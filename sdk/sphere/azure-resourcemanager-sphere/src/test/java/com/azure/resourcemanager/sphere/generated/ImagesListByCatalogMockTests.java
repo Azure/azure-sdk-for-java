@@ -46,12 +46,14 @@ public final class ImagesListByCatalogMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Image> response = manager.images().listByCatalog("mwmbes", "dnkwwtppjflcxog", "okonzmnsikvmkqz",
-            1984679669, 1625673068, 1138945921, com.azure.core.util.Context.NONE);
+        PagedIterable<Image> response = manager.images()
+            .listByCatalog("mwmbes", "dnkwwtppjflcxog", "okonzmnsikvmkqz", 1984679669, 1625673068, 1138945921,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tfz", response.iterator().next().properties().image());
         Assertions.assertEquals("hhvh", response.iterator().next().properties().imageId());

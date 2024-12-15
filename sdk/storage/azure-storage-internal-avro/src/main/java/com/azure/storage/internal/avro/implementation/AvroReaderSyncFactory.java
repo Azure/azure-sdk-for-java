@@ -20,7 +20,8 @@ public class AvroReaderSyncFactory {
         private final long offset;
         private final long thresholdIndex;
 
-        InternalAvroSyncReader(AvroSyncParser parser, ByteBuffer avroHeader, ByteBuffer avroBody, long offset, long thresholdIndex) {
+        InternalAvroSyncReader(AvroSyncParser parser, ByteBuffer avroHeader, ByteBuffer avroBody, long offset,
+            long thresholdIndex) {
             this.parser = parser;
             this.avroHeader = avroHeader;
             this.avroBody = avroBody;

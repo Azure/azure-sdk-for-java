@@ -175,10 +175,8 @@ public final class VideoAnalyzerOperationStatusInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model VideoAnalyzerOperationStatusInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model VideoAnalyzerOperationStatusInner"));
         }
     }
 

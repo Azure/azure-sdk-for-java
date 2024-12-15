@@ -30,23 +30,22 @@ public class DocumentModelAdminClientUnitTest {
     private static DocumentModelAdministrationAsyncClient asyncClient;
     private static DocumentAnalysisClient analysisClient;
     private static DocumentAnalysisAsyncClient analysisAsyncClient;
-    private static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or"
-        + " empty";
+    private static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE
+        = "'modelId' is required and cannot be null or" + " empty";
 
     @BeforeAll
     protected static void beforeTest() {
-        DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
-            .endpoint("https://localhost:8080")
+        DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder().endpoint("https://localhost:8080")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .credential(new AzureKeyCredential("fakeKey"));
 
         analysisClient = builder.buildClient();
         analysisAsyncClient = builder.buildAsyncClient();
 
-        DocumentModelAdministrationClientBuilder adminBuilder = new DocumentModelAdministrationClientBuilder()
-            .endpoint("https://localhost:8080")
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .credential(new AzureKeyCredential("fakeKey"));
+        DocumentModelAdministrationClientBuilder adminBuilder
+            = new DocumentModelAdministrationClientBuilder().endpoint("https://localhost:8080")
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .credential(new AzureKeyCredential("fakeKey"));
 
         client = adminBuilder.buildClient();
         asyncClient = adminBuilder.buildAsyncClient();
@@ -57,10 +56,8 @@ public class DocumentModelAdminClientUnitTest {
      */
     @SyncAsyncTest
     public void getModelNullModelID() {
-        assertThrows(IllegalArgumentException.class,
-            () -> SyncAsyncExtension.execute(
-                () -> client.getDocumentModel(null),
-                () -> asyncClient.getDocumentModel(null)));
+        assertThrows(IllegalArgumentException.class, () -> SyncAsyncExtension
+            .execute(() -> client.getDocumentModel(null), () -> asyncClient.getDocumentModel(null)));
     }
 
     /**
@@ -68,8 +65,7 @@ public class DocumentModelAdminClientUnitTest {
      */
     @Test
     public void analyzeReceiptDataNullDataSync() {
-        Assertions.assertThrows(NullPointerException.class,
-            () -> analysisClient.beginAnalyzeDocument(null, null));
+        Assertions.assertThrows(NullPointerException.class, () -> analysisClient.beginAnalyzeDocument(null, null));
     }
 
     /**
@@ -88,7 +84,8 @@ public class DocumentModelAdminClientUnitTest {
     public void analyzeContentResultWithNullData() {
         Assertions.assertThrows(NullPointerException.class,
             () -> analysisAsyncClient.beginAnalyzeDocument("prebuilt-layout", null)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
     }
 
     /**
@@ -105,10 +102,9 @@ public class DocumentModelAdminClientUnitTest {
      */
     @Test
     public void analyzeCustomDocumentWithNullModelId() {
-        Exception ex = Assertions.assertThrows(RuntimeException.class, () -> analysisClient.beginAnalyzeDocument(
-                null,
-                BinaryData.fromBytes("HelloWorld".getBytes()))
-            .setPollInterval(ONE_NANO_DURATION));
+        Exception ex = Assertions.assertThrows(RuntimeException.class,
+            () -> analysisClient.beginAnalyzeDocument(null, BinaryData.fromBytes("HelloWorld".getBytes()))
+                .setPollInterval(ONE_NANO_DURATION));
         Assertions.assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
@@ -119,7 +115,8 @@ public class DocumentModelAdminClientUnitTest {
     public void analyzeReceiptDataNullData() {
         assertThrows(NullPointerException.class,
             () -> analysisAsyncClient.beginAnalyzeDocument("prebuilt-receipt", null)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
     }
 
     /**
@@ -129,7 +126,8 @@ public class DocumentModelAdminClientUnitTest {
     public void analyzeBusinessCardDataNullData() {
         assertThrows(NullPointerException.class,
             () -> analysisAsyncClient.beginAnalyzeDocument("prebuilt-businessCard", null)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
     }
 
     /**
@@ -137,8 +135,8 @@ public class DocumentModelAdminClientUnitTest {
      */
     @Test
     public void beginBuildModelNullInput() {
-        Exception exception = assertThrows(NullPointerException.class, () ->
-            client.beginBuildDocumentModel((String) null, DocumentModelBuildMode.TEMPLATE));
+        Exception exception = assertThrows(NullPointerException.class,
+            () -> client.beginBuildDocumentModel((String) null, DocumentModelBuildMode.TEMPLATE));
         assertEquals("'blobContainerUrl' cannot be null.", exception.getMessage());
     }
 
@@ -160,6 +158,7 @@ public class DocumentModelAdminClientUnitTest {
     public void analyzeIDDocumentDataNullData() {
         assertThrows(NullPointerException.class,
             () -> analysisAsyncClient.beginAnalyzeDocument("prebuilt-idDocument", null)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
     }
 }

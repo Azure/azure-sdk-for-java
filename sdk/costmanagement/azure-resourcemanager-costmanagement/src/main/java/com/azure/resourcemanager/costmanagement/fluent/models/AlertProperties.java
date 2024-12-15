@@ -5,88 +5,85 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Alert properties. */
+/**
+ * Alert properties.
+ */
 @Fluent
-public final class AlertProperties {
+public final class AlertProperties implements JsonSerializable<AlertProperties> {
     /*
      * defines the type of alert
      */
-    @JsonProperty(value = "definition")
     private AlertPropertiesDefinition definition;
 
     /*
      * Alert description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Source of alert
      */
-    @JsonProperty(value = "source")
     private AlertSource source;
 
     /*
      * Alert details
      */
-    @JsonProperty(value = "details")
     private AlertPropertiesDetails details;
 
     /*
      * related budget
      */
-    @JsonProperty(value = "costEntityId")
     private String costEntityId;
 
     /*
      * alert status
      */
-    @JsonProperty(value = "status")
     private AlertStatus status;
 
     /*
      * dateTime in which alert was created
      */
-    @JsonProperty(value = "creationTime")
     private String creationTime;
 
     /*
      * dateTime in which alert was closed
      */
-    @JsonProperty(value = "closeTime")
     private String closeTime;
 
     /*
      * dateTime in which alert was last modified
      */
-    @JsonProperty(value = "modificationTime")
     private String modificationTime;
 
     /*
      * User who last modified the alert
      */
-    @JsonProperty(value = "statusModificationUserName")
     private String statusModificationUsername;
 
     /*
      * dateTime in which the alert status was last modified
      */
-    @JsonProperty(value = "statusModificationTime")
     private String statusModificationTime;
 
-    /** Creates an instance of AlertProperties class. */
+    /**
+     * Creates an instance of AlertProperties class.
+     */
     public AlertProperties() {
     }
 
     /**
      * Get the definition property: defines the type of alert.
-     *
+     * 
      * @return the definition value.
      */
     public AlertPropertiesDefinition definition() {
@@ -95,7 +92,7 @@ public final class AlertProperties {
 
     /**
      * Set the definition property: defines the type of alert.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the AlertProperties object itself.
      */
@@ -106,7 +103,7 @@ public final class AlertProperties {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +112,7 @@ public final class AlertProperties {
 
     /**
      * Set the description property: Alert description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertProperties object itself.
      */
@@ -126,7 +123,7 @@ public final class AlertProperties {
 
     /**
      * Get the source property: Source of alert.
-     *
+     * 
      * @return the source value.
      */
     public AlertSource source() {
@@ -135,7 +132,7 @@ public final class AlertProperties {
 
     /**
      * Set the source property: Source of alert.
-     *
+     * 
      * @param source the source value to set.
      * @return the AlertProperties object itself.
      */
@@ -146,7 +143,7 @@ public final class AlertProperties {
 
     /**
      * Get the details property: Alert details.
-     *
+     * 
      * @return the details value.
      */
     public AlertPropertiesDetails details() {
@@ -155,7 +152,7 @@ public final class AlertProperties {
 
     /**
      * Set the details property: Alert details.
-     *
+     * 
      * @param details the details value to set.
      * @return the AlertProperties object itself.
      */
@@ -166,7 +163,7 @@ public final class AlertProperties {
 
     /**
      * Get the costEntityId property: related budget.
-     *
+     * 
      * @return the costEntityId value.
      */
     public String costEntityId() {
@@ -175,7 +172,7 @@ public final class AlertProperties {
 
     /**
      * Set the costEntityId property: related budget.
-     *
+     * 
      * @param costEntityId the costEntityId value to set.
      * @return the AlertProperties object itself.
      */
@@ -186,7 +183,7 @@ public final class AlertProperties {
 
     /**
      * Get the status property: alert status.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -195,7 +192,7 @@ public final class AlertProperties {
 
     /**
      * Set the status property: alert status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AlertProperties object itself.
      */
@@ -206,7 +203,7 @@ public final class AlertProperties {
 
     /**
      * Get the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -215,7 +212,7 @@ public final class AlertProperties {
 
     /**
      * Set the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the AlertProperties object itself.
      */
@@ -226,7 +223,7 @@ public final class AlertProperties {
 
     /**
      * Get the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @return the closeTime value.
      */
     public String closeTime() {
@@ -235,7 +232,7 @@ public final class AlertProperties {
 
     /**
      * Set the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @param closeTime the closeTime value to set.
      * @return the AlertProperties object itself.
      */
@@ -246,7 +243,7 @@ public final class AlertProperties {
 
     /**
      * Get the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @return the modificationTime value.
      */
     public String modificationTime() {
@@ -255,7 +252,7 @@ public final class AlertProperties {
 
     /**
      * Set the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @param modificationTime the modificationTime value to set.
      * @return the AlertProperties object itself.
      */
@@ -266,7 +263,7 @@ public final class AlertProperties {
 
     /**
      * Get the statusModificationUsername property: User who last modified the alert.
-     *
+     * 
      * @return the statusModificationUsername value.
      */
     public String statusModificationUsername() {
@@ -275,7 +272,7 @@ public final class AlertProperties {
 
     /**
      * Set the statusModificationUsername property: User who last modified the alert.
-     *
+     * 
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the AlertProperties object itself.
      */
@@ -286,7 +283,7 @@ public final class AlertProperties {
 
     /**
      * Get the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @return the statusModificationTime value.
      */
     public String statusModificationTime() {
@@ -295,7 +292,7 @@ public final class AlertProperties {
 
     /**
      * Set the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @param statusModificationTime the statusModificationTime value to set.
      * @return the AlertProperties object itself.
      */
@@ -306,7 +303,7 @@ public final class AlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -316,5 +313,71 @@ public final class AlertProperties {
         if (details() != null) {
             details().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("definition", this.definition);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        jsonWriter.writeJsonField("details", this.details);
+        jsonWriter.writeStringField("costEntityId", this.costEntityId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("creationTime", this.creationTime);
+        jsonWriter.writeStringField("closeTime", this.closeTime);
+        jsonWriter.writeStringField("modificationTime", this.modificationTime);
+        jsonWriter.writeStringField("statusModificationUserName", this.statusModificationUsername);
+        jsonWriter.writeStringField("statusModificationTime", this.statusModificationTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertProperties.
+     */
+    public static AlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProperties deserializedAlertProperties = new AlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("definition".equals(fieldName)) {
+                    deserializedAlertProperties.definition = AlertPropertiesDefinition.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertProperties.description = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedAlertProperties.source = AlertSource.fromString(reader.getString());
+                } else if ("details".equals(fieldName)) {
+                    deserializedAlertProperties.details = AlertPropertiesDetails.fromJson(reader);
+                } else if ("costEntityId".equals(fieldName)) {
+                    deserializedAlertProperties.costEntityId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAlertProperties.status = AlertStatus.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedAlertProperties.creationTime = reader.getString();
+                } else if ("closeTime".equals(fieldName)) {
+                    deserializedAlertProperties.closeTime = reader.getString();
+                } else if ("modificationTime".equals(fieldName)) {
+                    deserializedAlertProperties.modificationTime = reader.getString();
+                } else if ("statusModificationUserName".equals(fieldName)) {
+                    deserializedAlertProperties.statusModificationUsername = reader.getString();
+                } else if ("statusModificationTime".equals(fieldName)) {
+                    deserializedAlertProperties.statusModificationTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProperties;
+        });
     }
 }

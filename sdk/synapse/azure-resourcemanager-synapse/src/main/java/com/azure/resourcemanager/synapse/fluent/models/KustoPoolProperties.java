@@ -5,82 +5,80 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import com.azure.resourcemanager.synapse.models.OptimizedAutoscale;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Class representing the Kusto pool properties. */
+/**
+ * Class representing the Kusto pool properties.
+ */
 @Fluent
-public final class KustoPoolProperties {
+public final class KustoPoolProperties implements JsonSerializable<KustoPoolProperties> {
     /*
      * The state of the resource.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private State state;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The Kusto Pool URI.
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * The Kusto Pool data ingestion URI.
      */
-    @JsonProperty(value = "dataIngestionUri", access = JsonProperty.Access.WRITE_ONLY)
     private String dataIngestionUri;
 
     /*
      * The reason for the Kusto Pool's current state.
      */
-    @JsonProperty(value = "stateReason", access = JsonProperty.Access.WRITE_ONLY)
     private String stateReason;
 
     /*
      * Optimized auto scale definition.
      */
-    @JsonProperty(value = "optimizedAutoscale")
     private OptimizedAutoscale optimizedAutoscale;
 
     /*
      * A boolean value that indicates if the streaming ingest is enabled.
      */
-    @JsonProperty(value = "enableStreamingIngest")
     private Boolean enableStreamingIngest;
 
     /*
      * A boolean value that indicates if the purge operations are enabled.
      */
-    @JsonProperty(value = "enablePurge")
     private Boolean enablePurge;
 
     /*
      * List of the Kusto Pool's language extensions.
      */
-    @JsonProperty(value = "languageExtensions", access = JsonProperty.Access.WRITE_ONLY)
     private LanguageExtensionsList languageExtensions;
 
     /*
      * The workspace unique identifier.
      */
-    @JsonProperty(value = "workspaceUID")
     private String workspaceUid;
 
-    /** Creates an instance of KustoPoolProperties class. */
+    /**
+     * Creates an instance of KustoPoolProperties class.
+     */
     public KustoPoolProperties() {
     }
 
     /**
      * Get the state property: The state of the resource.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -89,7 +87,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -98,7 +96,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the uri property: The Kusto Pool URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -107,7 +105,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the dataIngestionUri property: The Kusto Pool data ingestion URI.
-     *
+     * 
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
@@ -116,7 +114,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the stateReason property: The reason for the Kusto Pool's current state.
-     *
+     * 
      * @return the stateReason value.
      */
     public String stateReason() {
@@ -125,7 +123,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @return the optimizedAutoscale value.
      */
     public OptimizedAutoscale optimizedAutoscale() {
@@ -134,7 +132,7 @@ public final class KustoPoolProperties {
 
     /**
      * Set the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @param optimizedAutoscale the optimizedAutoscale value to set.
      * @return the KustoPoolProperties object itself.
      */
@@ -145,7 +143,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @return the enableStreamingIngest value.
      */
     public Boolean enableStreamingIngest() {
@@ -154,7 +152,7 @@ public final class KustoPoolProperties {
 
     /**
      * Set the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @param enableStreamingIngest the enableStreamingIngest value to set.
      * @return the KustoPoolProperties object itself.
      */
@@ -165,7 +163,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @return the enablePurge value.
      */
     public Boolean enablePurge() {
@@ -174,7 +172,7 @@ public final class KustoPoolProperties {
 
     /**
      * Set the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @param enablePurge the enablePurge value to set.
      * @return the KustoPoolProperties object itself.
      */
@@ -185,7 +183,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the languageExtensions property: List of the Kusto Pool's language extensions.
-     *
+     * 
      * @return the languageExtensions value.
      */
     public LanguageExtensionsList languageExtensions() {
@@ -194,7 +192,7 @@ public final class KustoPoolProperties {
 
     /**
      * Get the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @return the workspaceUid value.
      */
     public String workspaceUid() {
@@ -203,7 +201,7 @@ public final class KustoPoolProperties {
 
     /**
      * Set the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @param workspaceUid the workspaceUid value to set.
      * @return the KustoPoolProperties object itself.
      */
@@ -214,7 +212,7 @@ public final class KustoPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -224,5 +222,63 @@ public final class KustoPoolProperties {
         if (languageExtensions() != null) {
             languageExtensions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("optimizedAutoscale", this.optimizedAutoscale);
+        jsonWriter.writeBooleanField("enableStreamingIngest", this.enableStreamingIngest);
+        jsonWriter.writeBooleanField("enablePurge", this.enablePurge);
+        jsonWriter.writeStringField("workspaceUID", this.workspaceUid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KustoPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KustoPoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KustoPoolProperties.
+     */
+    public static KustoPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KustoPoolProperties deserializedKustoPoolProperties = new KustoPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedKustoPoolProperties.state = State.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedKustoPoolProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedKustoPoolProperties.uri = reader.getString();
+                } else if ("dataIngestionUri".equals(fieldName)) {
+                    deserializedKustoPoolProperties.dataIngestionUri = reader.getString();
+                } else if ("stateReason".equals(fieldName)) {
+                    deserializedKustoPoolProperties.stateReason = reader.getString();
+                } else if ("optimizedAutoscale".equals(fieldName)) {
+                    deserializedKustoPoolProperties.optimizedAutoscale = OptimizedAutoscale.fromJson(reader);
+                } else if ("enableStreamingIngest".equals(fieldName)) {
+                    deserializedKustoPoolProperties.enableStreamingIngest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePurge".equals(fieldName)) {
+                    deserializedKustoPoolProperties.enablePurge = reader.getNullable(JsonReader::getBoolean);
+                } else if ("languageExtensions".equals(fieldName)) {
+                    deserializedKustoPoolProperties.languageExtensions = LanguageExtensionsList.fromJson(reader);
+                } else if ("workspaceUID".equals(fieldName)) {
+                    deserializedKustoPoolProperties.workspaceUid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKustoPoolProperties;
+        });
     }
 }

@@ -137,6 +137,8 @@
       <Class name="com.azure.search.documents.test.environment.models.LoudHotel" />
       <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
       <Class name="com.azure.search.documents.util.SearchPagedResponse" />
+      <Class name="com.azure.search.documents.models.QueryRewritesValuesDebugInfo" />
+      <Class name="com.azure.search.documents.models.QueryRewritesDebugInfo" />
     </Or>
   </Match>
   <Match>

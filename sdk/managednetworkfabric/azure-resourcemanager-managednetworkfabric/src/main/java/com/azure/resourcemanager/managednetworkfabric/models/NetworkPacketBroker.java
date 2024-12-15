@@ -11,60 +11,62 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkPacke
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NetworkPacketBroker. */
+/**
+ * An immutable client-side representation of NetworkPacketBroker.
+ */
 public interface NetworkPacketBroker {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the networkFabricId property: ARM resource ID of the Network Fabric.
-     *
+     * 
      * @return the networkFabricId value.
      */
     String networkFabricId();
 
     /**
      * Gets the networkDeviceIds property: List of ARM resource IDs of Network Devices [NPB].
-     *
+     * 
      * @return the networkDeviceIds value.
      */
     List<String> networkDeviceIds();
@@ -72,80 +74,84 @@ public interface NetworkPacketBroker {
     /**
      * Gets the sourceInterfaceIds property: List of network interfaces across NPB devices that are used to mirror
      * source traffic.
-     *
+     * 
      * @return the sourceInterfaceIds value.
      */
     List<String> sourceInterfaceIds();
 
     /**
      * Gets the networkTapIds property: List of network Tap IDs configured on NPB.
-     *
+     * 
      * @return the networkTapIds value.
      */
     List<String> networkTapIds();
 
     /**
      * Gets the neighborGroupIds property: List of neighbor group IDs configured on NPB.
-     *
+     * 
      * @return the neighborGroupIds value.
      */
     List<String> neighborGroupIds();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkPacketBrokerInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetworkPacketBrokerInner innerModel();
 
-    /** The entirety of the NetworkPacketBroker definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NetworkPacketBroker definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
-    /** The NetworkPacketBroker definition stages. */
+    /**
+     * The NetworkPacketBroker definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NetworkPacketBroker definition. */
+        /**
+         * The first stage of the NetworkPacketBroker definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NetworkPacketBroker definition allowing to specify location. */
+        /**
+         * The stage of the NetworkPacketBroker definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -153,29 +159,33 @@ public interface NetworkPacketBroker {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the NetworkPacketBroker definition allowing to specify parent resource. */
+        /**
+         * The stage of the NetworkPacketBroker definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithNetworkFabricId withExistingResourceGroup(String resourceGroupName);
         }
 
-        /** The stage of the NetworkPacketBroker definition allowing to specify networkFabricId. */
+        /**
+         * The stage of the NetworkPacketBroker definition allowing to specify networkFabricId.
+         */
         interface WithNetworkFabricId {
             /**
              * Specifies the networkFabricId property: ARM resource ID of the Network Fabric..
-             *
+             * 
              * @param networkFabricId ARM resource ID of the Network Fabric.
              * @return the next definition stage.
              */
@@ -189,25 +199,27 @@ public interface NetworkPacketBroker {
         interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NetworkPacketBroker create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NetworkPacketBroker create(Context context);
         }
 
-        /** The stage of the NetworkPacketBroker definition allowing to specify tags. */
+        /**
+         * The stage of the NetworkPacketBroker definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -217,36 +229,42 @@ public interface NetworkPacketBroker {
 
     /**
      * Begins update for the NetworkPacketBroker resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NetworkPacketBroker.Update update();
 
-    /** The template for NetworkPacketBroker update. */
+    /**
+     * The template for NetworkPacketBroker update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NetworkPacketBroker apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NetworkPacketBroker apply(Context context);
     }
 
-    /** The NetworkPacketBroker update stages. */
+    /**
+     * The NetworkPacketBroker update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NetworkPacketBroker update allowing to specify tags. */
+        /**
+         * The stage of the NetworkPacketBroker update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -256,14 +274,14 @@ public interface NetworkPacketBroker {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NetworkPacketBroker refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

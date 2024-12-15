@@ -15,10 +15,8 @@ import java.io.IOException;
 /**
  * Implementation for {@link DeploymentExportResult}.
  */
-final class DeploymentExportResultImpl extends
-        WrapperImpl<DeploymentExportResultInner>
-        implements
-        DeploymentExportResult {
+final class DeploymentExportResultImpl extends WrapperImpl<DeploymentExportResultInner>
+    implements DeploymentExportResult {
 
     private SerializerAdapter serializerAdapter;
 

@@ -25,7 +25,10 @@ public final class SkuTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.BASIC).withTier("qes").withSize("gdf").withFamily("lzl")
+        Sku model = new Sku().withName(SkuName.BASIC)
+            .withTier("qes")
+            .withSize("gdf")
+            .withFamily("lzl")
             .withCapacity(1040747911);
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals(SkuName.BASIC, model.name());

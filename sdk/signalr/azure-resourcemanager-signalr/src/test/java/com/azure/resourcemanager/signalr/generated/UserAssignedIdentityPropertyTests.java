@@ -10,10 +10,8 @@ import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
 public final class UserAssignedIdentityPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentityProperty model =
-            BinaryData
-                .fromString("{\"principalId\":\"dvk\",\"clientId\":\"ejd\"}")
-                .toObject(UserAssignedIdentityProperty.class);
+        UserAssignedIdentityProperty model = BinaryData.fromString("{\"principalId\":\"dvk\",\"clientId\":\"ejd\"}")
+            .toObject(UserAssignedIdentityProperty.class);
     }
 
     @org.junit.jupiter.api.Test

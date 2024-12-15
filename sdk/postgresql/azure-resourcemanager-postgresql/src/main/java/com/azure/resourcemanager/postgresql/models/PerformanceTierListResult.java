@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of performance tiers. */
 @Fluent
 public final class PerformanceTierListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PerformanceTierListResult.class);
 
     /*
      * The list of performance tiers

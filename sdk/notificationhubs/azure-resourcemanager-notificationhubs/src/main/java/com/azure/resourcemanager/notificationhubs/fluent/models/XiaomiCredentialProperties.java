@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub XiaomiCredentialProperties.
  */
 @Fluent
-public final class XiaomiCredentialProperties {
+public final class XiaomiCredentialProperties implements JsonSerializable<XiaomiCredentialProperties> {
     /*
      * Gets or sets app secret.
      */
-    @JsonProperty(value = "appSecret")
     private String appSecret;
 
     /*
      * Gets or sets xiaomi service endpoint.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /**
@@ -76,5 +78,44 @@ public final class XiaomiCredentialProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appSecret", this.appSecret);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of XiaomiCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of XiaomiCredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the XiaomiCredentialProperties.
+     */
+    public static XiaomiCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            XiaomiCredentialProperties deserializedXiaomiCredentialProperties = new XiaomiCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appSecret".equals(fieldName)) {
+                    deserializedXiaomiCredentialProperties.appSecret = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedXiaomiCredentialProperties.endpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedXiaomiCredentialProperties;
+        });
     }
 }

@@ -25,10 +25,8 @@ public interface RegistryFileTaskRunRequest {
     boolean isArchiveEnabled();
 
     /** Container interface for all the definitions related to a registry file task run request. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.FileTaskPath,
-            DefinitionStages.FileTaskRunRequestStepAttachable {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.FileTaskPath,
+        DefinitionStages.FileTaskRunRequestStepAttachable {
     }
 
     /** Grouping of registry file task run request definition stages. */

@@ -7,40 +7,59 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing an attached database configuration. */
+/**
+ * Class representing an attached database configuration.
+ */
 @Fluent
 public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The properties of the attached database configuration.
      */
-    @JsonProperty(value = "properties")
     private AttachedDatabaseConfigurationProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AttachedDatabaseConfigurationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AttachedDatabaseConfigurationInner class.
+     */
     public AttachedDatabaseConfigurationInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +68,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
@@ -60,7 +79,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of the attached database configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AttachedDatabaseConfigurationProperties innerProperties() {
@@ -69,7 +88,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -77,8 +96,38 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -88,7 +137,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Get the databaseName property: The name of the database which you would like to attach, use * if you want to
      * follow all current and future databases.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -98,7 +147,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Set the databaseName property: The name of the database which you would like to attach, use * if you want to
      * follow all current and future databases.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
@@ -113,7 +162,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Get the kustoPoolResourceId property: The resource id of the kusto pool where the databases you would like to
      * attach reside.
-     *
+     * 
      * @return the kustoPoolResourceId value.
      */
     public String kustoPoolResourceId() {
@@ -123,7 +172,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Set the kustoPoolResourceId property: The resource id of the kusto pool where the databases you would like to
      * attach reside.
-     *
+     * 
      * @param kustoPoolResourceId the kustoPoolResourceId value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
@@ -138,7 +187,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     /**
      * Get the attachedDatabaseNames property: The list of databases from the clusterResourceId which are currently
      * attached to the kusto pool.
-     *
+     * 
      * @return the attachedDatabaseNames value.
      */
     public List<String> attachedDatabaseNames() {
@@ -147,7 +196,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Get the defaultPrincipalsModificationKind property: The default principals modification kind.
-     *
+     * 
      * @return the defaultPrincipalsModificationKind value.
      */
     public DefaultPrincipalsModificationKind defaultPrincipalsModificationKind() {
@@ -156,12 +205,12 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Set the defaultPrincipalsModificationKind property: The default principals modification kind.
-     *
+     * 
      * @param defaultPrincipalsModificationKind the defaultPrincipalsModificationKind value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
-    public AttachedDatabaseConfigurationInner withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationInner
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AttachedDatabaseConfigurationProperties();
         }
@@ -171,7 +220,7 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Get the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @return the tableLevelSharingProperties value.
      */
     public TableLevelSharingProperties tableLevelSharingProperties() {
@@ -180,12 +229,12 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Set the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
-    public AttachedDatabaseConfigurationInner withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationInner
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AttachedDatabaseConfigurationProperties();
         }
@@ -195,12 +244,62 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedDatabaseConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedDatabaseConfigurationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttachedDatabaseConfigurationInner.
+     */
+    public static AttachedDatabaseConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedDatabaseConfigurationInner deserializedAttachedDatabaseConfigurationInner
+                = new AttachedDatabaseConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.innerProperties
+                        = AttachedDatabaseConfigurationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAttachedDatabaseConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedDatabaseConfigurationInner;
+        });
     }
 }

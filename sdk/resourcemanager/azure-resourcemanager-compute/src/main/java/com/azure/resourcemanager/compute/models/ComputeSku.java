@@ -17,10 +17,13 @@ import java.util.Set;
 public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
     /** @return the sku name */
     ComputeSkuName name();
+
     /** @return the sku tier */
     ComputeSkuTier tier();
+
     /** @return the compute resource type that the sku describes */
     ComputeResourceType resourceType();
+
     /**
      * The virtual machine size type if the sku describes sku for virtual machine resource type.
      *
@@ -30,6 +33,7 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the virtual machine size type
      */
     VirtualMachineSizeTypes virtualMachineSizeType();
+
     /**
      * The managed disk or snapshot sku type if the sku describes sku for disk or snapshot resource type.
      *
@@ -39,6 +43,7 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the managed disk or snapshot sku type
      */
     DiskSkuTypes diskSkuType();
+
     /**
      * The availability set sku type if the sku describes sku for availability set resource type.
      *
@@ -48,18 +53,25 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the availability set sku type
      */
     AvailabilitySetSkuTypes availabilitySetSkuType();
+
     /** @return the regions that the sku is available */
     List<Region> regions();
+
     /** @return the availability zones supported for this sku, index by region */
     Map<Region, Set<AvailabilityZoneId>> zones();
+
     /** @return the scaling information of the sku */
     ResourceSkuCapacity capacity();
+
     /** @return the api versions that this sku supports */
     List<String> apiVersions();
+
     /** @return the metadata for querying the sku pricing information */
     List<ResourceSkuCosts> costs();
+
     /** @return the capabilities of the sku */
     List<ResourceSkuCapabilities> capabilities();
+
     /** @return the restrictions because of which SKU cannot be used */
     List<ResourceSkuRestrictions> restrictions();
 }

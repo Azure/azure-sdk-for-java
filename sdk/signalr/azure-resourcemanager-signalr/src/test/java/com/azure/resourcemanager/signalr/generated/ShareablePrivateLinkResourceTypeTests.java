@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ShareablePrivateLinkResourceTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShareablePrivateLinkResourceType model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"t\",\"properties\":{\"description\":\"gxobfirclnp\",\"groupId\":\"iayz\",\"type\":\"ykhyawfvjlboxqvk\"}}")
-                .toObject(ShareablePrivateLinkResourceType.class);
+        ShareablePrivateLinkResourceType model = BinaryData.fromString(
+            "{\"name\":\"t\",\"properties\":{\"description\":\"gxobfirclnp\",\"groupId\":\"iayz\",\"type\":\"ykhyawfvjlboxqvk\"}}")
+            .toObject(ShareablePrivateLinkResourceType.class);
         Assertions.assertEquals("t", model.name());
         Assertions.assertEquals("gxobfirclnp", model.properties().description());
         Assertions.assertEquals("iayz", model.properties().groupId());
@@ -25,14 +23,10 @@ public final class ShareablePrivateLinkResourceTypeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShareablePrivateLinkResourceType model =
-            new ShareablePrivateLinkResourceType()
-                .withName("t")
-                .withProperties(
-                    new ShareablePrivateLinkResourceProperties()
-                        .withDescription("gxobfirclnp")
-                        .withGroupId("iayz")
-                        .withType("ykhyawfvjlboxqvk"));
+        ShareablePrivateLinkResourceType model = new ShareablePrivateLinkResourceType().withName("t")
+            .withProperties(new ShareablePrivateLinkResourceProperties().withDescription("gxobfirclnp")
+                .withGroupId("iayz")
+                .withType("ykhyawfvjlboxqvk"));
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceType.class);
         Assertions.assertEquals("t", model.name());
         Assertions.assertEquals("gxobfirclnp", model.properties().description());

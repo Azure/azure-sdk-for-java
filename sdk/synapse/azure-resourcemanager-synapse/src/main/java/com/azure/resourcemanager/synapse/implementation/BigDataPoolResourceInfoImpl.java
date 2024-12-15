@@ -171,22 +171,17 @@ public final class BigDataPoolResourceInfoImpl
     }
 
     public BigDataPoolResourceInfo create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, bigDataPoolName, this.innerModel(), createForce, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .createOrUpdate(resourceGroupName, workspaceName, bigDataPoolName, this.innerModel(), createForce,
+                Context.NONE);
         return this;
     }
 
     public BigDataPoolResourceInfo create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, bigDataPoolName, this.innerModel(), createForce, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .createOrUpdate(resourceGroupName, workspaceName, bigDataPoolName, this.innerModel(), createForce, context);
         return this;
     }
 
@@ -203,53 +198,44 @@ public final class BigDataPoolResourceInfoImpl
     }
 
     public BigDataPoolResourceInfo apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .updateWithResponse(
-                    resourceGroupName, workspaceName, bigDataPoolName, updateBigDataPoolPatchInfo, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .updateWithResponse(resourceGroupName, workspaceName, bigDataPoolName, updateBigDataPoolPatchInfo,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public BigDataPoolResourceInfo apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .updateWithResponse(
-                    resourceGroupName, workspaceName, bigDataPoolName, updateBigDataPoolPatchInfo, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .updateWithResponse(resourceGroupName, workspaceName, bigDataPoolName, updateBigDataPoolPatchInfo, context)
+            .getValue();
         return this;
     }
 
-    BigDataPoolResourceInfoImpl(
-        BigDataPoolResourceInfoInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    BigDataPoolResourceInfoImpl(BigDataPoolResourceInfoInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bigDataPoolName = Utils.getValueFromIdByName(innerObject.id(), "bigDataPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.bigDataPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bigDataPools");
     }
 
     public BigDataPoolResourceInfo refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BigDataPoolResourceInfo refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBigDataPools()
-                .getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBigDataPools()
+            .getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, context)
+            .getValue();
         return this;
     }
 
@@ -303,8 +289,13 @@ public final class BigDataPoolResourceInfoImpl
         return this;
     }
 
-    public BigDataPoolResourceInfoImpl withDynamicExecutorAllocation(
-        DynamicExecutorAllocation dynamicExecutorAllocation) {
+    public BigDataPoolResourceInfoImpl withCacheSize(Integer cacheSize) {
+        this.innerModel().withCacheSize(cacheSize);
+        return this;
+    }
+
+    public BigDataPoolResourceInfoImpl
+        withDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation) {
         this.innerModel().withDynamicExecutorAllocation(dynamicExecutorAllocation);
         return this;
     }

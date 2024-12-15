@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of the hardware type (vendor and/or their product name). */
+/**
+ * Name of the hardware type (vendor and/or their product name).
+ */
 public final class AzureBareMetalHardwareTypeNamesEnum
     extends ExpandableStringEnum<AzureBareMetalHardwareTypeNamesEnum> {
-    /** Static value Cisco_UCS for AzureBareMetalHardwareTypeNamesEnum. */
+    /**
+     * Static value Cisco_UCS for AzureBareMetalHardwareTypeNamesEnum.
+     */
     public static final AzureBareMetalHardwareTypeNamesEnum CISCO_UCS = fromString("Cisco_UCS");
 
-    /** Static value HPE for AzureBareMetalHardwareTypeNamesEnum. */
+    /**
+     * Static value HPE for AzureBareMetalHardwareTypeNamesEnum.
+     */
     public static final AzureBareMetalHardwareTypeNamesEnum HPE = fromString("HPE");
 
-    /** Static value SDFLEX for AzureBareMetalHardwareTypeNamesEnum. */
+    /**
+     * Static value SDFLEX for AzureBareMetalHardwareTypeNamesEnum.
+     */
     public static final AzureBareMetalHardwareTypeNamesEnum SDFLEX = fromString("SDFLEX");
 
     /**
      * Creates a new instance of AzureBareMetalHardwareTypeNamesEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class AzureBareMetalHardwareTypeNamesEnum
 
     /**
      * Creates or finds a AzureBareMetalHardwareTypeNamesEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureBareMetalHardwareTypeNamesEnum.
      */
-    @JsonCreator
     public static AzureBareMetalHardwareTypeNamesEnum fromString(String name) {
         return fromString(name, AzureBareMetalHardwareTypeNamesEnum.class);
     }
 
     /**
      * Gets known AzureBareMetalHardwareTypeNamesEnum values.
-     *
+     * 
      * @return known AzureBareMetalHardwareTypeNamesEnum values.
      */
     public static Collection<AzureBareMetalHardwareTypeNamesEnum> values() {

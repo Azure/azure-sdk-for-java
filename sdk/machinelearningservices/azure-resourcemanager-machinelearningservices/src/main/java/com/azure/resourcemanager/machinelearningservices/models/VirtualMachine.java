@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("VirtualMachine")
 @Fluent
 public final class VirtualMachine extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachine.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachine.class);
 
     /*
      * The properties property.

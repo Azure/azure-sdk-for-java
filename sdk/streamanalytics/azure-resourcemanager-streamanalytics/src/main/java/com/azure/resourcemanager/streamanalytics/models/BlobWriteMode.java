@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BlobWriteMode extends ExpandableStringEnum<BlobWriteMode> {
      * @param name a name to look for.
      * @return the corresponding BlobWriteMode.
      */
-    @JsonCreator
     public static BlobWriteMode fromString(String name) {
         return fromString(name, BlobWriteMode.class);
     }

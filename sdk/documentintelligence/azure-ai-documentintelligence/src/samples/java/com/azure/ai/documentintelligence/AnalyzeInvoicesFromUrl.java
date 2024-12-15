@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -40,20 +40,13 @@ public class AnalyzeInvoicesFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller
-            = client.beginAnalyzeDocument("prebuilt-invoice",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
+        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeInvoicesPoller
+            = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(invoiceUrl));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 
         for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
-            Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
+            AnalyzedDocument analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
             Map<String, DocumentField> invoiceFields = analyzedInvoice.getFields();
             System.out.printf("----------- Analyzing invoice  %d -----------%n", i);
             DocumentField vendorNameField = invoiceFields.get("VendorName");

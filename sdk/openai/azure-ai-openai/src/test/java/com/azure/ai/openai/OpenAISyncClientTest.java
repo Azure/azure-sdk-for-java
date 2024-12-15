@@ -64,6 +64,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -81,7 +82,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient getOpenAIClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         return getOpenAIClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, serviceVersion)
-            .buildClient();
+                .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -99,9 +100,33 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
-            IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(OpenAIClientTestBase::assertCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsStreamUsageRunner((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamUsage(resultCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @Disabled("Unrecognized request argument supplied: max_completion_tokens")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsStreamTokenCutoffRunner((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamTokenCutoff(resultCompletions.stream().collect(Collectors.toList()));
         });
     }
 
@@ -129,12 +154,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((_deploymentId, prompt) -> {
             String deploymentId = "BAD_DEPLOYMENT_ID";
-            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> client.getCompletionsWithResponse(deploymentId,
+            ResourceNotFoundException exception
+                = assertThrows(ResourceNotFoundException.class, () -> client.getCompletionsWithResponse(deploymentId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(404, exception.getResponse().getStatusCode());
         });
@@ -169,6 +195,9 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertNotNull(usage);
+            assertTrue(usage.getCompletionTokens() <= 3);
         });
     }
 
@@ -177,8 +206,21 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
+            ChatCompletions resultChatCompletions
+                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertChatCompletions(1, resultChatCompletions);
+        });
+    }
+
+    @Disabled("Unrecognized request argument supplied: max_completion_tokens")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
+            ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId,
+                new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
+            assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10);
         });
     }
 
@@ -187,9 +229,46 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsage(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @Disabled("promps and completion tokens are null in Azure")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsageTokenDetails(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @Disabled("Unrecognized request argument supplied: max_completion_tokens")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsStreamTokenCutoffRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamTokenCutoff(resultChatCompletions.stream().collect(Collectors.toList()));
         });
     }
 
@@ -199,7 +278,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
             Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
-                    deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
+                deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
             assertResponseRequestHeader(response.getRequest());
             IterableStream<ChatCompletions> value = response.getValue();
             assertTrue(value.stream().toArray().length > 1);
@@ -266,8 +345,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getImageGenerationRunner((deploymentId, options) ->
-                assertImageGenerationsForAzure(client.getImageGenerations(deploymentId, options)));
+        getImageGenerationRunner((deploymentId,
+            options) -> assertImageGenerationsForAzure(client.getImageGenerations(deploymentId, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -275,7 +354,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGenerateImageWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getImageGenerationWithResponseRunner(deploymentId -> options -> requestOptions -> {
-            Response<ImageGenerations> response = client.getImageGenerationsWithResponse(deploymentId, options, requestOptions);
+            Response<ImageGenerations> response
+                = client.getImageGenerationsWithResponse(deploymentId, options, requestOptions);
             assertResponseRequestHeader(response.getRequest());
             assertImageGenerationsForAzure(response.getValue());
         });
@@ -283,11 +363,12 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testContentFilterInputExceptionInImageGeneration(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testContentFilterInputExceptionInImageGeneration(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         contentFilterInputExceptionRunner((deploymentId, options) -> {
-            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                    () -> client.getImageGenerations(deploymentId, options));
+            HttpResponseException httpResponseException
+                = assertThrows(HttpResponseException.class, () -> client.getImageGenerations(deploymentId, options));
             validateImageGenerationContentFilteringException(httpResponseException);
         });
     }
@@ -302,9 +383,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             assertEquals(1, chatCompletions.getChoices().size());
             ChatChoice chatChoice = chatCompletions.getChoices().get(0);
-            MyFunctionCallArguments arguments = assertFunctionCall(
-                chatChoice,
-                MyFunctionCallArguments.class);
+            MyFunctionCallArguments arguments = assertFunctionCall(chatChoice, MyFunctionCallArguments.class);
             assertTrue(arguments.getLocation().contains("San Francisco"));
             assertEquals(arguments.getUnit(), "CELSIUS");
         });
@@ -342,7 +421,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
-            ChatCompletions chatCompletions = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
+            ChatCompletions chatCompletions
+                = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
             assertSafePromptContentFilterResults(chatCompletions.getPromptFilterResults().get(0));
             assertEquals(1, chatCompletions.getChoices().size());
             assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
@@ -354,7 +434,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
-            IterableStream<ChatCompletions> messageList = client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages));
+            IterableStream<ChatCompletions> messageList
+                = client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages));
 
             int i = 0;
             int totalMessages = messageList.stream().toArray().length;
@@ -371,7 +452,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                     assertEquals(ChatRole.ASSISTANT, chatCompletions.getChoices().get(0).getDelta().getRole());
                     assertNull(chatCompletions.getPromptFilterResults());
                     // TODO (team): change in behaviour, this used to be uncommented
-//                    assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
+                    //                    assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
                 } else if (i == totalMessages - 1) {
                     // The last stream message is empty with all the filters set to null
                     assertEquals(1, chatCompletions.getChoices().size());
@@ -381,7 +462,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                     assertNotNull(chatChoice.getDelta());
                     assertNull(chatChoice.getDelta().getContent());
                     // TODO (team): change in behaviour, this used to be uncommented
-//                    assertSafeChoiceContentFilterResults(chatChoice.getContentFilterResults());
+                    //                    assertSafeChoiceContentFilterResults(chatChoice.getContentFilterResults());
                 } else {
                     // The rest of the intermediary messages have the text generation content filter set
                     assertNull(chatCompletions.getPromptFilterResults());
@@ -433,7 +514,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                     assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                     assertNotNull(choice.getText());
                     // TODO (team): change in behaviour, this used to be uncommented
-//                    assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
+                    //                    assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
                 } else {
                     // The rest of the intermediary messages have the text generation content filter set
                     assertNull(completions.getPromptFilterResults());
@@ -451,11 +532,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                azureSearchEndpoint, azureSearchIndexName);
+            AzureSearchChatExtensionParameters searchParameters
+                = new AzureSearchChatExtensionParameters(azureSearchEndpoint, azureSearchIndexName);
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                new AzureSearchChatExtensionConfiguration(searchParameters);
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration
+                = new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
@@ -466,21 +547,22 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatCompletionSearchExtensionContextPropertyFilter(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testChatCompletionSearchExtensionContextPropertyFilter(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                azureSearchEndpoint, azureSearchIndexName);
+            AzureSearchChatExtensionParameters searchParameters
+                = new AzureSearchChatExtensionParameters(azureSearchEndpoint, azureSearchIndexName);
 
             // Only have citations in the search results, default are 'citations' and 'intent'.
             List<OnYourDataContextProperty> contextProperties = new ArrayList<>();
             contextProperties.add(OnYourDataContextProperty.CITATIONS);
 
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()))
-                    .setIncludeContexts(contextProperties);
-            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureSearchChatExtensionConfiguration(searchParameters);
+                .setIncludeContexts(contextProperties);
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration
+                = new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
@@ -494,18 +576,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
-                azureSearchEndpoint, azureSearchIndexName);
+            AzureSearchChatExtensionParameters searchParameters
+                = new AzureSearchChatExtensionParameters(azureSearchEndpoint, azureSearchIndexName);
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureSearchChatExtensionConfiguration(searchParameters);
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration
+                = new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
-            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
 
             assertChatCompletionsStreamingCognitiveSearch(resultChatCompletions.stream());
         });
@@ -520,7 +604,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(deploymentName,
+                transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION);
         });
     }
@@ -534,7 +619,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(deploymentName,
+                transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE);
         });
     }
@@ -542,16 +628,16 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionTimestampGranularityInWord(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionTimestampGranularityInWord(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
-            transcriptionOptions
-                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
-                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
-                    transcriptionOptions);
+            AudioTranscription transcription
+                = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
 
             assertNull(transcription.getSegments());
             assertAudioTranscriptionWords(transcription.getWords());
@@ -561,16 +647,16 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionTimestampGranularityInSegment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionTimestampGranularityInSegment(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
-            transcriptionOptions
-                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
-                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.SEGMENT));
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.SEGMENT));
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
-                    transcriptionOptions);
+            AudioTranscription transcription
+                = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
 
             assertAudioTranscriptionSegments(transcription.getSegments());
             assertNull(transcription.getWords());
@@ -580,18 +666,17 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionTimestampGranularityInBothSegmentAndWord(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionTimestampGranularityInBothSegmentAndWord(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
-            transcriptionOptions
-                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
-                    .setTimestampGranularities(Arrays.asList(
-                            AudioTranscriptionTimestampGranularity.SEGMENT,
-                            AudioTranscriptionTimestampGranularity.WORD));
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.SEGMENT,
+                    AudioTranscriptionTimestampGranularity.WORD));
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
-                    transcriptionOptions);
+            AudioTranscription transcription
+                = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
 
             assertAudioTranscriptionSegments(transcription.getSegments());
             assertAudioTranscriptionWords(transcription.getWords());
@@ -601,17 +686,16 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionDuplicateTimestampGranularity(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionDuplicateTimestampGranularity(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
-            transcriptionOptions
-                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
-                    .setTimestampGranularities(Arrays.asList(
-                            AudioTranscriptionTimestampGranularity.WORD,
-                            AudioTranscriptionTimestampGranularity.WORD));
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD,
+                    AudioTranscriptionTimestampGranularity.WORD));
 
-            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
-                    transcriptionOptions);
+            AudioTranscription transcription
+                = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions);
 
             assertNull(transcription.getSegments());
             assertAudioTranscriptionWords(transcription.getWords());
@@ -621,16 +705,15 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
-    public void testAudioTranscriptionTimestampGranularityInWrongResponseFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testAudioTranscriptionTimestampGranularityInWrongResponseFormat(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
-            transcriptionOptions
-                    .setResponseFormat(AudioTranscriptionFormat.JSON)
-                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON)
+                .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
 
-            assertThrows(HttpResponseException.class, () ->
-                    client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
-                            transcriptionOptions));
+            assertThrows(HttpResponseException.class,
+                () -> client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions));
         });
     }
 
@@ -643,7 +726,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(),
+                transcriptionOptions);
             // A plain/text request adds a line break as an artifact. Also observed for translations
             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription);
         });
@@ -658,7 +742,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(),
+                transcriptionOptions);
             // Contains at least one sequence
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -677,7 +762,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(),
+                transcriptionOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -691,16 +777,14 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
-                AudioTranscriptionFormat.JSON,
-                AudioTranscriptionFormat.VERBOSE_JSON
-        );
+        List<AudioTranscriptionFormat> wrongFormats
+            = Arrays.asList(AudioTranscriptionFormat.JSON, AudioTranscriptionFormat.VERBOSE_JSON);
 
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
-            for (AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format : wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                assertThrows(IllegalArgumentException.class, () ->
-                        client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions));
+                assertThrows(IllegalArgumentException.class, () -> client.getAudioTranscriptionText(deploymentName,
+                    transcriptionOptions.getFilename(), transcriptionOptions));
             }
         });
     }
@@ -709,17 +793,14 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
-                AudioTranscriptionFormat.TEXT,
-                AudioTranscriptionFormat.SRT,
-                AudioTranscriptionFormat.VTT
-        );
+        List<AudioTranscriptionFormat> wrongFormats
+            = Arrays.asList(AudioTranscriptionFormat.TEXT, AudioTranscriptionFormat.SRT, AudioTranscriptionFormat.VTT);
 
         getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
-            for (AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format : wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                assertThrows(IllegalArgumentException.class, () ->
-                        client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions));
+                assertThrows(IllegalArgumentException.class, () -> client.getAudioTranscription(deploymentName,
+                    transcriptionOptions.getFilename(), transcriptionOptions));
             }
         });
     }
@@ -733,7 +814,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
+            AudioTranslation translation
+                = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationSimpleJson(translation, "It's raining today.");
         });
     }
@@ -747,7 +829,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VERBOSE_JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
+            AudioTranslation translation
+                = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE);
         });
     }
@@ -761,7 +844,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
+            String transcription
+                = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             assertEquals("It's raining today.\n", transcription);
         });
     }
@@ -775,7 +859,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.SRT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
+            String transcription
+                = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             // Sequence number
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -794,7 +879,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VTT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
+            String transcription
+                = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -808,16 +894,15 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        List<AudioTranslationFormat> wrongFormats = Arrays.asList(
-            AudioTranslationFormat.JSON,
-            AudioTranslationFormat.VERBOSE_JSON
-        );
+        List<AudioTranslationFormat> wrongFormats
+            = Arrays.asList(AudioTranslationFormat.JSON, AudioTranslationFormat.VERBOSE_JSON);
 
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
-            for (AudioTranslationFormat format: wrongFormats) {
+            for (AudioTranslationFormat format : wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
+                    client.getAudioTranslationText(deploymentName, translationOptions.getFilename(),
+                        translationOptions);
                 });
             }
         });
@@ -827,14 +912,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        List<AudioTranslationFormat> wrongFormats = Arrays.asList(
-            AudioTranslationFormat.TEXT,
-            AudioTranslationFormat.SRT,
-            AudioTranslationFormat.VTT
-        );
+        List<AudioTranslationFormat> wrongFormats
+            = Arrays.asList(AudioTranslationFormat.TEXT, AudioTranslationFormat.SRT, AudioTranslationFormat.VTT);
 
         getAudioTranslationRunner((deploymentName, translationOptions) -> {
-            for (AudioTranslationFormat format: wrongFormats) {
+            for (AudioTranslationFormat format : wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
                     client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
@@ -848,8 +930,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
-            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+            chatCompletionsOptions
+                .setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
+            Response<ChatCompletions> response
+                = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             // first round trip
             assertNotNull(response);
@@ -866,62 +950,18 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
             assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
 
-            ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
-            assertNotNull(functionToolCall);
-            assertFalse(functionToolCall.getFunction().getArguments() == null
-                    || functionToolCall.getFunction().getArguments().isEmpty());
-
-            // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
-            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
-                    functionToolCall, "");
-
-            ChatCompletions followUpChatCompletions = client.getChatCompletions(modelId, followUpChatCompletionsOptions);
-
-            assertNotNull(followUpChatCompletions);
-            assertNotNull(followUpChatCompletions.getChoices());
-            ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
-            assertNotNull(followUpChatChoice);
-            assertNotNull(followUpChatChoice.getMessage());
-            String content = followUpChatChoice.getMessage().getContent();
-            assertFalse(content == null || content.isEmpty());
-            assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
-            assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
-        }));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsToolCallForStrictStructuredOutput(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, serviceVersion);
-        getChatWithToolCallStructuredOutputRunner(((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
-            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
-
-            // first round trip
-            assertNotNull(response);
-            assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
-            ChatCompletions chatCompletions = response.getValue();
-            assertNotNull(chatCompletions);
-
-            assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
-            ChatChoice chatChoice = chatCompletions.getChoices().get(0);
-            assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.TOOL_CALLS);
-
-            ChatResponseMessage responseMessage = chatChoice.getMessage();
-            assertNotNull(responseMessage);
-            assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
-            assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-
-            ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
             assertNotNull(functionToolCall);
             assertFalse(functionToolCall.getFunction().getArguments() == null
                 || functionToolCall.getFunction().getArguments().isEmpty());
 
             // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
-            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
-                functionToolCall, "");
+            ChatCompletionsOptions followUpChatCompletionsOptions
+                = getChatCompletionsOptionWithToolCallFollowUp(functionToolCall, "");
 
-            ChatCompletions followUpChatCompletions = client.getChatCompletions(modelId, followUpChatCompletionsOptions);
+            ChatCompletions followUpChatCompletions
+                = client.getChatCompletions(modelId, followUpChatCompletionsOptions);
 
             assertNotNull(followUpChatCompletions);
             assertNotNull(followUpChatCompletions.getChoices());
@@ -937,13 +977,66 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionToolCallChoiceExplicitToolName(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsToolCallForStrictStructuredOutput(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatWithToolCallStructuredOutputRunner(((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions
+                .setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
+            Response<ChatCompletions> response
+                = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+
+            // first round trip
+            assertNotNull(response);
+            assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+            ChatCompletions chatCompletions = response.getValue();
+            assertNotNull(chatCompletions);
+
+            assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+            ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+            assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.TOOL_CALLS);
+
+            ChatResponseMessage responseMessage = chatChoice.getMessage();
+            assertNotNull(responseMessage);
+            assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
+            assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
+
+            ChatCompletionsFunctionToolCall functionToolCall
+                = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
+            assertNotNull(functionToolCall);
+            assertFalse(functionToolCall.getFunction().getArguments() == null
+                || functionToolCall.getFunction().getArguments().isEmpty());
+
+            // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
+            ChatCompletionsOptions followUpChatCompletionsOptions
+                = getChatCompletionsOptionWithToolCallFollowUp(functionToolCall, "");
+
+            ChatCompletions followUpChatCompletions
+                = client.getChatCompletions(modelId, followUpChatCompletionsOptions);
+
+            assertNotNull(followUpChatCompletions);
+            assertNotNull(followUpChatCompletions.getChoices());
+            ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+            assertNotNull(followUpChatChoice);
+            assertNotNull(followUpChatChoice.getMessage());
+            String content = followUpChatChoice.getMessage().getContent();
+            assertFalse(content == null || content.isEmpty());
+            assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+            assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionToolCallChoiceExplicitToolName(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(
-                    new ChatCompletionsNamedFunctionToolSelection(
-                            new ChatCompletionsFunctionToolSelection("FutureTemperature"))));
-            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+            chatCompletionsOptions
+                .setToolChoice(new ChatCompletionsToolSelection(new ChatCompletionsNamedFunctionToolSelection(
+                    new ChatCompletionsFunctionToolSelection("FutureTemperature"))));
+            Response<ChatCompletions> response
+                = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             assertNotNull(response);
             assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
@@ -961,7 +1054,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNull(message.getContent());
             assertNotNull(message.getToolCalls().get(0));
             assertInstanceOf(ChatCompletionsFunctionToolCall.class, message.getToolCalls().get(0));
-            ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
             assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature");
             assertTrue(functionToolCall.getFunction().getArguments().contains("Honolulu"));
             assertEquals(chatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
@@ -974,8 +1068,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionToolCallChoiceNone(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.NONE));
-            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+            chatCompletionsOptions
+                .setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.NONE));
+            Response<ChatCompletions> response
+                = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             assertNotNull(response);
             assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
@@ -1000,11 +1096,14 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionToolCallChoiceRequired(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionToolCallChoiceRequired(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
-            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
-            Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
+            chatCompletionsOptions
+                .setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.REQUIRED));
+            Response<ChatCompletions> response
+                = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             assertNotNull(response);
             assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
@@ -1022,7 +1121,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNull(message.getContent());
             assertNotNull(message.getToolCalls().get(0));
             assertInstanceOf(ChatCompletionsFunctionToolCall.class, message.getToolCalls().get(0));
-            ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = (ChatCompletionsFunctionToolCall) chatChoice.getMessage().getToolCalls().get(0);
             assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature");
             assertTrue(functionToolCall.getFunction().getArguments().contains("Honolulu"));
             assertEquals(chatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
@@ -1035,7 +1135,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
-            IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
+            IterableStream<ChatCompletions> chatCompletionsStream
+                = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
 
             StringBuilder argumentsBuilder = new StringBuilder();
             long totalStreamMessages = chatCompletionsStream.stream().count();
@@ -1076,20 +1177,22 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             }
             assertFunctionToolCallArgs(argumentsBuilder.toString());
             FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
-            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+            ChatCompletionsFunctionToolCall functionToolCall
+                = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
 
             // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
-            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
-                    functionToolCall, "");
+            ChatCompletionsOptions followUpChatCompletionsOptions
+                = getChatCompletionsOptionWithToolCallFollowUp(functionToolCall, "");
 
-            IterableStream<ChatCompletions> followupChatCompletionsStream = client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
+            IterableStream<ChatCompletions> followupChatCompletionsStream
+                = client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
             assertNotNull(followupChatCompletionsStream);
 
             StringBuilder contentBuilder = new StringBuilder();
             long totalStreamFollowUpMessages = followupChatCompletionsStream.stream().count();
             int j = 0;
 
-            for (ChatCompletions chatCompletions: followupChatCompletionsStream) {
+            for (ChatCompletions chatCompletions : followupChatCompletionsStream) {
                 List<ChatChoice> chatChoices = chatCompletions.getChoices();
                 if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
                     assertEquals(1, chatChoices.size());
@@ -1126,7 +1229,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         textToSpeechRunner(((modelId, speechGenerationOptions) -> {
             Response<BinaryData> response = client.generateSpeechFromTextWithResponse(modelId,
-                    BinaryData.fromObject(speechGenerationOptions), new RequestOptions());
+                BinaryData.fromObject(speechGenerationOptions), new RequestOptions());
             assertTrue(response.getStatusCode() > 0);
             assertNotNull(response.getHeaders());
             BinaryData speech = response.getValue();
@@ -1267,7 +1370,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse
+                = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
             FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
@@ -1300,7 +1404,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse
+                = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
             FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
@@ -1311,7 +1416,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @Disabled("Support in Azure OpenAI for FINE_TUNE files is not yet available")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testFineTuningJsonFileOperationsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testFineTuningJsonFileOperationsWithResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -1334,7 +1440,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(files.stream().anyMatch(f -> f.getId().equals(file.getId())));
 
             // Delete file
-            Response<FileDeletionStatus> deleteResponse = client.deleteFileWithResponse(file.getId(), new RequestOptions());
+            Response<FileDeletionStatus> deleteResponse
+                = client.deleteFileWithResponse(file.getId(), new RequestOptions());
             assertEquals(200, deleteResponse.getStatusCode());
             FileDeletionStatus deletionStatus = deleteResponse.getValue();
             assertTrue(deletionStatus.isDeleted());
@@ -1364,8 +1471,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 file = client.getFile(file.getId());
             }
 
-            Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions",
-                file.getId(), "24h"));
+            Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", file.getId(), "24h"));
             assertNotNull(batch);
 
             // Get single file
@@ -1436,9 +1542,9 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             // Delete file
             // TODO: Azure service returns 204 empty body, which is different from OpenAI delete operation that return 200 and a body
             client.deleteFile(file.getId());
-//            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
-//            assertTrue(deletionStatus.isDeleted());
-//            assertEquals(deletionStatus.getId(), file.getId());
+            //            FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
+            //            assertTrue(deletionStatus.isDeleted());
+            //            assertEquals(deletionStatus.getId(), file.getId());
         }));
     }
 
@@ -1468,7 +1574,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             assertNotEquals(uploadPartAddedId, uploadPartAddedId2);
 
-            CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+            CompleteUploadRequest completeUploadRequest
+                = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
 
             Upload completeUpload = client.completeUpload(uploadedId, completeUploadRequest);
             assertEquals(uploadedId, completeUpload.getId());

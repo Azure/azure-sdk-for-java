@@ -23,11 +23,10 @@ class DetectFunctionWithBinaryAndParametersSync extends DetectSyncFunction {
     }
 
     @Override
-    public List<FaceDetectionResult> execute(
-        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
-        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive) {
-        return mFaceClient.detect(mImageContent, detectionModel, recognitionModel, returnFaceId,
-            returnFaceAttributes, returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
+    public List<FaceDetectionResult> execute(FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel,
+        boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks,
+        Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+        return mFaceClient.detect(mImageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes,
+            returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
     }
 }

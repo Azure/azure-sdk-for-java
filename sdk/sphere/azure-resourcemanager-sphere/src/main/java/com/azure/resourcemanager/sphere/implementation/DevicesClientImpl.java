@@ -675,8 +675,10 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            resource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                resource)
+            .getSyncPoller();
     }
 
     /**
@@ -699,8 +701,10 @@ public final class DevicesClientImpl implements DevicesClient {
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deviceName, DeviceInner resource,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            resource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                resource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -999,8 +1003,10 @@ public final class DevicesClientImpl implements DevicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeviceInner>, DeviceInner> beginUpdate(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, String deviceName, DeviceUpdate properties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
-            properties, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1022,7 +1028,8 @@ public final class DevicesClientImpl implements DevicesClient {
     private Mono<DeviceInner> updateAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, DeviceUpdate properties) {
         return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, properties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1315,7 +1322,8 @@ public final class DevicesClientImpl implements DevicesClient {
     private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deviceName, Context context) {
         return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1547,8 +1555,10 @@ public final class DevicesClientImpl implements DevicesClient {
     public SyncPoller<PollResult<SignedCapabilityImageResponseInner>, SignedCapabilityImageResponseInner>
         beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
             String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return this.beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deviceName, generateDeviceCapabilityRequest).getSyncPoller();
+        return this
+            .beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest)
+            .getSyncPoller();
     }
 
     /**
@@ -1572,8 +1582,10 @@ public final class DevicesClientImpl implements DevicesClient {
         beginGenerateCapabilityImage(String resourceGroupName, String catalogName, String productName,
             String deviceGroupName, String deviceName, GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
             Context context) {
-        return this.beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deviceName, generateDeviceCapabilityRequest, context).getSyncPoller();
+        return this
+            .beginGenerateCapabilityImageAsync(resourceGroupName, catalogName, productName, deviceGroupName, deviceName,
+                generateDeviceCapabilityRequest, context)
+            .getSyncPoller();
     }
 
     /**

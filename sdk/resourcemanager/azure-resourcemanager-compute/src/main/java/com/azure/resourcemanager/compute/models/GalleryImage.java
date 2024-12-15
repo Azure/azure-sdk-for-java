@@ -26,12 +26,8 @@ import reactor.core.publisher.Mono;
  * multiple versions of the same image.
  */
 @Fluent
-public interface GalleryImage
-    extends HasInnerModel<GalleryImageInner>,
-        Indexable,
-        Refreshable<GalleryImage>,
-        Updatable<GalleryImage.Update>,
-        HasManager<ComputeManager> {
+public interface GalleryImage extends HasInnerModel<GalleryImageInner>, Indexable, Refreshable<GalleryImage>,
+    Updatable<GalleryImage.Update>, HasManager<ComputeManager> {
     /** @return the description of the image. */
     String description();
 
@@ -125,13 +121,8 @@ public interface GalleryImage
     PagedIterable<GalleryImageVersion> listVersions();
 
     /** The entirety of the gallery image definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGallery,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithIdentifier,
-            DefinitionStages.WithOsTypeAndState,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGallery, DefinitionStages.WithLocation,
+        DefinitionStages.WithIdentifier, DefinitionStages.WithOsTypeAndState, DefinitionStages.WithCreate {
     }
 
     /** Grouping of gallery image definition stages. */
@@ -446,33 +437,19 @@ public interface GalleryImage
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<GalleryImage>,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisallowed,
-                DefinitionStages.WithEndOfLifeDate,
-                DefinitionStages.WithEula,
-                DefinitionStages.WithPrivacyStatementUri,
-                DefinitionStages.WithPurchasePlan,
-                DefinitionStages.WithRecommendedVMConfiguration,
-                DefinitionStages.WithReleaseNoteUri,
-                DefinitionStages.WithHyperVGeneration,
-                DefinitionStages.WithSecurityTypes,
-                DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<GalleryImage>, DefinitionStages.WithDescription,
+            DefinitionStages.WithDisallowed, DefinitionStages.WithEndOfLifeDate, DefinitionStages.WithEula,
+            DefinitionStages.WithPrivacyStatementUri, DefinitionStages.WithPurchasePlan,
+            DefinitionStages.WithRecommendedVMConfiguration, DefinitionStages.WithReleaseNoteUri,
+            DefinitionStages.WithHyperVGeneration, DefinitionStages.WithSecurityTypes, DefinitionStages.WithTags {
         }
     }
+
     /** The template for a gallery image update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<GalleryImage>,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisallowed,
-            UpdateStages.WithEndOfLifeDate,
-            UpdateStages.WithEula,
-            UpdateStages.WithOsState,
-            UpdateStages.WithPrivacyStatementUri,
-            UpdateStages.WithRecommendedVMConfiguration,
-            UpdateStages.WithReleaseNoteUri,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<GalleryImage>, UpdateStages.WithDescription, UpdateStages.WithDisallowed,
+        UpdateStages.WithEndOfLifeDate, UpdateStages.WithEula, UpdateStages.WithOsState,
+        UpdateStages.WithPrivacyStatementUri, UpdateStages.WithRecommendedVMConfiguration,
+        UpdateStages.WithReleaseNoteUri, UpdateStages.WithTags {
     }
 
     /** Grouping of gallery image update stages. */

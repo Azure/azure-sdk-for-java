@@ -17,11 +17,8 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure SQL Server Firewall Rule. */
 @Fluent
 public interface SqlFirewallRule
-    extends ExternalChildResource<SqlFirewallRule, SqlServer>,
-        HasInnerModel<FirewallRuleInner>,
-        HasResourceGroup,
-        Refreshable<SqlFirewallRule>,
-        Updatable<SqlFirewallRule.Update> {
+    extends ExternalChildResource<SqlFirewallRule, SqlServer>, HasInnerModel<FirewallRuleInner>, HasResourceGroup,
+    Refreshable<SqlFirewallRule>, Updatable<SqlFirewallRule.Update> {
 
     /** @return name of the SQL Server to which this Firewall Rule belongs */
     String sqlServerName();
@@ -60,11 +57,10 @@ public interface SqlFirewallRule
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface SqlFirewallRuleDefinition<ParentT>
-        extends SqlFirewallRule.DefinitionStages.Blank<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
-            SqlFirewallRule.DefinitionStages.WithAttach<ParentT> {
+    interface SqlFirewallRuleDefinition<ParentT> extends SqlFirewallRule.DefinitionStages.Blank<ParentT>,
+        SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT>,
+        SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
+        SqlFirewallRule.DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of all the SQL Firewall Rule definition stages. */
@@ -74,9 +70,8 @@ public interface SqlFirewallRule
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT>
-            extends SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
-                SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT> {
+        interface Blank<ParentT> extends SqlFirewallRule.DefinitionStages.WithIpAddressRange<ParentT>,
+            SqlFirewallRule.DefinitionStages.WithIpAddress<ParentT> {
         }
 
         /** The SQL Firewall Rule definition to set the Ip address range for the parent SQL Server. */

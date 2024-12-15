@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApimResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApimResource model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"vgllixdgby\":\"ybjpozoks\"},\"id\":\"gwewqkjvxprwpxso\",\"name\":\"hu\",\"type\":\"xlcskltez\"}")
-                .toObject(ApimResource.class);
+        ApimResource model = BinaryData.fromString(
+            "{\"tags\":{\"vgllixdgby\":\"ybjpozoks\"},\"id\":\"gwewqkjvxprwpxso\",\"name\":\"hu\",\"type\":\"xlcskltez\"}")
+            .toObject(ApimResource.class);
         Assertions.assertEquals("ybjpozoks", model.tags().get("vgllixdgby"));
     }
 

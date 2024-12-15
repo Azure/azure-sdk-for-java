@@ -101,15 +101,16 @@ public class FormTrainingClientBuilderUnitTest {
      */
     @Test
     public void httpsProtocolRequiredException() {
-        FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential(INVALID_KEY)).endpoint(VALID_HTTP_LOCALHOST)
-            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        FormRecognizerClientBuilder clientBuilder
+            = new FormRecognizerClientBuilder().credential(new AzureKeyCredential(INVALID_KEY))
+                .endpoint(VALID_HTTP_LOCALHOST)
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .configuration(Configuration.getGlobalConfiguration())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        assertThrows(RuntimeException.class, () ->
-            clientBuilder.buildClient().beginRecognizeContentFromUrl(VALID_URL).getFinalResult());
+        assertThrows(RuntimeException.class,
+            () -> clientBuilder.buildClient().beginRecognizeContentFromUrl(VALID_URL).getFinalResult());
     }
 
     @Test

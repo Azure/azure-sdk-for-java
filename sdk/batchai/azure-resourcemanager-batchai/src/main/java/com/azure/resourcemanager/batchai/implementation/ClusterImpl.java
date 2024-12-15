@@ -132,20 +132,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, workspaceName, clusterName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .create(resourceGroupName, workspaceName, clusterName, createParameters, Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, workspaceName, clusterName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .create(resourceGroupName, workspaceName, clusterName, createParameters, context);
         return this;
     }
 
@@ -162,22 +158,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .updateWithResponse(resourceGroupName, workspaceName, clusterName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .updateWithResponse(resourceGroupName, workspaceName, clusterName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .updateWithResponse(resourceGroupName, workspaceName, clusterName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .updateWithResponse(resourceGroupName, workspaceName, clusterName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -190,22 +182,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getWithResponse(resourceGroupName, workspaceName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getWithResponse(resourceGroupName, workspaceName, clusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getWithResponse(resourceGroupName, workspaceName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getWithResponse(resourceGroupName, workspaceName, clusterName, context)
+            .getValue();
         return this;
     }
 
@@ -214,8 +202,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(Context context) {
-        return serviceManager
-            .clusters()
+        return serviceManager.clusters()
             .listRemoteLoginInformation(resourceGroupName, workspaceName, clusterName, context);
     }
 

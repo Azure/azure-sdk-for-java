@@ -6,25 +6,27 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationInner;
 
-/** An immutable client-side representation of DataConnectionValidation. */
+/**
+ * An immutable client-side representation of DataConnectionValidation.
+ */
 public interface DataConnectionValidation {
     /**
      * Gets the dataConnectionName property: The name of the data connection.
-     *
+     * 
      * @return the dataConnectionName value.
      */
     String dataConnectionName();
 
     /**
      * Gets the properties property: The data connection properties to validate.
-     *
+     * 
      * @return the properties value.
      */
     DataConnection properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationInner object.
-     *
+     * 
      * @return the inner object.
      */
     DataConnectionValidationInner innerModel();

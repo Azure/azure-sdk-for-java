@@ -35,12 +35,15 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}", serialized);
+        assertEquals(
+            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}",
+            serialized);
     }
 
     @Test
     public void canDeserializeAdditionalProperties() throws IOException {
-        String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+        String wireValue
+            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
         Foo deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), Foo.class);
 
         assertNotNull(deserialized.additionalProperties());
@@ -69,12 +72,15 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}", serialized);
+        assertEquals(
+            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}",
+            serialized);
     }
 
     @Test
     public void canDeserializeAdditionalPropertiesThroughInheritance() throws IOException {
-        String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+        String wireValue
+            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
         FooChild deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), FooChild.class);
 
         // Check additional properties are populated
@@ -127,6 +133,8 @@ public class AdditionalPropertiesSerializerTests {
 
         String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
 
-        assertEquals("{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"foo\":{\"bar\":\"bye.world\",\"additionalProperties\":{\"name\":\"Sushi\"}},\"properties.bar\":\"barbar\"}}", serialized);
+        assertEquals(
+            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"foo\":{\"bar\":\"bye.world\",\"additionalProperties\":{\"name\":\"Sushi\"}},\"properties.bar\":\"barbar\"}}",
+            serialized);
     }
 }

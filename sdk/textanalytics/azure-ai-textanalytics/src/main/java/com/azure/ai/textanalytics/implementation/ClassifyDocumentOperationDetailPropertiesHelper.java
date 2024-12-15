@@ -10,7 +10,8 @@ import java.time.OffsetDateTime;
 public final class ClassifyDocumentOperationDetailPropertiesHelper {
     private static ClassifyDocumentOperationDetailAccessor accessor;
 
-    private ClassifyDocumentOperationDetailPropertiesHelper() { }
+    private ClassifyDocumentOperationDetailPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -19,11 +20,14 @@ public final class ClassifyDocumentOperationDetailPropertiesHelper {
      */
     public interface ClassifyDocumentOperationDetailAccessor {
         void setOperationId(ClassifyDocumentOperationDetail operationDetail, String operationId);
+
         void setDisplayName(ClassifyDocumentOperationDetail operationDetail, String name);
+
         void setCreatedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime createdAt);
+
         void setExpiresAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime expiresAt);
-        void setLastModifiedAt(ClassifyDocumentOperationDetail operationDetail,
-            OffsetDateTime lastModifiedAt);
+
+        void setLastModifiedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
     }
 
     /**
@@ -31,8 +35,8 @@ public final class ClassifyDocumentOperationDetailPropertiesHelper {
      *
      * @param classifyDocumentOperationDetailAccessor The accessor.
      */
-    public static void setAccessor(
-        final ClassifyDocumentOperationDetailAccessor classifyDocumentOperationDetailAccessor) {
+    public static void
+        setAccessor(final ClassifyDocumentOperationDetailAccessor classifyDocumentOperationDetailAccessor) {
         accessor = classifyDocumentOperationDetailAccessor;
     }
 
@@ -44,13 +48,11 @@ public final class ClassifyDocumentOperationDetailPropertiesHelper {
         accessor.setDisplayName(operationDetail, name);
     }
 
-    public static void setCreatedAt(ClassifyDocumentOperationDetail operationDetail,
-        OffsetDateTime createdAt) {
+    public static void setCreatedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime createdAt) {
         accessor.setCreatedAt(operationDetail, createdAt);
     }
 
-    public static void setExpiresAt(ClassifyDocumentOperationDetail operationDetail,
-        OffsetDateTime expiresAt) {
+    public static void setExpiresAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime expiresAt) {
         accessor.setExpiresAt(operationDetail, expiresAt);
     }
 

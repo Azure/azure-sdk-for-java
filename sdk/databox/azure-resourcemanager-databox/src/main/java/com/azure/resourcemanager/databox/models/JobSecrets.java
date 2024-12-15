@@ -5,45 +5,50 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The base class for the secrets. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobSecretsType",
-    defaultImpl = JobSecrets.class)
-@JsonTypeName("JobSecrets")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = CustomerDiskJobSecrets.class),
-    @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobSecrets.class),
-    @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobSecrets.class),
-    @JsonSubTypes.Type(name = "DataBox", value = DataboxJobSecrets.class)
-})
+/**
+ * The base class for the secrets.
+ */
 @Immutable
-public class JobSecrets {
+public class JobSecrets implements JsonSerializable<JobSecrets> {
+    /*
+     * Used to indicate what type of job secrets object.
+     */
+    private ClassDiscriminator jobSecretsType = ClassDiscriminator.fromString("JobSecrets");
+
     /*
      * Dc Access Security Code for Customer Managed Shipping
      */
-    @JsonProperty(value = "dcAccessSecurityCode", access = JsonProperty.Access.WRITE_ONLY)
     private DcAccessSecurityCode dcAccessSecurityCode;
 
     /*
      * Error while fetching the secrets.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
 
-    /** Creates an instance of JobSecrets class. */
+    /**
+     * Creates an instance of JobSecrets class.
+     */
     public JobSecrets() {
     }
 
     /**
+     * Get the jobSecretsType property: Used to indicate what type of job secrets object.
+     * 
+     * @return the jobSecretsType value.
+     */
+    public ClassDiscriminator jobSecretsType() {
+        return this.jobSecretsType;
+    }
+
+    /**
      * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
-     *
+     * 
      * @return the dcAccessSecurityCode value.
      */
     public DcAccessSecurityCode dcAccessSecurityCode() {
@@ -51,8 +56,19 @@ public class JobSecrets {
     }
 
     /**
+     * Set the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
+     * 
+     * @param dcAccessSecurityCode the dcAccessSecurityCode value to set.
+     * @return the JobSecrets object itself.
+     */
+    JobSecrets withDcAccessSecurityCode(DcAccessSecurityCode dcAccessSecurityCode) {
+        this.dcAccessSecurityCode = dcAccessSecurityCode;
+        return this;
+    }
+
+    /**
      * Get the error property: Error while fetching the secrets.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -60,8 +76,19 @@ public class JobSecrets {
     }
 
     /**
+     * Set the error property: Error while fetching the secrets.
+     * 
+     * @param error the error value to set.
+     * @return the JobSecrets object itself.
+     */
+    JobSecrets withError(CloudError error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -71,5 +98,77 @@ public class JobSecrets {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobSecretsType",
+            this.jobSecretsType == null ? null : this.jobSecretsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobSecrets if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobSecrets.
+     */
+    public static JobSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("jobSecretsType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DataBoxCustomerDisk".equals(discriminatorValue)) {
+                    return CustomerDiskJobSecrets.fromJson(readerToUse.reset());
+                } else if ("DataBoxDisk".equals(discriminatorValue)) {
+                    return DataBoxDiskJobSecrets.fromJson(readerToUse.reset());
+                } else if ("DataBoxHeavy".equals(discriminatorValue)) {
+                    return DataBoxHeavyJobSecrets.fromJson(readerToUse.reset());
+                } else if ("DataBox".equals(discriminatorValue)) {
+                    return DataboxJobSecrets.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static JobSecrets fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobSecrets deserializedJobSecrets = new JobSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobSecretsType".equals(fieldName)) {
+                    deserializedJobSecrets.jobSecretsType = ClassDiscriminator.fromString(reader.getString());
+                } else if ("dcAccessSecurityCode".equals(fieldName)) {
+                    deserializedJobSecrets.dcAccessSecurityCode = DcAccessSecurityCode.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedJobSecrets.error = CloudError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobSecrets;
+        });
     }
 }

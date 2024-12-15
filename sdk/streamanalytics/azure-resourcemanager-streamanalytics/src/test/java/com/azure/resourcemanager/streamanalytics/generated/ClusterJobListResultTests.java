@@ -11,7 +11,7 @@ public final class ClusterJobListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterJobListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"gxywpmue\",\"streamingUnits\":1011039859,\"jobState\":\"Deleting\"},{\"id\":\"qkqujidsu\",\"streamingUnits\":168254793,\"jobState\":\"Running\"},{\"id\":\"laocqxtccmg\",\"streamingUnits\":1054992005,\"jobState\":\"Starting\"},{\"id\":\"lmoyrx\",\"streamingUnits\":2130871697,\"jobState\":\"Stopped\"}],\"nextLink\":\"pz\"}")
+            "{\"value\":[{\"id\":\"rxv\",\"streamingUnits\":76468143,\"jobState\":\"Degraded\"},{\"id\":\"zntxhdz\",\"streamingUnits\":349337714,\"jobState\":\"Stopped\"},{\"id\":\"hckfrlhrx\",\"streamingUnits\":757967759,\"jobState\":\"Created\"},{\"id\":\"ycanuzbpzkafku\",\"streamingUnits\":2051758335,\"jobState\":\"Degraded\"}],\"nextLink\":\"bmehh\"}")
             .toObject(ClusterJobListResult.class);
     }
 

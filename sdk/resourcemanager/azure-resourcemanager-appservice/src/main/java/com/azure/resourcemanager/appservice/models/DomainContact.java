@@ -45,20 +45,13 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithFirstName<ParentT>,
-            DefinitionStages.WithMiddleName<ParentT>,
-            DefinitionStages.WithAddressLine1<ParentT>,
-            DefinitionStages.WithAddressLine2<ParentT>,
-            DefinitionStages.WithCity<ParentT>,
-            DefinitionStages.WithStateOrProvince<ParentT>,
-            DefinitionStages.WithCountry<ParentT>,
-            DefinitionStages.WithPostalCode<ParentT>,
-            DefinitionStages.WithEmail<ParentT>,
-            DefinitionStages.WithPhoneCountryCode<ParentT>,
-            DefinitionStages.WithPhoneNumber<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithFirstName<ParentT>,
+        DefinitionStages.WithMiddleName<ParentT>, DefinitionStages.WithAddressLine1<ParentT>,
+        DefinitionStages.WithAddressLine2<ParentT>, DefinitionStages.WithCity<ParentT>,
+        DefinitionStages.WithStateOrProvince<ParentT>, DefinitionStages.WithCountry<ParentT>,
+        DefinitionStages.WithPostalCode<ParentT>, DefinitionStages.WithEmail<ParentT>,
+        DefinitionStages.WithPhoneCountryCode<ParentT>, DefinitionStages.WithPhoneNumber<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of domain contact stages applicable as part of a domain creation. */
@@ -305,10 +298,8 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithOrganization<ParentT>,
-                DefinitionStages.WithJobTitle<ParentT>,
-                DefinitionStages.WithFaxNumber<ParentT> {
+            extends Attachable.InDefinition<ParentT>, DefinitionStages.WithOrganization<ParentT>,
+            DefinitionStages.WithJobTitle<ParentT>, DefinitionStages.WithFaxNumber<ParentT> {
             /**
              * @return the contact
              */

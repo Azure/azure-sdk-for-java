@@ -95,23 +95,6 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
         return this.presentBodyPartMeasurements;
     }
 
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -165,7 +148,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
             }
             LimitedOrderDiscrepancyInference deserializedLimitedOrderDiscrepancyInference
                 = new LimitedOrderDiscrepancyInference(orderType);
-            deserializedLimitedOrderDiscrepancyInference.extension = extension;
+            deserializedLimitedOrderDiscrepancyInference.setExtension(extension);
             deserializedLimitedOrderDiscrepancyInference.kind = kind;
             deserializedLimitedOrderDiscrepancyInference.presentBodyParts = presentBodyParts;
             deserializedLimitedOrderDiscrepancyInference.presentBodyPartMeasurements = presentBodyPartMeasurements;

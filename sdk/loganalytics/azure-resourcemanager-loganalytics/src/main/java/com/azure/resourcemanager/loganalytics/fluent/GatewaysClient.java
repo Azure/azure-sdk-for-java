@@ -9,11 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in GatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewaysClient.
+ */
 public interface GatewaysClient {
     /**
      * Delete a Log Analytics gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param gatewayId The Log Analytics gateway Id.
@@ -24,12 +26,12 @@ public interface GatewaysClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String gatewayId,
+        Context context);
 
     /**
      * Delete a Log Analytics gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param gatewayId The Log Analytics gateway Id.

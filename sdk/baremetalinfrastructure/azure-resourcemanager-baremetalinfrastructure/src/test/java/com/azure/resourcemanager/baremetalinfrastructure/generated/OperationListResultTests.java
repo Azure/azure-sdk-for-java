@@ -10,11 +10,9 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.OperationListRes
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"vnipjox\",\"isDataAction\":false,\"display\":{\"provider\":\"gejspodmailzyde\",\"resource\":\"jwyahuxinpmqnja\",\"operation\":\"ixjsprozvcputeg\",\"description\":\"wmfdatscmdvpjhul\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"jozkrwfndiod\",\"isDataAction\":true,\"display\":{\"provider\":\"ej\",\"resource\":\"vwryoqpso\",\"operation\":\"ctazakljlahbcryf\",\"description\":\"fdosyg\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"akhmsbzjhcrz\",\"isDataAction\":true,\"display\":{\"provider\":\"lxaolthqtrgqjbp\",\"resource\":\"fsinzgvfcjrwzoxx\",\"operation\":\"felluwfzitonpe\",\"description\":\"pjkjlxofpdv\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"pini\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"vnipjox\",\"isDataAction\":false,\"display\":{\"provider\":\"gejspodmailzyde\",\"resource\":\"jwyahuxinpmqnja\",\"operation\":\"ixjsprozvcputeg\",\"description\":\"wmfdatscmdvpjhul\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"jozkrwfndiod\",\"isDataAction\":true,\"display\":{\"provider\":\"ej\",\"resource\":\"vwryoqpso\",\"operation\":\"ctazakljlahbcryf\",\"description\":\"fdosyg\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"akhmsbzjhcrz\",\"isDataAction\":true,\"display\":{\"provider\":\"lxaolthqtrgqjbp\",\"resource\":\"fsinzgvfcjrwzoxx\",\"operation\":\"felluwfzitonpe\",\"description\":\"pjkjlxofpdv\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"pini\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

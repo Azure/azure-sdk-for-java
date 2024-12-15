@@ -49,12 +49,14 @@ public final class TagRulesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TagRule response = manager.tagRules()
-            .getWithResponse("synljphuopxodl", "iyntorzihle", "sjswsrms", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("synljphuopxodl", "iyntorzihle", "sjswsrms", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, response.logRules().sendSubscriptionLogs());

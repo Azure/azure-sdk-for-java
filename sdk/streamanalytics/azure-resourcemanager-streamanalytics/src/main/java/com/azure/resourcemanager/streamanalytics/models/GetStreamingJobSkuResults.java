@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.GetStreamingJobSkuResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the request to get streaming job SKUs.
  */
 @Fluent
-public final class GetStreamingJobSkuResults {
+public final class GetStreamingJobSkuResults implements JsonSerializable<GetStreamingJobSkuResults> {
     /*
      * The list of available SKUs that the streaming job can use.
      */
-    @JsonProperty(value = "value")
     private List<GetStreamingJobSkuResultInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class GetStreamingJobSkuResults {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetStreamingJobSkuResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetStreamingJobSkuResults if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetStreamingJobSkuResults.
+     */
+    public static GetStreamingJobSkuResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetStreamingJobSkuResults deserializedGetStreamingJobSkuResults = new GetStreamingJobSkuResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GetStreamingJobSkuResultInner> value
+                        = reader.readArray(reader1 -> GetStreamingJobSkuResultInner.fromJson(reader1));
+                    deserializedGetStreamingJobSkuResults.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGetStreamingJobSkuResults.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetStreamingJobSkuResults;
+        });
     }
 }

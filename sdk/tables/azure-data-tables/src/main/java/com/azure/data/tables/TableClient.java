@@ -297,7 +297,7 @@ public final class TableClient {
     private final TableClient transactionalBatchClient;
 
     TableClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
-                SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
+        SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
         try {
             if (tableName == null) {
                 throw new NullPointerException(("'tableName' must not be null to create TableClient."));
@@ -315,14 +315,13 @@ public final class TableClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(serviceUrl)
+        this.tablesImplementation = new AzureTableImplBuilder().url(serviceUrl)
             .serializerAdapter(tablesSerializer)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
-        this.transactionalBatchImplementation =
-            new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
+        this.transactionalBatchImplementation
+            = new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
         this.pipeline = tablesImplementation.getHttpPipeline();
         this.transactionalBatchClient = new TableClient(this, serviceVersion, tablesSerializer);
@@ -332,8 +331,7 @@ public final class TableClient {
         this.accountName = client.getAccountName();
         this.tableEndpoint = client.getTableEndpoint();
         this.pipeline = BuilderHelper.buildNullClientPipeline();
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(client.getTablesImplementation().getUrl())
+        this.tablesImplementation = new AzureTableImplBuilder().url(client.getTablesImplementation().getUrl())
             .serializerAdapter(tablesSerializer)
             .pipeline(this.pipeline)
             .version(serviceVersion.getVersion())
@@ -464,10 +462,10 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
         final TableProperties properties = new TableProperties().setTableName(tableName);
-        Supplier<Response<TableItem>> callable = () ->
-            new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties, null,
-            ResponseFormat.RETURN_NO_CONTENT, null, context),
-                TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
+        Supplier<Response<TableItem>> callable = () -> new SimpleResponse<>(
+            tablesImplementation.getTables()
+                .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+            TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
         return callWithOptionalTimeout(callable, timeout, logger);
     }
@@ -516,8 +514,9 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
-        Supplier<Response<Void>> callable = () -> new SimpleResponse<>(tablesImplementation.getTables()
-            .deleteWithResponse(tableName, null, context), null);
+        Supplier<Response<Void>> callable
+            = () -> new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(tableName, null, context),
+                null);
 
         try {
             return requestWithOptionalTimeout(callable, timeout);
@@ -530,13 +529,10 @@ public final class TableClient {
     }
 
     private Response<Void> swallow404Exception(Throwable ex) {
-        if (ex instanceof TableServiceException
-            && ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
-            return new SimpleResponse<>(
-                ((TableServiceException) ex).getResponse().getRequest(),
+        if (ex instanceof TableServiceException && ((TableServiceException) ex).getResponse().getStatusCode() == 404) {
+            return new SimpleResponse<>(((TableServiceException) ex).getResponse().getRequest(),
                 ((TableServiceException) ex).getResponse().getStatusCode(),
-                ((TableServiceException) ex).getResponse().getHeaders(),
-                null);
+                ((TableServiceException) ex).getResponse().getHeaders(), null);
         } else {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
         }
@@ -609,9 +605,9 @@ public final class TableClient {
 
         EntityHelper.setPropertiesFromGetters(entity, logger);
         Supplier<Response<Void>> callable = () -> {
-            Response<Map<String, Object>> response = tablesImplementation.getTables().insertEntityWithResponse(
-                tableName, null, null, ResponseFormat.RETURN_NO_CONTENT,
-                entity.getProperties(), null, context);
+            Response<Map<String, Object>> response = tablesImplementation.getTables()
+                .insertEntityWithResponse(tableName, null, null, ResponseFormat.RETURN_NO_CONTENT,
+                    entity.getProperties(), null, context);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         };
 
@@ -688,7 +684,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
-                                                   Duration timeout, Context context) {
+        Duration timeout, Context context) {
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -700,13 +696,13 @@ public final class TableClient {
 
         Supplier<Response<Void>> callable = () -> {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
-                return tablesImplementation.getTables().updateEntityWithResponse(
-                    tableName, partitionKey, rowKey, null, null, null,
-                    entity.getProperties(), null, context);
+                return tablesImplementation.getTables()
+                    .updateEntityWithResponse(tableName, partitionKey, rowKey, null, null, null, entity.getProperties(),
+                        null, context);
             } else {
-                return tablesImplementation.getTables().mergeEntityWithResponse(
-                    tableName, partitionKey, rowKey, null, null, null,
-                    entity.getProperties(), null, context);
+                return tablesImplementation.getTables()
+                    .mergeEntityWithResponse(tableName, partitionKey, rowKey, null, null, null, entity.getProperties(),
+                        null, context);
             }
         };
 
@@ -827,7 +823,7 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
-                                                   boolean ifUnchanged, Duration timeout, Context context) {
+        boolean ifUnchanged, Duration timeout, Context context) {
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -841,12 +837,12 @@ public final class TableClient {
         Supplier<Response<Void>> callable = () -> {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag,
-                        entity.getProperties(), null, context);
+                    .updateEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag, entity.getProperties(),
+                        null, context);
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag,
-                        entity.getProperties(), null, context);
+                    .mergeEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag, entity.getProperties(),
+                        null, context);
             }
         };
 
@@ -940,22 +936,23 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
-                                                   Context context) {
-        return deleteEntityWithResponse(
-            entity.getPartitionKey(), entity.getRowKey(), entity.getETag(), ifUnchanged, timeout, context);
+        Context context) {
+        return deleteEntityWithResponse(entity.getPartitionKey(), entity.getRowKey(), entity.getETag(), ifUnchanged,
+            timeout, context);
     }
 
-    private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
-                                            Duration timeout, Context context) {
+    private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag,
+        boolean ifUnchanged, Duration timeout, Context context) {
         String finalETag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
         }
 
-        Supplier<Response<Void>> callable = () -> tablesImplementation.getTables().deleteEntityWithResponse(
-            tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), finalETag,
-            null, null, null, context);
+        Supplier<Response<Void>> callable = () -> tablesImplementation.getTables()
+            .deleteEntityWithResponse(tableName, TableUtils.escapeSingleQuotes(partitionKey),
+                TableUtils.escapeSingleQuotes(rowKey), finalETag, null, null, null, context);
 
         try {
             return requestWithOptionalTimeout(callable, timeout);
@@ -1041,9 +1038,9 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
 
-        Supplier<PagedIterable<TableEntity>> callable = () -> new PagedIterable<>(
-            () -> listEntitiesFirstPage(context, options, TableEntity.class),
-            token -> listEntitiesNextPage(token, context, options, TableEntity.class));
+        Supplier<PagedIterable<TableEntity>> callable
+            = () -> new PagedIterable<>(() -> listEntitiesFirstPage(context, options, TableEntity.class),
+                token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
         return callIterableWithOptionalTimeout(callable, timeout, logger);
     }
@@ -1068,24 +1065,21 @@ public final class TableClient {
     }
 
     private <T extends TableEntity> PagedResponse<T> listEntities(String nextPartitionKey, String nextRowKey,
-                                                                  Context context, ListEntitiesOptions options,
-                                                                  Class<T> resultType) {
+        Context context, ListEntitiesOptions options, Class<T> resultType) {
         String select = null;
 
         if (options.getSelect() != null) {
             select = String.join(",", options.getSelect());
         }
 
-        QueryOptions queryOptions = new QueryOptions()
-            .setFilter(options.getFilter())
+        QueryOptions queryOptions = new QueryOptions().setFilter(options.getFilter())
             .setTop(options.getTop())
             .setSelect(select)
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
-
-        final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response =
-            tablesImplementation.getTables().queryEntitiesWithResponse(tableName, null, null,
-            nextPartitionKey, nextRowKey, queryOptions, context);
+        final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response
+            = tablesImplementation.getTables()
+                .queryEntitiesWithResponse(tableName, null, null, nextPartitionKey, nextRowKey, queryOptions, context);
 
         final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
 
@@ -1182,30 +1176,31 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
-                                                       Duration timeout, Context context) {
-        QueryOptions queryOptions = new QueryOptions()
-            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+        Duration timeout, Context context) {
+        QueryOptions queryOptions
+            = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         if (select != null) {
             queryOptions.setSelect(String.join(",", select));
         }
 
         if (partitionKey == null || rowKey == null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
         Supplier<Response<TableEntity>> callable = () -> {
-            ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>> response =
-                tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponse(
-                tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null,
-                    null, queryOptions, context);
+            ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>> response
+                = tablesImplementation.getTables()
+                    .queryEntityWithPartitionAndRowKeyWithResponse(tableName,
+                        TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null,
+                        queryOptions, context);
 
             final Map<String, Object> matchingEntity = response.getValue();
 
             if (matchingEntity == null || matchingEntity.isEmpty()) {
-                logger.info("There was no matching entity. Table {}, partition key: {}, row key: {}.",
-                    tableName, partitionKey, rowKey);
+                logger.info("There was no matching entity. Table {}, partition key: {}, row key: {}.", tableName,
+                    partitionKey, rowKey);
                 return null;
             }
 
@@ -1283,15 +1278,14 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
         Supplier<Response<TableAccessPolicies>> callable = () -> {
-            ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper> response =
-                tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, context);
+            ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper> response
+                = tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, context);
             return new SimpleResponse<>(response,
                 new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items()));
         };
 
         return callWithOptionalTimeout(callable, timeout, logger);
     }
-
 
     /**
      * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
@@ -1373,20 +1367,20 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                        Duration timeout, Context context) {
+        Duration timeout, Context context) {
         if (tableSignedIdentifiers != null) {
             for (TableSignedIdentifier signedIdentifier : tableSignedIdentifiers) {
                 if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
                     if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
                         signedIdentifier.getAccessPolicy()
-                            .setStartsOn(signedIdentifier.getAccessPolicy()
-                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                            .setStartsOn(
+                                signedIdentifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
                     if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
                         signedIdentifier.getAccessPolicy()
-                            .setExpiresOn(signedIdentifier.getAccessPolicy()
-                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                            .setExpiresOn(
+                                signedIdentifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
                     }
                 }
             }
@@ -1394,14 +1388,12 @@ public final class TableClient {
 
         Supplier<Response<Void>> callable = () -> {
             ResponseBase<TablesSetAccessPolicyHeaders, Void> response = tablesImplementation.getTables()
-                .setAccessPolicyWithResponse(tableName, null, null,
-                    tableSignedIdentifiers, context);
+                .setAccessPolicyWithResponse(tableName, null, null, tableSignedIdentifiers, context);
             return new SimpleResponse<>(response, response.getValue());
         };
 
         return callWithOptionalTimeout(callable, timeout, logger);
     }
-
 
     /**
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
@@ -1584,7 +1576,8 @@ public final class TableClient {
      * may cause a given {@link TableTransactionAction action} to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+    public Response<TableTransactionResult> submitTransactionWithResponse(
+        List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
         if (transactionActions.isEmpty()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("A transaction must contain at least one operation."));
@@ -1598,50 +1591,54 @@ public final class TableClient {
                     operations.add(new TransactionalBatchAction.CreateEntity(transactionAction.getEntity()));
 
                     break;
+
                 case UPSERT_MERGE:
                     operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE));
 
                     break;
+
                 case UPSERT_REPLACE:
                     operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE));
 
                     break;
+
                 case UPDATE_MERGE:
                     operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE, transactionAction.getIfUnchanged()));
 
                     break;
+
                 case UPDATE_REPLACE:
                     operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE, transactionAction.getIfUnchanged()));
 
                     break;
+
                 case DELETE:
-                    operations.add(
-                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
-                            transactionAction.getIfUnchanged()));
+                    operations.add(new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
+                        transactionAction.getIfUnchanged()));
 
                     break;
+
                 default:
                     break;
             }
         }
 
         Supplier<Response<TableTransactionResult>> callable = () -> {
-            BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) ->
-                body.addChangeOperation(new TransactionalBatchSubRequest(pair.getAction(), pair.getRequest()));
-            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner = (body1, body2) ->
-                body2.getContents().forEach(req -> body1.addChangeOperation((TransactionalBatchSubRequest) req));
-            TransactionalBatchRequestBody requestBody =
-                operations.stream()
-                    .map(op -> new RequestActionPair(op.prepareRequest(transactionalBatchClient), op))
-                    .collect(TransactionalBatchRequestBody::new, accumulator, combiner);
+            BiConsumer<TransactionalBatchRequestBody, RequestActionPair> accumulator = (body, pair) -> body
+                .addChangeOperation(new TransactionalBatchSubRequest(pair.getAction(), pair.getRequest()));
+            BiConsumer<TransactionalBatchRequestBody, TransactionalBatchRequestBody> combiner
+                = (body1, body2) -> body2.getContents()
+                    .forEach(req -> body1.addChangeOperation((TransactionalBatchSubRequest) req));
+            TransactionalBatchRequestBody requestBody = operations.stream()
+                .map(op -> new RequestActionPair(op.prepareRequest(transactionalBatchClient), op))
+                .collect(TransactionalBatchRequestBody::new, accumulator, combiner);
 
-            ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response =
-                transactionalBatchImplementation
-                    .submitTransactionalBatchWithRestResponse(requestBody, null, context);
+            ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response
+                = transactionalBatchImplementation.submitTransactionalBatchWithRestResponse(requestBody, null, context);
 
             Response<List<TableTransactionActionResponse>> parsedResponse = parseResponse(requestBody, response);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -1702,7 +1699,8 @@ public final class TableClient {
                     error = (TableServiceJsonError) subResponse.getValue();
 
                     // Make a best effort to locate the failed operation and include it in the message
-                    if (changes != null && error.getOdataError() != null
+                    if (changes != null
+                        && error.getOdataError() != null
                         && error.getOdataError().getMessage() != null
                         && error.getOdataError().getMessage().getValue() != null) {
 
@@ -1718,12 +1716,11 @@ public final class TableClient {
                         }
                     }
                 } else if (subResponse.getValue() instanceof String) {
-                    errorMessage = "The service returned the following data for the failed operation: "
-                        + subResponse.getValue();
+                    errorMessage
+                        = "The service returned the following data for the failed operation: " + subResponse.getValue();
                 } else {
-                    errorMessage =
-                        "The service returned the following status code for the failed operation: "
-                            + subResponse.getStatusCode();
+                    errorMessage = "The service returned the following status code for the failed operation: "
+                        + subResponse.getStatusCode();
                 }
             }
         }

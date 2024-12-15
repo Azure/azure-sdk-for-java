@@ -5,70 +5,88 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of Cognitive Services account deployment. */
+/**
+ * Properties of Cognitive Services account deployment.
+ */
 @Fluent
-public final class DeploymentProperties {
+public final class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
      * Gets the status of the resource at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentProvisioningState provisioningState;
 
     /*
      * Properties of Cognitive Services account deployment model.
      */
-    @JsonProperty(value = "model")
     private DeploymentModel model;
 
     /*
-     * Properties of Cognitive Services account deployment model.
+     * Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
      */
-    @JsonProperty(value = "scaleSettings")
     private DeploymentScaleSettings scaleSettings;
 
     /*
      * The capabilities.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> capabilities;
 
     /*
      * The name of RAI policy.
      */
-    @JsonProperty(value = "raiPolicyName")
     private String raiPolicyName;
 
     /*
      * The call rate limit Cognitive Services account.
      */
-    @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
     private CallRateLimit callRateLimit;
 
     /*
      * The rateLimits property.
      */
-    @JsonProperty(value = "rateLimits", access = JsonProperty.Access.WRITE_ONLY)
     private List<ThrottlingRule> rateLimits;
 
     /*
      * Deployment model version upgrade option.
      */
-    @JsonProperty(value = "versionUpgradeOption")
     private DeploymentModelVersionUpgradeOption versionUpgradeOption;
 
-    /** Creates an instance of DeploymentProperties class. */
+    /*
+     * If the dynamic throttling is enabled.
+     */
+    private Boolean dynamicThrottlingEnabled;
+
+    /*
+     * The current capacity.
+     */
+    private Integer currentCapacity;
+
+    /*
+     * Internal use only.
+     */
+    private DeploymentCapacitySettings capacitySettings;
+
+    /*
+     * The name of parent deployment.
+     */
+    private String parentDeploymentName;
+
+    /**
+     * Creates an instance of DeploymentProperties class.
+     */
     public DeploymentProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets the status of the resource at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DeploymentProvisioningState provisioningState() {
@@ -77,7 +95,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the model property: Properties of Cognitive Services account deployment model.
-     *
+     * 
      * @return the model value.
      */
     public DeploymentModel model() {
@@ -86,7 +104,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the model property: Properties of Cognitive Services account deployment model.
-     *
+     * 
      * @param model the model value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -96,8 +114,9 @@ public final class DeploymentProperties {
     }
 
     /**
-     * Get the scaleSettings property: Properties of Cognitive Services account deployment model.
-     *
+     * Get the scaleSettings property: Properties of Cognitive Services account deployment model. (Deprecated, please
+     * use Deployment.sku instead.).
+     * 
      * @return the scaleSettings value.
      */
     public DeploymentScaleSettings scaleSettings() {
@@ -105,8 +124,9 @@ public final class DeploymentProperties {
     }
 
     /**
-     * Set the scaleSettings property: Properties of Cognitive Services account deployment model.
-     *
+     * Set the scaleSettings property: Properties of Cognitive Services account deployment model. (Deprecated, please
+     * use Deployment.sku instead.).
+     * 
      * @param scaleSettings the scaleSettings value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -117,7 +137,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the capabilities property: The capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     public Map<String, String> capabilities() {
@@ -126,7 +146,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the raiPolicyName property: The name of RAI policy.
-     *
+     * 
      * @return the raiPolicyName value.
      */
     public String raiPolicyName() {
@@ -135,7 +155,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the raiPolicyName property: The name of RAI policy.
-     *
+     * 
      * @param raiPolicyName the raiPolicyName value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -146,7 +166,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the callRateLimit property: The call rate limit Cognitive Services account.
-     *
+     * 
      * @return the callRateLimit value.
      */
     public CallRateLimit callRateLimit() {
@@ -155,7 +175,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the rateLimits property: The rateLimits property.
-     *
+     * 
      * @return the rateLimits value.
      */
     public List<ThrottlingRule> rateLimits() {
@@ -164,7 +184,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the versionUpgradeOption property: Deployment model version upgrade option.
-     *
+     * 
      * @return the versionUpgradeOption value.
      */
     public DeploymentModelVersionUpgradeOption versionUpgradeOption() {
@@ -173,7 +193,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the versionUpgradeOption property: Deployment model version upgrade option.
-     *
+     * 
      * @param versionUpgradeOption the versionUpgradeOption value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -183,8 +203,77 @@ public final class DeploymentProperties {
     }
 
     /**
+     * Get the dynamicThrottlingEnabled property: If the dynamic throttling is enabled.
+     * 
+     * @return the dynamicThrottlingEnabled value.
+     */
+    public Boolean dynamicThrottlingEnabled() {
+        return this.dynamicThrottlingEnabled;
+    }
+
+    /**
+     * Get the currentCapacity property: The current capacity.
+     * 
+     * @return the currentCapacity value.
+     */
+    public Integer currentCapacity() {
+        return this.currentCapacity;
+    }
+
+    /**
+     * Set the currentCapacity property: The current capacity.
+     * 
+     * @param currentCapacity the currentCapacity value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withCurrentCapacity(Integer currentCapacity) {
+        this.currentCapacity = currentCapacity;
+        return this;
+    }
+
+    /**
+     * Get the capacitySettings property: Internal use only.
+     * 
+     * @return the capacitySettings value.
+     */
+    public DeploymentCapacitySettings capacitySettings() {
+        return this.capacitySettings;
+    }
+
+    /**
+     * Set the capacitySettings property: Internal use only.
+     * 
+     * @param capacitySettings the capacitySettings value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withCapacitySettings(DeploymentCapacitySettings capacitySettings) {
+        this.capacitySettings = capacitySettings;
+        return this;
+    }
+
+    /**
+     * Get the parentDeploymentName property: The name of parent deployment.
+     * 
+     * @return the parentDeploymentName value.
+     */
+    public String parentDeploymentName() {
+        return this.parentDeploymentName;
+    }
+
+    /**
+     * Set the parentDeploymentName property: The name of parent deployment.
+     * 
+     * @param parentDeploymentName the parentDeploymentName value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withParentDeploymentName(String parentDeploymentName) {
+        this.parentDeploymentName = parentDeploymentName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -200,5 +289,78 @@ public final class DeploymentProperties {
         if (rateLimits() != null) {
             rateLimits().forEach(e -> e.validate());
         }
+        if (capacitySettings() != null) {
+            capacitySettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("model", this.model);
+        jsonWriter.writeJsonField("scaleSettings", this.scaleSettings);
+        jsonWriter.writeStringField("raiPolicyName", this.raiPolicyName);
+        jsonWriter.writeStringField("versionUpgradeOption",
+            this.versionUpgradeOption == null ? null : this.versionUpgradeOption.toString());
+        jsonWriter.writeNumberField("currentCapacity", this.currentCapacity);
+        jsonWriter.writeJsonField("capacitySettings", this.capacitySettings);
+        jsonWriter.writeStringField("parentDeploymentName", this.parentDeploymentName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDeploymentProperties.provisioningState
+                        = DeploymentProvisioningState.fromString(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    deserializedDeploymentProperties.model = DeploymentModel.fromJson(reader);
+                } else if ("scaleSettings".equals(fieldName)) {
+                    deserializedDeploymentProperties.scaleSettings = DeploymentScaleSettings.fromJson(reader);
+                } else if ("capabilities".equals(fieldName)) {
+                    Map<String, String> capabilities = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentProperties.capabilities = capabilities;
+                } else if ("raiPolicyName".equals(fieldName)) {
+                    deserializedDeploymentProperties.raiPolicyName = reader.getString();
+                } else if ("callRateLimit".equals(fieldName)) {
+                    deserializedDeploymentProperties.callRateLimit = CallRateLimit.fromJson(reader);
+                } else if ("rateLimits".equals(fieldName)) {
+                    List<ThrottlingRule> rateLimits = reader.readArray(reader1 -> ThrottlingRule.fromJson(reader1));
+                    deserializedDeploymentProperties.rateLimits = rateLimits;
+                } else if ("versionUpgradeOption".equals(fieldName)) {
+                    deserializedDeploymentProperties.versionUpgradeOption
+                        = DeploymentModelVersionUpgradeOption.fromString(reader.getString());
+                } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
+                    deserializedDeploymentProperties.dynamicThrottlingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("currentCapacity".equals(fieldName)) {
+                    deserializedDeploymentProperties.currentCapacity = reader.getNullable(JsonReader::getInt);
+                } else if ("capacitySettings".equals(fieldName)) {
+                    deserializedDeploymentProperties.capacitySettings = DeploymentCapacitySettings.fromJson(reader);
+                } else if ("parentDeploymentName".equals(fieldName)) {
+                    deserializedDeploymentProperties.parentDeploymentName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
     }
 }

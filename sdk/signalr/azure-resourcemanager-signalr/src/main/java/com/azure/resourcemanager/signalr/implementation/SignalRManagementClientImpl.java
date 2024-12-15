@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.signalr.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -41,183 +42,215 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the SignalRManagementClientImpl type. */
+/**
+ * Initializes a new instance of the SignalRManagementClientImpl type.
+ */
 @ServiceClient(builder = SignalRManagementClientBuilder.class)
 public final class SignalRManagementClientImpl implements SignalRManagementClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The SignalRsClient object to access its operations. */
+    /**
+     * The SignalRsClient object to access its operations.
+     */
     private final SignalRsClient signalRs;
 
     /**
      * Gets the SignalRsClient object to access its operations.
-     *
+     * 
      * @return the SignalRsClient object.
      */
     public SignalRsClient getSignalRs() {
         return this.signalRs;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The SignalRCustomCertificatesClient object to access its operations. */
+    /**
+     * The SignalRCustomCertificatesClient object to access its operations.
+     */
     private final SignalRCustomCertificatesClient signalRCustomCertificates;
 
     /**
      * Gets the SignalRCustomCertificatesClient object to access its operations.
-     *
+     * 
      * @return the SignalRCustomCertificatesClient object.
      */
     public SignalRCustomCertificatesClient getSignalRCustomCertificates() {
         return this.signalRCustomCertificates;
     }
 
-    /** The SignalRCustomDomainsClient object to access its operations. */
+    /**
+     * The SignalRCustomDomainsClient object to access its operations.
+     */
     private final SignalRCustomDomainsClient signalRCustomDomains;
 
     /**
      * Gets the SignalRCustomDomainsClient object to access its operations.
-     *
+     * 
      * @return the SignalRCustomDomainsClient object.
      */
     public SignalRCustomDomainsClient getSignalRCustomDomains() {
         return this.signalRCustomDomains;
     }
 
-    /** The SignalRPrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The SignalRPrivateEndpointConnectionsClient object to access its operations.
+     */
     private final SignalRPrivateEndpointConnectionsClient signalRPrivateEndpointConnections;
 
     /**
      * Gets the SignalRPrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the SignalRPrivateEndpointConnectionsClient object.
      */
     public SignalRPrivateEndpointConnectionsClient getSignalRPrivateEndpointConnections() {
         return this.signalRPrivateEndpointConnections;
     }
 
-    /** The SignalRPrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The SignalRPrivateLinkResourcesClient object to access its operations.
+     */
     private final SignalRPrivateLinkResourcesClient signalRPrivateLinkResources;
 
     /**
      * Gets the SignalRPrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the SignalRPrivateLinkResourcesClient object.
      */
     public SignalRPrivateLinkResourcesClient getSignalRPrivateLinkResources() {
         return this.signalRPrivateLinkResources;
     }
 
-    /** The SignalRReplicasClient object to access its operations. */
+    /**
+     * The SignalRReplicasClient object to access its operations.
+     */
     private final SignalRReplicasClient signalRReplicas;
 
     /**
      * Gets the SignalRReplicasClient object to access its operations.
-     *
+     * 
      * @return the SignalRReplicasClient object.
      */
     public SignalRReplicasClient getSignalRReplicas() {
         return this.signalRReplicas;
     }
 
-    /** The SignalRSharedPrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The SignalRSharedPrivateLinkResourcesClient object to access its operations.
+     */
     private final SignalRSharedPrivateLinkResourcesClient signalRSharedPrivateLinkResources;
 
     /**
      * Gets the SignalRSharedPrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the SignalRSharedPrivateLinkResourcesClient object.
      */
     public SignalRSharedPrivateLinkResourcesClient getSignalRSharedPrivateLinkResources() {
@@ -226,7 +259,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
 
     /**
      * Initializes an instance of SignalRManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -234,13 +267,8 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    SignalRManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    SignalRManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -260,7 +288,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -269,7 +297,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -279,7 +307,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -289,26 +317,15 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -321,19 +338,16 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -374,7 +388,7 @@ public final class SignalRManagementClientImpl implements SignalRManagementClien
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

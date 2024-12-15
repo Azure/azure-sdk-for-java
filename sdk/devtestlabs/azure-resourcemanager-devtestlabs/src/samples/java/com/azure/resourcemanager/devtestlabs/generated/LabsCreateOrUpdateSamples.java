@@ -8,19 +8,22 @@ import com.azure.resourcemanager.devtestlabs.models.StorageType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Labs CreateOrUpdate. */
+/**
+ * Samples for Labs CreateOrUpdate.
+ */
 public final class LabsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Labs_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
+        manager.labs()
             .define("{labName}")
             .withRegion("{location}")
             .withExistingResourceGroup("resourceGroupName")

@@ -47,14 +47,18 @@ public final class CatalogsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Catalog response = manager.catalogs().define("zhxgktrmgucn").withRegion("lwptfdy")
+        Catalog response = manager.catalogs()
+            .define("zhxgktrmgucn")
+            .withRegion("lwptfdy")
             .withExistingResourceGroup("medjvcslynqwwncw")
             .withTags(mapOf("huaoppp", "qbuaceopzfqr", "z", "qeqxo", "moizpos", "ahzxctobgbk"))
-            .withProperties(new CatalogProperties()).create();
+            .withProperties(new CatalogProperties())
+            .create();
 
         Assertions.assertEquals("bxqz", response.location());
         Assertions.assertEquals("jfauvjfdxxi", response.tags().get("e"));

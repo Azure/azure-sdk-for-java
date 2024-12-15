@@ -14,10 +14,8 @@ import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import java.util.Collections;
 import java.util.List;
 
-public final class AttachedDatabaseConfigurationImpl
-    implements AttachedDatabaseConfiguration,
-        AttachedDatabaseConfiguration.Definition,
-        AttachedDatabaseConfiguration.Update {
+public final class AttachedDatabaseConfigurationImpl implements AttachedDatabaseConfiguration,
+    AttachedDatabaseConfiguration.Definition, AttachedDatabaseConfiguration.Update {
     private AttachedDatabaseConfigurationInner innerObject;
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
@@ -108,22 +106,18 @@ public final class AttachedDatabaseConfigurationImpl
     }
 
     public AttachedDatabaseConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AttachedDatabaseConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -138,52 +132,44 @@ public final class AttachedDatabaseConfigurationImpl
     }
 
     public AttachedDatabaseConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AttachedDatabaseConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .createOrUpdate(resourceGroupName, clusterName, attachedDatabaseConfigurationName, this.innerModel(),
+                context);
         return this;
     }
 
-    AttachedDatabaseConfigurationImpl(
-        AttachedDatabaseConfigurationInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    AttachedDatabaseConfigurationImpl(AttachedDatabaseConfigurationInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.attachedDatabaseConfigurationName =
-            Utils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "attachedDatabaseConfigurations");
     }
 
     public AttachedDatabaseConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AttachedDatabaseConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAttachedDatabaseConfigurations()
-                .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAttachedDatabaseConfigurations()
+            .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
+            .getValue();
         return this;
     }
 
@@ -207,14 +193,14 @@ public final class AttachedDatabaseConfigurationImpl
         return this;
     }
 
-    public AttachedDatabaseConfigurationImpl withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationImpl
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         this.innerModel().withDefaultPrincipalsModificationKind(defaultPrincipalsModificationKind);
         return this;
     }
 
-    public AttachedDatabaseConfigurationImpl withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationImpl
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         this.innerModel().withTableLevelSharingProperties(tableLevelSharingProperties);
         return this;
     }

@@ -51,8 +51,8 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
      */
-    public WorkloadIdentityCredentialBuilder() { }
-
+    public WorkloadIdentityCredentialBuilder() {
+    }
 
     /**
      * Configure the path to a file containing a Kubernetes service account token that authenticates the identity.
@@ -73,19 +73,20 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredential build() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
 
-        String tenantIdInput = CoreUtils.isNullOrEmpty(tenantId)
-            ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
+        String tenantIdInput
+            = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
 
-        String federatedTokenFilePathInput = CoreUtils.isNullOrEmpty(tokenFilePath)
-            ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : tokenFilePath;
+        String federatedTokenFilePathInput
+            = CoreUtils.isNullOrEmpty(tokenFilePath) ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : tokenFilePath;
 
-        String clientIdInput = CoreUtils.isNullOrEmpty(clientId)
-            ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
+        String clientIdInput
+            = CoreUtils.isNullOrEmpty(clientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
 
-        ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput,
-            "Tenant ID", tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
+        ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
+            tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());

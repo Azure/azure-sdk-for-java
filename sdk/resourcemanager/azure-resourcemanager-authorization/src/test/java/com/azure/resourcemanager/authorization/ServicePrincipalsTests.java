@@ -35,16 +35,13 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         interceptorManager.removeSanitizers("AZSDK3432");
         try {
             // Create
-            servicePrincipal =
-                authorizationManager
-                    .servicePrincipals()
-                    .define(name)
-                    .withNewApplication()
-                    .definePasswordCredential("sppass")
-                    .attach()
-                    .create();
-            System
-                .out
+            servicePrincipal = authorizationManager.servicePrincipals()
+                .define(name)
+                .withNewApplication()
+                .definePasswordCredential("sppass")
+                .attach()
+                .create();
+            System.out
                 .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
@@ -61,12 +58,12 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
             // Update
-            servicePrincipal
-                .update()
+            servicePrincipal.update()
                 .withoutCredential("sppass")
                 .defineCertificateCredential("spcert")
                 .withAsymmetricX509Certificate()
-                .withPublicKey(replaceCRLF(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer"))))
+                .withPublicKey(
+                    replaceCRLF(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer"))))
                 .withDuration(Duration.ofDays(1))
                 .attach()
                 .apply();
@@ -78,8 +75,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         } finally {
             if (servicePrincipal != null) {
                 authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
-                authorizationManager
-                    .applications()
+                authorizationManager.applications()
                     .deleteById(authorizationManager.applications().getByName(servicePrincipal.applicationId()).id());
             }
         }
@@ -99,41 +95,41 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         ServicePrincipal servicePrincipal = null;
 
         try {
-            ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_EAST)
-                .create();
+            ResourceGroup resourceGroup
+                = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
-            servicePrincipal = authorizationManager.servicePrincipals().define(name)
+            servicePrincipal = authorizationManager.servicePrincipals()
+                .define(name)
                 .withNewApplication()
                 .definePasswordCredential(passwordName)
-                    .withPasswordConsumer(password -> clientSecret.add(password.value()))
-                    .attach()
+                .withPasswordConsumer(password -> clientSecret.add(password.value()))
+                .attach()
                 .withNewRoleInResourceGroup(BuiltInRole.READER, resourceGroup)
                 .create();
 
             Assertions.assertEquals(1, clientSecret.size());
 
-            TokenCredential credential = new ClientSecretCredentialBuilder()
-                .clientId(servicePrincipal.applicationId())
+            TokenCredential credential = new ClientSecretCredentialBuilder().clientId(servicePrincipal.applicationId())
                 .clientSecret(clientSecret.get(0))
                 .tenantId(profile().getTenantId())
                 .authorityHost(profile().getEnvironment().getActiveDirectoryEndpoint())
                 .httpClient(generateHttpClientWithProxy(null, null))
                 .build();
 
-            ResourceManager resourceManager1 = ResourceManager.authenticate(credential, profile())
-                .withDefaultSubscription();
+            ResourceManager resourceManager1
+                = ResourceManager.authenticate(credential, profile()).withDefaultSubscription();
 
-            Assertions.assertEquals(resourceGroup.id(), resourceManager1.resourceGroups().getByName(resourceGroup.name()).id());
+            Assertions.assertEquals(resourceGroup.id(),
+                resourceManager1.resourceGroups().getByName(resourceGroup.name()).id());
         } finally {
             try {
                 if (servicePrincipal != null) {
                     try {
                         authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
                     } finally {
-                        authorizationManager.applications().deleteById(
-                            authorizationManager.applications().getByName(servicePrincipal.applicationId()).id()
-                        );
+                        authorizationManager.applications()
+                            .deleteById(
+                                authorizationManager.applications().getByName(servicePrincipal.applicationId()).id());
                     }
                 }
             } finally {
@@ -152,41 +148,36 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
         try {
             // Create
-            servicePrincipal =
-                authorizationManager
-                    .servicePrincipals()
-                    .define(name)
-                    .withNewApplication()
-                    .definePasswordCredential("sppass")
-                    .attach()
-                    .defineCertificateCredential("spcert")
-                    .withAsymmetricX509Certificate()
-                    .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
-                    .withDuration(Duration.ofDays(7))
-                    .withAuthFileToExport(new FileOutputStream(authFile))
-                    .withPrivateKeyFile("/Users/jianghlu/Documents/code/certs/myserver.pfx")
-                    .withPrivateKeyPassword("StrongPass!123")
-                    .attach()
-                    .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, subscription)
-                    .create();
-            System
-                .out
+            servicePrincipal = authorizationManager.servicePrincipals()
+                .define(name)
+                .withNewApplication()
+                .definePasswordCredential("sppass")
+                .attach()
+                .defineCertificateCredential("spcert")
+                .withAsymmetricX509Certificate()
+                .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
+                .withDuration(Duration.ofDays(7))
+                .withAuthFileToExport(new FileOutputStream(authFile))
+                .withPrivateKeyFile("/Users/jianghlu/Documents/code/certs/myserver.pfx")
+                .withPrivateKeyPassword("StrongPass!123")
+                .attach()
+                .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, subscription)
+                .create();
+            System.out
                 .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-            ResourceManager resourceManager =
-                ResourceManager
-                    .authenticate(new DefaultAzureCredentialBuilder().build(), profile())
+            ResourceManager resourceManager
+                = ResourceManager.authenticate(new DefaultAzureCredentialBuilder().build(), profile())
                     .withSubscription(subscription);
             ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             // Update
             RoleAssignment ra = servicePrincipal.roleAssignments().iterator().next();
-            servicePrincipal
-                .update()
+            servicePrincipal.update()
                 .withoutRole(ra)
                 .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
                 .apply();
@@ -205,8 +196,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             } catch (Exception e) {
             }
             try {
-                authorizationManager
-                    .applications()
+                authorizationManager.applications()
                     .deleteById(authorizationManager.applications().getByName(servicePrincipal.applicationId()).id());
             } catch (Exception e) {
             }

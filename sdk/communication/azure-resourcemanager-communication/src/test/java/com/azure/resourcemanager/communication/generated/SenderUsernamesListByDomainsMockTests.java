@@ -45,12 +45,13 @@ public final class SenderUsernamesListByDomainsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SenderUsernameResource> response = manager.senderUsernames().listByDomains("ebxmubyynt", "lrb",
-            "tkoievseotgq", com.azure.core.util.Context.NONE);
+        PagedIterable<SenderUsernameResource> response = manager.senderUsernames()
+            .listByDomains("ebxmubyynt", "lrb", "tkoievseotgq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xbmp", response.iterator().next().username());
         Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());

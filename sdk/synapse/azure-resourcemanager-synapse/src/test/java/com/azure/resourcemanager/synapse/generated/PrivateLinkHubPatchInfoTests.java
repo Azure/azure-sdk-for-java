@@ -13,32 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"foskghsauuimj\":\"ku\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"}}")
-                .toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
+        PrivateLinkHubPatchInfo model = BinaryData
+            .fromString(
+                "{\"tags\":{\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\",\"nxdhbt\":\"k\",\"nermcl\":\"kphywpnvjto\"}}")
+            .toObject(PrivateLinkHubPatchInfo.class);
+        Assertions.assertEquals("vnm", model.tags().get("cykvceo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            new PrivateLinkHubPatchInfo()
-                .withTags(
-                    mapOf(
-                        "foskghsauuimj",
-                        "ku",
-                        "rfbyaosvexcso",
-                        "vxieduugidyj",
-                        "vleggzfbuhfmvfax",
-                        "pclhocohslk",
-                        "hl",
-                        "ffeii"));
+        PrivateLinkHubPatchInfo model = new PrivateLinkHubPatchInfo()
+            .withTags(mapOf("cykvceo", "vnm", "vnotyfjfcnj", "eil", "nxdhbt", "k", "nermcl", "kphywpnvjto"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubPatchInfo.class);
-        Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
+        Assertions.assertEquals("vnm", model.tags().get("cykvceo"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

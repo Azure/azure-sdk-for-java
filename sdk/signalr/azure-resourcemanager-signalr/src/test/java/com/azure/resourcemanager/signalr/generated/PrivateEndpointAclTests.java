@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointAclTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointAcl model =
-            BinaryData
-                .fromString("{\"name\":\"uzvx\",\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\"]}")
-                .toObject(PrivateEndpointAcl.class);
+        PrivateEndpointAcl model = BinaryData
+            .fromString("{\"name\":\"uzvx\",\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\"]}")
+            .toObject(PrivateEndpointAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
         Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
         Assertions.assertEquals("uzvx", model.name());
@@ -24,9 +23,8 @@ public final class PrivateEndpointAclTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointAcl model =
-            new PrivateEndpointAcl()
-                .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
+        PrivateEndpointAcl model
+            = new PrivateEndpointAcl().withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
                 .withDeny(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))
                 .withName("uzvx");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointAcl.class);

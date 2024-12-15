@@ -18,7 +18,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
@@ -33,8 +33,8 @@ import java.nio.charset.StandardCharsets;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
-        new ResponseExceptionConstructorCache();
+    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE
+        = new ResponseExceptionConstructorCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyBase.class);
@@ -52,7 +52,7 @@ public abstract class RestProxyBase {
      * this RestProxy "implements".
      */
     public RestProxyBase(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                         SwaggerInterfaceParser interfaceParser) {
+        SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -60,8 +60,7 @@ public abstract class RestProxyBase {
 
     public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args)
-                .setRequestOptions(options)
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
             return invoke(proxy, methodParser, request);
@@ -75,9 +74,9 @@ public abstract class RestProxyBase {
     protected abstract Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
-                                       ObjectSerializer objectSerializer) throws IOException;
+        ObjectSerializer objectSerializer) throws IOException;
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
@@ -145,8 +144,8 @@ public abstract class RestProxyBase {
         methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
 
         final URI uri = uriBuilder.toUri();
-        final HttpRequest request =
-            configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, objectSerializer, args);
+        final HttpRequest request
+            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, objectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 
@@ -156,7 +155,7 @@ public abstract class RestProxyBase {
     }
 
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
-                                      ObjectSerializer objectSerializer, Object[] args) throws IOException {
+        ObjectSerializer objectSerializer, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
@@ -222,21 +221,18 @@ public abstract class RestProxyBase {
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
-    public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       Response<?> response, BinaryData responseBody,
-                                                                       Object responseDecodedBody) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(response.getStatusCode())
-            .append(", ");
+    public static HttpResponseException instantiateUnexpectedException(
+        UnexpectedExceptionInformation unexpectedExceptionInformation, Response<?> response, BinaryData responseBody,
+        Object responseDecodedBody) {
+        StringBuilder exceptionMessage
+            = new StringBuilder("Status code ").append(response.getStatusCode()).append(", ");
 
         final String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
-            exceptionMessage.append("(")
-                .append(contentLength)
-                .append("-byte body)");
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseBody == null || responseBody.toBytes().length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
@@ -258,8 +254,7 @@ public abstract class RestProxyBase {
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType,
-            responseDecodedBody);
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType, responseDecodedBody);
     }
 
     /**

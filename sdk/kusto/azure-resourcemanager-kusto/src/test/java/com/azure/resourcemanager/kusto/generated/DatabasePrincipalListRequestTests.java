@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePrincipalListRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePrincipalListRequest model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"hxbld\",\"type\":\"App\",\"fqn\":\"wrlkdmtn\",\"email\":\"ok\",\"appId\":\"llxdyhgs\",\"tenantName\":\"cogjltdtbn\"}]}")
-                .toObject(DatabasePrincipalListRequest.class);
+        DatabasePrincipalListRequest model = BinaryData.fromString(
+            "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"hxbld\",\"type\":\"App\",\"fqn\":\"wrlkdmtn\",\"email\":\"ok\",\"appId\":\"llxdyhgs\",\"tenantName\":\"cogjltdtbn\"}]}")
+            .toObject(DatabasePrincipalListRequest.class);
         Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.value().get(0).role());
         Assertions.assertEquals("hxbld", model.value().get(0).name());
         Assertions.assertEquals(DatabasePrincipalType.APP, model.value().get(0).type());
@@ -30,18 +28,13 @@ public final class DatabasePrincipalListRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePrincipalListRequest model =
-            new DatabasePrincipalListRequest()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabasePrincipalInner()
-                                .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                                .withName("hxbld")
-                                .withType(DatabasePrincipalType.APP)
-                                .withFqn("wrlkdmtn")
-                                .withEmail("ok")
-                                .withAppId("llxdyhgs")));
+        DatabasePrincipalListRequest model = new DatabasePrincipalListRequest()
+            .withValue(Arrays.asList(new DatabasePrincipalInner().withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
+                .withName("hxbld")
+                .withType(DatabasePrincipalType.APP)
+                .withFqn("wrlkdmtn")
+                .withEmail("ok")
+                .withAppId("llxdyhgs")));
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalListRequest.class);
         Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, model.value().get(0).role());
         Assertions.assertEquals("hxbld", model.value().get(0).name());

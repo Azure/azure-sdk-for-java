@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -52,9 +51,6 @@ import java.util.regex.Pattern;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
-    private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
-
     // future improvement - make this configurable
     /**
      * The maximum number of items to cache in a cache.
@@ -87,13 +83,14 @@ public final class ImplUtils {
      */
     public static Duration getRetryAfterFromHeaders(HttpHeaders headers, Supplier<OffsetDateTime> nowSupplier) {
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
+        Duration retryDelay
+            = tryGetRetryDelay(headers, HttpHeaderName.X_MS_RETRY_AFTER_MS, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
 
         // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        retryDelay = tryGetRetryDelay(headers, RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
+        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER_MS, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -500,36 +497,6 @@ public final class ImplUtils {
     }
 
     /**
-     * Wrapper method around reflective invocations of {@code AccessController.doPrivileged(PrivilegedAction)} which
-     * checks for the ability to actually run privileged actions.
-     * <p>
-     * If it's not possible to run actions with privileged, {@link Supplier#get()} will be called directly.
-     *
-     * @param <T> The return value of the action.
-     * @param privilegedAction The privileged action to run.
-     * @return The results of running the action.
-     * @throws RuntimeException If an error occurs during execution.
-     */
-    public static <T> T doPrivileged(Supplier<T> privilegedAction) {
-        return AccessControllerUtils.doPrivileged(privilegedAction);
-    }
-
-    /**
-     * Wrapper method around reflective invocations of {@code AccessController.doPrivileged(PrivilegedExceptionAction)}
-     * which checks for the ability to actually run privileged actions.
-     * <p>
-     * If it's not possible to run actions with privileged, {@link Supplier#get()} will be called directly.
-     *
-     * @param <T> The return value of the action.
-     * @param privilegedActionException The privileged action that can throw an {@link Exception} to run.
-     * @return The results of running the action.
-     * @throws Exception If an error occurs while running the action.
-     */
-    public static <T> T doPrivilegedException(Callable<T> privilegedActionException) throws Exception {
-        return AccessControllerUtils.doPrivilegedException(privilegedActionException);
-    }
-
-    /**
      * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
      * shutting down.
      * <p>
@@ -550,7 +517,7 @@ public final class ImplUtils {
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            doPrivileged(() -> {
+            AccessControllerUtils.doPrivileged(() -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
                 return null;
             });
@@ -580,7 +547,7 @@ public final class ImplUtils {
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            doPrivileged(() -> {
+            AccessControllerUtils.doPrivileged(() -> {
                 Runtime.getRuntime().removeShutdownHook(shutdownThread);
                 return null;
             });

@@ -6,29 +6,30 @@ package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Object representing Restore properties of Managed CCF Resource.
  */
 @Fluent
-public final class ManagedCcfRestore {
+public final class ManagedCcfRestore implements JsonSerializable<ManagedCcfRestore> {
     /*
      * Fileshare where the managed CCF resource backup is stored.
      */
-    @JsonProperty(value = "fileShareName", required = true)
     private String fileShareName;
 
     /*
      * The region the managed CCF resource is being restored to.
      */
-    @JsonProperty(value = "restoreRegion", required = true)
     private String restoreRegion;
 
     /*
      * SAS URI used to access the backup Fileshare.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /**
@@ -120,4 +121,47 @@ public final class ManagedCcfRestore {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedCcfRestore.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileShareName", this.fileShareName);
+        jsonWriter.writeStringField("restoreRegion", this.restoreRegion);
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCcfRestore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCcfRestore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedCcfRestore.
+     */
+    public static ManagedCcfRestore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCcfRestore deserializedManagedCcfRestore = new ManagedCcfRestore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileShareName".equals(fieldName)) {
+                    deserializedManagedCcfRestore.fileShareName = reader.getString();
+                } else if ("restoreRegion".equals(fieldName)) {
+                    deserializedManagedCcfRestore.restoreRegion = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedManagedCcfRestore.uri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCcfRestore;
+        });
+    }
 }

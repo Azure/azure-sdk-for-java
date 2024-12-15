@@ -18,12 +18,8 @@ import java.time.OffsetDateTime;
  * Type representing consumer group of an event hub.
  */
 @Fluent
-public interface EventHubConsumerGroup extends
-    NestedResource,
-    HasManager<EventHubsManager>,
-    Refreshable<EventHubConsumerGroup>,
-        HasInnerModel<ConsumerGroupInner>,
-    Updatable<EventHubConsumerGroup.Update> {
+public interface EventHubConsumerGroup extends NestedResource, HasManager<EventHubsManager>,
+    Refreshable<EventHubConsumerGroup>, HasInnerModel<ConsumerGroupInner>, Updatable<EventHubConsumerGroup.Update> {
     /**
      * @return the resource group of the namespace where parent event hub resides
      */
@@ -57,11 +53,8 @@ public interface EventHubConsumerGroup extends
     /**
      * The entirety of the consumer group definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithEventHub,
-            DefinitionStages.WithUserMetadata,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithEventHub,
+        DefinitionStages.WithUserMetadata, DefinitionStages.WithCreate {
     }
 
     /**
@@ -124,9 +117,7 @@ public interface EventHubConsumerGroup extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<EventHubConsumerGroup>,
-            DefinitionStages.WithUserMetadata {
+        interface WithCreate extends Creatable<EventHubConsumerGroup>, DefinitionStages.WithUserMetadata {
         }
     }
 
@@ -134,9 +125,7 @@ public interface EventHubConsumerGroup extends
      * The template for a consumer group update operation, containing all the settings
      * that can be modified.
      */
-    interface Update extends
-        Appliable<EventHubConsumerGroup>,
-        UpdateStages.WithUserMetadata {
+    interface Update extends Appliable<EventHubConsumerGroup>, UpdateStages.WithUserMetadata {
     }
 
     /**

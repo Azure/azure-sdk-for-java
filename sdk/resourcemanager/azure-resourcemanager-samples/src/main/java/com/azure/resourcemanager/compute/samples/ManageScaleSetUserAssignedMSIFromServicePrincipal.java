@@ -33,7 +33,9 @@ import com.azure.resourcemanager.samples.Utils;
  *  - Login using created service principle and verify it can assign/remove identity #1, but not #2
  */
 public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
-    private static final ClientLogger LOGGER = new ClientLogger(ManageScaleSetUserAssignedMSIFromServicePrincipal.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ManageScaleSetUserAssignedMSIFromServicePrincipal.class);
+
     /**
      * Main function which runs the actual sample.
      *
@@ -63,76 +65,73 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             // ============================================================
             // Create Virtual Machine Scale Set
             Network network = azureResourceManager.networks()
-                    .define("vmssvnet")
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/28")
-                    .create();
+                .define("vmssvnet")
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
 
             VirtualMachineScaleSet virtualMachineScaleSet1 = azureResourceManager.virtualMachineScaleSets()
-                    .define(vmssName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                    .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                    .withoutPrimaryInternetFacingLoadBalancer()
-                    .withoutPrimaryInternalLoadBalancer()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .create();
+                .define(vmssName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withoutPrimaryInternetFacingLoadBalancer()
+                .withoutPrimaryInternalLoadBalancer()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .create();
 
             // ============================================================
             // Create a managed service identity #1 and create a service principal. Configure the service principal to have 2 permissions, to update the scale set and assign the managed service identity #1 to the scale set
-            servicePrincipal = authenticated.servicePrincipals().define(spName1)
-                    .withNewApplication()
-                    .definePasswordCredential("sppass")
-                    .attach()
-                    .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
-                    .create();
+            servicePrincipal = authenticated.servicePrincipals()
+                .define(spName1)
+                .withNewApplication()
+                .definePasswordCredential("sppass")
+                .attach()
+                .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
+                .create();
 
-            Identity identity1 = azureResourceManager.identities().define(identityName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            Identity identity1 = azureResourceManager.identities()
+                .define(identityName1)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .create();
 
-            servicePrincipal.update()
-                    .withNewRole(BuiltInRole.MANAGED_IDENTITY_OPERATOR, identity1.id())
-                    .apply();
+            servicePrincipal.update().withNewRole(BuiltInRole.MANAGED_IDENTITY_OPERATOR, identity1.id()).apply();
 
             // ============================================================
             // Create a managed service identity #2
-            Identity identity2 = azureResourceManager.identities().define(identityName2)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName + "2")
-                    .create();
+            Identity identity2 = azureResourceManager.identities()
+                .define(identityName2)
+                .withRegion(region)
+                .withNewResourceGroup(rgName + "2")
+                .create();
 
             // ============================================================
             // Login using created service principle and verify it can assign/remove identity #1, but not #2
-            ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-                .clientId(servicePrincipal.applicationId())
-                .tenantId(servicePrincipal.manager().tenantId())
-                .clientSecret("\"StrongPass!12\"")
-                .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
-                .build();
+            ClientSecretCredential credential
+                = new ClientSecretCredentialBuilder().clientId(servicePrincipal.applicationId())
+                    .tenantId(servicePrincipal.manager().tenantId())
+                    .clientSecret("\"StrongPass!12\"")
+                    .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                    .build();
             AzureProfile profile = new AzureProfile(null, subscription, AzureEnvironment.AZURE);
             ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
-            VirtualMachineScaleSet vmss = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
+            VirtualMachineScaleSet vmss
+                = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
 
-            vmss.update()
-                    .withExistingUserAssignedManagedServiceIdentity(identity1)
-                    .apply();
+            vmss.update().withExistingUserAssignedManagedServiceIdentity(identity1).apply();
 
             // verify that cannot assign user identity #2 as service principal does not have permissions
             try {
-                vmss.update()
-                        .withExistingUserAssignedManagedServiceIdentity(identity2)
-                        .apply();
-                throw LOGGER.logExceptionAsError(
-                    new RuntimeException("Should not be able to assign identity #2 as service principal does not have permissions")
-                );
+                vmss.update().withExistingUserAssignedManagedServiceIdentity(identity2).apply();
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Should not be able to assign identity #2 as service principal does not have permissions"));
             } catch (ManagementException ex) {
                 ex.printStackTrace();
             }
@@ -148,7 +147,9 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 }
             }
             try {
-                authenticated.activeDirectoryApplications().deleteById(authenticated.activeDirectoryApplications().getByName(servicePrincipal.applicationId()).id());
+                authenticated.activeDirectoryApplications()
+                    .deleteById(
+                        authenticated.activeDirectoryApplications().getByName(servicePrincipal.applicationId()).id());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
@@ -162,8 +163,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
      */
     private static String resourceGroupId(String id) {
         final ResourceId resourceId = ResourceId.fromString(id);
-        return String.format("/subscriptions/%s/resourceGroups/%s",
-            resourceId.subscriptionId(),
+        return String.format("/subscriptions/%s/resourceGroups/%s", resourceId.subscriptionId(),
             resourceId.resourceGroupName());
     }
 
@@ -181,8 +181,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager.Authenticated authenticated = AzureResourceManager
-                .configure()
+            AzureResourceManager.Authenticated authenticated = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile);
 

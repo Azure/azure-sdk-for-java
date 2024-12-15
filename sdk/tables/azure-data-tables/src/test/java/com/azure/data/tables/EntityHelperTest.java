@@ -19,7 +19,7 @@ public class EntityHelperTest {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
@@ -30,10 +30,10 @@ public class EntityHelperTest {
         props.put("LongField", l);
         props.put("StringField", s);
         props.put("EnumField", color);
-
+    
         TableEntity entity = new TableEntity("abc", "def");
         entity.setProperties(props);
-
+    
         SampleEntity result = EntityHelper.convertToSubclass(entity, SampleEntity.class, logger);
         Assertions.assertEquals(bytes, result.getByteField());
         Assertions.assertEquals(b, result.getBooleanField());
@@ -45,7 +45,7 @@ public class EntityHelperTest {
         Assertions.assertEquals(s, result.getStringField());
         Assertions.assertEquals(color, result.getEnumField());
     }
-
+    
     @Test
     public void testSetPropertiesFromGetters() {
         byte[] bytes = new byte[]{1, 2, 3};
@@ -57,7 +57,7 @@ public class EntityHelperTest {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         SampleEntity entity = new SampleEntity("abc", "def");
         entity.setByteField(bytes);
         entity.setBooleanField(b);
@@ -68,9 +68,9 @@ public class EntityHelperTest {
         entity.setLongField(l);
         entity.setStringField(s);
         entity.setEnumField(color);
-
+    
         EntityHelper.setPropertiesFromGetters(entity, logger);
-
+    
         Assertions.assertEquals(entity.getProperties().get("ByteField"), bytes);
         Assertions.assertEquals(entity.getProperties().get("BooleanField"), b);
         Assertions.assertEquals(entity.getProperties().get("DateTimeField"), dateTime);

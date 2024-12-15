@@ -1183,7 +1183,7 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
         String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace,
             parentResourcePath, resourceType, resourceName, lockName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

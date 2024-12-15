@@ -24,11 +24,8 @@ import java.util.Map;
 /** A client-side representation for a managed Kubernetes cluster. */
 @Fluent
 public interface KubernetesCluster
-    extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
-    Refreshable<KubernetesCluster>,
-    Updatable<KubernetesCluster.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection {
+    extends GroupableResource<ContainerServiceManager, ManagedClusterInner>, Refreshable<KubernetesCluster>,
+    Updatable<KubernetesCluster.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection {
 
     /** @return the provisioning state of the Kubernetes cluster */
     String provisioningState();
@@ -169,21 +166,12 @@ public interface KubernetesCluster
     // Fluent interfaces
 
     /** Interface for all the definitions related to a Kubernetes cluster. */
-    interface Definition
-        extends KubernetesCluster.DefinitionStages.Blank,
-            KubernetesCluster.DefinitionStages.WithGroup,
-            KubernetesCluster.DefinitionStages.WithVersion,
-            DefinitionStages.WithLinuxRootUsername,
-            DefinitionStages.WithLinuxSshKey,
-            DefinitionStages.WithServicePrincipalClientId,
-            DefinitionStages.WithServicePrincipalProfile,
-            DefinitionStages.WithDnsPrefix,
-            DefinitionStages.WithAgentPool,
-            DefinitionStages.WithNetworkProfile,
-            DefinitionStages.WithAddOnProfiles,
-            DefinitionStages.WithManagedClusterSku,
-            DefinitionStages.WithPublicNetworkAccess,
-            KubernetesCluster.DefinitionStages.WithCreate {
+    interface Definition extends KubernetesCluster.DefinitionStages.Blank, KubernetesCluster.DefinitionStages.WithGroup,
+        KubernetesCluster.DefinitionStages.WithVersion, DefinitionStages.WithLinuxRootUsername,
+        DefinitionStages.WithLinuxSshKey, DefinitionStages.WithServicePrincipalClientId,
+        DefinitionStages.WithServicePrincipalProfile, DefinitionStages.WithDnsPrefix, DefinitionStages.WithAgentPool,
+        DefinitionStages.WithNetworkProfile, DefinitionStages.WithAddOnProfiles, DefinitionStages.WithManagedClusterSku,
+        DefinitionStages.WithPublicNetworkAccess, KubernetesCluster.DefinitionStages.WithCreate {
     }
 
     /** Grouping of Kubernetes cluster definition stages. */
@@ -492,7 +480,6 @@ public interface KubernetesCluster
                 WithAttach<ParentT> withNetworkDataPlan(NetworkDataplane networkDataPlan);
             }
 
-
             /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
@@ -501,17 +488,15 @@ public interface KubernetesCluster
              * @param <ParentT> the stage of the container service definition to return to after attaching this
              *     definition
              */
-            interface WithAttach<ParentT>
-                extends NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
-                    NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
-                    NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
-                    NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
-                    NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
-                    NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
-                    Attachable.InDefinition<ParentT> {
+            interface WithAttach<ParentT> extends NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
+                NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
+                NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>, Attachable.InDefinition<ParentT> {
             }
         }
 
@@ -521,17 +506,16 @@ public interface KubernetesCluster
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
-        interface NetworkProfileDefinition<ParentT>
-            extends NetworkProfileDefinitionStages.Blank<ParentT>,
-                NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
-                NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
-                NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
-                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
-                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
-                NetworkProfileDefinitionStages.WithAttach<ParentT> {
+        interface NetworkProfileDefinition<ParentT> extends NetworkProfileDefinitionStages.Blank<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
+            NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
+            NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
+            NetworkProfileDefinitionStages.WithAttach<ParentT> {
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specify the DNS prefix label. */
@@ -670,40 +654,19 @@ public interface KubernetesCluster
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<KubernetesCluster>,
-                WithAgentPool,
-                WithNetworkProfile,
-                WithDnsPrefix,
-                WithAddOnProfiles,
-                WithAccessProfiles,
-                WithAutoScalerProfile,
-                WithManagedServiceIdentity,
-                WithRBAC,
-                WithAAD,
-                WithLocalAccounts,
-                WithDiskEncryption,
-                WithAgentPoolResourceGroup,
-                WithManagedClusterSku,
-                WithPublicNetworkAccess,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<KubernetesCluster>, WithAgentPool, WithNetworkProfile, WithDnsPrefix,
+            WithAddOnProfiles, WithAccessProfiles, WithAutoScalerProfile, WithManagedServiceIdentity, WithRBAC, WithAAD,
+            WithLocalAccounts, WithDiskEncryption, WithAgentPoolResourceGroup, WithManagedClusterSku,
+            WithPublicNetworkAccess, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends UpdateStages.WithAgentPool,
-            UpdateStages.WithAddOnProfiles,
-            UpdateStages.WithNetworkProfile,
-            UpdateStages.WithRBAC,
-            UpdateStages.WithAutoScalerProfile,
-            UpdateStages.WithAAD,
-            UpdateStages.WithLocalAccounts,
-            UpdateStages.WithVersion,
-            UpdateStages.WithManagedClusterSku,
-            UpdateStages.WithPublicNetworkAccess,
-            Resource.UpdateWithTags<KubernetesCluster.Update>,
-            Appliable<KubernetesCluster> {
+        extends UpdateStages.WithAgentPool, UpdateStages.WithAddOnProfiles, UpdateStages.WithNetworkProfile,
+        UpdateStages.WithRBAC, UpdateStages.WithAutoScalerProfile, UpdateStages.WithAAD, UpdateStages.WithLocalAccounts,
+        UpdateStages.WithVersion, UpdateStages.WithManagedClusterSku, UpdateStages.WithPublicNetworkAccess,
+        Resource.UpdateWithTags<KubernetesCluster.Update>, Appliable<KubernetesCluster> {
     }
 
     /** Grouping of the Kubernetes cluster update stages. */
@@ -880,7 +843,6 @@ public interface KubernetesCluster
             Update withVersion(String kubernetesVersion);
         }
 
-
         /** The stage of kubernetes cluster update allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
@@ -889,6 +851,7 @@ public interface KubernetesCluster
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the kubernetes cluster.
              *

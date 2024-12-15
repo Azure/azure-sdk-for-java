@@ -6,62 +6,64 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OpenID Connect Providers Contract. */
+/**
+ * OpenID Connect Providers Contract.
+ */
 @Fluent
-public final class OpenidConnectProviderContractProperties {
+public final class OpenidConnectProviderContractProperties
+    implements JsonSerializable<OpenidConnectProviderContractProperties> {
     /*
      * User-friendly OpenID Connect Provider name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * User-friendly description of OpenID Connect Provider.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Metadata endpoint URI.
      */
-    @JsonProperty(value = "metadataEndpoint", required = true)
     private String metadataEndpoint;
 
     /*
      * Client ID of developer console which is the client application.
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
      * Client Secret of developer console which is the client application.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * If true, the Open ID Connect provider may be used in the developer portal test console. True by default if no
      * value is provided.
      */
-    @JsonProperty(value = "useInTestConsole")
     private Boolean useInTestConsole;
 
     /*
      * If true, the Open ID Connect provider will be used in the API documentation in the developer portal. False by
      * default if no value is provided.
      */
-    @JsonProperty(value = "useInApiDocumentation")
     private Boolean useInApiDocumentation;
 
-    /** Creates an instance of OpenidConnectProviderContractProperties class. */
+    /**
+     * Creates an instance of OpenidConnectProviderContractProperties class.
+     */
     public OpenidConnectProviderContractProperties() {
     }
 
     /**
      * Get the displayName property: User-friendly OpenID Connect Provider name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -70,7 +72,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Set the displayName property: User-friendly OpenID Connect Provider name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -81,7 +83,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Get the description property: User-friendly description of OpenID Connect Provider.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +92,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Set the description property: User-friendly description of OpenID Connect Provider.
-     *
+     * 
      * @param description the description value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -101,7 +103,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Get the metadataEndpoint property: Metadata endpoint URI.
-     *
+     * 
      * @return the metadataEndpoint value.
      */
     public String metadataEndpoint() {
@@ -110,7 +112,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Set the metadataEndpoint property: Metadata endpoint URI.
-     *
+     * 
      * @param metadataEndpoint the metadataEndpoint value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -121,7 +123,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Get the clientId property: Client ID of developer console which is the client application.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -130,7 +132,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Set the clientId property: Client ID of developer console which is the client application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -141,7 +143,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Get the clientSecret property: Client Secret of developer console which is the client application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -150,7 +152,7 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Set the clientSecret property: Client Secret of developer console which is the client application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -162,7 +164,7 @@ public final class OpenidConnectProviderContractProperties {
     /**
      * Get the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
      * console. True by default if no value is provided.
-     *
+     * 
      * @return the useInTestConsole value.
      */
     public Boolean useInTestConsole() {
@@ -172,7 +174,7 @@ public final class OpenidConnectProviderContractProperties {
     /**
      * Set the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
      * console. True by default if no value is provided.
-     *
+     * 
      * @param useInTestConsole the useInTestConsole value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -184,7 +186,7 @@ public final class OpenidConnectProviderContractProperties {
     /**
      * Get the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
      * documentation in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @return the useInApiDocumentation value.
      */
     public Boolean useInApiDocumentation() {
@@ -194,7 +196,7 @@ public final class OpenidConnectProviderContractProperties {
     /**
      * Set the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
      * documentation in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @param useInApiDocumentation the useInApiDocumentation value to set.
      * @return the OpenidConnectProviderContractProperties object itself.
      */
@@ -205,29 +207,84 @@ public final class OpenidConnectProviderContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model OpenidConnectProviderContractProperties"));
         }
         if (metadataEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metadataEndpoint in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property metadataEndpoint in model OpenidConnectProviderContractProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model OpenidConnectProviderContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenidConnectProviderContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("metadataEndpoint", this.metadataEndpoint);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeBooleanField("useInTestConsole", this.useInTestConsole);
+        jsonWriter.writeBooleanField("useInApiDocumentation", this.useInApiDocumentation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenidConnectProviderContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenidConnectProviderContractProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OpenidConnectProviderContractProperties.
+     */
+    public static OpenidConnectProviderContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenidConnectProviderContractProperties deserializedOpenidConnectProviderContractProperties
+                = new OpenidConnectProviderContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.displayName = reader.getString();
+                } else if ("metadataEndpoint".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.metadataEndpoint = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.clientId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.description = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.clientSecret = reader.getString();
+                } else if ("useInTestConsole".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.useInTestConsole
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useInApiDocumentation".equals(fieldName)) {
+                    deserializedOpenidConnectProviderContractProperties.useInApiDocumentation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenidConnectProviderContractProperties;
+        });
+    }
 }

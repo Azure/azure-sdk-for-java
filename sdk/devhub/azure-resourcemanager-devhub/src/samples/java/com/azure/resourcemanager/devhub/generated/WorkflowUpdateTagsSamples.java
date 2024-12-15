@@ -8,25 +8,28 @@ import com.azure.resourcemanager.devhub.models.Workflow;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workflow UpdateTags. */
+/**
+ * Samples for Workflow UpdateTags.
+ */
 public final class WorkflowUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_UpdateTags.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_UpdateTags.json
      */
     /**
      * Sample code: Update Managed Cluster Tags.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void updateManagedClusterTags(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        Workflow resource =
-            manager
-                .workflows()
-                .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE)
-                .getValue();
+        Workflow resource = manager.workflows()
+            .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("promote", "false", "resourceEnv", "testing")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

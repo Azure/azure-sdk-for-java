@@ -5,37 +5,41 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Route policy statement condition properties. */
+/**
+ * Route policy statement condition properties.
+ */
 @Fluent
 public final class StatementConditionProperties extends IpCommunityIdList {
     /*
      * Type of the condition used.
      */
-    @JsonProperty(value = "type")
     private RoutePolicyConditionType type;
 
     /*
      * Arm Resource Id of IpPrefix.
      */
-    @JsonProperty(value = "ipPrefixId")
     private String ipPrefixId;
 
     /*
      * List of IP Extended Community resource IDs.
      */
-    @JsonProperty(value = "ipExtendedCommunityIds")
     private List<String> ipExtendedCommunityIds;
 
-    /** Creates an instance of StatementConditionProperties class. */
+    /**
+     * Creates an instance of StatementConditionProperties class.
+     */
     public StatementConditionProperties() {
     }
 
     /**
      * Get the type property: Type of the condition used.
-     *
+     * 
      * @return the type value.
      */
     public RoutePolicyConditionType type() {
@@ -44,7 +48,7 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Set the type property: Type of the condition used.
-     *
+     * 
      * @param type the type value to set.
      * @return the StatementConditionProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Get the ipPrefixId property: Arm Resource Id of IpPrefix.
-     *
+     * 
      * @return the ipPrefixId value.
      */
     public String ipPrefixId() {
@@ -64,7 +68,7 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Set the ipPrefixId property: Arm Resource Id of IpPrefix.
-     *
+     * 
      * @param ipPrefixId the ipPrefixId value to set.
      * @return the StatementConditionProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Get the ipExtendedCommunityIds property: List of IP Extended Community resource IDs.
-     *
+     * 
      * @return the ipExtendedCommunityIds value.
      */
     public List<String> ipExtendedCommunityIds() {
@@ -84,7 +88,7 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Set the ipExtendedCommunityIds property: List of IP Extended Community resource IDs.
-     *
+     * 
      * @param ipExtendedCommunityIds the ipExtendedCommunityIds value to set.
      * @return the StatementConditionProperties object itself.
      */
@@ -93,7 +97,9 @@ public final class StatementConditionProperties extends IpCommunityIdList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatementConditionProperties withIpCommunityIds(List<String> ipCommunityIds) {
         super.withIpCommunityIds(ipCommunityIds);
@@ -102,11 +108,60 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipCommunityIds", ipCommunityIds(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("ipPrefixId", this.ipPrefixId);
+        jsonWriter.writeArrayField("ipExtendedCommunityIds", this.ipExtendedCommunityIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatementConditionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatementConditionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatementConditionProperties.
+     */
+    public static StatementConditionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatementConditionProperties deserializedStatementConditionProperties = new StatementConditionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipCommunityIds".equals(fieldName)) {
+                    List<String> ipCommunityIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStatementConditionProperties.withIpCommunityIds(ipCommunityIds);
+                } else if ("type".equals(fieldName)) {
+                    deserializedStatementConditionProperties.type
+                        = RoutePolicyConditionType.fromString(reader.getString());
+                } else if ("ipPrefixId".equals(fieldName)) {
+                    deserializedStatementConditionProperties.ipPrefixId = reader.getString();
+                } else if ("ipExtendedCommunityIds".equals(fieldName)) {
+                    List<String> ipExtendedCommunityIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStatementConditionProperties.ipExtendedCommunityIds = ipExtendedCommunityIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatementConditionProperties;
+        });
     }
 }

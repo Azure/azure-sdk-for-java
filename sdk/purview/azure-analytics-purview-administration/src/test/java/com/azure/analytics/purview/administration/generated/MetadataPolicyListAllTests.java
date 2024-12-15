@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration.generated;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -18,13 +19,15 @@ public final class MetadataPolicyListAllTests extends PurviewMetadataClientTestB
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = metadataPolicyClient.listAll(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                "8e58266a-de42-40d5-b3c4-c6a7e159cfba",
-                response.iterableByPage().iterator().next().getHeaders().get("x-ms-request-id").getValue());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"policy_mycollection\",\"id\":\"98ed42ff-b67f-44df-8c8c-7e6b43e77055\",\"properties\":{\"description\":\"\",\"attributeRules\":[{\"name\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"principal.microsoft.id\",\"attributeValueIncludedIn\":[\"69e520f2-5f26-4074-9fe1-5187d85ec005\"]},{\"attributeName\":\"derived.purview.role\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:myparentcollection\"}]],\"id\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"kind\":\"attributerule\"},{\"name\":\"permission:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:myparentcollection\"}]],\"id\":\"permission:mycollection\",\"kind\":\"attributerule\"}],\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"mycollection\"},\"decisionRules\":[{\"dnfCondition\":[[{\"attributeName\":\"resource.purview.collection\",\"attributeValueIncludes\":\"mycollection\"},{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:mycollection\"}]],\"effect\":\"Permit\",\"kind\":\"decisionrule\"}],\"parentCollectionName\":\"myparentcollection\"},\"version\":1}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+        Assertions.assertEquals("8e58266a-de42-40d5-b3c4-c6a7e159cfba",
+            response.iterableByPage()
+                .iterator()
+                .next()
+                .getHeaders()
+                .get(HttpHeaderName.fromString("x-ms-request-id"))
+                .getValue());
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"name\":\"policy_mycollection\",\"id\":\"98ed42ff-b67f-44df-8c8c-7e6b43e77055\",\"properties\":{\"description\":\"\",\"attributeRules\":[{\"name\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"principal.microsoft.id\",\"attributeValueIncludedIn\":[\"69e520f2-5f26-4074-9fe1-5187d85ec005\"]},{\"attributeName\":\"derived.purview.role\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:myparentcollection\"}]],\"id\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"kind\":\"attributerule\"},{\"name\":\"permission:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:myparentcollection\"}]],\"id\":\"permission:mycollection\",\"kind\":\"attributerule\"}],\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"mycollection\"},\"decisionRules\":[{\"dnfCondition\":[[{\"attributeName\":\"resource.purview.collection\",\"attributeValueIncludes\":\"mycollection\"},{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:mycollection\"}]],\"effect\":\"Permit\",\"kind\":\"decisionrule\"}],\"parentCollectionName\":\"myparentcollection\"},\"version\":1}")
+            .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

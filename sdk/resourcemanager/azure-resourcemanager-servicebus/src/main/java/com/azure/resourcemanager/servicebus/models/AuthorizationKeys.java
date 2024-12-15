@@ -16,14 +16,17 @@ public interface AuthorizationKeys extends HasInnerModel<AccessKeysInner> {
      * @return primary key associated with the rule
      */
     String primaryKey();
+
     /**
      * @return secondary key associated with the rule
      */
     String secondaryKey();
+
     /**
      * @return primary connection string
      */
     String primaryConnectionString();
+
     /**
      * @return secondary connection string
      */

@@ -27,10 +27,8 @@ public interface RegistryDockerTaskRunRequest {
     boolean isArchiveEnabled();
 
     /** Container interface for all the definitions related to a registry Docker task run request. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.DockerFilePath,
-            DefinitionStages.DockerTaskRunRequestStepAttachable {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.DockerFilePath,
+        DefinitionStages.DockerTaskRunRequestStepAttachable {
     }
 
     /** Grouping of registry Docker task run request definition stages. */
@@ -93,8 +91,8 @@ public interface RegistryDockerTaskRunRequest {
              *     OverridingArgument specifying the content of the overriding argument.
              * @return the next stage of the container Docker task run request definition.
              */
-            DockerTaskRunRequestStepAttachable withOverridingArguments(
-                Map<String, OverridingArgument> overridingArguments);
+            DockerTaskRunRequestStepAttachable
+                withOverridingArguments(Map<String, OverridingArgument> overridingArguments);
 
             /**
              * The function that specifies the overriding argument and what it will override.
@@ -103,8 +101,8 @@ public interface RegistryDockerTaskRunRequest {
              * @param overridingArgument the content of the overriding argument.
              * @return the next stage of the container Docker task run request definition.
              */
-            DockerTaskRunRequestStepAttachable withOverridingArgument(
-                String name, OverridingArgument overridingArgument);
+            DockerTaskRunRequestStepAttachable withOverridingArgument(String name,
+                OverridingArgument overridingArgument);
         }
     }
 }

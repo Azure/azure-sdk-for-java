@@ -20,9 +20,8 @@ import java.util.List;
 
 /** Implementation for PointToSiteConfiguration and its create and update interfaces. */
 class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfiguration>
-    implements PointToSiteConfiguration,
-        PointToSiteConfiguration.Definition<VirtualNetworkGateway.Update>,
-        PointToSiteConfiguration.Update {
+    implements PointToSiteConfiguration, PointToSiteConfiguration.Definition<VirtualNetworkGateway.Update>,
+    PointToSiteConfiguration.Update {
     private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERT = "-----END CERTIFICATE-----";
 
@@ -52,8 +51,7 @@ class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfigu
         if (innerModel().vpnClientRootCertificates() == null) {
             innerModel().withVpnClientRootCertificates(new ArrayList<VpnClientRootCertificate>());
         }
-        innerModel()
-            .vpnClientRootCertificates()
+        innerModel().vpnClientRootCertificates()
             .add(new VpnClientRootCertificate().withName(name).withPublicCertData(certificateData));
         innerModel().withRadiusServerAddress(null).withRadiusServerSecret(null);
         return this;
@@ -66,8 +64,8 @@ class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfigu
             return this;
         } else {
             byte[] content = Files.readAllBytes(certificateFile.toPath());
-            String certificate =
-                new String(content, StandardCharsets.UTF_8).replace(BEGIN_CERT, "").replace(END_CERT, "");
+            String certificate
+                = new String(content, StandardCharsets.UTF_8).replace(BEGIN_CERT, "").replace(END_CERT, "");
             return this.withAzureCertificate(name, certificate);
         }
     }
@@ -98,8 +96,7 @@ class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfigu
         if (innerModel().vpnClientRevokedCertificates() == null) {
             innerModel().withVpnClientRevokedCertificates(new ArrayList<VpnClientRevokedCertificate>());
         }
-        innerModel()
-            .vpnClientRevokedCertificates()
+        innerModel().vpnClientRevokedCertificates()
             .add(new VpnClientRevokedCertificate().withName(name).withThumbprint(thumbprint));
         innerModel().withRadiusServerAddress(null).withRadiusServerSecret(null);
         return this;

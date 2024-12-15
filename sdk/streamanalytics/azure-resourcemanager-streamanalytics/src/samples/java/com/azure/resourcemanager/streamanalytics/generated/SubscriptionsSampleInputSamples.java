@@ -29,16 +29,21 @@ public final class SubscriptionsSampleInputSamples {
      */
     public static void
         sampleTheStreamAnalyticsInputData(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions().sampleInput("West US",
-            new SampleInputInner()
-                .withInput(new InputInner().withProperties(new StreamInputProperties()
-                    .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                    .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
-                        .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
-                            .withAccountKey("fakeTokenPlaceholder")))
-                        .withContainer("state").withPathPattern("{date}/{time}").withDateFormat("yyyy/MM/dd")
-                        .withTimeFormat("HH"))))
-                .withCompatibilityLevel("1.2").withEventsUri("http://myoutput.com").withDataLocale("en-US"),
-            com.azure.core.util.Context.NONE);
+        manager.subscriptions()
+            .sampleInput("West US",
+                new SampleInputInner()
+                    .withInput(new InputInner().withProperties(new StreamInputProperties()
+                        .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
+                        .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
+                            .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
+                                .withAccountKey("fakeTokenPlaceholder")))
+                            .withContainer("state")
+                            .withPathPattern("{date}/{time}")
+                            .withDateFormat("yyyy/MM/dd")
+                            .withTimeFormat("HH"))))
+                    .withCompatibilityLevel("1.2")
+                    .withEventsUri("http://myoutput.com")
+                    .withDataLocale("en-US"),
+                com.azure.core.util.Context.NONE);
     }
 }

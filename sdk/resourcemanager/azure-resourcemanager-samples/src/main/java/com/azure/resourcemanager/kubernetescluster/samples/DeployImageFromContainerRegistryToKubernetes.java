@@ -80,7 +80,8 @@ public class DeployImageFromContainerRegistryToKubernetes {
      * @param secret secondary service principal secret
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret) throws IOException, JSchException, InterruptedException {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId, String secret)
+        throws IOException, JSchException, InterruptedException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
         final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
         final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
@@ -103,13 +104,21 @@ public class DeployImageFromContainerRegistryToKubernetes {
             //
             //   If the environment variable was not set then reuse the main service principal set for running this sample.
 
-            if (servicePrincipalClientId == null || servicePrincipalClientId.isEmpty() || servicePrincipalSecret == null || servicePrincipalSecret.isEmpty()) {
+            if (servicePrincipalClientId == null
+                || servicePrincipalClientId.isEmpty()
+                || servicePrincipalSecret == null
+                || servicePrincipalSecret.isEmpty()) {
                 servicePrincipalClientId = System.getenv("AZURE_CLIENT_ID");
                 servicePrincipalSecret = System.getenv("AZURE_CLIENT_SECRET");
-                if (servicePrincipalClientId == null || servicePrincipalClientId.isEmpty() || servicePrincipalSecret == null || servicePrincipalSecret.isEmpty()) {
+                if (servicePrincipalClientId == null
+                    || servicePrincipalClientId.isEmpty()
+                    || servicePrincipalSecret == null
+                    || servicePrincipalSecret.isEmpty()) {
                     String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
 
-                    if (envSecondaryServicePrincipal == null || !envSecondaryServicePrincipal.isEmpty() || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
+                    if (envSecondaryServicePrincipal == null
+                        || !envSecondaryServicePrincipal.isEmpty()
+                        || !Files.exists(Paths.get(envSecondaryServicePrincipal))) {
                         envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
                     }
 
@@ -117,7 +126,6 @@ public class DeployImageFromContainerRegistryToKubernetes {
                     servicePrincipalSecret = Utils.getSecondaryServicePrincipalSecret(envSecondaryServicePrincipal);
                 }
             }
-
 
             //=============================================================
             // Create an SSH private/public key pair to be used when creating the container service
@@ -128,15 +136,16 @@ public class DeployImageFromContainerRegistryToKubernetes {
             System.out.println("SSH private key value: %n" + sshKeys.getSshPrivateKey());
             System.out.println("SSH public key value: %n" + sshKeys.getSshPublicKey());
 
-
             //=============================================================
             // Create an Azure Container Service (AKS) with managed Kubernetes clusters
 
-            System.out.println("Creating an Azure Container Service with managed Kubernetes cluster and one agent pool with one virtual machine");
+            System.out.println(
+                "Creating an Azure Container Service with managed Kubernetes cluster and one agent pool with one virtual machine");
 
             Date t1 = new Date();
 
-            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters().define(aksName)
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
+                .define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDefaultVersion()
@@ -145,17 +154,17 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
                 .withDnsPrefix("dns-" + aksName)
                 .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Service (AKS) resource: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
+            System.out.println("Created Azure Container Service (AKS) resource: (took "
+                + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + kubernetesCluster.id());
             Utils.print(kubernetesCluster);
-
 
             //=============================================================
             // Create an Azure Container Registry to store and manage private Docker container images
@@ -164,7 +173,8 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             t1 = new Date();
 
-            Registry azureRegistry = azureResourceManager.containerRegistries().define(acrName)
+            Registry azureRegistry = azureResourceManager.containerRegistries()
+                .define(acrName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
@@ -172,17 +182,17 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .create();
 
             t2 = new Date();
-            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
+            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                + " seconds) " + azureRegistry.id());
             Utils.print(azureRegistry);
-
 
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azureResourceManager, rgName, region,
-                azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
-
+            DockerClient dockerClient
+                = DockerUtils.createDockerClient(azureResourceManager, rgName, region, azureRegistry.loginServerUrl(),
+                    acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
@@ -199,18 +209,16 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
-            CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
-                .withName(dockerContainerName)
-                .withCmd("/hello")
-                .exec();
+            CreateContainerResponse dockerContainerInstance
+                = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
+                    .withName(dockerContainerName)
+                    .withCmd("/hello")
+                    .exec();
             System.out.println("List Docker containers:");
-            List<Container> dockerContainers = dockerClient.listContainersCmd()
-                .withShowAll(true)
-                .exec();
+            List<Container> dockerContainers = dockerClient.listContainersCmd().withShowAll(true).exec();
             for (Container container : dockerContainers) {
                 System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
-
 
             //=============================================================
             // Commit the new container
@@ -218,20 +226,19 @@ public class DeployImageFromContainerRegistryToKubernetes {
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
             dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
-                .withTag("latest").exec();
-
-            // We can now remove the temporary container instance
-            dockerClient.removeContainerCmd(dockerContainerInstance.getId())
-                .withForce(true)
+                .withTag("latest")
                 .exec();
 
+            // We can now remove the temporary container instance
+            dockerClient.removeContainerCmd(dockerContainerInstance.getId()).withForce(true).exec();
 
             //=============================================================
             // Push the new Docker image to the Azure Container Registry
 
             dockerClient.pushImageCmd(privateRepoUrl)
                 .withAuthConfig(dockerClient.authConfig())
-                .exec(new PushImageResultCallback()).awaitSuccess();
+                .exec(new PushImageResultCallback())
+                .awaitSuccess();
 
             // Remove the temp image from the local Docker host
             try {
@@ -240,31 +247,29 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 // just ignore if not exist
             }
 
-
             //=============================================================
             // Verify that the image we saved in the Azure Container registry can be pulled and instantiated locally
 
             dockerClient.pullImageCmd(privateRepoUrl)
                 .withAuthConfig(dockerClient.authConfig())
-                .exec(new PullImageResultCallback()).awaitCompletion();
-            System.out.println("List local Docker images after pulling sample image from the Azure Container Registry:");
-            images = dockerClient.listImagesCmd()
-                .withShowAll(true)
-                .exec();
+                .exec(new PullImageResultCallback())
+                .awaitCompletion();
+            System.out
+                .println("List local Docker images after pulling sample image from the Azure Container Registry:");
+            images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
             dockerClient.createContainerCmd(privateRepoUrl)
                 .withName(dockerContainerName + "-private")
-                .withCmd("/hello").exec();
-            System.out.println("List Docker containers after instantiating container from the Azure Container Registry sample image:");
-            dockerContainers = dockerClient.listContainersCmd()
-                .withShowAll(true)
+                .withCmd("/hello")
                 .exec();
+            System.out.println(
+                "List Docker containers after instantiating container from the Azure Container Registry sample image:");
+            dockerContainers = dockerClient.listContainersCmd().withShowAll(true).exec();
             for (Container container : dockerContainers) {
                 System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
-
 
             //=============================================================
             // Instantiate the Kubernetes client using the ".kube/config" file content from the Kubernetes cluster
@@ -275,9 +280,11 @@ public class DeployImageFromContainerRegistryToKubernetes {
             System.out.println("Found Kubernetes master at: " + kubernetesCluster.fqdn());
 
             byte[] kubeConfigContent = kubernetesCluster.adminKubeConfigContent();
-            File tempKubeConfigFile = File.createTempFile("kube", ".config", new File(System.getProperty("java.io.tmpdir")));
+            File tempKubeConfigFile
+                = File.createTempFile("kube", ".config", new File(System.getProperty("java.io.tmpdir")));
             tempKubeConfigFile.deleteOnExit();
-            try (BufferedWriter buffOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempKubeConfigFile), StandardCharsets.UTF_8))) {
+            try (BufferedWriter buffOut = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(tempKubeConfigFile), StandardCharsets.UTF_8))) {
                 buffOut.write(new String(kubeConfigContent, StandardCharsets.UTF_8));
             }
 
@@ -285,21 +292,18 @@ public class DeployImageFromContainerRegistryToKubernetes {
             Config config = new Config();
             KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
 
-
             //=============================================================
             // List all the nodes available in the Kubernetes cluster
 
             System.out.println(kubernetesClient.nodes().list());
 
-
             //=============================================================
             // Create a namespace where all the sample Kubernetes resources will be created
 
-            Namespace ns = new NamespaceBuilder()
-                .withNewMetadata()
-                    .withName(aksNamespace)
-                    .addToLabels("acr", "sample")
-                    .endMetadata()
+            Namespace ns = new NamespaceBuilder().withNewMetadata()
+                .withName(aksNamespace)
+                .addToLabels("acr", "sample")
+                .endMetadata()
                 .build();
             try {
                 System.out.println("Created namespace" + kubernetesClient.namespaces().create(ns));
@@ -312,29 +316,29 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 System.out.println("\tFound Kubernetes namespace: " + namespace.toString());
             }
 
-
             //=============================================================
             // Create a secret of type "docker-repository" that will be used for downloading the container image from
             //     our Azure private container repo
 
-            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
+            String basicAuth = new String(Base64
+                .encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+                    .getBytes(StandardCharsets.UTF_8)),
+                StandardCharsets.UTF_8);
             HashMap<String, String> secretData = new HashMap<>(1);
             String dockerCfg = String.format("{ \"%s\": { \"auth\": \"%s\", \"email\": \"%s\" } }",
-                azureRegistry.loginServerUrl(),
-                basicAuth,
-                "acrsample@azure.com");
+                azureRegistry.loginServerUrl(), basicAuth, "acrsample@azure.com");
 
             dockerCfg = new String(Base64.encodeBase64(dockerCfg.getBytes("UTF-8")), "UTF-8");
             secretData.put(".dockercfg", dockerCfg);
-            SecretBuilder secretBuilder = new SecretBuilder()
-                .withNewMetadata()
-                    .withName(aksSecretName)
-                    .withNamespace(aksNamespace)
-                    .endMetadata()
+            SecretBuilder secretBuilder = new SecretBuilder().withNewMetadata()
+                .withName(aksSecretName)
+                .withNamespace(aksNamespace)
+                .endMetadata()
                 .withData(secretData)
                 .withType("kubernetes.io/dockercfg");
 
-            System.out.println("Creating new secret: " + kubernetesClient.secrets().inNamespace(aksNamespace).create(secretBuilder.build()));
+            System.out.println("Creating new secret: "
+                + kubernetesClient.secrets().inNamespace(aksNamespace).create(secretBuilder.build()));
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
@@ -342,37 +346,36 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 System.out.println("\tFound secret: " + kubeS);
             }
 
-
             //=============================================================
             // Create a replication controller for our image stored in the Azure Container Registry
 
-            ReplicationController rc = new ReplicationControllerBuilder()
-                .withNewMetadata()
-                    .withName("acrsample-rc")
-                    .withNamespace(aksNamespace)
-                    .addToLabels("acrsample-nginx", "nginx")
-                    .endMetadata()
+            ReplicationController rc = new ReplicationControllerBuilder().withNewMetadata()
+                .withName("acrsample-rc")
+                .withNamespace(aksNamespace)
+                .addToLabels("acrsample-nginx", "nginx")
+                .endMetadata()
                 .withNewSpec()
-                    .withReplicas(2)
-                    .withNewTemplate()
-                        .withNewMetadata()
-                            .addToLabels("acrsample-nginx", "nginx")
-                            .endMetadata()
-                        .withNewSpec()
-                            .addNewImagePullSecret(aksSecretName)
-                            .addNewContainer()
-                                .withName("acrsample-pod-nginx")
-                                .withImage(privateRepoUrl)
-                                .addNewPort()
-                                    .withContainerPort(80)
-                                    .endPort()
-                                .endContainer()
-                            .endSpec()
-                        .endTemplate()
-                    .endSpec()
+                .withReplicas(2)
+                .withNewTemplate()
+                .withNewMetadata()
+                .addToLabels("acrsample-nginx", "nginx")
+                .endMetadata()
+                .withNewSpec()
+                .addNewImagePullSecret(aksSecretName)
+                .addNewContainer()
+                .withName("acrsample-pod-nginx")
+                .withImage(privateRepoUrl)
+                .addNewPort()
+                .withContainerPort(80)
+                .endPort()
+                .endContainer()
+                .endSpec()
+                .endTemplate()
+                .endSpec()
                 .build();
 
-            System.out.println("Creating a replication controller: " + kubernetesClient.replicationControllers().inNamespace(aksNamespace).create(rc));
+            System.out.println("Creating a replication controller: "
+                + kubernetesClient.replicationControllers().inNamespace(aksNamespace).create(rc));
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
             rc = kubernetesClient.replicationControllers().inNamespace(aksNamespace).withName("acrsample-rc").get();
@@ -382,31 +385,30 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 System.out.println("\tFound Kubernetes pods: " + pod.toString());
             }
 
-
             //=============================================================
             // Create a Load Balancer service that will expose the service to the world
 
-            Service lbService = new ServiceBuilder()
-                .withNewMetadata()
-                    .withName(aksLbIngressName)
-                    .withNamespace(aksNamespace)
-                    .endMetadata()
+            Service lbService = new ServiceBuilder().withNewMetadata()
+                .withName(aksLbIngressName)
+                .withNamespace(aksNamespace)
+                .endMetadata()
                 .withNewSpec()
-                    .withType("LoadBalancer")
-                    .addNewPort()
-                        .withPort(80)
-                        .withProtocol("TCP")
-                        .endPort()
-                    .addToSelector("acrsample-nginx", "nginx")
-                    .endSpec()
+                .withType("LoadBalancer")
+                .addNewPort()
+                .withPort(80)
+                .withProtocol("TCP")
+                .endPort()
+                .addToSelector("acrsample-nginx", "nginx")
+                .endSpec()
                 .build();
 
-            System.out.println("Creating a service: " + kubernetesClient.services().inNamespace(aksNamespace).create(lbService));
+            System.out.println(
+                "Creating a service: " + kubernetesClient.services().inNamespace(aksNamespace).create(lbService));
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
 
-            System.out.println("\tFound service: " + kubernetesClient.services().inNamespace(aksNamespace).withName(aksLbIngressName).get());
-
+            System.out.println("\tFound service: "
+                + kubernetesClient.services().inNamespace(aksNamespace).withName(aksLbIngressName).get());
 
             //=============================================================
             // Wait until the external IP becomes available
@@ -416,8 +418,17 @@ public class DeployImageFromContainerRegistryToKubernetes {
 
             while (timeout > 0) {
                 try {
-                    List<LoadBalancerIngress> lbIngressList = kubernetesClient.services().inNamespace(aksNamespace).withName(aksLbIngressName).get().getStatus().getLoadBalancer().getIngress();
-                    if (lbIngressList != null && !lbIngressList.isEmpty() && lbIngressList.get(0) != null && lbIngressList.get(0).getIp().matches(matchIPV4)) {
+                    List<LoadBalancerIngress> lbIngressList = kubernetesClient.services()
+                        .inNamespace(aksNamespace)
+                        .withName(aksLbIngressName)
+                        .get()
+                        .getStatus()
+                        .getLoadBalancer()
+                        .getIngress();
+                    if (lbIngressList != null
+                        && !lbIngressList.isEmpty()
+                        && lbIngressList.get(0) != null
+                        && lbIngressList.get(0).getIp().matches(matchIPV4)) {
                         System.out.println("\tFound ingress IP: " + lbIngressList.get(0).getIp());
                         timeout = 0;
                     }
@@ -462,8 +473,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

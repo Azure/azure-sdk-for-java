@@ -68,15 +68,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * @return A challenge attributes map.
      */
     private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
-                                                                  String authChallengePrefix) {
+        String authChallengePrefix) {
         if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
             return Collections.emptyMap();
         }
 
-        String[] attributes = authenticateHeader
-            .replace("\"", "")
-            .substring(authChallengePrefix.length())
-            .split(",");
+        String[] attributes = authenticateHeader.replace("\"", "").substring(authChallengePrefix.length()).split(",");
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
@@ -114,10 +111,10 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (this.challenge != null) {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-                TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                    .addScopes(this.challenge.getScopes())
-                    .setTenantId(this.challenge.getTenantId())
-                    .setCaeEnabled(true);
+                TokenRequestContext tokenRequestContext
+                    = new TokenRequestContext().addScopes(this.challenge.getScopes())
+                        .setTenantId(this.challenge.getTenantId())
+                        .setCaeEnabled(true);
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -156,8 +153,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             }
 
             String authority = getRequestAuthority(request);
-            Map<String, String> challengeAttributes =
-                extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+            Map<String, String> challengeAttributes
+                = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
             String scope = challengeAttributes.get("resource");
 
             if (scope != null) {
@@ -175,12 +172,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             } else {
                 if (!disableChallengeResourceVerification) {
                     if (!isChallengeResourceValid(request, scope)) {
-                        throw LOGGER.logExceptionAsError(
-                            new RuntimeException(String.format(
-                                "The challenge resource '%s' does not match the requested domain. If you wish to "
-                                    + "disable this check for your client, pass 'true' to the SecretClientBuilder"
-                                    + ".disableChallengeResourceVerification() method when building it. See "
-                                    + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
+                        throw LOGGER.logExceptionAsError(new RuntimeException(String
+                            .format("The challenge resource '%s' does not match the requested domain. If you wish to "
+                                + "disable this check for your client, pass 'true' to the SecretClientBuilder"
+                                + ".disableChallengeResourceVerification() method when building it. See "
+                                + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                     }
                 }
 
@@ -195,18 +191,16 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 try {
                     authorizationUri = new URI(authorization);
                 } catch (URISyntaxException e) {
-                    throw LOGGER.logExceptionAsError(
-                        new RuntimeException(
-                            String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(
+                        String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
                 }
 
-                this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
+                this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
 
                 CHALLENGE_CACHE.put(authority, this.challenge);
             }
 
-            TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                .addScopes(this.challenge.getScopes())
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId())
                 .setCaeEnabled(true);
 
@@ -219,14 +213,13 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     String claims = challengeAttributes.get("claims");
 
                     if (claims != null) {
-                        tokenRequestContext.setClaims(
-                            new String(Base64Util.decodeString(claims), StandardCharsets.UTF_8));
+                        tokenRequestContext
+                            .setClaims(new String(Base64Util.decodeString(claims), StandardCharsets.UTF_8));
                     }
                 }
             }
 
-            return setAuthorizationHeader(context, tokenRequestContext)
-                .then(Mono.just(true));
+            return setAuthorizationHeader(context, tokenRequestContext).then(Mono.just(true));
         });
     }
 
@@ -241,8 +234,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (this.challenge != null) {
             // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-            TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                .addScopes(this.challenge.getScopes())
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId())
                 .setCaeEnabled(true);
 
@@ -260,8 +252,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
             if (request.getBodyAsBinaryData() != null) {
                 context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBodyAsBinaryData());
-                context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
-                    request.getHeaders().getValue(CONTENT_LENGTH));
+                context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY, request.getHeaders().getValue(CONTENT_LENGTH));
                 request.setHeader(CONTENT_LENGTH, "0");
                 request.setBody((BinaryData) null);
             }
@@ -280,8 +271,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         String authority = getRequestAuthority(request);
-        Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -299,12 +290,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         } else {
             if (!disableChallengeResourceVerification) {
                 if (!isChallengeResourceValid(request, scope)) {
-                    throw LOGGER.logExceptionAsError(
-                        new RuntimeException(String.format(
-                            "The challenge resource '%s' does not match the requested domain. If you wish to disable "
-                                + "this check for your client, pass 'true' to the SecretClientBuilder"
-                                + ".disableChallengeResourceVerification() method when building it. See "
-                                + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                        "The challenge resource '%s' does not match the requested domain. If you wish to disable "
+                            + "this check for your client, pass 'true' to the SecretClientBuilder"
+                            + ".disableChallengeResourceVerification() method when building it. See "
+                            + "https://aka.ms/azsdk/blog/vault-uri for more information.",
+                        scope)));
                 }
             }
 
@@ -319,18 +310,16 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             try {
                 authorizationUri = new URI(authorization);
             } catch (URISyntaxException e) {
-                throw LOGGER.logExceptionAsError(
-                    new RuntimeException(
-                        String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
             }
 
-            this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
+            this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
 
             CHALLENGE_CACHE.put(authority, this.challenge);
         }
 
-        TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes(this.challenge.getScopes())
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
             .setTenantId(this.challenge.getTenantId())
             .setCaeEnabled(true);
 
@@ -405,7 +394,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 return next.process().flatMap(newResponse -> {
                     String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
-                    if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
+                    if (newResponse.getStatusCode() == 401
+                        && authHeader != null
+                        && isClaimsPresent(newResponse)
                         && !isClaimsPresent(httpResponse)) {
 
                         return handleChallenge(context, newResponse, nextPolicy);
@@ -429,7 +420,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             HttpResponse newResponse = next.processSync();
             String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
-            if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
+            if (newResponse.getStatusCode() == 401
+                && authHeader != null
+                && isClaimsPresent(newResponse)
                 && !isClaimsPresent(httpResponse)) {
 
                 return handleChallengeSync(context, newResponse, nextPolicy);
@@ -442,8 +435,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     private boolean isClaimsPresent(HttpResponse httpResponse) {
-        Map<String, String> challengeAttributes =
-            extractChallengeAttributes(httpResponse.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(httpResponse.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
 
         String error = challengeAttributes.get("error");
 
@@ -521,12 +514,13 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             scopeUri = new URI(scope);
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(
-                new RuntimeException(
-                    String.format("The challenge resource '%s' is not a valid URI.", scope), e));
+                new RuntimeException(String.format("The challenge resource '%s' is not a valid URI.", scope), e));
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.
-        return request.getUrl().getHost().toLowerCase(Locale.ROOT)
+        return request.getUrl()
+            .getHost()
+            .toLowerCase(Locale.ROOT)
             .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
     }
 }

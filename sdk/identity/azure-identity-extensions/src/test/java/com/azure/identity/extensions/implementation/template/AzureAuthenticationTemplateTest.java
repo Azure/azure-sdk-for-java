@@ -83,18 +83,18 @@ class AzureAuthenticationTemplateTest {
         int tokenExpireSeconds = 2;
         TokenCredential mockTokenCredential = mock(TokenCredential.class);
         OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
-        when(mockTokenCredential.getToken(any()))
-            .thenAnswer(u -> {
-                if (OffsetDateTime.now().isBefore(offsetDateTime)) {
-                    return Mono.just(new AccessToken(token1, offsetDateTime));
-                } else {
-                    return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
-                }
-            });
+        when(mockTokenCredential.getToken(any())).thenAnswer(u -> {
+            if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                return Mono.just(new AccessToken(token1, offsetDateTime));
+            } else {
+                return Mono.just(new AccessToken(token2, offsetDateTime.plusSeconds(tokenExpireSeconds)));
+            }
+        });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
-            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
-        })) {
+        try (MockedConstruction<DefaultTokenCredentialProvider> identityClientMock
+            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+                when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+            })) {
             Properties properties = new Properties();
 
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();

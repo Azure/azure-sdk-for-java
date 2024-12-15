@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.EventHubDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties that are associated with a Event Hub input containing stream data.
@@ -16,16 +19,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class EventHubStreamInputDataSourceProperties extends EventHubDataSourceProperties {
     /*
      * The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying
-     * distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from
-     * the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
+     * distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from the
+     * Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
      */
-    @JsonProperty(value = "consumerGroupName")
     private String consumerGroupName;
 
     /*
      * The number of messages that the message receiver can simultaneously request.
      */
-    @JsonProperty(value = "prefetchCount")
     private Integer prefetchCount;
 
     /**
@@ -141,6 +142,67 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("eventHubName", eventHubName());
+        jsonWriter.writeNumberField("partitionCount", partitionCount());
+        jsonWriter.writeStringField("consumerGroupName", this.consumerGroupName);
+        jsonWriter.writeNumberField("prefetchCount", this.prefetchCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubStreamInputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubStreamInputDataSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubStreamInputDataSourceProperties.
+     */
+    public static EventHubStreamInputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubStreamInputDataSourceProperties deserializedEventHubStreamInputDataSourceProperties
+                = new EventHubStreamInputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.withEventHubName(reader.getString());
+                } else if ("partitionCount".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties
+                        .withPartitionCount(reader.getNullable(JsonReader::getInt));
+                } else if ("consumerGroupName".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.consumerGroupName = reader.getString();
+                } else if ("prefetchCount".equals(fieldName)) {
+                    deserializedEventHubStreamInputDataSourceProperties.prefetchCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubStreamInputDataSourceProperties;
+        });
     }
 }

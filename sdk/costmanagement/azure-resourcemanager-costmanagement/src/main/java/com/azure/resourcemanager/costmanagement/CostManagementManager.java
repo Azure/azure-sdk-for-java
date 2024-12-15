@@ -65,8 +65,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to CostManagementManager. CostManagement management client provides access to CostManagement resources
- * for Azure Enterprise Subscriptions.
+ * Entry point to CostManagementManager.
+ * CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions.
  */
 public final class CostManagementManager {
     private Operations operations;
@@ -106,17 +106,15 @@ public final class CostManagementManager {
     private CostManagementManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new CostManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new CostManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of CostManagement service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the CostManagement service API instance.
@@ -129,7 +127,7 @@ public final class CostManagementManager {
 
     /**
      * Creates an instance of CostManagement service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the CostManagement service API instance.
@@ -142,14 +140,16 @@ public final class CostManagementManager {
 
     /**
      * Gets a Configurable instance that can be used to create CostManagementManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new CostManagementManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -221,8 +221,8 @@ public final class CostManagementManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -239,8 +239,8 @@ public final class CostManagementManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -260,15 +260,13 @@ public final class CostManagementManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.costmanagement")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -293,38 +291,28 @@ public final class CostManagementManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new CostManagementManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -336,7 +324,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Views. It manages View.
-     *
+     * 
      * @return Resource collection API of Views.
      */
     public Views views() {
@@ -348,7 +336,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Alerts.
-     *
+     * 
      * @return Resource collection API of Alerts.
      */
     public Alerts alerts() {
@@ -360,7 +348,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Forecasts.
-     *
+     * 
      * @return Resource collection API of Forecasts.
      */
     public Forecasts forecasts() {
@@ -372,7 +360,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Dimensions.
-     *
+     * 
      * @return Resource collection API of Dimensions.
      */
     public Dimensions dimensions() {
@@ -384,7 +372,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Queries.
-     *
+     * 
      * @return Resource collection API of Queries.
      */
     public Queries queries() {
@@ -396,20 +384,20 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateReservationDetailsReports.
-     *
+     * 
      * @return Resource collection API of GenerateReservationDetailsReports.
      */
     public GenerateReservationDetailsReports generateReservationDetailsReports() {
         if (this.generateReservationDetailsReports == null) {
-            this.generateReservationDetailsReports =
-                new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
+            this.generateReservationDetailsReports
+                = new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
         }
         return generateReservationDetailsReports;
     }
 
     /**
      * Gets the resource collection API of Exports. It manages Export.
-     *
+     * 
      * @return Resource collection API of Exports.
      */
     public Exports exports() {
@@ -421,61 +409,59 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateCostDetailsReports.
-     *
+     * 
      * @return Resource collection API of GenerateCostDetailsReports.
      */
     public GenerateCostDetailsReports generateCostDetailsReports() {
         if (this.generateCostDetailsReports == null) {
-            this.generateCostDetailsReports =
-                new GenerateCostDetailsReportsImpl(clientObject.getGenerateCostDetailsReports(), this);
+            this.generateCostDetailsReports
+                = new GenerateCostDetailsReportsImpl(clientObject.getGenerateCostDetailsReports(), this);
         }
         return generateCostDetailsReports;
     }
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReports.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReports.
      */
     public GenerateDetailedCostReports generateDetailedCostReports() {
         if (this.generateDetailedCostReports == null) {
-            this.generateDetailedCostReports =
-                new GenerateDetailedCostReportsImpl(clientObject.getGenerateDetailedCostReports(), this);
+            this.generateDetailedCostReports
+                = new GenerateDetailedCostReportsImpl(clientObject.getGenerateDetailedCostReports(), this);
         }
         return generateDetailedCostReports;
     }
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReportOperationResults.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReportOperationResults.
      */
     public GenerateDetailedCostReportOperationResults generateDetailedCostReportOperationResults() {
         if (this.generateDetailedCostReportOperationResults == null) {
-            this.generateDetailedCostReportOperationResults =
-                new GenerateDetailedCostReportOperationResultsImpl(
-                    clientObject.getGenerateDetailedCostReportOperationResults(), this);
+            this.generateDetailedCostReportOperationResults = new GenerateDetailedCostReportOperationResultsImpl(
+                clientObject.getGenerateDetailedCostReportOperationResults(), this);
         }
         return generateDetailedCostReportOperationResults;
     }
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReportOperationStatus.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReportOperationStatus.
      */
     public GenerateDetailedCostReportOperationStatus generateDetailedCostReportOperationStatus() {
         if (this.generateDetailedCostReportOperationStatus == null) {
-            this.generateDetailedCostReportOperationStatus =
-                new GenerateDetailedCostReportOperationStatusImpl(
-                    clientObject.getGenerateDetailedCostReportOperationStatus(), this);
+            this.generateDetailedCostReportOperationStatus = new GenerateDetailedCostReportOperationStatusImpl(
+                clientObject.getGenerateDetailedCostReportOperationStatus(), this);
         }
         return generateDetailedCostReportOperationStatus;
     }
 
     /**
      * Gets the resource collection API of PriceSheets.
-     *
+     * 
      * @return Resource collection API of PriceSheets.
      */
     public PriceSheets priceSheets() {
@@ -487,7 +473,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
-     *
+     * 
      * @return Resource collection API of ScheduledActions.
      */
     public ScheduledActions scheduledActions() {
@@ -499,33 +485,35 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of BenefitRecommendations.
-     *
+     * 
      * @return Resource collection API of BenefitRecommendations.
      */
     public BenefitRecommendations benefitRecommendations() {
         if (this.benefitRecommendations == null) {
-            this.benefitRecommendations =
-                new BenefitRecommendationsImpl(clientObject.getBenefitRecommendations(), this);
+            this.benefitRecommendations
+                = new BenefitRecommendationsImpl(clientObject.getBenefitRecommendations(), this);
         }
         return benefitRecommendations;
     }
 
     /**
      * Gets the resource collection API of BenefitUtilizationSummaries.
-     *
+     * 
      * @return Resource collection API of BenefitUtilizationSummaries.
      */
     public BenefitUtilizationSummaries benefitUtilizationSummaries() {
         if (this.benefitUtilizationSummaries == null) {
-            this.benefitUtilizationSummaries =
-                new BenefitUtilizationSummariesImpl(clientObject.getBenefitUtilizationSummaries(), this);
+            this.benefitUtilizationSummaries
+                = new BenefitUtilizationSummariesImpl(clientObject.getBenefitUtilizationSummaries(), this);
         }
         return benefitUtilizationSummaries;
     }
 
     /**
-     * @return Wrapped service client CostManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client CostManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client CostManagementClient.
      */
     public CostManagementClient serviceClient() {
         return this.clientObject;

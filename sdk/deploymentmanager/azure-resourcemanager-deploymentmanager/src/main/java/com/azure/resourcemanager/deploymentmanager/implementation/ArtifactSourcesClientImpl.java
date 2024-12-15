@@ -43,8 +43,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @param client the instance of the service client containing this operation class.
      */
     ArtifactSourcesClientImpl(AzureDeploymentManagerImpl client) {
-        this.service =
-            RestProxy.create(ArtifactSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ArtifactSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,65 +55,49 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureDeploymentManag")
     public interface ArtifactSourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/artifactSources/{artifactSourceName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/artifactSources/{artifactSourceName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArtifactSourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ArtifactSourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("artifactSourceName") String artifactSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ArtifactSourceInner artifactSourceInfo,
-            @HeaderParam("Accept") String accept,
+            @PathParam("artifactSourceName") String artifactSourceName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ArtifactSourceInner artifactSourceInfo, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/artifactSources/{artifactSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/artifactSources/{artifactSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArtifactSourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ArtifactSourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("artifactSourceName") String artifactSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("artifactSourceName") String artifactSourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/artifactSources/{artifactSourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/artifactSources/{artifactSourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("artifactSourceName") String artifactSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("artifactSourceName") String artifactSourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/artifactSources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/artifactSources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<ArtifactSourceInner>>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<ArtifactSourceInner>>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -131,19 +115,15 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
+    private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,18 +138,9 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            artifactSourceName,
-                            this.client.getApiVersion(),
-                            artifactSourceInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, artifactSourceName, this.client.getApiVersion(), artifactSourceInfo, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -189,19 +160,15 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context) {
+    private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -216,16 +183,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                artifactSourceName,
-                this.client.getApiVersion(),
-                artifactSourceInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            artifactSourceName, this.client.getApiVersion(), artifactSourceInfo, accept, context);
     }
 
     /**
@@ -264,8 +223,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context) {
+    public Response<ArtifactSourceInner> createOrUpdateWithResponse(String resourceGroupName, String artifactSourceName,
+        ArtifactSourceInner artifactSourceInfo, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo, context)
             .block();
     }
@@ -300,19 +259,15 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @return an artifact source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String artifactSourceName) {
+    private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String artifactSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -325,16 +280,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            artifactSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, artifactSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -350,19 +297,15 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @return an artifact source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String artifactSourceName, Context context) {
+    private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String artifactSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -374,15 +317,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                artifactSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            artifactSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -413,8 +349,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @return an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactSourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context) {
+    public Response<ArtifactSourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String artifactSourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, artifactSourceName, context).block();
     }
 
@@ -446,16 +382,12 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String artifactSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -467,17 +399,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            artifactSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, artifactSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -493,19 +416,15 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String artifactSourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String artifactSourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -517,15 +436,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                artifactSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            artifactSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -585,16 +497,12 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ArtifactSourceInner>>> listWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,16 +510,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -628,16 +528,12 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ArtifactSourceInner>>> listWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -645,14 +541,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

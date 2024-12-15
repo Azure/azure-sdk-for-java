@@ -15,8 +15,7 @@ public final class ChangeDirectoryResponseImpl implements ChangeDirectoryRespons
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    ChangeDirectoryResponseImpl(
-        ChangeDirectoryResponseInner innerObject,
+    ChangeDirectoryResponseImpl(ChangeDirectoryResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

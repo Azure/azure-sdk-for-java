@@ -1414,6 +1414,72 @@ public final class BatchClientImpl {
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
+        @Post("/pools/{poolId}/nodes/{nodeId}/start")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> startNodeInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/start")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> startNodeInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> reimageNodeInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> reimageNodeInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deallocateNodeInternal(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deallocateNodeInternalSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
+            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -2334,7 +2400,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2399,7 +2465,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2482,7 +2548,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2545,7 +2611,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2630,6 +2696,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -2694,13 +2762,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -2759,6 +2830,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -2920,6 +2997,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -2984,13 +3063,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3049,6 +3131,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -3180,7 +3268,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3193,7 +3281,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -3224,6 +3312,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -3288,13 +3378,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3378,6 +3471,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -3547,7 +3646,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3560,7 +3659,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -3591,6 +3690,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -3655,13 +3756,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3745,6 +3849,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -3932,7 +4042,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3945,7 +4055,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -3976,6 +4086,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -4040,13 +4152,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4130,6 +4245,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -4297,7 +4418,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4310,7 +4431,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -4341,6 +4462,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -4405,13 +4528,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4495,6 +4621,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -4976,6 +5108,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -5040,13 +5174,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5130,6 +5267,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5357,6 +5500,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -5421,13 +5566,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5511,6 +5659,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5718,6 +5872,9 @@ public final class BatchClientImpl {
      * <pre>
      * {@code
      * {
+     *     displayName: String (Optional)
+     *     vmSize: String (Optional)
+     *     enableInterNodeCommunication: Boolean (Optional)
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
@@ -5732,6 +5889,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5772,7 +5935,197 @@ public final class BatchClientImpl {
      *             value: String (Required)
      *         }
      *     ]
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible/criCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 enableAutomaticUpgrade: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *             caching: String(none/readonly/readwrite) (Optional)
+     *             diskSizeGB: Integer (Optional)
+     *             managedDisk (Optional): {
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
+     *             }
+     *             writeAcceleratorEnabled: Boolean (Optional)
+     *         }
+     *         securityProfile (Optional): {
+     *             encryptionAtHost: boolean (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
+     *             uefiSettings (Required): {
+     *                 secureBootEnabled: Boolean (Optional)
+     *                 vTpmEnabled: Boolean (Optional)
+     *             }
+     *         }
+     *         serviceArtifactReference (Optional): {
+     *             id: String (Required)
+     *         }
+     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         enableAcceleratedNetworking: Boolean (Optional)
+     *     }
+     *     resourceTags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOSUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -5837,6 +6190,9 @@ public final class BatchClientImpl {
      * <pre>
      * {@code
      * {
+     *     displayName: String (Optional)
+     *     vmSize: String (Optional)
+     *     enableInterNodeCommunication: Boolean (Optional)
      *     startTask (Optional): {
      *         commandLine: String (Required)
      *         containerSettings (Optional): {
@@ -5851,6 +6207,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -5891,7 +6253,197 @@ public final class BatchClientImpl {
      *             value: String (Required)
      *         }
      *     ]
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible/criCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 enableAutomaticUpgrade: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *             caching: String(none/readonly/readwrite) (Optional)
+     *             diskSizeGB: Integer (Optional)
+     *             managedDisk (Optional): {
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
+     *             }
+     *             writeAcceleratorEnabled: Boolean (Optional)
+     *         }
+     *         securityProfile (Optional): {
+     *             encryptionAtHost: boolean (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
+     *             uefiSettings (Required): {
+     *                 secureBootEnabled: Boolean (Optional)
+     *                 vTpmEnabled: Boolean (Optional)
+     *             }
+     *         }
+     *         serviceArtifactReference (Optional): {
+     *             id: String (Required)
+     *         }
+     *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         enableAcceleratedNetworking: Boolean (Optional)
+     *     }
+     *     resourceTags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOSUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOSUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -6534,6 +7086,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -6631,6 +7189,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -6846,7 +7410,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -6862,6 +7426,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -6905,7 +7471,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -6921,6 +7487,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -6982,7 +7550,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -6998,6 +7566,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -7039,7 +7609,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7055,6 +7625,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -7119,7 +7691,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7142,6 +7714,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -7184,7 +7758,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7207,6 +7781,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -7267,7 +7843,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7290,6 +7866,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -7330,7 +7908,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7353,6 +7931,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -7416,6 +7996,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -7474,6 +8056,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -7590,6 +8174,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -7706,6 +8296,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -7763,13 +8355,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -7918,6 +8513,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -8050,6 +8646,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -8166,6 +8768,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -8223,13 +8827,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8378,6 +8985,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -8500,6 +9108,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -8564,13 +9174,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8631,6 +9244,12 @@ public final class BatchClientImpl {
      *                         imageName: String (Required)
      *                         registry (Optional): (recursive schema, see registry above)
      *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                         containerHostBatchBindMounts (Optional): [
+     *                              (Optional){
+     *                                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                                 isReadOnly: Boolean (Optional)
+     *                             }
+     *                         ]
      *                     }
      *                     resourceFiles (Optional): [
      *                          (Optional){
@@ -8744,6 +9363,10 @@ public final class BatchClientImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -8832,6 +9455,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -8896,13 +9521,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8963,6 +9591,12 @@ public final class BatchClientImpl {
      *                         imageName: String (Required)
      *                         registry (Optional): (recursive schema, see registry above)
      *                         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                         containerHostBatchBindMounts (Optional): [
+     *                              (Optional){
+     *                                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                                 isReadOnly: Boolean (Optional)
+     *                             }
+     *                         ]
      *                     }
      *                     resourceFiles (Optional): [
      *                          (Optional){
@@ -9076,6 +9710,10 @@ public final class BatchClientImpl {
      *     metadata (Optional): [
      *         (recursive schema, see above)
      *     ]
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -9173,6 +9811,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -9289,6 +9933,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -9346,13 +9992,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9501,6 +10150,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -9636,6 +10286,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -9752,6 +10408,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -9809,13 +10467,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9964,6 +10625,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10290,6 +10952,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -10363,6 +11027,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -10472,6 +11138,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -10588,6 +11260,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -10645,13 +11319,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -10800,6 +11477,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -10876,6 +11554,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -10992,6 +11676,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -11049,13 +11735,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11204,6 +11893,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11242,7 +11932,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -11288,6 +11978,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -11404,6 +12100,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -11461,13 +12159,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11616,6 +12317,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -11689,7 +12391,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -11735,6 +12437,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -11851,6 +12559,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -11908,13 +12618,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12063,6 +12776,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12154,7 +12868,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12200,6 +12914,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -12316,6 +13036,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -12373,13 +13095,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12528,6 +13253,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -12599,7 +13325,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12645,6 +13371,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -12761,6 +13493,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -12818,13 +13552,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12973,6 +13710,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13064,7 +13802,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -13110,6 +13848,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -13226,6 +13970,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -13283,13 +14029,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -13438,6 +14187,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13513,7 +14263,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -13559,6 +14309,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -13675,6 +14431,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -13732,13 +14490,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -13887,6 +14648,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -13980,7 +14742,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -14026,6 +14788,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -14142,6 +14910,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -14199,13 +14969,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -14354,6 +15127,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14427,7 +15201,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -14473,6 +15247,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -14589,6 +15369,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -14646,13 +15428,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -14801,6 +15586,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -14901,7 +15687,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -14998,7 +15784,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15114,7 +15900,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15210,7 +15996,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15547,6 +16333,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -15603,6 +16391,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
+     * corresponding nodes have not fully processed the deletion. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -15711,6 +16501,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -15732,6 +16523,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -15848,6 +16645,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -15905,13 +16704,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -16176,6 +16978,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -16197,6 +17000,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -16313,6 +17122,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -16370,13 +17181,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -16632,6 +17446,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -16653,6 +17468,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -16769,6 +17590,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -16826,13 +17649,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17067,6 +17893,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17088,6 +17915,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17204,6 +18037,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17261,13 +18096,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17511,6 +18349,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -17532,6 +18371,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -17648,6 +18493,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -17705,13 +18552,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17980,6 +18830,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18001,6 +18852,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -18117,6 +18974,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -18174,13 +19033,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -18589,6 +19451,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -18639,6 +19503,8 @@ public final class BatchClientImpl {
      * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
+     * corresponding nodes have not fully processed the termination. The default value is false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -18714,6 +19580,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -18735,6 +19602,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -18851,6 +19724,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -18908,13 +19783,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -19121,6 +19999,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19142,6 +20021,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -19258,6 +20143,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -19315,13 +20202,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -19507,7 +20397,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -19545,6 +20435,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -19566,6 +20457,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -19682,6 +20579,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -19739,13 +20638,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -19957,7 +20859,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -19995,6 +20897,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20016,6 +20919,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -20132,6 +21041,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -20189,13 +21100,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -20425,7 +21339,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -20463,6 +21377,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20484,6 +21399,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -20600,6 +21521,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -20657,13 +21580,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -20873,7 +21799,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -20911,6 +21837,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -20932,6 +21859,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -21048,6 +21981,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -21105,13 +22040,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -21383,6 +22321,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -21545,6 +22489,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -21668,7 +22618,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -21724,6 +22674,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -21897,7 +22853,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -21953,6 +22909,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -22143,7 +23105,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -22199,6 +23161,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -22369,7 +23337,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -22425,6 +23393,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -22666,6 +23640,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -22876,6 +23856,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -23218,6 +24204,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -23463,6 +24455,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -23700,6 +24698,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -23936,6 +24940,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -24909,7 +25919,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -24926,7 +25936,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -24969,7 +25979,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -24986,7 +25996,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -25048,7 +26058,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -25065,7 +26075,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -25107,7 +26117,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -25124,7 +26134,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -25448,7 +26458,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -25509,6 +26519,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -25582,6 +26598,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -25627,7 +26645,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -25688,6 +26706,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -25761,6 +26785,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -25890,6 +26916,286 @@ public final class BatchClientImpl {
         });
         return service.rebootNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
             accept, requestOptionsLocal, Context.NONE);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     * 
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startNodeInternalWithResponseAsync(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startNodeInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     * 
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.startNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     * 
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> reimageNodeInternalWithResponseAsync(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return FluxUtil.withContext(context -> service.reimageNodeInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     * 
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> reimageNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return service.reimageNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, accept, requestOptionsLocal, Context.NONE);
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     * 
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deallocateNodeInternalWithResponseAsync(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return FluxUtil.withContext(context -> service.deallocateNodeInternal(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     * 
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeDeallocateOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deallocateNodeInternalWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return service.deallocateNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -26069,9 +27375,8 @@ public final class BatchClientImpl {
     /**
      * Gets the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26101,9 +27406,9 @@ public final class BatchClientImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsInternalWithResponseAsync(String poolId, String nodeId,
@@ -26116,9 +27421,8 @@ public final class BatchClientImpl {
     /**
      * Gets the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node. This API can be
-     * invoked only on Pools created with the virtual machine configuration property.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26148,8 +27452,8 @@ public final class BatchClientImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login
-     * settings, you must create a user Account on the Compute Node along with {@link Response}.
+     * Before you can remotely login to a Compute Node using the remote login settings,
+     * you must create a user Account on the Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeRemoteLoginSettingsInternalWithResponse(String poolId, String nodeId,
@@ -26301,7 +27605,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -26313,7 +27617,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -26374,6 +27678,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -26447,6 +27757,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -26488,7 +27800,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -26500,7 +27812,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -26561,6 +27873,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -26634,6 +27952,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -26692,7 +28012,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -26704,7 +28024,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -26765,6 +28085,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -26838,6 +28164,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -26876,7 +28204,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -26888,7 +28216,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -26949,6 +28277,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -27022,6 +28356,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -27845,7 +29181,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -27860,7 +29196,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -27903,7 +29239,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -27918,7 +29254,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -27980,7 +29316,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -27995,7 +29331,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -28037,7 +29373,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28052,7 +29388,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -28251,7 +29587,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
@@ -28278,6 +29614,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -28342,13 +29680,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -28432,6 +29773,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -28603,7 +29950,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
@@ -28630,6 +29977,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         nodeAgentSKUId: String (Required)
      *         windowsConfiguration (Optional): {
@@ -28694,13 +30043,16 @@ public final class BatchClientImpl {
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
      *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 securityProfile (Optional): {
+     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                 }
      *             }
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch) (Required)
+     *             securityType: String(trustedLaunch/confidentialVM) (Required)
      *             uefiSettings (Required): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -28784,6 +30136,12 @@ public final class BatchClientImpl {
      *             imageName: String (Required)
      *             registry (Optional): (recursive schema, see registry above)
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -28968,6 +30326,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -29016,6 +30376,8 @@ public final class BatchClientImpl {
      *         version: String (Optional)
      *         virtualMachineImageId: String (Optional)
      *         exactVersion: String (Optional)
+     *         sharedGalleryImageId: String (Optional)
+     *         communityGalleryImageId: String (Optional)
      *     }
      *     osType: String(linux/windows) (Required)
      *     capabilities (Optional): [
@@ -29067,6 +30429,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -29117,6 +30481,8 @@ public final class BatchClientImpl {
      *         unknown: int (Required)
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
      *         total: int (Required)
      *         upgradingOS: int (Required)
      *     }
@@ -29186,6 +30552,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -29302,6 +30674,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -29359,13 +30733,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -29514,6 +30891,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -29618,6 +30996,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -29734,6 +31118,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -29791,13 +31177,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -29946,6 +31335,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -30047,6 +31437,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -30163,6 +31559,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -30220,13 +31618,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -30375,6 +31776,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -30479,6 +31881,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -30595,6 +32003,8 @@ public final class BatchClientImpl {
      *                         version: String (Optional)
      *                         virtualMachineImageId: String (Optional)
      *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
      *                     }
      *                     nodeAgentSKUId: String (Required)
      *                     windowsConfiguration (Optional): {
@@ -30652,13 +32062,16 @@ public final class BatchClientImpl {
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
      *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
      *                         }
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch) (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
      *                         uefiSettings (Required): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -30807,6 +32220,7 @@ public final class BatchClientImpl {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -31050,6 +32464,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -31071,6 +32486,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -31187,6 +32608,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -31244,13 +32667,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -31485,6 +32911,7 @@ public final class BatchClientImpl {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
+     *             skipWithdrawFromVNet: boolean (Required)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -31506,6 +32933,12 @@ public final class BatchClientImpl {
      *                     }
      *                 }
      *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *                 containerHostBatchBindMounts (Optional): [
+     *                      (Optional){
+     *                         source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                         isReadOnly: Boolean (Optional)
+     *                     }
+     *                 ]
      *             }
      *             resourceFiles (Optional): [
      *                  (Optional){
@@ -31622,6 +33055,8 @@ public final class BatchClientImpl {
      *                             version: String (Optional)
      *                             virtualMachineImageId: String (Optional)
      *                             exactVersion: String (Optional)
+     *                             sharedGalleryImageId: String (Optional)
+     *                             communityGalleryImageId: String (Optional)
      *                         }
      *                         nodeAgentSKUId: String (Required)
      *                         windowsConfiguration (Optional): {
@@ -31679,13 +33114,16 @@ public final class BatchClientImpl {
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
      *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
      *                             }
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch) (Required)
+     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
      *                             uefiSettings (Required): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -31936,6 +33374,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -32144,6 +33588,12 @@ public final class BatchClientImpl {
      *             }
      *         }
      *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         containerHostBatchBindMounts (Optional): [
+     *              (Optional){
+     *                 source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                 isReadOnly: Boolean (Optional)
+     *             }
+     *         ]
      *     }
      *     resourceFiles (Optional): [
      *          (Optional){
@@ -32442,7 +33892,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -32484,7 +33934,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -32522,7 +33972,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -32583,6 +34033,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -32656,6 +34112,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -32694,7 +34152,7 @@ public final class BatchClientImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -32755,6 +34213,12 @@ public final class BatchClientImpl {
      *                 }
      *             }
      *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
      *         }
      *         resourceFiles (Optional): [
      *              (Optional){
@@ -32828,6 +34292,8 @@ public final class BatchClientImpl {
      *             version: String (Optional)
      *             virtualMachineImageId: String (Optional)
      *             exactVersion: String (Optional)
+     *             sharedGalleryImageId: String (Optional)
+     *             communityGalleryImageId: String (Optional)
      *         }
      *         scaleSetVmResourceId: String (Optional)
      *     }
@@ -32997,7 +34463,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -33039,7 +34505,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: long (Required)
+     *         contentLength: String (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }

@@ -44,9 +44,10 @@ public final class CertificatesRetrieveProofOfPossessionNonceWithResponseMockTes
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ProofOfPossessionNonceResponse response = manager.certificates()
             .retrieveProofOfPossessionNonceWithResponse("bhhxsrzdzuc", "rsc", "ntnev",

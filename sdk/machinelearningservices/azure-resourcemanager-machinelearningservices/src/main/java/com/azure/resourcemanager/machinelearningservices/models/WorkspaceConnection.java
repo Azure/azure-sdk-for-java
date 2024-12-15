@@ -76,11 +76,13 @@ public interface WorkspaceConnection {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkspaceConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkspaceConnection definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -92,17 +94,14 @@ public interface WorkspaceConnection {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the WorkspaceConnection definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithName,
-                DefinitionStages.WithCategory,
-                DefinitionStages.WithTarget,
-                DefinitionStages.WithAuthType,
-                DefinitionStages.WithValue,
-                DefinitionStages.WithValueFormat {
+            extends DefinitionStages.WithName, DefinitionStages.WithCategory, DefinitionStages.WithTarget,
+            DefinitionStages.WithAuthType, DefinitionStages.WithValue, DefinitionStages.WithValueFormat {
             /**
              * Executes the create request.
              *
@@ -118,6 +117,7 @@ public interface WorkspaceConnection {
              */
             WorkspaceConnection create(Context context);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify name. */
         interface WithName {
             /**
@@ -128,6 +128,7 @@ public interface WorkspaceConnection {
              */
             WithCreate withName(String name);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify category. */
         interface WithCategory {
             /**
@@ -138,6 +139,7 @@ public interface WorkspaceConnection {
              */
             WithCreate withCategory(String category);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify target. */
         interface WithTarget {
             /**
@@ -148,6 +150,7 @@ public interface WorkspaceConnection {
              */
             WithCreate withTarget(String target);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify authType. */
         interface WithAuthType {
             /**
@@ -158,6 +161,7 @@ public interface WorkspaceConnection {
              */
             WithCreate withAuthType(String authType);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify value. */
         interface WithValue {
             /**
@@ -168,6 +172,7 @@ public interface WorkspaceConnection {
              */
             WithCreate withValue(String value);
         }
+
         /** The stage of the WorkspaceConnection definition allowing to specify valueFormat. */
         interface WithValueFormat {
             /**
@@ -179,6 +184,7 @@ public interface WorkspaceConnection {
             WithCreate withValueFormat(ValueFormat valueFormat);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

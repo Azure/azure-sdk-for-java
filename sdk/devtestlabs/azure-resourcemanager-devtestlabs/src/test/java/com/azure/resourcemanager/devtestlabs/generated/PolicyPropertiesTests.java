@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"jocqwogfnzjvusf\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"uxylfsbtkadpy\",\"threshold\":\"wn\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-15T00:26:04Z\",\"provisioningState\":\"grjqctojcmi\",\"uniqueIdentifier\":\"fieypefojyqdhcup\"}")
-                .toObject(PolicyProperties.class);
+        PolicyProperties model = BinaryData.fromString(
+            "{\"description\":\"jocqwogfnzjvusf\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"uxylfsbtkadpy\",\"threshold\":\"wn\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-15T00:26:04Z\",\"provisioningState\":\"grjqctojcmi\",\"uniqueIdentifier\":\"fieypefojyqdhcup\"}")
+            .toObject(PolicyProperties.class);
         Assertions.assertEquals("jocqwogfnzjvusf", model.description());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
         Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET, model.factName());
@@ -29,14 +27,12 @@ public final class PolicyPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyProperties model =
-            new PolicyProperties()
-                .withDescription("jocqwogfnzjvusf")
-                .withStatus(PolicyStatus.ENABLED)
-                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
-                .withFactData("uxylfsbtkadpy")
-                .withThreshold("wn")
-                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
+        PolicyProperties model = new PolicyProperties().withDescription("jocqwogfnzjvusf")
+            .withStatus(PolicyStatus.ENABLED)
+            .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+            .withFactData("uxylfsbtkadpy")
+            .withThreshold("wn")
+            .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
         model = BinaryData.fromObject(model).toObject(PolicyProperties.class);
         Assertions.assertEquals("jocqwogfnzjvusf", model.description());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.status());

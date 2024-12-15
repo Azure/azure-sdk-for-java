@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,89 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2024-12-03)
+
+- Azure Resource Manager ApiManagement client library for Java. This package contains Microsoft Azure SDK for ApiManagement Management SDK. ApiManagement Client. Package tag package-2022-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.PortalSettingsContract` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.AssociationContract` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.ResourceCollectionValueItem` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.ApiManagementServiceUpdateParameters` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.AuthorizationServerUpdateContract` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.ApimResource` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.BackendReconnectContract` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.ApiTagResourceContractProperties` was modified
+
+* `isOnline()` was added
+
+#### `models.NamedValueCreateContract` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.PolicyDescriptionContract` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.IdentityProviderCreateContract` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
 
 ## 1.0.0-beta.4 (2023-08-25)
 

@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionValidationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionValidationInner model =
-            BinaryData
-                .fromString(
-                    "{\"dataConnectionName\":\"mbltoo\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"fqlwxldykalsy\",\"id\":\"olnjpnnbmjksibj\",\"name\":\"sjjx\",\"type\":\"ahmrnadzyqegxyi\"}}")
-                .toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("mbltoo", model.dataConnectionName());
-        Assertions.assertEquals("fqlwxldykalsy", model.properties().location());
+        DataConnectionValidationInner model = BinaryData.fromString(
+            "{\"dataConnectionName\":\"ur\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"ndsbdw\",\"id\":\"derzmwnto\",\"name\":\"agttm\",\"type\":\"mmagoaqylkjzt\"}}")
+            .toObject(DataConnectionValidationInner.class);
+        Assertions.assertEquals("ur", model.dataConnectionName());
+        Assertions.assertEquals("ndsbdw", model.properties().location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionValidationInner model =
-            new DataConnectionValidationInner()
-                .withDataConnectionName("mbltoo")
-                .withProperties(new DataConnectionInner().withLocation("fqlwxldykalsy"));
+        DataConnectionValidationInner model = new DataConnectionValidationInner().withDataConnectionName("ur")
+            .withProperties(new DataConnectionInner().withLocation("ndsbdw"));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("mbltoo", model.dataConnectionName());
-        Assertions.assertEquals("fqlwxldykalsy", model.properties().location());
+        Assertions.assertEquals("ur", model.dataConnectionName());
+        Assertions.assertEquals("ndsbdw", model.properties().location());
     }
 }

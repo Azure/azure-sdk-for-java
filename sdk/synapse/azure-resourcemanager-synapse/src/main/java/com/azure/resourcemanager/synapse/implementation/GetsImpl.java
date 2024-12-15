@@ -29,38 +29,24 @@ public final class GetsImpl implements Gets {
         this.serviceManager = serviceManager;
     }
 
-    public Response<IntegrationRuntimeOperationStatus> integrationRuntimeStartWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context) {
-        Response<IntegrationRuntimeOperationStatusInner> inner =
-            this
-                .serviceClient()
-                .integrationRuntimeStartWithResponse(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId, context);
+    public Response<IntegrationRuntimeOperationStatus> integrationRuntimeStartWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context) {
+        Response<IntegrationRuntimeOperationStatusInner> inner = this.serviceClient()
+            .integrationRuntimeStartWithResponse(resourceGroupName, workspaceName, integrationRuntimeName,
+                integrationRuntimeOperationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeOperationStatus integrationRuntimeStart(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId) {
-        IntegrationRuntimeOperationStatusInner inner =
-            this
-                .serviceClient()
-                .integrationRuntimeStart(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId);
+    public IntegrationRuntimeOperationStatus integrationRuntimeStart(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId) {
+        IntegrationRuntimeOperationStatusInner inner = this.serviceClient()
+            .integrationRuntimeStart(resourceGroupName, workspaceName, integrationRuntimeName,
+                integrationRuntimeOperationId);
         if (inner != null) {
             return new IntegrationRuntimeOperationStatusImpl(inner, this.manager());
         } else {
@@ -68,38 +54,24 @@ public final class GetsImpl implements Gets {
         }
     }
 
-    public Response<IntegrationRuntimeStopOperationStatus> integrationRuntimeStopWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context) {
-        Response<IntegrationRuntimeStopOperationStatusInner> inner =
-            this
-                .serviceClient()
-                .integrationRuntimeStopWithResponse(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId, context);
+    public Response<IntegrationRuntimeStopOperationStatus> integrationRuntimeStopWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context) {
+        Response<IntegrationRuntimeStopOperationStatusInner> inner = this.serviceClient()
+            .integrationRuntimeStopWithResponse(resourceGroupName, workspaceName, integrationRuntimeName,
+                integrationRuntimeOperationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeStopOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeStopOperationStatus integrationRuntimeStop(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId) {
-        IntegrationRuntimeStopOperationStatusInner inner =
-            this
-                .serviceClient()
-                .integrationRuntimeStop(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId);
+    public IntegrationRuntimeStopOperationStatus integrationRuntimeStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId) {
+        IntegrationRuntimeStopOperationStatusInner inner = this.serviceClient()
+            .integrationRuntimeStop(resourceGroupName, workspaceName, integrationRuntimeName,
+                integrationRuntimeOperationId);
         if (inner != null) {
             return new IntegrationRuntimeStopOperationStatusImpl(inner, this.manager());
         } else {
@@ -108,37 +80,24 @@ public final class GetsImpl implements Gets {
     }
 
     public Response<IntegrationRuntimeEnableinteractivequery> integrationRuntimeEnableInteractivequeryWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context) {
-        Response<IntegrationRuntimeEnableinteractivequeryInner> inner =
-            this
-                .serviceClient()
-                .integrationRuntimeEnableInteractivequeryWithResponse(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId, context);
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String integrationRuntimeOperationId, Context context) {
+        Response<IntegrationRuntimeEnableinteractivequeryInner> inner = this.serviceClient()
+            .integrationRuntimeEnableInteractivequeryWithResponse(resourceGroupName, workspaceName,
+                integrationRuntimeName, integrationRuntimeOperationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeEnableinteractivequeryImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeEnableinteractivequery integrationRuntimeEnableInteractivequery(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId) {
-        IntegrationRuntimeEnableinteractivequeryInner inner =
-            this
-                .serviceClient()
-                .integrationRuntimeEnableInteractivequery(
-                    resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntimeOperationId);
+    public IntegrationRuntimeEnableinteractivequery integrationRuntimeEnableInteractivequery(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId) {
+        IntegrationRuntimeEnableinteractivequeryInner inner = this.serviceClient()
+            .integrationRuntimeEnableInteractivequery(resourceGroupName, workspaceName, integrationRuntimeName,
+                integrationRuntimeOperationId);
         if (inner != null) {
             return new IntegrationRuntimeEnableinteractivequeryImpl(inner, this.manager());
         } else {

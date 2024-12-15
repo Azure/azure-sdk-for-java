@@ -24,44 +24,29 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public KustoPoolPrincipalAssignmentsImpl(
-        KustoPoolPrincipalAssignmentsClient innerClient,
+    public KustoPoolPrincipalAssignmentsImpl(KustoPoolPrincipalAssignmentsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context) {
-        Response<CheckNameResultInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(
-                    workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName, context);
+    public Response<CheckNameResult> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context) {
+        Response<CheckNameResultInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameResult checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    public CheckNameResult checkNameAvailability(String workspaceName, String kustoPoolName, String resourceGroupName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName);
+        CheckNameResultInner inner = this.serviceClient()
+            .checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName);
         if (inner != null) {
             return new CheckNameResultImpl(inner, this.manager());
         } else {
@@ -69,45 +54,38 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
     }
 
-    public PagedIterable<ClusterPrincipalAssignment> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
-        PagedIterable<ClusterPrincipalAssignmentInner> inner =
-            this.serviceClient().list(workspaceName, kustoPoolName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ClusterPrincipalAssignment> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName) {
+        PagedIterable<ClusterPrincipalAssignmentInner> inner
+            = this.serviceClient().list(workspaceName, kustoPoolName, resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ClusterPrincipalAssignment> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context) {
-        PagedIterable<ClusterPrincipalAssignmentInner> inner =
-            this.serviceClient().list(workspaceName, kustoPoolName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+    public PagedIterable<ClusterPrincipalAssignment> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context) {
+        PagedIterable<ClusterPrincipalAssignmentInner> inner
+            = this.serviceClient().list(workspaceName, kustoPoolName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
-    public Response<ClusterPrincipalAssignment> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
-        Response<ClusterPrincipalAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
+    public Response<ClusterPrincipalAssignment> getWithResponse(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context) {
+        Response<ClusterPrincipalAssignmentInner> inner = this.serviceClient()
+            .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterPrincipalAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ClusterPrincipalAssignment get(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
-        ClusterPrincipalAssignmentInner inner =
-            this.serviceClient().get(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
+    public ClusterPrincipalAssignment get(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName) {
+        ClusterPrincipalAssignmentInner inner
+            = this.serviceClient().get(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
         if (inner != null) {
             return new ClusterPrincipalAssignmentImpl(inner, this.manager());
         } else {
@@ -115,52 +93,36 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
     }
 
-    public void delete(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    public void delete(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName) {
         this.serviceClient().delete(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
     }
 
-    public void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    public void delete(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName, Context context) {
         this.serviceClient().delete(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
     }
 
     public ClusterPrincipalAssignment getById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this
             .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, Context.NONE)
@@ -168,109 +130,73 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
     }
 
     public Response<ClusterPrincipalAssignment> getByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this.getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
     }
 
     public void deleteById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.delete(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
     }

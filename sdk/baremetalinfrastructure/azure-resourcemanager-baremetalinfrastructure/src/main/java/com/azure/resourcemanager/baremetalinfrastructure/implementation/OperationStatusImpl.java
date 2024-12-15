@@ -14,8 +14,7 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager;
 
-    OperationStatusImpl(
-        OperationStatusInner innerObject,
+    OperationStatusImpl(OperationStatusInner innerObject,
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

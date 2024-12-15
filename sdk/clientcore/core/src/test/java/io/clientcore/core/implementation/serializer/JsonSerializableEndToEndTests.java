@@ -4,10 +4,10 @@
 package io.clientcore.core.implementation.serializer;
 
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonToken;
-import io.clientcore.core.json.JsonWriter;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +25,8 @@ public class JsonSerializableEndToEndTests {
 
     @Test
     public void serialization() throws IOException {
-        JsonSerializableWrapper wrapper = new JsonSerializableWrapper()
-            .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
+        JsonSerializableWrapper wrapper
+            = new JsonSerializableWrapper().setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
         String expected = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\","
             + "\"aNullableDecimal\":-0.0}}";
         String actual = new String(SERIALIZER.serializeToBytes(wrapper));
@@ -38,10 +38,10 @@ public class JsonSerializableEndToEndTests {
     public void deserialization() throws IOException {
         String json = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\","
             + "\"aNullableDecimal\":-0.0}}";
-        JsonSerializableWrapper expected = new JsonSerializableWrapper()
-            .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
-        JsonSerializableWrapper actual =
-            SERIALIZER.deserializeFromBytes(json.getBytes(), JsonSerializableWrapper.class);
+        JsonSerializableWrapper expected
+            = new JsonSerializableWrapper().setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
+        JsonSerializableWrapper actual
+            = SERIALIZER.deserializeFromBytes(json.getBytes(), JsonSerializableWrapper.class);
 
         assertEquals(expected, actual);
     }

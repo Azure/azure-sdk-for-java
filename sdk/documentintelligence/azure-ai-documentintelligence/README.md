@@ -28,7 +28,7 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,15 +43,16 @@ This table shows the relationship between SDK versions and supported API version
 | 1.0.0-beta.2 | 2024-02-29-preview               |
 | 1.0.0-beta.3 | 2024-02-29-preview               |
 | 1.0.0-beta.4 | 2024-07-31-preview               |
+| 1.0.0        | 2024-11-30                       |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
-| API version                                                | Supported clients                                                                             |
-|------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| 2023-10-31-preview, 2024-02-29-preview, 2024-07-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
-| 2023-07-31                                                 | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
+| API version                                                            | Supported clients                                                                             |
+|------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| 2023-10-31-preview, 2024-02-29-preview, 2024-07-31-preview, 2024-11-30 | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
+| 2023-07-31                                                             | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
 
 Please see the [Migration Guide][migration_guide] for more information about migrating from `azure-ai-formrecognizer` to `azure-ai-documentintelligence`.
 
@@ -73,12 +74,11 @@ DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligence
     .buildClient();
 ```
 or
-```java readme-sample-createDocumentModelAdministrationClient
-DocumentIntelligenceAdministrationClient client =
-    new DocumentIntelligenceAdministrationClientBuilder()
-        .credential(new AzureKeyCredential("{key}"))
-        .endpoint("{endpoint}")
-        .buildClient();
+```java com.azure.ai.documentanalysis.readme.DocumentIntelligenceAdministrationClient
+DocumentIntelligenceAdministrationClient documentIntelligenceAsyncClient = new DocumentIntelligenceAdministrationClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
 ```
 
 #### Create an Azure DocumentIntelligence client with Azure Active Directory credential
@@ -93,7 +93,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,16 +165,9 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions(layoutDocumentData));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -226,21 +219,14 @@ For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocum
 File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
     + "sample-forms/receipts/contoso-allinone.jpg");
 
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
+        new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
 AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
 for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
-    Document analyzedReceipt = receiptResults.getDocuments().get(i);
+    AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
     Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
     System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
     DocumentField merchantNameField = receiptFields.get("MerchantName");
@@ -301,7 +287,7 @@ More details on setting up a container and required file structure can be found 
 String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
-    administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
+    administrationClient.beginBuildDocumentModel(new BuildDocumentModelOptions("modelID", DocumentBuildMode.TEMPLATE)
         .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
 DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
@@ -309,10 +295,10 @@ DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult(
 // Model Info
 System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
 System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
-System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedDateTime());
+System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
-System.out.println("Document Fields:");
-documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+System.out.println("AnalyzedDocument Fields:");
+documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
         System.out.printf("Field: %s", field);
         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -328,23 +314,18 @@ was built on.
 ```java com.azure.ai.documentintelligence.readme.analyzeCustomModel
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
-    "1",
-    "en-US",
-    StringIndexType.TEXT_ELEMENTS,
-    Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-    null,
-    ContentFormat.TEXT,
-    null,
-    new AnalyzeDocumentRequest().setUrlSource(documentUrl));
+SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+    new AnalyzeDocumentOptions(documentUrl).setPages(Collections.singletonList("1")).setLocale("en-US")
+        .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES))
+        .setOutputContentFormat(DocumentContentFormat.TEXT));
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
 for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-    final Document analyzedDocument = analyzeResult.getDocuments().get(i);
+    final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
     System.out.printf("----------- Analyzing custom document %d -----------%n", i);
     System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-        analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+        analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
 }
 
 analyzeResult.getPages().forEach(documentPage -> {
@@ -385,7 +366,7 @@ for (int i = 0; i < tables.size(); i++) {
 Manage the models in your Document Intelligence account.
 ```java com.azure.ai.documentintelligence.readme.manageModels
 
-ResourceDetails resourceDetails = administrationClient.getResourceInfo();
+DocumentIntelligenceResourceDetails resourceDetails = administrationClient.getResourceDetails();
 System.out.printf("The resource has %s models, and we can have at most %s models.%n",
     resourceDetails.getCustomDocumentModels().getCount(), resourceDetails.getCustomDocumentModels().getLimit());
 
@@ -398,9 +379,9 @@ customDocumentModels.forEach(documentModelInfo -> {
     DocumentModelDetails documentModel = administrationClient.getModel(documentModelInfo.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
-    System.out.printf("Model created on: %s%n", documentModel.getCreatedDateTime());
-    if (documentModel.getDocTypes() != null) {
-        documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+    System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+    if (documentModel.getDocumentTypes() != null) {
+        documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s, ", field);
                 System.out.printf("Field type: %s, ", documentFieldSchema.getType());

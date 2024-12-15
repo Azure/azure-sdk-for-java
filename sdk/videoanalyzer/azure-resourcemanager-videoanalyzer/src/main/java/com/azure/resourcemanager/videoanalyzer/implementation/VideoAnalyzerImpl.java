@@ -104,12 +104,9 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -147,20 +144,16 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
     }
 
     public VideoAnalyzer create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VideoAnalyzer create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -176,25 +169,21 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
     }
 
     public VideoAnalyzer apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
     public VideoAnalyzer apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .update(resourceGroupName, accountName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 
-    VideoAnalyzerImpl(
-        VideoAnalyzerInner innerObject, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    VideoAnalyzerImpl(VideoAnalyzerInner innerObject,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -202,22 +191,18 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
     }
 
     public VideoAnalyzer refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VideoAnalyzer refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideoAnalyzers()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideoAnalyzers()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 

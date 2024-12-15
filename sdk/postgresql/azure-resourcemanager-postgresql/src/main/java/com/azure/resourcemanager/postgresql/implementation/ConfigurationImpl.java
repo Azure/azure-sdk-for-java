@@ -70,20 +70,16 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Configuration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), context);
         return this;
     }
 
@@ -98,25 +94,21 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Configuration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .createOrUpdate(resourceGroupName, serverName, configurationName, this.innerModel(), context);
         return this;
     }
 
-    ConfigurationImpl(
-        ConfigurationInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    ConfigurationImpl(ConfigurationInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -125,22 +117,18 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     public Configuration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Configuration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurations()
-                .getWithResponse(resourceGroupName, serverName, configurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurations()
+            .getWithResponse(resourceGroupName, serverName, configurationName, context)
+            .getValue();
         return this;
     }
 

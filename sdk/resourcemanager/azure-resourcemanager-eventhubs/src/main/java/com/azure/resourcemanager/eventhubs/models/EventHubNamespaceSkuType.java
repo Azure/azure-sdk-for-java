@@ -11,15 +11,15 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
  */
 public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     /** Static value NamespaceSku for BASIC. */
-    public static final EventHubNamespaceSkuType BASIC =
-        new EventHubNamespaceSkuType(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
+    public static final EventHubNamespaceSkuType BASIC
+        = new EventHubNamespaceSkuType(new Sku().withName(SkuName.BASIC).withTier(SkuTier.BASIC));
     /** Static value NamespaceSku for STANDARD. */
-    public static final EventHubNamespaceSkuType STANDARD =
-        new EventHubNamespaceSkuType(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
+    public static final EventHubNamespaceSkuType STANDARD
+        = new EventHubNamespaceSkuType(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
     /** Static value NamespaceSku for STANDARD. */
-    public static final EventHubNamespaceSkuType PREMIUM =
-        new EventHubNamespaceSkuType(new Sku().withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
-    
+    public static final EventHubNamespaceSkuType PREMIUM
+        = new EventHubNamespaceSkuType(new Sku().withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+
     private final Sku sku;
 
     /**

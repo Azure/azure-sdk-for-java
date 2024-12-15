@@ -7,32 +7,34 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of CommonExportProperties. */
+/**
+ * An immutable client-side representation of CommonExportProperties.
+ */
 public interface CommonExportProperties {
     /**
      * Gets the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
+     * 
      * @return the format value.
      */
     FormatType format();
 
     /**
      * Gets the deliveryInfo property: Has delivery information for the export.
-     *
+     * 
      * @return the deliveryInfo value.
      */
     ExportDeliveryInfo deliveryInfo();
 
     /**
      * Gets the definition property: Has the definition for the export.
-     *
+     * 
      * @return the definition value.
      */
     ExportDefinition definition();
 
     /**
      * Gets the runHistory property: If requested, has the most recent run history for the export.
-     *
+     * 
      * @return the runHistory value.
      */
     ExportExecutionListResult runHistory();
@@ -41,7 +43,7 @@ public interface CommonExportProperties {
      * Gets the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
      * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
      * Agreement commerce scopes.
-     *
+     * 
      * @return the partitionData value.
      */
     Boolean partitionData();
@@ -49,14 +51,14 @@ public interface CommonExportProperties {
     /**
      * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
      * time.
-     *
+     * 
      * @return the nextRunTimeEstimate value.
      */
     OffsetDateTime nextRunTimeEstimate();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     CommonExportPropertiesInner innerModel();

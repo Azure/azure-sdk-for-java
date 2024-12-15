@@ -47,13 +47,17 @@ public final class MonitorsListHostsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VMInfo> response = manager.monitors().listHosts("ur", "odkwobd", new HostsGetRequest()
-            .withVmIds(Arrays.asList("tibqdxbxwakb", "gqxndlkzgxhuripl", "podxunkb", "bxmubyynt")).withUserEmail("lrb"),
-            com.azure.core.util.Context.NONE);
+        PagedIterable<VMInfo> response = manager.monitors()
+            .listHosts("ur", "odkwobd",
+                new HostsGetRequest()
+                    .withVmIds(Arrays.asList("tibqdxbxwakb", "gqxndlkzgxhuripl", "podxunkb", "bxmubyynt"))
+                    .withUserEmail("lrb"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("koievseo", response.iterator().next().vmId());
         Assertions.assertEquals("q", response.iterator().next().agentVersion());

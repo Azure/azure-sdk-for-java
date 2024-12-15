@@ -23,13 +23,9 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure registry. */
 @Fluent
-public interface Registry
-    extends GroupableResource<ContainerRegistryManager, RegistryInner>,
-        Refreshable<Registry>,
-        Updatable<Registry.Update>,
-        SupportsListingPrivateLinkResource,
-        SupportsListingPrivateEndpointConnection,
-        SupportsUpdatingPrivateEndpointConnection {
+public interface Registry extends GroupableResource<ContainerRegistryManager, RegistryInner>, Refreshable<Registry>,
+    Updatable<Registry.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
     /** @return the SKU of the container registry. */
     Sku sku();
@@ -120,11 +116,8 @@ public interface Registry
     RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun();
 
     /** Container interface for all the definitions related to a registry. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of registry definition stages. */
@@ -261,26 +254,15 @@ public interface Registry
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<Registry>,
-            WithAdminUserEnabled,
-            WithWebhook,
-            WithPublicNetworkAccess,
-            WithDedicatedDataEndpoints,
-            WithZoneRedundancy,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<Registry>, WithAdminUserEnabled, WithWebhook, WithPublicNetworkAccess,
+            WithDedicatedDataEndpoints, WithZoneRedundancy, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Resource.UpdateWithTags<Update>,
-            Appliable<Registry>,
-            UpdateStages.WithAdminUserEnabled,
-            UpdateStages.WithSku,
-            UpdateStages.WithWebhook,
-            UpdateStages.WithDedicatedDataEndpoints,
-            UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Resource.UpdateWithTags<Update>, Appliable<Registry>, UpdateStages.WithAdminUserEnabled,
+        UpdateStages.WithSku, UpdateStages.WithWebhook, UpdateStages.WithDedicatedDataEndpoints,
+        UpdateStages.WithPublicNetworkAccess {
     }
 
     /** Grouping of container service update stages. */

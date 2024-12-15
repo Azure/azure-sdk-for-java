@@ -14,7 +14,8 @@ import java.io.IOException;
 public final class ErrorConstructorProxy {
     private static ErrorConstructorProxy.ErrorConstructorAccessor accessor;
 
-    private ErrorConstructorProxy() { }
+    private ErrorConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor}

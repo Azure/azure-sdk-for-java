@@ -5,37 +5,92 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
-/** The properties of the benefit recommendations when scope is 'Single'. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scope")
-@JsonTypeName("Single")
+/**
+ * The properties of the benefit recommendations when scope is 'Single'.
+ */
 @Fluent
 public final class SingleScopeBenefitRecommendationProperties extends BenefitRecommendationProperties {
+    /*
+     * Benefit scope. For example, Single or Shared.
+     */
+    private Scope scope = Scope.SINGLE;
+
     /*
      * The subscription ID that this single scope recommendation is for. Applicable only if recommendation is for
      * 'Single' scope.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The resource group that this single scope recommendation is for. Applicable only if recommendation is for
      * 'Single' scope and 'ResourceGroup' request scope.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
-    /** Creates an instance of SingleScopeBenefitRecommendationProperties class. */
+    /*
+     * The list of all benefit recommendations with the recommendation details.
+     */
+    private AllSavingsList allRecommendationDetails;
+
+    /*
+     * The current cost without benefit, corresponds to 'totalHours' in the look-back period.
+     */
+    private BigDecimal costWithoutBenefit;
+
+    /*
+     * An ISO 4217 currency code identifier for the costs and savings amounts.
+     */
+    private String currencyCode;
+
+    /*
+     * ARM SKU name. 'Compute_Savings_Plan' for SavingsPlan.
+     */
+    private String armSkuName;
+
+    /*
+     * The total hours for which the cost is covered. Its equal to number of records in a property
+     * 'properties/usage/charges'.
+     */
+    private Integer totalHours;
+
+    /*
+     * The last usage date used for looking back for computing the recommendations.
+     */
+    private OffsetDateTime lastConsumptionDate;
+
+    /*
+     * The first usage date used for looking back for computing the recommendations.
+     */
+    private OffsetDateTime firstConsumptionDate;
+
+    /**
+     * Creates an instance of SingleScopeBenefitRecommendationProperties class.
+     */
     public SingleScopeBenefitRecommendationProperties() {
+    }
+
+    /**
+     * Get the scope property: Benefit scope. For example, Single or Shared.
+     * 
+     * @return the scope value.
+     */
+    @Override
+    public Scope scope() {
+        return this.scope;
     }
 
     /**
      * Get the subscriptionId property: The subscription ID that this single scope recommendation is for. Applicable
      * only if recommendation is for 'Single' scope.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -45,56 +100,230 @@ public final class SingleScopeBenefitRecommendationProperties extends BenefitRec
     /**
      * Get the resourceGroup property: The resource group that this single scope recommendation is for. Applicable only
      * if recommendation is for 'Single' scope and 'ResourceGroup' request scope.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
         return this.resourceGroup;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the allRecommendationDetails property: The list of all benefit recommendations with the recommendation
+     * details.
+     * 
+     * @return the allRecommendationDetails value.
+     */
+    @Override
+    public AllSavingsList allRecommendationDetails() {
+        return this.allRecommendationDetails;
+    }
+
+    /**
+     * Get the costWithoutBenefit property: The current cost without benefit, corresponds to 'totalHours' in the
+     * look-back period.
+     * 
+     * @return the costWithoutBenefit value.
+     */
+    @Override
+    public BigDecimal costWithoutBenefit() {
+        return this.costWithoutBenefit;
+    }
+
+    /**
+     * Get the currencyCode property: An ISO 4217 currency code identifier for the costs and savings amounts.
+     * 
+     * @return the currencyCode value.
+     */
+    @Override
+    public String currencyCode() {
+        return this.currencyCode;
+    }
+
+    /**
+     * Get the armSkuName property: ARM SKU name. 'Compute_Savings_Plan' for SavingsPlan.
+     * 
+     * @return the armSkuName value.
+     */
+    @Override
+    public String armSkuName() {
+        return this.armSkuName;
+    }
+
+    /**
+     * Get the totalHours property: The total hours for which the cost is covered. Its equal to number of records in a
+     * property 'properties/usage/charges'.
+     * 
+     * @return the totalHours value.
+     */
+    @Override
+    public Integer totalHours() {
+        return this.totalHours;
+    }
+
+    /**
+     * Get the lastConsumptionDate property: The last usage date used for looking back for computing the
+     * recommendations.
+     * 
+     * @return the lastConsumptionDate value.
+     */
+    @Override
+    public OffsetDateTime lastConsumptionDate() {
+        return this.lastConsumptionDate;
+    }
+
+    /**
+     * Get the firstConsumptionDate property: The first usage date used for looking back for computing the
+     * recommendations.
+     * 
+     * @return the firstConsumptionDate value.
+     */
+    @Override
+    public OffsetDateTime firstConsumptionDate() {
+        return this.firstConsumptionDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SingleScopeBenefitRecommendationProperties withLookBackPeriod(LookBackPeriod lookBackPeriod) {
         super.withLookBackPeriod(lookBackPeriod);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SingleScopeBenefitRecommendationProperties withUsage(RecommendationUsageDetails usage) {
         super.withUsage(usage);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SingleScopeBenefitRecommendationProperties withTerm(Term term) {
         super.withTerm(term);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SingleScopeBenefitRecommendationProperties withCommitmentGranularity(Grain commitmentGranularity) {
         super.withCommitmentGranularity(commitmentGranularity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SingleScopeBenefitRecommendationProperties withRecommendationDetails(
-        AllSavingsBenefitDetails recommendationDetails) {
+    public SingleScopeBenefitRecommendationProperties
+        withRecommendationDetails(AllSavingsBenefitDetails recommendationDetails) {
         super.withRecommendationDetails(recommendationDetails);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (usage() != null) {
+            usage().validate();
+        }
+        if (recommendationDetails() != null) {
+            recommendationDetails().validate();
+        }
+        if (allRecommendationDetails() != null) {
+            allRecommendationDetails().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lookBackPeriod", lookBackPeriod() == null ? null : lookBackPeriod().toString());
+        jsonWriter.writeJsonField("usage", usage());
+        jsonWriter.writeStringField("term", term() == null ? null : term().toString());
+        jsonWriter.writeStringField("commitmentGranularity",
+            commitmentGranularity() == null ? null : commitmentGranularity().toString());
+        jsonWriter.writeJsonField("recommendationDetails", recommendationDetails());
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SingleScopeBenefitRecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SingleScopeBenefitRecommendationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SingleScopeBenefitRecommendationProperties.
+     */
+    public static SingleScopeBenefitRecommendationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SingleScopeBenefitRecommendationProperties deserializedSingleScopeBenefitRecommendationProperties
+                = new SingleScopeBenefitRecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstConsumptionDate".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.firstConsumptionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastConsumptionDate".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.lastConsumptionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lookBackPeriod".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties
+                        .withLookBackPeriod(LookBackPeriod.fromString(reader.getString()));
+                } else if ("totalHours".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.totalHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("usage".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties
+                        .withUsage(RecommendationUsageDetails.fromJson(reader));
+                } else if ("armSkuName".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.armSkuName = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties
+                        .withTerm(Term.fromString(reader.getString()));
+                } else if ("commitmentGranularity".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties
+                        .withCommitmentGranularity(Grain.fromString(reader.getString()));
+                } else if ("currencyCode".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.currencyCode = reader.getString();
+                } else if ("costWithoutBenefit".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.costWithoutBenefit
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("recommendationDetails".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties
+                        .withRecommendationDetails(AllSavingsBenefitDetails.fromJson(reader));
+                } else if ("allRecommendationDetails".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.allRecommendationDetails
+                        = AllSavingsList.fromJson(reader);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.scope = Scope.fromString(reader.getString());
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedSingleScopeBenefitRecommendationProperties.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSingleScopeBenefitRecommendationProperties;
+        });
     }
 }

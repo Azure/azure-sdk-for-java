@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryInfo model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"kbzefezrxcczurt\",\"path\":\"ipqxbkwvzgnzv\",\"containerName\":\"bzdixzmq\",\"uploadedTimestamp\":\"2021-03-19T22:04:23Z\",\"type\":\"awopqh\",\"provisioningStatus\":\"jptmcgsbost\",\"creatorId\":\"lnd\"}")
-                .toObject(LibraryInfo.class);
-        Assertions.assertEquals("kbzefezrxcczurt", model.name());
-        Assertions.assertEquals("ipqxbkwvzgnzv", model.path());
-        Assertions.assertEquals("bzdixzmq", model.containerName());
-        Assertions.assertEquals("awopqh", model.type());
+        LibraryInfo model = BinaryData.fromString(
+            "{\"name\":\"qxtbjwgnyf\",\"path\":\"fzsvtuikzh\",\"containerName\":\"qglcfhmlrqryxynq\",\"uploadedTimestamp\":\"2021-09-26T14:22:07Z\",\"type\":\"p\",\"provisioningStatus\":\"vwxzn\",\"creatorId\":\"goeiybbabpfhvfsl\"}")
+            .toObject(LibraryInfo.class);
+        Assertions.assertEquals("qxtbjwgnyf", model.name());
+        Assertions.assertEquals("fzsvtuikzh", model.path());
+        Assertions.assertEquals("qglcfhmlrqryxynq", model.containerName());
+        Assertions.assertEquals("p", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryInfo model =
-            new LibraryInfo()
-                .withName("kbzefezrxcczurt")
-                .withPath("ipqxbkwvzgnzv")
-                .withContainerName("bzdixzmq")
-                .withType("awopqh");
+        LibraryInfo model = new LibraryInfo().withName("qxtbjwgnyf")
+            .withPath("fzsvtuikzh")
+            .withContainerName("qglcfhmlrqryxynq")
+            .withType("p");
         model = BinaryData.fromObject(model).toObject(LibraryInfo.class);
-        Assertions.assertEquals("kbzefezrxcczurt", model.name());
-        Assertions.assertEquals("ipqxbkwvzgnzv", model.path());
-        Assertions.assertEquals("bzdixzmq", model.containerName());
-        Assertions.assertEquals("awopqh", model.type());
+        Assertions.assertEquals("qxtbjwgnyf", model.name());
+        Assertions.assertEquals("fzsvtuikzh", model.path());
+        Assertions.assertEquals("qglcfhmlrqryxynq", model.containerName());
+        Assertions.assertEquals("p", model.type());
     }
 }

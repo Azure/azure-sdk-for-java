@@ -31,45 +31,37 @@ public class RadiologyInsightsAgeMismatchTest extends RadiologyInsightsClientTes
     @Test
     public void test() {
         String documentContent = "CLINICAL HISTORY:   "
-                + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
-                + "\r\n "
-                + "\r\nCOMPARISON:   "
-                + "\r\nRight upper quadrant sonographic performed 1 day prior."
-                + "\r\n "
-                + "\r\nTECHNIQUE:   "
-                + "\r\nTransabdominal grayscale pelvic sonography with duplex color Doppler "
-                + "\r\nand spectral waveform analysis of the ovaries."
-                + "\r\n "
-                + "\r\nFINDINGS:   "
-                + "\r\nThe uterus is unremarkable given the transabdominal technique with "
-                + "\r\nendometrial echo complex within physiologic normal limits. The "
-                + "\r\novaries are symmetric in size, measuring 2.5 x 1.2 x 3.0 cm and the "
-                + "\r\nleft measuring 2.8 x 1.5 x 1.9 cm.\n \r\nOn duplex imaging, Doppler signal is symmetric."
-                + "\r\n "
-                + "\r\nIMPRESSION:   "
-                + "\r\n1. Normal pelvic sonography. Findings of testicular torsion."
-                + "\r\n\nA new US pelvis within the next 6 months is recommended."
-                + "\n\nThese results have been discussed with Dr. Jones at 3 PM on November 5 2020.\n "
-                + "\r\n";
+            + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
+            + "\r\n " + "\r\nCOMPARISON:   " + "\r\nRight upper quadrant sonographic performed 1 day prior." + "\r\n "
+            + "\r\nTECHNIQUE:   " + "\r\nTransabdominal grayscale pelvic sonography with duplex color Doppler "
+            + "\r\nand spectral waveform analysis of the ovaries." + "\r\n " + "\r\nFINDINGS:   "
+            + "\r\nThe uterus is unremarkable given the transabdominal technique with "
+            + "\r\nendometrial echo complex within physiologic normal limits. The "
+            + "\r\novaries are symmetric in size, measuring 2.5 x 1.2 x 3.0 cm and the "
+            + "\r\nleft measuring 2.8 x 1.5 x 1.9 cm.\n \r\nOn duplex imaging, Doppler signal is symmetric." + "\r\n "
+            + "\r\nIMPRESSION:   " + "\r\n1. Normal pelvic sonography. Findings of testicular torsion."
+            + "\r\n\nA new US pelvis within the next 6 months is recommended."
+            + "\n\nThese results have been discussed with Dr. Jones at 3 PM on November 5 2020.\n " + "\r\n";
         setDocumentContent(documentContent);
         setInferenceType(RadiologyInsightsInferenceType.AGE_MISMATCH);
         setOrderCode("MVLW");
         setOrderDescription("IH Hip 1 View Left");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("job1715007451704", request)).getFinalResult();
+                    getClient().beginInferRadiologyInsights("job1715007451704", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
-                
+
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
-                
+
                 RadiologyInsightsInference inference = inferences.get(0);
-                assertTrue(inference instanceof AgeMismatchInference, "Inference should be an instance of AgeMismatchInference");
+                assertTrue(inference instanceof AgeMismatchInference,
+                    "Inference should be an instance of AgeMismatchInference");
 
                 AgeMismatchInference ageMismatchInference = (AgeMismatchInference) inference;
                 List<FhirR4Extension> extensions = ageMismatchInference.getExtension();
@@ -85,5 +77,5 @@ public class RadiologyInsightsAgeMismatchTest extends RadiologyInsightsClientTes
             return;
         }
     }
-    
+
 }

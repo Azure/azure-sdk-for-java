@@ -10,17 +10,17 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
  * Type representing authorization rule of an event hub.
  */
 @Fluent
-public interface EventHubAuthorizationRule
-        extends
-        AuthorizationRule<EventHubAuthorizationRule> {
+public interface EventHubAuthorizationRule extends AuthorizationRule<EventHubAuthorizationRule> {
     /**
      * @return the resource group of the namespace where parent event hub resides
      */
     String namespaceResourceGroupName();
+
     /**
      * @return the namespace name of parent event hub
      */
     String namespaceName();
+
     /**
      * @return the name of the parent event hub
      */
@@ -47,6 +47,7 @@ public interface EventHubAuthorizationRule
              * @return the next stage of the definition
              */
             WithAccessPolicy withExistingEventHubId(String eventHubResourceId);
+
             /**
              * Specifies that authorization rule needs to be created for the given event hub.
              *
@@ -56,6 +57,7 @@ public interface EventHubAuthorizationRule
              * @return the next stage of the definition
              */
             WithAccessPolicy withExistingEventHub(String resourceGroupName, String namespaceName, String eventHubName);
+
             /**
              * Specifies that authorization rule needs to be created for the given event hub.
              *
@@ -68,9 +70,7 @@ public interface EventHubAuthorizationRule
         /**
          * Stage of the authorization rule definition allowing to specify access policy.
          */
-        interface WithAccessPolicy extends AuthorizationRule
-                .DefinitionStages
-                .WithListenOrSendOrManage<WithCreate> {
+        interface WithAccessPolicy extends AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<WithCreate> {
 
         }
 
@@ -86,18 +86,14 @@ public interface EventHubAuthorizationRule
     /**
      * The entirety of the event hub namespace authorization rule definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithEventHub,
-            DefinitionStages.WithAccessPolicy,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithEventHub,
+        DefinitionStages.WithAccessPolicy, DefinitionStages.WithCreate {
     }
 
     /**
      * The entirety of the event hub authorization rule update.
      */
-    interface Update extends
-        Appliable<EventHubAuthorizationRule>,
+    interface Update extends Appliable<EventHubAuthorizationRule>,
         UpdateStages.WithListenOrSendOrManage<EventHubAuthorizationRule.Update> {
     }
 }

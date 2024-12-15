@@ -13,8 +13,8 @@ public class DataBoundariesTests extends ResourceManagementTest {
 
     @Test
     public void testDataBoundaries() {
-        DataBoundaryDefinitionInner dataBoundaryDefinition = resourceClient.dataBoundaryClient().getDataBoundaries()
-                .getTenant(DefaultName.DEFAULT);
+        DataBoundaryDefinitionInner dataBoundaryDefinition
+            = resourceClient.dataBoundaryClient().getDataBoundaries().getTenant(DefaultName.DEFAULT);
 
         Assertions.assertEquals(DataBoundary.GLOBAL, dataBoundaryDefinition.properties().dataBoundary());
     }

@@ -8,20 +8,22 @@ import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
 import java.util.Arrays;
 import java.util.UUID;
 
-/** Samples for ExtendedSqlPoolBlobAuditingPolicies CreateOrUpdate. */
+/**
+ * Samples for ExtendedSqlPoolBlobAuditingPolicies CreateOrUpdate.
+ */
 public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolBlobAuditingCreateMax.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ExtendedSqlPoolBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update an extended Sql pool's blob auditing policy with all parameters.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateAnExtendedSqlPoolSBlobAuditingPolicyWithAllParameters(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .extendedSqlPoolBlobAuditingPolicies()
+        manager.extendedSqlPoolBlobAuditingPolicies()
             .define()
             .withExistingSqlPool("blobauditingtest-4799", "blobauditingtest-6440", "testdb")
             .withPredicateExpression("statement = 'select 1'")
@@ -30,12 +32,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
             .withStorageAccountAccessKey(
                 "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
             .withRetentionDays(6)
-            .withAuditActionsAndGroups(
-                Arrays
-                    .asList(
-                        "DATABASE_LOGOUT_GROUP",
-                        "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
-                        "UPDATE on database::TestDatabaseName by public"))
+            .withAuditActionsAndGroups(Arrays.asList("DATABASE_LOGOUT_GROUP", "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
+                "UPDATE on database::TestDatabaseName by public"))
             .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000"))
             .withIsStorageSecondaryKeyInUse(false)
             .withIsAzureMonitorTargetEnabled(true)
@@ -43,17 +41,17 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended SQL pool's azure monitor auditing policy with minimal parameters.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateAnExtendedSQLPoolSAzureMonitorAuditingPolicyWithMinimalParameters(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .extendedSqlPoolBlobAuditingPolicies()
+        manager.extendedSqlPoolBlobAuditingPolicies()
             .define()
             .withExistingSqlPool("blobauditingtest-4799", "blobauditingtest-6440", "testdb")
             .withState(BlobAuditingPolicyState.ENABLED)
@@ -62,17 +60,17 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolBlobAuditingCreateMin.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ExtendedSqlPoolBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended Sql pool's blob auditing policy with minimal parameters.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateAnExtendedSqlPoolSBlobAuditingPolicyWithMinimalParameters(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .extendedSqlPoolBlobAuditingPolicies()
+        manager.extendedSqlPoolBlobAuditingPolicies()
             .define()
             .withExistingSqlPool("blobauditingtest-4799", "blobauditingtest-6440", "testdb")
             .withState(BlobAuditingPolicyState.ENABLED)

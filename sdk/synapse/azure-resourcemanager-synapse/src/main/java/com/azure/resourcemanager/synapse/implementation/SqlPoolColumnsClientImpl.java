@@ -25,22 +25,28 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolColumnsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolColumnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolColumnsClient.
+ */
 public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolColumnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolColumnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolColumnsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SqlPoolColumnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SqlPoolColumnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,30 +57,21 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolColumnsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns"
-                + "/{columnName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolColumnInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlPoolColumnInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -87,24 +84,15 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @return sql pool column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -128,27 +116,14 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -162,25 +137,15 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @return sql pool column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
+    private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,24 +169,13 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, schemaName, tableName, columnName, accept, context);
     }
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -234,20 +188,15 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @return sql pool column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolColumnInner> getAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<SqlPoolColumnInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -261,22 +210,15 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @return sql pool column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlPoolColumnInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context)
-            .block();
+    public Response<SqlPoolColumnInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            context).block();
     }
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -289,15 +231,9 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @return sql pool column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolColumnInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        return getWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE)
-            .getValue();
+    public SqlPoolColumnInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            Context.NONE).getValue();
     }
 }

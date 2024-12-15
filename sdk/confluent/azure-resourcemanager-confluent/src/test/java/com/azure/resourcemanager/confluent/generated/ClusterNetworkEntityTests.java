@@ -22,8 +22,10 @@ public final class ClusterNetworkEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterNetworkEntity model = new ClusterNetworkEntity().withId("cffgdkzzewk").withEnvironment("hqcrailvpnpp")
-            .withRelated("flrwd").withResourceName("dlxyjrxs");
+        ClusterNetworkEntity model = new ClusterNetworkEntity().withId("cffgdkzzewk")
+            .withEnvironment("hqcrailvpnpp")
+            .withRelated("flrwd")
+            .withResourceName("dlxyjrxs");
         model = BinaryData.fromObject(model).toObject(ClusterNetworkEntity.class);
         Assertions.assertEquals("cffgdkzzewk", model.id());
         Assertions.assertEquals("hqcrailvpnpp", model.environment());

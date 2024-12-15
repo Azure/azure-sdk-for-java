@@ -5,17 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionConfiguration;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with a scalar function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Scalar")
 @Fluent
 public final class ScalarFunctionProperties extends FunctionProperties {
+    /*
+     * Indicates the type of function.
+     */
+    private String type = "Scalar";
+
+    /*
+     * The properties property.
+     */
+    private FunctionConfiguration innerProperties;
+
+    /*
+     * The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
+     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
+     * for optimistic concurrency.
+     */
+    private String etag;
+
     /**
      * Creates an instance of ScalarFunctionProperties class.
      */
@@ -23,29 +41,104 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the type property: Indicates the type of function.
+     * 
+     * @return the type value.
      */
     @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
+     */
+    private FunctionConfiguration innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the etag property: The current entity tag for the function. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
+     * headers for write operations for optimistic concurrency.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the inputs property: The inputs property.
+     * 
+     * @return the inputs value.
+     */
+    public List<FunctionInput> inputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputs();
+    }
+
+    /**
+     * Set the inputs property: The inputs property.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withInputs(List<FunctionInput> inputs) {
-        super.withInputs(inputs);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withInputs(inputs);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the output property: Describes the output of a function.
+     * 
+     * @return the output value.
      */
-    @Override
+    public FunctionOutput output() {
+        return this.innerProperties() == null ? null : this.innerProperties().output();
+    }
+
+    /**
+     * Set the output property: Describes the output of a function.
+     * 
+     * @param output the output value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withOutput(FunctionOutput output) {
-        super.withOutput(output);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @return the binding value.
      */
-    @Override
+    public FunctionBinding binding() {
+        return this.innerProperties() == null ? null : this.innerProperties().binding();
+    }
+
+    /**
+     * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @param binding the binding value to set.
+     * @return the ScalarFunctionProperties object itself.
+     */
     public ScalarFunctionProperties withBinding(FunctionBinding binding) {
-        super.withBinding(binding);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withBinding(binding);
         return this;
     }
 
@@ -56,6 +149,49 @@ public final class ScalarFunctionProperties extends FunctionProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", innerProperties());
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalarFunctionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalarFunctionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScalarFunctionProperties.
+     */
+    public static ScalarFunctionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalarFunctionProperties deserializedScalarFunctionProperties = new ScalarFunctionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("etag".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.innerProperties = FunctionConfiguration.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalarFunctionProperties;
+        });
     }
 }

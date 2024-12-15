@@ -62,10 +62,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model PrivateEndpointConnectionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model PrivateEndpointConnectionInner"));
         } else {
             properties().validate();
         }

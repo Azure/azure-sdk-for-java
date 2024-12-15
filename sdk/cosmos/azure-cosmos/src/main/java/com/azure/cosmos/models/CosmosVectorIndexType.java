@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import java.util.Arrays;
+
 /**
  * Defines the index type of vector index specification in the Azure Cosmos DB service.
  */
@@ -32,5 +34,15 @@ public enum CosmosVectorIndexType {
     @Override
     public String toString() {
         return this.overWireValue;
+    }
+
+    /**
+     * Method to validate the given value is accepted index type enum constant
+     * @param value the value of the index type
+     * @return the true if accepted value or else false
+     */
+    static boolean isValidType(String value) {
+        return Arrays.stream(CosmosVectorIndexType.values())
+            .anyMatch(vectorIndexType -> vectorIndexType.toString().equalsIgnoreCase(value));
     }
 }

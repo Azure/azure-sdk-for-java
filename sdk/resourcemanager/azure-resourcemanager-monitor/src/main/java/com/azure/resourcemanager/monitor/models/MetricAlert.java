@@ -20,10 +20,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of a Metric Alert. */
 @Fluent
-public interface MetricAlert
-    extends GroupableResource<MonitorManager, MetricAlertResourceInner>,
-        Refreshable<MetricAlert>,
-        Updatable<MetricAlert.Update> {
+public interface MetricAlert extends GroupableResource<MonitorManager, MetricAlertResourceInner>,
+    Refreshable<MetricAlert>, Updatable<MetricAlert.Update> {
 
     /**
      * Get the description of the metric alert that will be included in the alert email.
@@ -97,27 +95,16 @@ public interface MetricAlert
     OffsetDateTime lastUpdatedTime();
 
     /** The entirety of a Metric Alert definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithScopes,
-            DefinitionStages.WithWindowSize,
-            DefinitionStages.WithEvaluationFrequency,
-            DefinitionStages.WithSeverity,
-            DefinitionStages.WithActionGroup,
-            DefinitionStages.WithCriteriaDefinition {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate, DefinitionStages.WithScopes,
+        DefinitionStages.WithWindowSize, DefinitionStages.WithEvaluationFrequency, DefinitionStages.WithSeverity,
+        DefinitionStages.WithActionGroup, DefinitionStages.WithCriteriaDefinition {
     }
 
     /** Metric Alert definition for multiple resource. */
-    interface DefinitionMultipleResource
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithCreateDynamicCondition,
-            DefinitionStages.WithScopes,
-            DefinitionStages.WithWindowSizeMultipleResource,
-            DefinitionStages.WithEvaluationFrequencyMultipleResource,
-            DefinitionStages.WithSeverityMultipleResource,
-            DefinitionStages.WithActionGroupMultipleResource,
-            DefinitionStages.WithCriteriaDefinitionMultipleResource {
+    interface DefinitionMultipleResource extends DefinitionStages.Blank, DefinitionStages.WithCreateDynamicCondition,
+        DefinitionStages.WithScopes, DefinitionStages.WithWindowSizeMultipleResource,
+        DefinitionStages.WithEvaluationFrequencyMultipleResource, DefinitionStages.WithSeverityMultipleResource,
+        DefinitionStages.WithActionGroupMultipleResource, DefinitionStages.WithCriteriaDefinitionMultipleResource {
     }
 
     /** Grouping of metric alerts definition stages. */
@@ -153,8 +140,8 @@ public interface MetricAlert
              * @param regionName resource region.
              * @return the next stage of metric alert definition.
              */
-            WithWindowSizeMultipleResource withMultipleTargetResources(
-                Collection<String> resourceIds, String type, String regionName);
+            WithWindowSizeMultipleResource withMultipleTargetResources(Collection<String> resourceIds, String type,
+                String regionName);
 
             /**
              * Sets specified resources as target to alert on metric. All resources must be of the same type and in the
@@ -292,8 +279,8 @@ public interface MetricAlert
              * @param name sets the name of the dynamic condition.
              * @return the next stage of metric alert condition definition.
              */
-            MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<WithCreate> defineDynamicAlertCriteria(
-                String name);
+            MetricDynamicAlertCondition.DefinitionStages.Blank.MetricName<WithCreate>
+                defineDynamicAlertCriteria(String name);
         }
 
         /**
@@ -418,8 +405,8 @@ public interface MetricAlert
              * @param name sets the name of the condition.
              * @return the next stage of the metric alert update.
              */
-            MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<Update> defineDynamicAlertCriteria(
-                String name);
+            MetricDynamicAlertCondition.UpdateDefinitionStages.Blank.MetricName<Update>
+                defineDynamicAlertCriteria(String name);
 
             /**
              * Starts update of the previously defined metric alert condition.

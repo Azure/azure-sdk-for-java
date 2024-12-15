@@ -7,43 +7,53 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint;
+import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesEndpoint;
+import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"category\":\"tfjgt\",\"endpoints\":[]},{\"category\":\"vzuyturmlmu\",\"endpoints\":[]},{\"category\":\"bauiropi\",\"endpoints\":[]},{\"category\":\"onwpnga\",\"endpoints\":[]}]}")
-                .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
-        Assertions.assertEquals("tfjgt", model.value().get(0).category());
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"category\":\"jvlgfggcvkyyliz\",\"endpoints\":[{\"domainName\":\"psfxsf\",\"endpointDetails\":[{}]},{\"domainName\":\"vtmva\",\"endpointDetails\":[{}]},{\"domainName\":\"dqlvhukoveof\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"jfnmjmvlwyz\",\"endpointDetails\":[{},{},{},{}]}]}]}")
+            .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
+        Assertions.assertEquals("jvlgfggcvkyyliz", model.value().get(0).category());
+        Assertions.assertEquals("psfxsf", model.value().get(0).endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner model =
-            new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner()
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner model
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner()
                 .withValue(
                     Arrays
                         .asList(
                             new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                                .withCategory("tfjgt")
-                                .withEndpoints(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                                .withCategory("vzuyturmlmu")
-                                .withEndpoints(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                                .withCategory("bauiropi")
-                                .withEndpoints(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                                .withCategory("onwpnga")
-                                .withEndpoints(Arrays.asList())));
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
-        Assertions.assertEquals("tfjgt", model.value().get(0).category());
+                                .withCategory("jvlgfggcvkyyliz")
+                                .withEndpoints(Arrays.asList(
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("psfxsf")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vtmva")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                        .withDomainName("dqlvhukoveof")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                        .withDomainName("jfnmjmvlwyz")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()))))));
+        model = BinaryData.fromObject(model)
+            .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
+        Assertions.assertEquals("jvlgfggcvkyyliz", model.value().get(0).category());
+        Assertions.assertEquals("psfxsf", model.value().get(0).endpoints().get(0).domainName());
     }
 }

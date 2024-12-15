@@ -17,14 +17,34 @@ import java.util.UUID;
 @Fluent
 public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential {
     /*
+     * Type of data source credential
+     */
+    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY;
+
+    /*
      * The parameters property.
      */
     private DataLakeGen2SharedKeyParam parameters;
+
+    /*
+     * Unique id of data source credential
+     */
+    private UUID dataSourceCredentialId;
 
     /**
      * Creates an instance of DataLakeGen2SharedKeyCredential class.
      */
     public DataLakeGen2SharedKeyCredential() {
+    }
+
+    /**
+     * Get the dataSourceCredentialType property: Type of data source credential.
+     * 
+     * @return the dataSourceCredentialType value.
+     */
+    @Override
+    public DataSourceCredentialType getDataSourceCredentialType() {
+        return this.dataSourceCredentialType;
     }
 
     /**
@@ -48,6 +68,16 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
     }
 
     /**
+     * Get the dataSourceCredentialId property: Unique id of data source credential.
+     * 
+     * @return the dataSourceCredentialId value.
+     */
+    @Override
+    public UUID getDataSourceCredentialId() {
+        return this.dataSourceCredentialId;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -65,15 +95,17 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY == null ? null
-                : DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -83,8 +115,7 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataLakeGen2SharedKeyCredential if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataLakeGen2SharedKeyCredential.
      */
     public static DataLakeGen2SharedKeyCredential fromJson(JsonReader jsonReader) throws IOException {
@@ -95,23 +126,19 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialType".equals(fieldName)) {
-                    String dataSourceCredentialType = reader.getString();
-                    if (!"DataLakeGen2SharedKey".equals(dataSourceCredentialType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceCredentialType' was expected to be non-null and equal to 'DataLakeGen2SharedKey'. The found 'dataSourceCredentialType' was '"
-                                + dataSourceCredentialType + "'.");
-                    }
-                } else if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
-                    deserializedDataLakeGen2SharedKeyCredential.setDataSourceCredentialId(
-                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedDataLakeGen2SharedKeyCredential.dataSourceCredentialId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredential.setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedDataLakeGen2SharedKeyCredential.parameters
                         = DataLakeGen2SharedKeyParam.fromJson(reader);
+                } else if ("dataSourceCredentialType".equals(fieldName)) {
+                    deserializedDataLakeGen2SharedKeyCredential.dataSourceCredentialType
+                        = DataSourceCredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

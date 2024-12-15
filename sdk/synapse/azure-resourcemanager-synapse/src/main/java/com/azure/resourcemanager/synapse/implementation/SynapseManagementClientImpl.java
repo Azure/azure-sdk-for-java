@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.synapse.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -107,544 +108,635 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the SynapseManagementClientImpl type. */
+/**
+ * Initializes a new instance of the SynapseManagementClientImpl type.
+ */
 @ServiceClient(builder = SynapseManagementClientBuilder.class)
 public final class SynapseManagementClientImpl implements SynapseManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The AzureADOnlyAuthenticationsClient object to access its operations. */
+    /**
+     * The AzureADOnlyAuthenticationsClient object to access its operations.
+     */
     private final AzureADOnlyAuthenticationsClient azureADOnlyAuthentications;
 
     /**
      * Gets the AzureADOnlyAuthenticationsClient object to access its operations.
-     *
+     * 
      * @return the AzureADOnlyAuthenticationsClient object.
      */
     public AzureADOnlyAuthenticationsClient getAzureADOnlyAuthentications() {
         return this.azureADOnlyAuthentications;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The IpFirewallRulesClient object to access its operations. */
+    /**
+     * The IpFirewallRulesClient object to access its operations.
+     */
     private final IpFirewallRulesClient ipFirewallRules;
 
     /**
      * Gets the IpFirewallRulesClient object to access its operations.
-     *
+     * 
      * @return the IpFirewallRulesClient object.
      */
     public IpFirewallRulesClient getIpFirewallRules() {
         return this.ipFirewallRules;
     }
 
-    /** The KeysClient object to access its operations. */
+    /**
+     * The KeysClient object to access its operations.
+     */
     private final KeysClient keys;
 
     /**
      * Gets the KeysClient object to access its operations.
-     *
+     * 
      * @return the KeysClient object.
      */
     public KeysClient getKeys() {
         return this.keys;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesOperationsClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesOperationsClient object to access its operations.
+     */
     private final PrivateLinkResourcesOperationsClient privateLinkResourcesOperations;
 
     /**
      * Gets the PrivateLinkResourcesOperationsClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesOperationsClient object.
      */
     public PrivateLinkResourcesOperationsClient getPrivateLinkResourcesOperations() {
         return this.privateLinkResourcesOperations;
     }
 
-    /** The PrivateLinkHubPrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkHubPrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkHubPrivateLinkResourcesClient privateLinkHubPrivateLinkResources;
 
     /**
      * Gets the PrivateLinkHubPrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkHubPrivateLinkResourcesClient object.
      */
     public PrivateLinkHubPrivateLinkResourcesClient getPrivateLinkHubPrivateLinkResources() {
         return this.privateLinkHubPrivateLinkResources;
     }
 
-    /** The PrivateLinkHubsClient object to access its operations. */
+    /**
+     * The PrivateLinkHubsClient object to access its operations.
+     */
     private final PrivateLinkHubsClient privateLinkHubs;
 
     /**
      * Gets the PrivateLinkHubsClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkHubsClient object.
      */
     public PrivateLinkHubsClient getPrivateLinkHubs() {
         return this.privateLinkHubs;
     }
 
-    /** The PrivateEndpointConnectionsPrivateLinkHubsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsPrivateLinkHubsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsPrivateLinkHubsClient privateEndpointConnectionsPrivateLinkHubs;
 
     /**
      * Gets the PrivateEndpointConnectionsPrivateLinkHubsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsPrivateLinkHubsClient object.
      */
     public PrivateEndpointConnectionsPrivateLinkHubsClient getPrivateEndpointConnectionsPrivateLinkHubs() {
         return this.privateEndpointConnectionsPrivateLinkHubs;
     }
 
-    /** The SqlPoolsClient object to access its operations. */
+    /**
+     * The SqlPoolsClient object to access its operations.
+     */
     private final SqlPoolsClient sqlPools;
 
     /**
      * Gets the SqlPoolsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolsClient object.
      */
     public SqlPoolsClient getSqlPools() {
         return this.sqlPools;
     }
 
-    /** The SqlPoolMetadataSyncConfigsClient object to access its operations. */
+    /**
+     * The SqlPoolMetadataSyncConfigsClient object to access its operations.
+     */
     private final SqlPoolMetadataSyncConfigsClient sqlPoolMetadataSyncConfigs;
 
     /**
      * Gets the SqlPoolMetadataSyncConfigsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolMetadataSyncConfigsClient object.
      */
     public SqlPoolMetadataSyncConfigsClient getSqlPoolMetadataSyncConfigs() {
         return this.sqlPoolMetadataSyncConfigs;
     }
 
-    /** The SqlPoolOperationResultsClient object to access its operations. */
+    /**
+     * The SqlPoolOperationResultsClient object to access its operations.
+     */
     private final SqlPoolOperationResultsClient sqlPoolOperationResults;
 
     /**
      * Gets the SqlPoolOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolOperationResultsClient object.
      */
     public SqlPoolOperationResultsClient getSqlPoolOperationResults() {
         return this.sqlPoolOperationResults;
     }
 
-    /** The SqlPoolGeoBackupPoliciesClient object to access its operations. */
+    /**
+     * The SqlPoolGeoBackupPoliciesClient object to access its operations.
+     */
     private final SqlPoolGeoBackupPoliciesClient sqlPoolGeoBackupPolicies;
 
     /**
      * Gets the SqlPoolGeoBackupPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolGeoBackupPoliciesClient object.
      */
     public SqlPoolGeoBackupPoliciesClient getSqlPoolGeoBackupPolicies() {
         return this.sqlPoolGeoBackupPolicies;
     }
 
-    /** The SqlPoolDataWarehouseUserActivitiesClient object to access its operations. */
+    /**
+     * The SqlPoolDataWarehouseUserActivitiesClient object to access its operations.
+     */
     private final SqlPoolDataWarehouseUserActivitiesClient sqlPoolDataWarehouseUserActivities;
 
     /**
      * Gets the SqlPoolDataWarehouseUserActivitiesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolDataWarehouseUserActivitiesClient object.
      */
     public SqlPoolDataWarehouseUserActivitiesClient getSqlPoolDataWarehouseUserActivities() {
         return this.sqlPoolDataWarehouseUserActivities;
     }
 
-    /** The SqlPoolRestorePointsClient object to access its operations. */
+    /**
+     * The SqlPoolRestorePointsClient object to access its operations.
+     */
     private final SqlPoolRestorePointsClient sqlPoolRestorePoints;
 
     /**
      * Gets the SqlPoolRestorePointsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolRestorePointsClient object.
      */
     public SqlPoolRestorePointsClient getSqlPoolRestorePoints() {
         return this.sqlPoolRestorePoints;
     }
 
-    /** The SqlPoolReplicationLinksClient object to access its operations. */
+    /**
+     * The SqlPoolReplicationLinksClient object to access its operations.
+     */
     private final SqlPoolReplicationLinksClient sqlPoolReplicationLinks;
 
     /**
      * Gets the SqlPoolReplicationLinksClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolReplicationLinksClient object.
      */
     public SqlPoolReplicationLinksClient getSqlPoolReplicationLinks() {
         return this.sqlPoolReplicationLinks;
     }
 
-    /** The SqlPoolMaintenanceWindowsClient object to access its operations. */
+    /**
+     * The SqlPoolMaintenanceWindowsClient object to access its operations.
+     */
     private final SqlPoolMaintenanceWindowsClient sqlPoolMaintenanceWindows;
 
     /**
      * Gets the SqlPoolMaintenanceWindowsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolMaintenanceWindowsClient object.
      */
     public SqlPoolMaintenanceWindowsClient getSqlPoolMaintenanceWindows() {
         return this.sqlPoolMaintenanceWindows;
     }
 
-    /** The SqlPoolMaintenanceWindowOptionsClient object to access its operations. */
+    /**
+     * The SqlPoolMaintenanceWindowOptionsClient object to access its operations.
+     */
     private final SqlPoolMaintenanceWindowOptionsClient sqlPoolMaintenanceWindowOptions;
 
     /**
      * Gets the SqlPoolMaintenanceWindowOptionsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolMaintenanceWindowOptionsClient object.
      */
     public SqlPoolMaintenanceWindowOptionsClient getSqlPoolMaintenanceWindowOptions() {
         return this.sqlPoolMaintenanceWindowOptions;
     }
 
-    /** The SqlPoolTransparentDataEncryptionsClient object to access its operations. */
+    /**
+     * The SqlPoolTransparentDataEncryptionsClient object to access its operations.
+     */
     private final SqlPoolTransparentDataEncryptionsClient sqlPoolTransparentDataEncryptions;
 
     /**
      * Gets the SqlPoolTransparentDataEncryptionsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolTransparentDataEncryptionsClient object.
      */
     public SqlPoolTransparentDataEncryptionsClient getSqlPoolTransparentDataEncryptions() {
         return this.sqlPoolTransparentDataEncryptions;
     }
 
-    /** The SqlPoolBlobAuditingPoliciesClient object to access its operations. */
+    /**
+     * The SqlPoolBlobAuditingPoliciesClient object to access its operations.
+     */
     private final SqlPoolBlobAuditingPoliciesClient sqlPoolBlobAuditingPolicies;
 
     /**
      * Gets the SqlPoolBlobAuditingPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolBlobAuditingPoliciesClient object.
      */
     public SqlPoolBlobAuditingPoliciesClient getSqlPoolBlobAuditingPolicies() {
         return this.sqlPoolBlobAuditingPolicies;
     }
 
-    /** The SqlPoolOperationsClient object to access its operations. */
+    /**
+     * The SqlPoolOperationsClient object to access its operations.
+     */
     private final SqlPoolOperationsClient sqlPoolOperations;
 
     /**
      * Gets the SqlPoolOperationsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolOperationsClient object.
      */
     public SqlPoolOperationsClient getSqlPoolOperations() {
         return this.sqlPoolOperations;
     }
 
-    /** The SqlPoolUsagesClient object to access its operations. */
+    /**
+     * The SqlPoolUsagesClient object to access its operations.
+     */
     private final SqlPoolUsagesClient sqlPoolUsages;
 
     /**
      * Gets the SqlPoolUsagesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolUsagesClient object.
      */
     public SqlPoolUsagesClient getSqlPoolUsages() {
         return this.sqlPoolUsages;
     }
 
-    /** The SqlPoolSensitivityLabelsClient object to access its operations. */
+    /**
+     * The SqlPoolSensitivityLabelsClient object to access its operations.
+     */
     private final SqlPoolSensitivityLabelsClient sqlPoolSensitivityLabels;
 
     /**
      * Gets the SqlPoolSensitivityLabelsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolSensitivityLabelsClient object.
      */
     public SqlPoolSensitivityLabelsClient getSqlPoolSensitivityLabels() {
         return this.sqlPoolSensitivityLabels;
     }
 
-    /** The SqlPoolRecommendedSensitivityLabelsClient object to access its operations. */
+    /**
+     * The SqlPoolRecommendedSensitivityLabelsClient object to access its operations.
+     */
     private final SqlPoolRecommendedSensitivityLabelsClient sqlPoolRecommendedSensitivityLabels;
 
     /**
      * Gets the SqlPoolRecommendedSensitivityLabelsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolRecommendedSensitivityLabelsClient object.
      */
     public SqlPoolRecommendedSensitivityLabelsClient getSqlPoolRecommendedSensitivityLabels() {
         return this.sqlPoolRecommendedSensitivityLabels;
     }
 
-    /** The SqlPoolSchemasClient object to access its operations. */
+    /**
+     * The SqlPoolSchemasClient object to access its operations.
+     */
     private final SqlPoolSchemasClient sqlPoolSchemas;
 
     /**
      * Gets the SqlPoolSchemasClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolSchemasClient object.
      */
     public SqlPoolSchemasClient getSqlPoolSchemas() {
         return this.sqlPoolSchemas;
     }
 
-    /** The SqlPoolTablesClient object to access its operations. */
+    /**
+     * The SqlPoolTablesClient object to access its operations.
+     */
     private final SqlPoolTablesClient sqlPoolTables;
 
     /**
      * Gets the SqlPoolTablesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolTablesClient object.
      */
     public SqlPoolTablesClient getSqlPoolTables() {
         return this.sqlPoolTables;
     }
 
-    /** The SqlPoolTableColumnsClient object to access its operations. */
+    /**
+     * The SqlPoolTableColumnsClient object to access its operations.
+     */
     private final SqlPoolTableColumnsClient sqlPoolTableColumns;
 
     /**
      * Gets the SqlPoolTableColumnsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolTableColumnsClient object.
      */
     public SqlPoolTableColumnsClient getSqlPoolTableColumns() {
         return this.sqlPoolTableColumns;
     }
 
-    /** The SqlPoolConnectionPoliciesClient object to access its operations. */
+    /**
+     * The SqlPoolConnectionPoliciesClient object to access its operations.
+     */
     private final SqlPoolConnectionPoliciesClient sqlPoolConnectionPolicies;
 
     /**
      * Gets the SqlPoolConnectionPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolConnectionPoliciesClient object.
      */
     public SqlPoolConnectionPoliciesClient getSqlPoolConnectionPolicies() {
         return this.sqlPoolConnectionPolicies;
     }
 
-    /** The SqlPoolVulnerabilityAssessmentsClient object to access its operations. */
+    /**
+     * The SqlPoolVulnerabilityAssessmentsClient object to access its operations.
+     */
     private final SqlPoolVulnerabilityAssessmentsClient sqlPoolVulnerabilityAssessments;
 
     /**
      * Gets the SqlPoolVulnerabilityAssessmentsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolVulnerabilityAssessmentsClient object.
      */
     public SqlPoolVulnerabilityAssessmentsClient getSqlPoolVulnerabilityAssessments() {
         return this.sqlPoolVulnerabilityAssessments;
     }
 
-    /** The SqlPoolVulnerabilityAssessmentScansClient object to access its operations. */
+    /**
+     * The SqlPoolVulnerabilityAssessmentScansClient object to access its operations.
+     */
     private final SqlPoolVulnerabilityAssessmentScansClient sqlPoolVulnerabilityAssessmentScans;
 
     /**
      * Gets the SqlPoolVulnerabilityAssessmentScansClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolVulnerabilityAssessmentScansClient object.
      */
     public SqlPoolVulnerabilityAssessmentScansClient getSqlPoolVulnerabilityAssessmentScans() {
         return this.sqlPoolVulnerabilityAssessmentScans;
     }
 
-    /** The SqlPoolSecurityAlertPoliciesClient object to access its operations. */
+    /**
+     * The SqlPoolSecurityAlertPoliciesClient object to access its operations.
+     */
     private final SqlPoolSecurityAlertPoliciesClient sqlPoolSecurityAlertPolicies;
 
     /**
      * Gets the SqlPoolSecurityAlertPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolSecurityAlertPoliciesClient object.
      */
     public SqlPoolSecurityAlertPoliciesClient getSqlPoolSecurityAlertPolicies() {
         return this.sqlPoolSecurityAlertPolicies;
     }
 
-    /** The SqlPoolVulnerabilityAssessmentRuleBaselinesClient object to access its operations. */
+    /**
+     * The SqlPoolVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     */
     private final SqlPoolVulnerabilityAssessmentRuleBaselinesClient sqlPoolVulnerabilityAssessmentRuleBaselines;
 
     /**
      * Gets the SqlPoolVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolVulnerabilityAssessmentRuleBaselinesClient object.
      */
     public SqlPoolVulnerabilityAssessmentRuleBaselinesClient getSqlPoolVulnerabilityAssessmentRuleBaselines() {
         return this.sqlPoolVulnerabilityAssessmentRuleBaselines;
     }
 
-    /** The ExtendedSqlPoolBlobAuditingPoliciesClient object to access its operations. */
+    /**
+     * The ExtendedSqlPoolBlobAuditingPoliciesClient object to access its operations.
+     */
     private final ExtendedSqlPoolBlobAuditingPoliciesClient extendedSqlPoolBlobAuditingPolicies;
 
     /**
      * Gets the ExtendedSqlPoolBlobAuditingPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ExtendedSqlPoolBlobAuditingPoliciesClient object.
      */
     public ExtendedSqlPoolBlobAuditingPoliciesClient getExtendedSqlPoolBlobAuditingPolicies() {
         return this.extendedSqlPoolBlobAuditingPolicies;
     }
 
-    /** The DataMaskingPoliciesClient object to access its operations. */
+    /**
+     * The DataMaskingPoliciesClient object to access its operations.
+     */
     private final DataMaskingPoliciesClient dataMaskingPolicies;
 
     /**
      * Gets the DataMaskingPoliciesClient object to access its operations.
-     *
+     * 
      * @return the DataMaskingPoliciesClient object.
      */
     public DataMaskingPoliciesClient getDataMaskingPolicies() {
         return this.dataMaskingPolicies;
     }
 
-    /** The DataMaskingRulesClient object to access its operations. */
+    /**
+     * The DataMaskingRulesClient object to access its operations.
+     */
     private final DataMaskingRulesClient dataMaskingRules;
 
     /**
      * Gets the DataMaskingRulesClient object to access its operations.
-     *
+     * 
      * @return the DataMaskingRulesClient object.
      */
     public DataMaskingRulesClient getDataMaskingRules() {
         return this.dataMaskingRules;
     }
 
-    /** The SqlPoolColumnsClient object to access its operations. */
+    /**
+     * The SqlPoolColumnsClient object to access its operations.
+     */
     private final SqlPoolColumnsClient sqlPoolColumns;
 
     /**
      * Gets the SqlPoolColumnsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolColumnsClient object.
      */
     public SqlPoolColumnsClient getSqlPoolColumns() {
         return this.sqlPoolColumns;
     }
 
-    /** The SqlPoolWorkloadGroupsClient object to access its operations. */
+    /**
+     * The SqlPoolWorkloadGroupsClient object to access its operations.
+     */
     private final SqlPoolWorkloadGroupsClient sqlPoolWorkloadGroups;
 
     /**
      * Gets the SqlPoolWorkloadGroupsClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolWorkloadGroupsClient object.
      */
     public SqlPoolWorkloadGroupsClient getSqlPoolWorkloadGroups() {
         return this.sqlPoolWorkloadGroups;
     }
 
-    /** The SqlPoolWorkloadClassifiersClient object to access its operations. */
+    /**
+     * The SqlPoolWorkloadClassifiersClient object to access its operations.
+     */
     private final SqlPoolWorkloadClassifiersClient sqlPoolWorkloadClassifiers;
 
     /**
      * Gets the SqlPoolWorkloadClassifiersClient object to access its operations.
-     *
+     * 
      * @return the SqlPoolWorkloadClassifiersClient object.
      */
     public SqlPoolWorkloadClassifiersClient getSqlPoolWorkloadClassifiers() {
         return this.sqlPoolWorkloadClassifiers;
     }
 
-    /** The WorkspaceManagedSqlServerBlobAuditingPoliciesClient object to access its operations. */
+    /**
+     * The WorkspaceManagedSqlServerBlobAuditingPoliciesClient object to access its operations.
+     */
     private final WorkspaceManagedSqlServerBlobAuditingPoliciesClient workspaceManagedSqlServerBlobAuditingPolicies;
 
     /**
      * Gets the WorkspaceManagedSqlServerBlobAuditingPoliciesClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerBlobAuditingPoliciesClient object.
      */
     public WorkspaceManagedSqlServerBlobAuditingPoliciesClient getWorkspaceManagedSqlServerBlobAuditingPolicies() {
         return this.workspaceManagedSqlServerBlobAuditingPolicies;
     }
 
-    /** The WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object to access its operations. */
-    private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient
-        workspaceManagedSqlServerExtendedBlobAuditingPolicies;
+    /**
+     * The WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object to access its operations.
+     */
+    private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient workspaceManagedSqlServerExtendedBlobAuditingPolicies;
 
     /**
      * Gets the WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient object.
      */
     public WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient
@@ -652,25 +744,28 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.workspaceManagedSqlServerExtendedBlobAuditingPolicies;
     }
 
-    /** The WorkspaceManagedSqlServerSecurityAlertPoliciesClient object to access its operations. */
+    /**
+     * The WorkspaceManagedSqlServerSecurityAlertPoliciesClient object to access its operations.
+     */
     private final WorkspaceManagedSqlServerSecurityAlertPoliciesClient workspaceManagedSqlServerSecurityAlertPolicies;
 
     /**
      * Gets the WorkspaceManagedSqlServerSecurityAlertPoliciesClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerSecurityAlertPoliciesClient object.
      */
     public WorkspaceManagedSqlServerSecurityAlertPoliciesClient getWorkspaceManagedSqlServerSecurityAlertPolicies() {
         return this.workspaceManagedSqlServerSecurityAlertPolicies;
     }
 
-    /** The WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object to access its operations. */
-    private final WorkspaceManagedSqlServerVulnerabilityAssessmentsClient
-        workspaceManagedSqlServerVulnerabilityAssessments;
+    /**
+     * The WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object to access its operations.
+     */
+    private final WorkspaceManagedSqlServerVulnerabilityAssessmentsClient workspaceManagedSqlServerVulnerabilityAssessments;
 
     /**
      * Gets the WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerVulnerabilityAssessmentsClient object.
      */
     public WorkspaceManagedSqlServerVulnerabilityAssessmentsClient
@@ -678,49 +773,56 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.workspaceManagedSqlServerVulnerabilityAssessments;
     }
 
-    /** The WorkspaceManagedSqlServerEncryptionProtectorsClient object to access its operations. */
+    /**
+     * The WorkspaceManagedSqlServerEncryptionProtectorsClient object to access its operations.
+     */
     private final WorkspaceManagedSqlServerEncryptionProtectorsClient workspaceManagedSqlServerEncryptionProtectors;
 
     /**
      * Gets the WorkspaceManagedSqlServerEncryptionProtectorsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerEncryptionProtectorsClient object.
      */
     public WorkspaceManagedSqlServerEncryptionProtectorsClient getWorkspaceManagedSqlServerEncryptionProtectors() {
         return this.workspaceManagedSqlServerEncryptionProtectors;
     }
 
-    /** The WorkspaceManagedSqlServerUsagesClient object to access its operations. */
+    /**
+     * The WorkspaceManagedSqlServerUsagesClient object to access its operations.
+     */
     private final WorkspaceManagedSqlServerUsagesClient workspaceManagedSqlServerUsages;
 
     /**
      * Gets the WorkspaceManagedSqlServerUsagesClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerUsagesClient object.
      */
     public WorkspaceManagedSqlServerUsagesClient getWorkspaceManagedSqlServerUsages() {
         return this.workspaceManagedSqlServerUsages;
     }
 
-    /** The WorkspaceManagedSqlServerRecoverableSqlPoolsClient object to access its operations. */
+    /**
+     * The WorkspaceManagedSqlServerRecoverableSqlPoolsClient object to access its operations.
+     */
     private final WorkspaceManagedSqlServerRecoverableSqlPoolsClient workspaceManagedSqlServerRecoverableSqlPools;
 
     /**
      * Gets the WorkspaceManagedSqlServerRecoverableSqlPoolsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerRecoverableSqlPoolsClient object.
      */
     public WorkspaceManagedSqlServerRecoverableSqlPoolsClient getWorkspaceManagedSqlServerRecoverableSqlPools() {
         return this.workspaceManagedSqlServerRecoverableSqlPools;
     }
 
-    /** The WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations. */
-    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
-        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    /**
+     * The WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
+     */
+    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
 
     /**
      * Gets the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object.
      */
     public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
@@ -728,348 +830,406 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
     }
 
-    /** The WorkspacesClient object to access its operations. */
+    /**
+     * The WorkspacesClient object to access its operations.
+     */
     private final WorkspacesClient workspaces;
 
     /**
      * Gets the WorkspacesClient object to access its operations.
-     *
+     * 
      * @return the WorkspacesClient object.
      */
     public WorkspacesClient getWorkspaces() {
         return this.workspaces;
     }
 
-    /** The WorkspaceAadAdminsClient object to access its operations. */
+    /**
+     * The WorkspaceAadAdminsClient object to access its operations.
+     */
     private final WorkspaceAadAdminsClient workspaceAadAdmins;
 
     /**
      * Gets the WorkspaceAadAdminsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceAadAdminsClient object.
      */
     public WorkspaceAadAdminsClient getWorkspaceAadAdmins() {
         return this.workspaceAadAdmins;
     }
 
-    /** The WorkspaceSqlAadAdminsClient object to access its operations. */
+    /**
+     * The WorkspaceSqlAadAdminsClient object to access its operations.
+     */
     private final WorkspaceSqlAadAdminsClient workspaceSqlAadAdmins;
 
     /**
      * Gets the WorkspaceSqlAadAdminsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceSqlAadAdminsClient object.
      */
     public WorkspaceSqlAadAdminsClient getWorkspaceSqlAadAdmins() {
         return this.workspaceSqlAadAdmins;
     }
 
-    /** The WorkspaceManagedIdentitySqlControlSettingsClient object to access its operations. */
+    /**
+     * The WorkspaceManagedIdentitySqlControlSettingsClient object to access its operations.
+     */
     private final WorkspaceManagedIdentitySqlControlSettingsClient workspaceManagedIdentitySqlControlSettings;
 
     /**
      * Gets the WorkspaceManagedIdentitySqlControlSettingsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceManagedIdentitySqlControlSettingsClient object.
      */
     public WorkspaceManagedIdentitySqlControlSettingsClient getWorkspaceManagedIdentitySqlControlSettings() {
         return this.workspaceManagedIdentitySqlControlSettings;
     }
 
-    /** The RestorableDroppedSqlPoolsClient object to access its operations. */
+    /**
+     * The RestorableDroppedSqlPoolsClient object to access its operations.
+     */
     private final RestorableDroppedSqlPoolsClient restorableDroppedSqlPools;
 
     /**
      * Gets the RestorableDroppedSqlPoolsClient object to access its operations.
-     *
+     * 
      * @return the RestorableDroppedSqlPoolsClient object.
      */
     public RestorableDroppedSqlPoolsClient getRestorableDroppedSqlPools() {
         return this.restorableDroppedSqlPools;
     }
 
-    /** The BigDataPoolsClient object to access its operations. */
+    /**
+     * The BigDataPoolsClient object to access its operations.
+     */
     private final BigDataPoolsClient bigDataPools;
 
     /**
      * Gets the BigDataPoolsClient object to access its operations.
-     *
+     * 
      * @return the BigDataPoolsClient object.
      */
     public BigDataPoolsClient getBigDataPools() {
         return this.bigDataPools;
     }
 
-    /** The LibrariesClient object to access its operations. */
+    /**
+     * The LibrariesClient object to access its operations.
+     */
     private final LibrariesClient libraries;
 
     /**
      * Gets the LibrariesClient object to access its operations.
-     *
+     * 
      * @return the LibrariesClient object.
      */
     public LibrariesClient getLibraries() {
         return this.libraries;
     }
 
-    /** The LibrariesOperationsClient object to access its operations. */
+    /**
+     * The LibrariesOperationsClient object to access its operations.
+     */
     private final LibrariesOperationsClient librariesOperations;
 
     /**
      * Gets the LibrariesOperationsClient object to access its operations.
-     *
+     * 
      * @return the LibrariesOperationsClient object.
      */
     public LibrariesOperationsClient getLibrariesOperations() {
         return this.librariesOperations;
     }
 
-    /** The IntegrationRuntimesClient object to access its operations. */
+    /**
+     * The IntegrationRuntimesClient object to access its operations.
+     */
     private final IntegrationRuntimesClient integrationRuntimes;
 
     /**
      * Gets the IntegrationRuntimesClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimesClient object.
      */
     public IntegrationRuntimesClient getIntegrationRuntimes() {
         return this.integrationRuntimes;
     }
 
-    /** The IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
+     */
     private final IntegrationRuntimeNodeIpAddressOperationsClient integrationRuntimeNodeIpAddressOperations;
 
     /**
      * Gets the IntegrationRuntimeNodeIpAddressOperationsClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeNodeIpAddressOperationsClient object.
      */
     public IntegrationRuntimeNodeIpAddressOperationsClient getIntegrationRuntimeNodeIpAddressOperations() {
         return this.integrationRuntimeNodeIpAddressOperations;
     }
 
-    /** The IntegrationRuntimeObjectMetadatasClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeObjectMetadatasClient object to access its operations.
+     */
     private final IntegrationRuntimeObjectMetadatasClient integrationRuntimeObjectMetadatas;
 
     /**
      * Gets the IntegrationRuntimeObjectMetadatasClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeObjectMetadatasClient object.
      */
     public IntegrationRuntimeObjectMetadatasClient getIntegrationRuntimeObjectMetadatas() {
         return this.integrationRuntimeObjectMetadatas;
     }
 
-    /** The IntegrationRuntimeNodesClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeNodesClient object to access its operations.
+     */
     private final IntegrationRuntimeNodesClient integrationRuntimeNodes;
 
     /**
      * Gets the IntegrationRuntimeNodesClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeNodesClient object.
      */
     public IntegrationRuntimeNodesClient getIntegrationRuntimeNodes() {
         return this.integrationRuntimeNodes;
     }
 
-    /** The IntegrationRuntimeCredentialsClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeCredentialsClient object to access its operations.
+     */
     private final IntegrationRuntimeCredentialsClient integrationRuntimeCredentials;
 
     /**
      * Gets the IntegrationRuntimeCredentialsClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeCredentialsClient object.
      */
     public IntegrationRuntimeCredentialsClient getIntegrationRuntimeCredentials() {
         return this.integrationRuntimeCredentials;
     }
 
-    /** The IntegrationRuntimeConnectionInfosClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeConnectionInfosClient object to access its operations.
+     */
     private final IntegrationRuntimeConnectionInfosClient integrationRuntimeConnectionInfos;
 
     /**
      * Gets the IntegrationRuntimeConnectionInfosClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeConnectionInfosClient object.
      */
     public IntegrationRuntimeConnectionInfosClient getIntegrationRuntimeConnectionInfos() {
         return this.integrationRuntimeConnectionInfos;
     }
 
-    /** The IntegrationRuntimeAuthKeysOperationsClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
+     */
     private final IntegrationRuntimeAuthKeysOperationsClient integrationRuntimeAuthKeysOperations;
 
     /**
      * Gets the IntegrationRuntimeAuthKeysOperationsClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeAuthKeysOperationsClient object.
      */
     public IntegrationRuntimeAuthKeysOperationsClient getIntegrationRuntimeAuthKeysOperations() {
         return this.integrationRuntimeAuthKeysOperations;
     }
 
-    /** The IntegrationRuntimeMonitoringDatasClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeMonitoringDatasClient object to access its operations.
+     */
     private final IntegrationRuntimeMonitoringDatasClient integrationRuntimeMonitoringDatas;
 
     /**
      * Gets the IntegrationRuntimeMonitoringDatasClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeMonitoringDatasClient object.
      */
     public IntegrationRuntimeMonitoringDatasClient getIntegrationRuntimeMonitoringDatas() {
         return this.integrationRuntimeMonitoringDatas;
     }
 
-    /** The IntegrationRuntimeStatusOperationsClient object to access its operations. */
+    /**
+     * The IntegrationRuntimeStatusOperationsClient object to access its operations.
+     */
     private final IntegrationRuntimeStatusOperationsClient integrationRuntimeStatusOperations;
 
     /**
      * Gets the IntegrationRuntimeStatusOperationsClient object to access its operations.
-     *
+     * 
      * @return the IntegrationRuntimeStatusOperationsClient object.
      */
     public IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations() {
         return this.integrationRuntimeStatusOperations;
     }
 
-    /** The GetsClient object to access its operations. */
+    /**
+     * The GetsClient object to access its operations.
+     */
     private final GetsClient gets;
 
     /**
      * Gets the GetsClient object to access its operations.
-     *
+     * 
      * @return the GetsClient object.
      */
     public GetsClient getGets() {
         return this.gets;
     }
 
-    /** The SparkConfigurationsClient object to access its operations. */
+    /**
+     * The SparkConfigurationsClient object to access its operations.
+     */
     private final SparkConfigurationsClient sparkConfigurations;
 
     /**
      * Gets the SparkConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the SparkConfigurationsClient object.
      */
     public SparkConfigurationsClient getSparkConfigurations() {
         return this.sparkConfigurations;
     }
 
-    /** The SparkConfigurationsOperationsClient object to access its operations. */
+    /**
+     * The SparkConfigurationsOperationsClient object to access its operations.
+     */
     private final SparkConfigurationsOperationsClient sparkConfigurationsOperations;
 
     /**
      * Gets the SparkConfigurationsOperationsClient object to access its operations.
-     *
+     * 
      * @return the SparkConfigurationsOperationsClient object.
      */
     public SparkConfigurationsOperationsClient getSparkConfigurationsOperations() {
         return this.sparkConfigurationsOperations;
     }
 
-    /** The KustoOperationsClient object to access its operations. */
+    /**
+     * The KustoOperationsClient object to access its operations.
+     */
     private final KustoOperationsClient kustoOperations;
 
     /**
      * Gets the KustoOperationsClient object to access its operations.
-     *
+     * 
      * @return the KustoOperationsClient object.
      */
     public KustoOperationsClient getKustoOperations() {
         return this.kustoOperations;
     }
 
-    /** The KustoPoolsClient object to access its operations. */
+    /**
+     * The KustoPoolsClient object to access its operations.
+     */
     private final KustoPoolsClient kustoPools;
 
     /**
      * Gets the KustoPoolsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolsClient object.
      */
     public KustoPoolsClient getKustoPools() {
         return this.kustoPools;
     }
 
-    /** The KustoPoolChildResourcesClient object to access its operations. */
+    /**
+     * The KustoPoolChildResourcesClient object to access its operations.
+     */
     private final KustoPoolChildResourcesClient kustoPoolChildResources;
 
     /**
      * Gets the KustoPoolChildResourcesClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolChildResourcesClient object.
      */
     public KustoPoolChildResourcesClient getKustoPoolChildResources() {
         return this.kustoPoolChildResources;
     }
 
-    /** The KustoPoolAttachedDatabaseConfigurationsClient object to access its operations. */
+    /**
+     * The KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
+     */
     private final KustoPoolAttachedDatabaseConfigurationsClient kustoPoolAttachedDatabaseConfigurations;
 
     /**
      * Gets the KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolAttachedDatabaseConfigurationsClient object.
      */
     public KustoPoolAttachedDatabaseConfigurationsClient getKustoPoolAttachedDatabaseConfigurations() {
         return this.kustoPoolAttachedDatabaseConfigurations;
     }
 
-    /** The KustoPoolDatabasesClient object to access its operations. */
+    /**
+     * The KustoPoolDatabasesClient object to access its operations.
+     */
     private final KustoPoolDatabasesClient kustoPoolDatabases;
 
     /**
      * Gets the KustoPoolDatabasesClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolDatabasesClient object.
      */
     public KustoPoolDatabasesClient getKustoPoolDatabases() {
         return this.kustoPoolDatabases;
     }
 
-    /** The KustoPoolDataConnectionsClient object to access its operations. */
+    /**
+     * The KustoPoolDataConnectionsClient object to access its operations.
+     */
     private final KustoPoolDataConnectionsClient kustoPoolDataConnections;
 
     /**
      * Gets the KustoPoolDataConnectionsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolDataConnectionsClient object.
      */
     public KustoPoolDataConnectionsClient getKustoPoolDataConnections() {
         return this.kustoPoolDataConnections;
     }
 
-    /** The KustoPoolPrincipalAssignmentsClient object to access its operations. */
+    /**
+     * The KustoPoolPrincipalAssignmentsClient object to access its operations.
+     */
     private final KustoPoolPrincipalAssignmentsClient kustoPoolPrincipalAssignments;
 
     /**
      * Gets the KustoPoolPrincipalAssignmentsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolPrincipalAssignmentsClient object.
      */
     public KustoPoolPrincipalAssignmentsClient getKustoPoolPrincipalAssignments() {
         return this.kustoPoolPrincipalAssignments;
     }
 
-    /** The KustoPoolDatabasePrincipalAssignmentsClient object to access its operations. */
+    /**
+     * The KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
+     */
     private final KustoPoolDatabasePrincipalAssignmentsClient kustoPoolDatabasePrincipalAssignments;
 
     /**
      * Gets the KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
      */
     public KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments() {
         return this.kustoPoolDatabasePrincipalAssignments;
     }
 
-    /** The KustoPoolPrivateLinkResourcesOperationsClient object to access its operations. */
+    /**
+     * The KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
+     */
     private final KustoPoolPrivateLinkResourcesOperationsClient kustoPoolPrivateLinkResourcesOperations;
 
     /**
      * Gets the KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
-     *
+     * 
      * @return the KustoPoolPrivateLinkResourcesOperationsClient object.
      */
     public KustoPoolPrivateLinkResourcesOperationsClient getKustoPoolPrivateLinkResourcesOperations() {
@@ -1078,7 +1238,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
 
     /**
      * Initializes an instance of SynapseManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -1086,13 +1246,8 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    SynapseManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    SynapseManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -1129,34 +1284,34 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.sqlPoolVulnerabilityAssessments = new SqlPoolVulnerabilityAssessmentsClientImpl(this);
         this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansClientImpl(this);
         this.sqlPoolSecurityAlertPolicies = new SqlPoolSecurityAlertPoliciesClientImpl(this);
-        this.sqlPoolVulnerabilityAssessmentRuleBaselines =
-            new SqlPoolVulnerabilityAssessmentRuleBaselinesClientImpl(this);
+        this.sqlPoolVulnerabilityAssessmentRuleBaselines
+            = new SqlPoolVulnerabilityAssessmentRuleBaselinesClientImpl(this);
         this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesClientImpl(this);
         this.dataMaskingPolicies = new DataMaskingPoliciesClientImpl(this);
         this.dataMaskingRules = new DataMaskingRulesClientImpl(this);
         this.sqlPoolColumns = new SqlPoolColumnsClientImpl(this);
         this.sqlPoolWorkloadGroups = new SqlPoolWorkloadGroupsClientImpl(this);
         this.sqlPoolWorkloadClassifiers = new SqlPoolWorkloadClassifiersClientImpl(this);
-        this.workspaceManagedSqlServerBlobAuditingPolicies =
-            new WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerExtendedBlobAuditingPolicies =
-            new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerSecurityAlertPolicies =
-            new WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl(this);
-        this.workspaceManagedSqlServerVulnerabilityAssessments =
-            new WorkspaceManagedSqlServerVulnerabilityAssessmentsClientImpl(this);
-        this.workspaceManagedSqlServerEncryptionProtectors =
-            new WorkspaceManagedSqlServerEncryptionProtectorsClientImpl(this);
+        this.workspaceManagedSqlServerBlobAuditingPolicies
+            = new WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerExtendedBlobAuditingPolicies
+            = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerSecurityAlertPolicies
+            = new WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl(this);
+        this.workspaceManagedSqlServerVulnerabilityAssessments
+            = new WorkspaceManagedSqlServerVulnerabilityAssessmentsClientImpl(this);
+        this.workspaceManagedSqlServerEncryptionProtectors
+            = new WorkspaceManagedSqlServerEncryptionProtectorsClientImpl(this);
         this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesClientImpl(this);
-        this.workspaceManagedSqlServerRecoverableSqlPools =
-            new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
-        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
-            new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
+        this.workspaceManagedSqlServerRecoverableSqlPools
+            = new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
+        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+            = new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsClientImpl(this);
         this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsClientImpl(this);
-        this.workspaceManagedIdentitySqlControlSettings =
-            new WorkspaceManagedIdentitySqlControlSettingsClientImpl(this);
+        this.workspaceManagedIdentitySqlControlSettings
+            = new WorkspaceManagedIdentitySqlControlSettingsClientImpl(this);
         this.restorableDroppedSqlPools = new RestorableDroppedSqlPoolsClientImpl(this);
         this.bigDataPools = new BigDataPoolsClientImpl(this);
         this.libraries = new LibrariesClientImpl(this);
@@ -1186,7 +1341,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -1195,7 +1350,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -1205,7 +1360,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -1215,26 +1370,15 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -1247,19 +1391,16 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -1300,7 +1441,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStopOperationStatusInner;
 
-/** An immutable client-side representation of IntegrationRuntimeStopOperationStatus. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeStopOperationStatus.
+ */
 public interface IntegrationRuntimeStopOperationStatus {
     /**
      * Gets the status property: status of Start Integrationruntimes.
-     *
+     * 
      * @return the status value.
      */
     WorkspaceStatus status();
 
     /**
      * Gets the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
 
     /**
      * Gets the error property: The operation error message.
-     *
+     * 
      * @return the error value.
      */
     String error();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStopOperationStatusInner object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeStopOperationStatusInner innerModel();

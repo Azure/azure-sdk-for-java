@@ -97,8 +97,8 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public ClientAssertionCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public ClientAssertionCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -110,8 +110,8 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
      * @throws IllegalArgumentException if either of clientId, tenantId or clientAssertion is not present.
      */
     public ClientAssertionCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientAssertion", clientAssertionSupplier);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientAssertion",
+            clientAssertionSupplier);
 
         return new ClientAssertionCredential(clientId, tenantId, clientAssertionSupplier, identityClientOptions);
     }

@@ -72,8 +72,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a Cluster.
      */
-    Response<Cluster> getWithResponse(
-        String resourceGroupName, String workspaceName, String clusterName, Context context);
+    Response<Cluster> getWithResponse(String resourceGroupName, String workspaceName, String clusterName,
+        Context context);
 
     /**
      * Get the IP address, port of all the compute nodes in the Cluster.
@@ -89,8 +89,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address, port of all the compute nodes in the Cluster.
      */
-    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName);
+    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName, String workspaceName,
+        String clusterName);
 
     /**
      * Get the IP address, port of all the compute nodes in the Cluster.
@@ -107,8 +107,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address, port of all the compute nodes in the Cluster.
      */
-    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String clusterName, Context context);
+    PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(String resourceGroupName, String workspaceName,
+        String clusterName, Context context);
 
     /**
      * Gets information about Clusters associated with the given Workspace.
@@ -136,8 +136,8 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about Clusters associated with the given Workspace.
      */
-    PagedIterable<Cluster> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<Cluster> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 
     /**
      * Gets information about a Cluster.

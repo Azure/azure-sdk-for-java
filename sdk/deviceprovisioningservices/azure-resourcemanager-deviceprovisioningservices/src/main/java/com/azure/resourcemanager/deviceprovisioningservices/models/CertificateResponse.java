@@ -71,11 +71,13 @@ public interface CertificateResponse {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CertificateResponse definition stages. */
     interface DefinitionStages {
         /** The first stage of the CertificateResponse definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CertificateResponse definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -87,6 +89,7 @@ public interface CertificateResponse {
              */
             WithCreate withExistingProvisioningService(String resourceGroupName, String provisioningServiceName);
         }
+
         /**
          * The stage of the CertificateResponse definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -107,6 +110,7 @@ public interface CertificateResponse {
              */
             CertificateResponse create(Context context);
         }
+
         /** The stage of the CertificateResponse definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -117,6 +121,7 @@ public interface CertificateResponse {
              */
             WithCreate withProperties(CertificateProperties properties);
         }
+
         /** The stage of the CertificateResponse definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -130,6 +135,7 @@ public interface CertificateResponse {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the CertificateResponse resource.
      *
@@ -154,6 +160,7 @@ public interface CertificateResponse {
          */
         CertificateResponse apply(Context context);
     }
+
     /** The CertificateResponse update stages. */
     interface UpdateStages {
         /** The stage of the CertificateResponse update allowing to specify properties. */
@@ -166,6 +173,7 @@ public interface CertificateResponse {
              */
             Update withProperties(CertificateProperties properties);
         }
+
         /** The stage of the CertificateResponse update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -179,6 +187,7 @@ public interface CertificateResponse {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

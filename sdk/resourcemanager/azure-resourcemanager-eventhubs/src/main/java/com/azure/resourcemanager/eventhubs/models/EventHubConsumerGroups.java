@@ -16,11 +16,8 @@ import reactor.core.publisher.Mono;
  * Entry point to manage event hub consumer groups.
  */
 @Fluent
-public interface EventHubConsumerGroups extends
-    SupportsCreating<EventHubConsumerGroup.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<EventHubConsumerGroup>,
-    HasManager<EventHubsManager> {
+public interface EventHubConsumerGroups extends SupportsCreating<EventHubConsumerGroup.DefinitionStages.Blank>,
+    SupportsDeletingById, SupportsGettingById<EventHubConsumerGroup>, HasManager<EventHubsManager> {
     /**
      * Lists the consumer groups of an event hub in a namespace under a resource group.
      *
@@ -29,8 +26,8 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @return list of consumer groups
      */
-    PagedIterable<EventHubConsumerGroup> listByEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName);
+    PagedIterable<EventHubConsumerGroup> listByEventHub(String resourceGroupName, String namespaceName,
+        String eventHubName);
 
     /**
      * Lists the consumer groups of an event hub in a namespace under a resource group.
@@ -40,8 +37,8 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @return observable that emits the consumer groups
      */
-    PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
-        String resourceGroupName, String namespaceName, String eventHubName);
+    PagedFlux<EventHubConsumerGroup> listByEventHubAsync(String resourceGroupName, String namespaceName,
+        String eventHubName);
 
     /**
      * Gets a consumer group of an event hub in a namespace in a resource group.
@@ -52,8 +49,8 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return observable that emits the consumer group
      */
-    Mono<EventHubConsumerGroup> getByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<EventHubConsumerGroup> getByNameAsync(String resourceGroupName, String namespaceName, String eventHubName,
+        String name);
 
     /**
      * Gets a consumer group of an event hub in a namespace under a resource group.
@@ -64,8 +61,7 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return the consumer group
      */
-    EventHubConsumerGroup getByName(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    EventHubConsumerGroup getByName(String resourceGroupName, String namespaceName, String eventHubName, String name);
 
     /**
      * Deletes a consumer group of an event hub in a namespace under a resource group.
@@ -76,8 +72,7 @@ public interface EventHubConsumerGroups extends
      * @param name consumer group name
      * @return the completable representing the task
      */
-    Mono<Void> deleteByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String eventHubName, String name);
 
     /**
      * Deletes a consumer group of an event hub in a namespace under a resource group.
@@ -87,6 +82,5 @@ public interface EventHubConsumerGroups extends
      * @param eventHubName event hub name
      * @param name consumer group name
      */
-    void deleteByName(
-        String resourceGroupName, String namespaceName, String eventHubName, String name);
+    void deleteByName(String resourceGroupName, String namespaceName, String eventHubName, String name);
 }

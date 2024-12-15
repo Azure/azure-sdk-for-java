@@ -7,46 +7,55 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionInner;
 
-/** An immutable client-side representation of DataConnection. */
+/**
+ * An immutable client-side representation of DataConnection.
+ */
 public interface DataConnection {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the kind property: Kind of the endpoint for the data connection.
+     * 
+     * @return the kind value.
+     */
+    DataConnectionKind kind();
+
+    /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.DataConnectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     DataConnectionInner innerModel();

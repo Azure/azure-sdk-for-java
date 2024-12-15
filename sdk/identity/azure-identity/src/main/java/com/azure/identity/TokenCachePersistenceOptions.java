@@ -20,7 +20,8 @@ public final class TokenCachePersistenceOptions {
     /**
      * Constructs an instance of TokenCachePersistenceOptions.
      */
-    public TokenCachePersistenceOptions() { }
+    public TokenCachePersistenceOptions() {
+    }
 
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of

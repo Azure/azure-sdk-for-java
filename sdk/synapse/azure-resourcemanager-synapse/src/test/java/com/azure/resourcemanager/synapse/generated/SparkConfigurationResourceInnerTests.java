@@ -15,50 +15,39 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"qzeqyjleziunjxdf\",\"configs\":{\"mlbnseq\":\"ntkwcegy\",\"m\":\"cjjvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\"},\"annotations\":[\"zft\",\"ejwabmdujtmvco\",\"excmjurbuhhl\",\"yqltqsro\"],\"notes\":\"uwkffdjktsysid\",\"createdBy\":\"c\",\"created\":\"2021-11-11T21:46:56Z\",\"configMergeRule\":{\"ogsf\":\"fuijtkbus\"}},\"etag\":\"ayiansharujtji\",\"id\":\"xfz\",\"name\":\"j\",\"type\":\"ttvwkpqh\"}")
-                .toObject(SparkConfigurationResourceInner.class);
-        Assertions.assertEquals("qzeqyjleziunjxdf", model.description());
-        Assertions.assertEquals("ntkwcegy", model.configs().get("mlbnseq"));
-        Assertions.assertEquals("zft", model.annotations().get(0));
-        Assertions.assertEquals("uwkffdjktsysid", model.notes());
-        Assertions.assertEquals("c", model.createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T21:46:56Z"), model.created());
-        Assertions.assertEquals("fuijtkbus", model.configMergeRule().get("ogsf"));
+        SparkConfigurationResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"knmzlanrupdwvnp\",\"configs\":{\"laiwdcxsmlzzh\":\"nzqtpjhmqrhvt\",\"vlnnpx\":\"dtxetlgydlh\",\"fiqgeaar\":\"b\"},\"annotations\":[\"ekglklb\",\"ulidwc\",\"vmzegj\"],\"notes\":\"fhjirwgdnqzbrfk\",\"createdBy\":\"zhzmtksjci\",\"created\":\"2021-07-31T03:36:59Z\",\"configMergeRule\":{\"lkeuac\":\"xcdglj\",\"dgycxnmskwhqjjy\":\"tomflrytswfpf\",\"dwqslsrhmpqvw\":\"lurlpshhkvp\",\"qejo\":\"skondcbrwimu\"}},\"etag\":\"vyrrleaesinuq\",\"id\":\"ljqobbpihehcecyb\",\"name\":\"rqbrjbbmpxdlvyk\",\"type\":\"rexcrseqwjksghu\"}")
+            .toObject(SparkConfigurationResourceInner.class);
+        Assertions.assertEquals("knmzlanrupdwvnp", model.description());
+        Assertions.assertEquals("nzqtpjhmqrhvt", model.configs().get("laiwdcxsmlzzh"));
+        Assertions.assertEquals("ekglklb", model.annotations().get(0));
+        Assertions.assertEquals("fhjirwgdnqzbrfk", model.notes());
+        Assertions.assertEquals("zhzmtksjci", model.createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T03:36:59Z"), model.created());
+        Assertions.assertEquals("xcdglj", model.configMergeRule().get("lkeuac"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigurationResourceInner model =
-            new SparkConfigurationResourceInner()
-                .withDescription("qzeqyjleziunjxdf")
-                .withConfigs(
-                    mapOf(
-                        "mlbnseq",
-                        "ntkwcegy",
-                        "m",
-                        "cjjvpilguooqja",
-                        "hrtdtpdelq",
-                        "itgueiookjbs",
-                        "vcjkgd",
-                        "cslmotoebnfxo"))
-                .withAnnotations(Arrays.asList("zft", "ejwabmdujtmvco", "excmjurbuhhl", "yqltqsro"))
-                .withNotes("uwkffdjktsysid")
-                .withCreatedBy("c")
-                .withCreated(OffsetDateTime.parse("2021-11-11T21:46:56Z"))
-                .withConfigMergeRule(mapOf("ogsf", "fuijtkbus"));
+        SparkConfigurationResourceInner model = new SparkConfigurationResourceInner().withDescription("knmzlanrupdwvnp")
+            .withConfigs(mapOf("laiwdcxsmlzzh", "nzqtpjhmqrhvt", "vlnnpx", "dtxetlgydlh", "fiqgeaar", "b"))
+            .withAnnotations(Arrays.asList("ekglklb", "ulidwc", "vmzegj"))
+            .withNotes("fhjirwgdnqzbrfk")
+            .withCreatedBy("zhzmtksjci")
+            .withCreated(OffsetDateTime.parse("2021-07-31T03:36:59Z"))
+            .withConfigMergeRule(mapOf("lkeuac", "xcdglj", "dgycxnmskwhqjjy", "tomflrytswfpf", "dwqslsrhmpqvw",
+                "lurlpshhkvp", "qejo", "skondcbrwimu"));
         model = BinaryData.fromObject(model).toObject(SparkConfigurationResourceInner.class);
-        Assertions.assertEquals("qzeqyjleziunjxdf", model.description());
-        Assertions.assertEquals("ntkwcegy", model.configs().get("mlbnseq"));
-        Assertions.assertEquals("zft", model.annotations().get(0));
-        Assertions.assertEquals("uwkffdjktsysid", model.notes());
-        Assertions.assertEquals("c", model.createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T21:46:56Z"), model.created());
-        Assertions.assertEquals("fuijtkbus", model.configMergeRule().get("ogsf"));
+        Assertions.assertEquals("knmzlanrupdwvnp", model.description());
+        Assertions.assertEquals("nzqtpjhmqrhvt", model.configs().get("laiwdcxsmlzzh"));
+        Assertions.assertEquals("ekglklb", model.annotations().get(0));
+        Assertions.assertEquals("fhjirwgdnqzbrfk", model.notes());
+        Assertions.assertEquals("zhzmtksjci", model.createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T03:36:59Z"), model.created());
+        Assertions.assertEquals("xcdglj", model.configMergeRule().get("lkeuac"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

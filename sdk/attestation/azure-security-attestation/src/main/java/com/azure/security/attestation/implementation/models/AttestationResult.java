@@ -932,6 +932,9 @@ public final class AttestationResult implements JsonSerializable<AttestationResu
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

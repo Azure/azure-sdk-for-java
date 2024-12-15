@@ -125,14 +125,14 @@ public final class ReadmeSamples {
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }
 
-    public void createOpenAIClientWithAAD() {
-        // BEGIN: readme-sample-createOpenAIClientWithAAD
+    public void createOpenAIClientWithEntraID() {
+        // BEGIN: readme-sample-createOpenAIClientWithEntraID
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         OpenAIClient client = new OpenAIClientBuilder()
             .credential(defaultCredential)
             .endpoint("{endpoint}")
             .buildClient();
-        // END: readme-sample-createOpenAIClientWithAAD
+        // END: readme-sample-createOpenAIClientWithEntraID
     }
 
     public void createOpenAIClientWithProxyOption() {
@@ -176,10 +176,6 @@ public final class ReadmeSamples {
 
         completionsStream
             .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
             .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
         // END: readme-sample-getCompletionsStream
     }
@@ -452,7 +448,7 @@ public final class ReadmeSamples {
                 .buildClient();
         // or
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        OpenAIClient configurationClientAad = new OpenAIClientBuilder()
+        OpenAIClient configurationClientEntraID = new OpenAIClientBuilder()
                 .credential(credential)
                 .endpoint("{endpoint}")
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

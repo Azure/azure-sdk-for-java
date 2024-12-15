@@ -84,8 +84,7 @@ public class ModelHelper {
             maxSingleUploadSize = FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
-        return new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
+        return new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
@@ -93,17 +92,18 @@ public class ModelHelper {
 
     public static DataLakeAclChangeFailedException changeAclRequestFailed(DataLakeStorageException e,
         String continuationToken) {
-        String message = String.format("An error occurred while recursively changing the access control list. See the "
-            + "exception of type %s with status=%s and error code=%s for more information. You can resume changing "
-            + "the access control list using continuationToken=%s after addressing the error.", e.getClass(),
-            e.getStatusCode(), e.getErrorCode(), continuationToken);
+        String message = String.format(
+            "An error occurred while recursively changing the access control list. See the "
+                + "exception of type %s with status=%s and error code=%s for more information. You can resume changing "
+                + "the access control list using continuationToken=%s after addressing the error.",
+            e.getClass(), e.getStatusCode(), e.getErrorCode(), continuationToken);
         return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 
     public static DataLakeAclChangeFailedException changeAclFailed(Exception e, String continuationToken) {
         String message = String.format("An error occurred while recursively changing the access control list. See the "
-                + "exception of type %s for more information. You can resume changing the access control list using "
-                + "continuationToken=%s after addressing the error.", e.getClass(), continuationToken);
+            + "exception of type %s for more information. You can resume changing the access control list using "
+            + "continuationToken=%s after addressing the error.", e.getClass(), continuationToken);
         return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 
@@ -115,26 +115,35 @@ public class ModelHelper {
      * @return {@link PathExpiryOptions}
      * @throws IllegalArgumentException if the options are invalid for the pathResourceType
      */
-    public static PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options, PathResourceType pathResourceType) {
+    public static PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options,
+        PathResourceType pathResourceType) {
         if (pathResourceType == PathResourceType.DIRECTORY) {
             if (options.getProposedLeaseId() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
             }
             if (options.getLeaseDuration() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
             }
-            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
+            if (options.getScheduleDeletionOptions() != null
+                && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
             }
-            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
+            if (options.getScheduleDeletionOptions() != null
+                && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
             }
         }
         if (options.getScheduleDeletionOptions() == null) {
             return null;
         }
-        if (options.getScheduleDeletionOptions().getTimeToExpire() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null
+            && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
         }
         if (options.getScheduleDeletionOptions().getTimeToExpire() != null) {
             return PathExpiryOptions.RELATIVE_TO_NOW;
@@ -158,11 +167,11 @@ public class ModelHelper {
             boolean firstMetadata = true;
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
-                    throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
-                        + "empty, or whitespace.");
+                    throw new IllegalArgumentException(
+                        "The key for one of the metadata key-value pairs is null, " + "empty, or whitespace.");
                 } else if (Objects.isNull(entry.getValue()) || entry.getValue().isEmpty()) {
-                    throw new IllegalArgumentException("The value for one of the metadata key-value pairs is null, "
-                        + "empty, or whitespace.");
+                    throw new IllegalArgumentException(
+                        "The value for one of the metadata key-value pairs is null, " + "empty, or whitespace.");
                 }
 
                 /*

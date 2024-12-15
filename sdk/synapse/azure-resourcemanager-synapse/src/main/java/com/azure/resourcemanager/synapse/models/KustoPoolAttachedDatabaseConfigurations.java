@@ -8,26 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of KustoPoolAttachedDatabaseConfigurations. */
+/**
+ * Resource collection API of KustoPoolAttachedDatabaseConfigurations.
+ */
 public interface KustoPoolAttachedDatabaseConfigurations {
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -35,15 +37,15 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -54,16 +56,12 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response}.
      */
-    Response<AttachedDatabaseConfiguration> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String attachedDatabaseConfigurationName,
-        String resourceGroupName,
-        Context context);
+    Response<AttachedDatabaseConfiguration> getWithResponse(String workspaceName, String kustoPoolName,
+        String attachedDatabaseConfigurationName, String resourceGroupName, Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -73,12 +71,12 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration.
      */
-    AttachedDatabaseConfiguration get(
-        String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName, String resourceGroupName);
+    AttachedDatabaseConfiguration get(String workspaceName, String kustoPoolName,
+        String attachedDatabaseConfigurationName, String resourceGroupName);
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -87,12 +85,12 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName, String resourceGroupName);
+    void delete(String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName,
+        String resourceGroupName);
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -102,16 +100,12 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String attachedDatabaseConfigurationName,
-        String resourceGroupName,
-        Context context);
+    void delete(String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName,
+        String resourceGroupName, Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +116,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +128,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +138,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,7 +149,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
 
     /**
      * Begins definition for a new AttachedDatabaseConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AttachedDatabaseConfiguration definition.
      */

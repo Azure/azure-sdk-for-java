@@ -25,10 +25,10 @@ public final class ExperimentUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdate model = new ExperimentUpdate()
-            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.NONE).withUserAssignedIdentities(
-                mapOf("veual", new UserAssignedIdentity(), "mkh", new UserAssignedIdentity(), "bbcswsrtjri",
-                    new UserAssignedIdentity(), "bpbewtghfgb", new UserAssignedIdentity())))
+        ExperimentUpdate model = new ExperimentUpdate().withIdentity(new ResourceIdentity()
+            .withType(ResourceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("veual", new UserAssignedIdentity(), "mkh", new UserAssignedIdentity(),
+                "bbcswsrtjri", new UserAssignedIdentity(), "bpbewtghfgb", new UserAssignedIdentity())))
             .withTags(mapOf("aloayqcgwrtzju", "mxiebw", "txon", "gwyzm", "rknftguvriuhprwm", "mtsavjcbpwxqp", "bexrmcq",
                 "yvxqtayriwwroy"));
         model = BinaryData.fromObject(model).toObject(ExperimentUpdate.class);

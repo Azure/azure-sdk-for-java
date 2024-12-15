@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class RequestRetryOptionsTests {
     @Test
     public void retryOptionsToRequestRetryOptionsMapping() {
-        assertThrows(NullPointerException.class,  () -> RequestRetryOptions.fromRetryOptions(null, null, null));
+        assertThrows(NullPointerException.class, () -> RequestRetryOptions.fromRetryOptions(null, null, null));
 
         RetryOptions coreOptions = new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(4)));
-        RequestRetryOptions storageOptions = RequestRetryOptions.fromRetryOptions(coreOptions, Duration.ofSeconds(12),
-            "secondaryHost");
+        RequestRetryOptions storageOptions
+            = RequestRetryOptions.fromRetryOptions(coreOptions, Duration.ofSeconds(12), "secondaryHost");
 
         assertEquals(coreOptions.getFixedDelayOptions().getMaxRetries() + 1, storageOptions.getMaxTries());
         assertEquals(coreOptions.getFixedDelayOptions().getDelay(), storageOptions.getRetryDelay());
@@ -29,7 +29,8 @@ public class RequestRetryOptionsTests {
         assertEquals(coreOptions.getFixedDelayOptions().getDelay().toMillis(), storageOptions.calculateDelayInMs(3));
 
         coreOptions = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(3)
-            .setBaseDelay(Duration.ofSeconds(4)).setMaxDelay(Duration.ofSeconds(10)));
+            .setBaseDelay(Duration.ofSeconds(4))
+            .setMaxDelay(Duration.ofSeconds(10)));
         storageOptions = RequestRetryOptions.fromRetryOptions(coreOptions, Duration.ofSeconds(12), "secondaryHost");
 
         assertEquals(coreOptions.getExponentialBackoffOptions().getMaxRetries() + 1, storageOptions.getMaxTries());

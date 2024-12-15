@@ -34,21 +34,28 @@ public final class InstanceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceList model = new InstanceList().withNextLink("qduujitcjczdz")
-            .withValue(Arrays.asList(
-                new InstanceInner().withLocation("yiftyhxhuro")
-                    .withTags(mapOf("cukjf", "yxolniwp", "lryplwckbasyy", "giawx", "jkot", "nddhsgcbacph"))
-                    .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("usnhutje"),
-                        new IotHubSettings().withResourceId("tmrldhugjzzdatq")))
-                    .withEnableDiagnostics(false).withDiagnosticStorageProperties(
-                        new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
-                            .withConnectionString("eablg").withResourceId("huticndvkao")),
-                new InstanceInner().withLocation("tmut")
-                    .withTags(mapOf("kdosvqw", "ktapspwgcuertu", "bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq"))
-                    .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("dqytbciqfouflmm")))
-                    .withEnableDiagnostics(false).withDiagnosticStorageProperties(
-                        new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
-                            .withConnectionString("dmgloug").withResourceId("b"))));
+        InstanceList model
+            = new InstanceList().withNextLink("qduujitcjczdz")
+                .withValue(
+                    Arrays.asList(
+                        new InstanceInner().withLocation("yiftyhxhuro")
+                            .withTags(mapOf("cukjf", "yxolniwp", "lryplwckbasyy", "giawx", "jkot", "nddhsgcbacph"))
+                            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("usnhutje"),
+                                new IotHubSettings().withResourceId("tmrldhugjzzdatq")))
+                            .withEnableDiagnostics(false)
+                            .withDiagnosticStorageProperties(new DiagnosticStorageProperties()
+                                .withAuthenticationType(AuthenticationType.KEY_BASED)
+                                .withConnectionString("eablg")
+                                .withResourceId("huticndvkao")),
+                        new InstanceInner().withLocation("tmut")
+                            .withTags(
+                                mapOf("kdosvqw", "ktapspwgcuertu", "bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq"))
+                            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("dqytbciqfouflmm")))
+                            .withEnableDiagnostics(false)
+                            .withDiagnosticStorageProperties(
+                                new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
+                                    .withConnectionString("dmgloug")
+                                    .withResourceId("b"))));
         model = BinaryData.fromObject(model).toObject(InstanceList.class);
         Assertions.assertEquals("qduujitcjczdz", model.nextLink());
         Assertions.assertEquals("yiftyhxhuro", model.value().get(0).location());

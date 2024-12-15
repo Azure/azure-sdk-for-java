@@ -22,7 +22,10 @@ public class FindBlobsOptions {
     private Integer maxResultsPerPage;
 
     /**
+     * Creates a new instance of {@link FindBlobsOptions}.
+     *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @throws NullPointerException If {@code query} is null.
      */
     public FindBlobsOptions(String query) {
         StorageImplUtils.assertNotNull("query", query);
@@ -30,6 +33,8 @@ public class FindBlobsOptions {
     }
 
     /**
+     * Gets the filters the results to return only blobs whose tags match the specified expression.
+     *
      * @return Filters the results to return only blobs whose tags match the specified expression.
      */
     public String getQuery() {

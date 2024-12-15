@@ -6,63 +6,34 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SchedulesListApplicableMockTests {
     @Test
     public void testListApplicable() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"ftcvbii\",\"weeklyRecurrence\":{\"weekdays\":[\"dwgdn\",\"efgmwdhcebuv\",\"zldbglzoutbaaqg\",\"ekaj\"],\"time\":\"yzgsnorbjgmnz\"},\"dailyRecurrence\":{\"time\":\"vmrxkhlobvvjbh\"},\"hourlyRecurrence\":{\"minute\":1801825955},\"timeZoneId\":\"ayfluiyuosnu\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":793027662,\"webhookUrl\":\"yibdrqrswhbuu\",\"emailRecipient\":\"y\",\"notificationLocale\":\"wtjoxz\"},\"createdDate\":\"2021-07-15T14:18:57Z\",\"targetResourceId\":\"qchvczevjn\",\"provisioningState\":\"tagfyvrtpqp\",\"uniqueIdentifier\":\"hzcgkrepdqhqyhwq\"},\"location\":\"e\",\"tags\":{\"greohtwhlpuzjp\":\"qabckmzeoxin\",\"angp\":\"eezn\",\"phmsexroq\":\"bfaxyxzlbc\"},\"id\":\"ndktxfv\",\"name\":\"nfee\",\"type\":\"gpkrie\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"ftcvbii\",\"weeklyRecurrence\":{\"weekdays\":[\"dwgdn\",\"efgmwdhcebuv\",\"zldbglzoutbaaqg\",\"ekaj\"],\"time\":\"yzgsnorbjgmnz\"},\"dailyRecurrence\":{\"time\":\"vmrxkhlobvvjbh\"},\"hourlyRecurrence\":{\"minute\":1801825955},\"timeZoneId\":\"ayfluiyuosnu\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":793027662,\"webhookUrl\":\"yibdrqrswhbuu\",\"emailRecipient\":\"y\",\"notificationLocale\":\"wtjoxz\"},\"createdDate\":\"2021-07-15T14:18:57Z\",\"targetResourceId\":\"qchvczevjn\",\"provisioningState\":\"tagfyvrtpqp\",\"uniqueIdentifier\":\"hzcgkrepdqhqyhwq\"},\"location\":\"e\",\"tags\":{\"greohtwhlpuzjp\":\"qabckmzeoxin\",\"angp\":\"eezn\",\"phmsexroq\":\"bfaxyxzlbc\"},\"id\":\"ndktxfv\",\"name\":\"nfee\",\"type\":\"gpkrie\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Schedule> response =
-            manager.schedules().listApplicable("ixexkydfbwljavhu", "rkjd", "vrg", com.azure.core.util.Context.NONE);
+        PagedIterable<Schedule> response
+            = manager.schedules().listApplicable("ixexkydfbwljavhu", "rkjd", "vrg", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("e", response.iterator().next().location());
         Assertions.assertEquals("qabckmzeoxin", response.iterator().next().tags().get("greohtwhlpuzjp"));

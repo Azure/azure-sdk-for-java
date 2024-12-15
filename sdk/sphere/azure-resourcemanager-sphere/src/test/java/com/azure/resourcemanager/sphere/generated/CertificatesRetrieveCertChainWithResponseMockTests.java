@@ -42,12 +42,15 @@ public final class CertificatesRetrieveCertChainWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateChainResponse response = manager.certificates().retrieveCertChainWithResponse("dnbbglzps",
-            "iydmcwyhzdxs", "adbzmnvdfznud", com.azure.core.util.Context.NONE).getValue();
+        CertificateChainResponse response = manager.certificates()
+            .retrieveCertChainWithResponse("dnbbglzps", "iydmcwyhzdxs", "adbzmnvdfznud",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

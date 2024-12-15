@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.BlobDataSourceProperties;
 import com.azure.resourcemanager.streamanalytics.models.BlobWriteMode;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,13 +23,11 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
     /*
      * Blob path prefix.
      */
-    @JsonProperty(value = "blobPathPrefix")
     private String blobPathPrefix;
 
     /*
      * Blob write mode.
      */
-    @JsonProperty(value = "blobWriteMode")
     private BlobWriteMode blobWriteMode;
 
     /**
@@ -136,6 +137,72 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
      */
     @Override
     public void validate() {
-        super.validate();
+        if (storageAccounts() != null) {
+            storageAccounts().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageAccounts", storageAccounts(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("container", container());
+        jsonWriter.writeStringField("pathPattern", pathPattern());
+        jsonWriter.writeStringField("dateFormat", dateFormat());
+        jsonWriter.writeStringField("timeFormat", timeFormat());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("blobPathPrefix", this.blobPathPrefix);
+        jsonWriter.writeStringField("blobWriteMode", this.blobWriteMode == null ? null : this.blobWriteMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobOutputDataSourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobOutputDataSourceProperties.
+     */
+    public static BlobOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobOutputDataSourceProperties deserializedBlobOutputDataSourceProperties
+                = new BlobOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccounts".equals(fieldName)) {
+                    List<StorageAccount> storageAccounts
+                        = reader.readArray(reader1 -> StorageAccount.fromJson(reader1));
+                    deserializedBlobOutputDataSourceProperties.withStorageAccounts(storageAccounts);
+                } else if ("container".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.withContainer(reader.getString());
+                } else if ("pathPattern".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.withPathPattern(reader.getString());
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.withDateFormat(reader.getString());
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.withTimeFormat(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("blobPathPrefix".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.blobPathPrefix = reader.getString();
+                } else if ("blobWriteMode".equals(fieldName)) {
+                    deserializedBlobOutputDataSourceProperties.blobWriteMode
+                        = BlobWriteMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobOutputDataSourceProperties;
+        });
     }
 }

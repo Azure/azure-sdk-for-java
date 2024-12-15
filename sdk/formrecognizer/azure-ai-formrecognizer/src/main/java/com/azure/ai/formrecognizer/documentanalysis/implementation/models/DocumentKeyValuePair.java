@@ -82,6 +82,9 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the status of the workflow run. */
+/**
+ * Describes the status of the workflow run.
+ */
 public final class WorkflowRunStatus extends ExpandableStringEnum<WorkflowRunStatus> {
-    /** Static value queued for WorkflowRunStatus. */
+    /**
+     * Static value queued for WorkflowRunStatus.
+     */
     public static final WorkflowRunStatus QUEUED = fromString("queued");
 
-    /** Static value inprogress for WorkflowRunStatus. */
+    /**
+     * Static value inprogress for WorkflowRunStatus.
+     */
     public static final WorkflowRunStatus INPROGRESS = fromString("inprogress");
 
-    /** Static value completed for WorkflowRunStatus. */
+    /**
+     * Static value completed for WorkflowRunStatus.
+     */
     public static final WorkflowRunStatus COMPLETED = fromString("completed");
 
     /**
      * Creates a new instance of WorkflowRunStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class WorkflowRunStatus extends ExpandableStringEnum<WorkflowRunSta
 
     /**
      * Creates or finds a WorkflowRunStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkflowRunStatus.
      */
-    @JsonCreator
     public static WorkflowRunStatus fromString(String name) {
         return fromString(name, WorkflowRunStatus.class);
     }
 
     /**
      * Gets known WorkflowRunStatus values.
-     *
+     * 
      * @return known WorkflowRunStatus values.
      */
     public static Collection<WorkflowRunStatus> values() {

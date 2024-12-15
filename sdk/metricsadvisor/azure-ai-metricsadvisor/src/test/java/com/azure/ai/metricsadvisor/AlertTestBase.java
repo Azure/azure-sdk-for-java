@@ -27,9 +27,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         final OffsetDateTime startTime = OffsetDateTime.parse("2022-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2022-03-22T00:00:00Z");
         final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
-        final ListAlertOptions options = new ListAlertOptions()
-            .setAlertQueryTimeMode(timeMode)
-            .setMaxPageSize(10);
+        final ListAlertOptions options = new ListAlertOptions().setAlertQueryTimeMode(timeMode).setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
     }
 
@@ -47,7 +45,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         boolean isInRange = (anomalyAlert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.startTime)
             || anomalyAlert.getTimestamp().isAfter(ListAlertsInput.INSTANCE.startTime))
             && (anomalyAlert.getTimestamp().isEqual(ListAlertsInput.INSTANCE.endTime)
-            || anomalyAlert.getTimestamp().isBefore(ListAlertsInput.INSTANCE.endTime));
+                || anomalyAlert.getTimestamp().isBefore(ListAlertsInput.INSTANCE.endTime));
         Assertions.assertTrue(isInRange);
     }
 }

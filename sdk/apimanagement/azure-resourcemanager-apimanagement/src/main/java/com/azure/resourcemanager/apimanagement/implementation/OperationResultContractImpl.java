@@ -18,8 +18,7 @@ public final class OperationResultContractImpl implements OperationResultContrac
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    OperationResultContractImpl(
-        OperationResultContractInner innerObject,
+    OperationResultContractImpl(OperationResultContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

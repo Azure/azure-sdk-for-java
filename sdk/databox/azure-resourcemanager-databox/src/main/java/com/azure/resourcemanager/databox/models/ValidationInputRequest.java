@@ -5,40 +5,116 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Minimum fields that must be present in any type of validation request. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "validationType",
-    defaultImpl = ValidationInputRequest.class)
-@JsonTypeName("ValidationInputRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ValidateAddress", value = ValidateAddress.class),
-    @JsonSubTypes.Type(
-        name = "ValidateCreateOrderLimit",
-        value = CreateOrderLimitForSubscriptionValidationRequest.class),
-    @JsonSubTypes.Type(name = "ValidateDataTransferDetails", value = DataTransferDetailsValidationRequest.class),
-    @JsonSubTypes.Type(name = "ValidatePreferences", value = PreferencesValidationRequest.class),
-    @JsonSubTypes.Type(name = "ValidateSkuAvailability", value = SkuAvailabilityValidationRequest.class),
-    @JsonSubTypes.Type(
-        name = "ValidateSubscriptionIsAllowedToCreateJob",
-        value = SubscriptionIsAllowedToCreateJobValidationRequest.class)
-})
+/**
+ * Minimum fields that must be present in any type of validation request.
+ */
 @Immutable
-public class ValidationInputRequest {
-    /** Creates an instance of ValidationInputRequest class. */
+public class ValidationInputRequest implements JsonSerializable<ValidationInputRequest> {
+    /*
+     * Identifies the type of validation request.
+     */
+    private ValidationInputDiscriminator validationType
+        = ValidationInputDiscriminator.fromString("ValidationInputRequest");
+
+    /**
+     * Creates an instance of ValidationInputRequest class.
+     */
     public ValidationInputRequest() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation request.
+     * 
+     * @return the validationType value.
+     */
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationInputRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationInputRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationInputRequest.
+     */
+    public static ValidationInputRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("validationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ValidateAddress".equals(discriminatorValue)) {
+                    return ValidateAddress.fromJson(readerToUse.reset());
+                } else if ("ValidateCreateOrderLimit".equals(discriminatorValue)) {
+                    return CreateOrderLimitForSubscriptionValidationRequest.fromJson(readerToUse.reset());
+                } else if ("ValidateDataTransferDetails".equals(discriminatorValue)) {
+                    return DataTransferDetailsValidationRequest.fromJson(readerToUse.reset());
+                } else if ("ValidatePreferences".equals(discriminatorValue)) {
+                    return PreferencesValidationRequest.fromJson(readerToUse.reset());
+                } else if ("ValidateSkuAvailability".equals(discriminatorValue)) {
+                    return SkuAvailabilityValidationRequest.fromJson(readerToUse.reset());
+                } else if ("ValidateSubscriptionIsAllowedToCreateJob".equals(discriminatorValue)) {
+                    return SubscriptionIsAllowedToCreateJobValidationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ValidationInputRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationInputRequest deserializedValidationInputRequest = new ValidationInputRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationType".equals(fieldName)) {
+                    deserializedValidationInputRequest.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationInputRequest;
+        });
     }
 }

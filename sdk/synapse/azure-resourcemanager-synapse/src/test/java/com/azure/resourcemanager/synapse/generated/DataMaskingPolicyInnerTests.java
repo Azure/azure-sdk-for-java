@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataMaskingState\":\"Enabled\",\"exemptPrincipals\":\"jviylwdshfs\",\"applicationPrincipals\":\"rbgyefry\",\"maskingLevel\":\"gaojf\"},\"location\":\"nc\",\"kind\":\"mrfhirctymox\",\"managedBy\":\"tpipiwyczuhx\",\"id\":\"cpqjlihhyu\",\"name\":\"pskasdvlmfwdg\",\"type\":\"x\"}")
-                .toObject(DataMaskingPolicyInner.class);
-        Assertions.assertEquals(DataMaskingState.ENABLED, model.dataMaskingState());
-        Assertions.assertEquals("jviylwdshfs", model.exemptPrincipals());
+        DataMaskingPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"oookkqfq\",\"applicationPrincipals\":\"vleo\",\"maskingLevel\":\"ml\"},\"location\":\"qtqzfavyv\",\"kind\":\"qybaryeua\",\"managedBy\":\"kq\",\"id\":\"bqgzslesjcbhern\",\"name\":\"tiewdj\",\"type\":\"vbquwr\"}")
+            .toObject(DataMaskingPolicyInner.class);
+        Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());
+        Assertions.assertEquals("oookkqfq", model.exemptPrincipals());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingPolicyInner model =
-            new DataMaskingPolicyInner()
-                .withDataMaskingState(DataMaskingState.ENABLED)
-                .withExemptPrincipals("jviylwdshfs");
+        DataMaskingPolicyInner model = new DataMaskingPolicyInner().withDataMaskingState(DataMaskingState.DISABLED)
+            .withExemptPrincipals("oookkqfq");
         model = BinaryData.fromObject(model).toObject(DataMaskingPolicyInner.class);
-        Assertions.assertEquals(DataMaskingState.ENABLED, model.dataMaskingState());
-        Assertions.assertEquals("jviylwdshfs", model.exemptPrincipals());
+        Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());
+        Assertions.assertEquals("oookkqfq", model.exemptPrincipals());
     }
 }

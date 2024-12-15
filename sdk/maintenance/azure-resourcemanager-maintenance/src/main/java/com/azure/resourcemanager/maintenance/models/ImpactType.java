@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ImpactType extends ExpandableStringEnum<ImpactType> {
      * @param name a name to look for.
      * @return the corresponding ImpactType.
      */
-    @JsonCreator
     public static ImpactType fromString(String name) {
         return fromString(name, ImpactType.class);
     }

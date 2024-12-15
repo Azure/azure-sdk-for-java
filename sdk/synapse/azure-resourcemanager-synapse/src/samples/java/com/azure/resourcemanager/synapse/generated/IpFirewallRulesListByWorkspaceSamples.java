@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for IpFirewallRules ListByWorkspace. */
+/**
+ * Samples for IpFirewallRules ListByWorkspace.
+ */
 public final class IpFirewallRulesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListIpFirewallRules.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListIpFirewallRules.json
      */
     /**
      * Sample code: List IP firewall rules in a workspace.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listIPFirewallRulesInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .ipFirewallRules()
+        manager.ipFirewallRules()
             .listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -89,26 +89,21 @@ public final class ServerSecurityAlertPolicyImpl
     }
 
     public ServerSecurityAlertPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .createOrUpdate(
-                    resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerSecurityAlertPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), context);
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(
-        SecurityAlertPolicyName name, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(SecurityAlertPolicyName name,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = new ServerSecurityAlertPolicyInner();
         this.serviceManager = serviceManager;
         this.securityAlertPolicyName = name;
@@ -119,51 +114,42 @@ public final class ServerSecurityAlertPolicyImpl
     }
 
     public ServerSecurityAlertPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .createOrUpdate(
-                    resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerSecurityAlertPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .createOrUpdate(resourceGroupName, serverName, securityAlertPolicyName, this.innerModel(), context);
         return this;
     }
 
-    ServerSecurityAlertPolicyImpl(
-        ServerSecurityAlertPolicyInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.securityAlertPolicyName =
-            SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "securityAlertPolicies"));
+        this.securityAlertPolicyName
+            = SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "securityAlertPolicies"));
     }
 
     public ServerSecurityAlertPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServerSecurityAlertPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerSecurityAlertPolicies()
-                .getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerSecurityAlertPolicies()
+            .getWithResponse(resourceGroupName, serverName, securityAlertPolicyName, context)
+            .getValue();
         return this;
     }
 

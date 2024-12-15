@@ -24,9 +24,10 @@ public final class StreamingJobsStartSamples {
      */
     public static void startAStreamingJobWithJobStartTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().start("sjrg6936", "sj59",
-            new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.JOB_START_TIME),
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .start("sjrg6936", "sj59",
+                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.JOB_START_TIME),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -42,8 +43,8 @@ public final class StreamingJobsStartSamples {
     public static void startAStreamingJobWithCustomTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         manager.streamingJobs()
-            .start(
-                "sjrg6936", "sj59", new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.CUSTOM_TIME)
+            .start("sjrg6936", "sj59",
+                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.CUSTOM_TIME)
                     .withOutputStartTime(OffsetDateTime.parse("2012-12-12T12:12:12Z")),
                 com.azure.core.util.Context.NONE);
     }
@@ -60,8 +61,9 @@ public final class StreamingJobsStartSamples {
      */
     public static void startAStreamingJobWithLastOutputEventTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().start("sjrg6936", "sj59",
-            new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.LAST_OUTPUT_EVENT_TIME),
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .start("sjrg6936", "sj59",
+                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.LAST_OUTPUT_EVENT_TIME),
+                com.azure.core.util.Context.NONE);
     }
 }

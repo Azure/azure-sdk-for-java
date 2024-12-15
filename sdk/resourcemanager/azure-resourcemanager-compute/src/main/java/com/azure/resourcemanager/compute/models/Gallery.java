@@ -21,14 +21,8 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure gallery. */
 @Fluent
-public interface Gallery
-    extends HasInnerModel<GalleryInner>,
-        Resource,
-        GroupableResource<ComputeManager, GalleryInner>,
-        HasResourceGroup,
-        Refreshable<Gallery>,
-        Updatable<Gallery.Update>,
-        HasManager<ComputeManager> {
+public interface Gallery extends HasInnerModel<GalleryInner>, Resource, GroupableResource<ComputeManager, GalleryInner>,
+    HasResourceGroup, Refreshable<Gallery>, Updatable<Gallery.Update>, HasManager<ComputeManager> {
     /** @return description for the gallery resource. */
     String description();
 
@@ -103,6 +97,7 @@ public interface Gallery
             extends Creatable<Gallery>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDescription {
         }
     }
+
     /** The template for a Gallery update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<Gallery>, Resource.UpdateWithTags<Update>, UpdateStages.WithDescription {
     }

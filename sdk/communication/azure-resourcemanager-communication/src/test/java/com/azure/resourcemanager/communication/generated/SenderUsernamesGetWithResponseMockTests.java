@@ -44,12 +44,14 @@ public final class SenderUsernamesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SenderUsernameResource response = manager.senderUsernames()
-            .getWithResponse("quuvxzxcl", "ithhqzon", "sg", "b", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("quuvxzxcl", "ithhqzon", "sg", "b", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("acffgdkzzewkfvhq", response.username());
         Assertions.assertEquals("a", response.displayName());

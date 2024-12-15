@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageSampleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageSample model =
-            BinaryData
-                .fromString(
-                    "{\"subscriptionId\":\"31f9d37f-ba99-4b53-b5f1-186a76a93523\",\"meterId\":\"zyde\",\"usageStartTime\":\"2021-05-18T09:45:02Z\",\"usageEndTime\":\"2021-05-10T11:45:10Z\",\"quantity\":57.05146,\"unit\":\"xinpmqnjaq\",\"meterName\":\"xj\",\"meterCategory\":\"r\",\"meterSubCategory\":\"vcputegj\",\"meterRegion\":\"mfdatscmdvpj\",\"infoFields\":{\"project\":\"suuv\"},\"instanceData\":\"jozkrwfndiod\"}")
-                .toObject(UsageSample.class);
+        UsageSample model = BinaryData.fromString(
+            "{\"subscriptionId\":\"31f9d37f-ba99-4b53-b5f1-186a76a93523\",\"meterId\":\"zyde\",\"usageStartTime\":\"2021-05-18T09:45:02Z\",\"usageEndTime\":\"2021-05-10T11:45:10Z\",\"quantity\":57.05146,\"unit\":\"xinpmqnjaq\",\"meterName\":\"xj\",\"meterCategory\":\"r\",\"meterSubCategory\":\"vcputegj\",\"meterRegion\":\"mfdatscmdvpj\",\"infoFields\":{\"project\":\"suuv\"},\"instanceData\":\"jozkrwfndiod\"}")
+            .toObject(UsageSample.class);
         Assertions.assertEquals(UUID.fromString("31f9d37f-ba99-4b53-b5f1-186a76a93523"), model.subscriptionId());
         Assertions.assertEquals("zyde", model.meterId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T09:45:02Z"), model.usageStartTime());
@@ -35,9 +33,8 @@ public final class UsageSampleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageSample model =
-            new UsageSample()
-                .withSubscriptionId(UUID.fromString("31f9d37f-ba99-4b53-b5f1-186a76a93523"))
+        UsageSample model
+            = new UsageSample().withSubscriptionId(UUID.fromString("31f9d37f-ba99-4b53-b5f1-186a76a93523"))
                 .withMeterId("zyde")
                 .withUsageStartTime(OffsetDateTime.parse("2021-05-18T09:45:02Z"))
                 .withUsageEndTime(OffsetDateTime.parse("2021-05-10T11:45:10Z"))

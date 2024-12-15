@@ -15,8 +15,7 @@ public final class IntegrationRuntimeMonitoringDataImpl implements IntegrationRu
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    IntegrationRuntimeMonitoringDataImpl(
-        IntegrationRuntimeMonitoringDataInner innerObject,
+    IntegrationRuntimeMonitoringDataImpl(IntegrationRuntimeMonitoringDataInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

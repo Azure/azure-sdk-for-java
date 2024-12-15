@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for RestorableDroppedSqlPools Get. */
+/**
+ * Samples for RestorableDroppedSqlPools Get.
+ */
 public final class RestorableDroppedSqlPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlPoolGet.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlPoolGet.
+     * json
      */
     /**
      * Sample code: Get a restorable dropped Sql pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getARestorableDroppedSqlPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .restorableDroppedSqlPools()
-            .getWithResponse(
-                "restorabledroppeddatabasetest-1257",
-                "restorabledroppeddatabasetest-2389",
-                "restorabledroppeddatabasetest-7654,131403269876900000",
-                com.azure.core.util.Context.NONE);
+        manager.restorableDroppedSqlPools()
+            .getWithResponse("restorabledroppeddatabasetest-1257", "restorabledroppeddatabasetest-2389",
+                "restorabledroppeddatabasetest-7654,131403269876900000", com.azure.core.util.Context.NONE);
     }
 }

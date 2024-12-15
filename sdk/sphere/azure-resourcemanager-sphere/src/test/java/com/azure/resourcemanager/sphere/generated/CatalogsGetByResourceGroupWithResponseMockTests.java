@@ -44,12 +44,14 @@ public final class CatalogsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Catalog response = manager.catalogs()
-            .getByResourceGroupWithResponse("ehhseyvjusrts", "hspkdeemao", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("ehhseyvjusrts", "hspkdeemao", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("elmqk", response.location());
         Assertions.assertEquals("hvljuahaquh", response.tags().get("dhmdua"));

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventgrid.implementation.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;

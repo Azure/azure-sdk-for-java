@@ -16,10 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure Private DNS Zone. */
 @Fluent
-public interface PrivateDnsZone
-    extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner>,
-        Refreshable<PrivateDnsZone>,
-        Updatable<PrivateDnsZone.Update> {
+public interface PrivateDnsZone extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner>,
+    Refreshable<PrivateDnsZone>, Updatable<PrivateDnsZone.Update> {
 
     /**
      * @return the ETag of the zone.
@@ -259,11 +257,8 @@ public interface PrivateDnsZone
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<PrivateDnsZone>,
-                DefinitionStages.WithRecordSet,
-                DefinitionStages.WithVirtualNetworkLink,
-                DefinitionStages.WithETagCheck,
-                Resource.DefinitionWithTags<WithCreate> {
+            extends Creatable<PrivateDnsZone>, DefinitionStages.WithRecordSet, DefinitionStages.WithVirtualNetworkLink,
+            DefinitionStages.WithETagCheck, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -586,11 +581,7 @@ public interface PrivateDnsZone
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<PrivateDnsZone>,
-            UpdateStages.WithRecordSet,
-            UpdateStages.WithVirtualNetworkLink,
-            UpdateStages.WithETagCheck,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<PrivateDnsZone>, UpdateStages.WithRecordSet, UpdateStages.WithVirtualNetworkLink,
+        UpdateStages.WithETagCheck, Resource.UpdateWithTags<Update> {
     }
 }

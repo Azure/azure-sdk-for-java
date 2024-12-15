@@ -25,10 +25,8 @@ public interface RegistryEncodedTaskRunRequest {
     boolean isArchiveEnabled();
 
     /** Container interface for all the definitions related to a registry Encoded task run request. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.EncodedTaskContent,
-            DefinitionStages.EncodedTaskRunRequestStepAttachable {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.EncodedTaskContent,
+        DefinitionStages.EncodedTaskRunRequestStepAttachable {
     }
 
     /** Grouping of registry encoded task run request definition stages. */

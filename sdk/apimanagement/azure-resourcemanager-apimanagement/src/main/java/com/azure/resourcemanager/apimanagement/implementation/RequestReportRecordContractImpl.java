@@ -13,8 +13,7 @@ public final class RequestReportRecordContractImpl implements RequestReportRecor
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    RequestReportRecordContractImpl(
-        RequestReportRecordContractInner innerObject,
+    RequestReportRecordContractImpl(RequestReportRecordContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -37,6 +37,6 @@ public interface VideoAnalyzerOperationStatusesClient {
      * @return video analyzer operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoAnalyzerOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<VideoAnalyzerOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context);
 }

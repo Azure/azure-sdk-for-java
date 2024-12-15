@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IpFirewallRules. */
+/**
+ * Resource collection API of IpFirewallRules.
+ */
 public interface IpFirewallRules {
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IpFirewallRules {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface IpFirewallRules {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -50,7 +52,7 @@ public interface IpFirewallRules {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -64,7 +66,7 @@ public interface IpFirewallRules {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -74,12 +76,12 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a firewall rule along with {@link Response}.
      */
-    Response<IpFirewallRuleInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleName, Context context);
+    Response<IpFirewallRuleInfo> getWithResponse(String resourceGroupName, String workspaceName, String ruleName,
+        Context context);
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -92,7 +94,7 @@ public interface IpFirewallRules {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -101,12 +103,12 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules.
      */
-    ReplaceAllFirewallRulesOperationResponse replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request);
+    ReplaceAllFirewallRulesOperationResponse replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request);
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -116,12 +118,12 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules.
      */
-    ReplaceAllFirewallRulesOperationResponse replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);
+    ReplaceAllFirewallRulesOperationResponse replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request, Context context);
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -132,7 +134,7 @@ public interface IpFirewallRules {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +146,7 @@ public interface IpFirewallRules {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +157,7 @@ public interface IpFirewallRules {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +169,7 @@ public interface IpFirewallRules {
 
     /**
      * Begins definition for a new IpFirewallRuleInfo resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IpFirewallRuleInfo definition.
      */

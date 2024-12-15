@@ -41,13 +41,12 @@ public final class HttpResponseBodyDecoder {
      * @param response The {@link Response}.
      * @param serializer The {@link ObjectSerializer} that performs the decoding.
      * @param decodeData The API method metadata used during decoding of the {@link Response response}.
-     *
      * @return The decoded {@link Response response} body, or {@code null} if the body could not be decoded.
-     *
      * @throws HttpResponseException If the body cannot be decoded.
+     * @throws RuntimeException If the body cannot be decoded.
      */
     public static Object decodeByteArray(BinaryData body, Response<?> response, ObjectSerializer serializer,
-                                         HttpResponseDecodeData decodeData) {
+        HttpResponseDecodeData decodeData) {
         ensureRequestSet(response);
 
         // Check for the HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
@@ -57,15 +56,18 @@ public final class HttpResponseBodyDecoder {
             return null;
         } else if (isErrorStatus(response.getStatusCode(), decodeData)) {
             try {
-                return deserializeBody(body, decodeData.getUnexpectedException(
-                    response.getStatusCode()).getExceptionBodyClass(), null, serializer);
+                return deserializeBody(body,
+                    decodeData.getUnexpectedException(response.getStatusCode()).getExceptionBodyClass(), null,
+                    serializer);
             } catch (IOException e) {
                 return LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
-                if (cause instanceof InvocationTargetException || cause instanceof IllegalAccessException
-                    || cause instanceof NoSuchMethodException || cause instanceof IOException) {
+                if (cause instanceof InvocationTargetException
+                    || cause instanceof IllegalAccessException
+                    || cause instanceof NoSuchMethodException
+                    || cause instanceof IOException) {
                     // - InvocationTargetException is thrown by the deserializer when the fromJson() method in the
                     // type to deserialize to throws an exception.
                     // - IllegalAccessException is thrown when the deserializer cannot access said fromJson() method in
@@ -98,6 +100,10 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
+     * Get the decoded type used to decode the response body, or null if the body is not decodable.
+     *
+     * @param response The response to decode.
+     * @param decodeData Metadata about the API response.
      * @return The decoded type used to decode the response body, null if the body is not decodable.
      */
     public static Type decodedType(final Response<?> response, final HttpResponseDecodeData decodeData) {
@@ -120,7 +126,6 @@ public final class HttpResponseBodyDecoder {
      *
      * @param statusCode The status code from the response.
      * @param decodeData Metadata about the API response.
-     *
      * @return {@code true} if the {@link Response} status code is considered as error, {@code false}
      * otherwise.
      */
@@ -135,7 +140,6 @@ public final class HttpResponseBodyDecoder {
      * @param resultType The return type of the Java proxy method.
      * @param wireType Value of the optional {@link HttpRequestInformation#returnValueWireType()} annotation present in
      * the Java proxy method indicating 'entity type' (wireType) of REST API wire response body.
-     *
      * @return Deserialized object.
      * @throws IOException If the deserialization fails.
      */
@@ -166,7 +170,6 @@ public final class HttpResponseBodyDecoder {
      *
      * @param resultType The {@link Type} of java proxy method return value.
      * @param wireType The {@link Type} of entity in REST API response body.
-     *
      * @return The {@link Type} of REST API response body.
      */
     private static Type constructWireResponseType(Type resultType, Type wireType) {
@@ -191,8 +194,8 @@ public final class HttpResponseBodyDecoder {
             final Type resultValueType = typeArguments[1];
             final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(),
-                typeArguments[0], wireResponseValueType);
+            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(), typeArguments[0],
+                wireResponseValueType);
         }
 
         return resultType;
@@ -205,7 +208,6 @@ public final class HttpResponseBodyDecoder {
      * @param wireResponse The object to convert.
      * @param resultType The {@link Type} to convert the {@code wireResponse} to.
      * @param wireType The {@link Type} of the {@code wireResponse}.
-     *
      * @return The converted object.
      */
     private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
@@ -222,7 +224,8 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
-            @SuppressWarnings("unchecked") final List<Object> wireResponseList = (List<Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final List<Object> wireResponseList = (List<Object>) wireResponse;
 
             final int wireResponseListSize = wireResponseList.size();
 
@@ -238,8 +241,8 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
             final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
-            @SuppressWarnings("unchecked") final Map<String, Object> wireResponseMap
-                = (Map<String, Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
             final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
 
@@ -282,4 +285,3 @@ public final class HttpResponseBodyDecoder {
         Objects.requireNonNull(response.getRequest());
     }
 }
-

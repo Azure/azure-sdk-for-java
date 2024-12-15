@@ -17,7 +17,8 @@ import java.time.OffsetDateTime;
 @JsonTypeName("PointInTimeRestore")
 @Fluent
 public final class ServerPropertiesForRestore extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForRestore.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerPropertiesForRestore.class);
 
     /*
      * The source server id to restore from.
@@ -125,16 +126,12 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceServerId in model ServerPropertiesForRestore"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceServerId in model ServerPropertiesForRestore"));
         }
         if (restorePointInTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restorePointInTime in model ServerPropertiesForRestore"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restorePointInTime in model ServerPropertiesForRestore"));
         }
     }
 }

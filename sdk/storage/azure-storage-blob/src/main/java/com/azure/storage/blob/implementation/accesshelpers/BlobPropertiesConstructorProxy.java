@@ -51,7 +51,7 @@ public final class BlobPropertiesConstructorProxy {
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new BlobProperties(null, null, null, 0, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
 
         assert accessor != null;

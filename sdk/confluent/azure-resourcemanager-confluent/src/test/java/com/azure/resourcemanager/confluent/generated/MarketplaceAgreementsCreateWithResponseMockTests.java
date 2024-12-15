@@ -45,14 +45,19 @@ public final class MarketplaceAgreementsCreateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfluentAgreementResource response = manager.marketplaceAgreements()
-            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("oookkqfq").withProduct("vleo")
-                .withPlan("ml").withLicenseTextLink("qtqzfavyv").withPrivacyPolicyLink("qybaryeua")
-                .withRetrieveDatetime(OffsetDateTime.parse("2021-06-23T02:25:47Z")).withSignature("abqgzslesjcbh")
+            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("oookkqfq")
+                .withProduct("vleo")
+                .withPlan("ml")
+                .withLicenseTextLink("qtqzfavyv")
+                .withPrivacyPolicyLink("qybaryeua")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-06-23T02:25:47Z"))
+                .withSignature("abqgzslesjcbh")
                 .withAccepted(false), com.azure.core.util.Context.NONE)
             .getValue();
 

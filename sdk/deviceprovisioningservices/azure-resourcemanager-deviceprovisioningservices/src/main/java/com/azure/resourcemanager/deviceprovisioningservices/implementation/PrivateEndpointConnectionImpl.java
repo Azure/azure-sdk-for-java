@@ -54,35 +54,31 @@ public final class PrivateEndpointConnectionImpl
 
     private String privateEndpointConnectionName;
 
-    public PrivateEndpointConnectionImpl withExistingProvisioningService(
-        String resourceGroupName, String resourceName) {
+    public PrivateEndpointConnectionImpl withExistingProvisioningService(String resourceGroupName,
+        String resourceName) {
         this.resourceGroupName = resourceGroupName;
         this.resourceName = resourceName;
         return this;
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdatePrivateEndpointConnection(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdatePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdatePrivateEndpointConnection(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdatePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+                this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        String name, com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
+    PrivateEndpointConnectionImpl(String name,
+        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -93,27 +89,22 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdatePrivateEndpointConnection(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdatePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdatePrivateEndpointConnection(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdatePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
+                this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject,
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -123,24 +114,20 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .getPrivateEndpointConnectionWithResponse(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .getPrivateEndpointConnectionWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .getPrivateEndpointConnectionWithResponse(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .getPrivateEndpointConnectionWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName,
+                context)
+            .getValue();
         return this;
     }
 

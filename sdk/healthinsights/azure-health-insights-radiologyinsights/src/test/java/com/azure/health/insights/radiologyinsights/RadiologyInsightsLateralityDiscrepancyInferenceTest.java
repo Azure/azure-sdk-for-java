@@ -30,33 +30,34 @@ public class RadiologyInsightsLateralityDiscrepancyInferenceTest extends Radiolo
 
     @Test
     public void test() {
-        String documentContent = "Exam:   US LT BREAST TARGETED" 
-                + "\r\nTechnique:  Targeted imaging of the  right breast  is performed." 
-                + "\r\nFindings: Targeted imaging of the left breast is performed from the 6:00 to the 9:00 position.  " 
-                + "\r\nAt the 6:00 position, 5 cm from the nipple, there is a 3 x 2 x 4 mm minimally hypoechoic mass with a peripheral calcification. "
-                + "This may correspond to the mammographic finding. No other cystic or solid masses visualized." 
-                + "\r\n";
+        String documentContent = "Exam:   US LT BREAST TARGETED"
+            + "\r\nTechnique:  Targeted imaging of the  right breast  is performed."
+            + "\r\nFindings: Targeted imaging of the left breast is performed from the 6:00 to the 9:00 position.  "
+            + "\r\nAt the 6:00 position, 5 cm from the nipple, there is a 3 x 2 x 4 mm minimally hypoechoic mass with a peripheral calcification. "
+            + "This may correspond to the mammographic finding. No other cystic or solid masses visualized." + "\r\n";
         setDocumentContent(documentContent);
         setInferenceType(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY);
         setOrderCode("26688-1");
         setOrderDescription("US BREAST - LEFT LIMITED");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights("job1715007617997", request)).getFinalResult();
+                    getClient().beginInferRadiologyInsights("job1715007617997", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
-                
+
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
-                
-                RadiologyInsightsInference inference = inferences.get(0);
-                assertTrue(inference instanceof LateralityDiscrepancyInference, "Inference should be an instance of LateralityDiscrepancyInference");
 
-                LateralityDiscrepancyInference lateralityDiscrepancyInference = (LateralityDiscrepancyInference) inference;
+                RadiologyInsightsInference inference = inferences.get(0);
+                assertTrue(inference instanceof LateralityDiscrepancyInference,
+                    "Inference should be an instance of LateralityDiscrepancyInference");
+
+                LateralityDiscrepancyInference lateralityDiscrepancyInference
+                    = (LateralityDiscrepancyInference) inference;
                 List<FhirR4Extension> extensions = lateralityDiscrepancyInference.getExtension();
 
             });
@@ -68,5 +69,5 @@ public class RadiologyInsightsLateralityDiscrepancyInferenceTest extends Radiolo
             return;
         }
     }
-    
+
 }

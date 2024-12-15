@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Initial workspace AAD admin properties for a CSP subscription. */
+/**
+ * Initial workspace AAD admin properties for a CSP subscription.
+ */
 @Fluent
-public final class CspWorkspaceAdminProperties {
+public final class CspWorkspaceAdminProperties implements JsonSerializable<CspWorkspaceAdminProperties> {
     /*
      * AAD object ID of initial workspace admin
      */
-    @JsonProperty(value = "initialWorkspaceAdminObjectId")
     private String initialWorkspaceAdminObjectId;
 
-    /** Creates an instance of CspWorkspaceAdminProperties class. */
+    /**
+     * Creates an instance of CspWorkspaceAdminProperties class.
+     */
     public CspWorkspaceAdminProperties() {
     }
 
     /**
      * Get the initialWorkspaceAdminObjectId property: AAD object ID of initial workspace admin.
-     *
+     * 
      * @return the initialWorkspaceAdminObjectId value.
      */
     public String initialWorkspaceAdminObjectId() {
@@ -31,7 +38,7 @@ public final class CspWorkspaceAdminProperties {
 
     /**
      * Set the initialWorkspaceAdminObjectId property: AAD object ID of initial workspace admin.
-     *
+     * 
      * @param initialWorkspaceAdminObjectId the initialWorkspaceAdminObjectId value to set.
      * @return the CspWorkspaceAdminProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class CspWorkspaceAdminProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("initialWorkspaceAdminObjectId", this.initialWorkspaceAdminObjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CspWorkspaceAdminProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CspWorkspaceAdminProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CspWorkspaceAdminProperties.
+     */
+    public static CspWorkspaceAdminProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CspWorkspaceAdminProperties deserializedCspWorkspaceAdminProperties = new CspWorkspaceAdminProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("initialWorkspaceAdminObjectId".equals(fieldName)) {
+                    deserializedCspWorkspaceAdminProperties.initialWorkspaceAdminObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCspWorkspaceAdminProperties;
+        });
     }
 }

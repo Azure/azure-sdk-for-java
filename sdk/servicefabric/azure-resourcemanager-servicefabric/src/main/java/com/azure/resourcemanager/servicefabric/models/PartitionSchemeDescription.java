@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes how the service is partitioned.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "partitionScheme",
-    defaultImpl = PartitionSchemeDescription.class)
-@JsonTypeName("PartitionSchemeDescription")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Named", value = NamedPartitionSchemeDescription.class),
-    @JsonSubTypes.Type(name = "Singleton", value = SingletonPartitionSchemeDescription.class),
-    @JsonSubTypes.Type(name = "UniformInt64Range", value = UniformInt64RangePartitionSchemeDescription.class) })
 @Immutable
-public class PartitionSchemeDescription {
+public class PartitionSchemeDescription implements JsonSerializable<PartitionSchemeDescription> {
+    /*
+     * Specifies how the service is partitioned.
+     */
+    private PartitionScheme partitionScheme = PartitionScheme.fromString("PartitionSchemeDescription");
+
     /**
      * Creates an instance of PartitionSchemeDescription class.
      */
     public PartitionSchemeDescription() {
+    }
+
+    /**
+     * Get the partitionScheme property: Specifies how the service is partitioned.
+     * 
+     * @return the partitionScheme value.
+     */
+    public PartitionScheme partitionScheme() {
+        return this.partitionScheme;
     }
 
     /**
@@ -36,5 +42,72 @@ public class PartitionSchemeDescription {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partitionScheme",
+            this.partitionScheme == null ? null : this.partitionScheme.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartitionSchemeDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartitionSchemeDescription if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartitionSchemeDescription.
+     */
+    public static PartitionSchemeDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("partitionScheme".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Named".equals(discriminatorValue)) {
+                    return NamedPartitionSchemeDescription.fromJson(readerToUse.reset());
+                } else if ("Singleton".equals(discriminatorValue)) {
+                    return SingletonPartitionSchemeDescription.fromJson(readerToUse.reset());
+                } else if ("UniformInt64Range".equals(discriminatorValue)) {
+                    return UniformInt64RangePartitionSchemeDescription.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static PartitionSchemeDescription fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartitionSchemeDescription deserializedPartitionSchemeDescription = new PartitionSchemeDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partitionScheme".equals(fieldName)) {
+                    deserializedPartitionSchemeDescription.partitionScheme
+                        = PartitionScheme.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartitionSchemeDescription;
+        });
     }
 }

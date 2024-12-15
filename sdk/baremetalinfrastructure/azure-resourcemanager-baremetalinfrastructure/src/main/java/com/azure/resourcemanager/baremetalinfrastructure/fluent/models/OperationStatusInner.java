@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AsyncOperationStatus;
 import com.azure.resourcemanager.baremetalinfrastructure.models.OperationStatusError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The OperationStatus object returns the state of an asynchronous operation. */
+/**
+ * The OperationStatus object returns the state of an asynchronous operation.
+ */
 @Fluent
-public final class OperationStatusInner {
+public final class OperationStatusInner implements JsonSerializable<OperationStatusInner> {
     /*
      * Unique Operation Status Identifier.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Status of the operation.
      */
-    @JsonProperty(value = "status")
     private AsyncOperationStatus status;
 
     /*
      * Start Time when the operation was initially executed.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * An error from the Azure Bare Metal Infrastructure service.
      */
-    @JsonProperty(value = "error")
     private OperationStatusError error;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
      * Get the name property: Unique Operation Status Identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the name property: Unique Operation Status Identifier.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -62,7 +66,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the status property: Status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public AsyncOperationStatus status() {
@@ -71,7 +75,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the status property: Status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -82,7 +86,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the startTime property: Start Time when the operation was initially executed.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -91,7 +95,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the startTime property: Start Time when the operation was initially executed.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -102,7 +106,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the error property: An error from the Azure Bare Metal Infrastructure service.
-     *
+     * 
      * @return the error value.
      */
     public OperationStatusError error() {
@@ -111,7 +115,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the error property: An error from the Azure Bare Metal Infrastructure service.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -122,12 +126,57 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusInner.
+     */
+    public static OperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusInner deserializedOperationStatusInner = new OperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationStatusInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationStatusInner.status = AsyncOperationStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.startTime = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusInner.error = OperationStatusError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusInner;
+        });
     }
 }

@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/terraform/ci.yml
+      - sdk/terraform/azure-resourcemanager-terraform/
+    exclude:
+      - sdk/terraform/pom.xml
+      - sdk/terraform/azure-resourcemanager-terraform/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/terraform/ci.yml
+      - sdk/terraform/azure-resourcemanager-terraform/
+    exclude:
+      - sdk/terraform/pom.xml
+      - sdk/terraform/azure-resourcemanager-terraform/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerterraform
+    displayName: azure-resourcemanager-terraform
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: terraform
+    Artifacts:
+      - name: azure-resourcemanager-terraform
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerterraform
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerterraform }}

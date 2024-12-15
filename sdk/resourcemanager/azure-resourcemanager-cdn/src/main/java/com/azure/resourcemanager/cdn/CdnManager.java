@@ -84,11 +84,8 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     }
 
     private CdnManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new CdnManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new CdnManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());

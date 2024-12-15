@@ -6,16 +6,21 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** IP Community patchable properties. */
+/**
+ * IP Community patchable properties.
+ */
 @Fluent
-public final class IpCommunityRule {
+public final class IpCommunityRule implements JsonSerializable<IpCommunityRule> {
     /*
      * Action to be taken on the configuration. Example: Permit | Deny.
      */
-    @JsonProperty(value = "action", required = true)
     private CommunityActionTypes action;
 
     /*
@@ -23,28 +28,27 @@ public final class IpCommunityRule {
      * number and continue down the list until a match is made. Once a match is made, the permit or deny statement is
      * applied to that network and the rest of the list is ignored.
      */
-    @JsonProperty(value = "sequenceNumber", required = true)
     private long sequenceNumber;
 
     /*
      * Supported well known Community List.
      */
-    @JsonProperty(value = "wellKnownCommunities")
     private List<WellKnownCommunities> wellKnownCommunities;
 
     /*
      * List the community members of IP Community.
      */
-    @JsonProperty(value = "communityMembers", required = true)
     private List<String> communityMembers;
 
-    /** Creates an instance of IpCommunityRule class. */
+    /**
+     * Creates an instance of IpCommunityRule class.
+     */
     public IpCommunityRule() {
     }
 
     /**
      * Get the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
+     * 
      * @return the action value.
      */
     public CommunityActionTypes action() {
@@ -53,7 +57,7 @@ public final class IpCommunityRule {
 
     /**
      * Set the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpCommunityRule object itself.
      */
@@ -66,7 +70,7 @@ public final class IpCommunityRule {
      * Get the sequenceNumber property: Sequence to insert to/delete from existing route. Prefix lists are evaluated
      * starting with the lowest sequence number and continue down the list until a match is made. Once a match is made,
      * the permit or deny statement is applied to that network and the rest of the list is ignored.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public long sequenceNumber() {
@@ -77,7 +81,7 @@ public final class IpCommunityRule {
      * Set the sequenceNumber property: Sequence to insert to/delete from existing route. Prefix lists are evaluated
      * starting with the lowest sequence number and continue down the list until a match is made. Once a match is made,
      * the permit or deny statement is applied to that network and the rest of the list is ignored.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the IpCommunityRule object itself.
      */
@@ -88,7 +92,7 @@ public final class IpCommunityRule {
 
     /**
      * Get the wellKnownCommunities property: Supported well known Community List.
-     *
+     * 
      * @return the wellKnownCommunities value.
      */
     public List<WellKnownCommunities> wellKnownCommunities() {
@@ -97,7 +101,7 @@ public final class IpCommunityRule {
 
     /**
      * Set the wellKnownCommunities property: Supported well known Community List.
-     *
+     * 
      * @param wellKnownCommunities the wellKnownCommunities value to set.
      * @return the IpCommunityRule object itself.
      */
@@ -108,7 +112,7 @@ public final class IpCommunityRule {
 
     /**
      * Get the communityMembers property: List the community members of IP Community.
-     *
+     * 
      * @return the communityMembers value.
      */
     public List<String> communityMembers() {
@@ -117,7 +121,7 @@ public final class IpCommunityRule {
 
     /**
      * Set the communityMembers property: List the community members of IP Community.
-     *
+     * 
      * @param communityMembers the communityMembers value to set.
      * @return the IpCommunityRule object itself.
      */
@@ -128,22 +132,71 @@ public final class IpCommunityRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpCommunityRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model IpCommunityRule"));
         }
         if (communityMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property communityMembers in model IpCommunityRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property communityMembers in model IpCommunityRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpCommunityRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeLongField("sequenceNumber", this.sequenceNumber);
+        jsonWriter.writeArrayField("communityMembers", this.communityMembers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("wellKnownCommunities", this.wellKnownCommunities,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpCommunityRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpCommunityRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpCommunityRule.
+     */
+    public static IpCommunityRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpCommunityRule deserializedIpCommunityRule = new IpCommunityRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedIpCommunityRule.action = CommunityActionTypes.fromString(reader.getString());
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedIpCommunityRule.sequenceNumber = reader.getLong();
+                } else if ("communityMembers".equals(fieldName)) {
+                    List<String> communityMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIpCommunityRule.communityMembers = communityMembers;
+                } else if ("wellKnownCommunities".equals(fieldName)) {
+                    List<WellKnownCommunities> wellKnownCommunities
+                        = reader.readArray(reader1 -> WellKnownCommunities.fromString(reader1.getString()));
+                    deserializedIpCommunityRule.wellKnownCommunities = wellKnownCommunities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpCommunityRule;
+        });
+    }
 }

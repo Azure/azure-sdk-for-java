@@ -34,13 +34,11 @@ public class StorageMoverManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        storageMoverManager = StorageMoverManager
-            .configure()
+        storageMoverManager = StorageMoverManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class StorageMoverManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -80,7 +75,8 @@ public class StorageMoverManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             storageMover.refresh();
             Assertions.assertEquals(storageMover.name(), moveName);
-            Assertions.assertEquals(storageMover.name(), storageMoverManager.storageMovers().getById(storageMover.id()).name());
+            Assertions.assertEquals(storageMover.name(),
+                storageMoverManager.storageMovers().getById(storageMover.id()).name());
             Assertions.assertTrue(storageMoverManager.storageMovers().list().stream().count() > 0);
         } finally {
             if (storageMover != null) {

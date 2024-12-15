@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolDatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolDatabasesClient.
+ */
 public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolDatabasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolDatabasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolDatabasesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(KustoPoolDatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(KustoPoolDatabasesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,96 +71,62 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolDatabasesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/databases")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseListResult>> listByKustoPool(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatabaseListResult>> listByKustoPool(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatabaseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DatabaseInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DatabaseInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DatabaseInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DatabaseInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -162,22 +134,18 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByKustoPoolSinglePageAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    private Mono<PagedResponse<DatabaseInner>> listByKustoPoolSinglePageAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,28 +160,16 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByKustoPool(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByKustoPool(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, apiVersion, accept, context))
+            .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -222,22 +178,18 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByKustoPoolSinglePageAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    private Mono<PagedResponse<DatabaseInner>> listByKustoPoolSinglePageAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -253,24 +205,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByKustoPool(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByKustoPool(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, kustoPoolName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -280,14 +223,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByKustoPoolAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    private PagedFlux<DatabaseInner> listByKustoPoolAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName) {
         return new PagedFlux<>(() -> listByKustoPoolSinglePageAsync(resourceGroupName, workspaceName, kustoPoolName));
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -298,15 +241,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByKustoPoolAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    private PagedFlux<DatabaseInner> listByKustoPoolAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context) {
         return new PagedFlux<>(
             () -> listByKustoPoolSinglePageAsync(resourceGroupName, workspaceName, kustoPoolName, context));
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -316,14 +259,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByKustoPool(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    public PagedIterable<DatabaseInner> listByKustoPool(String resourceGroupName, String workspaceName,
+        String kustoPoolName) {
         return new PagedIterable<>(listByKustoPoolAsync(resourceGroupName, workspaceName, kustoPoolName));
     }
 
     /**
      * Returns the list of databases of the given Kusto pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -334,14 +277,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByKustoPool(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    public PagedIterable<DatabaseInner> listByKustoPool(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context) {
         return new PagedIterable<>(listByKustoPoolAsync(resourceGroupName, workspaceName, kustoPoolName, context));
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -352,19 +295,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -382,25 +321,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            databaseName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, databaseName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -412,19 +340,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -442,22 +366,13 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                databaseName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            kustoPoolName, databaseName, apiVersion, accept, context);
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -468,15 +383,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> getAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+    private Mono<DatabaseInner> getAsync(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -488,14 +403,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
+    public Response<DatabaseInner> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context).block();
     }
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -506,14 +421,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner get(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+    public DatabaseInner get(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName) {
         return getWithResponse(resourceGroupName, workspaceName, kustoPoolName, databaseName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -525,23 +440,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -564,26 +471,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            databaseName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, databaseName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -596,24 +491,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,23 +522,13 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                databaseName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, kustoPoolName, databaseName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -664,27 +540,17 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            kustoPoolName, databaseName, parameters);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -697,26 +563,18 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            kustoPoolName, databaseName, parameters, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -728,20 +586,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -754,22 +607,17 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -781,12 +629,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
+    private Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -794,7 +638,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -807,22 +651,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -834,18 +671,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
+    public DatabaseInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters).block();
     }
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -858,20 +691,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    public DatabaseInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
             .block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -883,23 +711,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,26 +742,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            databaseName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, databaseName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -954,24 +762,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -994,23 +793,13 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                databaseName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, kustoPoolName, databaseName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1022,27 +811,17 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1055,25 +834,18 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName,
+            databaseName, parameters, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1085,20 +857,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1111,21 +878,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1137,20 +898,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
-            .last()
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1163,13 +919,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1177,7 +928,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1189,18 +940,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters) {
+    public DatabaseInner update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters) {
         return updateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters).block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1213,19 +960,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context) {
+    public DatabaseInner update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters, Context context) {
         return updateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context).block();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1236,19 +978,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1266,25 +1004,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            databaseName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, databaseName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1296,19 +1023,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1326,22 +1049,13 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                databaseName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, kustoPoolName, databaseName, apiVersion, accept, context);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1352,19 +1066,17 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1376,19 +1088,18 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1399,14 +1110,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName).getSyncPoller();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1418,16 +1129,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1438,16 +1148,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1459,16 +1168,15 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1484,7 +1192,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1495,8 +1203,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        Context context) {
         deleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context).block();
     }
 }

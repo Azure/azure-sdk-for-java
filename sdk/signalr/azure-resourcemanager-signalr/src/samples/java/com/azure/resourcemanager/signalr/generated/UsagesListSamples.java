@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for Usages List. */
+/**
+ * Samples for Usages List.
+ */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Usages_List.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/Usages_List.
+     * json
      */
     /**
      * Sample code: Usages_List.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void usagesList(com.azure.resourcemanager.signalr.SignalRManager manager) {

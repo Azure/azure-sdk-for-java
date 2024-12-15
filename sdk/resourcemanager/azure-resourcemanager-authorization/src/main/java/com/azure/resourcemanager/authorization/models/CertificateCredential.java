@@ -25,14 +25,10 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithCertificateType<ParentT>,
-            DefinitionStages.WithPublicKey<ParentT>,
-            DefinitionStages.WithSymmetricKey<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithAuthFileCertificate<ParentT>,
-            DefinitionStages.WithAuthFileCertificatePassword<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithCertificateType<ParentT>, DefinitionStages.WithPublicKey<ParentT>,
+        DefinitionStages.WithSymmetricKey<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithAuthFileCertificate<ParentT>, DefinitionStages.WithAuthFileCertificatePassword<ParentT> {
     }
 
     /** Grouping of credential definition stages applicable as part of a application or service principal creation. */
@@ -172,11 +168,8 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithStartDate<ParentT>,
-                WithDuration<ParentT>,
-                WithAuthFile<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithStartDate<ParentT>,
+            WithDuration<ParentT>, WithAuthFile<ParentT> {
         }
     }
 }

@@ -40,7 +40,8 @@ public class HttpPipelineAdapterTests {
         pipelineAdapter.send(req);
     }
 
-    private HttpRequest mockForSendRequest(Mono<String> bodyResponseMono, String bodyResponse, HttpPipeline pipeline) throws MalformedURLException {
+    private HttpRequest mockForSendRequest(Mono<String> bodyResponseMono, String bodyResponse, HttpPipeline pipeline)
+        throws MalformedURLException {
 
         HttpRequest req = Mockito.mock(HttpRequest.class);
         HttpMethod method = HttpMethod.GET;

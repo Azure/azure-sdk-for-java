@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -17,8 +16,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -231,6 +230,7 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
      */
     @Generated
     public ApplicationInsightsClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://dc.services.visualstudio.com";
         SerializerAdapter localSerializerAdapter
@@ -238,6 +238,12 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
         ApplicationInsightsClientImpl client
             = new ApplicationInsightsClientImpl(localPipeline, localSerializerAdapter, localHost);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated
@@ -253,10 +259,8 @@ public final class ApplicationInsightsClientImplBuilder implements HttpTrait<App
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()

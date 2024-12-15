@@ -45,12 +45,13 @@ public final class OrganizationsListEnvironmentsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SCEnvironmentRecord> response = manager.organizations().listEnvironments("dao", "djvlpj",
-            945284283, "kzbrmsgeivsiy", com.azure.core.util.Context.NONE);
+        PagedIterable<SCEnvironmentRecord> response = manager.organizations()
+            .listEnvironments("dao", "djvlpj", 945284283, "kzbrmsgeivsiy", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("kdncj", response.iterator().next().kind());
         Assertions.assertEquals("onbzoggculapzwy", response.iterator().next().id());

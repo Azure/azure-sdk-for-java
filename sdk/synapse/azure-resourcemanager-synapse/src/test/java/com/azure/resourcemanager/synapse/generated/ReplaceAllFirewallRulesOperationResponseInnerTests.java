@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplaceAllFirewallRulesOperationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplaceAllFirewallRulesOperationResponseInner model =
-            BinaryData
-                .fromString("{\"operationId\":\"rtfw\"}")
-                .toObject(ReplaceAllFirewallRulesOperationResponseInner.class);
+        ReplaceAllFirewallRulesOperationResponseInner model = BinaryData.fromString("{\"operationId\":\"rtfw\"}")
+            .toObject(ReplaceAllFirewallRulesOperationResponseInner.class);
         Assertions.assertEquals("rtfw", model.operationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplaceAllFirewallRulesOperationResponseInner model =
-            new ReplaceAllFirewallRulesOperationResponseInner().withOperationId("rtfw");
+        ReplaceAllFirewallRulesOperationResponseInner model
+            = new ReplaceAllFirewallRulesOperationResponseInner().withOperationId("rtfw");
         model = BinaryData.fromObject(model).toObject(ReplaceAllFirewallRulesOperationResponseInner.class);
         Assertions.assertEquals("rtfw", model.operationId());
     }

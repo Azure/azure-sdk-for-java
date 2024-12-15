@@ -16,7 +16,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the PostgreSqlManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {PostgreSqlManagementClientImpl.class})
+@ServiceClientBuilder(serviceClients = { PostgreSqlManagementClientImpl.class })
 public final class PostgreSqlManagementClientBuilder {
     /*
      * The ID of the target subscription.
@@ -130,17 +130,15 @@ public final class PostgreSqlManagementClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        PostgreSqlManagementClientImpl client =
-            new PostgreSqlManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        PostgreSqlManagementClientImpl client = new PostgreSqlManagementClientImpl(pipeline, serializerAdapter,
+            defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

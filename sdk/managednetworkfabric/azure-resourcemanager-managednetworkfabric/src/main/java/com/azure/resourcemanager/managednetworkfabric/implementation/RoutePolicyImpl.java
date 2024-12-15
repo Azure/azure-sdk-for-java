@@ -12,6 +12,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
@@ -77,6 +78,10 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         return this.innerModel().administrativeState();
     }
 
+    public CommunityActionTypes defaultAction() {
+        return this.innerModel().defaultAction();
+    }
+
     public List<RoutePolicyStatementProperties> statements() {
         List<RoutePolicyStatementProperties> inner = this.innerModel().statements();
         if (inner != null) {
@@ -122,25 +127,21 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
     }
 
     public RoutePolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .create(resourceGroupName, routePolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .create(resourceGroupName, routePolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RoutePolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .create(resourceGroupName, routePolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .create(resourceGroupName, routePolicyName, this.innerModel(), context);
         return this;
     }
 
-    RoutePolicyImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    RoutePolicyImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new RoutePolicyInner();
         this.serviceManager = serviceManager;
         this.routePolicyName = name;
@@ -152,49 +153,40 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
     }
 
     public RoutePolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .update(resourceGroupName, routePolicyName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .update(resourceGroupName, routePolicyName, updateBody, Context.NONE);
         return this;
     }
 
     public RoutePolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .update(resourceGroupName, routePolicyName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .update(resourceGroupName, routePolicyName, updateBody, context);
         return this;
     }
 
-    RoutePolicyImpl(
-        RoutePolicyInner innerObject,
+    RoutePolicyImpl(RoutePolicyInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.routePolicyName = Utils.getValueFromIdByName(innerObject.id(), "routePolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.routePolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "routePolicies");
     }
 
     public RoutePolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, routePolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RoutePolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoutePolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRoutePolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, routePolicyName, context)
+            .getValue();
         return this;
     }
 
@@ -202,10 +194,9 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         return serviceManager.routePolicies().updateAdministrativeState(resourceGroupName, routePolicyName, body);
     }
 
-    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .routePolicies()
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.routePolicies()
             .updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
     }
 
@@ -253,6 +244,16 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
     public RoutePolicyImpl withAddressFamilyType(AddressFamilyType addressFamilyType) {
         this.innerModel().withAddressFamilyType(addressFamilyType);
         return this;
+    }
+
+    public RoutePolicyImpl withDefaultAction(CommunityActionTypes defaultAction) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultAction(defaultAction);
+            return this;
+        } else {
+            this.updateBody.withDefaultAction(defaultAction);
+            return this;
+        }
     }
 
     public RoutePolicyImpl withStatements(List<RoutePolicyStatementProperties> statements) {

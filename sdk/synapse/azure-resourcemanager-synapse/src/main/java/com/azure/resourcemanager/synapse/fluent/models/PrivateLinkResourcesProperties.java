@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Private Link Resources Properties. */
+/**
+ * Private Link Resources Properties.
+ */
 @Immutable
-public final class PrivateLinkResourcesProperties {
+public final class PrivateLinkResourcesProperties implements JsonSerializable<PrivateLinkResourcesProperties> {
     /*
      * The Private link resources GroupId
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * The private link resource required member names.
      */
-    @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
 
     /*
      * The private link resource required zone names.
      */
-    @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
-    /** Creates an instance of PrivateLinkResourcesProperties class. */
+    /**
+     * Creates an instance of PrivateLinkResourcesProperties class.
+     */
     public PrivateLinkResourcesProperties() {
     }
 
     /**
      * Get the groupId property: The Private link resources GroupId.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -51,7 +55,7 @@ public final class PrivateLinkResourcesProperties {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -60,7 +64,7 @@ public final class PrivateLinkResourcesProperties {
 
     /**
      * Get the requiredZoneNames property: The private link resource required zone names.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -69,7 +73,7 @@ public final class PrivateLinkResourcesProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -78,9 +82,54 @@ public final class PrivateLinkResourcesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourcesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourcesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourcesProperties.
+     */
+    public static PrivateLinkResourcesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourcesProperties deserializedPrivateLinkResourcesProperties
+                = new PrivateLinkResourcesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedPrivateLinkResourcesProperties.groupId = reader.getString();
+                } else if ("requiredMembers".equals(fieldName)) {
+                    List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResourcesProperties.requiredMembers = requiredMembers;
+                } else if ("requiredZoneNames".equals(fieldName)) {
+                    List<String> requiredZoneNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResourcesProperties.requiredZoneNames = requiredZoneNames;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateLinkResourcesProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourcesProperties;
+        });
     }
 }

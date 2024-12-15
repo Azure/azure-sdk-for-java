@@ -8,122 +8,124 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AzureBareMetalStorageInstances. */
+/**
+ * Resource collection API of AzureBareMetalStorageInstances.
+ */
 public interface AzureBareMetalStorageInstances {
     /**
      * Gets a list of Azure Bare Metal Storage instances in the specified subscription.
-     *
-     * <p>Gets a list of AzureBareMetalStorage instances in the specified subscription. The operations returns various
+     * 
+     * Gets a list of AzureBareMetalStorage instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetalStorage instances in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of AzureBareMetalStorage instances in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalStorageInstance> list();
 
     /**
      * Gets a list of Azure Bare Metal Storage instances in the specified subscription.
-     *
-     * <p>Gets a list of AzureBareMetalStorage instances in the specified subscription. The operations returns various
+     * 
+     * Gets a list of AzureBareMetalStorage instances in the specified subscription. The operations returns various
      * properties of each Azure Bare Metal Instance.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetalStorage instances in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of AzureBareMetalStorage instances in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalStorageInstance> list(Context context);
 
     /**
      * Gets a list of Azure Bare Metal Storage instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of AzureBareMetalStorage instances in the specified subscription and resource group. The
-     * operations returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
+     * Gets a list of AzureBareMetalStorage instances in the specified subscription and resource group. The operations
+     * returns various properties of each Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of AzureBareMetalStorage instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalStorageInstance> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets a list of Azure Bare Metal Storage instances in the specified subscription and resource group.
-     *
-     * <p>Gets a list of AzureBareMetalStorage instances in the specified subscription and resource group. The
-     * operations returns various properties of each Azure Bare Metal Instance.
-     *
+     * 
+     * Gets a list of AzureBareMetalStorage instances in the specified subscription and resource group. The operations
+     * returns various properties of each Azure Bare Metal Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of AzureBareMetalStorage instances in the specified subscription and resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<AzureBareMetalStorageInstance> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets an Azure Bare Metal Storage instance.
-     *
-     * <p>Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalStorageInstanceName Name of the Azure Bare Metal Storage Instance, also known as the
-     *     ResourceName.
+     * ResourceName.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
-    Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context);
 
     /**
      * Gets an Azure Bare Metal Storage instance.
-     *
-     * <p>Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalStorageInstanceName Name of the Azure Bare Metal Storage Instance, also known as the
-     *     ResourceName.
+     * ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
      */
-    AzureBareMetalStorageInstance getByResourceGroup(
-        String resourceGroupName, String azureBareMetalStorageInstanceName);
+    AzureBareMetalStorageInstance getByResourceGroup(String resourceGroupName,
+        String azureBareMetalStorageInstanceName);
 
     /**
      * Delete an AzureBareMetalStorageInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalStorageInstanceName Name of the Azure Bare Metal Storage Instance, also known as the
-     *     ResourceName.
+     * ResourceName.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Context context);
 
     /**
      * Delete an AzureBareMetalStorageInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureBareMetalStorageInstanceName Name of the Azure Bare Metal Storage Instance, also known as the
-     *     ResourceName.
+     * ResourceName.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,36 +134,36 @@ public interface AzureBareMetalStorageInstances {
 
     /**
      * Gets an Azure Bare Metal Storage instance.
-     *
-     * <p>Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     AzureBareMetalStorageInstance getById(String id);
 
     /**
      * Gets an Azure Bare Metal Storage instance.
-     *
-     * <p>Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * Gets an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     Response<AzureBareMetalStorageInstance> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete an AzureBareMetalStorageInstance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,7 +173,7 @@ public interface AzureBareMetalStorageInstances {
 
     /**
      * Delete an AzureBareMetalStorageInstance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +185,7 @@ public interface AzureBareMetalStorageInstances {
 
     /**
      * Begins definition for a new AzureBareMetalStorageInstance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AzureBareMetalStorageInstance definition.
      */

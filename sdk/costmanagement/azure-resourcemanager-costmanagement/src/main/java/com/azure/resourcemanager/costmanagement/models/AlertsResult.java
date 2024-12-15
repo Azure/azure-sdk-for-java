@@ -7,25 +7,27 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertsResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of AlertsResult. */
+/**
+ * An immutable client-side representation of AlertsResult.
+ */
 public interface AlertsResult {
     /**
      * Gets the value property: List of alerts.
-     *
+     * 
      * @return the value value.
      */
     List<Alert> value();
 
     /**
      * Gets the nextLink property: URL to get the next set of alerts results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.AlertsResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     AlertsResultInner innerModel();

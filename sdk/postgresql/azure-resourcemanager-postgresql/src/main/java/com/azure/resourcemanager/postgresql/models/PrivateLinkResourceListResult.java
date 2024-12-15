@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of private link resources. */
 @Immutable
 public final class PrivateLinkResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResult.class);
 
     /*
      * Array of results.

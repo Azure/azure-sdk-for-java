@@ -11,7 +11,7 @@ public final class SkuCapabilityV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuCapabilityV2 model = BinaryData.fromString(
-            "{\"name\":\"ynt\",\"vCores\":3707050213775351931,\"supportedIops\":2854193743711542243,\"supportedMemoryPerVCoreMB\":9128276167784679496,\"supportedZones\":[\"srmslyzr\"],\"supportedHAMode\":[\"c\",\"ckqqzqioxiysui\",\"zynkedya\"]}")
+            "{\"name\":\"gjltdtbnnhado\",\"vCores\":3020486930690600862,\"supportedIops\":6607949081134989897,\"supportedMemoryPerVCoreMB\":1994212450158328847,\"supportedZones\":[\"amqgxqquezikyw\"],\"supportedHAMode\":[\"kallatmel\",\"uipiccjzk\"]}")
             .toObject(SkuCapabilityV2.class);
     }
 

@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of resource provider operations. */
 @Fluent
 public final class OperationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
 
     /*
      * The list of resource provider operations.

@@ -44,9 +44,10 @@ public final class CapabilityTypesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CapabilityType response = manager.capabilityTypes()
             .getWithResponse("vezrypqlmfeo", "erqwkyhkobopg", "edkowepbqpcrfk", com.azure.core.util.Context.NONE)

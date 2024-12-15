@@ -7,6 +7,9 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.AvailableRpOperationInner;
 import com.azure.resourcemanager.synapse.models.AvailableRpOperationDisplayInfo;
+import com.azure.resourcemanager.synapse.models.OperationMetaLogSpecification;
+import com.azure.resourcemanager.synapse.models.OperationMetaMetricDimensionSpecification;
+import com.azure.resourcemanager.synapse.models.OperationMetaMetricSpecification;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,37 +17,98 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableRpOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableRpOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"display\":{\"description\":\"z\",\"resource\":\"chgejspodm\",\"provider\":\"lzydehojwyahux\",\"operation\":\"pmqnja\"},\"isDataAction\":\"ixjsprozvcputeg\",\"name\":\"wmfdatscmdvpjhul\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}},\"origin\":\"zkrwfn\"}")
-                .toObject(AvailableRpOperationInner.class);
+        AvailableRpOperationInner model = BinaryData.fromString(
+            "{\"display\":{\"description\":\"z\",\"resource\":\"chgejspodm\",\"provider\":\"lzydehojwyahux\",\"operation\":\"pmqnja\"},\"isDataAction\":\"ixjsprozvcputeg\",\"name\":\"wmfdatscmdvpjhul\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"sourceMdmNamespace\":\"jozkrwfndiod\",\"displayName\":\"slwejdpvw\",\"name\":\"oqpsoa\",\"aggregationType\":\"tazak\",\"displayDescription\":\"lahbcryff\",\"sourceMdmAccount\":\"dosyg\",\"enableRegionalMdmAccount\":true,\"unit\":\"ojakhmsbzjhcrze\",\"dimensions\":[{},{}],\"supportsInstanceLevelAggregation\":true,\"metricFilterPattern\":\"aolthqtrg\"},{\"sourceMdmNamespace\":\"bpf\",\"displayName\":\"s\",\"name\":\"zgvfcjrwz\",\"aggregationType\":\"xjtfelluwfzit\",\"displayDescription\":\"peqfpjkjl\",\"sourceMdmAccount\":\"fpdvhpfxxypi\",\"enableRegionalMdmAccount\":true,\"unit\":\"ayhuy\",\"dimensions\":[{},{}],\"supportsInstanceLevelAggregation\":true,\"metricFilterPattern\":\"epoo\"},{\"sourceMdmNamespace\":\"nuvamiheogna\",\"displayName\":\"zxtheotusivyevcc\",\"name\":\"ihnhun\",\"aggregationType\":\"wjzrnfygxgisp\",\"displayDescription\":\"vtz\",\"sourceMdmAccount\":\"ufubl\",\"enableRegionalMdmAccount\":false,\"unit\":\"qeof\",\"dimensions\":[{}],\"supportsInstanceLevelAggregation\":true,\"metricFilterPattern\":\"qjbasvms\"}],\"logSpecifications\":[{\"displayName\":\"lngsntnbybkzgcwr\",\"blobDuration\":\"lxxwrljdouskc\",\"name\":\"kocrcjdkwtnhx\"},{\"displayName\":\"jbiksqrglssai\",\"blobDuration\":\"p\",\"name\":\"nzl\"},{\"displayName\":\"fmppe\",\"blobDuration\":\"vmgxsab\",\"name\":\"qduujitcjczdz\"},{\"displayName\":\"ndhkrw\",\"blobDuration\":\"appd\",\"name\":\"dkvwrwjfe\"}]}},\"origin\":\"nhutjeltmrldhugj\"}")
+            .toObject(AvailableRpOperationInner.class);
         Assertions.assertEquals("z", model.display().description());
         Assertions.assertEquals("chgejspodm", model.display().resource());
         Assertions.assertEquals("lzydehojwyahux", model.display().provider());
         Assertions.assertEquals("pmqnja", model.display().operation());
         Assertions.assertEquals("ixjsprozvcputeg", model.isDataAction());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.name());
-        Assertions.assertEquals("zkrwfn", model.origin());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.origin());
+        Assertions.assertEquals("jozkrwfndiod",
+            model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
+        Assertions.assertEquals("slwejdpvw", model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("oqpsoa", model.serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("tazak", model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("lahbcryff",
+            model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("dosyg", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals(true,
+            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions.assertEquals(true,
+            model.serviceSpecification().metricSpecifications().get(0).supportsInstanceLevelAggregation());
+        Assertions.assertEquals("aolthqtrg",
+            model.serviceSpecification().metricSpecifications().get(0).metricFilterPattern());
+        Assertions.assertEquals("lngsntnbybkzgcwr",
+            model.serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("lxxwrljdouskc",
+            model.serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("kocrcjdkwtnhx", model.serviceSpecification().logSpecifications().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableRpOperationInner model =
-            new AvailableRpOperationInner()
-                .withDisplay(
-                    new AvailableRpOperationDisplayInfo()
-                        .withDescription("z")
-                        .withResource("chgejspodm")
-                        .withProvider("lzydehojwyahux")
-                        .withOperation("pmqnja"))
-                .withIsDataAction("ixjsprozvcputeg")
-                .withName("wmfdatscmdvpjhul")
-                .withOrigin("zkrwfn")
-                .withServiceSpecification(
-                    new OperationMetaServiceSpecification()
-                        .withMetricSpecifications(Arrays.asList())
-                        .withLogSpecifications(Arrays.asList()));
+        AvailableRpOperationInner model = new AvailableRpOperationInner()
+            .withDisplay(new AvailableRpOperationDisplayInfo().withDescription("z")
+                .withResource("chgejspodm")
+                .withProvider("lzydehojwyahux")
+                .withOperation("pmqnja"))
+            .withIsDataAction("ixjsprozvcputeg")
+            .withName("wmfdatscmdvpjhul")
+            .withOrigin("nhutjeltmrldhugj")
+            .withServiceSpecification(new OperationMetaServiceSpecification()
+                .withMetricSpecifications(Arrays.asList(
+                    new OperationMetaMetricSpecification().withSourceMdmNamespace("jozkrwfndiod")
+                        .withDisplayName("slwejdpvw")
+                        .withName("oqpsoa")
+                        .withAggregationType("tazak")
+                        .withDisplayDescription("lahbcryff")
+                        .withSourceMdmAccount("dosyg")
+                        .withEnableRegionalMdmAccount(true)
+                        .withUnit("ojakhmsbzjhcrze")
+                        .withDimensions(Arrays.asList(new OperationMetaMetricDimensionSpecification(),
+                            new OperationMetaMetricDimensionSpecification()))
+                        .withSupportsInstanceLevelAggregation(true)
+                        .withMetricFilterPattern("aolthqtrg"),
+                    new OperationMetaMetricSpecification().withSourceMdmNamespace("bpf")
+                        .withDisplayName("s")
+                        .withName("zgvfcjrwz")
+                        .withAggregationType("xjtfelluwfzit")
+                        .withDisplayDescription("peqfpjkjl")
+                        .withSourceMdmAccount("fpdvhpfxxypi")
+                        .withEnableRegionalMdmAccount(true)
+                        .withUnit("ayhuy")
+                        .withDimensions(Arrays.asList(new OperationMetaMetricDimensionSpecification(),
+                            new OperationMetaMetricDimensionSpecification()))
+                        .withSupportsInstanceLevelAggregation(true)
+                        .withMetricFilterPattern("epoo"),
+                    new OperationMetaMetricSpecification().withSourceMdmNamespace("nuvamiheogna")
+                        .withDisplayName("zxtheotusivyevcc")
+                        .withName("ihnhun")
+                        .withAggregationType("wjzrnfygxgisp")
+                        .withDisplayDescription("vtz")
+                        .withSourceMdmAccount("ufubl")
+                        .withEnableRegionalMdmAccount(false)
+                        .withUnit("qeof")
+                        .withDimensions(Arrays.asList(new OperationMetaMetricDimensionSpecification()))
+                        .withSupportsInstanceLevelAggregation(true)
+                        .withMetricFilterPattern("qjbasvms")))
+                .withLogSpecifications(Arrays.asList(
+                    new OperationMetaLogSpecification().withDisplayName("lngsntnbybkzgcwr")
+                        .withBlobDuration("lxxwrljdouskc")
+                        .withName("kocrcjdkwtnhx"),
+                    new OperationMetaLogSpecification().withDisplayName("jbiksqrglssai")
+                        .withBlobDuration("p")
+                        .withName("nzl"),
+                    new OperationMetaLogSpecification().withDisplayName("fmppe")
+                        .withBlobDuration("vmgxsab")
+                        .withName("qduujitcjczdz"),
+                    new OperationMetaLogSpecification().withDisplayName("ndhkrw")
+                        .withBlobDuration("appd")
+                        .withName("dkvwrwjfe"))));
         model = BinaryData.fromObject(model).toObject(AvailableRpOperationInner.class);
         Assertions.assertEquals("z", model.display().description());
         Assertions.assertEquals("chgejspodm", model.display().resource());
@@ -52,6 +116,26 @@ public final class AvailableRpOperationInnerTests {
         Assertions.assertEquals("pmqnja", model.display().operation());
         Assertions.assertEquals("ixjsprozvcputeg", model.isDataAction());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.name());
-        Assertions.assertEquals("zkrwfn", model.origin());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.origin());
+        Assertions.assertEquals("jozkrwfndiod",
+            model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
+        Assertions.assertEquals("slwejdpvw", model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("oqpsoa", model.serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("tazak", model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("lahbcryff",
+            model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("dosyg", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals(true,
+            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions.assertEquals(true,
+            model.serviceSpecification().metricSpecifications().get(0).supportsInstanceLevelAggregation());
+        Assertions.assertEquals("aolthqtrg",
+            model.serviceSpecification().metricSpecifications().get(0).metricFilterPattern());
+        Assertions.assertEquals("lngsntnbybkzgcwr",
+            model.serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("lxxwrljdouskc",
+            model.serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("kocrcjdkwtnhx", model.serviceSpecification().logSpecifications().get(0).name());
     }
 }

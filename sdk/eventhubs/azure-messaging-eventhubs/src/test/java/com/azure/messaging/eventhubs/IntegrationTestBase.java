@@ -45,16 +45,14 @@ public abstract class IntegrationTestBase extends TestBase {
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
-    protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
-        .mapToObj(String::valueOf)
-        .collect(Collectors.toList());
+    protected static final List<String> EXPECTED_PARTITION_IDS
+        = IntStream.range(0, NUMBER_OF_PARTITIONS).mapToObj(String::valueOf).collect(Collectors.toList());
     protected static final Duration TIMEOUT = Duration.ofMinutes(1);
 
     // Tests use timeouts of 20-60 seconds to verify something has happened
     // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
     // This is a good idea to do in any production application as well - no point in waiting too long
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
-        .setTryTimeout(Duration.ofSeconds(3))
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))
         .setDelay(Duration.ofSeconds(1))
         .setMaxDelay(Duration.ofSeconds(5))
         .setMaxRetries(10);
@@ -63,7 +61,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected String testName;
 
-    private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
+    private static final ClientOptions OPTIONS_WITH_TRACING
+        = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
     private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
@@ -130,15 +129,12 @@ public abstract class IntegrationTestBase extends TestBase {
      * {@link com.azure.identity.ClientSecretCredential}.
      */
     protected EventHubClientBuilder createBuilder(boolean shareConnection) {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+        final EventHubClientBuilder builder = new EventHubClientBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
-            .configuration(new ConfigurationBuilder()
-                .putProperty("com.azure.messaging.eventhubs.v2", "true")
-                .build());
+            .configuration(new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build());
 
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final String eventHubName = TestUtils.getEventHubName();
@@ -153,7 +149,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 return null;
 
             case LIVE:
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
                 Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
 
                 final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
@@ -163,7 +160,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String connectionString = TestUtils.getConnectionString(false);
 
                 Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
 
                 if (CoreUtils.isNullOrEmpty(connectionString)) {
                     final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();

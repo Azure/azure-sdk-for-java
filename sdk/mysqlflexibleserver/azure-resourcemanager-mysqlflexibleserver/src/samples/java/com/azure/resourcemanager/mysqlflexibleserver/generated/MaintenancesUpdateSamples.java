@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
  */
 public final class MaintenancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Maintenance/preview/2023-10-01-preview/examples/MaintenanceUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Maintenance/preview/2023-10-01-preview/examples/
+     * MaintenanceUpdate.json
      */
     /**
      * Sample code: Update maintenance on a server.

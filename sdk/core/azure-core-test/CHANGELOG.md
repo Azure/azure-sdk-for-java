@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.3 (Unreleased)
+## 1.27.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.27.0-beta.4 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.27.0-beta.3 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
 
 ## 1.27.0-beta.2 (2024-10-01)
 
@@ -56,7 +72,7 @@
 
 ### Features Added
 
-- Added `InterceptoprManager.removeSanitizers` to remove sanitizers used by Test Proxy.
+- Added `InterceptorManager.removeSanitizers` to remove sanitizers used by Test Proxy.
 
 ### Other Changes
 
@@ -77,7 +93,7 @@
 - `TestBase` no longer extends `BeforeEachCallback`.
 - `TestBase.setupTest` now takes `TestContextManager` rather than `TestInfo`, which is provided by `TestContextManagerParameterResolver`.
 - `TestBase.teardownTest` no longer takes a parameter.
-- `TestProxyTestBase.setupTestProxy` no lnoger takes a parameter.
+- `TestProxyTestBase.setupTestProxy` no longer takes a parameter.
 - `TestContextManager` no longer validates that a non-PLAYBACK test was ran in PLAYBACK mode, `TestBase` validates that now.
 - `DoNotRecord` deprecated `skipInPlayback`, if a test should be skipped in PLAYBACK and shouldn't be recorded it should
   be annotated with both `DoNotRecord` and `LiveOnly`.

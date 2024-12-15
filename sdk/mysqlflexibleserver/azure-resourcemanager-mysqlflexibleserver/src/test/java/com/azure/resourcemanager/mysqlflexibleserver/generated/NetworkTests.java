@@ -13,21 +13,21 @@ public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Network model = BinaryData.fromString(
-            "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"chcbonqvpkvlrxnj\",\"privateDnsZoneResourceId\":\"seiphe\"}")
+            "{\"publicNetworkAccess\":\"Disabled\",\"delegatedSubnetResourceId\":\"snzwd\",\"privateDnsZoneResourceId\":\"bavo\"}")
             .toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("seiphe", model.privateDnsZoneResourceId());
+        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("snzwd", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("bavo", model.privateDnsZoneResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model = new Network().withPublicNetworkAccess(EnableStatusEnum.ENABLED)
-            .withDelegatedSubnetResourceId("chcbonqvpkvlrxnj")
-            .withPrivateDnsZoneResourceId("seiphe");
+        Network model = new Network().withPublicNetworkAccess(EnableStatusEnum.DISABLED)
+            .withDelegatedSubnetResourceId("snzwd")
+            .withPrivateDnsZoneResourceId("bavo");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals(EnableStatusEnum.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("seiphe", model.privateDnsZoneResourceId());
+        Assertions.assertEquals(EnableStatusEnum.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("snzwd", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("bavo", model.privateDnsZoneResourceId());
     }
 }

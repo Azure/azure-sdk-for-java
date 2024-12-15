@@ -13,18 +13,19 @@ public final class JavaScriptFunctionBindingRetrievalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaScriptFunctionBindingRetrievalProperties model
-            = BinaryData.fromString("{\"script\":\"ndslgnayqigynduh\",\"udfType\":\"Scalar\"}")
+            = BinaryData.fromString("{\"script\":\"zucerscdntnev\",\"udfType\":\"Scalar\"}")
                 .toObject(JavaScriptFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("ndslgnayqigynduh", model.script());
+        Assertions.assertEquals("zucerscdntnev", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaScriptFunctionBindingRetrievalProperties model = new JavaScriptFunctionBindingRetrievalProperties()
-            .withScript("ndslgnayqigynduh").withUdfType(UdfType.SCALAR);
+        JavaScriptFunctionBindingRetrievalProperties model
+            = new JavaScriptFunctionBindingRetrievalProperties().withScript("zucerscdntnev")
+                .withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model).toObject(JavaScriptFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("ndslgnayqigynduh", model.script());
+        Assertions.assertEquals("zucerscdntnev", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

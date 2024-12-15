@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient.
+ */
 public interface SqlPoolOperationResultsClient {
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -28,14 +30,14 @@ public interface SqlPoolOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId);
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -47,14 +49,14 @@ public interface SqlPoolOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId, Context context);
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -65,14 +67,14 @@ public interface SqlPoolOperationResultsClient {
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId);
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -84,6 +86,6 @@ public interface SqlPoolOperationResultsClient {
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context);
 }

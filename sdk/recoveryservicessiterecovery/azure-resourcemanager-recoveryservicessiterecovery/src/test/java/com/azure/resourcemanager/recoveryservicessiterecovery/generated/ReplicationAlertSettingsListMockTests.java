@@ -45,12 +45,13 @@ public final class ReplicationAlertSettingsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Alert> response = manager.replicationAlertSettings().list("tzuaedrlhxgcq", "yrhkvxzzmiem",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Alert> response = manager.replicationAlertSettings()
+            .list("tzuaedrlhxgcq", "yrhkvxzzmiem", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tgp", response.iterator().next().properties().sendToOwners());
         Assertions.assertEquals("wgfqvj", response.iterator().next().properties().customEmailAddresses().get(0));

@@ -21,22 +21,18 @@ public final class WorkspaceManagedIdentitySqlControlSettingsImpl
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public WorkspaceManagedIdentitySqlControlSettingsImpl(
-        WorkspaceManagedIdentitySqlControlSettingsClient innerClient,
+    public WorkspaceManagedIdentitySqlControlSettingsImpl(WorkspaceManagedIdentitySqlControlSettingsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ManagedIdentitySqlControlSettingsModel> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<ManagedIdentitySqlControlSettingsModelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
+    public Response<ManagedIdentitySqlControlSettingsModel> getWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
+        Response<ManagedIdentitySqlControlSettingsModelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedIdentitySqlControlSettingsModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,12 +48,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsImpl
         }
     }
 
-    public ManagedIdentitySqlControlSettingsModel createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
+    public ManagedIdentitySqlControlSettingsModel createOrUpdate(String resourceGroupName, String workspaceName,
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
-        ManagedIdentitySqlControlSettingsModelInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, managedIdentitySqlControlSettings);
+        ManagedIdentitySqlControlSettingsModelInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, managedIdentitySqlControlSettings);
         if (inner != null) {
             return new ManagedIdentitySqlControlSettingsModelImpl(inner, this.manager());
         } else {
@@ -65,15 +59,10 @@ public final class WorkspaceManagedIdentitySqlControlSettingsImpl
         }
     }
 
-    public ManagedIdentitySqlControlSettingsModel createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-        Context context) {
-        ManagedIdentitySqlControlSettingsModelInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context);
+    public ManagedIdentitySqlControlSettingsModel createOrUpdate(String resourceGroupName, String workspaceName,
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context) {
+        ManagedIdentitySqlControlSettingsModelInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context);
         if (inner != null) {
             return new ManagedIdentitySqlControlSettingsModelImpl(inner, this.manager());
         } else {

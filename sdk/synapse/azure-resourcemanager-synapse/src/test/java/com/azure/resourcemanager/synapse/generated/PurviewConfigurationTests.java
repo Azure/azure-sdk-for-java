@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class PurviewConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurviewConfiguration model =
-            BinaryData.fromString("{\"purviewResourceId\":\"ezkgi\"}").toObject(PurviewConfiguration.class);
-        Assertions.assertEquals("ezkgi", model.purviewResourceId());
+        PurviewConfiguration model
+            = BinaryData.fromString("{\"purviewResourceId\":\"vgjrwhr\"}").toObject(PurviewConfiguration.class);
+        Assertions.assertEquals("vgjrwhr", model.purviewResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurviewConfiguration model = new PurviewConfiguration().withPurviewResourceId("ezkgi");
+        PurviewConfiguration model = new PurviewConfiguration().withPurviewResourceId("vgjrwhr");
         model = BinaryData.fromObject(model).toObject(PurviewConfiguration.class);
-        Assertions.assertEquals("ezkgi", model.purviewResourceId());
+        Assertions.assertEquals("vgjrwhr", model.purviewResourceId());
     }
 }

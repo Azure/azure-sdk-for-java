@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
- * event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired event.
  */
 @Fluent
 public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouterJobEventData {
@@ -35,8 +34,7 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
     }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker
-     * Selectors.
+     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker Selectors.
      * 
      * @return the expiredRequestedWorkerSelectors value.
      */
@@ -45,8 +43,7 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
     }
 
     /**
-     * Set the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker
-     * Selectors.
+     * Set the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker Selectors.
      * 
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobWorkerSelectorsExpiredEventData object itself.
@@ -132,6 +129,9 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

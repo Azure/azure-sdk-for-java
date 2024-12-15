@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequest
 public final class StaticSitesCreateOrUpdateStaticSiteCustomDomainSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteCustomDomain.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CreateOrUpdateStaticSiteCustomDomain.
      * json
      */
     /**

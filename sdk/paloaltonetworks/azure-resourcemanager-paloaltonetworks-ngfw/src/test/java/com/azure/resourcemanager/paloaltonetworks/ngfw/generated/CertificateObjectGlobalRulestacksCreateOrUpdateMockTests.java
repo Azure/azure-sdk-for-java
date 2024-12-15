@@ -46,14 +46,17 @@ public final class CertificateObjectGlobalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateObjectGlobalRulestackResource response
-            = manager.certificateObjectGlobalRulestacks().createOrUpdate("fvcl", "lxnfuijtkbusqogs",
+        CertificateObjectGlobalRulestackResource response = manager.certificateObjectGlobalRulestacks()
+            .createOrUpdate("fvcl", "lxnfuijtkbusqogs",
                 new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("kayi")
-                    .withCertificateSelfSigned(BooleanEnum.FALSE).withAuditComment("haru").withDescription("ji")
+                    .withCertificateSelfSigned(BooleanEnum.FALSE)
+                    .withAuditComment("haru")
+                    .withDescription("ji")
                     .withEtag("fzyjqt"),
                 com.azure.core.util.Context.NONE);
 

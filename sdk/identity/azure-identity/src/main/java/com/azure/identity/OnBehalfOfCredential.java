@@ -65,10 +65,9 @@ public class OnBehalfOfCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
-                                String certificatePassword, Supplier<String> clientAssertionSupplier,
-                                IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        String certificatePassword, Supplier<String> clientAssertionSupplier,
+        IdentityClientOptions identityClientOptions) {
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .certificatePath(certificatePath)
@@ -87,8 +86,8 @@ public class OnBehalfOfCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error)));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error)));
     }
 
     @Override
@@ -99,7 +98,8 @@ public class OnBehalfOfCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithOBO(request);

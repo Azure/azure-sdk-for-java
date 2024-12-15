@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SkuCapacityScaleType extends ExpandableStringEnum<SkuCapacity
      * @param name a name to look for.
      * @return the corresponding SkuCapacityScaleType.
      */
-    @JsonCreator
     public static SkuCapacityScaleType fromString(String name) {
         return fromString(name, SkuCapacityScaleType.class);
     }

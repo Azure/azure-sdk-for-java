@@ -75,23 +75,14 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param aadSecret AAD application client secret to access the KeyVault
      * @param azureEnvironment Azure environment
      */
-    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String vaultUri,
-                                                    String aadClientId, String aadSecret,
-                                                    AzureEnvironment azureEnvironment) {
-        this.keyVaultId =
-            Objects
-                .requireNonNull(
-                    keyVaultId,
-                    "KeyVaultId parameter holding resource id of the KeyVault to store disk encryption key is"
-                        + " required.");
-        this.aadClientId =
-            Objects
-                .requireNonNull(
-                    aadClientId, "aadClientId parameter holding AAD client id to access the KeyVault is required.");
-        this.aadSecret =
-            Objects
-                .requireNonNull(
-                    aadSecret, "aadSecret parameter holding AAD secret to access the KeyVault is required.");
+    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String vaultUri, String aadClientId,
+        String aadSecret, AzureEnvironment azureEnvironment) {
+        this.keyVaultId = Objects.requireNonNull(keyVaultId,
+            "KeyVaultId parameter holding resource id of the KeyVault to store disk encryption key is" + " required.");
+        this.aadClientId = Objects.requireNonNull(aadClientId,
+            "aadClientId parameter holding AAD client id to access the KeyVault is required.");
+        this.aadSecret = Objects.requireNonNull(aadSecret,
+            "aadSecret parameter holding AAD secret to access the KeyVault is required.");
         this.vaultUri = vaultUri;
         this.azureEnvironment = azureEnvironment;
     }
@@ -104,11 +95,9 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
      * @param azureEnvironment Azure environment
      * */
     protected VirtualMachineEncryptionConfiguration(String keyVaultId, String vaultUri,
-                                                    AzureEnvironment azureEnvironment) {
-        Objects
-            .requireNonNull(
-                keyVaultId,
-                "KeyVaultId parameter holding resource id of the keyVault to store disk encryption key is required.");
+        AzureEnvironment azureEnvironment) {
+        Objects.requireNonNull(keyVaultId,
+            "KeyVaultId parameter holding resource id of the keyVault to store disk encryption key is required.");
         this.keyVaultId = keyVaultId;
         this.aadClientId = null;
         this.aadSecret = null;
@@ -148,8 +137,8 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
             return vaultUri;
         }
 
-        String keyVaultDnsSuffix =
-            (azureEnvironment == null || CoreUtils.isNullOrEmpty(azureEnvironment.getKeyVaultDnsSuffix()))
+        String keyVaultDnsSuffix
+            = (azureEnvironment == null || CoreUtils.isNullOrEmpty(azureEnvironment.getKeyVaultDnsSuffix()))
                 ? AzureEnvironment.AZURE.getKeyVaultDnsSuffix()
                 : azureEnvironment.getKeyVaultDnsSuffix();
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);

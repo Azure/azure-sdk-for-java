@@ -17,19 +17,19 @@ public class ScenarioOptions {
     @Value("${TEST_CLASS:#{null}}")
     private String testClass;
 
-    @Value("${EVENTHUBS_CONNECTION_STRING:#{null}}")
-    private String eventhubsConnectionString;
+    @Value("${EVENT_HUBS_FULLY_QUALIFIED_NAMESPACE}")
+    private String eventHubsFullyQualifiedNamespace;
 
-    @Value("${EVENTHUBS_EVENT_HUB_NAME:#{null}}")
+    @Value("${EVENT_HUBS_EVENT_HUB_NAME:#{null}}")
     private String eventHubsEventHubName;
 
-    @Value("${EVENTHUBS_CONSUMER_GROUP:$Default}")
+    @Value("${EVENT_HUBS_CONSUMER_GROUP:$Default}")
     private String eventHubsConsumerGroup;
 
-    @Value("${STORAGE_CONNECTION_STRING:#{null}}")
-    private String storageConnectionString;
+    @Value("${STORAGE_BLOB_ENDPOINT_URI}")
+    private String storageBlobEndpointUri;
 
-    @Value("${STORAGE_CONTAINER_NAME:#{null}}")
+    @Value("${STORAGE_CONTAINER_NAME}")
     private String storageContainerName;
 
     @Value("${DURATION_MINUTES:15}")
@@ -47,20 +47,19 @@ public class ScenarioOptions {
     @Value("${IDLE_DURATION_MINUTES:0}")
     private int idleDurationInMinutes;
 
-    @Value("${USE_V2_STACK:false}")
+    @Value("${USE_V2:false}")
     private boolean useV2Stack;
 
     public String getTestClass() {
         return testClass;
     }
 
-    /**
-     * Gets the Event Hubs namespace connection string.
-     *
-     * @return The Event Hubs namespace connection string.
-     */
-    public String getEventHubsConnectionString() {
-        return eventhubsConnectionString;
+    public String getEventHubsFullyQualifiedNamespace() {
+        return eventHubsFullyQualifiedNamespace;
+    }
+
+    public void setEventHubsFullyQualifiedNamespace(String eventHubsFullyQualifiedNamespace) {
+        this.eventHubsFullyQualifiedNamespace = eventHubsFullyQualifiedNamespace;
     }
 
     /**
@@ -76,8 +75,12 @@ public class ScenarioOptions {
         return eventHubsConsumerGroup;
     }
 
-    public String getStorageConnectionString() {
-        return storageConnectionString;
+    public String getStorageBlobEndpointUri() {
+        return storageBlobEndpointUri;
+    }
+
+    public void setStorageBlobEndpointUri(String storageBlobEndpointUri) {
+        this.storageBlobEndpointUri = storageBlobEndpointUri;
     }
 
     public String getStorageContainerName() {
@@ -92,8 +95,14 @@ public class ScenarioOptions {
         return Duration.ofMinutes(delayTestStartInMinutes);
     }
 
+    /**
+     * Gets the idle duration.
+     *
+     * @return The idle duration.
+     * @throws IllegalArgumentException If the idle duration in minutes is less than zero.
+     */
     public Duration getIdleDuration() {
-        if  (idleDurationInMinutes == 0) {
+        if (idleDurationInMinutes == 0) {
             return Duration.ZERO;
         }
 

@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 /** Represents a log file. */
 @Fluent
 public final class LogFileInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFileInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogFileInner.class);
 
     /*
      * The properties of the log file.

@@ -36,6 +36,6 @@ public interface CheckNameAvailabilitiesClient {
      * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> executeWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailabilityInner> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
+        Context context);
 }

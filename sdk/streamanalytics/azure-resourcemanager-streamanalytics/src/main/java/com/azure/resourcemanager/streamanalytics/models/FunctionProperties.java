@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with a function.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = FunctionProperties.class)
-@JsonTypeName("FunctionProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Scalar", value = ScalarFunctionProperties.class),
-    @JsonSubTypes.Type(name = "Aggregate", value = AggregateFunctionProperties.class) })
 @Fluent
-public class FunctionProperties {
+public class FunctionProperties implements JsonSerializable<FunctionProperties> {
+    /*
+     * Indicates the type of function.
+     */
+    private String type = "FunctionProperties";
+
     /*
      * The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
      * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
      * for optimistic concurrency.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private FunctionConfiguration innerProperties;
 
     /**
      * Creates an instance of FunctionProperties class.
      */
     public FunctionProperties() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of function.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -58,12 +62,36 @@ public class FunctionProperties {
     }
 
     /**
+     * Set the etag property: The current entity tag for the function. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
+     * headers for write operations for optimistic concurrency.
+     * 
+     * @param etag the etag value to set.
+     * @return the FunctionProperties object itself.
+     */
+    FunctionProperties withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: The properties property.
      * 
      * @return the innerProperties value.
      */
     private FunctionConfiguration innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Set the innerProperties property: The properties property.
+     * 
+     * @param innerProperties the innerProperties value to set.
+     * @return the FunctionProperties object itself.
+     */
+    FunctionProperties withInnerProperties(FunctionConfiguration innerProperties) {
+        this.innerProperties = innerProperties;
+        return this;
     }
 
     /**
@@ -146,5 +174,73 @@ public class FunctionProperties {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionProperties.
+     */
+    public static FunctionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Scalar".equals(discriminatorValue)) {
+                    return ScalarFunctionProperties.fromJson(readerToUse.reset());
+                } else if ("Aggregate".equals(discriminatorValue)) {
+                    return AggregateFunctionProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FunctionProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionProperties deserializedFunctionProperties = new FunctionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedFunctionProperties.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFunctionProperties.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFunctionProperties.innerProperties = FunctionConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionProperties;
+        });
     }
 }

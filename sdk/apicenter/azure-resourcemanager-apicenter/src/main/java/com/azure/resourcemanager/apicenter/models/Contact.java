@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contact information.
  */
 @Fluent
-public final class Contact {
+public final class Contact implements JsonSerializable<Contact> {
     /*
      * Name of the contact.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * URL for the contact.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Email address of the contact.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /**
@@ -102,5 +103,47 @@ public final class Contact {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Contact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Contact if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Contact.
+     */
+    public static Contact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Contact deserializedContact = new Contact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedContact.name = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedContact.url = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedContact.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContact;
+        });
     }
 }

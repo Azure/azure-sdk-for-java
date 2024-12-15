@@ -15,9 +15,7 @@ class VirtualMachineExtensionImageTypeImpl extends WrapperImpl<VirtualMachineExt
     private final VirtualMachineExtensionImagesClient client;
     private final VirtualMachinePublisher publisher;
 
-    VirtualMachineExtensionImageTypeImpl(
-        VirtualMachineExtensionImagesClient client,
-        VirtualMachinePublisher publisher,
+    VirtualMachineExtensionImageTypeImpl(VirtualMachineExtensionImagesClient client, VirtualMachinePublisher publisher,
         VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.client = client;

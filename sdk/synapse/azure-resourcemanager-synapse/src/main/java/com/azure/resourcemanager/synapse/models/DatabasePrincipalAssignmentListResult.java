@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.DatabasePrincipalAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list Kusto database principal assignments operation response. */
+/**
+ * The list Kusto database principal assignments operation response.
+ */
 @Fluent
-public final class DatabasePrincipalAssignmentListResult {
+public final class DatabasePrincipalAssignmentListResult
+    implements JsonSerializable<DatabasePrincipalAssignmentListResult> {
     /*
      * The list of Kusto database principal assignments.
      */
-    @JsonProperty(value = "value")
     private List<DatabasePrincipalAssignmentInner> value;
 
-    /** Creates an instance of DatabasePrincipalAssignmentListResult class. */
+    /**
+     * Creates an instance of DatabasePrincipalAssignmentListResult class.
+     */
     public DatabasePrincipalAssignmentListResult() {
     }
 
     /**
      * Get the value property: The list of Kusto database principal assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabasePrincipalAssignmentInner> value() {
@@ -33,7 +41,7 @@ public final class DatabasePrincipalAssignmentListResult {
 
     /**
      * Set the value property: The list of Kusto database principal assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatabasePrincipalAssignmentListResult object itself.
      */
@@ -44,12 +52,51 @@ public final class DatabasePrincipalAssignmentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabasePrincipalAssignmentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabasePrincipalAssignmentListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabasePrincipalAssignmentListResult.
+     */
+    public static DatabasePrincipalAssignmentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabasePrincipalAssignmentListResult deserializedDatabasePrincipalAssignmentListResult
+                = new DatabasePrincipalAssignmentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DatabasePrincipalAssignmentInner> value
+                        = reader.readArray(reader1 -> DatabasePrincipalAssignmentInner.fromJson(reader1));
+                    deserializedDatabasePrincipalAssignmentListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabasePrincipalAssignmentListResult;
+        });
     }
 }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.signalr {
     exports com.azure.resourcemanager.signalr.fluent.models;
     exports com.azure.resourcemanager.signalr.models;
 
-    opens com.azure.resourcemanager.signalr.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.signalr.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.signalr.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.signalr.models to com.azure.core;
 }

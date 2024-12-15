@@ -4,26 +4,23 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPoolDatabasePrincipalAssignments Delete. */
+/**
+ * Samples for KustoPoolDatabasePrincipalAssignments Delete.
+ */
 public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasePrincipalAssignmentsDelete.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolDatabasePrincipalAssignmentsDelete.json
      */
     /**
      * Sample code: KustoPoolDatabasePrincipalAssignmentsDelete.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void kustoPoolDatabasePrincipalAssignmentsDelete(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolDatabasePrincipalAssignments()
-            .delete(
-                "synapseWorkspaceName",
-                "kustoclusterrptest4",
-                "Kustodatabase8",
-                "kustoprincipal1",
-                "kustorptest",
+    public static void
+        kustoPoolDatabasePrincipalAssignmentsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.kustoPoolDatabasePrincipalAssignments()
+            .delete("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest",
                 com.azure.core.util.Context.NONE);
     }
 }

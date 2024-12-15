@@ -10,11 +10,9 @@ import com.azure.resourcemanager.signalr.models.Sku;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"ob\",\"sku\":{\"name\":\"ft\",\"tier\":\"Premium\",\"size\":\"cwq\",\"family\":\"imaq\",\"capacity\":1167127831},\"capacity\":{\"minimum\":1484369172,\"maximum\":107725068,\"default\":1611708700,\"allowedValues\":[444207915,1128673192,84498484],\"scaleType\":\"Manual\"}}")
-                .toObject(Sku.class);
+        Sku model = BinaryData.fromString(
+            "{\"resourceType\":\"ob\",\"sku\":{\"name\":\"ft\",\"tier\":\"Premium\",\"size\":\"cwq\",\"family\":\"imaq\",\"capacity\":1167127831},\"capacity\":{\"minimum\":1484369172,\"maximum\":107725068,\"default\":1611708700,\"allowedValues\":[444207915,1128673192,84498484],\"scaleType\":\"Manual\"}}")
+            .toObject(Sku.class);
     }
 
     @org.junit.jupiter.api.Test

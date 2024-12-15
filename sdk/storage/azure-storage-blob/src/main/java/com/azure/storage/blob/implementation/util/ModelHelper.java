@@ -93,7 +93,7 @@ public final class ModelHelper {
      * @return Whether the authority is IP style.
      */
     public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
-        return new URL("http://" +  authority).getPort() != -1;
+        return new URL("http://" + authority).getPort() != -1;
     }
 
     /**
@@ -121,8 +121,7 @@ public final class ModelHelper {
             maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
-        return new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
+        return new ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
@@ -135,8 +134,8 @@ public final class ModelHelper {
      * @param other The options to fill in defaults.
      * @return An object with defaults filled in for null values in the original.
      */
-    public static com.azure.storage.common.ParallelTransferOptions populateAndApplyDefaults(
-        com.azure.storage.common.ParallelTransferOptions other) {
+    public static com.azure.storage.common.ParallelTransferOptions
+        populateAndApplyDefaults(com.azure.storage.common.ParallelTransferOptions other) {
         other = other == null ? new com.azure.storage.common.ParallelTransferOptions() : other;
 
         Long blockSize = other.getBlockSizeLong();
@@ -154,8 +153,7 @@ public final class ModelHelper {
             maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
-        return new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
+        return new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
             .setProgressListener(other.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
@@ -166,10 +164,9 @@ public final class ModelHelper {
      * @param blobOptions {@link ParallelTransferOptions}
      * @return {@link com.azure.storage.common.ParallelTransferOptions}
      */
-    public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
-        ParallelTransferOptions blobOptions) {
-        return new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSizeLong(blobOptions.getBlockSizeLong())
+    public static com.azure.storage.common.ParallelTransferOptions
+        wrapBlobOptions(ParallelTransferOptions blobOptions) {
+        return new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(blobOptions.getBlockSizeLong())
             .setMaxConcurrency(blobOptions.getMaxConcurrency())
             .setProgressListener(blobOptions.getProgressListener())
             .setMaxSingleUploadSizeLong(blobOptions.getMaxSingleUploadSizeLong());
@@ -239,8 +236,8 @@ public final class ModelHelper {
         return new BlobTags().setBlobTagSet(blobTagSet);
     }
 
-    public static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
-        Map<String, String> objectReplicationMetadata) {
+    public static List<ObjectReplicationPolicy>
+        transformObjectReplicationMetadata(Map<String, String> objectReplicationMetadata) {
         if (CoreUtils.isNullOrEmpty(objectReplicationMetadata)) {
             return null;
         }
@@ -252,8 +249,8 @@ public final class ModelHelper {
             int index = orString.indexOf('_', startIndex);
             String policyId = orString.substring(startIndex, index);
             String ruleId = orString.substring(index + 1);
-            ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
-                ObjectReplicationStatus.fromString(entry.getValue()));
+            ObjectReplicationRule rule
+                = new ObjectReplicationRule(ruleId, ObjectReplicationStatus.fromString(entry.getValue()));
             if (!internalSourcePolicies.containsKey(policyId)) {
                 internalSourcePolicies.put(policyId, new ArrayList<>());
             }
@@ -298,8 +295,7 @@ public final class ModelHelper {
             return null;
         }
 
-        return new BlobLeaseRequestConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        return new BlobLeaseRequestConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
@@ -312,14 +308,13 @@ public final class ModelHelper {
      * @param requestConditions {@link RequestConditions}
      * @return {@link BlobBeginCopySourceRequestConditions}
      */
-    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(
-        RequestConditions requestConditions) {
+    public static BlobBeginCopySourceRequestConditions
+        populateBlobSourceRequestConditions(RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
 
-        return new BlobBeginCopySourceRequestConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        return new BlobBeginCopySourceRequestConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
@@ -332,14 +327,13 @@ public final class ModelHelper {
      * @param requestConditions {@link RequestConditions}
      * @return {@link PageBlobCopyIncrementalRequestConditions}
      */
-    public static PageBlobCopyIncrementalRequestConditions populateBlobDestinationRequestConditions(
-        RequestConditions requestConditions) {
+    public static PageBlobCopyIncrementalRequestConditions
+        populateBlobDestinationRequestConditions(RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
 
-        return new PageBlobCopyIncrementalRequestConditions()
-            .setIfMatch(requestConditions.getIfMatch())
+        return new PageBlobCopyIncrementalRequestConditions().setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
@@ -354,8 +348,8 @@ public final class ModelHelper {
         return objectReplicationStatus.get("policy-id");
     }
 
-    public static List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies(
-        Map<String, String> objectReplicationStatus) {
+    public static List<ObjectReplicationPolicy>
+        getObjectReplicationSourcePolicies(Map<String, String> objectReplicationStatus) {
         if (CoreUtils.isNullOrEmpty(objectReplicationStatus)) {
             return new ArrayList<>();
         }
@@ -367,8 +361,8 @@ public final class ModelHelper {
                 int index = key.indexOf('_');
                 String policyId = key.substring(0, index);
                 String ruleId = key.substring(index + 1);
-                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
-                    ObjectReplicationStatus.fromString(entry.getValue()));
+                ObjectReplicationRule rule
+                    = new ObjectReplicationRule(ruleId, ObjectReplicationStatus.fromString(entry.getValue()));
                 if (!internalSourcePolicies.containsKey(policyId)) {
                     internalSourcePolicies.put(policyId, new ArrayList<>());
                 }
@@ -402,8 +396,7 @@ public final class ModelHelper {
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
-        return BlobQueryHeadersConstructorProxy.create(headers)
-            .setErrorCode(ModelHelper.getErrorCode(rawHeaders));
+        return BlobQueryHeadersConstructorProxy.create(headers).setErrorCode(ModelHelper.getErrorCode(rawHeaders));
     }
 
     public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
@@ -417,46 +410,52 @@ public final class ModelHelper {
             switch (condition) {
                 case LEASE_ID:
                     if (requestConditions.getLeaseId() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
                     }
                     break;
+
                 case TAGS_CONDITIONS:
                     if (requestConditions.getTagsConditions() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
                     }
                     break;
+
                 case IF_MODIFIED_SINCE:
                     if (requestConditions.getIfModifiedSince() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
                     }
                     break;
+
                 case IF_UNMODIFIED_SINCE:
                     if (requestConditions.getIfUnmodifiedSince() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
                     }
                     break;
+
                 case IF_MATCH:
                     if (requestConditions.getIfMatch() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
                     }
                     break;
+
                 case IF_NONE_MATCH:
                     if (requestConditions.getIfNoneMatch() != null) {
-                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
-                            : invalidConditionsFound;
+                        invalidConditionsFound
+                            = invalidConditionsFound == null ? new ArrayList<>() : invalidConditionsFound;
                         invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
                     }
                     break;
+
                 default:
                     break;
             }
@@ -464,25 +463,26 @@ public final class ModelHelper {
         if (invalidConditionsFound != null && !invalidConditionsFound.isEmpty()) {
             String unsupported = String.join(", ", invalidConditionsFound);
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("%s does not support the %s request condition(s) for parameter '%s'.",
-                    operationName, unsupported, parameterName)));
+                String.format("%s does not support the %s request condition(s) for parameter '%s'.", operationName,
+                    unsupported, parameterName)));
         }
     }
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BlobPropertiesConstructorProxy.create(
-                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+            BlobPropertiesConstructorProxy
+                .create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BlobPropertiesConstructorProxy.create(
-                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+            BlobPropertiesConstructorProxy
+                .create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {
-        return headers.getContentRange() == null ? headers.getContentLength()
+        return headers.getContentRange() == null
+            ? headers.getContentLength()
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
@@ -515,18 +515,22 @@ public final class ModelHelper {
             case SUCCESS:
                 operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
                 operationStatus = LongRunningOperationStatus.FAILED;
                 break;
+
             case ABORTED:
                 operationStatus = LongRunningOperationStatus.USER_CANCELLED;
                 break;
+
             case PENDING:
                 operationStatus = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "CopyStatusType is not supported. Status: " + status));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("CopyStatusType is not supported. Status: " + status));
         }
         return operationStatus;
     }
@@ -545,11 +549,12 @@ public final class ModelHelper {
      * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
      * of options has been selected.
      */
-    public static List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
+    public static List<ListBlobContainersIncludeType>
+        toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
             && (blobContainerListDetails.getRetrieveMetadata()
-            || blobContainerListDetails.getRetrieveDeleted()
-            || blobContainerListDetails.getRetrieveSystemContainers());
+                || blobContainerListDetails.getRetrieveDeleted()
+                || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(3);
             if (blobContainerListDetails.getRetrieveDeleted()) {
@@ -601,8 +606,8 @@ public final class ModelHelper {
 
     public static String pageRangeToString(PageRange pageRange) {
         if (pageRange.getStart() < 0 || pageRange.getEnd() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                + "0 if specified.");
+            throw new IllegalArgumentException(
+                "PageRange's start and end values must be greater than or equal to " + "0 if specified.");
         }
         if (pageRange.getStart() % PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
@@ -616,7 +621,8 @@ public final class ModelHelper {
         return "bytes=" + pageRange.getStart() + '-' + pageRange.getEnd();
     }
 
-    public static List<BlobSignedIdentifier> truncateTimeForBlobSignedIdentifier(List<BlobSignedIdentifier> identifiers) {
+    public static List<BlobSignedIdentifier>
+        truncateTimeForBlobSignedIdentifier(List<BlobSignedIdentifier> identifiers) {
         if (identifiers == null) {
             return null;
         }
@@ -628,12 +634,12 @@ public final class ModelHelper {
          */
         for (BlobSignedIdentifier identifier : identifiers) {
             if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
-                identifier.getAccessPolicy().setStartsOn(
-                    identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                identifier.getAccessPolicy()
+                    .setStartsOn(identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
             }
             if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
-                identifier.getAccessPolicy().setExpiresOn(
-                    identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                identifier.getAccessPolicy()
+                    .setExpiresOn(identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
             }
         }
         return identifiers;

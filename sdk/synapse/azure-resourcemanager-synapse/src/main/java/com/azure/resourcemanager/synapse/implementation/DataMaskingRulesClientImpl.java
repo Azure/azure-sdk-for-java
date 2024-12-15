@@ -32,22 +32,28 @@ import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingRulesClient.
+ */
 public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataMaskingRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of DataMaskingRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataMaskingRulesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DataMaskingRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DataMaskingRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,66 +64,46 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface DataMaskingRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
-                + "/{dataMaskingRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataMaskingRuleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DataMaskingRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
             @PathParam("dataMaskingRuleName") String dataMaskingRuleName,
-            @BodyParam("application/json") DataMaskingRuleInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DataMaskingRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
-                + "/{dataMaskingRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataMaskingRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DataMaskingRuleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
-            @PathParam("dataMaskingRuleName") String dataMaskingRuleName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("dataMaskingRuleName") String dataMaskingRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataMaskingRuleListResult>> listBySqlPool(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DataMaskingRuleListResult>> listBySqlPool(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -126,27 +112,19 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
+    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,27 +149,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            dataMaskingPolicyName,
-                            dataMaskingRuleName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, dataMaskingPolicyName,
+                dataMaskingRuleName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -201,28 +167,20 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters,
+    private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String dataMaskingRuleName, DataMaskingRuleInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,24 +205,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                dataMaskingPolicyName,
-                dataMaskingRuleName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, dataMaskingPolicyName, dataMaskingRuleName, parameters,
+            accept, context);
     }
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -276,20 +224,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return represents a Sql pool data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataMaskingRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<DataMaskingRuleInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -302,21 +245,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return represents a Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataMaskingRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters, context)
-            .block();
+    public Response<DataMaskingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName, DataMaskingRuleInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+            parameters, context).block();
     }
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -328,20 +265,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return represents a Sql pool data masking rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingRuleInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters, Context.NONE)
-            .getValue();
+    public DataMaskingRuleInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName, DataMaskingRuleInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -349,23 +281,19 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
+    private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -385,26 +313,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            dataMaskingPolicyName,
-                            dataMaskingRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, dataMaskingPolicyName, dataMaskingRuleName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -413,27 +330,19 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        Context context) {
+    private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -453,23 +362,13 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String dataMaskingPolicyName = "Default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                dataMaskingPolicyName,
-                dataMaskingRuleName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, dataMaskingPolicyName, dataMaskingRuleName, accept, context);
     }
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -480,15 +379,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return the specific Sql pool data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataMaskingRuleInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
+    private Mono<DataMaskingRuleInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -500,19 +399,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return the specific Sql pool data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataMaskingRuleInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        Context context) {
+    public Response<DataMaskingRuleInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String dataMaskingRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context)
             .block();
     }
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -523,38 +418,34 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return the specific Sql pool data masking rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingRuleInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
+    public DataMaskingRuleInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -571,28 +462,16 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listBySqlPool(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            dataMaskingPolicyName,
-                            accept,
-                            context))
-            .<PagedResponse<DataMaskingRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                context -> service.listBySqlPool(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, dataMaskingPolicyName, accept, context))
+            .<PagedResponse<DataMaskingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -600,23 +479,19 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -633,25 +508,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySqlPool(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                dataMaskingPolicyName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listBySqlPool(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, dataMaskingPolicyName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -661,14 +526,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedFlux<>(() -> listBySqlPoolSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -679,15 +544,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return new PagedFlux<>(
             () -> listBySqlPoolSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -697,14 +562,14 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataMaskingRuleInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<DataMaskingRuleInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedIterable<>(listBySqlPoolAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -715,8 +580,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataMaskingRuleInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<DataMaskingRuleInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return new PagedIterable<>(listBySqlPoolAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 }

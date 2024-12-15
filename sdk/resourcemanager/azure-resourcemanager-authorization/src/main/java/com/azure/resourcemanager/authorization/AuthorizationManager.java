@@ -107,8 +107,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     /** The implementation for Configurable interface. */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return AuthorizationManager
-                .authenticate(buildHttpPipeline(credential, profile), profile);
+            return AuthorizationManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
@@ -118,17 +117,12 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
             ? graphEndpoint + DEFAULT_GRAPH_ENDPOINT_SUFFIX
             : graphEndpoint + "/" + DEFAULT_GRAPH_ENDPOINT_SUFFIX;
 
-        this.microsoftGraphClient =
-            new MicrosoftGraphClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(graphEndpoint)
-                .buildClient();
-        this.authorizationManagementClient =
-            new AuthorizationManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
+        this.microsoftGraphClient
+            = new MicrosoftGraphClientBuilder().pipeline(httpPipeline).endpoint(graphEndpoint).buildClient();
+        this.authorizationManagementClient = new AuthorizationManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
         this.tenantId = profile.getTenantId();
         this.environment = profile.getEnvironment();
     }

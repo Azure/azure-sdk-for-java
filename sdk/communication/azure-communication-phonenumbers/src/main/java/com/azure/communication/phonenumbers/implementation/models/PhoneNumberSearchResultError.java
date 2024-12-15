@@ -41,8 +41,8 @@ public final class PhoneNumberSearchResultError extends ExpandableStringEnum<Pho
     public static final PhoneNumberSearchResultError NOT_ENOUGH_CREDIT = fromString("NotEnoughCredit");
 
     /** Static value NumbersPartiallyAcquired for PhoneNumberSearchResultError. */
-    public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED =
-            fromString("NumbersPartiallyAcquired");
+    public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED
+        = fromString("NumbersPartiallyAcquired");
 
     /** Static value AllNumbersNotAcquired for PhoneNumberSearchResultError. */
     public static final PhoneNumberSearchResultError ALL_NUMBERS_NOT_ACQUIRED = fromString("AllNumbersNotAcquired");

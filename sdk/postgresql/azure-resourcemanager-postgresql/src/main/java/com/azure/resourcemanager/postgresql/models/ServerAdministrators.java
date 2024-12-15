@@ -48,8 +48,8 @@ public interface ServerAdministrators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a and external administrator to be created.
      */
-    ServerAdministratorResource createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties);
+    ServerAdministratorResource createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties);
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
@@ -64,8 +64,8 @@ public interface ServerAdministrators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a and external administrator to be created.
      */
-    ServerAdministratorResource createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties, Context context);
+    ServerAdministratorResource createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties, Context context);
 
     /**
      * Deletes server active directory administrator.

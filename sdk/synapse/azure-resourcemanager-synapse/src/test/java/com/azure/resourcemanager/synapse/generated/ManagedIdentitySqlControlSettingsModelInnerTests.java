@@ -13,21 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentitySqlControlSettingsModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabling\"}},\"id\":\"nsiru\",\"name\":\"hzmme\",\"type\":\"ckdlpag\"}")
-                .toObject(ManagedIdentitySqlControlSettingsModelInner.class);
+        ManagedIdentitySqlControlSettingsModelInner model = BinaryData.fromString(
+            "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Enabled\"}},\"id\":\"hwtzolb\",\"name\":\"emwmdxmebwjs\",\"type\":\"jpahlxvea\"}")
+            .toObject(ManagedIdentitySqlControlSettingsModelInner.class);
         Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelInner model =
-            new ManagedIdentitySqlControlSettingsModelInner()
-                .withGrantSqlControlToManagedIdentity(
-                    new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED));
+        ManagedIdentitySqlControlSettingsModelInner model
+            = new ManagedIdentitySqlControlSettingsModelInner().withGrantSqlControlToManagedIdentity(
+                new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
+                    .withDesiredState(DesiredState.ENABLED));
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySqlControlSettingsModelInner.class);
         Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }

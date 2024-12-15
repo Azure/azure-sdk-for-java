@@ -14,14 +14,14 @@ import com.azure.resourcemanager.postgresql.models.PerformanceTierProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedPerformanceTiersImpl implements LocationBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
 
     private final LocationBasedPerformanceTiersClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public LocationBasedPerformanceTiersImpl(
-        LocationBasedPerformanceTiersClient innerClient,
+    public LocationBasedPerformanceTiersImpl(LocationBasedPerformanceTiersClient innerClient,
         com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

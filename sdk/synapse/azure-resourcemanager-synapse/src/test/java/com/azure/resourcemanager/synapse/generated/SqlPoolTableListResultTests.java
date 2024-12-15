@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.SqlPoolTableListResult;
 public final class SqlPoolTableListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolTableListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"durgkakmokz\",\"name\":\"jjklff\",\"type\":\"mouwqlgzrfzeey\"},{\"id\":\"bizikayuhq\",\"name\":\"bjbsybb\",\"type\":\"wrv\"},{\"id\":\"ldgmfpgvmpip\",\"name\":\"slthaq\",\"type\":\"x\"}],\"nextLink\":\"mwutwbdsre\"}")
-                .toObject(SqlPoolTableListResult.class);
+        SqlPoolTableListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"kvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}],\"nextLink\":\"mc\"}")
+            .toObject(SqlPoolTableListResult.class);
     }
 
     @org.junit.jupiter.api.Test

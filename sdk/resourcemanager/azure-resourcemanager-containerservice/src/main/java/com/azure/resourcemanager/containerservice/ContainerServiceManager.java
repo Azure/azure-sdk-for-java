@@ -18,8 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import java.util.Objects;
 
 /** Entry point to Azure Container Service management. */
-public final class ContainerServiceManager
-    extends Manager<ContainerServiceManagementClient> {
+public final class ContainerServiceManager extends Manager<ContainerServiceManagementClient> {
     // The service managers
     private KubernetesClustersImpl kubernetesClusters;
 
@@ -80,9 +79,7 @@ public final class ContainerServiceManager
     }
 
     private ContainerServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
+        super(httpPipeline, profile,
             new ContainerServiceManagementClientBuilder()
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)

@@ -15,13 +15,8 @@ import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
 
 /** An immutable client-side representation of an Azure SQL Encryption Protector. */
 @Fluent
-public interface SqlEncryptionProtector
-    extends HasId,
-        HasInnerModel<EncryptionProtectorInner>,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlEncryptionProtector>,
-        Updatable<SqlEncryptionProtector.Update> {
+public interface SqlEncryptionProtector extends HasId, HasInnerModel<EncryptionProtectorInner>, HasResourceGroup,
+    Indexable, Refreshable<SqlEncryptionProtector>, Updatable<SqlEncryptionProtector.Update> {
 
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();

@@ -59,23 +59,18 @@ public final class EdgeModuleEntityImpl
     }
 
     public EdgeModuleEntity create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, edgeModuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EdgeModuleEntity create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -90,28 +85,22 @@ public final class EdgeModuleEntityImpl
     }
 
     public EdgeModuleEntity apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, edgeModuleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EdgeModuleEntity apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, edgeModuleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EdgeModuleEntityImpl(
-        EdgeModuleEntityInner innerObject,
+    EdgeModuleEntityImpl(EdgeModuleEntityInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -121,35 +110,29 @@ public final class EdgeModuleEntityImpl
     }
 
     public EdgeModuleEntity refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .getWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .getWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EdgeModuleEntity refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEdgeModules()
-                .getWithResponse(resourceGroupName, accountName, edgeModuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeModules()
+            .getWithResponse(resourceGroupName, accountName, edgeModuleName, context)
+            .getValue();
         return this;
     }
 
     public EdgeModuleProvisioningToken listProvisioningToken(ListProvisioningTokenInput parameters) {
-        return serviceManager
-            .edgeModules()
+        return serviceManager.edgeModules()
             .listProvisioningToken(resourceGroupName, accountName, edgeModuleName, parameters);
     }
 
-    public Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
-        ListProvisioningTokenInput parameters, Context context) {
-        return serviceManager
-            .edgeModules()
+    public Response<EdgeModuleProvisioningToken>
+        listProvisioningTokenWithResponse(ListProvisioningTokenInput parameters, Context context) {
+        return serviceManager.edgeModules()
             .listProvisioningTokenWithResponse(resourceGroupName, accountName, edgeModuleName, parameters, context);
     }
 }

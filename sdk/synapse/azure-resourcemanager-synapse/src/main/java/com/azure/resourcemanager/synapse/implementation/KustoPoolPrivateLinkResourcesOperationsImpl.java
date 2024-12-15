@@ -19,25 +19,26 @@ public final class KustoPoolPrivateLinkResourcesOperationsImpl implements KustoP
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public KustoPoolPrivateLinkResourcesOperationsImpl(
-        KustoPoolPrivateLinkResourcesOperationsClient innerClient,
+    public KustoPoolPrivateLinkResourcesOperationsImpl(KustoPoolPrivateLinkResourcesOperationsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
-        PagedIterable<KustoPoolPrivateLinkResourcesInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName);
-        return Utils.mapPage(inner, inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
+    public PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName) {
+        PagedIterable<KustoPoolPrivateLinkResourcesInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<KustoPoolPrivateLinkResources> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
-        PagedIterable<KustoPoolPrivateLinkResourcesInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
+    public PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context) {
+        PagedIterable<KustoPoolPrivateLinkResourcesInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
     }
 
     private KustoPoolPrivateLinkResourcesOperationsClient serviceClient() {

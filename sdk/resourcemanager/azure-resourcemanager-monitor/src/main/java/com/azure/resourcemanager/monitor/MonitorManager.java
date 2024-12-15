@@ -45,6 +45,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
     public static Configurable configure() {
         return new MonitorManager.ConfigurableImpl();
     }
+
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
      *
@@ -57,6 +58,7 @@ public final class MonitorManager extends Manager<MonitorClient> {
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
+
     /**
      * Creates an instance of MonitorManager that exposes Monitor API entry points.
      *
@@ -138,11 +140,8 @@ public final class MonitorManager extends Manager<MonitorClient> {
     }
 
     private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new MonitorClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new MonitorClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());

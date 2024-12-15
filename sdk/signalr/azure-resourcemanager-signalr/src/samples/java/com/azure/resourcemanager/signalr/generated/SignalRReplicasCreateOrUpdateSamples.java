@@ -9,19 +9,22 @@ import com.azure.resourcemanager.signalr.models.SignalRSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SignalRReplicas CreateOrUpdate. */
+/**
+ * Samples for SignalRReplicas CreateOrUpdate.
+ */
 public final class SignalRReplicasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRReplicas_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRReplicas_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRReplicasCreateOrUpdate(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRReplicas()
+        manager.signalRReplicas()
             .define("mySignalRService-eastus")
             .withRegion("eastus")
             .withExistingSignalR("myResourceGroup", "mySignalRService")

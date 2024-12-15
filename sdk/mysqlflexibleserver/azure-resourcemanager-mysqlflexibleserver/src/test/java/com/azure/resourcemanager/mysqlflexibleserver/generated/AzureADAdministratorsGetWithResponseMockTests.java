@@ -23,7 +23,7 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"kslircizjxvydfc\",\"sid\":\"cvlhv\",\"tenantId\":\"dyftumrtwna\",\"identityResourceId\":\"slbi\"},\"id\":\"ojgcyzt\",\"name\":\"fmznba\",\"type\":\"qphchqnrnrpxehuw\"}";
+            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"fhmouwq\",\"sid\":\"zrfze\",\"tenantId\":\"ebizikayuh\",\"identityResourceId\":\"bjbsybb\"},\"id\":\"r\",\"name\":\"t\",\"type\":\"dgmfpgvmpipasl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class AzureADAdministratorsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureADAdministrator response = manager.azureADAdministrators()
-            .getWithResponse("qg", "zpnfqntcypsxj", AdministratorName.ACTIVE_DIRECTORY,
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("abudurgk", "kmokz", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.administratorType());
-        Assertions.assertEquals("kslircizjxvydfc", response.login());
-        Assertions.assertEquals("cvlhv", response.sid());
-        Assertions.assertEquals("dyftumrtwna", response.tenantId());
-        Assertions.assertEquals("slbi", response.identityResourceId());
+        Assertions.assertEquals("fhmouwq", response.login());
+        Assertions.assertEquals("zrfze", response.sid());
+        Assertions.assertEquals("ebizikayuh", response.tenantId());
+        Assertions.assertEquals("bjbsybb", response.identityResourceId());
     }
 }

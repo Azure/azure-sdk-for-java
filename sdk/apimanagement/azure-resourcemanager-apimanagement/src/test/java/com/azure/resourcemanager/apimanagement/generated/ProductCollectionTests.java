@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"pyqy\",\"description\":\"xubmdnafcbqw\",\"terms\":\"mjel\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":538354089,\"state\":\"published\"},\"id\":\"ohdbvqvwzkj\",\"name\":\"pwbeonr\",\"type\":\"kwzdqybxcea\"},{\"properties\":{\"displayName\":\"cptsoqfyiase\",\"description\":\"hkrttzrazis\",\"terms\":\"kiuemv\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":974039641,\"state\":\"published\"},\"id\":\"rx\",\"name\":\"bsojk\",\"type\":\"inhmdptys\"}],\"count\":3080565060879434644,\"nextLink\":\"nzxojpslsvjgpli\"}")
-                .toObject(ProductCollection.class);
+        ProductCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"pyqy\",\"description\":\"xubmdnafcbqw\",\"terms\":\"mjel\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":538354089,\"state\":\"published\"},\"id\":\"ohdbvqvwzkj\",\"name\":\"pwbeonr\",\"type\":\"kwzdqybxcea\"},{\"properties\":{\"displayName\":\"cptsoqfyiase\",\"description\":\"hkrttzrazis\",\"terms\":\"kiuemv\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":974039641,\"state\":\"published\"},\"id\":\"rx\",\"name\":\"bsojk\",\"type\":\"inhmdptys\"}],\"count\":3080565060879434644,\"nextLink\":\"nzxojpslsvjgpli\"}")
+            .toObject(ProductCollection.class);
         Assertions.assertEquals("pyqy", model.value().get(0).displayName());
         Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).description());
         Assertions.assertEquals("mjel", model.value().get(0).terms());
@@ -32,29 +30,24 @@ public final class ProductCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductCollection model =
-            new ProductCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ProductContractInner()
-                                .withDisplayName("pyqy")
-                                .withDescription("xubmdnafcbqw")
-                                .withTerms("mjel")
-                                .withSubscriptionRequired(false)
-                                .withApprovalRequired(false)
-                                .withSubscriptionsLimit(538354089)
-                                .withState(ProductState.PUBLISHED),
-                            new ProductContractInner()
-                                .withDisplayName("cptsoqfyiase")
-                                .withDescription("hkrttzrazis")
-                                .withTerms("kiuemv")
-                                .withSubscriptionRequired(true)
-                                .withApprovalRequired(true)
-                                .withSubscriptionsLimit(974039641)
-                                .withState(ProductState.PUBLISHED)))
-                .withCount(3080565060879434644L)
-                .withNextLink("nzxojpslsvjgpli");
+        ProductCollection model = new ProductCollection()
+            .withValue(Arrays.asList(
+                new ProductContractInner().withDisplayName("pyqy")
+                    .withDescription("xubmdnafcbqw")
+                    .withTerms("mjel")
+                    .withSubscriptionRequired(false)
+                    .withApprovalRequired(false)
+                    .withSubscriptionsLimit(538354089)
+                    .withState(ProductState.PUBLISHED),
+                new ProductContractInner().withDisplayName("cptsoqfyiase")
+                    .withDescription("hkrttzrazis")
+                    .withTerms("kiuemv")
+                    .withSubscriptionRequired(true)
+                    .withApprovalRequired(true)
+                    .withSubscriptionsLimit(974039641)
+                    .withState(ProductState.PUBLISHED)))
+            .withCount(3080565060879434644L)
+            .withNextLink("nzxojpslsvjgpli");
         model = BinaryData.fromObject(model).toObject(ProductCollection.class);
         Assertions.assertEquals("pyqy", model.value().get(0).displayName());
         Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).description());

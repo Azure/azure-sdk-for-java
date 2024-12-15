@@ -44,22 +44,26 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
+     * Type: string (or Expression with resultType string)
      */
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
+     * boolean (or Expression with resultType boolean)
      */
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
+     * concurrently. Type: boolean (or Expression with resultType boolean)
      */
     private Object runConcurrently;
 
     /*
-     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
+     * resultType integer)
      */
     private Object sourceStagingConcurrency;
 

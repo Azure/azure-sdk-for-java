@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalR ListKeys. */
+/**
+ * Samples for SignalR ListKeys.
+ */
 public final class SignalRListKeysSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListKeys.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalR_ListKeys.json
      */
     /**
      * Sample code: SignalR_ListKeys.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRListKeys(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRs()
+        manager.signalRs()
             .listKeysWithResponse("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

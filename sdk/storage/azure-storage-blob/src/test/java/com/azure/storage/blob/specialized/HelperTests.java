@@ -42,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HelperTests extends BlobTestBase {
-        /*
+    /*
     This test is to validate the workaround for the autorest bug that forgets to set the request property on the
     response.
-     */
+    */
 
     @Test
     public void requestProperty() {
@@ -59,11 +59,8 @@ public class HelperTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> blobRangeSupplier() {
-        return Stream.of(
-            Arguments.of(0, null, null),
-            Arguments.of(0, 5L, "bytes=0-4"),
-            Arguments.of(5, 10L, "bytes=5-14")
-        );
+        return Stream.of(Arguments.of(0, null, null), Arguments.of(0, 5L, "bytes=0-4"),
+            Arguments.of(5, 10L, "bytes=5-14"));
     }
 
     @ParameterizedTest
@@ -73,24 +70,21 @@ public class HelperTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> blobRangeIASupplier() {
-        return Stream.of(
-            Arguments.of(-1, 5L),
-            Arguments.of(0, -1L)
-        );
+        return Stream.of(Arguments.of(-1, 5L), Arguments.of(0, -1L));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {
-        "blob,blob",
-        "path/to]a blob,path/to]a blob",
-        "path%2Fto%5Da%20blob,path/to]a blob",
-        "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,斑點"
-    })
+    @CsvSource(
+        value = {
+            "blob,blob",
+            "path/to]a blob,path/to]a blob",
+            "path%2Fto%5Da%20blob,path/to]a blob",
+            "斑點,斑點",
+            "%E6%96%91%E9%BB%9E,斑點" })
     public void urlParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
-        BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName
-            + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig="
-            + FakeCredentialInTests.FAKE_SIGNATURE_PLACEHOLDER));
+        BlobUrlParts parts = BlobUrlParts.parse(new URL(
+            "http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION
+                + "&sr=c&sp=r&sig=" + FakeCredentialInTests.FAKE_SIGNATURE_PLACEHOLDER));
 
         assertEquals("http", parts.getScheme());
         assertEquals("host", parts.getHost());
@@ -116,8 +110,8 @@ public class HelperTests extends BlobTestBase {
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(expiryTime, p);
 
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName",
-            "snapshot", null, "encryptionScope");
+        BlobSasImplUtil implUtil
+            = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null, "encryptionScope");
         String sas = implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), Context.NONE);
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true));
@@ -136,10 +130,7 @@ public class HelperTests extends BlobTestBase {
 
     @Test
     public void blobURLPartsImplicitRoot() {
-        BlobUrlParts bup = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setBlobName("blob");
+        BlobUrlParts bup = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("blob");
 
         BlobUrlParts implParts = BlobUrlParts.parse(bup.toUrl());
 
@@ -201,24 +192,14 @@ public class HelperTests extends BlobTestBase {
 
     @Test
     public void pageListCustomDeserializer() throws IOException {
-        String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n"
-            + "<PageList>  \n"
-            + "   <PageRange>  \n"
-            + "      <Start>0</Start>  \n"
-            + "      <End>511</End>  \n"
-            + "   </PageRange>  \n"
-            + "   <ClearRange>  \n"
-            + "      <Start>512</Start>  \n"
-            + "      <End>1023</End>  \n"
-            + "   </ClearRange>  \n"
-            + "   <PageRange>  \n"
-            + "      <Start>1024</Start>  \n"
-            + "      <End>2047</End>  \n"
-            + "   </PageRange>  \n"
-            + "</PageList>";
+        String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n" + "<PageList>  \n" + "   <PageRange>  \n"
+            + "      <Start>0</Start>  \n" + "      <End>511</End>  \n" + "   </PageRange>  \n" + "   <ClearRange>  \n"
+            + "      <Start>512</Start>  \n" + "      <End>1023</End>  \n" + "   </ClearRange>  \n"
+            + "   <PageRange>  \n" + "      <Start>1024</Start>  \n" + "      <End>2047</End>  \n"
+            + "   </PageRange>  \n" + "</PageList>";
 
-        PageList pageList = JacksonAdapter.createDefaultSerializerAdapter().deserialize(responseXml, PageList.class,
-            SerializerEncoding.XML);
+        PageList pageList = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(responseXml, PageList.class, SerializerEncoding.XML);
 
         assertEquals(2, pageList.getPageRange().size());
         assertEquals(1, pageList.getClearRange().size());

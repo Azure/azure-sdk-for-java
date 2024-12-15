@@ -31,13 +31,9 @@ public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInne
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.GitHubWithAttach<ParentT>,
-            DefinitionStages.WithRepositoryType<ParentT>,
-            DefinitionStages.WithBranch<ParentT>,
-            DefinitionStages.WithGitHubBranch<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.GitHubWithAttach<ParentT>, DefinitionStages.WithRepositoryType<ParentT>,
+        DefinitionStages.WithBranch<ParentT>, DefinitionStages.WithGitHubBranch<ParentT> {
     }
 
     /** Grouping of web app source control definition stages applicable as part of a web app creation. */
@@ -83,8 +79,8 @@ public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInne
              * @param repository the name of the repository, e.g. azure-sdk-for-java
              * @return the next stage of the definition
              */
-            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(
-                String organization, String repository);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization,
+                String repository);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration will be turned on. This
@@ -171,12 +167,9 @@ public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInne
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.GitHubWithAttach<ParentT>,
-            UpdateDefinitionStages.WithRepositoryType<ParentT>,
-            UpdateDefinitionStages.WithBranch<ParentT>,
-            UpdateDefinitionStages.WithGitHubBranch<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.GitHubWithAttach<ParentT>, UpdateDefinitionStages.WithRepositoryType<ParentT>,
+        UpdateDefinitionStages.WithBranch<ParentT>, UpdateDefinitionStages.WithGitHubBranch<ParentT> {
     }
 
     /** Grouping of web app source control definition stages applicable as part of a web app update. */
@@ -222,8 +215,8 @@ public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInne
              * @param repository the name of the repository, e.g. azure-sdk-for-java
              * @return the next stage of the definition
              */
-            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(
-                String organization, String repository);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization,
+                String repository);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration will be turned on. This

@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Allows you to take control over the process of converting text into indexable/searchable tokens. It's a user-defined

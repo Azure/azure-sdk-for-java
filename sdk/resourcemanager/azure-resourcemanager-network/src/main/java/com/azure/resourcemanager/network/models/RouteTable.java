@@ -15,12 +15,8 @@ import java.util.Map;
 
 /** Entry point for route table management. */
 @Fluent()
-public interface RouteTable
-    extends GroupableResource<NetworkManager, RouteTableInner>,
-        Refreshable<RouteTable>,
-        Updatable<RouteTable.Update>,
-        UpdatableWithTags<RouteTable>,
-        HasAssociatedSubnets {
+public interface RouteTable extends GroupableResource<NetworkManager, RouteTableInner>, Refreshable<RouteTable>,
+    Updatable<RouteTable.Update>, UpdatableWithTags<RouteTable>, HasAssociatedSubnets {
 
     /** @return the routes of this route table */
     Map<String, Route> routes();
@@ -94,11 +90,8 @@ public interface RouteTable
          * The stage of a route table definition which contains all the minimum required inputs for the resource to be
          * created (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<RouteTable>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithRoute,
-                DefinitionStages.WithBgpRoutePropagation {
+        interface WithCreate extends Creatable<RouteTable>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithRoute, DefinitionStages.WithBgpRoutePropagation {
         }
     }
 
@@ -167,6 +160,7 @@ public interface RouteTable
              * @return the next stage of the update
              */
             Update withDisableBgpRoutePropagation();
+
             /**
              * Enable the routes learned by BGP on that route table.
              *
@@ -181,10 +175,7 @@ public interface RouteTable
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<RouteTable>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithRoute,
-            UpdateStages.WithBgpRoutePropagation {
+    interface Update extends Appliable<RouteTable>, Resource.UpdateWithTags<Update>, UpdateStages.WithRoute,
+        UpdateStages.WithBgpRoutePropagation {
     }
 }

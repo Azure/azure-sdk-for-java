@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInResourceGroup.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInResourceGroup
+     * .json
      */
     /**
      * Sample code: List workspaces in resource group.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listWorkspacesInResourceGroup(com.azure.resourcemanager.synapse.SynapseManager manager) {

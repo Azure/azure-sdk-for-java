@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.UpdateJobDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Job Properties for update. */
+/**
+ * Job Properties for update.
+ */
 @Fluent
-public final class UpdateJobProperties {
+public final class UpdateJobProperties implements JsonSerializable<UpdateJobProperties> {
     /*
      * Details of a job to be updated.
      */
-    @JsonProperty(value = "details")
     private UpdateJobDetails details;
 
-    /** Creates an instance of UpdateJobProperties class. */
+    /**
+     * Creates an instance of UpdateJobProperties class.
+     */
     public UpdateJobProperties() {
     }
 
     /**
      * Get the details property: Details of a job to be updated.
-     *
+     * 
      * @return the details value.
      */
     public UpdateJobDetails details() {
@@ -32,7 +39,7 @@ public final class UpdateJobProperties {
 
     /**
      * Set the details property: Details of a job to be updated.
-     *
+     * 
      * @param details the details value to set.
      * @return the UpdateJobProperties object itself.
      */
@@ -43,12 +50,48 @@ public final class UpdateJobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (details() != null) {
             details().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("details", this.details);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateJobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateJobProperties.
+     */
+    public static UpdateJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateJobProperties deserializedUpdateJobProperties = new UpdateJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("details".equals(fieldName)) {
+                    deserializedUpdateJobProperties.details = UpdateJobDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateJobProperties;
+        });
     }
 }

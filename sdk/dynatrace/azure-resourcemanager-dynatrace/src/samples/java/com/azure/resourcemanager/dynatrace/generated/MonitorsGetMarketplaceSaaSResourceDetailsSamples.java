@@ -6,37 +6,39 @@ package com.azure.resourcemanager.dynatrace.generated;
 
 import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetailsRequest;
 
-/** Samples for Monitors GetMarketplaceSaaSResourceDetails. */
+/**
+ * Samples for Monitors GetMarketplaceSaaSResourceDetails.
+ */
 public final class MonitorsGetMarketplaceSaaSResourceDetailsSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMarketplaceSaaSResourceDetails_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetMarketplaceSaaSResourceDetails_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMarketplaceSaaSResourceDetails_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsGetMarketplaceSaaSResourceDetailsMinimumSetGen(
         com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+        manager.monitors()
             .getMarketplaceSaaSResourceDetailsWithResponse(
                 new MarketplaceSaaSResourceDetailsRequest().withTenantId("urnmattojzhktcfw"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetMarketplaceSaaSResourceDetails_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetMarketplaceSaaSResourceDetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMarketplaceSaaSResourceDetails_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsGetMarketplaceSaaSResourceDetailsMaximumSetGen(
         com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
+        manager.monitors()
             .getMarketplaceSaaSResourceDetailsWithResponse(
                 new MarketplaceSaaSResourceDetailsRequest().withTenantId("urnmattojzhktcfw"),
                 com.azure.core.util.Context.NONE);

@@ -34,8 +34,8 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
         String endpoint;
         String schemaGroup;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+            tokenCredential = tokenRequestContext -> Mono
+                .fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = PLAYBACK_ENDPOINT;
         } else {
@@ -47,9 +47,7 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -61,8 +59,7 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
+        return new AssertingHttpClientBuilder(httpClient).assertAsync()
             .skipRequest((httpRequest, context) -> false)
             .build();
     }

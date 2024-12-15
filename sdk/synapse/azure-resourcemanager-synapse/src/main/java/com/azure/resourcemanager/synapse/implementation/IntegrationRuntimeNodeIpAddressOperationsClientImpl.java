@@ -31,24 +31,24 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
     implements IntegrationRuntimeNodeIpAddressOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeNodeIpAddressOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeNodeIpAddressOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeNodeIpAddressOperationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IntegrationRuntimeNodeIpAddressOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationRuntimeNodeIpAddressOperationsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,29 +59,22 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeNodeIpAddressOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationRuntimeNodeIpAddressInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @PathParam("nodeName") String nodeName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<IntegrationRuntimeNodeIpAddressInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @PathParam("nodeName") String nodeName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -90,22 +83,18 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
+    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String nodeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -115,9 +104,8 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
@@ -125,27 +113,16 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            integrationRuntimeName,
-                            nodeName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, integrationRuntimeName, nodeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -155,26 +132,18 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context) {
+    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String nodeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -184,9 +153,8 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
@@ -194,24 +162,15 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                integrationRuntimeName,
-                nodeName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, integrationRuntimeName, nodeName, accept, context);
     }
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -222,17 +181,17 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @return the IP address of an integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeNodeIpAddressInner> getAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
+    private Mono<IntegrationRuntimeNodeIpAddressInner> getAsync(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, nodeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -244,21 +203,17 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @return the IP address of an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context) {
+    public Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String nodeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, nodeName, context)
             .block();
     }
 
     /**
      * Get integration runtime node IP address
-     *
-     * <p>Get the IP address of an integration runtime node.
-     *
+     * 
+     * Get the IP address of an integration runtime node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -269,8 +224,8 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @return the IP address of an integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeNodeIpAddressInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
+    public IntegrationRuntimeNodeIpAddressInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName) {
         return getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, nodeName, Context.NONE)
             .getValue();
     }

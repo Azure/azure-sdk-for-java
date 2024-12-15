@@ -21,7 +21,7 @@ public final class NetworkSecurityPerimeterConfigurationsListByPrivateLinkScopeM
     @Test
     public void testListByPrivateLinkScope() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"gycxnmskwhqjjys\",\"provisioningIssues\":[{\"name\":\"pshhkvpedwqslsr\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Warning\",\"description\":\"skondcbrwimu\",\"suggestedResourceIds\":[\"josovyrrl\"],\"suggestedAccessRules\":[{}]}},{\"name\":\"inuqtljq\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Error\",\"description\":\"hcecybmrqbr\",\"suggestedResourceIds\":[\"mpxdlvy\",\"frexcrseqw\",\"ksghudgzhxogjgg\",\"voujkxibdafhrk\"],\"suggestedAccessRules\":[{},{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"kxfbvfbhdyirhp\",\"perimeterGuid\":\"gddeimaw\",\"location\":\"vgkk\"},\"resourceAssociation\":{\"name\":\"ikjcjcazt\",\"accessMode\":\"audit\"},\"profile\":{\"name\":\"qowxwcom\",\"accessRulesVersion\":1863569932,\"accessRules\":[{\"name\":\"vc\",\"properties\":{}}],\"diagnosticSettingsVersion\":726020344,\"enabledLogCategories\":[\"cvejyfdvlvhbwrn\"]}},\"id\":\"xt\",\"name\":\"ddpqt\",\"type\":\"ehnmnaoyankco\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"aifyzyzeyuubeids\",\"provisioningIssues\":[{\"name\":\"toi\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Warning\",\"description\":\"ltgvdihoynkrx\",\"suggestedResourceIds\":[\"wkd\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"ucpcunnuzdqumoen\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"hqhsknd\",\"suggestedResourceIds\":[\"qkaadlknw\",\"oanniyopetxi\",\"cnrly\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"ephblkwqpatvbqs\",\"perimeterGuid\":\"cjbctviv\",\"location\":\"qymtuowogtgits\"},\"resourceAssociation\":{\"name\":\"vbrzcdb\",\"accessMode\":\"enforced\"},\"profile\":{\"name\":\"ds\",\"accessRulesVersion\":1628332910,\"accessRules\":[{\"name\":\"tkdbmwnrdjyib\",\"properties\":{}},{\"name\":\"aomhjrmkuhmaxl\",\"properties\":{}},{\"name\":\"f\",\"properties\":{}}],\"diagnosticSettingsVersion\":1545427056,\"enabledLogCategories\":[\"bc\",\"nc\",\"exxqcwg\",\"xf\"]}},\"id\":\"vaknokzwjj\",\"name\":\"r\",\"type\":\"tixldzyyfytpqs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NetworkSecurityPerimeterConfigurationsListByPrivateLinkScopeM
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkSecurityPerimeterConfiguration> response = manager.networkSecurityPerimeterConfigurations()
-            .listByPrivateLinkScope("ua", "htomflrytswfp", com.azure.core.util.Context.NONE);
+            .listByPrivateLinkScope("oytzpose", "xigpxvkqmaupxvpi", com.azure.core.util.Context.NONE);
 
     }
 }

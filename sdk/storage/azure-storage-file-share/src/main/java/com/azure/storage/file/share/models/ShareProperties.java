@@ -163,6 +163,12 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
 
     /**
+     * Creates a new instance of {@link ShareProperties}.
+     */
+    public ShareProperties() {
+    }
+
+    /**
      * Get the lastModified property: The lastModified property.
      *
      * @return the lastModified value.
@@ -621,8 +627,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(Boolean enableSnapshotVirtualDirectoryAccess) {
         this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;
     }
@@ -760,7 +765,8 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param nextAllowedProvisionedIopsDowngradeTime the nextAllowedProvisionedIopsDowngradeTime value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
+    public ShareProperties
+        setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
         this.nextAllowedProvisionedIopsDowngradeTime = nextAllowedProvisionedIopsDowngradeTime;
         return this;
     }
@@ -784,7 +790,8 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param nextAllowedProvisionedBandwidthDowngradeTime the nextAllowedProvisionedBandwidthDowngradeTime value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
+    public ShareProperties
+        setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
         this.nextAllowedProvisionedBandwidthDowngradeTime = nextAllowedProvisionedBandwidthDowngradeTime;
         return this;
     }

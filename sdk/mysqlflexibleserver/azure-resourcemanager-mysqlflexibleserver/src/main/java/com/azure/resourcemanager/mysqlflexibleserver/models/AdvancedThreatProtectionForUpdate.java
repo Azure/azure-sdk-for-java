@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.AdvancedThreatProtectionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Parameters allowed to update advanced threat protection for a server.
  */
 @Fluent
-public final class AdvancedThreatProtectionForUpdate {
+public final class AdvancedThreatProtectionForUpdate implements JsonSerializable<AdvancedThreatProtectionForUpdate> {
     /*
      * Resource update properties.
      */
-    @JsonProperty(value = "properties")
     private AdvancedThreatProtectionUpdateProperties innerProperties;
 
     /**
@@ -68,5 +71,43 @@ public final class AdvancedThreatProtectionForUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvancedThreatProtectionForUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvancedThreatProtectionForUpdate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdvancedThreatProtectionForUpdate.
+     */
+    public static AdvancedThreatProtectionForUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvancedThreatProtectionForUpdate deserializedAdvancedThreatProtectionForUpdate
+                = new AdvancedThreatProtectionForUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAdvancedThreatProtectionForUpdate.innerProperties
+                        = AdvancedThreatProtectionUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvancedThreatProtectionForUpdate;
+        });
     }
 }

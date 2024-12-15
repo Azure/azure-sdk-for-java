@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -45,6 +45,7 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
+    <shadingPrefixNetty>azurecosmoskafkaconnect</shadingPrefixNetty>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
@@ -55,6 +56,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=com.azure.cosmos.kafka.connect
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
@@ -70,6 +72,7 @@ Licensed under the MIT License.
 
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>
@@ -83,7 +86,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.65.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.66.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -127,7 +130,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -292,6 +295,7 @@ Licensed under the MIT License.
                 <include>io.confluent:kafka-connect-maven-plugin:[0.12.0]</include> <!-- {x-include-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -355,7 +359,7 @@ Licensed under the MIT License.
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
@@ -446,6 +450,54 @@ Licensed under the MIT License.
                   <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
                   <shadeSourcesContent>true</shadeSourcesContent>
                   <createDependencyReducedPom>true</createDependencyReducedPom>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>01-copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>03-repack</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_linux_aarch_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/llibazurecosmoskafkaconnect_netty_tcnative_linux_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_aarch_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_epoll_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
                 </configuration>
               </execution>
             </executions>

@@ -16,18 +16,22 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateLinkResourcesClient;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceListResultInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * CloudHsmClusterPrivateLinkResourcesClient.
+ * An instance of this class provides access to all the operations defined in CloudHsmClusterPrivateLinkResourcesClient.
  */
 public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements CloudHsmClusterPrivateLinkResourcesClient {
     /**
@@ -62,10 +66,18 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResultInner>> listByCloudHsmCluster(@HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceListResult>> listByCloudHsmCluster(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudHsmClusterName") String cloudHsmClusterName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PrivateLinkResourceListResult>> listByCloudHsmClusterNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -74,16 +86,16 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>>
-        listByCloudHsmClusterWithResponseAsync(String resourceGroupName, String cloudHsmClusterName) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterSinglePageAsync(String resourceGroupName,
+        String cloudHsmClusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -100,11 +112,13 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-10-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByCloudHsmCluster(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, apiVersion, accept, context))
+            .withContext(
+                context -> service.listByCloudHsmCluster(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, cloudHsmClusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -113,17 +127,17 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>>
-        listByCloudHsmClusterWithResponseAsync(String resourceGroupName, String cloudHsmClusterName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterSinglePageAsync(String resourceGroupName,
+        String cloudHsmClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -140,11 +154,13 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-10-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByCloudHsmCluster(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, cloudHsmClusterName, apiVersion, accept, context);
+        return service
+            .listByCloudHsmCluster(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                cloudHsmClusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -152,17 +168,18 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster on successful completion of {@link Mono}.
+     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
+     * {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceListResultInner> listByCloudHsmClusterAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PrivateLinkResourceInner> listByCloudHsmClusterAsync(String resourceGroupName,
         String cloudHsmClusterName) {
-        return listByCloudHsmClusterWithResponseAsync(resourceGroupName, cloudHsmClusterName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return new PagedFlux<>(() -> listByCloudHsmClusterSinglePageAsync(resourceGroupName, cloudHsmClusterName),
+            nextLink -> listByCloudHsmClusterNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -170,17 +187,20 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster along with {@link Response}.
+     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
+     * {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceListResultInner> listByCloudHsmClusterWithResponse(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PrivateLinkResourceInner> listByCloudHsmClusterAsync(String resourceGroupName,
         String cloudHsmClusterName, Context context) {
-        return listByCloudHsmClusterWithResponseAsync(resourceGroupName, cloudHsmClusterName, context).block();
+        return new PagedFlux<>(
+            () -> listByCloudHsmClusterSinglePageAsync(resourceGroupName, cloudHsmClusterName, context),
+            nextLink -> listByCloudHsmClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -188,15 +208,91 @@ public final class CloudHsmClusterPrivateLinkResourcesClientImpl implements Clou
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the Cloud Hsm Cluster.
+     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateLinkResourceInner> listByCloudHsmCluster(String resourceGroupName,
+        String cloudHsmClusterName) {
+        return new PagedIterable<>(listByCloudHsmClusterAsync(resourceGroupName, cloudHsmClusterName));
+    }
+
+    /**
+     * Gets the private link resources supported for the Cloud Hsm Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources supported for the Cloud Hsm Cluster as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateLinkResourceInner> listByCloudHsmCluster(String resourceGroupName,
+        String cloudHsmClusterName, Context context) {
+        return new PagedIterable<>(listByCloudHsmClusterAsync(resourceGroupName, cloudHsmClusterName, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceListResultInner listByCloudHsmCluster(String resourceGroupName,
-        String cloudHsmClusterName) {
-        return listByCloudHsmClusterWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE).getValue();
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByCloudHsmClusterNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByCloudHsmClusterNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByCloudHsmClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

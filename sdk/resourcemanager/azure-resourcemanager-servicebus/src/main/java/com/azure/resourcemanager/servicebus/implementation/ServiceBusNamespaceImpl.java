@@ -24,15 +24,8 @@ import java.util.List;
  * Implementation for ServiceBusNamespace.
  */
 class ServiceBusNamespaceImpl
-    extends GroupableResourceImpl<
-        ServiceBusNamespace,
-        SBNamespaceInner,
-        ServiceBusNamespaceImpl,
-        ServiceBusManager>
-    implements
-        ServiceBusNamespace,
-        ServiceBusNamespace.Definition,
-        ServiceBusNamespace.Update {
+    extends GroupableResourceImpl<ServiceBusNamespace, SBNamespaceInner, ServiceBusNamespaceImpl, ServiceBusManager>
+    implements ServiceBusNamespace, ServiceBusNamespace.Definition, ServiceBusNamespace.Update {
     private List<Creatable<Queue>> queuesToCreate;
     private List<Creatable<Topic>> topicsToCreate;
     private List<Creatable<NamespaceAuthorizationRule>> rulesToCreate;
@@ -72,32 +65,23 @@ class ServiceBusNamespaceImpl
 
     @Override
     public QueuesImpl queues() {
-        return new QueuesImpl(this.resourceGroupName(),
-                this.name(),
-                this.region(),
-                this.manager());
+        return new QueuesImpl(this.resourceGroupName(), this.name(), this.region(), this.manager());
     }
 
     @Override
     public TopicsImpl topics() {
-        return new TopicsImpl(this.resourceGroupName(),
-                this.name(),
-                this.region(),
-                this.manager());
+        return new TopicsImpl(this.resourceGroupName(), this.name(), this.region(), this.manager());
     }
 
     @Override
     public NamespaceAuthorizationRulesImpl authorizationRules() {
-        return new NamespaceAuthorizationRulesImpl(this.resourceGroupName(),
-                this.name(),
-                this.region(),
-                manager());
+        return new NamespaceAuthorizationRulesImpl(this.resourceGroupName(), this.name(), this.region(), manager());
     }
 
     @Override
     public ServiceBusNamespaceImpl withSku(NamespaceSku namespaceSku) {
-        this.innerModel().withSku(new SBSku()
-                .withName(namespaceSku.name())
+        this.innerModel()
+            .withSku(new SBSku().withName(namespaceSku.name())
                 .withTier(namespaceSku.tier())
                 .withCapacity(namespaceSku.capacity()));
         return this;
@@ -153,16 +137,18 @@ class ServiceBusNamespaceImpl
 
     @Override
     protected Mono<SBNamespaceInner> getInnerAsync() {
-        return this.manager().serviceClient().getNamespaces().getByResourceGroupAsync(this.resourceGroupName(),
-                this.name());
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<ServiceBusNamespace> createResourceAsync() {
-        Mono<SBNamespaceInner> createTask = this.manager().serviceClient().getNamespaces()
-            .createOrUpdateAsync(this.resourceGroupName(),
-                    this.name(),
-                    this.innerModel())
+        Mono<SBNamespaceInner> createTask = this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return inner;
@@ -209,12 +195,7 @@ class ServiceBusNamespaceImpl
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Flux.mergeDelayError(32,
-            queuesCreateStream,
-            topicsCreateStream,
-            rulesCreateStream,
-            queuesDeleteStream,
-            topicsDeleteStream,
-            rulesDeleteStream);
+        return Flux.mergeDelayError(32, queuesCreateStream, topicsCreateStream, rulesCreateStream, queuesDeleteStream,
+            topicsDeleteStream, rulesDeleteStream);
     }
 }

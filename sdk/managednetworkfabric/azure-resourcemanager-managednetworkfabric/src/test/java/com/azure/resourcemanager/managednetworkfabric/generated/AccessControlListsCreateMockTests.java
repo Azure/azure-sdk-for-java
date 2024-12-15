@@ -6,23 +6,21 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListAction;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -30,109 +28,77 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessControlListsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"lastSyncedTime\":\"2021-01-14T10:52:54Z\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"configurationType\":\"Inline\",\"aclsUrl\":\"jkjqpizdnuehxwlt\",\"defaultAction\":\"Permit\",\"matchConfigurations\":[{\"matchConfigurationName\":\"bnklgerxac\",\"sequenceNumber\":1385317157229113948,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{},{}],\"actions\":[{}]},{\"matchConfigurationName\":\"hjrmp\",\"sequenceNumber\":5198363061422888849,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]},{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{},{},{}]}],\"annotation\":\"armyb\"},\"location\":\"rotgeysyq\",\"tags\":{\"xia\":\"ehfwwcbf\"},\"id\":\"uvjucfjisosfzlnr\",\"name\":\"xnfyzgu\",\"type\":\"xfh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"lastSyncedTime\":\"2021-02-05T15:09:47Z\",\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"configurationType\":\"File\",\"aclsUrl\":\"zwgdpvhwiril\",\"matchConfigurations\":[{\"matchConfigurationName\":\"rhqdoxd\",\"sequenceNumber\":4989762918343425516,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{}],\"actions\":[{},{},{}]}],\"dynamicMatchConfigurations\":[{\"ipGroups\":[{},{},{}],\"vlanGroups\":[{},{},{},{}],\"portGroups\":[{},{}]}],\"annotation\":\"dpd\"},\"location\":\"er\",\"tags\":{\"ure\":\"dlirqqclsaqifep\",\"fpxeswctlfytb\":\"vivkiglioklsu\",\"ddfclmowu\":\"tytvnpbgces\"},\"id\":\"ofofkbcjz\",\"name\":\"wweoblbtdqz\",\"type\":\"ixccnkfsog\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccessControlList response =
-            manager
-                .accessControlLists()
-                .define("dcyandblkb")
-                .withRegion("lhxsoanguhbnho")
-                .withExistingResourceGroup("zvvpaysqwh")
-                .withTags(
-                    mapOf(
-                        "zpxlitwkejmgemud",
-                        "zreneggpdt",
-                        "pezammpkapvnpeu",
-                        "pehskvsdfvhr",
-                        "svktfps",
-                        "gnmfakeqnitroml"))
+        AccessControlList response
+            = manager.accessControlLists()
+                .define("vbmnhtwofx")
+                .withRegion("cynbu")
+                .withExistingResourceGroup("tebjkjgeecwtfma")
+                .withTags(mapOf("voneey", "iehedm"))
                 .withConfigurationType(ConfigurationType.FILE)
-                .withAclsUrl("ctfvxuos")
+                .withAclsUrl("rml")
+                .withDefaultAction(CommunityActionTypes.PERMIT)
                 .withMatchConfigurations(
-                    Arrays
-                        .asList(
-                            new AccessControlListMatchConfiguration()
-                                .withMatchConfigurationName("a")
-                                .withSequenceNumber(7453371447000048334L)
-                                .withIpAddressType(IpAddressType.IPV4)
-                                .withMatchConditions(
-                                    Arrays
-                                        .asList(
-                                            new AccessControlListMatchCondition(),
-                                            new AccessControlListMatchCondition()))
-                                .withActions(Arrays.asList(new AccessControlListAction()))))
-                .withDynamicMatchConfigurations(
-                    Arrays
-                        .asList(
-                            new CommonDynamicMatchConfiguration()
-                                .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties()))
-                                .withVlanGroups(
-                                    Arrays
-                                        .asList(
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties(),
-                                            new VlanGroupProperties()))
-                                .withPortGroups(Arrays.asList(new PortGroupProperties())),
-                            new CommonDynamicMatchConfiguration()
-                                .withIpGroups(
-                                    Arrays
-                                        .asList(
-                                            new IpGroupProperties(), new IpGroupProperties(), new IpGroupProperties()))
-                                .withVlanGroups(Arrays.asList(new VlanGroupProperties(), new VlanGroupProperties()))
-                                .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties()))))
-                .withAnnotation("beqkittl")
+                    Arrays.asList(
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("jgqqrugwesps")
+                            .withSequenceNumber(5755899523459666377L)
+                            .withIpAddressType(IpAddressType.IPV6)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("zfvzasupcv")
+                            .withSequenceNumber(214884224548552199L)
+                            .withIpAddressType(IpAddressType.IPV4)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction(), new AccessControlListAction())),
+                        new AccessControlListMatchConfiguration().withMatchConfigurationName("m")
+                            .withSequenceNumber(2567619873631405084L)
+                            .withIpAddressType(IpAddressType.IPV6)
+                            .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition(), new AccessControlListMatchCondition(),
+                                new AccessControlListMatchCondition()))
+                            .withActions(Arrays.asList(new AccessControlListAction()))))
+                .withDynamicMatchConfigurations(Arrays.asList(
+                    new CommonDynamicMatchConfiguration()
+                        .withIpGroups(Arrays.asList(new IpGroupProperties(), new IpGroupProperties(),
+                            new IpGroupProperties(), new IpGroupProperties()))
+                        .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                        .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties())),
+                    new CommonDynamicMatchConfiguration()
+                        .withIpGroups(
+                            Arrays.asList(new IpGroupProperties(), new IpGroupProperties(), new IpGroupProperties()))
+                        .withVlanGroups(Arrays.asList(new VlanGroupProperties()))
+                        .withPortGroups(Arrays.asList(new PortGroupProperties(), new PortGroupProperties(),
+                            new PortGroupProperties(), new PortGroupProperties()))))
+                .withAnnotation("lmajpuyxoafrmz")
                 .create();
 
-        Assertions.assertEquals("er", response.location());
-        Assertions.assertEquals("dlirqqclsaqifep", response.tags().get("ure"));
-        Assertions.assertEquals(ConfigurationType.FILE, response.configurationType());
-        Assertions.assertEquals("zwgdpvhwiril", response.aclsUrl());
-        Assertions.assertEquals("rhqdoxd", response.matchConfigurations().get(0).matchConfigurationName());
-        Assertions.assertEquals(4989762918343425516L, response.matchConfigurations().get(0).sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, response.matchConfigurations().get(0).ipAddressType());
-        Assertions.assertEquals("dpd", response.annotation());
+        Assertions.assertEquals("rotgeysyq", response.location());
+        Assertions.assertEquals("ehfwwcbf", response.tags().get("xia"));
+        Assertions.assertEquals(ConfigurationType.INLINE, response.configurationType());
+        Assertions.assertEquals("jkjqpizdnuehxwlt", response.aclsUrl());
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.defaultAction());
+        Assertions.assertEquals("bnklgerxac", response.matchConfigurations().get(0).matchConfigurationName());
+        Assertions.assertEquals(1385317157229113948L, response.matchConfigurations().get(0).sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, response.matchConfigurations().get(0).ipAddressType());
+        Assertions.assertEquals("armyb", response.annotation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

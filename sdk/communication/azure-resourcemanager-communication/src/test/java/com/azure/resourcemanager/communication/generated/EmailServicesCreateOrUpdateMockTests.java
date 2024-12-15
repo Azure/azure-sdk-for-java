@@ -46,14 +46,18 @@ public final class EmailServicesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EmailServiceResource response
-            = manager.emailServices().define("mnvdfzn").withRegion("hh").withExistingResourceGroup("mcwyhzdxssadb")
-                .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
-                .withDataLocation("dvxzbncblylpst").create();
+        EmailServiceResource response = manager.emailServices()
+            .define("mnvdfzn")
+            .withRegion("hh")
+            .withExistingResourceGroup("mcwyhzdxssadb")
+            .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
+            .withDataLocation("dvxzbncblylpst")
+            .create();
 
         Assertions.assertEquals("qzeqqkdltfzxm", response.location());
         Assertions.assertEquals("hgure", response.tags().get("dkwobdagx"));

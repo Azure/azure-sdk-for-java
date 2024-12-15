@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatastoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatastoreInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"uuid\":\"wwiftohqkvpuv\",\"vCenterId\":\"gplsaknynf\",\"moRefId\":\"n\",\"inventoryItemId\":\"ph\",\"moName\":\"pxodlqiyntorzih\",\"statuses\":[{\"type\":\"jswsrmslyz\",\"status\":\"zbchckqqzqioxiy\",\"reason\":\"iizynkedyatrwyh\",\"message\":\"ibzyhwitsmyp\",\"severity\":\"npcdpumnzgm\",\"lastUpdatedAt\":\"2021-02-11T00:28:43Z\"},{\"type\":\"abikns\",\"status\":\"gj\",\"reason\":\"bldtlww\",\"message\":\"kdmtncvokotll\",\"severity\":\"yhgsy\",\"lastUpdatedAt\":\"2021-07-28T04:52:50Z\"}],\"customResourceName\":\"jlt\",\"capacityGB\":7818158463712312814,\"freeSpaceGB\":8180810548190524314,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"rkvcikhnvpa\",\"name\":\"gxqquezik\"},\"kind\":\"gxk\",\"location\":\"lla\",\"tags\":{\"ccjzkzivgvv\":\"lwuip\",\"rdvstkwqqtch\":\"nayrhyrnxxmueedn\"},\"id\":\"alm\",\"name\":\"mtdaa\",\"type\":\"gdv\"}")
-                .toObject(DatastoreInner.class);
+        DatastoreInner model = BinaryData.fromString(
+            "{\"properties\":{\"uuid\":\"wwiftohqkvpuv\",\"vCenterId\":\"gplsaknynf\",\"moRefId\":\"n\",\"inventoryItemId\":\"ph\",\"moName\":\"pxodlqiyntorzih\",\"statuses\":[{\"type\":\"jswsrmslyz\",\"status\":\"zbchckqqzqioxiy\",\"reason\":\"iizynkedyatrwyh\",\"message\":\"ibzyhwitsmyp\",\"severity\":\"npcdpumnzgm\",\"lastUpdatedAt\":\"2021-02-11T00:28:43Z\"},{\"type\":\"abikns\",\"status\":\"gj\",\"reason\":\"bldtlww\",\"message\":\"kdmtncvokotll\",\"severity\":\"yhgsy\",\"lastUpdatedAt\":\"2021-07-28T04:52:50Z\"}],\"customResourceName\":\"jlt\",\"capacityGB\":7818158463712312814,\"freeSpaceGB\":8180810548190524314,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"rkvcikhnvpa\",\"name\":\"gxqquezik\"},\"kind\":\"gxk\",\"location\":\"lla\",\"tags\":{\"ccjzkzivgvv\":\"lwuip\",\"rdvstkwqqtch\":\"nayrhyrnxxmueedn\"},\"id\":\"alm\",\"name\":\"mtdaa\",\"type\":\"gdv\"}")
+            .toObject(DatastoreInner.class);
         Assertions.assertEquals("lla", model.location());
         Assertions.assertEquals("lwuip", model.tags().get("ccjzkzivgvv"));
         Assertions.assertEquals("rkvcikhnvpa", model.extendedLocation().type());
@@ -31,15 +29,13 @@ public final class DatastoreInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreInner model =
-            new DatastoreInner()
-                .withLocation("lla")
-                .withTags(mapOf("ccjzkzivgvv", "lwuip", "rdvstkwqqtch", "nayrhyrnxxmueedn"))
-                .withExtendedLocation(new ExtendedLocation().withType("rkvcikhnvpa").withName("gxqquezik"))
-                .withKind("gxk")
-                .withVCenterId("gplsaknynf")
-                .withMoRefId("n")
-                .withInventoryItemId("ph");
+        DatastoreInner model = new DatastoreInner().withLocation("lla")
+            .withTags(mapOf("ccjzkzivgvv", "lwuip", "rdvstkwqqtch", "nayrhyrnxxmueedn"))
+            .withExtendedLocation(new ExtendedLocation().withType("rkvcikhnvpa").withName("gxqquezik"))
+            .withKind("gxk")
+            .withVCenterId("gplsaknynf")
+            .withMoRefId("n")
+            .withInventoryItemId("ph");
         model = BinaryData.fromObject(model).toObject(DatastoreInner.class);
         Assertions.assertEquals("lla", model.location());
         Assertions.assertEquals("lwuip", model.tags().get("ccjzkzivgvv"));

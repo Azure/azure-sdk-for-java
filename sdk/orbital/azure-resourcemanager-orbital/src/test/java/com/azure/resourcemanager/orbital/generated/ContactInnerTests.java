@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"deleting\",\"status\":\"scheduled\",\"reservationStartTime\":\"2021-11-03T08:28:15Z\",\"reservationEndTime\":\"2021-10-17T02:08:16Z\",\"rxStartTime\":\"2021-01-19T22:22:26Z\",\"rxEndTime\":\"2021-10-23T17:23:55Z\",\"txStartTime\":\"2021-08-27T02:48:22Z\",\"txEndTime\":\"2021-10-09T04:02:02Z\",\"errorMessage\":\"zjaoyfhrtxil\",\"maximumElevationDegrees\":27.193933,\"startAzimuthDegrees\":42.982025,\"endAzimuthDegrees\":50.19077,\"groundStationName\":\"s\",\"startElevationDegrees\":16.52248,\"endElevationDegrees\":70.19497,\"antennaConfiguration\":{\"destinationIp\":\"qawrlyxwj\",\"sourceIps\":[\"rbnwbxgjvtbvpy\",\"szdnr\",\"jq\",\"uhmuouqfprwzwbn\"]},\"contactProfile\":{\"id\":\"uitnwuiz\"}},\"id\":\"zxufiz\",\"name\":\"ckyfih\",\"type\":\"fidfvzw\"}")
-                .toObject(ContactInner.class);
-        Assertions.assertEquals(ContactsPropertiesProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T08:28:15Z"), model.reservationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T02:08:16Z"), model.reservationEndTime());
-        Assertions.assertEquals("s", model.groundStationName());
-        Assertions.assertEquals("uitnwuiz", model.contactProfile().id());
+        ContactInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"failed\",\"status\":\"cancelled\",\"reservationStartTime\":\"2021-09-03T01:46:22Z\",\"reservationEndTime\":\"2021-11-03T18:10:18Z\",\"rxStartTime\":\"2021-01-04T06:33:38Z\",\"rxEndTime\":\"2021-05-24T00:31:31Z\",\"txStartTime\":\"2021-11-02T07:55:59Z\",\"txEndTime\":\"2021-11-25T20:26:44Z\",\"errorMessage\":\"bacphejko\",\"maximumElevationDegrees\":64.57916,\"startAzimuthDegrees\":17.64155,\"endAzimuthDegrees\":71.94767,\"groundStationName\":\"l\",\"startElevationDegrees\":90.19363,\"endElevationDegrees\":5.8344603,\"antennaConfiguration\":{\"destinationIp\":\"yqkgfg\",\"sourceIps\":[\"adgakeqsrxybz\",\"qedqytbciqfoufl\",\"mnkzsmod\",\"glougpbk\"]},\"contactProfile\":{\"id\":\"tmut\"}},\"id\":\"qktapspwgcuert\",\"name\":\"mkdo\",\"type\":\"vqwhbmdgbbjfd\"}")
+            .toObject(ContactInner.class);
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T01:46:22Z"), model.reservationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T18:10:18Z"), model.reservationEndTime());
+        Assertions.assertEquals("l", model.groundStationName());
+        Assertions.assertEquals("tmut", model.contactProfile().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactInner model =
-            new ContactInner()
-                .withProvisioningState(ContactsPropertiesProvisioningState.DELETING)
-                .withReservationStartTime(OffsetDateTime.parse("2021-11-03T08:28:15Z"))
-                .withReservationEndTime(OffsetDateTime.parse("2021-10-17T02:08:16Z"))
-                .withGroundStationName("s")
-                .withContactProfile(new ContactsPropertiesContactProfile().withId("uitnwuiz"));
+        ContactInner model = new ContactInner().withProvisioningState(ContactsPropertiesProvisioningState.FAILED)
+            .withReservationStartTime(OffsetDateTime.parse("2021-09-03T01:46:22Z"))
+            .withReservationEndTime(OffsetDateTime.parse("2021-11-03T18:10:18Z"))
+            .withGroundStationName("l")
+            .withContactProfile(new ContactsPropertiesContactProfile().withId("tmut"));
         model = BinaryData.fromObject(model).toObject(ContactInner.class);
-        Assertions.assertEquals(ContactsPropertiesProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T08:28:15Z"), model.reservationStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T02:08:16Z"), model.reservationEndTime());
-        Assertions.assertEquals("s", model.groundStationName());
-        Assertions.assertEquals("uitnwuiz", model.contactProfile().id());
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T01:46:22Z"), model.reservationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T18:10:18Z"), model.reservationEndTime());
+        Assertions.assertEquals("l", model.groundStationName());
+        Assertions.assertEquals("tmut", model.contactProfile().id());
     }
 }

@@ -6,72 +6,54 @@ package com.azure.resourcemanager.largeinstance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.largeinstance.LargeInstanceManager;
 import com.azure.resourcemanager.largeinstance.models.AzureLargeInstanceHardwareTypeNamesEnum;
 import com.azure.resourcemanager.largeinstance.models.AzureLargeStorageInstance;
 import com.azure.resourcemanager.largeinstance.models.AzureLargeStorageInstanceTagsUpdate;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AzureLargeStorageInstancesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"azureLargeStorageInstanceUniqueIdentifier\":\"ylsyxkqjnsje\",\"storageProperties\":{\"provisioningState\":\"Migrating\",\"offeringType\":\"gxsds\",\"storageType\":\"e\",\"generation\":\"sbzkf\",\"hardwareType\":\"SDFLEX\",\"workloadType\":\"v\",\"storageBillingProperties\":{\"billingMode\":\"icvi\",\"sku\":\"kjj\"}}},\"location\":\"xrbuukzclew\",\"tags\":{\"aztz\":\"lw\",\"yq\":\"ofncckwyfzqwhxxb\"},\"id\":\"xzfe\",\"name\":\"ztppriolxorjalto\",\"type\":\"mncwsobqwcsdb\"}";
+            = "{\"properties\":{\"azureLargeStorageInstanceUniqueIdentifier\":\"cjrvxdjzlmwlxkv\",\"storageProperties\":{\"provisioningState\":\"Canceled\",\"offeringType\":\"ovawjvzunlu\",\"storageType\":\"nnprn\",\"generation\":\"peilpjzuaejxdu\",\"hardwareType\":\"HPE\",\"workloadType\":\"zbbtdzumveek\",\"storageBillingProperties\":{\"billingMode\":\"ozuhkfp\",\"sku\":\"jyofdxluusdtto\"}}},\"location\":\"aboekqv\",\"tags\":{\"flhhcaal\":\"nsmvbxwyj\"},\"id\":\"jixisxyawjoyaqcs\",\"name\":\"yjpkiidzyexz\",\"type\":\"eli\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LargeInstanceManager manager = LargeInstanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LargeInstanceManager manager = LargeInstanceManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureLargeStorageInstance response = manager.azureLargeStorageInstances()
+            .updateWithResponse("loayqcgw", "tzjuzgwyzmhtxo",
+                new AzureLargeStorageInstanceTagsUpdate().withTags(mapOf("vjcbpwxqpsrknf", "ts", "vxqtayriwwroyqbe",
+                    "guvriuhprwmd", "nojvknmefqsg", "rmcqiby", "pjyzhpv", "vah")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AzureLargeStorageInstance response
-            = manager.azureLargeStorageInstances()
-                .updateWithResponse("odtji", "fw",
-                    new AzureLargeStorageInstanceTagsUpdate()
-                        .withTags(mapOf("acjvefkd", "lt", "fpagaowpulp", "foakgg")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("xrbuukzclew", response.location());
-        Assertions.assertEquals("lw", response.tags().get("aztz"));
-        Assertions.assertEquals("ylsyxkqjnsje", response.properties().azureLargeStorageInstanceUniqueIdentifier());
-        Assertions.assertEquals("gxsds", response.properties().storageProperties().offeringType());
-        Assertions.assertEquals("e", response.properties().storageProperties().storageType());
-        Assertions.assertEquals("sbzkf", response.properties().storageProperties().generation());
-        Assertions.assertEquals(AzureLargeInstanceHardwareTypeNamesEnum.SDFLEX,
+        Assertions.assertEquals("aboekqv", response.location());
+        Assertions.assertEquals("nsmvbxwyj", response.tags().get("flhhcaal"));
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", response.properties().azureLargeStorageInstanceUniqueIdentifier());
+        Assertions.assertEquals("ovawjvzunlu", response.properties().storageProperties().offeringType());
+        Assertions.assertEquals("nnprn", response.properties().storageProperties().storageType());
+        Assertions.assertEquals("peilpjzuaejxdu", response.properties().storageProperties().generation());
+        Assertions.assertEquals(AzureLargeInstanceHardwareTypeNamesEnum.HPE,
             response.properties().storageProperties().hardwareType());
-        Assertions.assertEquals("v", response.properties().storageProperties().workloadType());
-        Assertions.assertEquals("icvi",
+        Assertions.assertEquals("zbbtdzumveek", response.properties().storageProperties().workloadType());
+        Assertions.assertEquals("ozuhkfp",
             response.properties().storageProperties().storageBillingProperties().billingMode());
-        Assertions.assertEquals("kjj", response.properties().storageProperties().storageBillingProperties().sku());
+        Assertions.assertEquals("jyofdxluusdtto",
+            response.properties().storageProperties().storageBillingProperties().sku());
     }
 
     // Use "Map.of" if available

@@ -13,8 +13,8 @@ public final class OperationResponseImpl implements OperationResponse {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    OperationResponseImpl(
-        OperationResponseInner innerObject, com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
+    OperationResponseImpl(OperationResponseInner innerObject,
+        com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

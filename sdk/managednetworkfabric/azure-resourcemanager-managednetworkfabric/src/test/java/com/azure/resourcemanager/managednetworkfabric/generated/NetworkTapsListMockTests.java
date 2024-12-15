@@ -6,82 +6,50 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.DestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.Encapsulation;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTap;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkTapsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"yrqlazfjltck\",\"sourceTapRuleId\":\"vdxhyfv\",\"destinations\":[{\"name\":\"exfdzpxalk\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"kzaiyrnwwo\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"oizuwwzcrig\"]},\"destinationTapRuleId\":\"belnqalbsoqxajsi\"}],\"pollingType\":\"Pull\",\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"annotation\":\"bwxuypcuriwll\"},\"location\":\"clv\",\"tags\":{\"miysghhcmqdlkk\":\"qtzshwlwjxr\",\"dnxbssatpialrq\":\"bdekbvdulmka\"},\"id\":\"wcxxccf\",\"name\":\"fvoz\",\"type\":\"iyvrexitpz\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"mfvjz\",\"sourceTapRuleId\":\"etpdezebvtkgzjna\",\"destinations\":[{\"name\":\"hei\",\"destinationType\":\"Direct\",\"destinationId\":\"cxuounzzckogcv\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"nyofts\",\"diydwklkuamxho\"]},\"destinationTapRuleId\":\"nqeonyi\"}],\"pollingType\":\"Push\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"annotation\":\"wzlwellhmppf\"},\"location\":\"rfuzedud\",\"tags\":{\"a\":\"dv\",\"mimbcflhycluou\":\"fvjv\"},\"id\":\"vrqvxnoa\",\"name\":\"ariv\",\"type\":\"zezeew\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NetworkTap> response = manager.networkTaps().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rfuzedud", response.iterator().next().location());
-        Assertions.assertEquals("dv", response.iterator().next().tags().get("a"));
-        Assertions.assertEquals("mfvjz", response.iterator().next().networkPacketBrokerId());
-        Assertions.assertEquals("hei", response.iterator().next().destinations().get(0).name());
-        Assertions
-            .assertEquals(DestinationType.DIRECT, response.iterator().next().destinations().get(0).destinationType());
-        Assertions.assertEquals("cxuounzzckogcv", response.iterator().next().destinations().get(0).destinationId());
-        Assertions
-            .assertEquals(
-                Encapsulation.GRE,
-                response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions
-            .assertEquals(
-                "nyofts",
-                response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("nqeonyi", response.iterator().next().destinations().get(0).destinationTapRuleId());
-        Assertions.assertEquals(PollingType.PUSH, response.iterator().next().pollingType());
-        Assertions.assertEquals("wzlwellhmppf", response.iterator().next().annotation());
+        Assertions.assertEquals("clv", response.iterator().next().location());
+        Assertions.assertEquals("qtzshwlwjxr", response.iterator().next().tags().get("miysghhcmqdlkk"));
+        Assertions.assertEquals("yrqlazfjltck", response.iterator().next().networkPacketBrokerId());
+        Assertions.assertEquals("exfdzpxalk", response.iterator().next().destinations().get(0).name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN,
+            response.iterator().next().destinations().get(0).destinationType());
+        Assertions.assertEquals("kzaiyrnwwo", response.iterator().next().destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.NONE,
+            response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
+        Assertions.assertEquals("oizuwwzcrig",
+            response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
+        Assertions.assertEquals("belnqalbsoqxajsi",
+            response.iterator().next().destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals(PollingType.PULL, response.iterator().next().pollingType());
+        Assertions.assertEquals("bwxuypcuriwll", response.iterator().next().annotation());
     }
 }

@@ -17,8 +17,8 @@ public final class KustoPoolListResultImpl implements KustoPoolListResult {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    KustoPoolListResultImpl(
-        KustoPoolListResultInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    KustoPoolListResultImpl(KustoPoolListResultInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,12 +26,8 @@ public final class KustoPoolListResultImpl implements KustoPoolListResult {
     public List<KustoPool> value() {
         List<KustoPoolInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new KustoPoolImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new KustoPoolImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

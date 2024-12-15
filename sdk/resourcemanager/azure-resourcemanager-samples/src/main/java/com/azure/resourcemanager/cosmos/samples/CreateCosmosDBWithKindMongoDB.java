@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.cosmos.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -41,22 +40,24 @@ public final class CreateCosmosDBWithKindMongoDB {
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.MONGO_DB)
-                    .withEventualConsistency()
-                    .withWriteReplication(Region.US_WEST)
-                    .withReadReplication(Region.US_WEST3)
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(docDBName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.MONGO_DB)
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_WEST)
+                .withReadReplication(Region.US_WEST3)
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
 
             System.out.println("Get the MongoDB connection string");
-            DatabaseAccountListConnectionStringsResult databaseAccountListConnectionStringsResult = cosmosDBAccount.listConnectionStrings();
+            DatabaseAccountListConnectionStringsResult databaseAccountListConnectionStringsResult
+                = cosmosDBAccount.listConnectionStrings();
             System.out.println("MongoDB connection string: "
-                    + databaseAccountListConnectionStringsResult.connectionStrings().get(0).connectionString());
+                + databaseAccountListConnectionStringsResult.connectionStrings().get(0).connectionString());
 
             //============================================================
             // Delete CosmosDB
@@ -97,8 +98,7 @@ public final class CreateCosmosDBWithKindMongoDB {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

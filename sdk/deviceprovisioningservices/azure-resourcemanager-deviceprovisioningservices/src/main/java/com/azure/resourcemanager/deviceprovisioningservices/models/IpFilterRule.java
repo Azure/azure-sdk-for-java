@@ -123,19 +123,16 @@ public final class IpFilterRule {
      */
     public void validate() {
         if (filterName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model IpFilterRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model IpFilterRule"));
         }
         if (ipMask() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
         }
     }
 

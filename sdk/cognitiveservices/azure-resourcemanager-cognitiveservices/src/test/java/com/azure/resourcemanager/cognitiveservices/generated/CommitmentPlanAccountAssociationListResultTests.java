@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPlanAccountAssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPlanAccountAssociationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"lwfffi\",\"value\":[{\"etag\":\"qqmtedltmmji\",\"properties\":{\"accountId\":\"ozphvwauyqncygu\"},\"id\":\"kvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"},{\"etag\":\"c\",\"properties\":{\"accountId\":\"ixbjx\"},\"id\":\"fw\",\"name\":\"yl\",\"type\":\"coolsttpkiwkkb\"},{\"etag\":\"rywvtylbfpn\",\"properties\":{\"accountId\":\"doiwi\"},\"id\":\"thtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"etag\":\"wct\",\"properties\":{\"accountId\":\"zj\"},\"id\":\"uu\",\"name\":\"fdlwg\",\"type\":\"ytsbwtovv\"}]}")
-                .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("lwfffi", model.nextLink());
+        CommitmentPlanAccountAssociationListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"omtkub\",\"value\":[{\"etag\":\"vdxzxhihfrbbc\",\"tags\":{\"ykvgtrdcnifmz\":\"agtltdhlfkqoj\"},\"properties\":{\"accountId\":\"ymbrnysuxmpraf\"},\"id\":\"g\",\"name\":\"khocxvdfffwaf\",\"type\":\"roud\"},{\"etag\":\"avehhrvkbunzo\",\"tags\":{\"dyuib\":\"hcxgkmoyx\",\"zydvfvf\":\"mfdn\",\"vhmgorffukis\":\"jnaeois\"},\"properties\":{\"accountId\":\"mzhwplefaxvxi\"},\"id\":\"cbtgnhnz\",\"name\":\"yqxtjjfzql\",\"type\":\"hycav\"}]}")
+            .toObject(CommitmentPlanAccountAssociationListResult.class);
+        Assertions.assertEquals("omtkub", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAccountAssociationListResult model =
-            new CommitmentPlanAccountAssociationListResult().withNextLink("lwfffi");
+        CommitmentPlanAccountAssociationListResult model
+            = new CommitmentPlanAccountAssociationListResult().withNextLink("omtkub");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("lwfffi", model.nextLink());
+        Assertions.assertEquals("omtkub", model.nextLink());
     }
 }

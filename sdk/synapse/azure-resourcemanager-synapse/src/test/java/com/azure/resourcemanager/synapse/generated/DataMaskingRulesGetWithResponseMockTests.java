@@ -6,77 +6,46 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.DataMaskingFunction;
 import com.azure.resourcemanager.synapse.models.DataMaskingRule;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataMaskingRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"id\":\"walzyxwhoeamoeo\",\"aliasName\":\"oeysfp\",\"ruleState\":\"Disabled\",\"schemaName\":\"twuuhauegnk\",\"tableName\":\"mnfeub\",\"columnName\":\"zjy\",\"maskingFunction\":\"Number\",\"numberFrom\":\"fugiphrrkuu\",\"numberTo\":\"qdurhzzfopue\",\"prefixSize\":\"usvwluj\",\"suffixSize\":\"wnibittoz\",\"replacementString\":\"dqumqvfm\"},\"location\":\"ad\",\"kind\":\"gctxegtvgwyur\",\"id\":\"elfnzzryiz\",\"name\":\"bxgde\",\"type\":\"xlayunomir\"}";
 
-        String responseStr =
-            "{\"properties\":{\"id\":\"fdz\",\"aliasName\":\"ouzfwofwakuk\",\"ruleState\":\"Disabled\",\"schemaName\":\"tzxsoednlwglihe\",\"tableName\":\"o\",\"columnName\":\"ucmqgisnione\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"dr\",\"numberTo\":\"uenxkgtlzlmt\",\"prefixSize\":\"xcznnhzkb\",\"suffixSize\":\"mxlxmwtygeq\",\"replacementString\":\"sito\"},\"location\":\"ahfsgb\",\"kind\":\"lreesrfwsszvlcwl\",\"id\":\"solntfxxcrqmipf\",\"name\":\"wfo\",\"type\":\"gizmshxxbaizabu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DataMaskingRule response = manager.dataMaskingRules()
+            .getWithResponse("gyuqwrldaxurfqa", "csozjv", "dzciggb", "vt", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DataMaskingRule response =
-            manager
-                .dataMaskingRules()
-                .getWithResponse("ftvhkmoogj", "hskb", "gmjgrul", "fogxhcxnw", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ouzfwofwakuk", response.aliasName());
+        Assertions.assertEquals("oeysfp", response.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, response.ruleState());
-        Assertions.assertEquals("tzxsoednlwglihe", response.schemaName());
-        Assertions.assertEquals("o", response.tableName());
-        Assertions.assertEquals("ucmqgisnione", response.columnName());
-        Assertions.assertEquals(DataMaskingFunction.CCN, response.maskingFunction());
-        Assertions.assertEquals("dr", response.numberFrom());
-        Assertions.assertEquals("uenxkgtlzlmt", response.numberTo());
-        Assertions.assertEquals("xcznnhzkb", response.prefixSize());
-        Assertions.assertEquals("mxlxmwtygeq", response.suffixSize());
-        Assertions.assertEquals("sito", response.replacementString());
+        Assertions.assertEquals("twuuhauegnk", response.schemaName());
+        Assertions.assertEquals("mnfeub", response.tableName());
+        Assertions.assertEquals("zjy", response.columnName());
+        Assertions.assertEquals(DataMaskingFunction.NUMBER, response.maskingFunction());
+        Assertions.assertEquals("fugiphrrkuu", response.numberFrom());
+        Assertions.assertEquals("qdurhzzfopue", response.numberTo());
+        Assertions.assertEquals("usvwluj", response.prefixSize());
+        Assertions.assertEquals("wnibittoz", response.suffixSize());
+        Assertions.assertEquals("dqumqvfm", response.replacementString());
     }
 }

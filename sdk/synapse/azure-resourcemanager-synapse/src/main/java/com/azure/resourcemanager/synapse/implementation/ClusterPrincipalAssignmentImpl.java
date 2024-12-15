@@ -86,8 +86,8 @@ public final class ClusterPrincipalAssignmentImpl
 
     private String resourceGroupName;
 
-    public ClusterPrincipalAssignmentImpl withExistingKustoPool(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
+    public ClusterPrincipalAssignmentImpl withExistingKustoPool(String workspaceName, String kustoPoolName,
+        String resourceGroupName) {
         this.workspaceName = workspaceName;
         this.kustoPoolName = kustoPoolName;
         this.resourceGroupName = resourceGroupName;
@@ -95,32 +95,18 @@ public final class ClusterPrincipalAssignmentImpl
     }
 
     public ClusterPrincipalAssignment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ClusterPrincipalAssignment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -135,62 +121,45 @@ public final class ClusterPrincipalAssignmentImpl
     }
 
     public ClusterPrincipalAssignment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ClusterPrincipalAssignment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, this.innerModel(),
+                context);
         return this;
     }
 
-    ClusterPrincipalAssignmentImpl(
-        ClusterPrincipalAssignmentInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    ClusterPrincipalAssignmentImpl(ClusterPrincipalAssignmentInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.kustoPoolName = Utils.getValueFromIdByName(innerObject.id(), "kustoPools");
-        this.principalAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "principalAssignments");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.kustoPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kustoPools");
+        this.principalAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "principalAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public ClusterPrincipalAssignment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ClusterPrincipalAssignment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolPrincipalAssignments()
-                .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolPrincipalAssignments()
+            .getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
+            .getValue();
         return this;
     }
 

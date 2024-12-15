@@ -141,11 +141,8 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     }
 
     private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ComputeManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ComputeManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
@@ -173,12 +170,10 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     /** @return the virtual machine image resource management API entry point */
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
-            virtualMachineImages =
-                new VirtualMachineImagesImpl(
-                    new VirtualMachinePublishersImpl(
-                        this.serviceClient().getVirtualMachineImages(),
-                        this.serviceClient().getVirtualMachineExtensionImages()),
-                    this.serviceClient().getVirtualMachineImages());
+            virtualMachineImages = new VirtualMachineImagesImpl(
+                new VirtualMachinePublishersImpl(this.serviceClient().getVirtualMachineImages(),
+                    this.serviceClient().getVirtualMachineExtensionImages()),
+                this.serviceClient().getVirtualMachineImages());
         }
         return virtualMachineImages;
     }
@@ -186,11 +181,9 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     /** @return the virtual machine extension image resource management API entry point */
     public VirtualMachineExtensionImages virtualMachineExtensionImages() {
         if (virtualMachineExtensionImages == null) {
-            virtualMachineExtensionImages =
-                new VirtualMachineExtensionImagesImpl(
-                    new VirtualMachinePublishersImpl(
-                        this.serviceClient().getVirtualMachineImages(),
-                        this.serviceClient().getVirtualMachineExtensionImages()));
+            virtualMachineExtensionImages = new VirtualMachineExtensionImagesImpl(
+                new VirtualMachinePublishersImpl(this.serviceClient().getVirtualMachineImages(),
+                    this.serviceClient().getVirtualMachineExtensionImages()));
         }
         return virtualMachineExtensionImages;
     }
@@ -198,8 +191,8 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     /** @return the virtual machine scale set resource management API entry point */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
-            virtualMachineScaleSets =
-                new VirtualMachineScaleSetsImpl(this, storageManager, networkManager, this.authorizationManager);
+            virtualMachineScaleSets
+                = new VirtualMachineScaleSetsImpl(this, storageManager, networkManager, this.authorizationManager);
         }
         return virtualMachineScaleSets;
     }

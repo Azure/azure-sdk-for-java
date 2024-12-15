@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.MaintenancesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.MaintenanceInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Maintenance;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Maintenances;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceUpdate;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Maintenances;
 
 public final class MaintenancesImpl implements Maintenances {
     private static final ClientLogger LOGGER = new ClientLogger(MaintenancesImpl.class);

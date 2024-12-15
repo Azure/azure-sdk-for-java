@@ -18,7 +18,7 @@ public final class EnvironmentsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void environmentsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.environments().headWithResponse("contoso-resources", "contoso", "default", "public",
-            com.azure.core.util.Context.NONE);
+        manager.environments()
+            .headWithResponse("contoso-resources", "contoso", "default", "public", com.azure.core.util.Context.NONE);
     }
 }

@@ -83,10 +83,8 @@ public interface ApplicationGatewayIpConfiguration
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithSubnet<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithSubnet<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of application gateway IP configuration update stages. */
@@ -179,9 +177,7 @@ public interface ApplicationGatewayIpConfiguration
      *
      * @param <ParentT> the parent type
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithSubnet<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithSubnet<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

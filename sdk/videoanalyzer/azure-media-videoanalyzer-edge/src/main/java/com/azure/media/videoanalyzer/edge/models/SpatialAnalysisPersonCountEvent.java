@@ -5,26 +5,35 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a Spatial Analysis person count operation eventing configuration. */
+/**
+ * Defines a Spatial Analysis person count operation eventing configuration.
+ */
 @Fluent
 public final class SpatialAnalysisPersonCountEvent extends SpatialAnalysisOperationEventBase {
     /*
      * The event trigger type.
      */
-    @JsonProperty(value = "trigger")
     private SpatialAnalysisPersonCountEventTrigger trigger;
 
     /*
      * The event or interval output frequency.
      */
-    @JsonProperty(value = "outputFrequency")
     private String outputFrequency;
 
     /**
+     * Creates an instance of SpatialAnalysisPersonCountEvent class.
+     */
+    public SpatialAnalysisPersonCountEvent() {
+    }
+
+    /**
      * Get the trigger property: The event trigger type.
-     *
+     * 
      * @return the trigger value.
      */
     public SpatialAnalysisPersonCountEventTrigger getTrigger() {
@@ -33,7 +42,7 @@ public final class SpatialAnalysisPersonCountEvent extends SpatialAnalysisOperat
 
     /**
      * Set the trigger property: The event trigger type.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the SpatialAnalysisPersonCountEvent object itself.
      */
@@ -44,7 +53,7 @@ public final class SpatialAnalysisPersonCountEvent extends SpatialAnalysisOperat
 
     /**
      * Get the outputFrequency property: The event or interval output frequency.
-     *
+     * 
      * @return the outputFrequency value.
      */
     public String getOutputFrequency() {
@@ -53,7 +62,7 @@ public final class SpatialAnalysisPersonCountEvent extends SpatialAnalysisOperat
 
     /**
      * Set the outputFrequency property: The event or interval output frequency.
-     *
+     * 
      * @param outputFrequency the outputFrequency value to set.
      * @return the SpatialAnalysisPersonCountEvent object itself.
      */
@@ -62,17 +71,69 @@ public final class SpatialAnalysisPersonCountEvent extends SpatialAnalysisOperat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountEvent setThreshold(String threshold) {
         super.setThreshold(threshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpatialAnalysisPersonCountEvent setFocus(SpatialAnalysisOperationFocus focus) {
         super.setFocus(focus);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("threshold", getThreshold());
+        jsonWriter.writeStringField("focus", getFocus() == null ? null : getFocus().toString());
+        jsonWriter.writeStringField("trigger", this.trigger == null ? null : this.trigger.toString());
+        jsonWriter.writeStringField("outputFrequency", this.outputFrequency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialAnalysisPersonCountEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialAnalysisPersonCountEvent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialAnalysisPersonCountEvent.
+     */
+    public static SpatialAnalysisPersonCountEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialAnalysisPersonCountEvent deserializedSpatialAnalysisPersonCountEvent
+                = new SpatialAnalysisPersonCountEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threshold".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonCountEvent.setThreshold(reader.getString());
+                } else if ("focus".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonCountEvent
+                        .setFocus(SpatialAnalysisOperationFocus.fromString(reader.getString()));
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonCountEvent.trigger
+                        = SpatialAnalysisPersonCountEventTrigger.fromString(reader.getString());
+                } else if ("outputFrequency".equals(fieldName)) {
+                    deserializedSpatialAnalysisPersonCountEvent.outputFrequency = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialAnalysisPersonCountEvent;
+        });
     }
 }

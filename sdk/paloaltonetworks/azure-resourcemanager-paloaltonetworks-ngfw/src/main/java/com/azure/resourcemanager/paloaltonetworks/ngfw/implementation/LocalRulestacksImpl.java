@@ -171,8 +171,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
 
     public Response<ListAppIdResponse> listAppIdsWithResponse(String resourceGroupName, String localRulestackName,
         String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
-        Response<ListAppIdResponseInner> inner = this.serviceClient().listAppIdsWithResponse(resourceGroupName,
-            localRulestackName, appIdVersion, appPrefix, skip, top, context);
+        Response<ListAppIdResponseInner> inner = this.serviceClient()
+            .listAppIdsWithResponse(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ListAppIdResponseImpl(inner.getValue(), this.manager()));

@@ -25,6 +25,12 @@ public final class DataLakeAccessPolicy {
     private String permissions;
 
     /**
+     * Creates a new instance of {@link DataLakeAccessPolicy}.
+     */
+    public DataLakeAccessPolicy() {
+    }
+
+    /**
      * Get the startsOn property: the date-time the policy is active.
      *
      * @return the startsOn value.

@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient.
+ */
 public interface PrivateLinkResourcesOperationsClient {
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,9 +32,9 @@ public interface PrivateLinkResourcesOperationsClient {
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -46,9 +48,9 @@ public interface PrivateLinkResourcesOperationsClient {
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -59,14 +61,14 @@ public interface PrivateLinkResourcesOperationsClient {
      * @return private link resource in workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.

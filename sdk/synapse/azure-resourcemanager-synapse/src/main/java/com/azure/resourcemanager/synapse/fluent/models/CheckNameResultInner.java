@@ -5,44 +5,47 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.Reason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The result returned from a check name availability request. */
+/**
+ * The result returned from a check name availability request.
+ */
 @Fluent
-public final class CheckNameResultInner {
+public final class CheckNameResultInner implements JsonSerializable<CheckNameResultInner> {
     /*
      * Specifies a Boolean value that indicates if the name is available.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * The name that was checked.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Message indicating an unavailable name due to a conflict, or a description of the naming rules that are
-     * violated.
+     * Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Message providing the reason why the given name is invalid.
      */
-    @JsonProperty(value = "reason")
     private Reason reason;
 
-    /** Creates an instance of CheckNameResultInner class. */
+    /**
+     * Creates an instance of CheckNameResultInner class.
+     */
     public CheckNameResultInner() {
     }
 
     /**
      * Get the nameAvailable property: Specifies a Boolean value that indicates if the name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -51,7 +54,7 @@ public final class CheckNameResultInner {
 
     /**
      * Set the nameAvailable property: Specifies a Boolean value that indicates if the name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckNameResultInner object itself.
      */
@@ -62,7 +65,7 @@ public final class CheckNameResultInner {
 
     /**
      * Get the name property: The name that was checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +74,7 @@ public final class CheckNameResultInner {
 
     /**
      * Set the name property: The name that was checked.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameResultInner object itself.
      */
@@ -83,7 +86,7 @@ public final class CheckNameResultInner {
     /**
      * Get the message property: Message indicating an unavailable name due to a conflict, or a description of the
      * naming rules that are violated.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -93,7 +96,7 @@ public final class CheckNameResultInner {
     /**
      * Set the message property: Message indicating an unavailable name due to a conflict, or a description of the
      * naming rules that are violated.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckNameResultInner object itself.
      */
@@ -104,7 +107,7 @@ public final class CheckNameResultInner {
 
     /**
      * Get the reason property: Message providing the reason why the given name is invalid.
-     *
+     * 
      * @return the reason value.
      */
     public Reason reason() {
@@ -113,7 +116,7 @@ public final class CheckNameResultInner {
 
     /**
      * Set the reason property: Message providing the reason why the given name is invalid.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckNameResultInner object itself.
      */
@@ -124,9 +127,54 @@ public final class CheckNameResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameResultInner.
+     */
+    public static CheckNameResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameResultInner deserializedCheckNameResultInner = new CheckNameResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckNameResultInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedCheckNameResultInner.name = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckNameResultInner.message = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckNameResultInner.reason = Reason.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameResultInner;
+        });
     }
 }

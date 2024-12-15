@@ -10,9 +10,9 @@ import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterJobInner;
 public final class ClusterJobInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterJobInner model = BinaryData
-            .fromString("{\"id\":\"xhdzhlrqjbhckf\",\"streamingUnits\":1523615779,\"jobState\":\"Starting\"}")
-            .toObject(ClusterJobInner.class);
+        ClusterJobInner model
+            = BinaryData.fromString("{\"id\":\"yvjusrtslhsp\",\"streamingUnits\":1857421626,\"jobState\":\"Created\"}")
+                .toObject(ClusterJobInner.class);
     }
 
     @org.junit.jupiter.api.Test

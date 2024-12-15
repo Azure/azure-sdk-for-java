@@ -7,17 +7,16 @@ package com.azure.resourcemanager.resourcegraph.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcegraph.models.Facet;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FacetTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Facet model = BinaryData.fromString("{\"resultType\":\"Facet\",\"expression\":\"j\"}").toObject(Facet.class);
         Assertions.assertEquals("j", model.expression());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Facet model = new Facet().withExpression("j");
         model = BinaryData.fromObject(model).toObject(Facet.class);
         Assertions.assertEquals("j", model.expression());

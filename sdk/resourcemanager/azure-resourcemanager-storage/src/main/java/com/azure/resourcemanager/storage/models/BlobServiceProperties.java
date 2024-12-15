@@ -17,12 +17,8 @@ import java.util.List;
 
 /** Type representing BlobServiceProperties. */
 @Fluent
-public interface BlobServiceProperties
-    extends HasInnerModel<BlobServicePropertiesInner>,
-        Indexable,
-        Refreshable<BlobServiceProperties>,
-        Updatable<BlobServiceProperties.Update>,
-        HasManager<StorageManager> {
+public interface BlobServiceProperties extends HasInnerModel<BlobServicePropertiesInner>, Indexable,
+    Refreshable<BlobServiceProperties>, Updatable<BlobServiceProperties.Update>, HasManager<StorageManager> {
     /** @return the cors value. */
     CorsRules cors();
 
@@ -231,25 +227,17 @@ public interface BlobServiceProperties
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<BlobServiceProperties>,
-                DefinitionStages.WithCors,
-                DefinitionStages.WithDefaultServiceVersion,
-                DefinitionStages.WithDeleteRetentionPolicy,
-                DefinitionStages.WithBlobVersioning,
-                DefinitionStages.WithContainerDeleteRetentionPolicy,
-                DefinitionStages.WithLastAccessTimeTrackingPolicy {
+        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithCors,
+            DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy,
+            DefinitionStages.WithBlobVersioning, DefinitionStages.WithContainerDeleteRetentionPolicy,
+            DefinitionStages.WithLastAccessTimeTrackingPolicy {
         }
     }
+
     /** The template for a BlobServiceProperties update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<BlobServiceProperties>,
-            UpdateStages.WithCors,
-            UpdateStages.WithDefaultServiceVersion,
-            UpdateStages.WithDeleteRetentionPolicy,
-            UpdateStages.WithBlobVersioning,
-            UpdateStages.WithContainerDeleteRetentionPolicy,
-            UpdateStages.WithLastAccessTimeTrackingPolicy {
+    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithCors,
+        UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy, UpdateStages.WithBlobVersioning,
+        UpdateStages.WithContainerDeleteRetentionPolicy, UpdateStages.WithLastAccessTimeTrackingPolicy {
     }
 
     /** Grouping of BlobServiceProperties update stages. */

@@ -14,7 +14,8 @@ import java.util.List;
 /** The result of a request to list machine learning workspaces. */
 @Fluent
 public final class WorkspaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
 
     /*
      * The list of machine learning workspaces. Since this list may be

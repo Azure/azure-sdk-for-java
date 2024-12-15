@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.DatacenterAddressResponse;
 public final class DatacenterAddressResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatacenterAddressResponse model =
-            BinaryData
-                .fromString(
-                    "{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"idyjrrfbyaosvexc\",\"onpc\"],\"dataCenterAzureLocation\":\"ocohslkevleg\"}")
-                .toObject(DatacenterAddressResponse.class);
+        DatacenterAddressResponse model = BinaryData.fromString(
+            "{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"exxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"dataCenterAzureLocation\":\"dobpxjmflbvvn\"}")
+            .toObject(DatacenterAddressResponse.class);
     }
 
     @org.junit.jupiter.api.Test

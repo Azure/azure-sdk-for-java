@@ -46,12 +46,9 @@ public interface VirtualMachineScaleSetExtension
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithImageOrPublisher<ParentT>,
-            DefinitionStages.WithPublisher<ParentT>,
-            DefinitionStages.WithType<ParentT>,
-            DefinitionStages.WithVersion<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithImageOrPublisher<ParentT>,
+        DefinitionStages.WithPublisher<ParentT>, DefinitionStages.WithType<ParentT>,
+        DefinitionStages.WithVersion<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /**
@@ -362,12 +359,9 @@ public interface VirtualMachineScaleSetExtension
      * @param <ParentT> the stage of the parent update to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
-            UpdateDefinitionStages.WithPublisher<ParentT>,
-            UpdateDefinitionStages.WithType<ParentT>,
-            UpdateDefinitionStages.WithVersion<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
+        UpdateDefinitionStages.WithPublisher<ParentT>, UpdateDefinitionStages.WithType<ParentT>,
+        UpdateDefinitionStages.WithVersion<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of virtual machine extension update stages. */
@@ -436,9 +430,7 @@ public interface VirtualMachineScaleSetExtension
     /**
      * The entirety of virtual machine scale set extension update as a part of parent virtual machine scale set update.
      */
-    interface Update
-        extends Settable<VirtualMachineScaleSet.Update>,
-            UpdateStages.WithAutoUpgradeMinorVersion,
-            UpdateStages.WithSettings {
+    interface Update extends Settable<VirtualMachineScaleSet.Update>, UpdateStages.WithAutoUpgradeMinorVersion,
+        UpdateStages.WithSettings {
     }
 }

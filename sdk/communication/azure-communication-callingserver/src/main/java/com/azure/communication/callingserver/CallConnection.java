@@ -143,7 +143,8 @@ public class CallConnection {
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
+    public TransferCallResult
+        transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
         return callConnectionAsync.transferToParticipantCall(transferToParticipantCallOptions).block();
     }
 
@@ -159,7 +160,9 @@ public class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransferCallResult> transferToParticipantCallWithResponse(
         TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
-        return callConnectionAsync.transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context).block();
+        return callConnectionAsync
+            .transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context)
+            .block();
     }
 
     /**
@@ -186,7 +189,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantsResult> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions,
-                                                                       Context context) {
+        Context context) {
         return callConnectionAsync.addParticipantsWithResponseInternal(addParticipantsOptions, context).block();
     }
 
@@ -201,7 +204,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                       String operationContext) {
+        String operationContext) {
         return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
     }
 
@@ -216,9 +219,11 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                             String operationContext, Context context) {
-        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context).block();
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(
+        List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
+        return callConnectionAsync
+            .removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context)
+            .block();
     }
 
     //region Content management Actions

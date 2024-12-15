@@ -26,7 +26,8 @@ import java.util.Map;
 /** Represents a server. */
 @Fluent
 public final class ServerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerInner.class);
 
     /*
      * The Azure Active Directory identity of the server.

@@ -49,7 +49,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /*
      * Contains debugging information that can be used to further explore your search results.
      */
-    private List<DocumentDebugInfo> documentDebugInfo;
+    private DocumentDebugInfo documentDebugInfo;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
@@ -111,7 +111,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * 
      * @return the documentDebugInfo value.
      */
-    public List<DocumentDebugInfo> getDocumentDebugInfo() {
+    public DocumentDebugInfo getDocumentDebugInfo() {
         return this.documentDebugInfo;
     }
 
@@ -165,7 +165,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
             Double rerankerScore = null;
             Map<String, List<String>> highlights = null;
             List<QueryCaptionResult> captions = null;
-            List<DocumentDebugInfo> documentDebugInfo = null;
+            DocumentDebugInfo documentDebugInfo = null;
             Map<String, Object> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -181,7 +181,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                 } else if ("@search.captions".equals(fieldName)) {
                     captions = reader.readArray(reader1 -> QueryCaptionResult.fromJson(reader1));
                 } else if ("@search.documentDebugInfo".equals(fieldName)) {
-                    documentDebugInfo = reader.readArray(reader1 -> DocumentDebugInfo.fromJson(reader1));
+                    documentDebugInfo = DocumentDebugInfo.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

@@ -16,15 +16,14 @@ import reactor.core.publisher.Mono;
  * Entry point to manage disaster recovery pairing of event hub namespaces.
  */
 @Fluent
-public interface EventHubDisasterRecoveryPairings extends
-    SupportsCreating<EventHubDisasterRecoveryPairing.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsGettingById<EventHubDisasterRecoveryPairing>,
-    HasManager<EventHubsManager> {
+public interface EventHubDisasterRecoveryPairings
+    extends SupportsCreating<EventHubDisasterRecoveryPairing.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<EventHubDisasterRecoveryPairing>, HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of a disaster recovery pairing.
      */
     DisasterRecoveryPairingAuthorizationRules authorizationRules();
+
     /**
      * Lists the disaster recovery pairings of a namespace under a resource group.
      *
@@ -33,6 +32,7 @@ public interface EventHubDisasterRecoveryPairings extends
      * @return list of disaster recovery pairings
      */
     PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(String resourceGroupName, String namespaceName);
+
     /**
      * Lists the disaster recovery pairings of a namespace under a resource group.
      *
@@ -41,6 +41,7 @@ public interface EventHubDisasterRecoveryPairings extends
      * @return observable that emits disaster recovery pairings
      */
     PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(String resourceGroupName, String namespaceName);
+
     /**
      * Gets a disaster recovery pairings of a namespace under a resource group.
      *

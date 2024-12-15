@@ -5,61 +5,63 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Failover properties of the protected item. */
+/**
+ * Failover properties of the protected item.
+ */
 @Immutable
-public final class FailoverProtectedItemProperties {
+public final class FailoverProtectedItemProperties implements JsonSerializable<FailoverProtectedItemProperties> {
     /*
      * Gets or sets the protected item name.
      */
-    @JsonProperty(value = "protectedItemName", access = JsonProperty.Access.WRITE_ONLY)
     private String protectedItemName;
 
     /*
      * Gets or sets the VM name.
      */
-    @JsonProperty(value = "vmName", access = JsonProperty.Access.WRITE_ONLY)
     private String vmName;
 
     /*
      * Gets or sets the test VM name.
      */
-    @JsonProperty(value = "testVmName", access = JsonProperty.Access.WRITE_ONLY)
     private String testVmName;
 
     /*
      * Gets or sets the recovery point Id.
      */
-    @JsonProperty(value = "recoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
     private String recoveryPointId;
 
     /*
      * Gets or sets the recovery point time.
      */
-    @JsonProperty(value = "recoveryPointTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime recoveryPointTime;
 
     /*
      * Gets or sets the network name.
      */
-    @JsonProperty(value = "networkName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkName;
 
     /*
      * Gets or sets the network subnet.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
-    /** Creates an instance of FailoverProtectedItemProperties class. */
+    /**
+     * Creates an instance of FailoverProtectedItemProperties class.
+     */
     public FailoverProtectedItemProperties() {
     }
 
     /**
      * Get the protectedItemName property: Gets or sets the protected item name.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -68,7 +70,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the vmName property: Gets or sets the VM name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -77,7 +79,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the testVmName property: Gets or sets the test VM name.
-     *
+     * 
      * @return the testVmName value.
      */
     public String testVmName() {
@@ -86,7 +88,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the recoveryPointId property: Gets or sets the recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -95,7 +97,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the recoveryPointTime property: Gets or sets the recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -104,7 +106,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the networkName property: Gets or sets the network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -113,7 +115,7 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Get the subnet property: Gets or sets the network subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -122,9 +124,58 @@ public final class FailoverProtectedItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverProtectedItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverProtectedItemProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverProtectedItemProperties.
+     */
+    public static FailoverProtectedItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverProtectedItemProperties deserializedFailoverProtectedItemProperties
+                = new FailoverProtectedItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemName".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.protectedItemName = reader.getString();
+                } else if ("vmName".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.vmName = reader.getString();
+                } else if ("testVmName".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.testVmName = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.recoveryPointId = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.networkName = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedFailoverProtectedItemProperties.subnet = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverProtectedItemProperties;
+        });
     }
 }

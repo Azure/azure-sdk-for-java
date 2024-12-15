@@ -96,29 +96,29 @@ public interface KubernetesClusterAgentPool
      */
     Map<String, String> tags();
 
-//    /**
-//     * Starts the agent pool.
-//     */
-//    void start();
-//
-//    /**
-//     * Starts the agent pool.
-//     *
-//     * @return A {@link Mono} that completes when a successful response is received.
-//     */
-//    Mono<Void> startAsync();
-//
-//    /**
-//     * Stops the agent pool.
-//     */
-//    void stop();
-//
-//    /**
-//     * Stops the agent pool.
-//     *
-//     * @return A {@link Mono} that completes when a successful response is received.
-//     */
-//    Mono<Void>  stopAsync();
+    //    /**
+    //     * Starts the agent pool.
+    //     */
+    //    void start();
+    //
+    //    /**
+    //     * Starts the agent pool.
+    //     *
+    //     * @return A {@link Mono} that completes when a successful response is received.
+    //     */
+    //    Mono<Void> startAsync();
+    //
+    //    /**
+    //     * Stops the agent pool.
+    //     */
+    //    void stop();
+    //
+    //    /**
+    //     * Stops the agent pool.
+    //     *
+    //     * @return A {@link Mono} that completes when a successful response is received.
+    //     */
+    //    Mono<Void>  stopAsync();
 
     // Fluent interfaces
 
@@ -127,15 +127,10 @@ public interface KubernetesClusterAgentPool
      *
      * @param <ParentT> the stage of the container service definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithOSType<ParentT>,
-            DefinitionStages.WithOSDiskSize<ParentT>,
-            DefinitionStages.WithAgentPoolType<ParentT>,
-            DefinitionStages.WithAgentPoolVirtualMachineCount<ParentT>,
-            DefinitionStages.WithMaxPodsCount<ParentT>,
-            DefinitionStages.WithVirtualNetwork<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithOSType<ParentT>,
+        DefinitionStages.WithOSDiskSize<ParentT>, DefinitionStages.WithAgentPoolType<ParentT>,
+        DefinitionStages.WithAgentPoolVirtualMachineCount<ParentT>, DefinitionStages.WithMaxPodsCount<ParentT>,
+        DefinitionStages.WithVirtualNetwork<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of container service agent pool definition stages as a part of parent container service definition. */
@@ -458,34 +453,18 @@ public interface KubernetesClusterAgentPool
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends WithOSType<ParentT>,
-                WithOSDiskSize<ParentT>,
-                WithAgentPoolType<ParentT>,
-                WithAgentPoolVirtualMachineCount<ParentT>,
-                WithMaxPodsCount<ParentT>,
-                WithVirtualNetwork<ParentT>,
-                WithAgentPoolMode<ParentT>,
-                WithAutoScaling<ParentT>,
-                WithAvailabilityZones<ParentT>,
-                WithNodeLabelsTaints<ParentT>,
-                WithVMPriority<ParentT>,
-                WithBillingProfile<ParentT>,
-                WithDiskType<ParentT>,
-                WithFips<ParentT>,
-                WithTags<ParentT>,
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT> extends WithOSType<ParentT>, WithOSDiskSize<ParentT>, WithAgentPoolType<ParentT>,
+            WithAgentPoolVirtualMachineCount<ParentT>, WithMaxPodsCount<ParentT>, WithVirtualNetwork<ParentT>,
+            WithAgentPoolMode<ParentT>, WithAutoScaling<ParentT>, WithAvailabilityZones<ParentT>,
+            WithNodeLabelsTaints<ParentT>, WithVMPriority<ParentT>, WithBillingProfile<ParentT>, WithDiskType<ParentT>,
+            WithFips<ParentT>, WithTags<ParentT>, Attachable.InDefinition<ParentT> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update<ParentT>
-        extends Settable<ParentT>,
-            UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
-            UpdateStages.WithAutoScaling<ParentT>,
-            UpdateStages.WithAgentPoolMode<ParentT>,
-            UpdateStages.WithDiskType<ParentT>,
-            UpdateStages.WithTags<ParentT> {
+    interface Update<ParentT> extends Settable<ParentT>, UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
+        UpdateStages.WithAutoScaling<ParentT>, UpdateStages.WithAgentPoolMode<ParentT>,
+        UpdateStages.WithDiskType<ParentT>, UpdateStages.WithTags<ParentT> {
     }
 
     /** Grouping of agent pool update stages. */

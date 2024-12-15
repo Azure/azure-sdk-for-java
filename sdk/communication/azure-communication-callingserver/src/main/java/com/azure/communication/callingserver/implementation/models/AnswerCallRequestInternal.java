@@ -85,8 +85,8 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public AnswerCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }

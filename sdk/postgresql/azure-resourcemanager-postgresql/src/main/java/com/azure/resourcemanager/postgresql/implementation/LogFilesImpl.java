@@ -14,14 +14,15 @@ import com.azure.resourcemanager.postgresql.models.LogFiles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LogFilesImpl implements LogFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
 
     private final LogFilesClient innerClient;
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    public LogFilesImpl(
-        LogFilesClient innerClient, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    public LogFilesImpl(LogFilesClient innerClient,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

@@ -45,12 +45,14 @@ public final class ExperimentsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Experiment response = manager.experiments()
-            .getByResourceGroupWithResponse("z", "ybycnunvj", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("z", "ybycnunvj", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("aeqphchqnr", response.location());
         Assertions.assertEquals("x", response.tags().get("huwrykqgaifm"));

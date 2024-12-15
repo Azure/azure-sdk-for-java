@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class KekIdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KekIdentityProperties model =
-            BinaryData
-                .fromString("{\"userAssignedIdentity\":\"rc\",\"useSystemAssignedIdentity\":\"datatso\"}")
-                .toObject(KekIdentityProperties.class);
-        Assertions.assertEquals("rc", model.userAssignedIdentity());
+        KekIdentityProperties model = BinaryData
+            .fromString("{\"userAssignedIdentity\":\"vodhtn\",\"useSystemAssignedIdentity\":\"datarudhzmmesckdl\"}")
+            .toObject(KekIdentityProperties.class);
+        Assertions.assertEquals("vodhtn", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KekIdentityProperties model =
-            new KekIdentityProperties().withUserAssignedIdentity("rc").withUseSystemAssignedIdentity("datatso");
+        KekIdentityProperties model = new KekIdentityProperties().withUserAssignedIdentity("vodhtn")
+            .withUseSystemAssignedIdentity("datarudhzmmesckdl");
         model = BinaryData.fromObject(model).toObject(KekIdentityProperties.class);
-        Assertions.assertEquals("rc", model.userAssignedIdentity());
+        Assertions.assertEquals("vodhtn", model.userAssignedIdentity());
     }
 }

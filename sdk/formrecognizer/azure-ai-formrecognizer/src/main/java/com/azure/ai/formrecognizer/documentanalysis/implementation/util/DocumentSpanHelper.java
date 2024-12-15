@@ -19,6 +19,7 @@ public final class DocumentSpanHelper {
      */
     public interface DocumentSpanAccessor {
         void setOffset(DocumentSpan documentSpan, int offset);
+
         void setLength(DocumentSpan documentSpan, int length);
     }
 

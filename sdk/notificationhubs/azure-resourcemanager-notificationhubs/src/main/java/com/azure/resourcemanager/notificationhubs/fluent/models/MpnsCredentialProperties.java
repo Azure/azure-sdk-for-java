@@ -6,29 +6,30 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Description of a NotificationHub MpnsCredential.
  */
 @Fluent
-public final class MpnsCredentialProperties {
+public final class MpnsCredentialProperties implements JsonSerializable<MpnsCredentialProperties> {
     /*
      * Gets or sets the MPNS certificate.
      */
-    @JsonProperty(value = "mpnsCertificate")
     private String mpnsCertificate;
 
     /*
      * Gets or sets the certificate key for this credential.
      */
-    @JsonProperty(value = "certificateKey")
     private String certificateKey;
 
     /*
      * Gets or sets the MPNS certificate Thumbprint
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /**
@@ -104,18 +105,64 @@ public final class MpnsCredentialProperties {
      */
     public void validate() {
         if (mpnsCertificate() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mpnsCertificate in model MpnsCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mpnsCertificate in model MpnsCredentialProperties"));
         }
         if (certificateKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateKey in model MpnsCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateKey in model MpnsCredentialProperties"));
         }
         if (thumbprint() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property thumbprint in model MpnsCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property thumbprint in model MpnsCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MpnsCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mpnsCertificate", this.mpnsCertificate);
+        jsonWriter.writeStringField("certificateKey", this.certificateKey);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MpnsCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MpnsCredentialProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MpnsCredentialProperties.
+     */
+    public static MpnsCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MpnsCredentialProperties deserializedMpnsCredentialProperties = new MpnsCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mpnsCertificate".equals(fieldName)) {
+                    deserializedMpnsCredentialProperties.mpnsCertificate = reader.getString();
+                } else if ("certificateKey".equals(fieldName)) {
+                    deserializedMpnsCredentialProperties.certificateKey = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedMpnsCredentialProperties.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMpnsCredentialProperties;
+        });
+    }
 }

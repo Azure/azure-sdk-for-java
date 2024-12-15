@@ -21,15 +21,11 @@ import java.util.Collection;
  * Entry point to resource group management API.
  */
 @Fluent
-public interface ResourceGroups extends
-        SupportsListing<ResourceGroup>,
-        SupportsListingByTag<ResourceGroup>,
-        SupportsGettingByName<ResourceGroup>,
-        SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
-        SupportsDeletingByName,
-        //SupportsBeginDeletingByName,
-        SupportsBatchCreation<ResourceGroup>,
-        HasManager<ResourceManager> {
+public interface ResourceGroups
+    extends SupportsListing<ResourceGroup>, SupportsListingByTag<ResourceGroup>, SupportsGettingByName<ResourceGroup>,
+    SupportsCreating<ResourceGroup.DefinitionStages.Blank>, SupportsDeletingByName,
+    //SupportsBeginDeletingByName,
+    SupportsBatchCreation<ResourceGroup>, HasManager<ResourceManager> {
 
     /**
      * Checks whether resource group exists.

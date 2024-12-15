@@ -8,48 +8,66 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.AzureSku;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import com.azure.resourcemanager.synapse.models.OptimizedAutoscale;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Class representing a Kusto kusto pool. */
+/**
+ * Class representing a Kusto kusto pool.
+ */
 @Fluent
 public final class KustoPoolInner extends Resource {
     /*
      * The SKU of the kusto pool.
      */
-    @JsonProperty(value = "sku", required = true)
     private AzureSku sku;
 
     /*
      * The kusto pool properties.
      */
-    @JsonProperty(value = "properties")
     private KustoPoolProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of KustoPoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of KustoPoolInner class.
+     */
     public KustoPoolInner() {
     }
 
     /**
      * Get the sku property: The SKU of the kusto pool.
-     *
+     * 
      * @return the sku value.
      */
     public AzureSku sku() {
@@ -58,7 +76,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the kusto pool.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the KustoPoolInner object itself.
      */
@@ -69,7 +87,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the innerProperties property: The kusto pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private KustoPoolProperties innerProperties() {
@@ -78,7 +96,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -87,21 +105,55 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KustoPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KustoPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -110,7 +162,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the state property: The state of the resource.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -119,7 +171,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -128,7 +180,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the uri property: The Kusto Pool URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -137,7 +189,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the dataIngestionUri property: The Kusto Pool data ingestion URI.
-     *
+     * 
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
@@ -146,7 +198,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the stateReason property: The reason for the Kusto Pool's current state.
-     *
+     * 
      * @return the stateReason value.
      */
     public String stateReason() {
@@ -155,7 +207,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @return the optimizedAutoscale value.
      */
     public OptimizedAutoscale optimizedAutoscale() {
@@ -164,7 +216,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Set the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @param optimizedAutoscale the optimizedAutoscale value to set.
      * @return the KustoPoolInner object itself.
      */
@@ -178,7 +230,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @return the enableStreamingIngest value.
      */
     public Boolean enableStreamingIngest() {
@@ -187,7 +239,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Set the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @param enableStreamingIngest the enableStreamingIngest value to set.
      * @return the KustoPoolInner object itself.
      */
@@ -201,7 +253,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @return the enablePurge value.
      */
     public Boolean enablePurge() {
@@ -210,7 +262,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Set the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @param enablePurge the enablePurge value to set.
      * @return the KustoPoolInner object itself.
      */
@@ -224,7 +276,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the languageExtensions property: List of the Kusto Pool's language extensions.
-     *
+     * 
      * @return the languageExtensions value.
      */
     public LanguageExtensionsList languageExtensions() {
@@ -233,7 +285,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Get the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @return the workspaceUid value.
      */
     public String workspaceUid() {
@@ -242,7 +294,7 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Set the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @param workspaceUid the workspaceUid value to set.
      * @return the KustoPoolInner object itself.
      */
@@ -256,14 +308,13 @@ public final class KustoPoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model KustoPoolInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model KustoPoolInner"));
         } else {
             sku().validate();
         }
@@ -273,4 +324,61 @@ public final class KustoPoolInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KustoPoolInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KustoPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KustoPoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KustoPoolInner.
+     */
+    public static KustoPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KustoPoolInner deserializedKustoPoolInner = new KustoPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKustoPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKustoPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKustoPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedKustoPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKustoPoolInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedKustoPoolInner.sku = AzureSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKustoPoolInner.innerProperties = KustoPoolProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedKustoPoolInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedKustoPoolInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKustoPoolInner;
+        });
+    }
 }

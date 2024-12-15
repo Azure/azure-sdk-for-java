@@ -12,8 +12,7 @@ public final class AuthorizationServerSecretsContractImpl implements Authorizati
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    AuthorizationServerSecretsContractImpl(
-        AuthorizationServerSecretsContractInner innerObject,
+    AuthorizationServerSecretsContractImpl(AuthorizationServerSecretsContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

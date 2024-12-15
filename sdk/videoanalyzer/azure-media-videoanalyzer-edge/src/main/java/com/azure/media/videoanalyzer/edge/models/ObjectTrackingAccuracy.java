@@ -5,32 +5,51 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ObjectTrackingAccuracy. */
+/**
+ * Object tracker accuracy: low, medium, high. Higher accuracy leads to higher CPU consumption in average.
+ */
 public final class ObjectTrackingAccuracy extends ExpandableStringEnum<ObjectTrackingAccuracy> {
-    /** Static value low for ObjectTrackingAccuracy. */
+    /**
+     * Low accuracy.
+     */
     public static final ObjectTrackingAccuracy LOW = fromString("low");
 
-    /** Static value medium for ObjectTrackingAccuracy. */
+    /**
+     * Medium accuracy.
+     */
     public static final ObjectTrackingAccuracy MEDIUM = fromString("medium");
 
-    /** Static value high for ObjectTrackingAccuracy. */
+    /**
+     * High accuracy.
+     */
     public static final ObjectTrackingAccuracy HIGH = fromString("high");
 
     /**
+     * Creates a new instance of ObjectTrackingAccuracy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ObjectTrackingAccuracy() {
+    }
+
+    /**
      * Creates or finds a ObjectTrackingAccuracy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ObjectTrackingAccuracy.
      */
-    @JsonCreator
     public static ObjectTrackingAccuracy fromString(String name) {
         return fromString(name, ObjectTrackingAccuracy.class);
     }
 
-    /** @return known ObjectTrackingAccuracy values. */
+    /**
+     * Gets known ObjectTrackingAccuracy values.
+     * 
+     * @return known ObjectTrackingAccuracy values.
+     */
     public static Collection<ObjectTrackingAccuracy> values() {
         return values(ObjectTrackingAccuracy.class);
     }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 public final class ResourceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceStatus model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"zlljfmppeebvm\",\"status\":\"sabkyqduujitcjcz\",\"reason\":\"evndh\",\"message\":\"wpdappdsbdkv\",\"severity\":\"wjfeusnhutjel\",\"lastUpdatedAt\":\"2021-04-28T11:05:16Z\"}")
-                .toObject(ResourceStatus.class);
+        ResourceStatus model = BinaryData.fromString(
+            "{\"type\":\"zlljfmppeebvm\",\"status\":\"sabkyqduujitcjcz\",\"reason\":\"evndh\",\"message\":\"wpdappdsbdkv\",\"severity\":\"wjfeusnhutjel\",\"lastUpdatedAt\":\"2021-04-28T11:05:16Z\"}")
+            .toObject(ResourceStatus.class);
     }
 
     @org.junit.jupiter.api.Test

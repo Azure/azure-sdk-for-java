@@ -223,7 +223,8 @@ public final class UriBuilder {
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
-        return query.entrySet().stream()
+        return query.entrySet()
+            .stream()
             // get all parameters joined by a comma.
             // name=a&name=b&name=c becomes name=a,b,c
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue()));
@@ -323,8 +324,8 @@ public final class UriBuilder {
                     break;
 
                 case QUERY:
-                    parseQueryParameters(tokenText).forEachRemaining(
-                        queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
+                    parseQueryParameters(tokenText)
+                        .forEachRemaining(queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -417,8 +418,9 @@ public final class UriBuilder {
         if (PARSED_URIS.size() >= MAX_CACHE_SIZE) {
             PARSED_URIS.clear();
         }
-        return PARSED_URIS.computeIfAbsent(concurrentSafeUri,
-            u -> new UriBuilder().with(u, UriTokenizerState.SCHEME_OR_HOST)).copy();
+        return PARSED_URIS
+            .computeIfAbsent(concurrentSafeUri, u -> new UriBuilder().with(u, UriTokenizerState.SCHEME_OR_HOST))
+            .copy();
     }
 
     /**

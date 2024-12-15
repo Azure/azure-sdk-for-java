@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "#Microsoft.VideoAnalyzer.VideoSequenceAbsoluteTimeMarkers",
-        value = VideoSequenceAbsoluteTimeMarkers.class)
-})
+        value = VideoSequenceAbsoluteTimeMarkers.class) })
 @Immutable
 public class TimeSequenceBase {
     /**

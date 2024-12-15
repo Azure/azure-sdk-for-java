@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.IngressStartAtType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An object that contains the details about the starting point in time to ingest events. */
+/**
+ * An object that contains the details about the starting point in time to ingest events.
+ */
 @Fluent
-public final class IngressStartAtProperties {
+public final class IngressStartAtProperties implements JsonSerializable<IngressStartAtProperties> {
     /*
      * The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime", "CustomEnqueuedTime".
      */
-    @JsonProperty(value = "type")
     private IngressStartAtType type;
 
     /*
      * ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the date and time that will
      * be the starting point for Events to be consumed.
      */
-    @JsonProperty(value = "time")
     private String time;
 
-    /** Creates an instance of IngressStartAtProperties class. */
+    /**
+     * Creates an instance of IngressStartAtProperties class.
+     */
     public IngressStartAtProperties() {
     }
 
     /**
      * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
      * "CustomEnqueuedTime".
-     *
+     * 
      * @return the type value.
      */
     public IngressStartAtType type() {
@@ -41,7 +47,7 @@ public final class IngressStartAtProperties {
     /**
      * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
      * "CustomEnqueuedTime".
-     *
+     * 
      * @param type the type value to set.
      * @return the IngressStartAtProperties object itself.
      */
@@ -53,7 +59,7 @@ public final class IngressStartAtProperties {
     /**
      * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
      * date and time that will be the starting point for Events to be consumed.
-     *
+     * 
      * @return the time value.
      */
     public String time() {
@@ -63,7 +69,7 @@ public final class IngressStartAtProperties {
     /**
      * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
      * date and time that will be the starting point for Events to be consumed.
-     *
+     * 
      * @param time the time value to set.
      * @return the IngressStartAtProperties object itself.
      */
@@ -74,9 +80,48 @@ public final class IngressStartAtProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("time", this.time);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngressStartAtProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngressStartAtProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngressStartAtProperties.
+     */
+    public static IngressStartAtProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngressStartAtProperties deserializedIngressStartAtProperties = new IngressStartAtProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIngressStartAtProperties.type = IngressStartAtType.fromString(reader.getString());
+                } else if ("time".equals(fieldName)) {
+                    deserializedIngressStartAtProperties.time = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngressStartAtProperties;
+        });
     }
 }

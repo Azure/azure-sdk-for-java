@@ -16,10 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure disk encryption set. */
 @Fluent
-public interface DiskEncryptionSet
-    extends GroupableResource<ComputeManager, DiskEncryptionSetInner>,
-        Updatable<DiskEncryptionSet.Update>,
-        Refreshable<DiskEncryptionSet> {
+public interface DiskEncryptionSet extends GroupableResource<ComputeManager, DiskEncryptionSetInner>,
+    Updatable<DiskEncryptionSet.Update>, Refreshable<DiskEncryptionSet> {
     /** @return resource id of the Azure key vault containing the key or secret */
     String keyVaultId();
 
@@ -42,23 +40,21 @@ public interface DiskEncryptionSet
     DiskEncryptionSetType encryptionType();
 
     /** The entirety of the disk encryption set definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithEncryptionType,
-        DefinitionStages.WithKeyVault,
-        DefinitionStages.WithKeyVaultKey,
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithEncryptionType, DefinitionStages.WithKeyVault, DefinitionStages.WithKeyVaultKey,
         DefinitionStages.WithSystemAssignedManagedServiceIdentity,
-        DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
-        DefinitionStages.WithCreate { }
+        DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate, DefinitionStages.WithCreate {
+    }
 
     /** Grouping of disk encryption set definition stages */
     interface DefinitionStages {
         /** The first stage of a disk encryption set definition. */
-        interface Blank extends DefinitionWithRegion<WithGroup> { }
+        interface Blank extends DefinitionWithRegion<WithGroup> {
+        }
 
         /** The stage of a disk encryption set definition allowing to specify the resource group. */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithEncryptionType> { }
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithEncryptionType> {
+        }
 
         /**
          * The stage of a disk encryption set definition allowing to set the disk encryption set type.
@@ -158,17 +154,13 @@ public interface DiskEncryptionSet
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<DiskEncryptionSet>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithAutomaticKeyRotation { }
+            extends Creatable<DiskEncryptionSet>, Resource.DefinitionWithTags<WithCreate>, WithAutomaticKeyRotation {
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<DiskEncryptionSet>,
-        Resource.UpdateWithTags<Update>,
-        UpdateStages.WithSystemAssignedManagedServiceIdentity,
-        UpdateStages.WithAutomaticKeyRotation {
+    interface Update extends Appliable<DiskEncryptionSet>, Resource.UpdateWithTags<Update>,
+        UpdateStages.WithSystemAssignedManagedServiceIdentity, UpdateStages.WithAutomaticKeyRotation {
     }
 
     /** Grouping of disk encryption set update stages. */

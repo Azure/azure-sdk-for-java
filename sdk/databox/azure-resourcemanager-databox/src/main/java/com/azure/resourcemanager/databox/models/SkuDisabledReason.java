@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Reason why the Sku is disabled. */
+/**
+ * Reason why the Sku is disabled.
+ */
 public enum SkuDisabledReason {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value Country. */
+    /**
+     * Enum value Country.
+     */
     COUNTRY("Country"),
 
-    /** Enum value Region. */
+    /**
+     * Enum value Region.
+     */
     REGION("Region"),
 
-    /** Enum value Feature. */
+    /**
+     * Enum value Feature.
+     */
     FEATURE("Feature"),
 
-    /** Enum value OfferType. */
+    /**
+     * Enum value OfferType.
+     */
     OFFER_TYPE("OfferType"),
 
-    /** Enum value NoSubscriptionInfo. */
+    /**
+     * Enum value NoSubscriptionInfo.
+     */
     NO_SUBSCRIPTION_INFO("NoSubscriptionInfo");
 
-    /** The actual serialized value for a SkuDisabledReason instance. */
+    /**
+     * The actual serialized value for a SkuDisabledReason instance.
+     */
     private final String value;
 
     SkuDisabledReason(String value) {
@@ -36,11 +49,10 @@ public enum SkuDisabledReason {
 
     /**
      * Parses a serialized value to a SkuDisabledReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SkuDisabledReason object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuDisabledReason fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum SkuDisabledReason {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

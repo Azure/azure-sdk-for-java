@@ -14,25 +14,24 @@ public final class AzureMachineLearningStudioInputsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningStudioInputs model = BinaryData.fromString(
-            "{\"name\":\"xjyngudivk\",\"columnNames\":[{\"name\":\"bxqz\",\"dataType\":\"zjf\",\"mapTo\":1306170568},{\"name\":\"fdxxivetvtcqaqtd\",\"dataType\":\"mcbxvwvxysl\",\"mapTo\":675840078}]}")
+            "{\"name\":\"ewwwfbkrvrnsv\",\"columnNames\":[{\"name\":\"ohxcrsbfova\",\"dataType\":\"ruvw\",\"mapTo\":1393923794}]}")
             .toObject(AzureMachineLearningStudioInputs.class);
-        Assertions.assertEquals("xjyngudivk", model.name());
-        Assertions.assertEquals("bxqz", model.columnNames().get(0).name());
-        Assertions.assertEquals("zjf", model.columnNames().get(0).dataType());
-        Assertions.assertEquals(1306170568, model.columnNames().get(0).mapTo());
+        Assertions.assertEquals("ewwwfbkrvrnsv", model.name());
+        Assertions.assertEquals("ohxcrsbfova", model.columnNames().get(0).name());
+        Assertions.assertEquals("ruvw", model.columnNames().get(0).dataType());
+        Assertions.assertEquals(1393923794, model.columnNames().get(0).mapTo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMachineLearningStudioInputs model = new AzureMachineLearningStudioInputs().withName("xjyngudivk")
-            .withColumnNames(Arrays.asList(
-                new AzureMachineLearningStudioInputColumn().withName("bxqz").withDataType("zjf").withMapTo(1306170568),
-                new AzureMachineLearningStudioInputColumn().withName("fdxxivetvtcqaqtd").withDataType("mcbxvwvxysl")
-                    .withMapTo(675840078)));
+        AzureMachineLearningStudioInputs model = new AzureMachineLearningStudioInputs().withName("ewwwfbkrvrnsv")
+            .withColumnNames(Arrays.asList(new AzureMachineLearningStudioInputColumn().withName("ohxcrsbfova")
+                .withDataType("ruvw")
+                .withMapTo(1393923794)));
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningStudioInputs.class);
-        Assertions.assertEquals("xjyngudivk", model.name());
-        Assertions.assertEquals("bxqz", model.columnNames().get(0).name());
-        Assertions.assertEquals("zjf", model.columnNames().get(0).dataType());
-        Assertions.assertEquals(1306170568, model.columnNames().get(0).mapTo());
+        Assertions.assertEquals("ewwwfbkrvrnsv", model.name());
+        Assertions.assertEquals("ohxcrsbfova", model.columnNames().get(0).name());
+        Assertions.assertEquals("ruvw", model.columnNames().get(0).dataType());
+        Assertions.assertEquals(1393923794, model.columnNames().get(0).mapTo());
     }
 }

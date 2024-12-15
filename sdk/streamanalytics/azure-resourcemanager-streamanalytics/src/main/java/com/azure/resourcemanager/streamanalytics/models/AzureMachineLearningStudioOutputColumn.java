@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an output column for the Azure Machine Learning Studio endpoint.
  */
 @Fluent
-public final class AzureMachineLearningStudioOutputColumn {
+public final class AzureMachineLearningStudioOutputColumn
+    implements JsonSerializable<AzureMachineLearningStudioOutputColumn> {
     /*
      * The name of the output column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The (Azure Machine Learning supported) data type of the output column. A list of valid Azure Machine Learning
      * data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /**
@@ -52,9 +55,8 @@ public final class AzureMachineLearningStudioOutputColumn {
     }
 
     /**
-     * Get the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of
-     * valid Azure Machine Learning data types are described at
-     * https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
+     * Get the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of valid
+     * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      * 
      * @return the dataType value.
      */
@@ -63,9 +65,8 @@ public final class AzureMachineLearningStudioOutputColumn {
     }
 
     /**
-     * Set the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of
-     * valid Azure Machine Learning data types are described at
-     * https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
+     * Set the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of valid
+     * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      * 
      * @param dataType the dataType value to set.
      * @return the AzureMachineLearningStudioOutputColumn object itself.
@@ -81,5 +82,45 @@ public final class AzureMachineLearningStudioOutputColumn {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningStudioOutputColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningStudioOutputColumn if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningStudioOutputColumn.
+     */
+    public static AzureMachineLearningStudioOutputColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningStudioOutputColumn deserializedAzureMachineLearningStudioOutputColumn
+                = new AzureMachineLearningStudioOutputColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioOutputColumn.name = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioOutputColumn.dataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningStudioOutputColumn;
+        });
     }
 }

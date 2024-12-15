@@ -54,10 +54,8 @@ public final class HealthCheckStepProperties extends StepProperties {
     public void validate() {
         super.validate();
         if (attributes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attributes in model HealthCheckStepProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property attributes in model HealthCheckStepProperties"));
         } else {
             attributes().validate();
         }

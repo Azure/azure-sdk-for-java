@@ -25,11 +25,8 @@ import reactor.core.publisher.Mono;
  * Creatable#createAsync()} you agree to the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
  */
 @Fluent
-public interface AppServiceDomain
-    extends GroupableResource<AppServiceManager, DomainInner>,
-        HasName,
-        Refreshable<AppServiceDomain>,
-        Updatable<AppServiceDomain.Update> {
+public interface AppServiceDomain extends GroupableResource<AppServiceManager, DomainInner>, HasName,
+    Refreshable<AppServiceDomain>, Updatable<AppServiceDomain.Update> {
 
     /** @return admin contact information */
     Contact adminContact();
@@ -109,12 +106,8 @@ public interface AppServiceDomain
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithAdminContact,
-            DefinitionStages.WithBillingContact,
-            DefinitionStages.WithRegistrantContact,
-            DefinitionStages.WithTechContact,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithAdminContact, DefinitionStages.WithBillingContact,
+        DefinitionStages.WithRegistrantContact, DefinitionStages.WithTechContact, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the domain definition stages. */
@@ -238,15 +231,8 @@ public interface AppServiceDomain
          * A domain definition with sufficient inputs to create a new domain in the cloud, but exposing additional
          * optional inputs to specify.
          */
-        interface WithCreate
-            extends WithDomainPrivacy,
-                WithAutoRenew,
-                WithAdminContact,
-                WithBillingContact,
-                WithTechContact,
-                WithDnsZone,
-                Creatable<AppServiceDomain>,
-                DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithDomainPrivacy, WithAutoRenew, WithAdminContact, WithBillingContact,
+            WithTechContact, WithDnsZone, Creatable<AppServiceDomain>, DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -347,14 +333,8 @@ public interface AppServiceDomain
     }
 
     /** The template for a domain update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<AppServiceDomain>,
-            UpdateStages.WithAdminContact,
-            UpdateStages.WithBillingContact,
-            UpdateStages.WithTechContact,
-            UpdateStages.WithAutoRenew,
-            UpdateStages.WithDomainPrivacy,
-            UpdateStages.WithDnsZone,
-            GroupableResource.UpdateWithTags<Update> {
+    interface Update extends Appliable<AppServiceDomain>, UpdateStages.WithAdminContact,
+        UpdateStages.WithBillingContact, UpdateStages.WithTechContact, UpdateStages.WithAutoRenew,
+        UpdateStages.WithDomainPrivacy, UpdateStages.WithDnsZone, GroupableResource.UpdateWithTags<Update> {
     }
 }

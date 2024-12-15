@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Manual scale settings for the cluster. */
 @Fluent
 public final class ManualScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManualScaleSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManualScaleSettings.class);
 
     /*
      * The desired number of compute nodes in the Cluster. Default is 0.

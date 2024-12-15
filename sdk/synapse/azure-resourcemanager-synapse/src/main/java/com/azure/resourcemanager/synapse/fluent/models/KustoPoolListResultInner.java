@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The list Kusto pools operation response. */
+/**
+ * The list Kusto pools operation response.
+ */
 @Fluent
-public final class KustoPoolListResultInner {
+public final class KustoPoolListResultInner implements JsonSerializable<KustoPoolListResultInner> {
     /*
      * The list of Kusto pools.
      */
-    @JsonProperty(value = "value")
     private List<KustoPoolInner> value;
 
-    /** Creates an instance of KustoPoolListResultInner class. */
+    /**
+     * Creates an instance of KustoPoolListResultInner class.
+     */
     public KustoPoolListResultInner() {
     }
 
     /**
      * Get the value property: The list of Kusto pools.
-     *
+     * 
      * @return the value value.
      */
     public List<KustoPoolInner> value() {
@@ -32,7 +39,7 @@ public final class KustoPoolListResultInner {
 
     /**
      * Set the value property: The list of Kusto pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the KustoPoolListResultInner object itself.
      */
@@ -43,12 +50,49 @@ public final class KustoPoolListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KustoPoolListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KustoPoolListResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KustoPoolListResultInner.
+     */
+    public static KustoPoolListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KustoPoolListResultInner deserializedKustoPoolListResultInner = new KustoPoolListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<KustoPoolInner> value = reader.readArray(reader1 -> KustoPoolInner.fromJson(reader1));
+                    deserializedKustoPoolListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKustoPoolListResultInner;
+        });
     }
 }

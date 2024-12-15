@@ -32,7 +32,6 @@ public class UploadBlockBlobTest extends AbstractUploadTest<BlobPerfStressOption
 
     @Override
     public Mono<Void> runAsync() {
-        return blockBlobAsyncClient.upload(byteBufferFlux, options.getSize(), true)
-            .then();
+        return blockBlobAsyncClient.upload(byteBufferFlux, options.getSize(), true).then();
     }
 }

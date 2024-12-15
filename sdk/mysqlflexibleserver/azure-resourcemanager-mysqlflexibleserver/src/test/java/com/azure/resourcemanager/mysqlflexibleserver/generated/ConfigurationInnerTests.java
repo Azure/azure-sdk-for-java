@@ -13,21 +13,21 @@ public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"mrldhu\",\"currentValue\":\"zzd\",\"description\":\"qxhocdgeablgphut\",\"documentationLink\":\"ndv\",\"defaultValue\":\"ozwyiftyhxhuro\",\"dataType\":\"tyxolniwpwc\",\"allowedValues\":\"jfkgiawxk\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"syyp\",\"name\":\"ddhsgcbacphe\",\"type\":\"koty\"}")
+            "{\"properties\":{\"value\":\"xxwr\",\"currentValue\":\"douskcqvkocrcjdk\",\"description\":\"nh\",\"documentationLink\":\"njbiksqrglssain\",\"defaultValue\":\"jwnzlljfmp\",\"dataType\":\"ebvmgxsabkyqd\",\"allowedValues\":\"jitcjczdzevn\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"dsbdkvwrwjf\",\"name\":\"usnhutje\",\"type\":\"tmrldhugjzzdatq\"}")
             .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("mrldhu", model.value());
-        Assertions.assertEquals("zzd", model.currentValue());
+        Assertions.assertEquals("xxwr", model.value());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model = new ConfigurationInner().withValue("mrldhu")
-            .withCurrentValue("zzd")
+        ConfigurationInner model = new ConfigurationInner().withValue("xxwr")
+            .withCurrentValue("douskcqvkocrcjdk")
             .withSource(ConfigurationSource.SYSTEM_DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("mrldhu", model.value());
-        Assertions.assertEquals("zzd", model.currentValue());
+        Assertions.assertEquals("xxwr", model.value());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 }

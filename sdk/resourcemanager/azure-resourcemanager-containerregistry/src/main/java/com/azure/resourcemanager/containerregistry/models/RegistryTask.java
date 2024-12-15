@@ -54,24 +54,14 @@ public interface RegistryTask
     Map<String, RegistrySourceTrigger> sourceTriggers();
 
     /** Container interface for all the definitions related to a registry task. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.Location,
-            DefinitionStages.Platform,
-            DefinitionStages.TaskStepType,
-            DefinitionStages.SourceTriggerDefinition,
-            DefinitionStages.TriggerTypes,
-            DefinitionStages.TaskCreatable {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.Location, DefinitionStages.Platform,
+        DefinitionStages.TaskStepType, DefinitionStages.SourceTriggerDefinition, DefinitionStages.TriggerTypes,
+        DefinitionStages.TaskCreatable {
     }
 
     /** Container interface for all the updates related to a registry task. */
-    interface Update
-        extends UpdateStages.Platform,
-            UpdateStages.TriggerTypes,
-            UpdateStages.AgentConfiguration,
-            UpdateStages.Timeout,
-            UpdateStages.TaskStepType,
-            Appliable<RegistryTask> {
+    interface Update extends UpdateStages.Platform, UpdateStages.TriggerTypes, UpdateStages.AgentConfiguration,
+        UpdateStages.Timeout, UpdateStages.TaskStepType, Appliable<RegistryTask> {
     }
 
     /** Grouping of registry task definition stages. */
@@ -236,8 +226,8 @@ public interface RegistryTask
              *     user inputs.
              * @return the next stage of the container registry task definition.
              */
-            TaskCreatable withBaseImageTrigger(
-                String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
+            TaskCreatable withBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType,
+                TriggerStatus triggerStatus);
         }
 
         /**
@@ -406,8 +396,8 @@ public interface RegistryTask
              *     user inputs.
              * @return the next stage of the container registry task update.
              */
-            Update updateBaseImageTrigger(
-                String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
+            Update updateBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType,
+                TriggerStatus triggerStatus);
         }
 
         /**

@@ -16,18 +16,10 @@ import reactor.core.publisher.Mono;
  * @param <FluentModelImplT> the implementation type of the fluent model type
  * @param <ManagerT> the service manager type
  */
-public abstract class GroupableParentResourceImpl<
-        FluentModelT extends Resource,
-        InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<?>>
-        extends
-        GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT> {
+public abstract class GroupableParentResourceImpl<FluentModelT extends Resource, InnerModelT extends com.azure.core.management.Resource, FluentModelImplT extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>, ManagerT extends Manager<?>>
+    extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT> {
 
-    protected GroupableParentResourceImpl(
-            String name,
-            InnerModelT innerObject,
-            ManagerT manager) {
+    protected GroupableParentResourceImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject, manager);
         initializeChildrenFromInner();
     }
@@ -36,24 +28,26 @@ public abstract class GroupableParentResourceImpl<
 
     protected abstract void initializeChildrenFromInner();
 
-    protected void beforeCreating() { }
+    protected void beforeCreating() {
+    }
 
-    protected void afterCreating() { }
+    protected void afterCreating() {
+    }
 
     @Override
     public Mono<FluentModelT> createResourceAsync() {
-        @SuppressWarnings("unchecked") final FluentModelT self = (FluentModelT) this;
+        @SuppressWarnings("unchecked")
+        final FluentModelT self = (FluentModelT) this;
         beforeCreating();
-        return createInner()
-                .flatMap(inner -> {
-                    setInner(inner);
-                    try {
-                        initializeChildrenFromInner();
-                        afterCreating();
-                        return Mono.just(self);
-                    } catch (Exception e) {
-                        return Mono.error(e);
-                    }
-                });
+        return createInner().flatMap(inner -> {
+            setInner(inner);
+            try {
+                initializeChildrenFromInner();
+                afterCreating();
+                return Mono.just(self);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
     }
 }

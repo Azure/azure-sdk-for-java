@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** (Optional) The ID of the parent management group used during creation. */
+/**
+ * (Optional) The ID of the parent management group used during creation.
+ */
 @Fluent
-public final class CreateParentGroupInfo {
+public final class CreateParentGroupInfo implements JsonSerializable<CreateParentGroupInfo> {
     /*
-     * The fully qualified ID for the parent management group.  For example,
+     * The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the parent management group
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The friendly name of the parent management group.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
-    /** Creates an instance of CreateParentGroupInfo class. */
+    /**
+     * Creates an instance of CreateParentGroupInfo class.
+     */
     public CreateParentGroupInfo() {
     }
 
     /**
      * Get the id property: The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +51,7 @@ public final class CreateParentGroupInfo {
     /**
      * Set the id property: The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param id the id value to set.
      * @return the CreateParentGroupInfo object itself.
      */
@@ -57,7 +62,7 @@ public final class CreateParentGroupInfo {
 
     /**
      * Get the name property: The name of the parent management group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +71,7 @@ public final class CreateParentGroupInfo {
 
     /**
      * Get the displayName property: The friendly name of the parent management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -75,9 +80,49 @@ public final class CreateParentGroupInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateParentGroupInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateParentGroupInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateParentGroupInfo.
+     */
+    public static CreateParentGroupInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateParentGroupInfo deserializedCreateParentGroupInfo = new CreateParentGroupInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCreateParentGroupInfo.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCreateParentGroupInfo.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCreateParentGroupInfo.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateParentGroupInfo;
+        });
     }
 }

@@ -34,24 +34,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in PrivateLinkHubPrivateLinkResourcesClient.
  */
 public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements PrivateLinkHubPrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkHubPrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkHubPrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkHubPrivateLinkResourcesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateLinkHubPrivateLinkResourcesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkHubPrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,75 +62,59 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateLinkHubPrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-                + "/privateLinkHubs/{privateLinkHubName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<PrivateLinkResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateLinkHubName") String privateLinkHubName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("privateLinkHubName") String privateLinkHubName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-                + "/privateLinkHubs/{privateLinkHubName}/privateLinkResources/{privateLinkResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources/{privateLinkResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateLinkHubName") String privateLinkHubName,
-            @PathParam("privateLinkResourceName") String privateLinkResourceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("privateLinkResourceName") String privateLinkResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a private link hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String privateLinkHubName) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String privateLinkHubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -143,34 +127,18 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateLinkHubName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, privateLinkHubName, accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -178,22 +146,18 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a private link hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String privateLinkHubName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String privateLinkHubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,30 +171,17 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateLinkHubName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                privateLinkHubName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,16 +191,15 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String privateLinkHubName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateLinkHubName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateLinkHubName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -259,18 +209,17 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @return all private link resources for a private link hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listAsync(
-        String resourceGroupName, String privateLinkHubName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateLinkHubName, context),
+    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String privateLinkHubName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateLinkHubName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,9 +234,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -297,39 +246,35 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @return all private link resources for a private link hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> list(
-        String resourceGroupName, String privateLinkHubName, Context context) {
+    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String privateLinkHubName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, privateLinkHubName, context));
     }
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in private link hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private link resource in private link hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String privateLinkHubName, String privateLinkResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -340,33 +285,22 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
                 .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
         }
         if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            privateLinkHubName,
-                            privateLinkResourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, privateLinkHubName, privateLinkResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -374,23 +308,19 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in private link hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private link resource in private link hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String privateLinkHubName, String privateLinkResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,30 +331,21 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
                 .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
         }
         if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                privateLinkHubName,
-                privateLinkResourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            privateLinkHubName, privateLinkResourceName, accept, context);
     }
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -434,17 +355,17 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @return private link resource in private link hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceInner> getAsync(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
+    private Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName) {
         return getWithResponseAsync(resourceGroupName, privateLinkHubName, privateLinkResourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -455,16 +376,16 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @return private link resource in private link hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context) {
+    public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, privateLinkHubName, privateLinkResourceName, context).block();
     }
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -474,21 +395,20 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @return private link resource in private link hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
+    public PrivateLinkResourceInner get(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName) {
         return getWithResponse(resourceGroupName, privateLinkHubName, privateLinkResourceName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -496,37 +416,26 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -534,23 +443,13 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

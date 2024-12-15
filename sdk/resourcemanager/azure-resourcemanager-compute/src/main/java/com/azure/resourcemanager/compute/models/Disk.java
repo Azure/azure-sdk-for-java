@@ -100,21 +100,12 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     PublicNetworkAccess publicNetworkAccess();
 
     /** The entirety of the managed disk definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithDiskSource,
-            DefinitionStages.WithWindowsDiskSource,
-            DefinitionStages.WithLinuxDiskSource,
-            DefinitionStages.WithData,
-            DefinitionStages.WithDataDiskSource,
-            DefinitionStages.WithDataDiskFromVhd,
-            DefinitionStages.WithDataDiskFromUpload,
-            DefinitionStages.WithDataDiskFromDisk,
-            DefinitionStages.WithDataDiskFromSnapshot,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithCreateAndSize,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDiskSource,
+        DefinitionStages.WithWindowsDiskSource, DefinitionStages.WithLinuxDiskSource, DefinitionStages.WithData,
+        DefinitionStages.WithDataDiskSource, DefinitionStages.WithDataDiskFromVhd,
+        DefinitionStages.WithDataDiskFromUpload, DefinitionStages.WithDataDiskFromDisk,
+        DefinitionStages.WithDataDiskFromSnapshot, DefinitionStages.WithStorageAccount,
+        DefinitionStages.WithCreateAndSize, DefinitionStages.WithCreate {
     }
 
     /** Grouping of managed disk definition stages. */
@@ -327,6 +318,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
+
         /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataDiskFromImage {
             /**
@@ -479,16 +471,9 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<Disk>,
-                Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
-                WithSku,
-                WithAvailabilityZone,
-                WithDiskEncryption,
-                WithHibernationSupport,
-                WithLogicalSectorSize,
-                WithHyperVGeneration,
-                WithPublicNetworkAccess {
+        interface WithCreate extends Creatable<Disk>, Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
+            WithSku, WithAvailabilityZone, WithDiskEncryption, WithHibernationSupport, WithLogicalSectorSize,
+            WithHyperVGeneration, WithPublicNetworkAccess {
 
             /**
              * Begins creating the disk resource.
@@ -581,6 +566,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the disk.
              *
@@ -591,15 +577,8 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Disk>,
-            Resource.UpdateWithTags<Disk.Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithSize,
-            UpdateStages.WithOSSettings,
-            UpdateStages.WithDiskEncryption,
-            UpdateStages.WithHibernationSupport,
-            UpdateStages.WithHyperVGeneration,
-            UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku,
+        UpdateStages.WithSize, UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption,
+        UpdateStages.WithHibernationSupport, UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess {
     }
 }

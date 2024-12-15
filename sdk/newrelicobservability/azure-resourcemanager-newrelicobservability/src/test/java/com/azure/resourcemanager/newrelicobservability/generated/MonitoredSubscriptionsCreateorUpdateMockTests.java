@@ -53,34 +53,37 @@ public final class MonitoredSubscriptionsCreateorUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MonitoredSubscriptionProperties response
-            = manager
-                .monitoredSubscriptions().define(ConfigurationName.DEFAULT).withExistingMonitor("pfuvglsbjjca",
-                    "vxb")
-                .withProperties(
-                    new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
-                        .withMonitoredSubscriptionList(
-                            Arrays.asList(
-                                new MonitoredSubscriptionInner().withSubscriptionId("cormr").withStatus(Status.DELETING)
-                                    .withError("vcofudfl")
-                                    .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
-                                        .withMetricRules(new MetricRulesInner())),
-                                new MonitoredSubscriptionInner().withSubscriptionId("dknnqvsazn")
-                                    .withStatus(Status.IN_PROGRESS).withError("rudsg")
-                                    .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
-                                        .withMetricRules(new MetricRulesInner())),
-                                new MonitoredSubscriptionInner().withSubscriptionId("grauwjuetaebur")
-                                    .withStatus(Status.ACTIVE).withError("ovsm")
-                                    .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
-                                        .withMetricRules(new MetricRulesInner())),
-                                new MonitoredSubscriptionInner().withSubscriptionId("q").withStatus(Status.ACTIVE)
-                                    .withError("ifrvtpu").withTagRules(new MonitoringTagRulesPropertiesInner()
-                                        .withLogRules(new LogRules()).withMetricRules(new MetricRulesInner())))))
-                .create();
+        MonitoredSubscriptionProperties response = manager.monitoredSubscriptions()
+            .define(ConfigurationName.DEFAULT)
+            .withExistingMonitor("pfuvglsbjjca", "vxb")
+            .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.DELETE_COMPLETE)
+                .withMonitoredSubscriptionList(Arrays.asList(
+                    new MonitoredSubscriptionInner().withSubscriptionId("cormr")
+                        .withStatus(Status.DELETING)
+                        .withError("vcofudfl")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRulesInner())),
+                    new MonitoredSubscriptionInner().withSubscriptionId("dknnqvsazn")
+                        .withStatus(Status.IN_PROGRESS)
+                        .withError("rudsg")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRulesInner())),
+                    new MonitoredSubscriptionInner().withSubscriptionId("grauwjuetaebur")
+                        .withStatus(Status.ACTIVE)
+                        .withError("ovsm")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRulesInner())),
+                    new MonitoredSubscriptionInner().withSubscriptionId("q")
+                        .withStatus(Status.ACTIVE)
+                        .withError("ifrvtpu")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRulesInner())))))
+            .create();
 
         Assertions.assertEquals(PatchOperation.ACTIVE, response.properties().patchOperation());
         Assertions.assertEquals("zkoj", response.properties().monitoredSubscriptionList().get(0).subscriptionId());

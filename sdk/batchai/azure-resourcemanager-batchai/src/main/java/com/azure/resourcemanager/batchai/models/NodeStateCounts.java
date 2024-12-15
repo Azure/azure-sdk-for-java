@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Counts of various compute node states on the cluster. */
 @Immutable
 public final class NodeStateCounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeStateCounts.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NodeStateCounts.class);
 
     /*
      * Number of compute nodes in idle state.

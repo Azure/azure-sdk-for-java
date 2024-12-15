@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Azure storage account credentials. */
 @Fluent
 public final class AzureStorageCredentialsInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageCredentialsInfo.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureStorageCredentialsInfo.class);
 
     /*
      * Storage account key. One of accountKey or accountKeySecretReference must
@@ -67,8 +68,8 @@ public final class AzureStorageCredentialsInfo {
      * @param accountKeySecretReference the accountKeySecretReference value to set.
      * @return the AzureStorageCredentialsInfo object itself.
      */
-    public AzureStorageCredentialsInfo withAccountKeySecretReference(
-        KeyVaultSecretReference accountKeySecretReference) {
+    public AzureStorageCredentialsInfo
+        withAccountKeySecretReference(KeyVaultSecretReference accountKeySecretReference) {
         this.accountKeySecretReference = accountKeySecretReference;
         return this;
     }

@@ -30,7 +30,8 @@ public final class FunctionConfigurationTests {
                 Arrays.asList(new FunctionInput().withDataType("ifsqesaagdfmg").withIsConfigurationParameter(false),
                     new FunctionInput().withDataType("j").withIsConfigurationParameter(true),
                     new FunctionInput().withDataType("kwm").withIsConfigurationParameter(true)))
-            .withOutput(new FunctionOutput().withDataType("izntocipao")).withBinding(new FunctionBinding());
+            .withOutput(new FunctionOutput().withDataType("izntocipao"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(FunctionConfiguration.class);
         Assertions.assertEquals("ifsqesaagdfmg", model.inputs().get(0).dataType());
         Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure SKU definition. */
+/**
+ * Azure SKU definition.
+ */
 @Fluent
-public final class AzureSku {
+public final class AzureSku implements JsonSerializable<AzureSku> {
     /*
      * SKU name.
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The number of instances of the cluster.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /*
      * SKU size.
      */
-    @JsonProperty(value = "size", required = true)
     private SkuSize size;
 
-    /** Creates an instance of AzureSku class. */
+    /**
+     * Creates an instance of AzureSku class.
+     */
     public AzureSku() {
     }
 
     /**
      * Get the name property: SKU name.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -44,7 +49,7 @@ public final class AzureSku {
 
     /**
      * Set the name property: SKU name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureSku object itself.
      */
@@ -55,7 +60,7 @@ public final class AzureSku {
 
     /**
      * Get the capacity property: The number of instances of the cluster.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -64,7 +69,7 @@ public final class AzureSku {
 
     /**
      * Set the capacity property: The number of instances of the cluster.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the AzureSku object itself.
      */
@@ -75,7 +80,7 @@ public final class AzureSku {
 
     /**
      * Get the size property: SKU size.
-     *
+     * 
      * @return the size value.
      */
     public SkuSize size() {
@@ -84,7 +89,7 @@ public final class AzureSku {
 
     /**
      * Set the size property: SKU size.
-     *
+     * 
      * @param size the size value to set.
      * @return the AzureSku object itself.
      */
@@ -95,19 +100,62 @@ public final class AzureSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model AzureSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model AzureSku"));
         }
         if (size() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property size in model AzureSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property size in model AzureSku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("size", this.size == null ? null : this.size.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureSku.
+     */
+    public static AzureSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSku deserializedAzureSku = new AzureSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureSku.name = SkuName.fromString(reader.getString());
+                } else if ("size".equals(fieldName)) {
+                    deserializedAzureSku.size = SkuSize.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedAzureSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSku;
+        });
+    }
 }

@@ -10,26 +10,26 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultMod
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vault Update. */
+/**
+ * Samples for Vault Update.
+ */
 public final class VaultUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Update.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Update.json
      */
     /**
      * Sample code: Vault_Update.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultUpdate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        VaultModel resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse(
-                    "rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        VaultModel resource = manager.vaults()
+            .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key8872", "fakeTokenPlaceholder"))
             .withProperties(new VaultModelProperties().withVaultType(ReplicationVaultType.DISASTER_RECOVERY))
             .apply();

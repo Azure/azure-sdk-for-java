@@ -7,45 +7,100 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesCustom;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromPlan;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromVm;
 import com.azure.resourcemanager.devtestlabs.models.DataDiskStorageTypeInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A custom image. */
+/**
+ * A custom image.
+ */
 @Fluent
 public final class CustomImageInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private CustomImageProperties innerProperties = new CustomImageProperties();
 
-    /** Creates an instance of CustomImageInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomImageInner class.
+     */
     public CustomImageInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomImageInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -54,7 +109,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the vm property: The virtual machine from which the image is to be created.
-     *
+     * 
      * @return the vm value.
      */
     public CustomImagePropertiesFromVm vm() {
@@ -63,7 +118,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the vm property: The virtual machine from which the image is to be created.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the CustomImageInner object itself.
      */
@@ -77,7 +132,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the vhd property: The VHD from which the image is to be created.
-     *
+     * 
      * @return the vhd value.
      */
     public CustomImagePropertiesCustom vhd() {
@@ -86,7 +141,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the vhd property: The VHD from which the image is to be created.
-     *
+     * 
      * @param vhd the vhd value to set.
      * @return the CustomImageInner object itself.
      */
@@ -100,7 +155,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the description property: The description of the custom image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +164,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the description property: The description of the custom image.
-     *
+     * 
      * @param description the description value to set.
      * @return the CustomImageInner object itself.
      */
@@ -123,7 +178,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the author property: The author of the custom image.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -132,7 +187,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the author property: The author of the custom image.
-     *
+     * 
      * @param author the author value to set.
      * @return the CustomImageInner object itself.
      */
@@ -146,7 +201,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the custom image.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -155,7 +210,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the managedImageId property: The Managed Image Id backing the custom image.
-     *
+     * 
      * @return the managedImageId value.
      */
     public String managedImageId() {
@@ -164,7 +219,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the managedImageId property: The Managed Image Id backing the custom image.
-     *
+     * 
      * @param managedImageId the managedImageId value to set.
      * @return the CustomImageInner object itself.
      */
@@ -178,7 +233,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the managedSnapshotId property: The Managed Snapshot Id backing the custom image.
-     *
+     * 
      * @return the managedSnapshotId value.
      */
     public String managedSnapshotId() {
@@ -187,7 +242,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the managedSnapshotId property: The Managed Snapshot Id backing the custom image.
-     *
+     * 
      * @param managedSnapshotId the managedSnapshotId value to set.
      * @return the CustomImageInner object itself.
      */
@@ -201,7 +256,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the dataDiskStorageInfo property: Storage information about the data disks present in the custom image.
-     *
+     * 
      * @return the dataDiskStorageInfo value.
      */
     public List<DataDiskStorageTypeInfo> dataDiskStorageInfo() {
@@ -210,7 +265,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the dataDiskStorageInfo property: Storage information about the data disks present in the custom image.
-     *
+     * 
      * @param dataDiskStorageInfo the dataDiskStorageInfo value to set.
      * @return the CustomImageInner object itself.
      */
@@ -224,7 +279,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the customImagePlan property: Storage information about the plan related to this custom image.
-     *
+     * 
      * @return the customImagePlan value.
      */
     public CustomImagePropertiesFromPlan customImagePlan() {
@@ -233,7 +288,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Set the customImagePlan property: Storage information about the plan related to this custom image.
-     *
+     * 
      * @param customImagePlan the customImagePlan value to set.
      * @return the CustomImageInner object itself.
      */
@@ -248,7 +303,7 @@ public final class CustomImageInner extends Resource {
     /**
      * Get the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been enabled for
      * programmatic deployment.
-     *
+     * 
      * @return the isPlanAuthorized value.
      */
     public Boolean isPlanAuthorized() {
@@ -258,7 +313,7 @@ public final class CustomImageInner extends Resource {
     /**
      * Set the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been enabled for
      * programmatic deployment.
-     *
+     * 
      * @param isPlanAuthorized the isPlanAuthorized value to set.
      * @return the CustomImageInner object itself.
      */
@@ -272,7 +327,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -281,7 +336,7 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -290,19 +345,68 @@ public final class CustomImageInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CustomImageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CustomImageInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomImageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomImageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomImageInner.
+     */
+    public static CustomImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomImageInner deserializedCustomImageInner = new CustomImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomImageInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCustomImageInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomImageInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomImageInner.innerProperties = CustomImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomImageInner;
+        });
+    }
 }

@@ -45,6 +45,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         CallAutomationClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
         downloadMetadata(conversationClient.getCallRecording());
     }
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -82,15 +83,11 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            Response<Void> response = conversationClient
-                .getCallRecording()
+            Response<Void> response = conversationClient.getCallRecording()
                 .downloadToWithResponse(VIDEO_URL, byteArrayOutputStream, null, Context.NONE);
             assertThat(response, is(notNullValue()));
-            assertThat(
-                response.getHeaders().getValue("Content-Type"),
-                is(equalTo("application/octet-stream")));
-            assertThat(
-                Integer.parseInt(response.getHeaders().getValue("Content-Length")),
+            assertThat(response.getHeaders().getValue("Content-Type"), is(equalTo("application/octet-stream")));
+            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
                 is(equalTo(byteArrayOutputStream.size())));
         } catch (Exception e) {
             fail("Unexpected exception received", e);
@@ -110,9 +107,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         CallingServerErrorException ex = assertThrows(CallingServerErrorException.class,
-            () -> conversationClient
-                .getCallRecording()
-                .downloadTo(CONTENT_URL_404, byteArrayOutputStream));
+            () -> conversationClient.getCallRecording().downloadTo(CONTENT_URL_404, byteArrayOutputStream));
     }
 
     @ParameterizedTest
@@ -123,12 +118,8 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         CallAutomationClient conversationClient = setupClient(builder, "downloadContentWrongUrl");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IllegalArgumentException ex =
-            assertThrows(
-                IllegalArgumentException.class,
-                () -> conversationClient
-                    .getCallRecording()
-                    .downloadTo("wrongurl", byteArrayOutputStream));
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> conversationClient.getCallRecording().downloadTo("wrongurl", byteArrayOutputStream));
         assertThat(ex, is(notNullValue()));
     }
 
@@ -145,11 +136,8 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
         OutputStream outputStream = Mockito.mock(OutputStream.class);
         doThrow(IOException.class).when(outputStream).write(Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
-        assertThrows(
-            UncheckedIOException.class,
-            () -> conversationClient
-                .getCallRecording()
-                .downloadTo(METADATA_URL, outputStream));
+        assertThrows(UncheckedIOException.class,
+            () -> conversationClient.getCallRecording().downloadTo(METADATA_URL, outputStream));
     }
 
     private CallAutomationClient setupClient(CallAutomationClientBuilder builder, String testName) {

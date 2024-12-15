@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPools Get. */
+/**
+ * Samples for KustoPools Get.
+ */
 public final class KustoPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsGet.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsGet.json
      */
     /**
      * Sample code: kustoPoolsGet.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPools()
-            .getWithResponse(
-                "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
+        manager.kustoPools()
+            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,12 @@ public class KeyVaultEncode {
     private static final byte TAG_SEQUENCE = 0x30;
 
     /**
+     * Creates a new instance of {@link KeyVaultEncode}.
+     */
+    public KeyVaultEncode() {
+    }
+
+    /**
      * Decode signatures imitating ECUtil
      *
      * @param signature signature get by keyvault
@@ -84,15 +90,21 @@ public class KeyVaultEncode {
      */
     static byte[] buildLengthBytes(byte tag, int len) {
         if (len < 128) {
-            return new byte[] {tag, ((byte) len)};
+            return new byte[] { tag, ((byte) len) };
         } else if (len < (1 << 8)) {
-            return new byte[] {tag, (byte) 0x081, (byte) len};
+            return new byte[] { tag, (byte) 0x081, (byte) len };
         } else if (len < (1 << 16)) {
-            return new byte[] {tag, (byte) 0x082, (byte) (len >> 8), (byte) len};
+            return new byte[] { tag, (byte) 0x082, (byte) (len >> 8), (byte) len };
         } else if (len < (1 << 24)) {
-            return new byte[] {tag, (byte) 0x083, (byte) (len >> 16), (byte) (len >> 8), (byte) len};
+            return new byte[] { tag, (byte) 0x083, (byte) (len >> 16), (byte) (len >> 8), (byte) len };
         } else {
-            return new byte[] {tag, (byte) 0x084, (byte) (len >> 24), (byte) (len >> 16), (byte) (len >> 8), (byte) len};
+            return new byte[] {
+                tag,
+                (byte) 0x084,
+                (byte) (len >> 24),
+                (byte) (len >> 16),
+                (byte) (len >> 8),
+                (byte) len };
         }
     }
 

@@ -23,9 +23,10 @@ public final class ChaosTargetQuerySelectorTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetQuerySelector model
-            = new ChaosTargetQuerySelector().withId("utwpfhp").withFilter(new ChaosTargetFilter())
-                .withQueryString("lmnguxaw").withSubscriptionIds(Arrays.asList("ldsyuuximerqfob", "yznkby"));
+        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("utwpfhp")
+            .withFilter(new ChaosTargetFilter())
+            .withQueryString("lmnguxaw")
+            .withSubscriptionIds(Arrays.asList("ldsyuuximerqfob", "yznkby"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetQuerySelector.class);
         Assertions.assertEquals("utwpfhp", model.id());
         Assertions.assertEquals("lmnguxaw", model.queryString());

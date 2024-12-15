@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ServiceBusQueueOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a Service Bus Queue output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.ServiceBus/Queue")
 @Fluent
 public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.ServiceBus/Queue";
+
+    /*
      * The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private ServiceBusQueueOutputDataSourceProperties innerProperties;
 
     /**
@@ -31,8 +34,19 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the innerProperties property: The properties that are associated with a Service Bus Queue output. Required
-     * on PUT (CreateOrReplace) requests.
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerProperties property: The properties that are associated with a Service Bus Queue output. Required on
+     * PUT (CreateOrReplace) requests.
      * 
      * @return the innerProperties value.
      */
@@ -90,8 +104,8 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
-     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
+     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      * 
      * @return the systemPropertyColumns value.
      */
@@ -101,8 +115,8 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
-     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
+     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
@@ -220,9 +234,49 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBusQueueOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBusQueueOutputDataSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBusQueueOutputDataSource.
+     */
+    public static ServiceBusQueueOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBusQueueOutputDataSource deserializedServiceBusQueueOutputDataSource
+                = new ServiceBusQueueOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceBusQueueOutputDataSource.innerProperties
+                        = ServiceBusQueueOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBusQueueOutputDataSource;
+        });
     }
 }

@@ -90,13 +90,11 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         if (httpClientType.equals(NETTY)) {
             if (options.isInsecure()) {
                 try {
-                    SslContext sslContext = SslContextBuilder.forClient()
-                        .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                        .build();
+                    SslContext sslContext
+                        = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
 
-                    reactor.netty.http.client.HttpClient nettyHttpClient =
-                        reactor.netty.http.client.HttpClient.create()
-                            .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+                    reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
+                        .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
                     return new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
                 } catch (SSLException e) {
@@ -109,12 +107,12 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             if (options.isInsecure()) {
                 try {
                     SSLContext sslContext = SSLContext.getInstance("SSL");
-                    sslContext.init(
-                        null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
-                    OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                        .sslSocketFactory(sslContext.getSocketFactory(),
-                            (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
-                        .build();
+                    sslContext.init(null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
+                    OkHttpClient okHttpClient
+                        = new OkHttpClient.Builder()
+                            .sslSocketFactory(sslContext.getSocketFactory(),
+                                (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
+                            .build();
                     return new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
                 } catch (NoSuchAlgorithmException | KeyManagementException e) {
                     throw new IllegalStateException(e);
@@ -128,13 +126,13 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                 throw new UnsupportedOperationException("Can't configure JDK HttpClient for insecure mode.");
             } else {
                 // we want to support friendly name for jdk, but can't use JdkHttpClientProvider on Java 8
-                httpClientType = PerfStressOptions.HttpClientType.fromString("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+                httpClientType = PerfStressOptions.HttpClientType
+                    .fromString("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
             }
         } else if (httpClientType.equals(VERTX)) {
             if (options.isInsecure()) {
-                HttpClientOptions vertxOptions = new io.vertx.core.http.HttpClientOptions()
-                    .setSsl(true)
-                    .setTrustAll(true);
+                HttpClientOptions vertxOptions
+                    = new io.vertx.core.http.HttpClientOptions().setSsl(true).setTrustAll(true);
                 return createVertxReflectivelyUntilNameChangeReleases(vertxOptions);
             } else {
                 httpClientProvider = getVertxClientProviderReflectivelyUntilNameChangeReleases();
@@ -170,7 +168,8 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         }
 
         try {
-            httpClientBuilder.getClass().getDeclaredMethod("httpClientOptions", HttpClientOptions.class)
+            httpClientBuilder.getClass()
+                .getDeclaredMethod("httpClientOptions", HttpClientOptions.class)
                 .invoke(httpClientBuilder, vertxOptions);
 
             return (HttpClient) httpClientBuilder.getClass().getDeclaredMethod("build").invoke(httpClientBuilder);
@@ -197,14 +196,16 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     }
 
     @SuppressWarnings("unchecked")
-    private static Class<? extends HttpClientProvider> getHttpClientProvider(PerfStressOptions.HttpClientType httpClientType) {
+    private static Class<? extends HttpClientProvider>
+        getHttpClientProvider(PerfStressOptions.HttpClientType httpClientType) {
         String providerClassName = httpClientType.toString();
         try {
             Class<?> provider = Class.forName(providerClassName, false, ApiPerfTestBase.class.getClassLoader());
             if (HttpClientProvider.class.isAssignableFrom(provider)) {
                 return (Class<? extends HttpClientProvider>) provider;
             } else {
-                throw new IllegalArgumentException("Http client type does not match HttpClientProvider implementation: " + providerClassName);
+                throw new IllegalArgumentException(
+                    "Http client type does not match HttpClientProvider implementation: " + providerClassName);
             }
         } catch (Throwable e) {
             throw new IllegalArgumentException("Http client provider type is not found: " + providerClassName, e);
@@ -214,9 +215,8 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     private static reactor.netty.http.client.HttpClient createRecordPlaybackClient(PerfStressOptions options) {
         if (options.isInsecure()) {
             try {
-                SslContext sslContext = SslContextBuilder.forClient()
-                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                    .build();
+                SslContext sslContext
+                    = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
                 return reactor.netty.http.client.HttpClient.create()
                     .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
             } catch (SSLException e) {
@@ -264,18 +264,15 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         long startNanoTime = System.nanoTime();
 
         return Flux.generate(sink -> {
-                if (System.nanoTime() < endNanoTime) {
-                    sink.next(1);
-                } else {
-                    sink.complete();
-                }
-            })
-            .flatMap(ignored -> runTestAsync(), 1)
-            .doOnNext(result -> {
-                completedOperations += result;
-                lastCompletionNanoTime = System.nanoTime() - startNanoTime;
-            })
-            .then();
+            if (System.nanoTime() < endNanoTime) {
+                sink.next(1);
+            } else {
+                sink.complete();
+            }
+        }).flatMap(ignored -> runTestAsync(), 1).doOnNext(result -> {
+            completedOperations += result;
+            lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+        }).then();
     }
 
     public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
@@ -289,12 +286,10 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             try {
                 semaphore.acquire();
                 // Each runTestAsyncWithCompletableFuture() call runs independently
-                CompletableFuture<Void> testFuture = runTestAsyncWithCompletableFuture()
-                    .thenAccept(result -> {
-                        completedOperations += result;
-                        lastCompletionNanoTime = System.nanoTime() - startNanoTime;
-                    })
-                    .whenComplete((res, ex) -> semaphore.release());
+                CompletableFuture<Void> testFuture = runTestAsyncWithCompletableFuture().thenAccept(result -> {
+                    completedOperations += result;
+                    lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                }).whenComplete((res, ex) -> semaphore.release());
                 futures.add(testFuture);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -424,36 +419,29 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      * @return An empty {@link Mono}.
      */
     public Mono<Void> stopPlaybackAsync() {
-        return recordPlaybackHttpClient
-            .headers(h -> {
-                // The Recording id to track the recording session on the Test Proxy Server.
-                h.set("x-recording-id", recordingId);
-                // Indicates Test Proxy Server to purge the cached recording.
-                h.set("x-purge-inmemory-recording", Boolean.toString(true));
-            })
-            .post()
-            .uri(testProxy.resolve("/playback/stop"))
-            .response()
-            .doOnSuccess(response -> {
-                testProxyPolicy.setMode(null);
-                testProxyPolicy.setRecordingId(null);
-            })
-            .then();
+        return recordPlaybackHttpClient.headers(h -> {
+            // The Recording id to track the recording session on the Test Proxy Server.
+            h.set("x-recording-id", recordingId);
+            // Indicates Test Proxy Server to purge the cached recording.
+            h.set("x-purge-inmemory-recording", Boolean.toString(true));
+        }).post().uri(testProxy.resolve("/playback/stop")).response().doOnSuccess(response -> {
+            testProxyPolicy.setMode(null);
+            testProxyPolicy.setRecordingId(null);
+        }).then();
     }
 
     private Mono<Void> startRecordingAsync() {
-        return Mono.defer(() -> recordPlaybackHttpClient
-            .post()
+        return Mono.defer(() -> recordPlaybackHttpClient.post()
             .uri(testProxy.resolve("/record/start"))
             .response()
             .doOnNext(response -> {
                 recordingId = response.responseHeaders().get("x-recording-id");
-            }).then());
+            })
+            .then());
     }
 
     private Mono<Void> stopRecordingAsync() {
-        return Mono.defer(() -> recordPlaybackHttpClient
-            .headers(h -> h.set("x-recording-id", recordingId))
+        return Mono.defer(() -> recordPlaybackHttpClient.headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(testProxy.resolve("/record/stop"))
             .response()
@@ -461,16 +449,15 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     }
 
     private Mono<Void> startPlaybackAsync() {
-        return Mono.defer(() -> recordPlaybackHttpClient
-            .headers(h -> h.set("x-recording-id", recordingId))
+        return Mono.defer(() -> recordPlaybackHttpClient.headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(testProxy.resolve("/playback/start"))
             .response()
             .doOnNext(response -> {
                 recordingId = response.responseHeaders().get("x-recording-id");
-            }).then());
+            })
+            .then());
     }
-
 
     /**
      * Records responses and starts tests in playback mode.
@@ -482,21 +469,15 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         if (testProxyPolicy != null) {
 
             // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
-            return runSyncOrAsync()
-                .then(startRecordingAsync())
-                .then(Mono.defer(() -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("record");
-                    return Mono.empty();
-                }))
-                .then(runSyncOrAsync())
-                .then(stopRecordingAsync())
-                .then(startPlaybackAsync())
-                .then(Mono.defer(() -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("playback");
-                    return Mono.empty();
-                }));
+            return runSyncOrAsync().then(startRecordingAsync()).then(Mono.defer(() -> {
+                testProxyPolicy.setRecordingId(recordingId);
+                testProxyPolicy.setMode("record");
+                return Mono.empty();
+            })).then(runSyncOrAsync()).then(stopRecordingAsync()).then(startPlaybackAsync()).then(Mono.defer(() -> {
+                testProxyPolicy.setRecordingId(recordingId);
+                testProxyPolicy.setMode("playback");
+                return Mono.empty();
+            }));
         }
         return Mono.empty();
     }
@@ -508,9 +489,9 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             } else if (options.isCompletableFuture()) {
                 return Mono.fromFuture(CompletableFuture.supplyAsync(() -> runTestAsyncWithCompletableFuture())).then();
             } else if (options.isExecutorService()) {
-                return  Mono.fromRunnable(runTestAsyncWithExecutorService());
+                return Mono.fromRunnable(runTestAsyncWithExecutorService());
             } else if (options.isVirtualThread()) {
-                return  Mono.fromRunnable(this::runTestAsyncWithVirtualThread);
+                return Mono.fromRunnable(this::runTestAsyncWithVirtualThread);
             } else {
                 return runTestAsync().then();
             }

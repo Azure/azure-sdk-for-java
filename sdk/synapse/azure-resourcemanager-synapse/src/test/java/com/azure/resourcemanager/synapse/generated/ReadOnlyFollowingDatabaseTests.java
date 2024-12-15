@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReadOnlyFollowingDatabaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReadOnlyFollowingDatabase model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"ReadOnlyFollowing\",\"properties\":{\"provisioningState\":\"Deleting\",\"softDeletePeriod\":\"PT1H8M39S\",\"hotCachePeriod\":\"PT168H52M2S\",\"statistics\":{\"size\":48.76836},\"leaderClusterResourceId\":\"jufptbjczjnciuiy\",\"attachedDatabaseConfigurationName\":\"ldaswvpp\",\"principalsModificationKind\":\"None\"},\"location\":\"zlgcndhzxrrf\",\"id\":\"srhkhgsnxuwwkpph\",\"name\":\"fsbzxlbzxo\",\"type\":\"eikjclwza\"}")
-                .toObject(ReadOnlyFollowingDatabase.class);
-        Assertions.assertEquals("zlgcndhzxrrf", model.location());
-        Assertions.assertEquals(Duration.parse("PT168H52M2S"), model.hotCachePeriod());
+        ReadOnlyFollowingDatabase model = BinaryData.fromString(
+            "{\"kind\":\"ReadOnlyFollowing\",\"properties\":{\"provisioningState\":\"Deleting\",\"softDeletePeriod\":\"PT69H41M9S\",\"hotCachePeriod\":\"PT193H9M52S\",\"statistics\":{\"size\":7.7127876},\"leaderClusterResourceId\":\"fdyjdu\",\"attachedDatabaseConfigurationName\":\"pyszekb\",\"principalsModificationKind\":\"Replace\"},\"location\":\"aaggkre\",\"id\":\"frnuybffljfi\",\"name\":\"mreoagsqtaad\",\"type\":\"srexxfavs\"}")
+            .toObject(ReadOnlyFollowingDatabase.class);
+        Assertions.assertEquals("aaggkre", model.location());
+        Assertions.assertEquals(Duration.parse("PT193H9M52S"), model.hotCachePeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReadOnlyFollowingDatabase model =
-            new ReadOnlyFollowingDatabase()
-                .withLocation("zlgcndhzxrrf")
-                .withHotCachePeriod(Duration.parse("PT168H52M2S"));
+        ReadOnlyFollowingDatabase model
+            = new ReadOnlyFollowingDatabase().withLocation("aaggkre").withHotCachePeriod(Duration.parse("PT193H9M52S"));
         model = BinaryData.fromObject(model).toObject(ReadOnlyFollowingDatabase.class);
-        Assertions.assertEquals("zlgcndhzxrrf", model.location());
-        Assertions.assertEquals(Duration.parse("PT168H52M2S"), model.hotCachePeriod());
+        Assertions.assertEquals("aaggkre", model.location());
+        Assertions.assertEquals(Duration.parse("PT193H9M52S"), model.hotCachePeriod());
     }
 }

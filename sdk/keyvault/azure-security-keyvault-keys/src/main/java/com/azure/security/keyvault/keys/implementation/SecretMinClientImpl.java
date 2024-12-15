@@ -95,56 +95,40 @@ public final class SecretMinClientImpl {
     @ServiceInterface(name = "SecretMinClient")
     public interface SecretMinClientService {
         @Get("secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(code = { 404 }, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(code = { 403 }, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SecretKey>> getSecret(
-            @HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecretKey>> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(code = { 404 }, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(code = { 403 }, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<SecretKey> getSecretSync(
-            @HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam("secret-name") String secretName,
-            @PathParam("secret-version") String secretVersion,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<SecretKey> getSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("secrets/{secret-name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SecretKey>> setSecret(
-            @HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam("secret-name") String secretName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SecretRequestParameters parameters,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType,
-            Context context);
+        Mono<Response<SecretKey>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretRequestParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
 
         @Put("secrets/{secret-name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(code = { 400 }, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<SecretKey> setSecretSync(
-            @HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @PathParam("secret-name") String secretName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SecretRequestParameters parameters,
-            @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType,
-            Context context);
+        Response<SecretKey> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretRequestParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
     }
 
     /**
@@ -165,8 +149,8 @@ public final class SecretMinClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretKey>> getSecretWithResponseAsync(
-        String vaultBaseUrl, String secretName, String secretVersion, Context context) {
+    public Mono<Response<SecretKey>> getSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        String secretVersion, Context context) {
         final String accept = "application/json";
         return service.getSecret(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), accept, context);
     }
@@ -188,8 +172,8 @@ public final class SecretMinClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretKey> getSecretWithResponse(
-        String vaultBaseUrl, String secretName, String secretVersion, Context context) {
+    public Response<SecretKey> getSecretWithResponse(String vaultBaseUrl, String secretName, String secretVersion,
+        Context context) {
         final String accept = "application/json";
         return service.getSecretSync(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), accept, context);
     }
@@ -214,22 +198,16 @@ public final class SecretMinClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretKey> setSecretWithResponse(
-        String vaultBaseUrl,
-        String secretName,
-        String value,
-        Map<String, String> tags,
-        String contentType,
-        SecretRequestAttributes secretAttributes,
-        Context context) {
+    public Response<SecretKey> setSecretWithResponse(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String contentType, SecretRequestAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         SecretRequestParameters parameters = new SecretRequestParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
         parameters.setContentType(contentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecretSync(
-            vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType, context);
+        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
+            context);
     }
 
     /**
@@ -253,21 +231,15 @@ public final class SecretMinClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretKey>> setSecretWithResponseAsync(
-        String vaultBaseUrl,
-        String secretName,
-        String value,
-        Map<String, String> tags,
-        String contentType,
-        SecretRequestAttributes secretAttributes,
-        Context context) {
+    public Mono<Response<SecretKey>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String contentType, SecretRequestAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         SecretRequestParameters parameters = new SecretRequestParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
         parameters.setContentType(contentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecret(
-            vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType, context);
+        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
+            context);
     }
 }

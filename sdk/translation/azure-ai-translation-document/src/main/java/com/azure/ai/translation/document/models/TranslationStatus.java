@@ -4,140 +4,84 @@
 package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
 /**
- * Translation job status response.
+ * List of possible statuses for job or document.
  */
-@Immutable
-public final class TranslationStatus {
-
-    /*
-     * Id of the operation.
-     */
-    @Generated
-    @JsonProperty(value = "id")
-    private final String id;
-
-    /*
-     * Operation created date time
-     */
-    @Generated
-    @JsonProperty(value = "createdDateTimeUtc")
-    private final OffsetDateTime createdDateTimeUtc;
-
-    /*
-     * Date time in which the operation's status has been updated
-     */
-    @Generated
-    @JsonProperty(value = "lastActionDateTimeUtc")
-    private final OffsetDateTime lastActionDateTimeUtc;
-
-    /*
-     * List of possible statuses for job or document
-     */
-    @Generated
-    @JsonProperty(value = "status")
-    private final Status status;
-
-    /*
-     * This contains an outer error with error code, message, details, target and an
-     * inner error with more descriptive details.
-     */
-    @Generated
-    @JsonProperty(value = "error")
-    private TranslationError error;
-
-    /*
-     * Status Summary
-     */
-    @Generated
-    @JsonProperty(value = "summary")
-    private final StatusSummary summary;
+public final class TranslationStatus extends ExpandableStringEnum<TranslationStatus> {
 
     /**
-     * Creates an instance of TranslationStatus class.
-     *
-     * @param id the id value to set.
-     * @param createdDateTimeUtc the createdDateTimeUtc value to set.
-     * @param lastActionDateTimeUtc the lastActionDateTimeUtc value to set.
-     * @param status the status value to set.
-     * @param summary the summary value to set.
+     * NotStarted.
      */
     @Generated
-    @JsonCreator
-    private TranslationStatus(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "createdDateTimeUtc") OffsetDateTime createdDateTimeUtc,
-        @JsonProperty(value = "lastActionDateTimeUtc") OffsetDateTime lastActionDateTimeUtc,
-        @JsonProperty(value = "status") Status status, @JsonProperty(value = "summary") StatusSummary summary) {
-        this.id = id;
-        this.createdDateTimeUtc = createdDateTimeUtc;
-        this.lastActionDateTimeUtc = lastActionDateTimeUtc;
-        this.status = status;
-        this.summary = summary;
+    public static final TranslationStatus NOT_STARTED = fromString("NotStarted");
+
+    /**
+     * Running.
+     */
+    @Generated
+    public static final TranslationStatus RUNNING = fromString("Running");
+
+    /**
+     * Succeeded.
+     */
+    @Generated
+    public static final TranslationStatus SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Failed.
+     */
+    @Generated
+    public static final TranslationStatus FAILED = fromString("Failed");
+
+    /**
+     * Cancelled.
+     */
+    @Generated
+    public static final TranslationStatus CANCELLED = fromString("Cancelled");
+
+    /**
+     * Cancelling.
+     */
+    @Generated
+    public static final TranslationStatus CANCELLING = fromString("Cancelling");
+
+    /**
+     * ValidationFailed.
+     */
+    @Generated
+    public static final TranslationStatus VALIDATION_FAILED = fromString("ValidationFailed");
+
+    /**
+     * Creates a new instance of TranslationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public TranslationStatus() {
     }
 
     /**
-     * Get the id property: Id of the operation.
+     * Creates or finds a TranslationStatus from its string representation.
      *
-     * @return the id value.
+     * @param name a name to look for.
+     * @return the corresponding TranslationStatus.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public static TranslationStatus fromString(String name) {
+        return fromString(name, TranslationStatus.class);
     }
 
     /**
-     * Get the createdDateTimeUtc property: Operation created date time.
+     * Gets known TranslationStatus values.
      *
-     * @return the createdDateTimeUtc value.
+     * @return known TranslationStatus values.
      */
     @Generated
-    public OffsetDateTime getCreatedDateTimeUtc() {
-        return this.createdDateTimeUtc;
-    }
-
-    /**
-     * Get the lastActionDateTimeUtc property: Date time in which the operation's status has been updated.
-     *
-     * @return the lastActionDateTimeUtc value.
-     */
-    @Generated
-    public OffsetDateTime getLastActionDateTimeUtc() {
-        return this.lastActionDateTimeUtc;
-    }
-
-    /**
-     * Get the status property: List of possible statuses for job or document.
-     *
-     * @return the status value.
-     */
-    @Generated
-    public Status getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the error property: This contains an outer error with error code, message, details, target and an
-     * inner error with more descriptive details.
-     *
-     * @return the error value.
-     */
-    @Generated
-    public TranslationError getError() {
-        return this.error;
-    }
-
-    /**
-     * Get the summary property: Status Summary.
-     *
-     * @return the summary value.
-     */
-    @Generated
-    public StatusSummary getSummary() {
-        return this.summary;
+    public static Collection<TranslationStatus> values() {
+        return values(TranslationStatus.class);
     }
 }

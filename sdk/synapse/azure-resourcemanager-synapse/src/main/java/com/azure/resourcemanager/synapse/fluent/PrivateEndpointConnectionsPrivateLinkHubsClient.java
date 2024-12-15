@@ -18,7 +18,7 @@ import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnection
 public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,12 +27,12 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
      * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(
-        String resourceGroupName, String privateLinkHubName);
+    PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(String resourceGroupName,
+        String privateLinkHubName);
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -42,12 +42,12 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
      * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(String resourceGroupName,
+        String privateLinkHubName, Context context);
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -58,12 +58,12 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionForPrivateLinkHubInner> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionForPrivateLinkHubInner> getWithResponse(String resourceGroupName,
+        String privateLinkHubName, String privateEndpointConnectionName, Context context);
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -73,6 +73,6 @@ public interface PrivateEndpointConnectionsPrivateLinkHubsClient {
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionForPrivateLinkHubInner get(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionForPrivateLinkHubInner get(String resourceGroupName, String privateLinkHubName,
+        String privateEndpointConnectionName);
 }

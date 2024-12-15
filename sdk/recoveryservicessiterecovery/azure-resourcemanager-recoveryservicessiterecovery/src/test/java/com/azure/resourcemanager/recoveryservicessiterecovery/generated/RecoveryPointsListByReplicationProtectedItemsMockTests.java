@@ -45,12 +45,14 @@ public final class RecoveryPointsListByReplicationProtectedItemsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RecoveryPoint> response = manager.recoveryPoints().listByReplicationProtectedItems("ehdhjofywwna",
-            "oxlorxgsl", "c", "u", "hvpaglyyhrgma", com.azure.core.util.Context.NONE);
+        PagedIterable<RecoveryPoint> response = manager.recoveryPoints()
+            .listByReplicationProtectedItems("ehdhjofywwna", "oxlorxgsl", "c", "u", "hvpaglyyhrgma",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T18:08:27Z"),
             response.iterator().next().properties().recoveryPointTime());

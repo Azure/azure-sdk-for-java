@@ -43,24 +43,31 @@ public final class SubscriptionsTestQuerySamples {
         manager.subscriptions()
             .testQuery("West US",
                 new TestQueryInner()
-                    .withDiagnostics(new TestQueryDiagnostics().withWriteUri(
-                        "http://myoutput.com").withPath(
-                            "/pathto/subdirectory"))
+                    .withDiagnostics(
+                        new TestQueryDiagnostics().withWriteUri("http://myoutput.com").withPath("/pathto/subdirectory"))
                     .withStreamingJob(
                         new StreamingJobInner().withLocation("West US")
                             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
                                 "fakeTokenPlaceholder"))
                             .withSkuPropertiesSku(new Sku().withName(SkuName.STANDARD))
                             .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
-                            .withOutputErrorPolicy(OutputErrorPolicy.DROP).withEventsOutOfOrderMaxDelayInSeconds(0)
-                            .withEventsLateArrivalMaxDelayInSeconds(5).withDataLocale("en-US")
+                            .withOutputErrorPolicy(OutputErrorPolicy.DROP)
+                            .withEventsOutOfOrderMaxDelayInSeconds(0)
+                            .withEventsLateArrivalMaxDelayInSeconds(5)
+                            .withDataLocale("en-US")
                             .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO)
-                            .withInputs(Arrays.asList(new InputInner().withProperties(new StreamInputProperties()
-                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                                .withDatasource(new RawStreamInputDataSource().withPayloadUri("http://myinput.com")))
-                                .withName("inputtest")))
+                            .withInputs(
+                                Arrays.asList(
+                                    new InputInner()
+                                        .withProperties(
+                                            new StreamInputProperties()
+                                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
+                                                .withDatasource(new RawStreamInputDataSource()
+                                                    .withPayloadUri("http://myinput.com")))
+                                        .withName("inputtest")))
                             .withTransformation(new TransformationInner().withName("transformationtest")
-                                .withStreamingUnits(1).withQuery("Select Id, Name from inputtest"))
+                                .withStreamingUnits(1)
+                                .withQuery("Select Id, Name from inputtest"))
                             .withOutputs(Arrays.asList(new OutputInner().withName("outputtest")
                                 .withDatasource(new RawOutputDatasource().withPayloadUri("http://myoutput.com"))
                                 .withSerialization(new JsonSerialization())))

@@ -46,13 +46,17 @@ public final class WorkspacesCreateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workspace response = manager.workspaces().define("aeneqnzarrwl").withRegion("fqka")
+        Workspace response = manager.workspaces()
+            .define("aeneqnzarrwl")
+            .withRegion("fqka")
             .withExistingResourceGroup("syrsndsytgadgvra")
-            .withTags(mapOf("bwwift", "iipfpubj", "ynfs", "hqkvpuvksgplsak")).create();
+            .withTags(mapOf("bwwift", "iipfpubj", "ynfs", "hqkvpuvksgplsak"))
+            .create();
 
         Assertions.assertEquals("rpzbchckqqzqi", response.location());
         Assertions.assertEquals("ysuiizynkedya", response.tags().get("rwyhqmibzyhwitsm"));

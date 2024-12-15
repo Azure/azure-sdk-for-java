@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The renew properties for a reservation. */
+/**
+ * The renew properties for a reservation.
+ */
 @Fluent
-public final class RenewPropertiesResponse {
+public final class RenewPropertiesResponse implements JsonSerializable<RenewPropertiesResponse> {
     /*
      * The request for reservation purchase
      */
-    @JsonProperty(value = "purchaseProperties")
     private PurchaseRequest purchaseProperties;
 
     /*
-     * Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included.
-     * This is locked price 30 days before expiry.
+     * Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This
+     * is locked price 30 days before expiry.
      */
-    @JsonProperty(value = "pricingCurrencyTotal")
     private RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal;
 
     /*
      * Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not
      * included.
      */
-    @JsonProperty(value = "billingCurrencyTotal")
     private RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal;
 
-    /** Creates an instance of RenewPropertiesResponse class. */
+    /**
+     * Creates an instance of RenewPropertiesResponse class.
+     */
     public RenewPropertiesResponse() {
     }
 
     /**
      * Get the purchaseProperties property: The request for reservation purchase.
-     *
+     * 
      * @return the purchaseProperties value.
      */
     public PurchaseRequest purchaseProperties() {
@@ -45,7 +50,7 @@ public final class RenewPropertiesResponse {
 
     /**
      * Set the purchaseProperties property: The request for reservation purchase.
-     *
+     * 
      * @param purchaseProperties the purchaseProperties value to set.
      * @return the RenewPropertiesResponse object itself.
      */
@@ -57,7 +62,7 @@ public final class RenewPropertiesResponse {
     /**
      * Get the pricingCurrencyTotal property: Amount that Microsoft uses for record. Used during refund for calculating
      * refund limit. Tax is not included. This is locked price 30 days before expiry.
-     *
+     * 
      * @return the pricingCurrencyTotal value.
      */
     public RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal() {
@@ -67,12 +72,12 @@ public final class RenewPropertiesResponse {
     /**
      * Set the pricingCurrencyTotal property: Amount that Microsoft uses for record. Used during refund for calculating
      * refund limit. Tax is not included. This is locked price 30 days before expiry.
-     *
+     * 
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the RenewPropertiesResponse object itself.
      */
-    public RenewPropertiesResponse withPricingCurrencyTotal(
-        RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal) {
+    public RenewPropertiesResponse
+        withPricingCurrencyTotal(RenewPropertiesResponsePricingCurrencyTotal pricingCurrencyTotal) {
         this.pricingCurrencyTotal = pricingCurrencyTotal;
         return this;
     }
@@ -80,7 +85,7 @@ public final class RenewPropertiesResponse {
     /**
      * Get the billingCurrencyTotal property: Currency and amount that customer will be charged in customer's local
      * currency for renewal purchase. Tax is not included.
-     *
+     * 
      * @return the billingCurrencyTotal value.
      */
     public RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal() {
@@ -90,19 +95,19 @@ public final class RenewPropertiesResponse {
     /**
      * Set the billingCurrencyTotal property: Currency and amount that customer will be charged in customer's local
      * currency for renewal purchase. Tax is not included.
-     *
+     * 
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the RenewPropertiesResponse object itself.
      */
-    public RenewPropertiesResponse withBillingCurrencyTotal(
-        RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal) {
+    public RenewPropertiesResponse
+        withBillingCurrencyTotal(RenewPropertiesResponseBillingCurrencyTotal billingCurrencyTotal) {
         this.billingCurrencyTotal = billingCurrencyTotal;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -115,5 +120,49 @@ public final class RenewPropertiesResponse {
         if (billingCurrencyTotal() != null) {
             billingCurrencyTotal().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("purchaseProperties", this.purchaseProperties);
+        jsonWriter.writeJsonField("pricingCurrencyTotal", this.pricingCurrencyTotal);
+        jsonWriter.writeJsonField("billingCurrencyTotal", this.billingCurrencyTotal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RenewPropertiesResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RenewPropertiesResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RenewPropertiesResponse.
+     */
+    public static RenewPropertiesResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RenewPropertiesResponse deserializedRenewPropertiesResponse = new RenewPropertiesResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("purchaseProperties".equals(fieldName)) {
+                    deserializedRenewPropertiesResponse.purchaseProperties = PurchaseRequest.fromJson(reader);
+                } else if ("pricingCurrencyTotal".equals(fieldName)) {
+                    deserializedRenewPropertiesResponse.pricingCurrencyTotal
+                        = RenewPropertiesResponsePricingCurrencyTotal.fromJson(reader);
+                } else if ("billingCurrencyTotal".equals(fieldName)) {
+                    deserializedRenewPropertiesResponse.billingCurrencyTotal
+                        = RenewPropertiesResponseBillingCurrencyTotal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRenewPropertiesResponse;
+        });
     }
 }

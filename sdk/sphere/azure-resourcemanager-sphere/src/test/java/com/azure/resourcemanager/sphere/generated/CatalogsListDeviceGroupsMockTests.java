@@ -50,13 +50,15 @@ public final class CatalogsListDeviceGroupsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DeviceGroup> response = manager.catalogs().listDeviceGroups("zjuzgwyz", "htxongmtsavjc",
-            new ListDeviceGroupsRequest().withDeviceGroupName("wxqpsrknftguvri"), "hprwmdyv", 1468047146, 1392355180,
-            1817218794, com.azure.core.util.Context.NONE);
+        PagedIterable<DeviceGroup> response = manager.catalogs()
+            .listDeviceGroups("zjuzgwyz", "htxongmtsavjc",
+                new ListDeviceGroupsRequest().withDeviceGroupName("wxqpsrknftguvri"), "hprwmdyv", 1468047146,
+                1392355180, 1817218794, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("iwwroyqbexrmc", response.iterator().next().properties().description());
         Assertions.assertEquals(OSFeedType.RETAIL_EVAL, response.iterator().next().properties().osFeedType());

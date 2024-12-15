@@ -23,7 +23,7 @@ public final class PrivateLinkScopesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"jww\",\"privateLinkScopeId\":\"z\",\"privateEndpointConnections\":[{\"id\":\"mxqhndvnoamldse\",\"name\":\"ohdjhhflzok\",\"type\":\"ox\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jetagltsxoatft\",\"description\":\"zpnpbswv\"},\"provisioningState\":\"loccsrmozihm\",\"groupIds\":[\"awtxxpk\"]}},{\"id\":\"cxcjxgry\",\"name\":\"mpcycilrmcaykgg\",\"type\":\"xu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"sxwpndfcpfnznthj\",\"description\":\"wkjaos\"},\"provisioningState\":\"uzvoamktcqiosm\",\"groupIds\":[\"ahgx\"]}},{\"id\":\"lyrtltlaprlt\",\"name\":\"atbhjmznn\",\"type\":\"oqeq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vlagun\",\"description\":\"tgfebwln\"},\"provisioningState\":\"hyreeu\",\"groupIds\":[\"av\",\"pdqmjxlyyzglgouw\",\"lmjjyuo\"]}},{\"id\":\"tob\",\"name\":\"kjeytunl\",\"type\":\"jkwrusnkq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"rqunjq\",\"description\":\"denxau\"},\"provisioningState\":\"pakdkifmjnnawt\",\"groupIds\":[\"pxuckpggq\",\"wey\",\"rdhlis\",\"gwflq\"]}}]},\"location\":\"pizruwnpqxpxiw\",\"tags\":{\"zjvkviirhgfgrws\":\"gjsaasiixtm\",\"tctbrxkjzwrgxffm\":\"pgratzvzbglbyvi\"},\"id\":\"hkwfbkgozxwop\",\"name\":\"bydpizqaclnapxb\",\"type\":\"yg\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"t\",\"privateLinkScopeId\":\"oyin\",\"privateEndpointConnections\":[{\"id\":\"rlcyrduc\",\"name\":\"go\",\"type\":\"y\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"cvcrrp\",\"description\":\"jttbstv\"},\"provisioningState\":\"aqnrmvvfkoxmlg\",\"groupIds\":[\"uidvrmazlpdwwex\",\"mzvlazipbh\",\"wvqsgny\"]}},{\"id\":\"uzivensrpmeyyvp\",\"name\":\"atlb\",\"type\":\"pzgsk\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"fvolmknbnxwcd\",\"description\":\"mmpvf\"},\"provisioningState\":\"wzfgbrttuiaclkie\",\"groupIds\":[\"jlfnthiq\",\"yuttdiygbpvnwswm\",\"xkyctwwgzwx\"]}},{\"id\":\"mecvogygzyvneeza\",\"name\":\"gh\",\"type\":\"oqqtl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bkrkjj\",\"description\":\"avfqnvhnqoewdogi\"},\"provisioningState\":\"tesypvidbztjh\",\"groupIds\":[\"b\"]}},{\"id\":\"nynkbwet\",\"name\":\"uhpsprkzyaupia\",\"type\":\"xnafbw\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"htuov\",\"description\":\"aonurjtumg\"},\"provisioningState\":\"hpv\",\"groupIds\":[\"slclblyjxltbsju\",\"c\",\"sfxigctmgx\"]}}]},\"location\":\"pbezqccydrtceu\",\"tags\":{\"eq\":\"kkyihzt\",\"ecfehuwa\":\"gqzgwldoychill\",\"uhicqllizstacsjv\":\"a\",\"wqejpmvsse\":\"rweft\"},\"id\":\"aepwamcxtcz\",\"name\":\"upeuknijduyye\",\"type\":\"pydjfboc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class PrivateLinkScopesListMockTests {
         PagedIterable<HybridComputePrivateLinkScope> response
             = manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pizruwnpqxpxiw", response.iterator().next().location());
-        Assertions.assertEquals("gjsaasiixtm", response.iterator().next().tags().get("zjvkviirhgfgrws"));
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
+        Assertions.assertEquals("pbezqccydrtceu", response.iterator().next().location());
+        Assertions.assertEquals("kkyihzt", response.iterator().next().tags().get("eq"));
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

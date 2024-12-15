@@ -46,12 +46,14 @@ public final class CatalogsListDeploymentsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Deployment> response = manager.catalogs().listDeployments("zceuojgjrw", "ueiotwmcdyt", "x",
-            384724385, 1665373545, 838785311, com.azure.core.util.Context.NONE);
+        PagedIterable<Deployment> response = manager.catalogs()
+            .listDeployments("zceuojgjrw", "ueiotwmcdyt", "x", 384724385, 1665373545, 838785311,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("jawgqwg", response.iterator().next().properties().deploymentId());
         Assertions.assertEquals("kxfbkpycgklwndn",

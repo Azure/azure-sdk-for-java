@@ -8,19 +8,21 @@ import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachines CreateOrUpdate. */
+/**
+ * Samples for VirtualMachines CreateOrUpdate.
+ */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualMachines_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .define("{vmName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")
@@ -32,13 +34,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .withLabVirtualNetworkId(
                 "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
             .withDisallowPublicIpAddress(true)
-            .withGalleryImageReference(
-                new GalleryImageReference()
-                    .withOffer("UbuntuServer")
-                    .withPublisher("Canonical")
-                    .withSku("16.04-LTS")
-                    .withOsType("Linux")
-                    .withVersion("Latest"))
+            .withGalleryImageReference(new GalleryImageReference().withOffer("UbuntuServer")
+                .withPublisher("Canonical")
+                .withSku("16.04-LTS")
+                .withOsType("Linux")
+                .withVersion("Latest"))
             .withAllowClaim(true)
             .withStorageType("Standard")
             .create();

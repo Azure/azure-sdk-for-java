@@ -14,41 +14,37 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"eventHubResourceId\":\"gmnhjevd\",\"consumerGroup\":\"znfaj\",\"tableName\":\"kskmqozzkivyhjrl\",\"mappingRuleName\":\"zji\",\"dataFormat\":\"TSVE\",\"eventSystemProperties\":[\"ef\",\"wabs\",\"lronqqlmg\",\"lqxsjxtelex\"],\"compression\":\"None\",\"provisioningState\":\"Succeeded\",\"managedIdentityResourceId\":\"zoolzqoca\"}")
-                .toObject(EventHubConnectionProperties.class);
-        Assertions.assertEquals("gmnhjevd", model.eventHubResourceId());
-        Assertions.assertEquals("znfaj", model.consumerGroup());
-        Assertions.assertEquals("kskmqozzkivyhjrl", model.tableName());
-        Assertions.assertEquals("zji", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.TSVE, model.dataFormat());
-        Assertions.assertEquals("ef", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.NONE, model.compression());
-        Assertions.assertEquals("zoolzqoca", model.managedIdentityResourceId());
+        EventHubConnectionProperties model = BinaryData.fromString(
+            "{\"eventHubResourceId\":\"wceivbvz\",\"consumerGroup\":\"pbwxgoooxz\",\"tableName\":\"admskx\",\"mappingRuleName\":\"pdgzigjsugswhg\",\"dataFormat\":\"PARQUET\",\"eventSystemProperties\":[\"wwnbafoctohz\",\"aquvwsxbgnvkervq\",\"hoadhrsxqvzv\",\"pabdsrg\"],\"compression\":\"GZip\",\"provisioningState\":\"Creating\",\"managedIdentityResourceId\":\"rsubklrxhjnl\"}")
+            .toObject(EventHubConnectionProperties.class);
+        Assertions.assertEquals("wceivbvz", model.eventHubResourceId());
+        Assertions.assertEquals("pbwxgoooxz", model.consumerGroup());
+        Assertions.assertEquals("admskx", model.tableName());
+        Assertions.assertEquals("pdgzigjsugswhg", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.PARQUET, model.dataFormat());
+        Assertions.assertEquals("wwnbafoctohz", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.GZIP, model.compression());
+        Assertions.assertEquals("rsubklrxhjnl", model.managedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConnectionProperties model =
-            new EventHubConnectionProperties()
-                .withEventHubResourceId("gmnhjevd")
-                .withConsumerGroup("znfaj")
-                .withTableName("kskmqozzkivyhjrl")
-                .withMappingRuleName("zji")
-                .withDataFormat(EventHubDataFormat.TSVE)
-                .withEventSystemProperties(Arrays.asList("ef", "wabs", "lronqqlmg", "lqxsjxtelex"))
-                .withCompression(Compression.NONE)
-                .withManagedIdentityResourceId("zoolzqoca");
+        EventHubConnectionProperties model = new EventHubConnectionProperties().withEventHubResourceId("wceivbvz")
+            .withConsumerGroup("pbwxgoooxz")
+            .withTableName("admskx")
+            .withMappingRuleName("pdgzigjsugswhg")
+            .withDataFormat(EventHubDataFormat.PARQUET)
+            .withEventSystemProperties(Arrays.asList("wwnbafoctohz", "aquvwsxbgnvkervq", "hoadhrsxqvzv", "pabdsrg"))
+            .withCompression(Compression.GZIP)
+            .withManagedIdentityResourceId("rsubklrxhjnl");
         model = BinaryData.fromObject(model).toObject(EventHubConnectionProperties.class);
-        Assertions.assertEquals("gmnhjevd", model.eventHubResourceId());
-        Assertions.assertEquals("znfaj", model.consumerGroup());
-        Assertions.assertEquals("kskmqozzkivyhjrl", model.tableName());
-        Assertions.assertEquals("zji", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.TSVE, model.dataFormat());
-        Assertions.assertEquals("ef", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.NONE, model.compression());
-        Assertions.assertEquals("zoolzqoca", model.managedIdentityResourceId());
+        Assertions.assertEquals("wceivbvz", model.eventHubResourceId());
+        Assertions.assertEquals("pbwxgoooxz", model.consumerGroup());
+        Assertions.assertEquals("admskx", model.tableName());
+        Assertions.assertEquals("pdgzigjsugswhg", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.PARQUET, model.dataFormat());
+        Assertions.assertEquals("wwnbafoctohz", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.GZIP, model.compression());
+        Assertions.assertEquals("rsubklrxhjnl", model.managedIdentityResourceId());
     }
 }

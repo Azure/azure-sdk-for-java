@@ -6,6 +6,9 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
@@ -15,33 +18,50 @@ import com.azure.resourcemanager.synapse.models.PurviewConfiguration;
 import com.azure.resourcemanager.synapse.models.VirtualNetworkProfile;
 import com.azure.resourcemanager.synapse.models.WorkspacePublicNetworkAccess;
 import com.azure.resourcemanager.synapse.models.WorkspaceRepositoryConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** A workspace. */
+/**
+ * A workspace.
+ */
 @Fluent
 public final class WorkspaceInner extends Resource {
     /*
      * Workspace resource properties
      */
-    @JsonProperty(value = "properties")
     private WorkspaceProperties innerProperties;
 
     /*
      * Identity of the workspace
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
-    /** Creates an instance of WorkspaceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkspaceInner class.
+     */
     public WorkspaceInner() {
     }
 
     /**
      * Get the innerProperties property: Workspace resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceProperties innerProperties() {
@@ -50,7 +70,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the identity property: Identity of the workspace.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -59,7 +79,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the identity property: Identity of the workspace.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -68,14 +88,48 @@ public final class WorkspaceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -84,7 +138,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
+     * 
      * @return the defaultDataLakeStorage value.
      */
     public DataLakeStorageAccountDetails defaultDataLakeStorage() {
@@ -93,7 +147,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
+     * 
      * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -107,7 +161,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @return the sqlAdministratorLoginPassword value.
      */
     public String sqlAdministratorLoginPassword() {
@@ -116,7 +170,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -133,7 +187,7 @@ public final class WorkspaceInner extends Resource {
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
      * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
      * that the name cannot end with '.'.
-     *
+     * 
      * @return the managedResourceGroupName value.
      */
     public String managedResourceGroupName() {
@@ -145,7 +199,7 @@ public final class WorkspaceInner extends Resource {
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
      * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
      * that the name cannot end with '.'.
-     *
+     * 
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -159,7 +213,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -168,7 +222,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
+     * 
      * @return the sqlAdministratorLogin value.
      */
     public String sqlAdministratorLogin() {
@@ -177,7 +231,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
+     * 
      * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -191,7 +245,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the virtualNetworkProfile property: Virtual Network profile.
-     *
+     * 
      * @return the virtualNetworkProfile value.
      */
     public VirtualNetworkProfile virtualNetworkProfile() {
@@ -200,7 +254,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the virtualNetworkProfile property: Virtual Network profile.
-     *
+     * 
      * @param virtualNetworkProfile the virtualNetworkProfile value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -214,7 +268,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the connectivityEndpoints property: Connectivity endpoints.
-     *
+     * 
      * @return the connectivityEndpoints value.
      */
     public Map<String, String> connectivityEndpoints() {
@@ -224,7 +278,7 @@ public final class WorkspaceInner extends Resource {
     /**
      * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
-     *
+     * 
      * @return the managedVirtualNetwork value.
      */
     public String managedVirtualNetwork() {
@@ -234,7 +288,7 @@ public final class WorkspaceInner extends Resource {
     /**
      * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
-     *
+     * 
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -248,7 +302,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -257,12 +311,12 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public WorkspaceInner
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }
@@ -272,7 +326,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionDetails encryption() {
@@ -281,7 +335,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -295,7 +349,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @return the workspaceUid value.
      */
     public UUID workspaceUid() {
@@ -304,7 +358,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the extraProperties property: Workspace level configs and feature flags.
-     *
+     * 
      * @return the extraProperties value.
      */
     public Object extraProperties() {
@@ -313,7 +367,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
@@ -322,12 +376,12 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspaceInner
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }
@@ -337,7 +391,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
@@ -346,12 +400,12 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspaceInner
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }
@@ -361,7 +415,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
@@ -370,7 +424,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -384,7 +438,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the adlaResourceId property: The ADLA resource ID.
-     *
+     * 
      * @return the adlaResourceId value.
      */
     public String adlaResourceId() {
@@ -393,7 +447,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
@@ -402,7 +456,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -416,7 +470,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
-     *
+     * 
      * @return the cspWorkspaceAdminProperties value.
      */
     public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
@@ -425,7 +479,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
-     *
+     * 
      * @param cspWorkspaceAdminProperties the cspWorkspaceAdminProperties value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -439,7 +493,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the settings property: Workspace settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -449,7 +503,7 @@ public final class WorkspaceInner extends Resource {
     /**
      * Get the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
      * subresource.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -459,7 +513,7 @@ public final class WorkspaceInner extends Resource {
     /**
      * Set the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
      * subresource.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -473,7 +527,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
-     *
+     * 
      * @return the trustedServiceBypassEnabled value.
      */
     public Boolean trustedServiceBypassEnabled() {
@@ -482,7 +536,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Set the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
-     *
+     * 
      * @param trustedServiceBypassEnabled the trustedServiceBypassEnabled value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -496,7 +550,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -506,5 +560,58 @@ public final class WorkspaceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceInner.
+     */
+    public static WorkspaceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceInner deserializedWorkspaceInner = new WorkspaceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkspaceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspaceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspaceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkspaceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspaceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspaceInner.innerProperties = WorkspaceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkspaceInner.identity = ManagedIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceInner;
+        });
     }
 }

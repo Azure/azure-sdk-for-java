@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of servers. */
 @Fluent
 public final class ServerListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerListResult.class);
 
     /*
      * The list of servers

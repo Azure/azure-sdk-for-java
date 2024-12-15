@@ -25,9 +25,13 @@ public final class AccountsCreateOrUpdateSamples {
      */
     public static void
         accountsCreateOrUpdate(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        manager.accounts().define("myPlaywrightAccount").withRegion("westus").withExistingResourceGroup("dummyrg")
+        manager.accounts()
+            .define("myPlaywrightAccount")
+            .withRegion("westus")
+            .withExistingResourceGroup("dummyrg")
             .withTags(mapOf("Team", "Dev Exp"))
-            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED)).create();
+            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED))
+            .create();
     }
 
     // Use "Map.of" if available

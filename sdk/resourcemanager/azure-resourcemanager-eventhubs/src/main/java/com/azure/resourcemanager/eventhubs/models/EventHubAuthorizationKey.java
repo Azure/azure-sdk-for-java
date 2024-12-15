@@ -10,8 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
  * Type representing access key of {@link EventHubNamespaceAuthorizationRule}.
  */
 @Fluent
-public interface EventHubAuthorizationKey
-    extends HasInnerModel<AccessKeysInner> {
+public interface EventHubAuthorizationKey extends HasInnerModel<AccessKeysInner> {
     /**
      * @return primary access key
      */

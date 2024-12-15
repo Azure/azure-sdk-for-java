@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for SqlPoolWorkloadGroup CreateOrUpdate. */
+/**
+ * Samples for SqlPoolWorkloadGroup CreateOrUpdate.
+ */
 public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadGroupMin.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * CreateOrUpdateSqlPoolWorkloadGroupMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createAWorkloadGroupWithTheRequiredPropertiesSpecified(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolWorkloadGroups()
+        manager.sqlPoolWorkloadGroups()
             .define("smallrc")
             .withExistingSqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187")
             .withMinResourcePercent(0)
@@ -27,17 +29,17 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadGroupMax.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * CreateOrUpdateSqlPoolWorkloadGroupMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void createAWorkloadGroupWithAllPropertiesSpecified(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolWorkloadGroups()
+    public static void
+        createAWorkloadGroupWithAllPropertiesSpecified(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.sqlPoolWorkloadGroups()
             .define("smallrc")
             .withExistingSqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187")
             .withMinResourcePercent(0)

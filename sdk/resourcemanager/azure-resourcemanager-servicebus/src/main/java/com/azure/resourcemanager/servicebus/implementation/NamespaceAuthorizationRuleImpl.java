@@ -13,21 +13,12 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for NamespaceAuthorizationRule.
  */
-class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<NamespaceAuthorizationRule,
-    ServiceBusNamespaceImpl,
-    SBAuthorizationRuleInner,
-    NamespaceAuthorizationRuleImpl,
-    ServiceBusManager>
-    implements
-        NamespaceAuthorizationRule,
-        NamespaceAuthorizationRule.Definition,
-        NamespaceAuthorizationRule.Update {
+class NamespaceAuthorizationRuleImpl extends
+    AuthorizationRuleBaseImpl<NamespaceAuthorizationRule, ServiceBusNamespaceImpl, SBAuthorizationRuleInner, NamespaceAuthorizationRuleImpl, ServiceBusManager>
+    implements NamespaceAuthorizationRule, NamespaceAuthorizationRule.Definition, NamespaceAuthorizationRule.Update {
 
-    NamespaceAuthorizationRuleImpl(String resourceGroupName,
-                                   String namespaceName,
-                                   String name,
-                                   SBAuthorizationRuleInner inner,
-                                   ServiceBusManager manager) {
+    NamespaceAuthorizationRuleImpl(String resourceGroupName, String namespaceName, String name,
+        SBAuthorizationRuleInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
     }
@@ -39,20 +30,19 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
 
     @Override
     protected Mono<SBAuthorizationRuleInner> getInnerAsync() {
-        return this.manager().serviceClient().getNamespaces()
-                .getAuthorizationRuleAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .getAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.name());
     }
 
     @Override
     protected Mono<NamespaceAuthorizationRule> createChildResourceAsync() {
         final NamespaceAuthorizationRule self = this;
-        return this.manager().serviceClient().getNamespaces()
-            .createOrUpdateAuthorizationRuleAsync(
-                this.resourceGroupName(),
-                this.namespaceName(),
-                this.name(),
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .createOrUpdateAuthorizationRuleAsync(this.resourceGroupName(), this.namespaceName(), this.name(),
                 this.innerModel())
             .map(inner -> {
                 setInner(inner);
@@ -62,18 +52,19 @@ class NamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<Namespace
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager().serviceClient().getNamespaces()
-                .listKeysAsync(this.resourceGroupName(),
-                        this.namespaceName(),
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .listKeysAsync(this.resourceGroupName(), this.namespaceName(), this.name());
     }
 
     @Override
-    protected Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
-        return this.manager().serviceClient().getNamespaces()
-                .regenerateKeysAsync(this.resourceGroupName(),
-                    this.namespaceName(),
-                    this.name(),
-                    regenerateAccessKeyParameters);
+    protected Mono<AccessKeysInner>
+        regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .regenerateKeysAsync(this.resourceGroupName(), this.namespaceName(), this.name(),
+                regenerateAccessKeyParameters);
     }
 }

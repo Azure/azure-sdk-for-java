@@ -76,14 +76,16 @@ public final class FabricImpl implements Fabric, Fabric.Definition {
     }
 
     public Fabric create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationFabrics().create(resourceName,
-            resourceGroupName, fabricName, createInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationFabrics()
+            .create(resourceName, resourceGroupName, fabricName, createInput, Context.NONE);
         return this;
     }
 
     public Fabric create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationFabrics().create(resourceName,
-            resourceGroupName, fabricName, createInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationFabrics()
+            .create(resourceName, resourceGroupName, fabricName, createInput, context);
         return this;
     }
 
@@ -96,15 +98,19 @@ public final class FabricImpl implements Fabric, Fabric.Definition {
 
     public Fabric refresh() {
         String localFilter = null;
-        this.innerObject = serviceManager.serviceClient().getReplicationFabrics()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, localFilter, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationFabrics()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, localFilter, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Fabric refresh(Context context) {
         String localFilter = null;
-        this.innerObject = serviceManager.serviceClient().getReplicationFabrics()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, localFilter, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationFabrics()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, localFilter, context)
+            .getValue();
         return this;
     }
 
@@ -113,8 +119,8 @@ public final class FabricImpl implements Fabric, Fabric.Definition {
     }
 
     public Fabric checkConsistency(Context context) {
-        return serviceManager.replicationFabrics().checkConsistency(resourceName, resourceGroupName, fabricName,
-            context);
+        return serviceManager.replicationFabrics()
+            .checkConsistency(resourceName, resourceGroupName, fabricName, context);
     }
 
     public void migrateToAad() {
@@ -126,13 +132,13 @@ public final class FabricImpl implements Fabric, Fabric.Definition {
     }
 
     public Fabric reassociateGateway(FailoverProcessServerRequest failoverProcessServerRequest) {
-        return serviceManager.replicationFabrics().reassociateGateway(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest);
+        return serviceManager.replicationFabrics()
+            .reassociateGateway(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest);
     }
 
     public Fabric reassociateGateway(FailoverProcessServerRequest failoverProcessServerRequest, Context context) {
-        return serviceManager.replicationFabrics().reassociateGateway(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest, context);
+        return serviceManager.replicationFabrics()
+            .reassociateGateway(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context);
     }
 
     public void delete() {
@@ -144,13 +150,13 @@ public final class FabricImpl implements Fabric, Fabric.Definition {
     }
 
     public Fabric renewCertificate(RenewCertificateInput renewCertificate) {
-        return serviceManager.replicationFabrics().renewCertificate(resourceName, resourceGroupName, fabricName,
-            renewCertificate);
+        return serviceManager.replicationFabrics()
+            .renewCertificate(resourceName, resourceGroupName, fabricName, renewCertificate);
     }
 
     public Fabric renewCertificate(RenewCertificateInput renewCertificate, Context context) {
-        return serviceManager.replicationFabrics().renewCertificate(resourceName, resourceGroupName, fabricName,
-            renewCertificate, context);
+        return serviceManager.replicationFabrics()
+            .renewCertificate(resourceName, resourceGroupName, fabricName, renewCertificate, context);
     }
 
     public void removeInfra() {

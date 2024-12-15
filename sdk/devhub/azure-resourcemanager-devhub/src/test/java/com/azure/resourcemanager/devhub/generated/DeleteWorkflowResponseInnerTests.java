@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DeleteWorkflowResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeleteWorkflowResponseInner model =
-            BinaryData.fromString("{\"status\":\"thz\"}").toObject(DeleteWorkflowResponseInner.class);
-        Assertions.assertEquals("thz", model.status());
+        DeleteWorkflowResponseInner model
+            = BinaryData.fromString("{\"status\":\"kdkexxp\"}").toObject(DeleteWorkflowResponseInner.class);
+        Assertions.assertEquals("kdkexxp", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteWorkflowResponseInner model = new DeleteWorkflowResponseInner().withStatus("thz");
+        DeleteWorkflowResponseInner model = new DeleteWorkflowResponseInner().withStatus("kdkexxp");
         model = BinaryData.fromObject(model).toObject(DeleteWorkflowResponseInner.class);
-        Assertions.assertEquals("thz", model.status());
+        Assertions.assertEquals("kdkexxp", model.status());
     }
 }

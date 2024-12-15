@@ -49,17 +49,13 @@ public final class StoragesImpl {
     @Host("{$host}")
     @ServiceInterface(name = "QuantumClientStorage")
     private interface StoragesService {
-        @Post(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/storage/sasUri")
-        @ExpectedResponses({200})
+        @Post("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/storage/sasUri")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<SasUriResponse>> sasUri(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @BodyParam("application/json") BlobDetails blobDetails,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<SasUriResponse>> sasUri(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @BodyParam("application/json") BlobDetails blobDetails, @HeaderParam("Accept") String accept);
     }
 
     /**
@@ -75,13 +71,8 @@ public final class StoragesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SasUriResponse>> sasUriWithResponseAsync(BlobDetails blobDetails) {
         final String accept = "application/json";
-        return service.sasUri(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                this.client.getResourceGroupName(),
-                this.client.getWorkspaceName(),
-                blobDetails,
-                accept);
+        return service.sasUri(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getResourceGroupName(), this.client.getWorkspaceName(), blobDetails, accept);
     }
 
     /**
@@ -96,15 +87,13 @@ public final class StoragesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SasUriResponse> sasUriAsync(BlobDetails blobDetails) {
-        return sasUriWithResponseAsync(blobDetails)
-                .flatMap(
-                        (Response<SasUriResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return sasUriWithResponseAsync(blobDetails).flatMap((Response<SasUriResponse> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**

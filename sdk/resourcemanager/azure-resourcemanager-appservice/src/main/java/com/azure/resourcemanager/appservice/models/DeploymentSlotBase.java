@@ -11,9 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  *
  * @param <FluentT> the type of the resource
  */
-public interface DeploymentSlotBase<FluentT> extends
-    WebAppBase,
-    Updatable<DeploymentSlotBase.Update<FluentT>> {
+public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<DeploymentSlotBase.Update<FluentT>> {
 
     /**
      * Grouping of all the deployment slot update stages.
@@ -100,12 +98,8 @@ public interface DeploymentSlotBase<FluentT> extends
     }
 
     /** The template for a web app update operation, containing all the settings that can be modified. */
-    interface Update<FluentT> extends
-        Appliable<FluentT>,
-        WebAppBase.Update<FluentT>,
-        UpdateStages.WithRuntimeVersion<FluentT>,
-        UpdateStages.WithDockerContainerImage<FluentT>,
-        UpdateStages.WithStartUpCommand<FluentT>,
-        UpdateStages.WithCredentials<FluentT> {
+    interface Update<FluentT> extends Appliable<FluentT>, WebAppBase.Update<FluentT>,
+        UpdateStages.WithRuntimeVersion<FluentT>, UpdateStages.WithDockerContainerImage<FluentT>,
+        UpdateStages.WithStartUpCommand<FluentT>, UpdateStages.WithCredentials<FluentT> {
     }
 }

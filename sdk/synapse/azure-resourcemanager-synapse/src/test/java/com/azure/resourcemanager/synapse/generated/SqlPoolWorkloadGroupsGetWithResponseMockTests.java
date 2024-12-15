@@ -6,70 +6,39 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.WorkloadGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SqlPoolWorkloadGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"minResourcePercent\":1518766637,\"maxResourcePercent\":1643198710,\"minResourcePercentPerRequest\":18.202032298846227,\"maxResourcePercentPerRequest\":85.92328199984041,\"importance\":\"uvjhxmnrqstjc\",\"queryExecutionTimeout\":1223754124},\"id\":\"wmlgicvnpv\",\"name\":\"dhgjnaqyqi\",\"type\":\"slz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"minResourcePercent\":2137176136,\"maxResourcePercent\":1086346110,\"minResourcePercentPerRequest\":46.161386887148105,\"maxResourcePercentPerRequest\":75.77077117649453,\"importance\":\"xuknsykdtoi\",\"queryExecutionTimeout\":1554888273},\"id\":\"ncdrcoanvxuldx\",\"name\":\"nck\",\"type\":\"nlb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkloadGroup response = manager.sqlPoolWorkloadGroups()
+            .getWithResponse("gzrujlqc", "ny", "lleiq", "cbgvsbt", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkloadGroup response =
-            manager
-                .sqlPoolWorkloadGroups()
-                .getWithResponse("zidgzwd", "damisvpztdi", "ykpxkqejt", "j", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(2137176136, response.minResourcePercent());
-        Assertions.assertEquals(1086346110, response.maxResourcePercent());
-        Assertions.assertEquals(46.161386887148105, response.minResourcePercentPerRequest());
-        Assertions.assertEquals(75.77077117649453D, response.maxResourcePercentPerRequest());
-        Assertions.assertEquals("xuknsykdtoi", response.importance());
-        Assertions.assertEquals(1554888273, response.queryExecutionTimeout());
+        Assertions.assertEquals(1518766637, response.minResourcePercent());
+        Assertions.assertEquals(1643198710, response.maxResourcePercent());
+        Assertions.assertEquals(18.202032298846227, response.minResourcePercentPerRequest());
+        Assertions.assertEquals(85.92328199984041D, response.maxResourcePercentPerRequest());
+        Assertions.assertEquals("uvjhxmnrqstjc", response.importance());
+        Assertions.assertEquals(1223754124, response.queryExecutionTimeout());
     }
 }

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** API Authentication Settings. */
+/**
+ * API Authentication Settings.
+ */
 @Fluent
-public final class AuthenticationSettingsContract {
+public final class AuthenticationSettingsContract implements JsonSerializable<AuthenticationSettingsContract> {
     /*
      * OAuth2 Authentication settings
      */
-    @JsonProperty(value = "oAuth2")
     private OAuth2AuthenticationSettingsContract oAuth2;
 
     /*
      * OpenID Connect Authentication Settings
      */
-    @JsonProperty(value = "openid")
     private OpenIdAuthenticationSettingsContract openid;
 
     /*
      * Collection of OAuth2 authentication settings included into this API.
      */
-    @JsonProperty(value = "oAuth2AuthenticationSettings")
     private List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings;
 
     /*
      * Collection of Open ID Connect authentication settings included into this API.
      */
-    @JsonProperty(value = "openidAuthenticationSettings")
     private List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings;
 
-    /** Creates an instance of AuthenticationSettingsContract class. */
+    /**
+     * Creates an instance of AuthenticationSettingsContract class.
+     */
     public AuthenticationSettingsContract() {
     }
 
     /**
      * Get the oAuth2 property: OAuth2 Authentication settings.
-     *
+     * 
      * @return the oAuth2 value.
      */
     public OAuth2AuthenticationSettingsContract oAuth2() {
@@ -50,7 +54,7 @@ public final class AuthenticationSettingsContract {
 
     /**
      * Set the oAuth2 property: OAuth2 Authentication settings.
-     *
+     * 
      * @param oAuth2 the oAuth2 value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
@@ -61,7 +65,7 @@ public final class AuthenticationSettingsContract {
 
     /**
      * Get the openid property: OpenID Connect Authentication Settings.
-     *
+     * 
      * @return the openid value.
      */
     public OpenIdAuthenticationSettingsContract openid() {
@@ -70,7 +74,7 @@ public final class AuthenticationSettingsContract {
 
     /**
      * Set the openid property: OpenID Connect Authentication Settings.
-     *
+     * 
      * @param openid the openid value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
@@ -82,7 +86,7 @@ public final class AuthenticationSettingsContract {
     /**
      * Get the oAuth2AuthenticationSettings property: Collection of OAuth2 authentication settings included into this
      * API.
-     *
+     * 
      * @return the oAuth2AuthenticationSettings value.
      */
     public List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings() {
@@ -92,12 +96,12 @@ public final class AuthenticationSettingsContract {
     /**
      * Set the oAuth2AuthenticationSettings property: Collection of OAuth2 authentication settings included into this
      * API.
-     *
+     * 
      * @param oAuth2AuthenticationSettings the oAuth2AuthenticationSettings value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
-    public AuthenticationSettingsContract withOAuth2AuthenticationSettings(
-        List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings) {
+    public AuthenticationSettingsContract
+        withOAuth2AuthenticationSettings(List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings) {
         this.oAuth2AuthenticationSettings = oAuth2AuthenticationSettings;
         return this;
     }
@@ -105,7 +109,7 @@ public final class AuthenticationSettingsContract {
     /**
      * Get the openidAuthenticationSettings property: Collection of Open ID Connect authentication settings included
      * into this API.
-     *
+     * 
      * @return the openidAuthenticationSettings value.
      */
     public List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings() {
@@ -115,19 +119,19 @@ public final class AuthenticationSettingsContract {
     /**
      * Set the openidAuthenticationSettings property: Collection of Open ID Connect authentication settings included
      * into this API.
-     *
+     * 
      * @param openidAuthenticationSettings the openidAuthenticationSettings value to set.
      * @return the AuthenticationSettingsContract object itself.
      */
-    public AuthenticationSettingsContract withOpenidAuthenticationSettings(
-        List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings) {
+    public AuthenticationSettingsContract
+        withOpenidAuthenticationSettings(List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings) {
         this.openidAuthenticationSettings = openidAuthenticationSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -143,5 +147,61 @@ public final class AuthenticationSettingsContract {
         if (openidAuthenticationSettings() != null) {
             openidAuthenticationSettings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("oAuth2", this.oAuth2);
+        jsonWriter.writeJsonField("openid", this.openid);
+        jsonWriter.writeArrayField("oAuth2AuthenticationSettings", this.oAuth2AuthenticationSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("openidAuthenticationSettings", this.openidAuthenticationSettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationSettingsContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationSettingsContract if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthenticationSettingsContract.
+     */
+    public static AuthenticationSettingsContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationSettingsContract deserializedAuthenticationSettingsContract
+                = new AuthenticationSettingsContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oAuth2".equals(fieldName)) {
+                    deserializedAuthenticationSettingsContract.oAuth2
+                        = OAuth2AuthenticationSettingsContract.fromJson(reader);
+                } else if ("openid".equals(fieldName)) {
+                    deserializedAuthenticationSettingsContract.openid
+                        = OpenIdAuthenticationSettingsContract.fromJson(reader);
+                } else if ("oAuth2AuthenticationSettings".equals(fieldName)) {
+                    List<OAuth2AuthenticationSettingsContract> oAuth2AuthenticationSettings
+                        = reader.readArray(reader1 -> OAuth2AuthenticationSettingsContract.fromJson(reader1));
+                    deserializedAuthenticationSettingsContract.oAuth2AuthenticationSettings
+                        = oAuth2AuthenticationSettings;
+                } else if ("openidAuthenticationSettings".equals(fieldName)) {
+                    List<OpenIdAuthenticationSettingsContract> openidAuthenticationSettings
+                        = reader.readArray(reader1 -> OpenIdAuthenticationSettingsContract.fromJson(reader1));
+                    deserializedAuthenticationSettingsContract.openidAuthenticationSettings
+                        = openidAuthenticationSettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationSettingsContract;
+        });
     }
 }

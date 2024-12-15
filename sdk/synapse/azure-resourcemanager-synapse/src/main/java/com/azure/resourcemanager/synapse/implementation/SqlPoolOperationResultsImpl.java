@@ -18,16 +18,16 @@ public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResult
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolOperationResultsImpl(
-        SqlPoolOperationResultsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolOperationResultsImpl(SqlPoolOperationResultsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        SqlPoolInner inner =
-            this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
+    public SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId) {
+        SqlPoolInner inner
+            = this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
         if (inner != null) {
             return new SqlPoolImpl(inner, this.manager());
         } else {
@@ -35,12 +35,10 @@ public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResult
         }
     }
 
-    public SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
-        SqlPoolInner inner =
-            this
-                .serviceClient()
-                .getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
+    public SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context) {
+        SqlPoolInner inner = this.serviceClient()
+            .getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
         if (inner != null) {
             return new SqlPoolImpl(inner, this.manager());
         } else {

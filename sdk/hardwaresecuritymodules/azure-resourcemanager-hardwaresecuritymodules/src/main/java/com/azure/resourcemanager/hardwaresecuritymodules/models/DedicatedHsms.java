@@ -15,8 +15,8 @@ public interface DedicatedHsms {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
-     * @param name The name of the dedicated HSM to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
@@ -27,8 +27,8 @@ public interface DedicatedHsms {
     /**
      * Deletes the specified Azure Dedicated HSM.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
-     * @param name The name of the dedicated HSM to delete.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
@@ -40,8 +40,8 @@ public interface DedicatedHsms {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
@@ -54,8 +54,8 @@ public interface DedicatedHsms {
     /**
      * Gets the specified Azure dedicated HSM.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
@@ -68,7 +68,7 @@ public interface DedicatedHsms {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
@@ -81,7 +81,7 @@ public interface DedicatedHsms {
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,8 +122,8 @@ public interface DedicatedHsms {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
      * by server.
@@ -141,8 +141,8 @@ public interface DedicatedHsms {
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
      * 
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the dedicated Hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected

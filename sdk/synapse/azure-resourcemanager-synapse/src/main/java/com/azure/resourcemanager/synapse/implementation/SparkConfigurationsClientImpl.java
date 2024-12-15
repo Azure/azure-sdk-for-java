@@ -25,22 +25,28 @@ import com.azure.resourcemanager.synapse.fluent.SparkConfigurationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SparkConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SparkConfigurationsClient.
+ */
 public final class SparkConfigurationsClientImpl implements SparkConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SparkConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SparkConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SparkConfigurationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SparkConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SparkConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,60 +57,49 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SparkConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sparkconfigurations/{sparkConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sparkconfigurations/{sparkConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SparkConfigurationResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SparkConfigurationResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sparkConfigurationName") String sparkConfigurationName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("workspaceName") String workspaceName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sparkConfiguration by name in a workspace along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return sparkConfiguration by name in a workspace along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SparkConfigurationResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
+    private Mono<Response<SparkConfigurationResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String sparkConfigurationName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sparkConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sparkConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sparkConfigurationName is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -112,26 +107,16 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            sparkConfigurationName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, sparkConfigurationName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
@@ -139,32 +124,27 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sparkConfiguration by name in a workspace along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return sparkConfiguration by name in a workspace along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SparkConfigurationResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context) {
+    private Mono<Response<SparkConfigurationResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String sparkConfigurationName, String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sparkConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sparkConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sparkConfigurationName is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -172,23 +152,15 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                sparkConfigurationName,
-                workspaceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            sparkConfigurationName, workspaceName, accept, context);
     }
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
@@ -198,17 +170,17 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
      * @return sparkConfiguration by name in a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SparkConfigurationResourceInner> getAsync(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
+    private Mono<SparkConfigurationResourceInner> getAsync(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName) {
         return getWithResponseAsync(resourceGroupName, sparkConfigurationName, workspaceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
@@ -219,16 +191,16 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
      * @return sparkConfiguration by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkConfigurationResourceInner> getWithResponse(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context) {
+    public Response<SparkConfigurationResourceInner> getWithResponse(String resourceGroupName,
+        String sparkConfigurationName, String workspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, sparkConfigurationName, workspaceName, context).block();
     }
 
     /**
      * Get SparkConfiguration by name.
-     *
-     * <p>Get SparkConfiguration by name in a workspace.
-     *
+     * 
+     * Get SparkConfiguration by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sparkConfigurationName SparkConfiguration name.
      * @param workspaceName The name of the workspace.
@@ -238,8 +210,8 @@ public final class SparkConfigurationsClientImpl implements SparkConfigurationsC
      * @return sparkConfiguration by name in a workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkConfigurationResourceInner get(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
+    public SparkConfigurationResourceInner get(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName) {
         return getWithResponse(resourceGroupName, sparkConfigurationName, workspaceName, Context.NONE).getValue();
     }
 }

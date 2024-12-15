@@ -14,9 +14,6 @@ import java.util.Collections;
  */
 @Fluent
 public class ClientOptions {
-    private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH
-        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     // ClientOptions is a commonly used class, use a static logger.
@@ -64,20 +61,16 @@ public class ClientOptions {
      *
      * @param applicationId The application ID.
      * @return The updated ClientOptions object.
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
-     * length.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces.
      */
     public ClientOptions setApplicationId(String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
-            } else if (applicationId.contains(" ")) {
+            if (applicationId.contains(" ")) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 
         this.applicationId = applicationId;
-
         return this;
     }
 

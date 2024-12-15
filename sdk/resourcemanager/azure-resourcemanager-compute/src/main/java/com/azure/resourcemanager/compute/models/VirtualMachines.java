@@ -22,16 +22,10 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to virtual machine management API. */
 public interface VirtualMachines
-    extends SupportsListing<VirtualMachine>,
-        SupportsListingByResourceGroup<VirtualMachine>,
-        SupportsGettingByResourceGroup<VirtualMachine>,
-        SupportsGettingById<VirtualMachine>,
-        SupportsCreating<VirtualMachine.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<VirtualMachine>,
-        SupportsBatchDeletion,
-        HasManager<ComputeManager> {
+    extends SupportsListing<VirtualMachine>, SupportsListingByResourceGroup<VirtualMachine>,
+    SupportsGettingByResourceGroup<VirtualMachine>, SupportsGettingById<VirtualMachine>,
+    SupportsCreating<VirtualMachine.DefinitionStages.Blank>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<VirtualMachine>, SupportsBatchDeletion, HasManager<ComputeManager> {
 
     /** @return available virtual machine sizes */
     VirtualMachineSizes sizes();
@@ -180,8 +174,8 @@ public interface VirtualMachines
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return a representation of the deferred computation of this call
      */
-    Mono<String> captureAsync(
-        String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
+    Mono<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix,
+        boolean overwriteVhd);
 
     /**
      * Migrates the virtual machine with unmanaged disks to use managed disks.
@@ -209,8 +203,8 @@ public interface VirtualMachines
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScript(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine asynchronously.
@@ -221,8 +215,8 @@ public interface VirtualMachines
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptAsync(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptAsync(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine.
@@ -233,8 +227,8 @@ public interface VirtualMachines
      * @param scriptParameters script parameters
      * @return result of shell script execution
      */
-    RunCommandResult runShellScript(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runShellScript(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine asynchronously.
@@ -245,8 +239,8 @@ public interface VirtualMachines
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptAsync(
-        String groupName, String name, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptAsync(String groupName, String name, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in a virtual machine.

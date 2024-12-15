@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A class that contains database statistics information. */
+/**
+ * A class that contains database statistics information.
+ */
 @Fluent
-public final class DatabaseStatistics {
+public final class DatabaseStatistics implements JsonSerializable<DatabaseStatistics> {
     /*
      * The database size - the total size of compressed data and index in bytes.
      */
-    @JsonProperty(value = "size")
     private Float size;
 
-    /** Creates an instance of DatabaseStatistics class. */
+    /**
+     * Creates an instance of DatabaseStatistics class.
+     */
     public DatabaseStatistics() {
     }
 
     /**
      * Get the size property: The database size - the total size of compressed data and index in bytes.
-     *
+     * 
      * @return the size value.
      */
     public Float size() {
@@ -31,7 +38,7 @@ public final class DatabaseStatistics {
 
     /**
      * Set the size property: The database size - the total size of compressed data and index in bytes.
-     *
+     * 
      * @param size the size value to set.
      * @return the DatabaseStatistics object itself.
      */
@@ -42,9 +49,45 @@ public final class DatabaseStatistics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("size", this.size);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseStatistics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseStatistics if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseStatistics.
+     */
+    public static DatabaseStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseStatistics deserializedDatabaseStatistics = new DatabaseStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedDatabaseStatistics.size = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseStatistics;
+        });
     }
 }

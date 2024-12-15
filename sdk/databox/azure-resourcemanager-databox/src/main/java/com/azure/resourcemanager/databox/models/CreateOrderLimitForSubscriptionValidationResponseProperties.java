@@ -5,28 +5,50 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of create order limit for subscription validation response. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidateCreateOrderLimit")
+/**
+ * Properties of create order limit for subscription validation response.
+ */
 @Immutable
 public final class CreateOrderLimitForSubscriptionValidationResponseProperties extends ValidationInputResponse {
     /*
+     * Identifies the type of validation response.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_CREATE_ORDER_LIMIT;
+
+    /*
      * Create order limit validation status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
 
-    /** Creates an instance of CreateOrderLimitForSubscriptionValidationResponseProperties class. */
+    /*
+     * Error code and message of validation response.
+     */
+    private CloudError error;
+
+    /**
+     * Creates an instance of CreateOrderLimitForSubscriptionValidationResponseProperties class.
+     */
     public CreateOrderLimitForSubscriptionValidationResponseProperties() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation response.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the status property: Create order limit validation status.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -34,12 +56,71 @@ public final class CreateOrderLimitForSubscriptionValidationResponseProperties e
     }
 
     /**
+     * Get the error property: Error code and message of validation response.
+     * 
+     * @return the error value.
+     */
+    @Override
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrderLimitForSubscriptionValidationResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrderLimitForSubscriptionValidationResponseProperties if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * CreateOrderLimitForSubscriptionValidationResponseProperties.
+     */
+    public static CreateOrderLimitForSubscriptionValidationResponseProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrderLimitForSubscriptionValidationResponseProperties deserializedCreateOrderLimitForSubscriptionValidationResponseProperties
+                = new CreateOrderLimitForSubscriptionValidationResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedCreateOrderLimitForSubscriptionValidationResponseProperties.error
+                        = CloudError.fromJson(reader);
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedCreateOrderLimitForSubscriptionValidationResponseProperties.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedCreateOrderLimitForSubscriptionValidationResponseProperties.status
+                        = ValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrderLimitForSubscriptionValidationResponseProperties;
+        });
     }
 }

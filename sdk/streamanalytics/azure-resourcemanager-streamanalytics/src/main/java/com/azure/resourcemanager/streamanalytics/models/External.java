@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage account where the custom code artifacts are located.
  */
 @Fluent
-public final class External {
+public final class External implements JsonSerializable<External> {
     /*
      * The properties that are associated with an Azure Storage account
      */
-    @JsonProperty(value = "storageAccount")
     private StorageAccount storageAccount;
 
     /*
      * The UserCustomCode container.
      */
-    @JsonProperty(value = "container")
     private String container;
 
     /*
      * The UserCustomCode path.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The refresh parameters for any/all updatable user defined functions present in the job config.
      */
-    @JsonProperty(value = "refreshConfiguration")
     private RefreshConfiguration refreshConfiguration;
 
     /**
@@ -136,5 +136,50 @@ public final class External {
         if (refreshConfiguration() != null) {
             refreshConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageAccount", this.storageAccount);
+        jsonWriter.writeStringField("container", this.container);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeJsonField("refreshConfiguration", this.refreshConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of External from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of External if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the External.
+     */
+    public static External fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            External deserializedExternal = new External();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccount".equals(fieldName)) {
+                    deserializedExternal.storageAccount = StorageAccount.fromJson(reader);
+                } else if ("container".equals(fieldName)) {
+                    deserializedExternal.container = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedExternal.path = reader.getString();
+                } else if ("refreshConfiguration".equals(fieldName)) {
+                    deserializedExternal.refreshConfiguration = RefreshConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternal;
+        });
     }
 }

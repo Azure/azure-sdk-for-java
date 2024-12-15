@@ -43,8 +43,8 @@ public class AvroBooleanSchema extends AvroSimpleSchema {
         } else if (b == (byte) 1) {
             this.result = true;
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(
-                "Expected byte %b to be a boolean value.", b)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(String.format("Expected byte %b to be a boolean value.", b)));
         }
         this.done = true;
     }

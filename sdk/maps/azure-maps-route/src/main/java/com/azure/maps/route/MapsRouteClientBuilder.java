@@ -76,10 +76,9 @@ import java.util.Objects;
  * <!-- end com.azure.maps.route.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { MapsRouteClient.class, MapsRouteAsyncClient.class })
-public final class MapsRouteClientBuilder
-    implements AzureKeyCredentialTrait<MapsRouteClientBuilder>, TokenCredentialTrait<MapsRouteClientBuilder>,
-    HttpTrait<MapsRouteClientBuilder>, ConfigurationTrait<MapsRouteClientBuilder>,
-    EndpointTrait<MapsRouteClientBuilder> {
+public final class MapsRouteClientBuilder implements AzureKeyCredentialTrait<MapsRouteClientBuilder>,
+    TokenCredentialTrait<MapsRouteClientBuilder>, HttpTrait<MapsRouteClientBuilder>,
+    ConfigurationTrait<MapsRouteClientBuilder>, EndpointTrait<MapsRouteClientBuilder> {
 
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
@@ -317,9 +316,8 @@ public final class MapsRouteClientBuilder
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }

@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.AzureBareMetalStorageInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response from the Get AzureBareMetalStorageInstances operation. */
+/**
+ * The response from the Get AzureBareMetalStorageInstances operation.
+ */
 @Fluent
-public final class AzureBareMetalStorageInstancesListResult {
+public final class AzureBareMetalStorageInstancesListResult
+    implements JsonSerializable<AzureBareMetalStorageInstancesListResult> {
     /*
      * The list of AzureBareMetalStorage instances.
      */
-    @JsonProperty(value = "value")
     private List<AzureBareMetalStorageInstanceInner> value;
 
     /*
      * The URL to get the next set of AzureBareMetalStorage instances.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AzureBareMetalStorageInstancesListResult class. */
+    /**
+     * Creates an instance of AzureBareMetalStorageInstancesListResult class.
+     */
     public AzureBareMetalStorageInstancesListResult() {
     }
 
     /**
      * Get the value property: The list of AzureBareMetalStorage instances.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureBareMetalStorageInstanceInner> value() {
@@ -39,7 +46,7 @@ public final class AzureBareMetalStorageInstancesListResult {
 
     /**
      * Set the value property: The list of AzureBareMetalStorage instances.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureBareMetalStorageInstancesListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class AzureBareMetalStorageInstancesListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of AzureBareMetalStorage instances.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class AzureBareMetalStorageInstancesListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of AzureBareMetalStorage instances.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AzureBareMetalStorageInstancesListResult object itself.
      */
@@ -70,12 +77,54 @@ public final class AzureBareMetalStorageInstancesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBareMetalStorageInstancesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBareMetalStorageInstancesListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBareMetalStorageInstancesListResult.
+     */
+    public static AzureBareMetalStorageInstancesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBareMetalStorageInstancesListResult deserializedAzureBareMetalStorageInstancesListResult
+                = new AzureBareMetalStorageInstancesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AzureBareMetalStorageInstanceInner> value
+                        = reader.readArray(reader1 -> AzureBareMetalStorageInstanceInner.fromJson(reader1));
+                    deserializedAzureBareMetalStorageInstancesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAzureBareMetalStorageInstancesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBareMetalStorageInstancesListResult;
+        });
     }
 }

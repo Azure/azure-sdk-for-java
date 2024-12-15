@@ -10,9 +10,8 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolSchemaInner;
 public final class SqlPoolSchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolSchemaInner model =
-            BinaryData
-                .fromString("{\"id\":\"wfsdjpvkvpbj\",\"name\":\"bkzbzkd\",\"type\":\"ncj\"}")
+        SqlPoolSchemaInner model
+            = BinaryData.fromString("{\"id\":\"kpj\",\"name\":\"qqmtedltmmji\",\"type\":\"yeozphvwauyqncy\"}")
                 .toObject(SqlPoolSchemaInner.class);
     }
 

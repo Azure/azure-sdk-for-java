@@ -112,8 +112,8 @@ public final class MediaStreamingConfigurationInternal
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationInternal setAudioChannelType(
-        MediaStreamingAudioChannelTypeInternal audioChannelType) {
+    public MediaStreamingConfigurationInternal
+        setAudioChannelType(MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
     }
@@ -151,8 +151,8 @@ public final class MediaStreamingConfigurationInternal
                 } else if ("contentType".equals(fieldName)) {
                     configuration.contentType = MediaStreamingContentTypeInternal.fromString(reader.getString());
                 } else if ("audioChannelType".equals(fieldName)) {
-                    configuration.audioChannelType = MediaStreamingAudioChannelTypeInternal.fromString(
-                        reader.getString());
+                    configuration.audioChannelType
+                        = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

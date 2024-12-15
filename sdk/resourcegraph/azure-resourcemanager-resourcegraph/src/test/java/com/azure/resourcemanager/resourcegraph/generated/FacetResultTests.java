@@ -7,28 +7,27 @@ package com.azure.resourcemanager.resourcegraph.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcegraph.models.FacetResult;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FacetResultTests {
-    @Test
-    public void testDeserialize() {
-        FacetResult model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"FacetResult\",\"totalRecords\":8819753813869121711,\"count\":1725970823,\"expression\":\"qnjaqwix\"}")
-                .toObject(FacetResult.class);
-        Assertions.assertEquals("qnjaqwix", model.expression());
-        Assertions.assertEquals(8819753813869121711L, model.totalRecords());
-        Assertions.assertEquals(1725970823, model.count());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FacetResult model = BinaryData.fromString(
+            "{\"resultType\":\"FacetResult\",\"totalRecords\":6646325726173395137,\"count\":194894857,\"data\":\"datawzjeiach\",\"expression\":\"oosflnr\"}")
+            .toObject(FacetResult.class);
+        Assertions.assertEquals("oosflnr", model.expression());
+        Assertions.assertEquals(6646325726173395137L, model.totalRecords());
+        Assertions.assertEquals(194894857, model.count());
     }
 
-    @Test
-    public void testSerialize() {
-        FacetResult model =
-            new FacetResult().withExpression("qnjaqwix").withTotalRecords(8819753813869121711L).withCount(1725970823);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FacetResult model = new FacetResult().withExpression("oosflnr")
+            .withTotalRecords(6646325726173395137L)
+            .withCount(194894857)
+            .withData("datawzjeiach");
         model = BinaryData.fromObject(model).toObject(FacetResult.class);
-        Assertions.assertEquals("qnjaqwix", model.expression());
-        Assertions.assertEquals(8819753813869121711L, model.totalRecords());
-        Assertions.assertEquals(1725970823, model.count());
+        Assertions.assertEquals("oosflnr", model.expression());
+        Assertions.assertEquals(6646325726173395137L, model.totalRecords());
+        Assertions.assertEquals(194894857, model.count());
     }
 }

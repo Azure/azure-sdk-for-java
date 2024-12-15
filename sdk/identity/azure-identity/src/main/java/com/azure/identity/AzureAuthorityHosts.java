@@ -14,7 +14,8 @@ package com.azure.identity;
  */
 public final class AzureAuthorityHosts {
 
-    private AzureAuthorityHosts() { }
+    private AzureAuthorityHosts() {
+    }
 
     /**
      * The host of the Microsoft Entra authority for tenants in the Azure Public Cloud.
@@ -39,17 +40,20 @@ public final class AzureAuthorityHosts {
      */
     public static final String AZURE_GOVERNMENT = "https://login.microsoftonline.us/";
 
-
     static String getDefaultScope(String authorityHost) {
         switch (authorityHost) {
             case AZURE_PUBLIC_CLOUD:
                 return "https://management.core.windows.net//.default";
+
             case AZURE_CHINA:
                 return "https://management.core.chinacloudapi.cn//.default";
+
             case AZURE_GERMANY:
                 return "https://management.core.cloudapi.de//.default";
+
             case AZURE_GOVERNMENT:
                 return "https://management.core.usgovcloudapi.net//.default";
+
             default:
                 return null;
         }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An output event timestamp.
  */
 @Fluent
-public final class LastOutputEventTimestamp {
+public final class LastOutputEventTimestamp implements JsonSerializable<LastOutputEventTimestamp> {
     /*
      * The last output event time.
      */
-    @JsonProperty(value = "lastOutputEventTime")
     private String lastOutputEventTime;
 
     /*
      * The time that the last update happened.
      */
-    @JsonProperty(value = "lastUpdateTime")
     private String lastUpdateTime;
 
     /**
@@ -76,5 +78,44 @@ public final class LastOutputEventTimestamp {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastOutputEventTime", this.lastOutputEventTime);
+        jsonWriter.writeStringField("lastUpdateTime", this.lastUpdateTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LastOutputEventTimestamp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LastOutputEventTimestamp if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LastOutputEventTimestamp.
+     */
+    public static LastOutputEventTimestamp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LastOutputEventTimestamp deserializedLastOutputEventTimestamp = new LastOutputEventTimestamp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastOutputEventTime".equals(fieldName)) {
+                    deserializedLastOutputEventTimestamp.lastOutputEventTime = reader.getString();
+                } else if ("lastUpdateTime".equals(fieldName)) {
+                    deserializedLastOutputEventTimestamp.lastUpdateTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLastOutputEventTimestamp;
+        });
     }
 }

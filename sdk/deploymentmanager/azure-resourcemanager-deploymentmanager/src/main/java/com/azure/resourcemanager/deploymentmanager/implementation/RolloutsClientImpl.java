@@ -61,97 +61,69 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureDeploymentManag")
     public interface RolloutsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts/{rolloutName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts/{rolloutName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rolloutName") String rolloutName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rolloutName") String rolloutName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RolloutRequestInner rolloutRequest,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RolloutRequestInner rolloutRequest, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts/{rolloutName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts/{rolloutName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RolloutInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RolloutInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("retryAttempt") Integer retryAttempt,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("retryAttempt") Integer retryAttempt,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts/{rolloutName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts/{rolloutName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts/{rolloutName}/cancel")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts/{rolloutName}/cancel")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RolloutInner>> cancel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RolloutInner>> cancel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts/{rolloutName}/restart")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts/{rolloutName}/restart")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RolloutInner>> restart(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RolloutInner>> restart(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("rolloutName") String rolloutName,
-            @QueryParam("skipSucceeded") Boolean skipSucceeded,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("rolloutName") String rolloutName,
+            @QueryParam("skipSucceeded") Boolean skipSucceeded, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/rollouts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/rollouts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<RolloutInner>>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<RolloutInner>>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -170,19 +142,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String rolloutName, RolloutRequestInner rolloutRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,18 +164,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            rolloutRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, rolloutName, this.client.getApiVersion(), rolloutRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -228,19 +186,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,16 +208,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rolloutName,
-                this.client.getApiVersion(),
-                rolloutRequest,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            rolloutName, this.client.getApiVersion(), rolloutRequest, accept, context);
     }
 
     /**
@@ -281,18 +227,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return the {@link PollerFlux} for polling of defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest);
-        return this
-            .client
-            .<RolloutRequestInner, RolloutRequestInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RolloutRequestInner.class,
-                RolloutRequestInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest);
+        return this.client.<RolloutRequestInner, RolloutRequestInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RolloutRequestInner.class, RolloutRequestInner.class, this.client.getContext());
     }
 
     /**
@@ -309,19 +249,13 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return the {@link PollerFlux} for polling of defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String rolloutName) {
+    private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String rolloutName) {
         final RolloutRequestInner rolloutRequest = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest);
-        return this
-            .client
-            .<RolloutRequestInner, RolloutRequestInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RolloutRequestInner.class,
-                RolloutRequestInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest);
+        return this.client.<RolloutRequestInner, RolloutRequestInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RolloutRequestInner.class, RolloutRequestInner.class, this.client.getContext());
     }
 
     /**
@@ -343,12 +277,10 @@ public final class RolloutsClientImpl implements RolloutsClient {
     private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest, context);
-        return this
-            .client
-            .<RolloutRequestInner, RolloutRequestInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RolloutRequestInner.class, RolloutRequestInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, rolloutName, rolloutRequest, context);
+        return this.client.<RolloutRequestInner, RolloutRequestInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RolloutRequestInner.class, RolloutRequestInner.class, context);
     }
 
     /**
@@ -365,8 +297,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return the {@link SyncPoller} for polling of defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
-        String resourceGroupName, String rolloutName) {
+    public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner>
+        beginCreateOrUpdate(String resourceGroupName, String rolloutName) {
         final RolloutRequestInner rolloutRequest = null;
         return this.beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest).getSyncPoller();
     }
@@ -407,10 +339,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the PUT rollout request body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RolloutRequestInner> createOrUpdateAsync(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
-        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest)
-            .last()
+    private Mono<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName,
+        RolloutRequestInner rolloutRequest) {
+        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -430,8 +361,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName) {
         final RolloutRequestInner rolloutRequest = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -451,10 +381,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the PUT rollout request body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RolloutRequestInner> createOrUpdateAsync(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest, context)
-            .last()
+    private Mono<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName,
+        RolloutRequestInner rolloutRequest, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -493,8 +422,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the PUT rollout request body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RolloutRequestInner createOrUpdate(
-        String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
+    public RolloutRequestInner createOrUpdate(String resourceGroupName, String rolloutName,
+        RolloutRequestInner rolloutRequest, Context context) {
         return createOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest, context).block();
     }
 
@@ -511,19 +440,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return detailed information of a rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String rolloutName, Integer retryAttempt) {
+    private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String rolloutName, Integer retryAttempt) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,17 +460,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            retryAttempt,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, rolloutName, this.client.getApiVersion(), retryAttempt, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -563,19 +479,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return detailed information of a rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String rolloutName, Integer retryAttempt, Context context) {
+    private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String rolloutName, Integer retryAttempt, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -586,16 +498,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rolloutName,
-                this.client.getApiVersion(),
-                retryAttempt,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            rolloutName, this.client.getApiVersion(), retryAttempt, accept, context);
     }
 
     /**
@@ -629,8 +533,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return detailed information of a rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RolloutInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String rolloutName, Integer retryAttempt, Context context) {
+    public Response<RolloutInner> getByResourceGroupWithResponse(String resourceGroupName, String rolloutName,
+        Integer retryAttempt, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, rolloutName, retryAttempt, context).block();
     }
 
@@ -665,16 +569,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String rolloutName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -685,17 +585,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, rolloutName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -713,19 +604,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String rolloutName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String rolloutName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -736,15 +623,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rolloutName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            rolloutName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -813,16 +693,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> cancelWithResponseAsync(String resourceGroupName, String rolloutName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -833,17 +709,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rolloutName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, rolloutName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -861,19 +728,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RolloutInner>> cancelWithResponseAsync(
-        String resourceGroupName, String rolloutName, Context context) {
+    private Mono<Response<RolloutInner>> cancelWithResponseAsync(String resourceGroupName, String rolloutName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -884,15 +747,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rolloutName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            rolloutName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -963,19 +819,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RolloutInner>> restartWithResponseAsync(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded) {
+    private Mono<Response<RolloutInner>> restartWithResponseAsync(String resourceGroupName, String rolloutName,
+        Boolean skipSucceeded) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -986,18 +838,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            rolloutName,
-                            skipSucceeded,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, rolloutName, skipSucceeded, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1018,19 +860,15 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RolloutInner>> restartWithResponseAsync(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context) {
+    private Mono<Response<RolloutInner>> restartWithResponseAsync(String resourceGroupName, String rolloutName,
+        Boolean skipSucceeded, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1041,16 +879,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                rolloutName,
-                skipSucceeded,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            rolloutName, skipSucceeded, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1089,8 +919,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @return defines the rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RolloutInner> restartWithResponse(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context) {
+    public Response<RolloutInner> restartWithResponse(String resourceGroupName, String rolloutName,
+        Boolean skipSucceeded, Context context) {
         return restartWithResponseAsync(resourceGroupName, rolloutName, skipSucceeded, context).block();
     }
 
@@ -1124,16 +954,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<RolloutInner>>> listWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1141,16 +967,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1167,16 +985,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<RolloutInner>>> listWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1184,14 +998,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

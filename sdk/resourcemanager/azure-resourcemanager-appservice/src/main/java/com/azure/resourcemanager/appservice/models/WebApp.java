@@ -18,10 +18,9 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App. */
 @Fluent
-public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface WebApp
+    extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update>, SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection {
 
     /** @return the entry point to deployment slot management API under the web app */
     DeploymentSlots deploymentSlots();
@@ -107,15 +106,10 @@ public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Upda
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.NewAppServicePlanWithGroup,
-            DefinitionStages.WithNewAppServicePlan,
-            DefinitionStages.WithLinuxAppFramework,
-            DefinitionStages.WithCredentials,
-            DefinitionStages.WithStartUpCommand,
-            DefinitionStages.WithWindowsAppFramework,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.NewAppServicePlanWithGroup,
+        DefinitionStages.WithNewAppServicePlan, DefinitionStages.WithLinuxAppFramework,
+        DefinitionStages.WithCredentials, DefinitionStages.WithStartUpCommand, DefinitionStages.WithWindowsAppFramework,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the web app definition stages. */
@@ -526,12 +520,7 @@ public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Upda
     }
 
     /** The template for a web app update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<WebApp>,
-            UpdateStages.WithAppServicePlan,
-            UpdateStages.WithContainerImage,
-            UpdateStages.WithWindowsRuntimeStack,
-            UpdateStages.WithLinuxAppImage,
-            WebAppBase.Update<WebApp> {
+    interface Update extends Appliable<WebApp>, UpdateStages.WithAppServicePlan, UpdateStages.WithContainerImage,
+        UpdateStages.WithWindowsRuntimeStack, UpdateStages.WithLinuxAppImage, WebAppBase.Update<WebApp> {
     }
 }

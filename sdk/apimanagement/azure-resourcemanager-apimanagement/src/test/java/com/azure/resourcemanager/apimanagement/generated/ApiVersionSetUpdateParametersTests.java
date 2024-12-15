@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionSetUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionSetUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"a\",\"versioningScheme\":\"Query\",\"description\":\"qcahyhxal\",\"versionQueryName\":\"xawoijpodtblxp\",\"versionHeaderName\":\"wjdjodqhykin\"}}")
-                .toObject(ApiVersionSetUpdateParameters.class);
+        ApiVersionSetUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"a\",\"versioningScheme\":\"Query\",\"description\":\"qcahyhxal\",\"versionQueryName\":\"xawoijpodtblxp\",\"versionHeaderName\":\"wjdjodqhykin\"}}")
+            .toObject(ApiVersionSetUpdateParameters.class);
         Assertions.assertEquals("a", model.displayName());
         Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());
         Assertions.assertEquals("qcahyhxal", model.description());
@@ -26,13 +24,11 @@ public final class ApiVersionSetUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetUpdateParameters model =
-            new ApiVersionSetUpdateParameters()
-                .withDisplayName("a")
-                .withVersioningScheme(VersioningScheme.QUERY)
-                .withDescription("qcahyhxal")
-                .withVersionQueryName("xawoijpodtblxp")
-                .withVersionHeaderName("wjdjodqhykin");
+        ApiVersionSetUpdateParameters model = new ApiVersionSetUpdateParameters().withDisplayName("a")
+            .withVersioningScheme(VersioningScheme.QUERY)
+            .withDescription("qcahyhxal")
+            .withVersionQueryName("xawoijpodtblxp")
+            .withVersionHeaderName("wjdjodqhykin");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetUpdateParameters.class);
         Assertions.assertEquals("a", model.displayName());
         Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());

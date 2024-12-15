@@ -5,29 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PostgreSqlOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes a PostgreSQL output data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.DBForPostgreSQL/servers/databases")
 @Fluent
 public final class PostgreSqlOutputDataSource extends OutputDataSource {
+    /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.DBForPostgreSQL/servers/databases";
+
     /*
      * The properties that are associated with a PostgreSQL output data source. Required on PUT (CreateOrReplace)
      * requests.
      */
-    @JsonProperty(value = "properties")
     private PostgreSqlOutputDataSourceProperties innerProperties;
 
     /**
      * Creates an instance of PostgreSqlOutputDataSource class.
      */
     public PostgreSqlOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -218,9 +232,48 @@ public final class PostgreSqlOutputDataSource extends OutputDataSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlOutputDataSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PostgreSqlOutputDataSource.
+     */
+    public static PostgreSqlOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlOutputDataSource deserializedPostgreSqlOutputDataSource = new PostgreSqlOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedPostgreSqlOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPostgreSqlOutputDataSource.innerProperties
+                        = PostgreSqlOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostgreSqlOutputDataSource;
+        });
     }
 }

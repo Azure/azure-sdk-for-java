@@ -44,12 +44,14 @@ public final class ReplicationPoliciesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Policy response = manager.replicationPolicies()
-            .getWithResponse("rs", "vvmrn", "rdijox", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rs", "vvmrn", "rdijox", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("sychdcjggcmpncj", response.properties().friendlyName());
         Assertions.assertEquals("bnoq", response.location());

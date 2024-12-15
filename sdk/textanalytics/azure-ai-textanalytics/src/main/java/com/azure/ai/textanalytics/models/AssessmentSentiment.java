@@ -19,8 +19,8 @@ public final class AssessmentSentiment {
     private int length;
 
     static {
-        AssessmentSentimentPropertiesHelper.setAccessor(
-            new AssessmentSentimentPropertiesHelper.AssessmentSentimentAccessor() {
+        AssessmentSentimentPropertiesHelper
+            .setAccessor(new AssessmentSentimentPropertiesHelper.AssessmentSentimentAccessor() {
                 @Override
                 public void setText(AssessmentSentiment assessmentSentiment, String text) {
                     assessmentSentiment.setText(text);

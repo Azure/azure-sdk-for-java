@@ -34,13 +34,11 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        healthcareApisManager = HealthcareApisManager
-            .configure()
+        healthcareApisManager = HealthcareApisManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -82,8 +77,13 @@ public class HealthcareApisManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), healthcareApisManager.workspaces().getById(workspace.id()).name());
-            Assertions.assertTrue(healthcareApisManager.workspaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(workspace.name(),
+                healthcareApisManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertTrue(healthcareApisManager.workspaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (workspace != null) {
                 healthcareApisManager.workspaces().deleteById(workspace.id());

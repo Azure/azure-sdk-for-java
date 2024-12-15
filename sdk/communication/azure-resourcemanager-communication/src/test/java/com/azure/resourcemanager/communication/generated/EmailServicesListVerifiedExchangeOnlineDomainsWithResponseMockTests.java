@@ -43,12 +43,14 @@ public final class EmailServicesListVerifiedExchangeOnlineDomainsWithResponseMoc
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         List<String> response = manager.emailServices()
-            .listVerifiedExchangeOnlineDomainsWithResponse(com.azure.core.util.Context.NONE).getValue();
+            .listVerifiedExchangeOnlineDomainsWithResponse(com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("olpsslqlf", response.get(0));
     }

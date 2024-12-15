@@ -21,22 +21,18 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public ExtendedSqlPoolBlobAuditingPoliciesImpl(
-        ExtendedSqlPoolBlobAuditingPoliciesClient innerClient,
+    public ExtendedSqlPoolBlobAuditingPoliciesImpl(ExtendedSqlPoolBlobAuditingPoliciesClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ExtendedSqlPoolBlobAuditingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        Response<ExtendedSqlPoolBlobAuditingPolicyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
+    public Response<ExtendedSqlPoolBlobAuditingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        Response<ExtendedSqlPoolBlobAuditingPolicyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExtendedSqlPoolBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -44,8 +40,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        ExtendedSqlPoolBlobAuditingPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
+        ExtendedSqlPoolBlobAuditingPolicyInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
         if (inner != null) {
             return new ExtendedSqlPoolBlobAuditingPolicyImpl(inner, this.manager());
         } else {
@@ -53,68 +49,56 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
         }
     }
 
-    public PagedIterable<ExtendedSqlPoolBlobAuditingPolicy> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> inner =
-            this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new ExtendedSqlPoolBlobAuditingPolicyImpl(inner1, this.manager()));
+    public PagedIterable<ExtendedSqlPoolBlobAuditingPolicy> listBySqlPool(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
+        PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> inner
+            = this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedSqlPoolBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ExtendedSqlPoolBlobAuditingPolicy> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> inner =
-            this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new ExtendedSqlPoolBlobAuditingPolicyImpl(inner1, this.manager()));
+    public PagedIterable<ExtendedSqlPoolBlobAuditingPolicy> listBySqlPool(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
+        PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> inner
+            = this.serviceClient().listBySqlPool(resourceGroupName, workspaceName, sqlPoolName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedSqlPoolBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
     }
 
     public Response<ExtendedSqlPoolBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
     }

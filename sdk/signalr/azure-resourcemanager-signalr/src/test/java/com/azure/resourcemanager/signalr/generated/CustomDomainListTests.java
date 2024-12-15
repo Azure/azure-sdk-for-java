@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomDomainListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomDomainList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"jw\",\"customCertificate\":{\"id\":\"wqiok\"}},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
-                .toObject(CustomDomainList.class);
+        CustomDomainList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"jw\",\"customCertificate\":{\"id\":\"wqiok\"}},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
+            .toObject(CustomDomainList.class);
         Assertions.assertEquals("jw", model.value().get(0).domainName());
         Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
         Assertions.assertEquals("dbsdshm", model.nextLink());
@@ -26,15 +24,9 @@ public final class CustomDomainListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDomainList model =
-            new CustomDomainList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CustomDomainInner()
-                                .withDomainName("jw")
-                                .withCustomCertificate(new ResourceReference().withId("wqiok"))))
-                .withNextLink("dbsdshm");
+        CustomDomainList model
+            = new CustomDomainList().withValue(Arrays.asList(new CustomDomainInner().withDomainName("jw")
+                .withCustomCertificate(new ResourceReference().withId("wqiok")))).withNextLink("dbsdshm");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
         Assertions.assertEquals("jw", model.value().get(0).domainName());
         Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());

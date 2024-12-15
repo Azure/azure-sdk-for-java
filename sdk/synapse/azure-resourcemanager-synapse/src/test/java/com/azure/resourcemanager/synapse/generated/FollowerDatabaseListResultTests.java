@@ -13,27 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class FollowerDatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FollowerDatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"clusterResourceId\":\"yqyybxubmdna\",\"attachedDatabaseConfigurationName\":\"cbq\",\"databaseName\":\"e\"}]}")
-                .toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("yqyybxubmdna", model.value().get(0).kustoPoolResourceId());
-        Assertions.assertEquals("cbq", model.value().get(0).attachedDatabaseConfigurationName());
+        FollowerDatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"clusterResourceId\":\"fwxudgnhg\",\"attachedDatabaseConfigurationName\":\"okrtalvnb\",\"databaseName\":\"pbeme\"}]}")
+            .toObject(FollowerDatabaseListResult.class);
+        Assertions.assertEquals("fwxudgnhg", model.value().get(0).kustoPoolResourceId());
+        Assertions.assertEquals("okrtalvnb", model.value().get(0).attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FollowerDatabaseListResult model =
-            new FollowerDatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FollowerDatabaseDefinitionInner()
-                                .withKustoPoolResourceId("yqyybxubmdna")
-                                .withAttachedDatabaseConfigurationName("cbq")));
+        FollowerDatabaseListResult model = new FollowerDatabaseListResult()
+            .withValue(Arrays.asList(new FollowerDatabaseDefinitionInner().withKustoPoolResourceId("fwxudgnhg")
+                .withAttachedDatabaseConfigurationName("okrtalvnb")));
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("yqyybxubmdna", model.value().get(0).kustoPoolResourceId());
-        Assertions.assertEquals("cbq", model.value().get(0).attachedDatabaseConfigurationName());
+        Assertions.assertEquals("fwxudgnhg", model.value().get(0).kustoPoolResourceId());
+        Assertions.assertEquals("okrtalvnb", model.value().get(0).attachedDatabaseConfigurationName());
     }
 }

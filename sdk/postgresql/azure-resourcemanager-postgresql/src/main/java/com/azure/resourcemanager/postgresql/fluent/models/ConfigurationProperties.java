@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties of a configuration. */
 @Fluent
 public final class ConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConfigurationProperties.class);
 
     /*
      * Value of the configuration.

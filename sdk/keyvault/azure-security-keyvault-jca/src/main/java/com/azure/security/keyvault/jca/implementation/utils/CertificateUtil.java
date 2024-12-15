@@ -32,9 +32,8 @@ public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
-    public static Certificate[] loadCertificatesFromSecretBundleValue(String string)
-        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException,
-        PKCSException {
+    public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
+        IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         if (string.contains(BEGIN_CERTIFICATE)) {
             return loadCertificatesFromSecretBundleValuePem(string);
         } else {
@@ -99,9 +98,19 @@ public final class CertificateUtil {
 
     public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
-        return factory.generateCertificates(inputStream).stream()
+        return factory.generateCertificates(inputStream)
+            .stream()
             .map(o -> (Certificate) o)
             .collect(Collectors.toList())
             .toArray(new Certificate[0]);
     }
+
+    public static String getCertificateNameFromCertificateItemId(String id) {
+        // Example id: https://mycertificates.vault.azure.net/certificates/mycert
+        // Here, vault name is mycertificates.
+        // Vault name must be a 3-24 character string, containing only 0-9, a-z, A-Z, and not consecutive -.
+        String keyWord = "/certificates/";
+        return id.substring(id.indexOf(keyWord) + keyWord.length());
+    }
+
 }

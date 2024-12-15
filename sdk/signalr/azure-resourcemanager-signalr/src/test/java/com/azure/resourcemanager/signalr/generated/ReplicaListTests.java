@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"zhezwwvaiq\",\"tier\":\"Free\",\"size\":\"fonkphhqyikvyla\",\"family\":\"avluwmncs\",\"capacity\":736005906},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"vpo\",\"resourceStopped\":\"rsg\"},\"location\":\"b\",\"tags\":{\"njdgkynscliq\":\"zq\",\"mtk\":\"zvhxnk\",\"ppnvdxz\":\"bo\",\"hlfkqojpy\":\"hihfrbbcevqagtlt\"},\"id\":\"vgtrdcnifmzzs\",\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"},{\"sku\":{\"name\":\"hocxvdfffwafqrou\",\"tier\":\"Basic\",\"size\":\"avehhrvkbunzo\",\"family\":\"dhcxgkmoy\",\"capacity\":1284986304},\"properties\":{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"hmfdnbzydvfvfcj\",\"resourceStopped\":\"eoisrvhmgor\"},\"location\":\"ukiscvwmzhw\",\"tags\":{\"btgn\":\"faxvxil\",\"zqlqhyc\":\"nzeyqxtjj\",\"mieknlraria\":\"vodggxdbee\"},\"id\":\"wiuagydwqf\",\"name\":\"ylyrfgiagtco\",\"type\":\"ocqwogfnzjvus\"}],\"nextLink\":\"ld\"}")
-                .toObject(ReplicaList.class);
+        ReplicaList model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"zhezwwvaiq\",\"tier\":\"Free\",\"size\":\"fonkphhqyikvyla\",\"family\":\"avluwmncs\",\"capacity\":736005906},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"vpo\",\"resourceStopped\":\"rsg\"},\"location\":\"b\",\"tags\":{\"njdgkynscliq\":\"zq\",\"mtk\":\"zvhxnk\",\"ppnvdxz\":\"bo\",\"hlfkqojpy\":\"hihfrbbcevqagtlt\"},\"id\":\"vgtrdcnifmzzs\",\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"},{\"sku\":{\"name\":\"hocxvdfffwafqrou\",\"tier\":\"Basic\",\"size\":\"avehhrvkbunzo\",\"family\":\"dhcxgkmoy\",\"capacity\":1284986304},\"properties\":{\"provisioningState\":\"Updating\",\"regionEndpointEnabled\":\"hmfdnbzydvfvfcj\",\"resourceStopped\":\"eoisrvhmgor\"},\"location\":\"ukiscvwmzhw\",\"tags\":{\"btgn\":\"faxvxil\",\"zqlqhyc\":\"nzeyqxtjj\",\"mieknlraria\":\"vodggxdbee\"},\"id\":\"wiuagydwqf\",\"name\":\"ylyrfgiagtco\",\"type\":\"ocqwogfnzjvus\"}],\"nextLink\":\"ld\"}")
+            .toObject(ReplicaList.class);
         Assertions.assertEquals("b", model.value().get(0).location());
         Assertions.assertEquals("zq", model.value().get(0).tags().get("njdgkynscliq"));
         Assertions.assertEquals("zhezwwvaiq", model.value().get(0).sku().name());
@@ -34,41 +32,21 @@ public final class ReplicaListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaList model =
-            new ReplicaList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ReplicaInner()
-                                .withLocation("b")
-                                .withTags(
-                                    mapOf(
-                                        "njdgkynscliq",
-                                        "zq",
-                                        "mtk",
-                                        "zvhxnk",
-                                        "ppnvdxz",
-                                        "bo",
-                                        "hlfkqojpy",
-                                        "hihfrbbcevqagtlt"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("zhezwwvaiq")
-                                        .withTier(SignalRSkuTier.FREE)
-                                        .withCapacity(736005906))
-                                .withRegionEndpointEnabled("vpo")
-                                .withResourceStopped("rsg"),
-                            new ReplicaInner()
-                                .withLocation("ukiscvwmzhw")
-                                .withTags(mapOf("btgn", "faxvxil", "zqlqhyc", "nzeyqxtjj", "mieknlraria", "vodggxdbee"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("hocxvdfffwafqrou")
-                                        .withTier(SignalRSkuTier.BASIC)
-                                        .withCapacity(1284986304))
-                                .withRegionEndpointEnabled("hmfdnbzydvfvfcj")
-                                .withResourceStopped("eoisrvhmgor")))
-                .withNextLink("ld");
+        ReplicaList model = new ReplicaList().withValue(Arrays.asList(
+            new ReplicaInner().withLocation("b")
+                .withTags(
+                    mapOf("njdgkynscliq", "zq", "mtk", "zvhxnk", "ppnvdxz", "bo", "hlfkqojpy", "hihfrbbcevqagtlt"))
+                .withSku(new ResourceSku().withName("zhezwwvaiq").withTier(SignalRSkuTier.FREE).withCapacity(736005906))
+                .withRegionEndpointEnabled("vpo")
+                .withResourceStopped("rsg"),
+            new ReplicaInner().withLocation("ukiscvwmzhw")
+                .withTags(mapOf("btgn", "faxvxil", "zqlqhyc", "nzeyqxtjj", "mieknlraria", "vodggxdbee"))
+                .withSku(new ResourceSku().withName("hocxvdfffwafqrou")
+                    .withTier(SignalRSkuTier.BASIC)
+                    .withCapacity(1284986304))
+                .withRegionEndpointEnabled("hmfdnbzydvfvfcj")
+                .withResourceStopped("eoisrvhmgor")))
+            .withNextLink("ld");
         model = BinaryData.fromObject(model).toObject(ReplicaList.class);
         Assertions.assertEquals("b", model.value().get(0).location());
         Assertions.assertEquals("zq", model.value().get(0).tags().get("njdgkynscliq"));

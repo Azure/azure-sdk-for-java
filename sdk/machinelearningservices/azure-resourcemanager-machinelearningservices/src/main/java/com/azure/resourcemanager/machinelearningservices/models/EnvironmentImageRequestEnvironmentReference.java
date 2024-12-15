@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The unique identifying details of the AZURE ML environment. */
 @Immutable
 public final class EnvironmentImageRequestEnvironmentReference extends EnvironmentReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentImageRequestEnvironmentReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnvironmentImageRequestEnvironmentReference.class);
 
     /** {@inheritDoc} */
     @Override

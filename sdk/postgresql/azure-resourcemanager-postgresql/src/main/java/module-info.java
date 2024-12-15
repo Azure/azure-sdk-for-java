@@ -10,10 +10,6 @@ module com.azure.resourcemanager.postgresql {
     exports com.azure.resourcemanager.postgresql.fluent.models;
     exports com.azure.resourcemanager.postgresql.models;
 
-    opens com.azure.resourcemanager.postgresql.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.postgresql.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.postgresql.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.postgresql.models to com.azure.core, com.fasterxml.jackson.databind;
 }

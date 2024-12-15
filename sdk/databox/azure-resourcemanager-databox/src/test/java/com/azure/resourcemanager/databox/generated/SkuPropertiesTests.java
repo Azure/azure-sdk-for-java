@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.fluent.models.SkuProperties;
 public final class SkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"ijggmebfsiar\",\"serviceLocation\":\"trcvpnazzmh\"},{\"dataLocation\":\"unmpxttd\",\"serviceLocation\":\"rbnlankxmyskp\"},{\"dataLocation\":\"enbtkcxywny\",\"serviceLocation\":\"rsyn\"}],\"capacity\":{\"usable\":\"dybyxczfclhaa\",\"maximum\":\"babphlwrqlfk\"},\"costs\":[{\"meterId\":\"sucocmnyyazttbtw\",\"meterType\":\"qpuedckzywbiex\",\"multiplier\":78.08101138922657}],\"apiVersions\":[\"axibxujw\",\"hqwa\"],\"disabledReason\":\"Region\",\"disabledReasonMessage\":\"yoxa\",\"requiredFeature\":\"dkzjancuxrh\",\"countriesWithinCommerceBoundary\":[\"avxbniwdjswztsdb\",\"gnxytxhpzxbz\",\"fzab\",\"lcuhxwtctyqiklb\"]}")
-                .toObject(SkuProperties.class);
+        SkuProperties model = BinaryData.fromString(
+            "{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"dhxujznbmpo\",\"serviceLocation\":\"wpr\"},{\"dataLocation\":\"lve\",\"serviceLocation\":\"lupj\"},{\"dataLocation\":\"hfxobbcswsrtj\",\"serviceLocation\":\"plrbpbewtghf\"}],\"capacity\":{\"usable\":\"c\",\"maximum\":\"xzvlvqhjkbegib\"},\"costs\":[{\"meterId\":\"iebwwaloayqcgwrt\",\"meterType\":\"uzgwyzmhtx\",\"multiplier\":98.57752142749447},{\"meterId\":\"savjcbpwxqps\",\"meterType\":\"nftguvriuhpr\",\"multiplier\":74.66600066006839}],\"apiVersions\":[\"qtayri\",\"wroyqbexrmcq\",\"bycnojvkn\"],\"disabledReason\":\"None\",\"disabledReasonMessage\":\"sgzvahapjyzhpv\",\"requiredFeature\":\"zcjrvxdjzlmwlx\",\"countriesWithinCommerceBoundary\":[\"gfhzovawjvzunlut\"]}")
+            .toObject(SkuProperties.class);
     }
 
     @org.junit.jupiter.api.Test

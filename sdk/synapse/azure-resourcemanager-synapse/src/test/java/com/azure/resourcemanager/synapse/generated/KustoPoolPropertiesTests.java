@@ -12,40 +12,35 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolProperties model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"Running\",\"provisioningState\":\"Moving\",\"uri\":\"mljdlrgmsplzga\",\"dataIngestionUri\":\"cshhv\",\"stateReason\":\"wgnxkympqanxrj\",\"optimizedAutoscale\":{\"version\":1472510277,\"isEnabled\":false,\"minimum\":1632181186,\"maximum\":781825712},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[{\"languageExtensionName\":\"R\"}]},\"workspaceUID\":\"hxcylhkgm\"}")
-                .toObject(KustoPoolProperties.class);
-        Assertions.assertEquals(1472510277, model.optimizedAutoscale().version());
-        Assertions.assertEquals(false, model.optimizedAutoscale().isEnabled());
-        Assertions.assertEquals(1632181186, model.optimizedAutoscale().minimum());
-        Assertions.assertEquals(781825712, model.optimizedAutoscale().maximum());
+        KustoPoolProperties model = BinaryData.fromString(
+            "{\"state\":\"Stopped\",\"provisioningState\":\"Running\",\"uri\":\"nnggiycwkdtaawxw\",\"dataIngestionUri\":\"ka\",\"stateReason\":\"rrqmbzmqk\",\"optimizedAutoscale\":{\"version\":294632549,\"isEnabled\":true,\"minimum\":1369142351,\"maximum\":1303745431},\"enableStreamingIngest\":false,\"enablePurge\":false,\"languageExtensions\":{\"value\":[{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"PYTHON\"}]},\"workspaceUID\":\"okdgoge\"}")
+            .toObject(KustoPoolProperties.class);
+        Assertions.assertEquals(294632549, model.optimizedAutoscale().version());
+        Assertions.assertEquals(true, model.optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1369142351, model.optimizedAutoscale().minimum());
+        Assertions.assertEquals(1303745431, model.optimizedAutoscale().maximum());
         Assertions.assertEquals(false, model.enableStreamingIngest());
-        Assertions.assertEquals(true, model.enablePurge());
-        Assertions.assertEquals("hxcylhkgm", model.workspaceUid());
+        Assertions.assertEquals(false, model.enablePurge());
+        Assertions.assertEquals("okdgoge", model.workspaceUid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolProperties model =
-            new KustoPoolProperties()
-                .withOptimizedAutoscale(
-                    new OptimizedAutoscale()
-                        .withVersion(1472510277)
-                        .withIsEnabled(false)
-                        .withMinimum(1632181186)
-                        .withMaximum(781825712))
-                .withEnableStreamingIngest(false)
-                .withEnablePurge(true)
-                .withWorkspaceUid("hxcylhkgm");
+        KustoPoolProperties model = new KustoPoolProperties()
+            .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(294632549)
+                .withIsEnabled(true)
+                .withMinimum(1369142351)
+                .withMaximum(1303745431))
+            .withEnableStreamingIngest(false)
+            .withEnablePurge(false)
+            .withWorkspaceUid("okdgoge");
         model = BinaryData.fromObject(model).toObject(KustoPoolProperties.class);
-        Assertions.assertEquals(1472510277, model.optimizedAutoscale().version());
-        Assertions.assertEquals(false, model.optimizedAutoscale().isEnabled());
-        Assertions.assertEquals(1632181186, model.optimizedAutoscale().minimum());
-        Assertions.assertEquals(781825712, model.optimizedAutoscale().maximum());
+        Assertions.assertEquals(294632549, model.optimizedAutoscale().version());
+        Assertions.assertEquals(true, model.optimizedAutoscale().isEnabled());
+        Assertions.assertEquals(1369142351, model.optimizedAutoscale().minimum());
+        Assertions.assertEquals(1303745431, model.optimizedAutoscale().maximum());
         Assertions.assertEquals(false, model.enableStreamingIngest());
-        Assertions.assertEquals(true, model.enablePurge());
-        Assertions.assertEquals("hxcylhkgm", model.workspaceUid());
+        Assertions.assertEquals(false, model.enablePurge());
+        Assertions.assertEquals("okdgoge", model.workspaceUid());
     }
 }

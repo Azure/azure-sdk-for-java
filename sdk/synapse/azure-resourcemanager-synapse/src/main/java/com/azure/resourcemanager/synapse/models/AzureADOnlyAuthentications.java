@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AzureADOnlyAuthentications. */
+/**
+ * Resource collection API of AzureADOnlyAuthentications.
+ */
 public interface AzureADOnlyAuthentications {
     /**
      * Get Azure Active Directory only authentication property
-     *
-     * <p>Gets a Azure Active Directory only authentication property.
-     *
+     * 
+     * Gets a Azure Active Directory only authentication property.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param azureADOnlyAuthenticationName name of the property.
@@ -24,17 +26,14 @@ public interface AzureADOnlyAuthentications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory only authentication property along with {@link Response}.
      */
-    Response<AzureADOnlyAuthentication> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        Context context);
+    Response<AzureADOnlyAuthentication> getWithResponse(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName, Context context);
 
     /**
      * Get Azure Active Directory only authentication property
-     *
-     * <p>Gets a Azure Active Directory only authentication property.
-     *
+     * 
+     * Gets a Azure Active Directory only authentication property.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param azureADOnlyAuthenticationName name of the property.
@@ -43,29 +42,29 @@ public interface AzureADOnlyAuthentications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory only authentication property.
      */
-    AzureADOnlyAuthentication get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
+    AzureADOnlyAuthentication get(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
 
     /**
      * Gets a list of Azure Active Directory only authentication property
-     *
-     * <p>Gets a list of Azure Active Directory only authentication property for a workspace.
-     *
+     * 
+     * Gets a list of Azure Active Directory only authentication property for a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName);
 
     /**
      * Gets a list of Azure Active Directory only authentication property
-     *
-     * <p>Gets a list of Azure Active Directory only authentication property for a workspace.
-     *
+     * 
+     * Gets a list of Azure Active Directory only authentication property for a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -73,15 +72,15 @@ public interface AzureADOnlyAuthentications {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Get Azure Active Directory only authentication property
-     *
-     * <p>Gets a Azure Active Directory only authentication property.
-     *
+     * 
+     * Gets a Azure Active Directory only authentication property.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,9 +91,9 @@ public interface AzureADOnlyAuthentications {
 
     /**
      * Get Azure Active Directory only authentication property
-     *
-     * <p>Gets a Azure Active Directory only authentication property.
-     *
+     * 
+     * Gets a Azure Active Directory only authentication property.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +105,7 @@ public interface AzureADOnlyAuthentications {
 
     /**
      * Begins definition for a new AzureADOnlyAuthentication resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AzureADOnlyAuthentication definition.
      */

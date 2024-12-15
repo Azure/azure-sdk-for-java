@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class BackupPolicyProperties implements JsonSerializable<BackupPolicyProperties> {
     /*
-     * Backup Policy GUID ID
+     * Backup Policy Resource ID
      */
     private String backupPolicyId;
 
@@ -65,7 +65,7 @@ public final class BackupPolicyProperties implements JsonSerializable<BackupPoli
     }
 
     /**
-     * Get the backupPolicyId property: Backup Policy GUID ID.
+     * Get the backupPolicyId property: Backup Policy Resource ID.
      * 
      * @return the backupPolicyId value.
      */

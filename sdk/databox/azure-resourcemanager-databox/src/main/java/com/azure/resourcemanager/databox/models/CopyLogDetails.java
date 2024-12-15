@@ -5,34 +5,110 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details for log generated during copy. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "copyLogDetailsType",
-    defaultImpl = CopyLogDetails.class)
-@JsonTypeName("CopyLogDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataBox", value = DataBoxAccountCopyLogDetails.class),
-    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskCopyLogDetails.class),
-    @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskCopyLogDetails.class),
-    @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyAccountCopyLogDetails.class)
-})
+/**
+ * Details for log generated during copy.
+ */
 @Immutable
-public class CopyLogDetails {
-    /** Creates an instance of CopyLogDetails class. */
+public class CopyLogDetails implements JsonSerializable<CopyLogDetails> {
+    /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator copyLogDetailsType = ClassDiscriminator.fromString("CopyLogDetails");
+
+    /**
+     * Creates an instance of CopyLogDetails class.
+     */
     public CopyLogDetails() {
     }
 
     /**
+     * Get the copyLogDetailsType property: Indicates the type of job details.
+     * 
+     * @return the copyLogDetailsType value.
+     */
+    public ClassDiscriminator copyLogDetailsType() {
+        return this.copyLogDetailsType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("copyLogDetailsType",
+            this.copyLogDetailsType == null ? null : this.copyLogDetailsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyLogDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyLogDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CopyLogDetails.
+     */
+    public static CopyLogDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("copyLogDetailsType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DataBox".equals(discriminatorValue)) {
+                    return DataBoxAccountCopyLogDetails.fromJson(readerToUse.reset());
+                } else if ("DataBoxCustomerDisk".equals(discriminatorValue)) {
+                    return DataBoxCustomerDiskCopyLogDetails.fromJson(readerToUse.reset());
+                } else if ("DataBoxDisk".equals(discriminatorValue)) {
+                    return DataBoxDiskCopyLogDetails.fromJson(readerToUse.reset());
+                } else if ("DataBoxHeavy".equals(discriminatorValue)) {
+                    return DataBoxHeavyAccountCopyLogDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CopyLogDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyLogDetails deserializedCopyLogDetails = new CopyLogDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyLogDetailsType".equals(fieldName)) {
+                    deserializedCopyLogDetails.copyLogDetailsType = ClassDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyLogDetails;
+        });
     }
 }

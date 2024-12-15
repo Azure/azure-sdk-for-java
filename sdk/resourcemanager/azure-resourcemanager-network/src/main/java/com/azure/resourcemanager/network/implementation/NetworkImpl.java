@@ -59,20 +59,16 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public Mono<Network> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                network -> {
-                    NetworkImpl impl = (NetworkImpl) network;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(network -> {
+            NetworkImpl impl = (NetworkImpl) network;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<VirtualNetworkInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworks()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -80,8 +76,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworks()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -107,12 +102,10 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         }
         IpAddressAvailabilityResultInner result = null;
         try {
-            result =
-                this
-                    .manager()
-                    .serviceClient()
-                    .getVirtualNetworks()
-                    .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
+            result = this.manager()
+                .serviceClient()
+                .getVirtualNetworks()
+                .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
         } catch (ManagementException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
                 throw logger.logExceptionAsError(e);
@@ -250,20 +243,18 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     @Override
     protected Mono<VirtualNetworkInner> createInner() {
         if (ddosProtectionPlanCreatable != null && this.taskResult(ddosProtectionPlanCreatable.key()) != null) {
-            DdosProtectionPlan ddosProtectionPlan =
-                this.<DdosProtectionPlan>taskResult(ddosProtectionPlanCreatable.key());
+            DdosProtectionPlan ddosProtectionPlan
+                = this.<DdosProtectionPlan>taskResult(ddosProtectionPlanCreatable.key());
             withExistingDdosProtectionPlan(ddosProtectionPlan.id());
         }
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getVirtualNetworks()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
-            .map(
-                virtualNetworkInner -> {
-                    NetworkImpl.this.ddosProtectionPlanCreatable = null;
-                    return virtualNetworkInner;
-                });
+            .map(virtualNetworkInner -> {
+                NetworkImpl.this.ddosProtectionPlanCreatable = null;
+                return virtualNetworkInner;
+            });
     }
 
     @Override
@@ -289,11 +280,9 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     @Override
     public NetworkImpl withNewDdosProtectionPlan() {
         innerModel().withEnableDdosProtection(true);
-        DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
-            manager()
-                .ddosProtectionPlans()
-                .define(this.manager().resourceManager().internalContext().randomResourceName(name(), 20))
-                .withRegion(region());
+        DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup = manager().ddosProtectionPlans()
+            .define(this.manager().resourceManager().internalContext().randomResourceName(name(), 20))
+            .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
             ddosProtectionPlanCreatable = ddosProtectionPlanWithGroup.withNewResourceGroup(super.creatableGroup);
         } else {

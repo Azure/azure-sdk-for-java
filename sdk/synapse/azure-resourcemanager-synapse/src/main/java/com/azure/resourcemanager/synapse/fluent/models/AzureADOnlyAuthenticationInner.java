@@ -6,26 +6,47 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.StateValue;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Azure Active Directory Only Authentication Info. */
+/**
+ * Azure Active Directory Only Authentication Info.
+ */
 @Fluent
 public final class AzureADOnlyAuthenticationInner extends ProxyResource {
     /*
      * azureADOnlyAuthentication resource properties
      */
-    @JsonProperty(value = "properties")
     private AzureADOnlyAuthenticationProperties innerProperties;
 
-    /** Creates an instance of AzureADOnlyAuthenticationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AzureADOnlyAuthenticationInner class.
+     */
     public AzureADOnlyAuthenticationInner() {
     }
 
     /**
      * Get the innerProperties property: azureADOnlyAuthentication resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureADOnlyAuthenticationProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class AzureADOnlyAuthenticationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -43,7 +94,7 @@ public final class AzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the AzureADOnlyAuthenticationInner object itself.
      */
@@ -57,7 +108,7 @@ public final class AzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Get the state property: property configuration state.
-     *
+     * 
      * @return the state value.
      */
     public StateValue state() {
@@ -66,7 +117,7 @@ public final class AzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Get the creationDate property: property configuration date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -75,12 +126,57 @@ public final class AzureADOnlyAuthenticationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureADOnlyAuthenticationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureADOnlyAuthenticationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureADOnlyAuthenticationInner.
+     */
+    public static AzureADOnlyAuthenticationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureADOnlyAuthenticationInner deserializedAzureADOnlyAuthenticationInner
+                = new AzureADOnlyAuthenticationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureADOnlyAuthenticationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureADOnlyAuthenticationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureADOnlyAuthenticationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureADOnlyAuthenticationInner.innerProperties
+                        = AzureADOnlyAuthenticationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureADOnlyAuthenticationInner;
+        });
     }
 }

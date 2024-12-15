@@ -21,14 +21,9 @@ import reactor.core.publisher.Mono;
 /** Entry point for Spring Service management API. */
 @Fluent
 public interface SpringServices
-    extends HasManager<AppPlatformManager>,
-        SupportsCreating<SpringService.DefinitionStages.Blank>,
-        SupportsGettingById<SpringService>,
-        SupportsGettingByResourceGroup<SpringService>,
-        SupportsListing<SpringService>,
-        SupportsListingByResourceGroup<SpringService>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup {
+    extends HasManager<AppPlatformManager>, SupportsCreating<SpringService.DefinitionStages.Blank>,
+    SupportsGettingById<SpringService>, SupportsGettingByResourceGroup<SpringService>, SupportsListing<SpringService>,
+    SupportsListingByResourceGroup<SpringService>, SupportsDeletingById, SupportsDeletingByResourceGroup {
     /**
      * Checks the name of the service is available in specific region or not.
      *

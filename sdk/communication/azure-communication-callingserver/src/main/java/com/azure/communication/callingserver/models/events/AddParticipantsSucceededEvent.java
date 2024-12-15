@@ -64,8 +64,7 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return toJsonShared(jsonWriter.writeStartObject())
-            .writeStringField("operationContext", operationContext)
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("operationContext", operationContext)
             .writeJsonField("resultInfo", resultInfo)
             .writeEndObject();
     }
@@ -95,8 +94,8 @@ public final class AddParticipantsSucceededEvent extends CallAutomationEventBase
                 } else if ("resultInfo".equals(fieldName)) {
                     event.resultInfo = ResultInfo.fromJson(reader);
                 } else if ("participants".equals(fieldName)) {
-                    event.participants = reader.readArray(r ->
-                        CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(r)));
+                    event.participants = reader.readArray(
+                        r -> CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(r)));
                 } else {
                     reader.skipChildren();
                 }

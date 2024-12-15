@@ -50,7 +50,6 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
         return this;
     }
 
-
     @Override
     public HttpHeaders set(HttpHeaderName name, String value) {
         if (name == null) {

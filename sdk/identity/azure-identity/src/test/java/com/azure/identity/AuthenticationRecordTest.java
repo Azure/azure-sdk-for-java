@@ -15,13 +15,9 @@ import java.io.OutputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthenticationRecordTest {
-    String json = "{"
-        + "\"authority\":\"authority\","
-        + "\"homeAccountId\":\"homeAccountId\","
-        + "\"tenantId\":\"tenantId\","
-        + "\"username\":\"username\","
-        + "\"clientId\":\"clientId\""
-        + "}";
+    String json = "{" + "\"authority\":\"authority\"," + "\"homeAccountId\":\"homeAccountId\","
+        + "\"tenantId\":\"tenantId\"," + "\"username\":\"username\"," + "\"clientId\":\"clientId\"" + "}";
+
     @Test
     public void canSerialize() {
         InputStream stream = new ByteArrayInputStream(json.getBytes());
@@ -45,23 +41,22 @@ public class AuthenticationRecordTest {
     @Test
     public void canSerializeAsync() {
         InputStream stream = new ByteArrayInputStream(json.getBytes());
-        StepVerifier.create(AuthenticationRecord.deserializeAsync(stream))
-            .expectNextMatches(record -> {
-                assertEquals("authority", record.getAuthority());
-                assertEquals("homeAccountId", record.getHomeAccountId());
-                assertEquals("tenantId", record.getTenantId());
-                assertEquals("username", record.getUsername());
-                assertEquals("clientId", record.getClientId());
-                OutputStream outStream = new ByteArrayOutputStream();
-                record.serialize(outStream);
-                try {
-                    outStream.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                String serialized = outStream.toString();
-                assertEquals(json, serialized);
-                return true;
-            }).verifyComplete();
+        StepVerifier.create(AuthenticationRecord.deserializeAsync(stream)).expectNextMatches(record -> {
+            assertEquals("authority", record.getAuthority());
+            assertEquals("homeAccountId", record.getHomeAccountId());
+            assertEquals("tenantId", record.getTenantId());
+            assertEquals("username", record.getUsername());
+            assertEquals("clientId", record.getClientId());
+            OutputStream outStream = new ByteArrayOutputStream();
+            record.serialize(outStream);
+            try {
+                outStream.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String serialized = outStream.toString();
+            assertEquals(json, serialized);
+            return true;
+        }).verifyComplete();
     }
 }

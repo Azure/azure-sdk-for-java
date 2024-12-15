@@ -36,6 +36,8 @@ import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
+import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.TablesConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +48,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class BuilderHelper {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-data-tables.properties");
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-data-tables.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
@@ -56,13 +57,11 @@ final class BuilderHelper {
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
-                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
-                                      String sasToken, String endpoint,
-                                      RetryPolicy retryPolicy, RetryOptions retryOptions,
-                                      HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
-                                      List<HttpPipelinePolicy> perCallAdditionalPolicies,
-                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
-                                      ClientLogger logger, boolean enableTenantDiscovery) {
+        AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken, String endpoint,
+        RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
+        HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
+        List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
+        boolean enableTenantDiscovery) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
@@ -86,14 +85,14 @@ final class BuilderHelper {
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        policies.add(new UserAgentPolicy(
-            CoreUtils.getApplicationId(localClientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, logOptions), CLIENT_NAME,
+            CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
 
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
 
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
@@ -115,8 +114,8 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
-            credentialPolicy =  new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential,
-                enableTenantDiscovery, StorageConstants.STORAGE_SCOPE);
+            credentialPolicy = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery,
+                TableUtils.isCosmosEndpoint(endpoint) ? TablesConstants.COSMOS_SCOPE : StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
@@ -132,8 +131,7 @@ final class BuilderHelper {
         policies.add(new HttpLoggingPolicy(logOptions));
         policies.add(new TableScrubEtagPolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(createTracer(clientOptions))
             .clientOptions(localClientOptions)
@@ -142,28 +140,24 @@ final class BuilderHelper {
 
     static HttpPipeline buildNullClientPipeline() {
         HttpPipelinePolicy[] policies = {
-            new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.ACCEPT, "application/json;odata=minimalmetadata"))
-        };
+            new AddHeadersPolicy(
+                new HttpHeaders().set(HttpHeaderName.ACCEPT, "application/json;odata=minimalmetadata")) };
 
-        return new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(new NullHttpClient())
-            .build();
+        return new HttpPipelineBuilder().policies(policies).httpClient(new NullHttpClient()).build();
     }
 
     static void validateCredentials(AzureNamedKeyCredential azureNamedKeyCredential,
-                                    AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
-                                    String sasToken, String connectionString, ClientLogger logger) {
-        List<Object> usedCredentials =
-            Stream.of(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString)
+        AzureSasCredential azureSasCredential, TokenCredential tokenCredential, String sasToken,
+        String connectionString, ClientLogger logger) {
+        List<Object> usedCredentials
+            = Stream.of(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         // Only allow two forms of authentication when 'connectionString' and 'sasToken' are provided. Validate that
         // both contain the same SAS settings.
         if (usedCredentials.size() == 2 && connectionString != null && sasToken != null) {
-            StorageConnectionString storageConnectionString =
-                StorageConnectionString.create(connectionString, logger);
+            StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
             StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
             if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
@@ -210,7 +204,6 @@ final class BuilderHelper {
                     + usedCredentialsStringBuilder + "."));
         }
     }
-
 
     private static Tracer createTracer(ClientOptions clientOptions) {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();

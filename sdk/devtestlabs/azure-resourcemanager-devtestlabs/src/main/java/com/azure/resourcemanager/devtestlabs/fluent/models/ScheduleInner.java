@@ -7,45 +7,100 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.DayDetails;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.HourDetails;
 import com.azure.resourcemanager.devtestlabs.models.NotificationSettings;
 import com.azure.resourcemanager.devtestlabs.models.WeekDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A schedule. */
+/**
+ * A schedule.
+ */
 @Fluent
 public final class ScheduleInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduleProperties innerProperties = new ScheduleProperties();
 
-    /** Creates an instance of ScheduleInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScheduleInner class.
+     */
     public ScheduleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -54,7 +109,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
@@ -63,7 +118,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Set the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduleInner object itself.
      */
@@ -77,7 +132,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @return the taskType value.
      */
     public String taskType() {
@@ -86,7 +141,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Set the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @param taskType the taskType value to set.
      * @return the ScheduleInner object itself.
      */
@@ -101,7 +156,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Get the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @return the weeklyRecurrence value.
      */
     public WeekDetails weeklyRecurrence() {
@@ -111,7 +166,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Set the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @param weeklyRecurrence the weeklyRecurrence value to set.
      * @return the ScheduleInner object itself.
      */
@@ -126,7 +181,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Get the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @return the dailyRecurrence value.
      */
     public DayDetails dailyRecurrence() {
@@ -136,7 +191,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Set the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @param dailyRecurrence the dailyRecurrence value to set.
      * @return the ScheduleInner object itself.
      */
@@ -151,7 +206,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Get the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @return the hourlyRecurrence value.
      */
     public HourDetails hourlyRecurrence() {
@@ -161,7 +216,7 @@ public final class ScheduleInner extends Resource {
     /**
      * Set the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @param hourlyRecurrence the hourlyRecurrence value to set.
      * @return the ScheduleInner object itself.
      */
@@ -178,7 +233,7 @@ public final class ScheduleInner extends Resource {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -190,7 +245,7 @@ public final class ScheduleInner extends Resource {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleInner object itself.
      */
@@ -204,7 +259,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the notificationSettings property: Notification settings.
-     *
+     * 
      * @return the notificationSettings value.
      */
     public NotificationSettings notificationSettings() {
@@ -213,7 +268,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Set the notificationSettings property: Notification settings.
-     *
+     * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduleInner object itself.
      */
@@ -227,7 +282,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the createdDate property: The creation date of the schedule.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -236,7 +291,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -245,7 +300,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Set the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the ScheduleInner object itself.
      */
@@ -259,7 +314,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -268,7 +323,7 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -277,18 +332,67 @@ public final class ScheduleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleInner.
+     */
+    public static ScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleInner deserializedScheduleInner = new ScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduleInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduleInner.innerProperties = ScheduleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleInner;
+        });
+    }
 }

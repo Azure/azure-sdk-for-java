@@ -77,9 +77,10 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      *  when in v2 mode.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        boolean distributedTransactionsSupport, boolean isV2, boolean useSessionChannelCache) {
+        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        ServiceBusAmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
+        MessageSerializer messageSerializer, boolean distributedTransactionsSupport, boolean isV2,
+        boolean useSessionChannelCache) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2, useSessionChannelCache);
 
@@ -99,9 +100,10 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
         if (isDisposed()) {
-            return monoError(LOGGER.atWarning(), new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
-                connectionId, entityPath)));
+            return monoError(LOGGER.atWarning(),
+                new IllegalStateException(
+                    String.format("connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
+                        connectionId, entityPath)));
         }
 
         final String entityTypePath = String.join("-", entityType.toString(), entityPath);
@@ -111,48 +113,47 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             return Mono.just(existing);
         }
 
-        return getReactorConnection().then(
-            Mono.defer(() -> {
-                final TokenManager tokenManager = new AzureTokenManagerProvider(authorizationType,
-                    fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
-                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+        return getReactorConnection().then(Mono.defer(() -> {
+            final TokenManager tokenManager = new AzureTokenManagerProvider(authorizationType, fullyQualifiedNamespace,
+                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE).getTokenManager(getClaimsBasedSecurityNode(),
+                    entityPath);
 
-                return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
-                    if (current != null) {
-                        LOGGER.info("A management node exists already, returning it.");
+            return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
+                if (current != null) {
+                    LOGGER.info("A management node exists already, returning it.");
 
-                        // Close the token manager we had created during this because it is unneeded now.
-                        tokenManager.close();
-                        return current;
-                    }
+                    // Close the token manager we had created during this because it is unneeded now.
+                    tokenManager.close();
+                    return current;
+                }
 
-                    final String sessionName = entityPath + "-" + MANAGEMENT_SESSION_NAME;
-                    final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
-                    final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
+                final String sessionName = entityPath + "-" + MANAGEMENT_SESSION_NAME;
+                final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
+                final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
 
-                    LOGGER.atInfo()
-                        .addKeyValue(LINK_NAME_KEY, linkName)
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue("address", address)
-                        .log("Creating management node.");
+                LOGGER.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue("address", address)
+                    .log("Creating management node.");
 
-                    final ChannelCacheWrapper channelCache;
-                    if (useSessionChannelCache) {
-                        // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-                        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                        final RequestResponseChannelCache cache
-                            = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
-                        channelCache = new ChannelCacheWrapper(cache);
-                    } else {
-                        // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-                        final AmqpChannelProcessor<RequestResponseChannel> cache
-                            = createRequestResponseChannel(sessionName, linkName, address);
-                        channelCache = new ChannelCacheWrapper(cache);
-                    }
-                    return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
-                        messageSerializer, retryOptions.getTryTimeout());
-                }));
+                final ChannelCacheWrapper channelCache;
+                if (useSessionChannelCache) {
+                    // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
+                    final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+                    final RequestResponseChannelCache cache
+                        = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
+                    channelCache = new ChannelCacheWrapper(cache);
+                } else {
+                    // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
+                    final AmqpChannelProcessor<RequestResponseChannel> cache
+                        = createRequestResponseChannel(sessionName, linkName, address);
+                    channelCache = new ChannelCacheWrapper(cache);
+                }
+                return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
+                    messageSerializer, retryOptions.getTryTimeout());
             }));
+        }));
     }
 
     /**
@@ -175,8 +176,10 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             LOGGER.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
-                retryPolicy, transferEntityPath, clientIdentifier).cast(AmqpSendLink.class);
+            return session
+                .createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                    transferEntityPath, clientIdentifier)
+                .cast(AmqpSendLink.class);
         });
     }
 
@@ -196,15 +199,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
-        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType, String clientIdentifier) {
-        return createSession(entityPath).cast(ServiceBusSession.class)
-            .flatMap(session -> {
-                LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
-                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType,
+        String clientIdentifier) {
+        return createSession(entityPath).cast(ServiceBusSession.class).flatMap(session -> {
+            LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, clientIdentifier);
-            });
+            return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
+                receiveMode, clientIdentifier);
+        });
     }
 
     @Override
@@ -227,16 +230,16 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ServiceBusReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType, String clientIdentifier, String sessionId) {
-        return createSession(entityPath).cast(ServiceBusSession.class)
-            .flatMap(session -> {
-                LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
-                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType,
+        String clientIdentifier, String sessionId) {
+        return createSession(entityPath).cast(ServiceBusSession.class).flatMap(session -> {
+            LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, clientIdentifier, sessionId);
-            });
+            return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(), retryPolicy,
+                receiveMode, clientIdentifier, sessionId);
+        });
     }
 
     @Override

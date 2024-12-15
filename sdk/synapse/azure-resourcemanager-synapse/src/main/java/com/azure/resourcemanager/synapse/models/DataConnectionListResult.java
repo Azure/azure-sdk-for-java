@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list Kusto data connections operation response. */
+/**
+ * The list Kusto data connections operation response.
+ */
 @Fluent
-public final class DataConnectionListResult {
+public final class DataConnectionListResult implements JsonSerializable<DataConnectionListResult> {
     /*
      * The list of Kusto data connections.
      */
-    @JsonProperty(value = "value")
     private List<DataConnectionInner> value;
 
-    /** Creates an instance of DataConnectionListResult class. */
+    /**
+     * Creates an instance of DataConnectionListResult class.
+     */
     public DataConnectionListResult() {
     }
 
     /**
      * Get the value property: The list of Kusto data connections.
-     *
+     * 
      * @return the value value.
      */
     public List<DataConnectionInner> value() {
@@ -33,7 +40,7 @@ public final class DataConnectionListResult {
 
     /**
      * Set the value property: The list of Kusto data connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the DataConnectionListResult object itself.
      */
@@ -44,12 +51,50 @@ public final class DataConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectionListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataConnectionListResult.
+     */
+    public static DataConnectionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectionListResult deserializedDataConnectionListResult = new DataConnectionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataConnectionInner> value
+                        = reader.readArray(reader1 -> DataConnectionInner.fromJson(reader1));
+                    deserializedDataConnectionListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectionListResult;
+        });
     }
 }

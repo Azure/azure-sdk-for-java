@@ -37,21 +37,10 @@ public class NetworkSecurityGroupTests extends ResourceManagerTestProxyTestBase 
     protected final Region region = Region.US_EAST;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -73,10 +62,10 @@ public class NetworkSecurityGroupTests extends ResourceManagerTestProxyTestBase 
         }
     }
 
-
     @Test
     public void testDeleteByResourceGroup() {
-        Network network = azureResourceManager.networks().define("vmssvnet")
+        Network network = azureResourceManager.networks()
+            .define("vmssvnet")
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/28")
@@ -85,7 +74,8 @@ public class NetworkSecurityGroupTests extends ResourceManagerTestProxyTestBase 
 
         final String nsgName = generateRandomResourceName("nsg", 8);
 
-        NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups().define(nsgName)
+        NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups()
+            .define(nsgName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .defineRule("rule1")
@@ -100,7 +90,8 @@ public class NetworkSecurityGroupTests extends ResourceManagerTestProxyTestBase 
 
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        VirtualMachineScaleSet vmss = azureResourceManager.virtualMachineScaleSets().define(vmssName)
+        VirtualMachineScaleSet vmss = azureResourceManager.virtualMachineScaleSets()
+            .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()

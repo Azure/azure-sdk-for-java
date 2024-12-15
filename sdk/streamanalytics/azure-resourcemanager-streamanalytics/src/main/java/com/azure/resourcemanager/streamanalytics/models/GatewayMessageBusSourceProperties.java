@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with a gateway message bus datasource.
  */
 @Fluent
-public class GatewayMessageBusSourceProperties {
+public class GatewayMessageBusSourceProperties implements JsonSerializable<GatewayMessageBusSourceProperties> {
     /*
      * The name of the Service Bus topic.
      */
-    @JsonProperty(value = "topic")
     private String topic;
 
     /**
@@ -50,5 +53,42 @@ public class GatewayMessageBusSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("topic", this.topic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayMessageBusSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayMessageBusSourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayMessageBusSourceProperties.
+     */
+    public static GatewayMessageBusSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayMessageBusSourceProperties deserializedGatewayMessageBusSourceProperties
+                = new GatewayMessageBusSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("topic".equals(fieldName)) {
+                    deserializedGatewayMessageBusSourceProperties.topic = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayMessageBusSourceProperties;
+        });
     }
 }

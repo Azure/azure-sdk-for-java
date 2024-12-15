@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseCheckNameRequest model =
-            BinaryData
-                .fromString("{\"name\":\"xiidloped\",\"type\":\"Microsoft.Synapse/workspaces/kustoPools/databases\"}")
-                .toObject(DatabaseCheckNameRequest.class);
-        Assertions.assertEquals("xiidloped", model.name());
+        DatabaseCheckNameRequest model = BinaryData
+            .fromString("{\"name\":\"zucafeddww\",\"type\":\"Microsoft.Synapse/workspaces/kustoPools/databases\"}")
+            .toObject(DatabaseCheckNameRequest.class);
+        Assertions.assertEquals("zucafeddww", model.name());
         Assertions.assertEquals(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseCheckNameRequest model =
-            new DatabaseCheckNameRequest()
-                .withName("xiidloped")
-                .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES);
+        DatabaseCheckNameRequest model = new DatabaseCheckNameRequest().withName("zucafeddww")
+            .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES);
         model = BinaryData.fromObject(model).toObject(DatabaseCheckNameRequest.class);
-        Assertions.assertEquals("xiidloped", model.name());
+        Assertions.assertEquals("zucafeddww", model.name());
         Assertions.assertEquals(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES, model.type());
     }
 }

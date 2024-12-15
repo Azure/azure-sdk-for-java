@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPools Delete. */
+/**
+ * Samples for KustoPools Delete.
+ */
 public final class KustoPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.
+     * json
      */
     /**
      * Sample code: kustoPoolsDelete.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPools()
+        manager.kustoPools()
             .delete("kustorptest", "kustorptest", "kustoclusterrptest4", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,18 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CspWorkspaceAdminPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CspWorkspaceAdminProperties model =
-            BinaryData
-                .fromString("{\"initialWorkspaceAdminObjectId\":\"idxas\"}")
-                .toObject(CspWorkspaceAdminProperties.class);
-        Assertions.assertEquals("idxas", model.initialWorkspaceAdminObjectId());
+        CspWorkspaceAdminProperties model = BinaryData.fromString("{\"initialWorkspaceAdminObjectId\":\"ycy\"}")
+            .toObject(CspWorkspaceAdminProperties.class);
+        Assertions.assertEquals("ycy", model.initialWorkspaceAdminObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CspWorkspaceAdminProperties model =
-            new CspWorkspaceAdminProperties().withInitialWorkspaceAdminObjectId("idxas");
+        CspWorkspaceAdminProperties model = new CspWorkspaceAdminProperties().withInitialWorkspaceAdminObjectId("ycy");
         model = BinaryData.fromObject(model).toObject(CspWorkspaceAdminProperties.class);
-        Assertions.assertEquals("idxas", model.initialWorkspaceAdminObjectId());
+        Assertions.assertEquals("ycy", model.initialWorkspaceAdminObjectId());
     }
 }

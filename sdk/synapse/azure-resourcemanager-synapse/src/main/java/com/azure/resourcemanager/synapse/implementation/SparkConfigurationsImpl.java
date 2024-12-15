@@ -20,31 +20,28 @@ public final class SparkConfigurationsImpl implements SparkConfigurations {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SparkConfigurationsImpl(
-        SparkConfigurationsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SparkConfigurationsImpl(SparkConfigurationsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SparkConfigurationResource> getWithResponse(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context) {
-        Response<SparkConfigurationResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, sparkConfigurationName, workspaceName, context);
+    public Response<SparkConfigurationResource> getWithResponse(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName, Context context) {
+        Response<SparkConfigurationResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, sparkConfigurationName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SparkConfigurationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SparkConfigurationResource get(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName) {
-        SparkConfigurationResourceInner inner =
-            this.serviceClient().get(resourceGroupName, sparkConfigurationName, workspaceName);
+    public SparkConfigurationResource get(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName) {
+        SparkConfigurationResourceInner inner
+            = this.serviceClient().get(resourceGroupName, sparkConfigurationName, workspaceName);
         if (inner != null) {
             return new SparkConfigurationResourceImpl(inner, this.manager());
         } else {

@@ -25,21 +25,18 @@ import java.util.Map;
 /** Implementation of {@link PrivateDnsRecordSet}. */
 class PrivateDnsRecordSetImpl
     extends ExternalChildResourceImpl<PrivateDnsRecordSet, RecordSetInner, PrivateDnsZoneImpl, PrivateDnsZone>
-    implements PrivateDnsRecordSet,
-        PrivateDnsRecordSet.Definition<PrivateDnsZone.DefinitionStages.WithCreate>,
-        PrivateDnsRecordSet.UpdateDefinition<PrivateDnsZone.Update>,
-        PrivateDnsRecordSet.UpdateCombined {
+    implements PrivateDnsRecordSet, PrivateDnsRecordSet.Definition<PrivateDnsZone.DefinitionStages.WithCreate>,
+    PrivateDnsRecordSet.UpdateDefinition<PrivateDnsZone.Update>, PrivateDnsRecordSet.UpdateCombined {
 
     protected final RecordSetInner recordSetRemoveInfo;
     protected final String type;
     private final ETagState etagState = new ETagState();
 
-    protected PrivateDnsRecordSetImpl(
-        String name, String type, final PrivateDnsZoneImpl parent, final RecordSetInner innerModel) {
+    protected PrivateDnsRecordSetImpl(String name, String type, final PrivateDnsZoneImpl parent,
+        final RecordSetInner innerModel) {
         super(name, parent, innerModel);
         this.type = type;
-        this.recordSetRemoveInfo = new RecordSetInner()
-            .withAaaaRecords(new ArrayList<>())
+        this.recordSetRemoveInfo = new RecordSetInner().withAaaaRecords(new ArrayList<>())
             .withARecords(new ArrayList<>())
             .withCnameRecord(new CnameRecord())
             .withMxRecords(new ArrayList<>())
@@ -106,15 +103,13 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        innerModel().mxRecords().add(
-            new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
+        innerModel().mxRecords().add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withoutMailExchange(String mailExchangeHostName, int priority) {
-        recordSetRemoveInfo.mxRecords().add(
-            new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
+        recordSetRemoveInfo.mxRecords().add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
@@ -174,15 +169,15 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        innerModel().srvRecords().add(
-            new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
+        innerModel().srvRecords()
+            .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withoutRecord(String target, int port, int priority, int weight) {
-        recordSetRemoveInfo.srvRecords().add(
-            new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
+        recordSetRemoveInfo.srvRecords()
+            .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
 
@@ -255,7 +250,9 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public Mono<PrivateDnsRecordSet> updateResourceAsync() {
-        return parent().manager().serviceClient().getRecordSets()
+        return parent().manager()
+            .serviceClient()
+            .getRecordSets()
             .getAsync(parent().resourceGroupName(), parent().name(), recordType(), name())
             .map(recordSetInner -> prepare(recordSetInner))
             .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
@@ -263,18 +260,19 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return parent().manager().serviceClient().getRecordSets()
-            .deleteWithResponseAsync(
-                parent().resourceGroupName(),
-                parent().name(),
-                recordType(),
-                name(),
-                etagState.ifMatchValueOnDelete()).then();
+        return parent().manager()
+            .serviceClient()
+            .getRecordSets()
+            .deleteWithResponseAsync(parent().resourceGroupName(), parent().name(), recordType(), name(),
+                etagState.ifMatchValueOnDelete())
+            .then();
     }
 
     @Override
     protected Mono<RecordSetInner> getInnerAsync() {
-        return parent().manager().serviceClient().getRecordSets()
+        return parent().manager()
+            .serviceClient()
+            .getRecordSets()
             .getAsync(parent().resourceGroupName(), parent().name(), recordType(), name());
     }
 
@@ -302,15 +300,11 @@ class PrivateDnsRecordSetImpl
 
     private Mono<PrivateDnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final PrivateDnsRecordSetImpl self = this;
-        return parent().manager().serviceClient().getRecordSets()
-            .createOrUpdateWithResponseAsync(
-                parent().resourceGroupName(),
-                parent().name(),
-                recordType(),
-                name(),
-                resource,
-                etagState.ifMatchValueOnUpdate(resource.etag()),
-                etagState.ifNonMatchValueOnCreate())
+        return parent().manager()
+            .serviceClient()
+            .getRecordSets()
+            .createOrUpdateWithResponseAsync(parent().resourceGroupName(), parent().name(), recordType(), name(),
+                resource, etagState.ifMatchValueOnUpdate(resource.etag()), etagState.ifNonMatchValueOnCreate())
             .map(recordSetInner -> {
                 setInner(recordSetInner.getValue());
                 self.etagState.clear();

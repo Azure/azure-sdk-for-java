@@ -14,25 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertPropertiesDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertPropertiesDefinition model =
-            BinaryData
-                .fromString("{\"type\":\"Budget\",\"category\":\"System\",\"criteria\":\"MultiCurrency\"}")
-                .toObject(AlertPropertiesDefinition.class);
-        Assertions.assertEquals(AlertType.BUDGET, model.type());
-        Assertions.assertEquals(AlertCategory.SYSTEM, model.category());
-        Assertions.assertEquals(AlertCriteria.MULTI_CURRENCY, model.criteria());
+        AlertPropertiesDefinition model = BinaryData
+            .fromString(
+                "{\"type\":\"BudgetForecast\",\"category\":\"Billing\",\"criteria\":\"UsageThresholdExceeded\"}")
+            .toObject(AlertPropertiesDefinition.class);
+        Assertions.assertEquals(AlertType.BUDGET_FORECAST, model.type());
+        Assertions.assertEquals(AlertCategory.BILLING, model.category());
+        Assertions.assertEquals(AlertCriteria.USAGE_THRESHOLD_EXCEEDED, model.criteria());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertPropertiesDefinition model =
-            new AlertPropertiesDefinition()
-                .withType(AlertType.BUDGET)
-                .withCategory(AlertCategory.SYSTEM)
-                .withCriteria(AlertCriteria.MULTI_CURRENCY);
+        AlertPropertiesDefinition model = new AlertPropertiesDefinition().withType(AlertType.BUDGET_FORECAST)
+            .withCategory(AlertCategory.BILLING)
+            .withCriteria(AlertCriteria.USAGE_THRESHOLD_EXCEEDED);
         model = BinaryData.fromObject(model).toObject(AlertPropertiesDefinition.class);
-        Assertions.assertEquals(AlertType.BUDGET, model.type());
-        Assertions.assertEquals(AlertCategory.SYSTEM, model.category());
-        Assertions.assertEquals(AlertCriteria.MULTI_CURRENCY, model.criteria());
+        Assertions.assertEquals(AlertType.BUDGET_FORECAST, model.type());
+        Assertions.assertEquals(AlertCategory.BILLING, model.category());
+        Assertions.assertEquals(AlertCriteria.USAGE_THRESHOLD_EXCEEDED, model.criteria());
     }
 }

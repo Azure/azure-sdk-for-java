@@ -44,12 +44,13 @@ public final class ReplicationAppliancesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReplicationAppliance> response = manager.replicationAppliances().list("uzkeutuip", "clzjwaqdz",
-            "ydewuwxyll", com.azure.core.util.Context.NONE);
+        PagedIterable<ReplicationAppliance> response = manager.replicationAppliances()
+            .list("uzkeutuip", "clzjwaqdz", "ydewuwxyll", com.azure.core.util.Context.NONE);
 
     }
 }

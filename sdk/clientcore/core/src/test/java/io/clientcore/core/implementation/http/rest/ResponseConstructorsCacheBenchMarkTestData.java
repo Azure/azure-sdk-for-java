@@ -79,8 +79,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     // MOCK RESPONSES
-    private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_HEADERS, null);
+    private static final Response<?> VOID_RESPONSE
+        = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null);
     private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, BinaryData.fromBytes(FOO_BYTE_ARRAY));
 

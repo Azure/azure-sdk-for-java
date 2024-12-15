@@ -20,20 +20,29 @@ import java.util.List;
 public final class AnalyzeResultHelper {
     private static AnalyzeResultAccessor accessor;
 
-    private AnalyzeResultHelper() { }
+    private AnalyzeResultHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnalyzeResult} instance.
      */
     public interface AnalyzeResultAccessor {
         void setModelId(AnalyzeResult analyzeResult, String id);
+
         void setContent(AnalyzeResult analyzeResult, String content);
+
         void setPages(AnalyzeResult analyzeResult, List<DocumentPage> pages);
+
         void setTables(AnalyzeResult analyzeResult, List<DocumentTable> tables);
+
         void setKeyValuePairs(AnalyzeResult analyzeResult, List<DocumentKeyValuePair> keyValuePairs);
+
         void setStyles(AnalyzeResult analyzeResult, List<DocumentStyle> documentStyles);
+
         void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents);
+
         void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages);
+
         void setParagraphs(AnalyzeResult analyzeResult, List<DocumentParagraph> paragraphs);
 
         void setServiceVersion(AnalyzeResult analyzeResult, String serviceVersion);
@@ -67,6 +76,7 @@ public final class AnalyzeResultHelper {
     static void setKeyValuePairs(AnalyzeResult analyzeResult, List<DocumentKeyValuePair> keyValuePairs) {
         accessor.setKeyValuePairs(analyzeResult, keyValuePairs);
     }
+
     static void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents) {
         accessor.setDocuments(analyzeResult, documents);
     }

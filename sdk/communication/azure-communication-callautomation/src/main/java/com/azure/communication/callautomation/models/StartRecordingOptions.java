@@ -177,7 +177,8 @@ public final class StartRecordingOptions {
      * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
+    public StartRecordingOptions
+        setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HostsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HostsList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ztfolhbnxk\",\"value\":[{\"properties\":{\"uuid\":\"aulppggd\",\"vCenterId\":\"napnyiropuhpigv\",\"moRefId\":\"ylgqgitxmedjvcsl\",\"inventoryItemId\":\"qwwncw\",\"moName\":\"hxg\",\"statuses\":[{\"type\":\"gucnapkte\",\"status\":\"llwptfdy\",\"reason\":\"fqbuaceopzf\",\"message\":\"hhuao\",\"severity\":\"pcqeqx\",\"lastUpdatedAt\":\"2021-02-19T08:33:13Z\"},{\"type\":\"ahzxctobgbk\",\"status\":\"oizpostmgrcfbun\",\"reason\":\"fqjhhkxbpvjymj\",\"message\":\"xjyngudivk\",\"severity\":\"swbxqz\",\"lastUpdatedAt\":\"2021-10-26T13:42:02Z\"}],\"customResourceName\":\"fauvjfdxx\",\"overallMemoryUsageGB\":246485485455680585,\"memorySizeGB\":186339366809590099,\"overallCpuUsageMHz\":1691424509403284517,\"cpuMhz\":5418508363199916719,\"datastoreIds\":[\"cbxvwvxyslqbh\",\"fxoblytkb\",\"mpew\"],\"networkIds\":[\"bkrvrnsvshqj\",\"hxcr\",\"bfovasrruvwbhsq\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"gjb\",\"name\":\"xb\"},\"kind\":\"srfbjfdtwss\",\"location\":\"t\",\"tags\":{\"exilzznfqqnvwpmq\":\"vjz\",\"r\":\"aruoujmkcjhwqyt\"},\"id\":\"bnw\",\"name\":\"ewgdrjervn\",\"type\":\"enq\"},{\"properties\":{\"uuid\":\"hin\",\"vCenterId\":\"ygmi\",\"moRefId\":\"hnzdndslgnayqi\",\"inventoryItemId\":\"nduhavhqlkthum\",\"moName\":\"olbgycduiertgccy\",\"statuses\":[{\"type\":\"l\",\"status\":\"slqlfmmdn\",\"reason\":\"glzpswiydm\",\"message\":\"yhz\",\"severity\":\"ss\",\"lastUpdatedAt\":\"2021-03-20T02:21:45Z\"},{\"type\":\"mnvdfzn\",\"status\":\"ao\",\"reason\":\"xzb\",\"message\":\"blylpstdbh\",\"severity\":\"srzdzucerscdn\",\"lastUpdatedAt\":\"2021-05-15T10:38:25Z\"}],\"customResourceName\":\"fiwjmygtdssls\",\"overallMemoryUsageGB\":1995934686601657592,\"memorySizeGB\":1708954452668375735,\"overallCpuUsageMHz\":2319180534572952806,\"cpuMhz\":7993353797121101484,\"datastoreIds\":[\"mwabnetshhszhedp\",\"vwiwubmwmbesld\"],\"networkIds\":[\"wtppjflcxogaoko\",\"z\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"vmkqzeqq\",\"name\":\"l\"},\"kind\":\"xmhhvhgureo\",\"location\":\"kwobdagxtibq\",\"tags\":{\"ogqxndlkzgxhuri\":\"xwak\",\"ebxmubyynt\":\"lbpodxunk\"},\"id\":\"lrb\",\"name\":\"tkoievseotgq\",\"type\":\"l\"},{\"properties\":{\"uuid\":\"muwlauwzizxbm\",\"vCenterId\":\"cjefuzmu\",\"moRefId\":\"bttdumorppxe\",\"inventoryItemId\":\"nzbtbhj\",\"moName\":\"lkfg\",\"statuses\":[{\"type\":\"euel\",\"status\":\"hsd\",\"reason\":\"t\",\"message\":\"fikdowwqu\",\"severity\":\"xzxcl\",\"lastUpdatedAt\":\"2021-10-23T21:40:50Z\"}],\"customResourceName\":\"hqzonosggbhcoh\",\"overallMemoryUsageGB\":6411320489884269010,\"memorySizeGB\":865048723597164706,\"overallCpuUsageMHz\":4626193574706169830,\"cpuMhz\":1682623003142529215,\"datastoreIds\":[\"wacf\",\"gdkz\",\"ewkfvhqcrai\"],\"networkIds\":[\"n\",\"pfuflrw\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"xyjrxsagafcnih\",\"name\":\"qapnedgfbcv\"},\"kind\":\"q\",\"location\":\"pkeqdcvdrhvoo\",\"tags\":{\"opcjwvnhd\":\"tbobz\",\"mgxcxrslpm\":\"d\",\"qsluicp\":\"twuoegrpkhjwni\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"},{\"properties\":{\"uuid\":\"zvqtmnubexkp\",\"vCenterId\":\"smond\",\"moRefId\":\"quxvypomgkop\",\"inventoryItemId\":\"hojvpajqgxysmocm\",\"moName\":\"fqvm\",\"statuses\":[{\"type\":\"zapvhelx\",\"status\":\"glyatddckcbcuej\",\"reason\":\"xgc\",\"message\":\"ibrhosxsdqr\",\"severity\":\"o\",\"lastUpdatedAt\":\"2021-01-19T18:37:38Z\"},{\"type\":\"m\",\"status\":\"yiba\",\"reason\":\"fluszdtm\",\"message\":\"kwofyyvoq\",\"severity\":\"piexpbtgiw\",\"lastUpdatedAt\":\"2021-01-16T18:36:12Z\"}],\"customResourceName\":\"nwashrtd\",\"overallMemoryUsageGB\":5267748012493523201,\"memorySizeGB\":4226927042414197543,\"overallCpuUsageMHz\":456816387828721622,\"cpuMhz\":5768697708302228972,\"datastoreIds\":[\"ujw\",\"asipqiio\"],\"networkIds\":[\"qerpqlpqwcc\",\"uqgbdbutauvfbt\",\"uwhhmhykojoxafn\"],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"chkoymkcdyh\",\"name\":\"kkpwdreqnovvq\"},\"kind\":\"ljxywsu\",\"location\":\"syrsndsytgadgvra\",\"tags\":{\"arrwlquu\":\"neqn\"},\"id\":\"jfqka\",\"name\":\"e\",\"type\":\"iipfpubj\"}]}")
-                .toObject(HostsList.class);
+        HostsList model = BinaryData.fromString(
+            "{\"nextLink\":\"ztfolhbnxk\",\"value\":[{\"properties\":{\"uuid\":\"aulppggd\",\"vCenterId\":\"napnyiropuhpigv\",\"moRefId\":\"ylgqgitxmedjvcsl\",\"inventoryItemId\":\"qwwncw\",\"moName\":\"hxg\",\"statuses\":[{\"type\":\"gucnapkte\",\"status\":\"llwptfdy\",\"reason\":\"fqbuaceopzf\",\"message\":\"hhuao\",\"severity\":\"pcqeqx\",\"lastUpdatedAt\":\"2021-02-19T08:33:13Z\"},{\"type\":\"ahzxctobgbk\",\"status\":\"oizpostmgrcfbun\",\"reason\":\"fqjhhkxbpvjymj\",\"message\":\"xjyngudivk\",\"severity\":\"swbxqz\",\"lastUpdatedAt\":\"2021-10-26T13:42:02Z\"}],\"customResourceName\":\"fauvjfdxx\",\"overallMemoryUsageGB\":246485485455680585,\"memorySizeGB\":186339366809590099,\"overallCpuUsageMHz\":1691424509403284517,\"cpuMhz\":5418508363199916719,\"datastoreIds\":[\"cbxvwvxyslqbh\",\"fxoblytkb\",\"mpew\"],\"networkIds\":[\"bkrvrnsvshqj\",\"hxcr\",\"bfovasrruvwbhsq\"],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"gjb\",\"name\":\"xb\"},\"kind\":\"srfbjfdtwss\",\"location\":\"t\",\"tags\":{\"exilzznfqqnvwpmq\":\"vjz\",\"r\":\"aruoujmkcjhwqyt\"},\"id\":\"bnw\",\"name\":\"ewgdrjervn\",\"type\":\"enq\"},{\"properties\":{\"uuid\":\"hin\",\"vCenterId\":\"ygmi\",\"moRefId\":\"hnzdndslgnayqi\",\"inventoryItemId\":\"nduhavhqlkthum\",\"moName\":\"olbgycduiertgccy\",\"statuses\":[{\"type\":\"l\",\"status\":\"slqlfmmdn\",\"reason\":\"glzpswiydm\",\"message\":\"yhz\",\"severity\":\"ss\",\"lastUpdatedAt\":\"2021-03-20T02:21:45Z\"},{\"type\":\"mnvdfzn\",\"status\":\"ao\",\"reason\":\"xzb\",\"message\":\"blylpstdbh\",\"severity\":\"srzdzucerscdn\",\"lastUpdatedAt\":\"2021-05-15T10:38:25Z\"}],\"customResourceName\":\"fiwjmygtdssls\",\"overallMemoryUsageGB\":1995934686601657592,\"memorySizeGB\":1708954452668375735,\"overallCpuUsageMHz\":2319180534572952806,\"cpuMhz\":7993353797121101484,\"datastoreIds\":[\"mwabnetshhszhedp\",\"vwiwubmwmbesld\"],\"networkIds\":[\"wtppjflcxogaoko\",\"z\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"vmkqzeqq\",\"name\":\"l\"},\"kind\":\"xmhhvhgureo\",\"location\":\"kwobdagxtibq\",\"tags\":{\"ogqxndlkzgxhuri\":\"xwak\",\"ebxmubyynt\":\"lbpodxunk\"},\"id\":\"lrb\",\"name\":\"tkoievseotgq\",\"type\":\"l\"},{\"properties\":{\"uuid\":\"muwlauwzizxbm\",\"vCenterId\":\"cjefuzmu\",\"moRefId\":\"bttdumorppxe\",\"inventoryItemId\":\"nzbtbhj\",\"moName\":\"lkfg\",\"statuses\":[{\"type\":\"euel\",\"status\":\"hsd\",\"reason\":\"t\",\"message\":\"fikdowwqu\",\"severity\":\"xzxcl\",\"lastUpdatedAt\":\"2021-10-23T21:40:50Z\"}],\"customResourceName\":\"hqzonosggbhcoh\",\"overallMemoryUsageGB\":6411320489884269010,\"memorySizeGB\":865048723597164706,\"overallCpuUsageMHz\":4626193574706169830,\"cpuMhz\":1682623003142529215,\"datastoreIds\":[\"wacf\",\"gdkz\",\"ewkfvhqcrai\"],\"networkIds\":[\"n\",\"pfuflrw\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"xyjrxsagafcnih\",\"name\":\"qapnedgfbcv\"},\"kind\":\"q\",\"location\":\"pkeqdcvdrhvoo\",\"tags\":{\"opcjwvnhd\":\"tbobz\",\"mgxcxrslpm\":\"d\",\"qsluicp\":\"twuoegrpkhjwni\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"},{\"properties\":{\"uuid\":\"zvqtmnubexkp\",\"vCenterId\":\"smond\",\"moRefId\":\"quxvypomgkop\",\"inventoryItemId\":\"hojvpajqgxysmocm\",\"moName\":\"fqvm\",\"statuses\":[{\"type\":\"zapvhelx\",\"status\":\"glyatddckcbcuej\",\"reason\":\"xgc\",\"message\":\"ibrhosxsdqr\",\"severity\":\"o\",\"lastUpdatedAt\":\"2021-01-19T18:37:38Z\"},{\"type\":\"m\",\"status\":\"yiba\",\"reason\":\"fluszdtm\",\"message\":\"kwofyyvoq\",\"severity\":\"piexpbtgiw\",\"lastUpdatedAt\":\"2021-01-16T18:36:12Z\"}],\"customResourceName\":\"nwashrtd\",\"overallMemoryUsageGB\":5267748012493523201,\"memorySizeGB\":4226927042414197543,\"overallCpuUsageMHz\":456816387828721622,\"cpuMhz\":5768697708302228972,\"datastoreIds\":[\"ujw\",\"asipqiio\"],\"networkIds\":[\"qerpqlpqwcc\",\"uqgbdbutauvfbt\",\"uwhhmhykojoxafn\"],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"chkoymkcdyh\",\"name\":\"kkpwdreqnovvq\"},\"kind\":\"ljxywsu\",\"location\":\"syrsndsytgadgvra\",\"tags\":{\"arrwlquu\":\"neqn\"},\"id\":\"jfqka\",\"name\":\"e\",\"type\":\"iipfpubj\"}]}")
+            .toObject(HostsList.class);
         Assertions.assertEquals("ztfolhbnxk", model.nextLink());
         Assertions.assertEquals("t", model.value().get(0).location());
         Assertions.assertEquals("vjz", model.value().get(0).tags().get("exilzznfqqnvwpmq"));
@@ -34,46 +32,36 @@ public final class HostsListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostsList model =
-            new HostsList()
-                .withNextLink("ztfolhbnxk")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new HostModelInner()
-                                .withLocation("t")
-                                .withTags(mapOf("exilzznfqqnvwpmq", "vjz", "r", "aruoujmkcjhwqyt"))
-                                .withExtendedLocation(new ExtendedLocation().withType("gjb").withName("xb"))
-                                .withKind("srfbjfdtwss")
-                                .withVCenterId("napnyiropuhpigv")
-                                .withMoRefId("ylgqgitxmedjvcsl")
-                                .withInventoryItemId("qwwncw"),
-                            new HostModelInner()
-                                .withLocation("kwobdagxtibq")
-                                .withTags(mapOf("ogqxndlkzgxhuri", "xwak", "ebxmubyynt", "lbpodxunk"))
-                                .withExtendedLocation(new ExtendedLocation().withType("vmkqzeqq").withName("l"))
-                                .withKind("xmhhvhgureo")
-                                .withVCenterId("ygmi")
-                                .withMoRefId("hnzdndslgnayqi")
-                                .withInventoryItemId("nduhavhqlkthum"),
-                            new HostModelInner()
-                                .withLocation("pkeqdcvdrhvoo")
-                                .withTags(mapOf("opcjwvnhd", "tbobz", "mgxcxrslpm", "d", "qsluicp", "twuoegrpkhjwni"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withType("xyjrxsagafcnih").withName("qapnedgfbcv"))
-                                .withKind("q")
-                                .withVCenterId("cjefuzmu")
-                                .withMoRefId("bttdumorppxe")
-                                .withInventoryItemId("nzbtbhj"),
-                            new HostModelInner()
-                                .withLocation("syrsndsytgadgvra")
-                                .withTags(mapOf("arrwlquu", "neqn"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withType("chkoymkcdyh").withName("kkpwdreqnovvq"))
-                                .withKind("ljxywsu")
-                                .withVCenterId("smond")
-                                .withMoRefId("quxvypomgkop")
-                                .withInventoryItemId("hojvpajqgxysmocm")));
+        HostsList model = new HostsList().withNextLink("ztfolhbnxk")
+            .withValue(Arrays.asList(
+                new HostModelInner().withLocation("t")
+                    .withTags(mapOf("exilzznfqqnvwpmq", "vjz", "r", "aruoujmkcjhwqyt"))
+                    .withExtendedLocation(new ExtendedLocation().withType("gjb").withName("xb"))
+                    .withKind("srfbjfdtwss")
+                    .withVCenterId("napnyiropuhpigv")
+                    .withMoRefId("ylgqgitxmedjvcsl")
+                    .withInventoryItemId("qwwncw"),
+                new HostModelInner().withLocation("kwobdagxtibq")
+                    .withTags(mapOf("ogqxndlkzgxhuri", "xwak", "ebxmubyynt", "lbpodxunk"))
+                    .withExtendedLocation(new ExtendedLocation().withType("vmkqzeqq").withName("l"))
+                    .withKind("xmhhvhgureo")
+                    .withVCenterId("ygmi")
+                    .withMoRefId("hnzdndslgnayqi")
+                    .withInventoryItemId("nduhavhqlkthum"),
+                new HostModelInner().withLocation("pkeqdcvdrhvoo")
+                    .withTags(mapOf("opcjwvnhd", "tbobz", "mgxcxrslpm", "d", "qsluicp", "twuoegrpkhjwni"))
+                    .withExtendedLocation(new ExtendedLocation().withType("xyjrxsagafcnih").withName("qapnedgfbcv"))
+                    .withKind("q")
+                    .withVCenterId("cjefuzmu")
+                    .withMoRefId("bttdumorppxe")
+                    .withInventoryItemId("nzbtbhj"),
+                new HostModelInner().withLocation("syrsndsytgadgvra")
+                    .withTags(mapOf("arrwlquu", "neqn"))
+                    .withExtendedLocation(new ExtendedLocation().withType("chkoymkcdyh").withName("kkpwdreqnovvq"))
+                    .withKind("ljxywsu")
+                    .withVCenterId("smond")
+                    .withMoRefId("quxvypomgkop")
+                    .withInventoryItemId("hojvpajqgxysmocm")));
         model = BinaryData.fromObject(model).toObject(HostsList.class);
         Assertions.assertEquals("ztfolhbnxk", model.nextLink());
         Assertions.assertEquals("t", model.value().get(0).location());

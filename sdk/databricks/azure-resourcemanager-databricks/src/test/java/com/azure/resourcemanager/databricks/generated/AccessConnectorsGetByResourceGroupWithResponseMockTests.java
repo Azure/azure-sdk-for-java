@@ -6,68 +6,37 @@ package com.azure.resourcemanager.databricks.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databricks.AzureDatabricksManager;
 import com.azure.resourcemanager.databricks.models.AccessConnector;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessConnectorsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"identity\":{\"principalId\":\"8c22fe2a-dcbb-487b-9ab7-9dc1e0052475\",\"tenantId\":\"70e499d4-cf19-4830-b124-7222fbb2fd0b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yat\":{\"principalId\":\"02b19d20-873d-4681-859d-9757ff6c9228\",\"clientId\":\"de7ef414-4aab-40b3-8167-d7162abc9f6f\"}}},\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"bcuejrjxgci\",\"tags\":{\"sdqrhzoymibmrq\":\"rhos\"},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}";
 
-        String responseStr =
-            "{\"identity\":{\"principalId\":\"e4e4c164-c3f2-4d3d-8803-68a3058fe6c2\",\"tenantId\":\"5a2065cf-a1ec-4c78-9372-c03f5528d465\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"alm\",\"tags\":{\"aygdvwvgpioh\":\"d\",\"udxepxgyqagv\":\"wxrt\",\"wi\":\"vmnpkukghimdblx\"},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AccessConnector response = manager.accessConnectors()
+            .getByResourceGroupWithResponse("mocmbqfqvmk", "xozap", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccessConnector response =
-            manager
-                .accessConnectors()
-                .getByResourceGroupWithResponse("rhyrnxxmueed", "drd", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("alm", response.location());
-        Assertions.assertEquals("d", response.tags().get("aygdvwvgpioh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("bcuejrjxgci", response.location());
+        Assertions.assertEquals("rhos", response.tags().get("sdqrhzoymibmrq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 }

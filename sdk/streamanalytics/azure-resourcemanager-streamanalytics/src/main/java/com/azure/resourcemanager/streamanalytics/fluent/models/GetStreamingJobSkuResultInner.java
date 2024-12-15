@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.GetStreamingJobSkuResultSku;
 import com.azure.resourcemanager.streamanalytics.models.ResourceType;
 import com.azure.resourcemanager.streamanalytics.models.SkuCapacity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes an available SKU information.
  */
 @Immutable
-public final class GetStreamingJobSkuResultInner {
+public final class GetStreamingJobSkuResultInner implements JsonSerializable<GetStreamingJobSkuResultInner> {
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceType resourceType;
 
     /*
      * The properties that are associated with a SKU.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private GetStreamingJobSkuResultSku sku;
 
     /*
      * Describes scaling information of a SKU.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private SkuCapacity capacity;
 
     /**
@@ -78,5 +79,46 @@ public final class GetStreamingJobSkuResultInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetStreamingJobSkuResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetStreamingJobSkuResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetStreamingJobSkuResultInner.
+     */
+    public static GetStreamingJobSkuResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetStreamingJobSkuResultInner deserializedGetStreamingJobSkuResultInner
+                = new GetStreamingJobSkuResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedGetStreamingJobSkuResultInner.resourceType
+                        = ResourceType.fromString(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGetStreamingJobSkuResultInner.sku = GetStreamingJobSkuResultSku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedGetStreamingJobSkuResultInner.capacity = SkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetStreamingJobSkuResultInner;
+        });
     }
 }

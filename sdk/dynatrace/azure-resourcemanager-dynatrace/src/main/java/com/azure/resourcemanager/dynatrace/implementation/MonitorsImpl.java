@@ -40,34 +40,31 @@ public final class MonitorsImpl implements Monitors {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    public MonitorsImpl(
-        MonitorsClient innerClient, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    public MonitorsImpl(MonitorsClient innerClient,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoredResourceInner> inner =
-            this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<MonitoredResourceInner> inner =
-            this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
+    public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context) {
+        PagedIterable<MonitoredResourceInner> inner
+            = this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
     }
 
-    public Response<VMExtensionPayload> getVMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<VMExtensionPayloadInner> inner =
-            this.serviceClient().getVMHostPayloadWithResponse(resourceGroupName, monitorName, context);
+    public Response<VMExtensionPayload> getVMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<VMExtensionPayloadInner> inner
+            = this.serviceClient().getVMHostPayloadWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VMExtensionPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -83,15 +80,12 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public Response<MonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<MonitorResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
+    public Response<MonitorResource> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<MonitorResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MonitorResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -117,44 +111,41 @@ public final class MonitorsImpl implements Monitors {
 
     public PagedIterable<MonitorResource> list() {
         PagedIterable<MonitorResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MonitorResource> list(Context context) {
         PagedIterable<MonitorResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MonitorResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<MonitorResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MonitorResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<MonitorResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
+        PagedIterable<MonitorResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
     }
 
-    public Response<MarketplaceSaaSResourceDetailsResponse> getMarketplaceSaaSResourceDetailsWithResponse(
-        MarketplaceSaaSResourceDetailsRequest request, Context context) {
-        Response<MarketplaceSaaSResourceDetailsResponseInner> inner =
-            this.serviceClient().getMarketplaceSaaSResourceDetailsWithResponse(request, context);
+    public Response<MarketplaceSaaSResourceDetailsResponse>
+        getMarketplaceSaaSResourceDetailsWithResponse(MarketplaceSaaSResourceDetailsRequest request, Context context) {
+        Response<MarketplaceSaaSResourceDetailsResponseInner> inner
+            = this.serviceClient().getMarketplaceSaaSResourceDetailsWithResponse(request, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MarketplaceSaaSResourceDetailsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MarketplaceSaaSResourceDetailsResponse getMarketplaceSaaSResourceDetails(
-        MarketplaceSaaSResourceDetailsRequest request) {
-        MarketplaceSaaSResourceDetailsResponseInner inner =
-            this.serviceClient().getMarketplaceSaaSResourceDetails(request);
+    public MarketplaceSaaSResourceDetailsResponse
+        getMarketplaceSaaSResourceDetails(MarketplaceSaaSResourceDetailsRequest request) {
+        MarketplaceSaaSResourceDetailsResponseInner inner
+            = this.serviceClient().getMarketplaceSaaSResourceDetails(request);
         if (inner != null) {
             return new MarketplaceSaaSResourceDetailsResponseImpl(inner, this.manager());
         } else {
@@ -164,23 +155,20 @@ public final class MonitorsImpl implements Monitors {
 
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName) {
         PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, Context context) {
         PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
     }
 
-    public Response<MetricsStatusResponse> getMetricStatusWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<MetricsStatusResponseInner> inner =
-            this.serviceClient().getMetricStatusWithResponse(resourceGroupName, monitorName, context);
+    public Response<MetricsStatusResponse> getMetricStatusWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<MetricsStatusResponseInner> inner
+            = this.serviceClient().getMetricStatusWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MetricsStatusResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -198,25 +186,22 @@ public final class MonitorsImpl implements Monitors {
 
     public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName) {
         PagedIterable<AppServiceInfoInner> inner = this.serviceClient().listAppServices(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AppServiceInfo> listAppServices(
-        String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<AppServiceInfoInner> inner =
-            this.serviceClient().listAppServices(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
+    public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
+        Context context) {
+        PagedIterable<AppServiceInfoInner> inner
+            = this.serviceClient().listAppServices(resourceGroupName, monitorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
     }
 
-    public Response<SsoDetailsResponse> getSsoDetailsWithResponse(
-        String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context) {
-        Response<SsoDetailsResponseInner> inner =
-            this.serviceClient().getSsoDetailsWithResponse(resourceGroupName, monitorName, request, context);
+    public Response<SsoDetailsResponse> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context) {
+        Response<SsoDetailsResponseInner> inner
+            = this.serviceClient().getSsoDetailsWithResponse(resourceGroupName, monitorName, request, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SsoDetailsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -232,92 +217,74 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request) {
-        PagedIterable<LinkableEnvironmentResponseInner> inner =
-            this.serviceClient().listLinkableEnvironments(resourceGroupName, monitorName, request);
-        return Utils.mapPage(inner, inner1 -> new LinkableEnvironmentResponseImpl(inner1, this.manager()));
+    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(String resourceGroupName,
+        String monitorName, LinkableEnvironmentRequest request) {
+        PagedIterable<LinkableEnvironmentResponseInner> inner
+            = this.serviceClient().listLinkableEnvironments(resourceGroupName, monitorName, request);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LinkableEnvironmentResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request, Context context) {
-        PagedIterable<LinkableEnvironmentResponseInner> inner =
-            this.serviceClient().listLinkableEnvironments(resourceGroupName, monitorName, request, context);
-        return Utils.mapPage(inner, inner1 -> new LinkableEnvironmentResponseImpl(inner1, this.manager()));
+    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(String resourceGroupName,
+        String monitorName, LinkableEnvironmentRequest request, Context context) {
+        PagedIterable<LinkableEnvironmentResponseInner> inner
+            = this.serviceClient().listLinkableEnvironments(resourceGroupName, monitorName, request, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LinkableEnvironmentResponseImpl(inner1, this.manager()));
     }
 
     public MonitorResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
 
     public Response<MonitorResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         this.delete(resourceGroupName, monitorName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         this.delete(resourceGroupName, monitorName, context);
     }

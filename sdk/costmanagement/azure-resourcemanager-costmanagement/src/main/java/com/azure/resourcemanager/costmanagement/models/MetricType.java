@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Metric to use when displaying costs. */
+/**
+ * Metric to use when displaying costs.
+ */
 public final class MetricType extends ExpandableStringEnum<MetricType> {
-    /** Static value ActualCost for MetricType. */
+    /**
+     * Static value ActualCost for MetricType.
+     */
     public static final MetricType ACTUAL_COST = fromString("ActualCost");
 
-    /** Static value AmortizedCost for MetricType. */
+    /**
+     * Static value AmortizedCost for MetricType.
+     */
     public static final MetricType AMORTIZED_COST = fromString("AmortizedCost");
 
-    /** Static value AHUB for MetricType. */
+    /**
+     * Static value AHUB for MetricType.
+     */
     public static final MetricType AHUB = fromString("AHUB");
 
     /**
      * Creates a new instance of MetricType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MetricType extends ExpandableStringEnum<MetricType> {
 
     /**
      * Creates or finds a MetricType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricType.
      */
-    @JsonCreator
     public static MetricType fromString(String name) {
         return fromString(name, MetricType.class);
     }
 
     /**
      * Gets known MetricType values.
-     *
+     * 
      * @return known MetricType values.
      */
     public static Collection<MetricType> values() {

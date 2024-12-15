@@ -23,11 +23,8 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of a virtual machine instance in an Azure virtual machine scale set. */
 @Fluent
 public interface VirtualMachineScaleSetVM
-    extends Resource,
-        ChildResource<VirtualMachineScaleSet>,
-        Refreshable<VirtualMachineScaleSetVM>,
-        Updatable<VirtualMachineScaleSetVM.Update>,
-        HasInnerModel<VirtualMachineScaleSetVMInner> {
+    extends Resource, ChildResource<VirtualMachineScaleSet>, Refreshable<VirtualMachineScaleSetVM>,
+    Updatable<VirtualMachineScaleSetVM.Update>, HasInnerModel<VirtualMachineScaleSetVMInner> {
     /** @return the instance ID assigned to this virtual machine instance */
     String instanceId();
 
@@ -317,8 +314,8 @@ public interface VirtualMachineScaleSetVM
          * @param storageAccountTypes the storage account type
          * @return the next stage of the update
          */
-        Update withExistingDataDisk(
-            Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes);
+        Update withExistingDataDisk(Disk dataDisk, int lun, CachingTypes cachingTypes,
+            StorageAccountTypes storageAccountTypes);
 
         /**
          * Detaches an existing data disk from this VMSS virtual machine.

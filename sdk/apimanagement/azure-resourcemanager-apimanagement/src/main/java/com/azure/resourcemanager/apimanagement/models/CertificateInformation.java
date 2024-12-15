@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** SSL certificate information. */
+/**
+ * SSL certificate information.
+ */
 @Fluent
-public final class CertificateInformation {
+public final class CertificateInformation implements JsonSerializable<CertificateInformation> {
     /*
      * Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
      * specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "expiry", required = true)
     private OffsetDateTime expiry;
 
     /*
      * Thumbprint of the certificate.
      */
-    @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
     /*
      * Subject of the certificate.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
-    /** Creates an instance of CertificateInformation class. */
+    /**
+     * Creates an instance of CertificateInformation class.
+     */
     public CertificateInformation() {
     }
 
     /**
      * Get the expiry property: Expiration date of the certificate. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -48,7 +55,7 @@ public final class CertificateInformation {
     /**
      * Set the expiry property: Expiration date of the certificate. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the CertificateInformation object itself.
      */
@@ -59,7 +66,7 @@ public final class CertificateInformation {
 
     /**
      * Get the thumbprint property: Thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -68,7 +75,7 @@ public final class CertificateInformation {
 
     /**
      * Set the thumbprint property: Thumbprint of the certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateInformation object itself.
      */
@@ -79,7 +86,7 @@ public final class CertificateInformation {
 
     /**
      * Get the subject property: Subject of the certificate.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -88,7 +95,7 @@ public final class CertificateInformation {
 
     /**
      * Set the subject property: Subject of the certificate.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CertificateInformation object itself.
      */
@@ -99,27 +106,69 @@ public final class CertificateInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expiry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expiry in model CertificateInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expiry in model CertificateInformation"));
         }
         if (thumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property thumbprint in model CertificateInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property thumbprint in model CertificateInformation"));
         }
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subject in model CertificateInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subject in model CertificateInformation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateInformation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("subject", this.subject);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateInformation.
+     */
+    public static CertificateInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateInformation deserializedCertificateInformation = new CertificateInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expiry".equals(fieldName)) {
+                    deserializedCertificateInformation.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateInformation.thumbprint = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCertificateInformation.subject = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateInformation;
+        });
+    }
 }

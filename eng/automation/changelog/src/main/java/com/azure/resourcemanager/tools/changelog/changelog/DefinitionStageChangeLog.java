@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.tools.changelog.changelog;
 
 import com.azure.resourcemanager.tools.changelog.utils.AllMethods;
+import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
 import com.azure.resourcemanager.tools.changelog.utils.ClassName;
 import com.azure.resourcemanager.tools.changelog.utils.MethodName;
 import japicmp.model.JApiMethod;
@@ -24,6 +25,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
 
     DefinitionStageChangeLog(Map<String, AllMethods> allStages, String parentClass) {
         this.parentClass = parentClass;
+        this.breakingChange = BreakingChange.onJavaClass(this.parentClass);
         oldMethodStages = new ArrayList<>();
         newMethodStages = new ArrayList<>();
         AllMethods blankStage = allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().get().getValue();
@@ -76,34 +78,22 @@ public class DefinitionStageChangeLog extends ChangeLog {
                 if (newMethodStages.get(i).contains(method)) {
                     switch (method.getChangeStatus()) {
                         case REMOVED:
-                            addClassTitle(breakingChange);
-                            breakingChange.add(String.format("* `%s` was removed in stage %d", MethodName.name(method.getOldMethod().get()), i + 1));
+                            breakingChange.addMethodLevelChange(String.format("`%s` was removed in stage %d", MethodName.name(method.getOldMethod().get()), i + 1));
                             break;
                         case MODIFIED:
                             if (!method.getOldMethod().get().getLongName().equals(method.getNewMethod().get().getLongName())) {
-                                addClassTitle(breakingChange);
-                                breakingChange.add(String.format("* `%s` -> `%s` in stage %d", MethodName.name(method.getOldMethod().get()), MethodName.name(method.getNewMethod().get()), i + 1));
+                                breakingChange.addMethodLevelChange(String.format("`%s` -> `%s` in stage %d", MethodName.name(method.getOldMethod().get()), MethodName.name(method.getNewMethod().get()), i + 1));
                             }
                             break;
                     }
                 } else if (method.getOldMethod().isPresent()) {
-                    addClassTitle(breakingChange);
-                    breakingChange.add(String.format("* `%s` was removed in stage %d", MethodName.name(method.getOldMethod().get()), i + 1));
+                    breakingChange.addMethodLevelChange(String.format("`%s` was removed in stage %d", MethodName.name(method.getOldMethod().get()), i + 1));
                 }
             }
         }
         if (newSize > oldSize) {
             List<String> newStages = IntStream.range(oldSize + 1, newSize + 1).boxed().map(Object::toString).collect(Collectors.toList());
-            addClassTitle(breakingChange);
-            breakingChange.add(String.format("* Stage %s was added", String.join(", ", newStages)));
-        }
-    }
-
-    @Override
-    protected void addClassTitle(List<String> list) {
-        if (list.isEmpty()) {
-            list.add(String.format("#### `%s` was modified", parentClass));
-            list.add("");
+            breakingChange.addStageLevelChange(String.format("Required stage %s was added", String.join(", ", newStages)));
         }
     }
 }

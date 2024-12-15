@@ -22,7 +22,8 @@ import java.util.List;
 /** The properties of a server. */
 @Fluent
 public final class ServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerProperties.class);
 
     /*
      * The administrator's login name of a server. Can only be specified when

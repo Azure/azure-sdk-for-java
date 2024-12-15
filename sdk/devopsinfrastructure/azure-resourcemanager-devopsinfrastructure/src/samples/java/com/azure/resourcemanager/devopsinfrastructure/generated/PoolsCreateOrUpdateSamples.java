@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-04-preview/CreateOrUpdatePool.json
+     * x-ms-original-file: 2024-10-19/CreateOrUpdatePool.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.

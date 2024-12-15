@@ -38,19 +38,31 @@ public final class HyperVVirtualMachineDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVVirtualMachineDetails model
-            = new HyperVVirtualMachineDetails().withSourceItemId("igglclwalhvub").withGeneration("zphetxdqcm")
-                .withOsDetails(new OSDetails().withOsType("ajqzj").withProductType("lecxbibiwks").withOsEdition("gyxs")
-                    .withOSVersion("pzvoikv").withOSMajorVersion("wczfzwushlcx").withOSMinorVersion("lalhhezpfkiss"))
-                .withDiskDetails(Arrays.asList(
-                    new DiskDetails().withMaxSizeMB(8933439553335588786L).withVhdType("aoq").withVhdId("gpto")
-                        .withVhdName("jq"),
-                    new DiskDetails().withMaxSizeMB(8153507398057204968L).withVhdType("nlrtbfijzz").withVhdId("o")
-                        .withVhdName("olbuauktwieope"),
-                    new DiskDetails().withMaxSizeMB(6227229278544049294L).withVhdType("dwrswyiljpi")
-                        .withVhdId("gxyxyauxredd").withVhdName("mcnltmwytkujsqyc")))
-                .withHasPhysicalDisk(PresenceStatus.NOT_PRESENT).withHasFibreChannelAdapter(PresenceStatus.PRESENT)
-                .withHasSharedVhd(PresenceStatus.PRESENT).withHyperVHostId("qgpwbmwhr");
+        HyperVVirtualMachineDetails model = new HyperVVirtualMachineDetails().withSourceItemId("igglclwalhvub")
+            .withGeneration("zphetxdqcm")
+            .withOsDetails(new OSDetails().withOsType("ajqzj")
+                .withProductType("lecxbibiwks")
+                .withOsEdition("gyxs")
+                .withOSVersion("pzvoikv")
+                .withOSMajorVersion("wczfzwushlcx")
+                .withOSMinorVersion("lalhhezpfkiss"))
+            .withDiskDetails(Arrays.asList(
+                new DiskDetails().withMaxSizeMB(8933439553335588786L)
+                    .withVhdType("aoq")
+                    .withVhdId("gpto")
+                    .withVhdName("jq"),
+                new DiskDetails().withMaxSizeMB(8153507398057204968L)
+                    .withVhdType("nlrtbfijzz")
+                    .withVhdId("o")
+                    .withVhdName("olbuauktwieope"),
+                new DiskDetails().withMaxSizeMB(6227229278544049294L)
+                    .withVhdType("dwrswyiljpi")
+                    .withVhdId("gxyxyauxredd")
+                    .withVhdName("mcnltmwytkujsqyc")))
+            .withHasPhysicalDisk(PresenceStatus.NOT_PRESENT)
+            .withHasFibreChannelAdapter(PresenceStatus.PRESENT)
+            .withHasSharedVhd(PresenceStatus.PRESENT)
+            .withHyperVHostId("qgpwbmwhr");
         model = BinaryData.fromObject(model).toObject(HyperVVirtualMachineDetails.class);
         Assertions.assertEquals("igglclwalhvub", model.sourceItemId());
         Assertions.assertEquals("zphetxdqcm", model.generation());

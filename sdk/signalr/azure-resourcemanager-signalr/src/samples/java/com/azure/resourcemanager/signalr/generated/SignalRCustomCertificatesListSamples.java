@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalRCustomCertificates List. */
+/**
+ * Samples for SignalRCustomCertificates List.
+ */
 public final class SignalRCustomCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_List.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRCustomCertificates_List.json
      */
     /**
      * Sample code: SignalRCustomCertificates_List.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRCustomCertificatesList(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRCustomCertificates()
+        manager.signalRCustomCertificates()
             .list("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

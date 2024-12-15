@@ -18,12 +18,8 @@ import java.util.List;
 
 /** Type representing ManagementPolicy. */
 @Fluent
-public interface ManagementPolicy
-    extends HasInnerModel<ManagementPolicyInner>,
-        Indexable,
-        Refreshable<ManagementPolicy>,
-        Updatable<ManagementPolicy.Update>,
-        HasManager<StorageManager> {
+public interface ManagementPolicy extends HasInnerModel<ManagementPolicyInner>, Indexable,
+    Refreshable<ManagementPolicy>, Updatable<ManagementPolicy.Update>, HasManager<StorageManager> {
     /** @return the id value. */
     String id();
 
@@ -43,11 +39,8 @@ public interface ManagementPolicy
     List<PolicyRule> rules();
 
     /** The entirety of the ManagementPolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithRule,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithRule,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of ManagementPolicy definition stages. */
@@ -88,6 +81,7 @@ public interface ManagementPolicy
         interface WithCreate extends Creatable<ManagementPolicy>, ManagementPolicy.DefinitionStages.WithRule {
         }
     }
+
     /** The template for a ManagementPolicy update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<ManagementPolicy>, UpdateStages.WithPolicy, UpdateStages.Rule {
     }

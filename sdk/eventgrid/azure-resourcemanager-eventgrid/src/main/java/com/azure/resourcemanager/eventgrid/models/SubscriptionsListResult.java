@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the List event subscriptions operation.
  */
 @Fluent
-public final class SubscriptionsListResult {
+public final class SubscriptionsListResult implements JsonSerializable<SubscriptionsListResult> {
     /*
      * A collection of Subscriptions.
      */
-    @JsonProperty(value = "value")
     private List<SubscriptionInner> value;
 
     /*
      * A link for the next page of event subscriptions
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class SubscriptionsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionsListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionsListResult.
+     */
+    public static SubscriptionsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionsListResult deserializedSubscriptionsListResult = new SubscriptionsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SubscriptionInner> value = reader.readArray(reader1 -> SubscriptionInner.fromJson(reader1));
+                    deserializedSubscriptionsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSubscriptionsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionsListResult;
+        });
     }
 }

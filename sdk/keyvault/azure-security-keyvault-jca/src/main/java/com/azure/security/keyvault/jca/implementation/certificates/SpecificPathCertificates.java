@@ -118,7 +118,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
         }
         aliases.add(alias);
         certificates.put(alias, certificate);
-        certificateChains.put(alias, new Certificate[]{certificate});
+        certificateChains.put(alias, new Certificate[] { certificate });
     }
 
     /**
@@ -136,7 +136,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
                 setCertificateEntry(alias, certificate);
                 certificateChains.put(alias, loadX509CertificatesFromFile(inputStream));
                 LOGGER.log(INFO, "Load certificate from specific path. alias = {0}, thumbprint = {1}, file = {2}",
-                    new Object[]{alias, getThumbprint(certificate), file.getName()});
+                    new Object[] { alias, getThumbprint(certificate), file.getName() });
             }
         } catch (CertificateException e) {
             LOGGER.log(WARNING, "Unable to load certificate from: " + file.getName(), e);
@@ -195,13 +195,13 @@ public final class SpecificPathCertificates implements AzureCertificates {
         File filePackage = new File(certificatePath);
         File[] array = filePackage.listFiles();
         Optional.ofNullable(array)
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .filter(Objects::nonNull)
-                .filter(File::isFile)
-                .filter(File::exists)
-                .filter(File::canRead)
-                .forEach(files::add);
+            .map(Arrays::stream)
+            .orElseGet(Stream::empty)
+            .filter(Objects::nonNull)
+            .filter(File::isFile)
+            .filter(File::exists)
+            .filter(File::canRead)
+            .forEach(files::add);
         return files;
     }
 

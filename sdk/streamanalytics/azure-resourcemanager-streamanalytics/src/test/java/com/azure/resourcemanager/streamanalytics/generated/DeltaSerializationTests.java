@@ -13,18 +13,18 @@ public final class DeltaSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeltaSerialization model = BinaryData.fromString(
-            "{\"type\":\"Delta\",\"properties\":{\"deltaTablePath\":\"wifto\",\"partitionColumns\":[\"vpuvks\",\"plsaknynfsynljph\",\"op\",\"odlqiyntor\"]}}")
+            "{\"type\":\"Delta\",\"properties\":{\"deltaTablePath\":\"osjswsr\",\"partitionColumns\":[\"yzrpzbchckqqzq\",\"ox\",\"ysuiizynkedya\",\"rwyhqmibzyhwitsm\"]}}")
             .toObject(DeltaSerialization.class);
-        Assertions.assertEquals("wifto", model.deltaTablePath());
-        Assertions.assertEquals("vpuvks", model.partitionColumns().get(0));
+        Assertions.assertEquals("osjswsr", model.deltaTablePath());
+        Assertions.assertEquals("yzrpzbchckqqzq", model.partitionColumns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeltaSerialization model = new DeltaSerialization().withDeltaTablePath("wifto")
-            .withPartitionColumns(Arrays.asList("vpuvks", "plsaknynfsynljph", "op", "odlqiyntor"));
+        DeltaSerialization model = new DeltaSerialization().withDeltaTablePath("osjswsr")
+            .withPartitionColumns(Arrays.asList("yzrpzbchckqqzq", "ox", "ysuiizynkedya", "rwyhqmibzyhwitsm"));
         model = BinaryData.fromObject(model).toObject(DeltaSerialization.class);
-        Assertions.assertEquals("wifto", model.deltaTablePath());
-        Assertions.assertEquals("vpuvks", model.partitionColumns().get(0));
+        Assertions.assertEquals("osjswsr", model.deltaTablePath());
+        Assertions.assertEquals("yzrpzbchckqqzq", model.partitionColumns().get(0));
     }
 }

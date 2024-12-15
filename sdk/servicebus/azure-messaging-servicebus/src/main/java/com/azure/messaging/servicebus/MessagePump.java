@@ -44,7 +44,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 final class MessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
-    private final long  pumpId;
+    private final long pumpId;
     private final ServiceBusReceiverAsyncClient client;
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -108,31 +108,33 @@ final class MessagePump {
         logCPUResourcesConcurrencyMismatch();
         final Mono<Void> terminatePumping = pollConnectionState();
         final Mono<Void> pumping = client.nonSessionProcessorReceiveV2()
-            .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
+            .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1)
+            .then();
 
         final Mono<Void> pumpingMessages = Mono.firstWithSignal(pumping, terminatePumping);
 
-        return pumpingMessages
-            .onErrorMap(e -> {
-                if (e instanceof MessagePumpTerminatedException) {
-                    // Source of 'e': pollConnectionState.
-                    return e;
-                }
-                // 'e' propagated from client.nonSessionProcessorReceiveV2.
-                return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map", e);
-            })
-            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
+        return pumpingMessages.onErrorMap(e -> {
+            if (e instanceof MessagePumpTerminatedException) {
+                // Source of 'e': pollConnectionState.
+                return e;
+            }
+            // 'e' propagated from client.nonSessionProcessorReceiveV2.
+            return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map",
+                e);
+        })
+            .then(Mono.error(
+                () -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
-        return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
-            .handle((ignored, sink) -> {
-                if (client.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo()
-                        .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "non-session#connection-state-poll"));
-                    sink.error(e);
-                }
-            }).then();
+        return Flux.interval(CONNECTION_STATE_POLL_INTERVAL).handle((ignored, sink) -> {
+            if (client.isConnectionClosed()) {
+                final RuntimeException e = logger.atInfo()
+                    .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath,
+                        "non-session#connection-state-poll"));
+                sink.error(e);
+            }
+        }).then();
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {

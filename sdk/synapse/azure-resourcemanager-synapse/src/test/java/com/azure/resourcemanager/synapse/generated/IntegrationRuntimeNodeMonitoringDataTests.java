@@ -12,38 +12,21 @@ import java.util.Map;
 public final class IntegrationRuntimeNodeMonitoringDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeNodeMonitoringData model =
-            BinaryData
-                .fromString(
-                    "{\"nodeName\":\"vmfqhppubo\",\"availableMemoryInMB\":1380428673,\"cpuUtilization\":1908236647,\"concurrentJobsLimit\":61402651,\"concurrentJobsRunning\":58075104,\"maxConcurrentJobs\":342947659,\"sentBytes\":99.36763,\"receivedBytes\":14.429962,\"\":{\"kauxof\":\"datatcjuahokqto\",\"ywhslwkojpllndnp\":\"datahfphwpnulaiywze\"}}")
-                .toObject(IntegrationRuntimeNodeMonitoringData.class);
+        IntegrationRuntimeNodeMonitoringData model = BinaryData.fromString(
+            "{\"nodeName\":\"srrryejylmbkzu\",\"availableMemoryInMB\":1007245359,\"cpuUtilization\":986601993,\"concurrentJobsLimit\":1684917507,\"concurrentJobsRunning\":2004521886,\"maxConcurrentJobs\":784814227,\"sentBytes\":52.939053,\"receivedBytes\":40.327175,\"\":{\"fqyhqoto\":\"datazzjgnr\",\"pzdqtvhcspod\":\"datahiqakydiwfbrk\",\"lbmoichd\":\"dataqaxsipietgbebjf\"}}")
+            .toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeNodeMonitoringData model =
-            new IntegrationRuntimeNodeMonitoringData()
-                .withAdditionalProperties(
-                    mapOf(
-                        "nodeName",
-                        "vmfqhppubo",
-                        "cpuUtilization",
-                        1908236647,
-                        "receivedBytes",
-                        14.429962f,
-                        "concurrentJobsLimit",
-                        61402651,
-                        "concurrentJobsRunning",
-                        58075104,
-                        "maxConcurrentJobs",
-                        342947659,
-                        "availableMemoryInMB",
-                        1380428673,
-                        "sentBytes",
-                        99.36763f));
+        IntegrationRuntimeNodeMonitoringData model = new IntegrationRuntimeNodeMonitoringData()
+            .withAdditionalProperties(mapOf("nodeName", "srrryejylmbkzu", "cpuUtilization", 986601993, "receivedBytes",
+                40.327175f, "concurrentJobsLimit", 1684917507, "concurrentJobsRunning", 2004521886, "maxConcurrentJobs",
+                784814227, "availableMemoryInMB", 1007245359, "sentBytes", 52.939053f));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

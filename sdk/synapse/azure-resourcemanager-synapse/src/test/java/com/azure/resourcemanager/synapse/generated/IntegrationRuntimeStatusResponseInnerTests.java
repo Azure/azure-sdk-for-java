@@ -13,25 +13,20 @@ import java.util.Map;
 public final class IntegrationRuntimeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cpzgpxtiv\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"knidib\",\"state\":\"Offline\",\"\":{\"r\":\"datap\",\"rmzvupo\":\"datagovfgpikqmhhaow\"}}}")
-                .toObject(IntegrationRuntimeStatusResponseInner.class);
+        IntegrationRuntimeStatusResponseInner model = BinaryData.fromString(
+            "{\"name\":\"ycjimryvwgcwwpbm\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"w\",\"state\":\"Stopping\",\"\":{\"leallklm\":\"dataxwefohecbvopwndy\",\"rdfjmzsyzfhotl\":\"datakhlowkxxpv\"}}}")
+            .toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            new IntegrationRuntimeStatusResponseInner()
-                .withProperties(
-                    new IntegrationRuntimeStatus()
-                        .withAdditionalProperties(
-                            mapOf(
-                                "dataFactoryName", "knidib", "state", "Offline", "type", "IntegrationRuntimeStatus")));
+        IntegrationRuntimeStatusResponseInner model = new IntegrationRuntimeStatusResponseInner()
+            .withProperties(new IntegrationRuntimeStatus().withAdditionalProperties(
+                mapOf("dataFactoryName", "w", "state", "Stopping", "type", "IntegrationRuntimeStatus")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,47 +5,47 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioInputs;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioOutputColumn;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The binding properties associated with an Azure Machine learning Studio.
  */
 @Fluent
-public final class AzureMachineLearningStudioFunctionBindingProperties {
+public final class AzureMachineLearningStudioFunctionBindingProperties
+    implements JsonSerializable<AzureMachineLearningStudioFunctionBindingProperties> {
     /*
      * The Request-Response execute endpoint of the Azure Machine Learning Studio. Find out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-
      * service-rrs
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * The API key used to authenticate with Request-Response endpoint.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * The inputs for the Azure Machine Learning Studio endpoint.
      */
-    @JsonProperty(value = "inputs")
     private AzureMachineLearningStudioInputs inputs;
 
     /*
      * A list of outputs from the Azure Machine Learning Studio endpoint execution.
      */
-    @JsonProperty(value = "outputs")
     private List<AzureMachineLearningStudioOutputColumn> outputs;
 
     /*
      * Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is
      * 1000.
      */
-    @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /**
@@ -173,5 +173,59 @@ public final class AzureMachineLearningStudioFunctionBindingProperties {
         if (outputs() != null) {
             outputs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeJsonField("inputs", this.inputs);
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("batchSize", this.batchSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningStudioFunctionBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningStudioFunctionBindingProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningStudioFunctionBindingProperties.
+     */
+    public static AzureMachineLearningStudioFunctionBindingProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningStudioFunctionBindingProperties deserializedAzureMachineLearningStudioFunctionBindingProperties
+                = new AzureMachineLearningStudioFunctionBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingProperties.endpoint = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingProperties.apiKey = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingProperties.inputs
+                        = AzureMachineLearningStudioInputs.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    List<AzureMachineLearningStudioOutputColumn> outputs
+                        = reader.readArray(reader1 -> AzureMachineLearningStudioOutputColumn.fromJson(reader1));
+                    deserializedAzureMachineLearningStudioFunctionBindingProperties.outputs = outputs;
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingProperties.batchSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningStudioFunctionBindingProperties;
+        });
     }
 }

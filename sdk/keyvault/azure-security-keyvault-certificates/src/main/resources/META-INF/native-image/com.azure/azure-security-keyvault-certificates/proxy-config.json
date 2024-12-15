@@ -1,6 +1,6 @@
 [
   [
-    "com.azure.security.keyvault.certificates.implementation.CertificateClientImpl$CertificateService"
+    "com.azure.security.keyvault.certificates.implementation.CertificateClientImpl$CertificateClientService"
   ],
   [
     "com.microsoft.aad.msal4jextensions.persistence.mac.ISecurityLibrary"

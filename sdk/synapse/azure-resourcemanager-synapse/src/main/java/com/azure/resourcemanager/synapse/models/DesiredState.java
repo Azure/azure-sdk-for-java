@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Desired state. */
+/**
+ * Desired state.
+ */
 public enum DesiredState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a DesiredState instance. */
+    /**
+     * The actual serialized value for a DesiredState instance.
+     */
     private final String value;
 
     DesiredState(String value) {
@@ -24,11 +29,10 @@ public enum DesiredState {
 
     /**
      * Parses a serialized value to a DesiredState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DesiredState object, or null if unable to parse.
      */
-    @JsonCreator
     public static DesiredState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum DesiredState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

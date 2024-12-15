@@ -34,12 +34,15 @@ public final class FunctionsCreateOrReplaceSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createACLRUdfFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().define("function588").withExistingStreamingjob("sjrg", "sjName")
+        manager.functions()
+            .define("function588")
+            .withExistingStreamingjob("sjrg", "sjName")
             .withProperties(new ScalarFunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
                 .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
                 .withBinding(new CSharpFunctionBinding().withDllPath("ASAEdgeApplication2_CodeBehind")
-                    .withClassProperty("ASAEdgeUDFDemo.Class1").withMethod("SquareFunction")
+                    .withClassProperty("ASAEdgeUDFDemo.Class1")
+                    .withMethod("SquareFunction")
                     .withUpdateMode(UpdateMode.STATIC)))
             .create();
     }
@@ -56,17 +59,22 @@ public final class FunctionsCreateOrReplaceSamples {
      */
     public static void
         createAnAzureMLServiceFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().define("function588").withExistingStreamingjob("sjrg", "sjName")
+        manager.functions()
+            .define("function588")
+            .withExistingStreamingjob("sjrg", "sjName")
             .withProperties(new ScalarFunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
                 .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
                 .withBinding(new AzureMachineLearningServiceFunctionBinding().withEndpoint("someAzureMLEndpointURL")
                     .withApiKey("fakeTokenPlaceholder")
                     .withInputs(Arrays.asList(new AzureMachineLearningServiceInputColumn().withName("data")
-                        .withDataType("array").withMapTo(0)))
+                        .withDataType("array")
+                        .withMapTo(0)))
                     .withOutputs(Arrays.asList(
                         new AzureMachineLearningServiceOutputColumn().withName("Sentiment").withDataType("string")))
-                    .withBatchSize(1000).withNumberOfParallelRequests(1).withInputRequestName("Inputs")
+                    .withBatchSize(1000)
+                    .withNumberOfParallelRequests(1)
+                    .withInputRequestName("Inputs")
                     .withOutputResponseName("Results")))
             .create();
     }
@@ -83,7 +91,9 @@ public final class FunctionsCreateOrReplaceSamples {
      */
     public static void
         createAJavaScriptFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().define("function8197").withExistingStreamingjob("sjrg1637", "sj8653")
+        manager.functions()
+            .define("function8197")
+            .withExistingStreamingjob("sjrg1637", "sj8653")
             .withProperties(
                 new ScalarFunctionProperties().withInputs(Arrays.asList(new FunctionInput().withDataType("Any")))
                     .withOutput(new FunctionOutput().withDataType("Any"))
@@ -103,7 +113,9 @@ public final class FunctionsCreateOrReplaceSamples {
      */
     public static void
         createAnAzureMLFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().define("function588").withExistingStreamingjob("sjrg7", "sj9093")
+        manager.functions()
+            .define("function588")
+            .withExistingStreamingjob("sjrg7", "sj9093")
             .withProperties(new ScalarFunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("nvarchar(max)")))
                 .withOutput(new FunctionOutput().withDataType("nvarchar(max)"))
@@ -111,7 +123,8 @@ public final class FunctionsCreateOrReplaceSamples {
                     .withApiKey("fakeTokenPlaceholder")
                     .withInputs(new AzureMachineLearningStudioInputs().withName("input1")
                         .withColumnNames(Arrays.asList(new AzureMachineLearningStudioInputColumn().withName("tweet")
-                            .withDataType("string").withMapTo(0))))
+                            .withDataType("string")
+                            .withMapTo(0))))
                     .withOutputs(Arrays.asList(
                         new AzureMachineLearningStudioOutputColumn().withName("Sentiment").withDataType("string")))
                     .withBatchSize(1000)))

@@ -5,32 +5,64 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilizationSummaryInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.IncludedQuantityUtilizationSummaryProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-/** Included Quantity utilization summary resource. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("IncludedQuantity")
+/**
+ * Included Quantity utilization summary resource.
+ */
 @Fluent
 public final class IncludedQuantityUtilizationSummary extends BenefitUtilizationSummaryInner {
     /*
+     * Supported values: 'SavingsPlan'.
+     */
+    private BenefitKind kind = BenefitKind.INCLUDED_QUANTITY;
+
+    /*
      * Included Quantity utilization summary properties.
      */
-    @JsonProperty(value = "properties")
     private IncludedQuantityUtilizationSummaryProperties innerProperties;
 
-    /** Creates an instance of IncludedQuantityUtilizationSummary class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IncludedQuantityUtilizationSummary class.
+     */
     public IncludedQuantityUtilizationSummary() {
     }
 
     /**
+     * Get the kind property: Supported values: 'SavingsPlan'.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public BenefitKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Included Quantity utilization summary properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IncludedQuantityUtilizationSummaryProperties innerProperties() {
@@ -38,8 +70,38 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the utilizationPercentage property: This is the utilized percentage for the benefit ID.
-     *
+     * 
      * @return the utilizationPercentage value.
      */
     public BigDecimal utilizationPercentage() {
@@ -48,7 +110,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Get the armSkuName property: ARM SKU name. For example, 'Compute_Savings_Plan' for savings plan.
-     *
+     * 
      * @return the armSkuName value.
      */
     public String armSkuName() {
@@ -57,7 +119,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Get the benefitId property: The benefit ID is the identifier of the benefit.
-     *
+     * 
      * @return the benefitId value.
      */
     public String benefitId() {
@@ -66,7 +128,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Get the benefitOrderId property: The benefit order ID is the identifier for a benefit purchase.
-     *
+     * 
      * @return the benefitOrderId value.
      */
     public String benefitOrderId() {
@@ -75,7 +137,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Get the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @return the benefitType value.
      */
     public BenefitKind benefitType() {
@@ -84,7 +146,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Set the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @param benefitType the benefitType value to set.
      * @return the IncludedQuantityUtilizationSummary object itself.
      */
@@ -99,7 +161,7 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
     /**
      * Get the usageDate property: Date corresponding to the utilization summary record. If the grain of data is
      * monthly, value for this field will be first day of the month.
-     *
+     * 
      * @return the usageDate value.
      */
     public OffsetDateTime usageDate() {
@@ -108,14 +170,61 @@ public final class IncludedQuantityUtilizationSummary extends BenefitUtilization
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncludedQuantityUtilizationSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncludedQuantityUtilizationSummary if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncludedQuantityUtilizationSummary.
+     */
+    public static IncludedQuantityUtilizationSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncludedQuantityUtilizationSummary deserializedIncludedQuantityUtilizationSummary
+                = new IncludedQuantityUtilizationSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIncludedQuantityUtilizationSummary.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIncludedQuantityUtilizationSummary.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIncludedQuantityUtilizationSummary.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIncludedQuantityUtilizationSummary.kind = BenefitKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIncludedQuantityUtilizationSummary.innerProperties
+                        = IncludedQuantityUtilizationSummaryProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncludedQuantityUtilizationSummary;
+        });
     }
 }

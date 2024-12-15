@@ -40,7 +40,7 @@ class LockRenewalOperationTest {
         }
     }
 
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     @ParameterizedTest
     void constructor(boolean isSession) {
         // Arrange
@@ -48,10 +48,9 @@ class LockRenewalOperationTest {
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plus(renewalPeriod);
         final Duration maxDuration = Duration.ofSeconds(20);
 
-        final Function<String, Mono<OffsetDateTime>> renewalOperation =
-            token -> A_LOCK_TOKEN.equals(token)
-                ? Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod))
-                : Mono.error(new IllegalArgumentException("did not expect : " + token));
+        final Function<String, Mono<OffsetDateTime>> renewalOperation = token -> A_LOCK_TOKEN.equals(token)
+            ? Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod))
+            : Mono.error(new IllegalArgumentException("did not expect : " + token));
 
         // Act
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
@@ -109,8 +108,8 @@ class LockRenewalOperationTest {
         // Act
         StepVerifier.create(operation.getCompletionOperation())
             .thenAwait(totalSleepPeriod)
-            .expectErrorMatches(e -> e instanceof IllegalAccessException
-                && e.getMessage().equals(testError.getMessage()))
+            .expectErrorMatches(
+                e -> e instanceof IllegalAccessException && e.getMessage().equals(testError.getMessage()))
             .verify();
 
         // Assert
@@ -154,11 +153,10 @@ class LockRenewalOperationTest {
         // Assert
         assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
         assertNull(operation.getThrowable());
-        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
+        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String
+            .format("initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
 
-        assertTrue(invocation.get() <= atMost,
-            "Should have had at most x invocations. actual: " + invocation.get());
+        assertTrue(invocation.get() <= atMost, "Should have had at most x invocations. actual: " + invocation.get());
     }
 
     /**
@@ -187,23 +185,18 @@ class LockRenewalOperationTest {
         operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
-        StepVerifier.create(operation.getCompletionOperation())
-            .thenAwait(totalSleepPeriod)
-            .then(() -> {
-                LOGGER.info("Finished renewals for first sleep. Cancelling.");
-                operation.close();
-            })
-            .expectComplete()
-            .verify(renewalPeriod);
+        StepVerifier.create(operation.getCompletionOperation()).thenAwait(totalSleepPeriod).then(() -> {
+            LOGGER.info("Finished renewals for first sleep. Cancelling.");
+            operation.close();
+        }).expectComplete().verify(renewalPeriod);
 
         // Assert
         assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());
         assertNull(operation.getThrowable());
-        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
+        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String
+            .format("initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
 
-        assertTrue(invocation.get() <= atMost,
-            "Should have had at most x invocations. actual: " + invocation.get());
+        assertTrue(invocation.get() <= atMost, "Should have had at most x invocations. actual: " + invocation.get());
     }
 
     /**
@@ -273,10 +266,9 @@ class LockRenewalOperationTest {
         // Assert
         assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
         assertNull(operation.getThrowable());
-        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String.format(
-            "initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
+        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String
+            .format("initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
 
-        assertTrue(invocation.get() >= atLeast,
-            "Should have had at least x invocations. actual: " + invocation.get());
+        assertTrue(invocation.get() >= atLeast, "Should have had at least x invocations. actual: " + invocation.get());
     }
 }

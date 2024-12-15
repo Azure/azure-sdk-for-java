@@ -41,24 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient.
+ */
 public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePrincipalAssignmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabasePrincipalAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabasePrincipalAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabasePrincipalAssignmentsClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DatabasePrincipalAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DatabasePrincipalAssignmentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,90 +73,66 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface DatabasePrincipalAssignmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabasePrincipalAssignmentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatabasePrincipalAssignmentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("databaseName") String databaseName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("databaseName") String databaseName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabasePrincipalAssignmentInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("databaseName") String databaseName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabasePrincipalAssignmentListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatabasePrincipalAssignmentListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -161,19 +141,14 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,39 +161,26 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         } else {
             principalAssignmentName.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            principalAssignmentName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName,
+                clusterName, databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                principalAssignmentName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -228,20 +190,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,36 +211,24 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         } else {
             principalAssignmentName.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                principalAssignmentName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), principalAssignmentName, accept, context);
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -294,19 +239,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, databaseName,
+            principalAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -318,20 +259,16 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
         Context context) {
-        return checkNameAvailabilityWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
-            .block();
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, databaseName,
+            principalAssignmentName, context).block();
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -342,19 +279,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityWithResponse(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE)
-            .getValue();
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -363,22 +296,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster database principalAssignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalAssignmentInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+    private Mono<Response<DatabasePrincipalAssignmentInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String principalAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,31 +320,20 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            principalAssignmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterName, databaseName, principalAssignmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -425,26 +343,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster database principalAssignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabasePrincipalAssignmentInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
+    private Mono<Response<DatabasePrincipalAssignmentInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String principalAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -457,28 +367,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                principalAssignmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+            databaseName, principalAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -489,15 +389,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return a Kusto cluster database principalAssignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabasePrincipalAssignmentInner> getAsync(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+    private Mono<DatabasePrincipalAssignmentInner> getAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -509,19 +409,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return a Kusto cluster database principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabasePrincipalAssignmentInner> getWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
+    public Response<DatabasePrincipalAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
             .block();
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -532,15 +428,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return a Kusto cluster database principalAssignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+    public DatabasePrincipalAssignmentInner get(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName) {
         return getWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -550,26 +446,19 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a database principal assignment along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String principalAssignmentName,
         DatabasePrincipalAssignmentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -582,9 +471,8 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -593,26 +481,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            principalAssignmentName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, databaseName, principalAssignmentName, this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -623,27 +500,19 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a database principal assignment along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String principalAssignmentName,
+        DatabasePrincipalAssignmentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -656,9 +525,8 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -667,23 +535,14 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                principalAssignmentName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, principalAssignmentName, this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -696,28 +555,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            String principalAssignmentName,
-            DatabasePrincipalAssignmentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters);
-        return this
-            .client
-            .<DatabasePrincipalAssignmentInner, DatabasePrincipalAssignmentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabasePrincipalAssignmentInner.class,
-                DatabasePrincipalAssignmentInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String databaseName,
+            String principalAssignmentName, DatabasePrincipalAssignmentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            databaseName, principalAssignmentName, parameters);
+        return this.client.<DatabasePrincipalAssignmentInner, DatabasePrincipalAssignmentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatabasePrincipalAssignmentInner.class,
+            DatabasePrincipalAssignmentInner.class, this.client.getContext());
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -731,30 +580,19 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            String principalAssignmentName,
-            DatabasePrincipalAssignmentInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String databaseName,
+            String principalAssignmentName, DatabasePrincipalAssignmentInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, context);
-        return this
-            .client
-            .<DatabasePrincipalAssignmentInner, DatabasePrincipalAssignmentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabasePrincipalAssignmentInner.class,
-                DatabasePrincipalAssignmentInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            databaseName, principalAssignmentName, parameters, context);
+        return this.client.<DatabasePrincipalAssignmentInner, DatabasePrincipalAssignmentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatabasePrincipalAssignmentInner.class,
+            DatabasePrincipalAssignmentInner.class, context);
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -767,12 +605,8 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            String principalAssignmentName,
-            DatabasePrincipalAssignmentInner parameters) {
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+            String principalAssignmentName, DatabasePrincipalAssignmentInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters)
             .getSyncPoller();
@@ -780,7 +614,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -794,22 +628,17 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            String principalAssignmentName,
-            DatabasePrincipalAssignmentInner parameters,
-            Context context) {
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+            String principalAssignmentName, DatabasePrincipalAssignmentInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -821,21 +650,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return class representing a database principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabasePrincipalAssignmentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DatabasePrincipalAssignmentInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, DatabasePrincipalAssignmentInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -848,22 +671,16 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return class representing a database principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabasePrincipalAssignmentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters,
+    private Mono<DatabasePrincipalAssignmentInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, DatabasePrincipalAssignmentInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName,
+            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -875,19 +692,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters) {
+    public DatabasePrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, DatabasePrincipalAssignmentInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters)
             .block();
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -900,21 +713,16 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters,
+    public DatabasePrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, DatabasePrincipalAssignmentInner parameters,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters,
+            context).block();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -925,19 +733,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -950,31 +754,20 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            principalAssignmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterName, databaseName, principalAssignmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -986,23 +779,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1015,28 +800,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                principalAssignmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, principalAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1047,19 +822,17 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1071,23 +844,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1098,16 +866,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        return this
-            .beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1119,20 +886,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1143,16 +905,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1164,20 +925,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1187,14 +943,14 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+    public void delete(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName) {
         deleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName).block();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1205,18 +961,14 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context) {
+    public void delete(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName, Context context) {
         deleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context).block();
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1224,22 +976,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabasePrincipalAssignmentInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<PagedResponse<DatabasePrincipalAssignmentInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1253,28 +1001,16 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatabasePrincipalAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, databaseName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatabasePrincipalAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1283,22 +1019,18 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabasePrincipalAssignmentInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<PagedResponse<DatabasePrincipalAssignmentInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1313,42 +1045,33 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+                databaseName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabasePrincipalAssignmentInner> listAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private PagedFlux<DatabasePrincipalAssignmentInner> listAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1356,36 +1079,36 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabasePrincipalAssignmentInner> listAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private PagedFlux<DatabasePrincipalAssignmentInner> listAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String resourceGroupName, String clusterName, String databaseName) {
+    public PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Lists all Kusto cluster database principalAssignments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -1393,12 +1116,12 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterName, databaseName, context));
     }
 }

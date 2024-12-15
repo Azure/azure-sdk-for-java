@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IpCommunities. */
+/**
+ * Resource collection API of IpCommunities.
+ */
 public interface IpCommunities {
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface IpCommunities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Community resource definition along with {@link Response}.
      */
-    Response<IpCommunity> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipCommunityName, Context context);
+    Response<IpCommunity> getByResourceGroupWithResponse(String resourceGroupName, String ipCommunityName,
+        Context context);
 
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface IpCommunities {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface IpCommunities {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface IpCommunities {
 
     /**
      * List IP Communities by resource group.
-     *
-     * <p>Implements IP Communities list by resource group GET method.
-     *
+     * 
+     * Implements IP Communities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface IpCommunities {
 
     /**
      * List IP Communities by resource group.
-     *
-     * <p>Implements IP Communities list by resource group GET method.
-     *
+     * 
+     * Implements IP Communities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface IpCommunities {
 
     /**
      * List IP Communities by subscription.
-     *
-     * <p>Implements IP Communities list by subscription GET method.
-     *
+     * 
+     * Implements IP Communities list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Communities as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface IpCommunities {
 
     /**
      * List IP Communities by subscription.
-     *
-     * <p>Implements IP Communities list by subscription GET method.
-     *
+     * 
+     * Implements IP Communities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface IpCommunities {
 
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface IpCommunities {
 
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface IpCommunities {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface IpCommunities {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface IpCommunities {
 
     /**
      * Begins definition for a new IpCommunity resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IpCommunity definition.
      */

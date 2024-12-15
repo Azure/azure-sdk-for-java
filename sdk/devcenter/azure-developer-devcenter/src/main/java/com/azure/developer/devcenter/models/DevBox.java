@@ -113,7 +113,7 @@ public final class DevBox implements JsonSerializable<DevBox> {
     private DevBoxImageReference imageReference;
 
     /*
-     * Creation time of this Dev Box.
+     * Creation time of this Dev Box, in RFC3339 format.
      */
     @Generated
     private OffsetDateTime createdTime;
@@ -289,7 +289,7 @@ public final class DevBox implements JsonSerializable<DevBox> {
     }
 
     /**
-     * Get the createdTime property: Creation time of this Dev Box.
+     * Get the createdTime property: Creation time of this Dev Box, in RFC3339 format.
      *
      * @return the createdTime value.
      */

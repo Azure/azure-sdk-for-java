@@ -5,28 +5,50 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of sku availability validation response. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidateSkuAvailability")
+/**
+ * Properties of sku availability validation response.
+ */
 @Immutable
 public final class SkuAvailabilityValidationResponseProperties extends ValidationInputResponse {
     /*
+     * Identifies the type of validation response.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_SKU_AVAILABILITY;
+
+    /*
      * Sku availability validation status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
 
-    /** Creates an instance of SkuAvailabilityValidationResponseProperties class. */
+    /*
+     * Error code and message of validation response.
+     */
+    private CloudError error;
+
+    /**
+     * Creates an instance of SkuAvailabilityValidationResponseProperties class.
+     */
     public SkuAvailabilityValidationResponseProperties() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation response.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the status property: Sku availability validation status.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -34,12 +56,68 @@ public final class SkuAvailabilityValidationResponseProperties extends Validatio
     }
 
     /**
+     * Get the error property: Error code and message of validation response.
+     * 
+     * @return the error value.
+     */
+    @Override
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuAvailabilityValidationResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuAvailabilityValidationResponseProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuAvailabilityValidationResponseProperties.
+     */
+    public static SkuAvailabilityValidationResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuAvailabilityValidationResponseProperties deserializedSkuAvailabilityValidationResponseProperties
+                = new SkuAvailabilityValidationResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationResponseProperties.error = CloudError.fromJson(reader);
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationResponseProperties.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationResponseProperties.status
+                        = ValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuAvailabilityValidationResponseProperties;
+        });
     }
 }

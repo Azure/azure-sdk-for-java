@@ -13,6 +13,7 @@ public final class VirtualMachineDiskOptions {
     private StorageAccountTypes storageAccountType;
     private CachingTypes cachingTypes;
     private DeleteOptions deleteOptions;
+    private Boolean writeAcceleratorEnabled;
 
     // DiskEncryptionSetParameters instance without ID means do not configure.
     // If disk is already encrypted with CMK, it remains so when attached.
@@ -33,6 +34,15 @@ public final class VirtualMachineDiskOptions {
         return deleteOptions;
     }
 
+    /**
+     * Gets whether the write accelerator is enabled. {@literal null} if no change.
+     *
+     * @return whether the write accelerator is enabled
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return writeAcceleratorEnabled;
+    }
+
     /** @return whether disk encryption set is configured,
      * either as the ID of disk encryption set, or as {@code null} to override default configuration. */
     public boolean isDiskEncryptionSetConfigured() {
@@ -49,7 +59,7 @@ public final class VirtualMachineDiskOptions {
 
     /**
      * Sets the storage account type.
-     *
+     * <p>
      * Storage account type configured here will not work when attaching a disk.
      *
      * @param storageAccountType the storage account type
@@ -79,6 +89,21 @@ public final class VirtualMachineDiskOptions {
      */
     public VirtualMachineDiskOptions withDeleteOptions(DeleteOptions deleteOptions) {
         this.deleteOptions = deleteOptions;
+        return this;
+    }
+
+    /**
+     * Enables/disables the write accelerator.
+     * <p>
+     * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+     * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+     * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+     *
+     * @param writeAcceleratorEnabled whether to enable the write accelerator
+     * @return self
+     */
+    public VirtualMachineDiskOptions withWriteAcceleratorEnabled(boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
         return this;
     }
 

@@ -191,25 +191,15 @@ public final class ResourceUtils {
      *                                  if the resource is a generic resource
      * @return the resource ID string
      */
-    public static String constructResourceId(
-            final String subscriptionId,
-            final String resourceGroupName,
-            final String resourceProviderNamespace,
-            final String resourceType,
-            final String resourceName,
-            final String parentResourcePath) {
+    public static String constructResourceId(final String subscriptionId, final String resourceGroupName,
+        final String resourceProviderNamespace, final String resourceType, final String resourceName,
+        final String parentResourcePath) {
         String prefixedParentPath = parentResourcePath;
         if (parentResourcePath != null && !parentResourcePath.isEmpty()) {
             prefixedParentPath = "/" + parentResourcePath;
         }
-        return String.format(
-                "/subscriptions/%s/resourcegroups/%s/providers/%s%s/%s/%s",
-                subscriptionId,
-                resourceGroupName,
-                resourceProviderNamespace,
-                prefixedParentPath,
-                resourceType,
-                resourceName);
+        return String.format("/subscriptions/%s/resourcegroups/%s/providers/%s%s/%s/%s", subscriptionId,
+            resourceGroupName, resourceProviderNamespace, prefixedParentPath, resourceType, resourceName);
     }
 
     /**

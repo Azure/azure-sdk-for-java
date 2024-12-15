@@ -29,14 +29,17 @@ public final class SubscriptionsTestInputSamples {
      */
     public static void
         testTheStreamAnalyticsInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.subscriptions().testInput("West US",
-            new TestInputInner().withInput(new InputInner().withProperties(new StreamInputProperties()
-                .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
-                .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
-                    .withStorageAccounts(Arrays.asList(
-                        new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
-                    .withContainer("state").withPathPattern("{date}/{time}").withDateFormat("yyyy/MM/dd")
-                    .withTimeFormat("HH")))),
-            com.azure.core.util.Context.NONE);
+        manager.subscriptions()
+            .testInput("West US",
+                new TestInputInner().withInput(new InputInner().withProperties(new StreamInputProperties()
+                    .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
+                    .withDatasource(new BlobStreamInputDataSource().withSourcePartitionCount(16)
+                        .withStorageAccounts(Arrays.asList(new StorageAccount().withAccountName("someAccountName")
+                            .withAccountKey("fakeTokenPlaceholder")))
+                        .withContainer("state")
+                        .withPathPattern("{date}/{time}")
+                        .withDateFormat("yyyy/MM/dd")
+                        .withTimeFormat("HH")))),
+                com.azure.core.util.Context.NONE);
     }
 }

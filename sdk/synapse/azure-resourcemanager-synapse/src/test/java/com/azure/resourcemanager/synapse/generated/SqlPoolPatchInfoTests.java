@@ -17,60 +17,58 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolPatchInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"henbtkcxywnytn\":\"xmyskp\"},\"location\":\"yn\",\"sku\":{\"tier\":\"dybyxczfclhaa\",\"name\":\"babphlwrqlfk\",\"capacity\":1003967781},\"properties\":{\"maxSizeBytes\":3711072422112516968,\"collation\":\"cmnyyazttb\",\"sourceDatabaseId\":\"wrqpue\",\"recoverableDatabaseId\":\"kzywbiex\",\"provisioningState\":\"eyueaxibxujwb\",\"status\":\"walm\",\"restorePointInTime\":\"2021-11-10T04:08:23Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-07-26T23:02:26Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-06-08T12:36:20Z\"}}")
-                .toObject(SqlPoolPatchInfo.class);
-        Assertions.assertEquals("xmyskp", model.tags().get("henbtkcxywnytn"));
-        Assertions.assertEquals("yn", model.location());
-        Assertions.assertEquals("dybyxczfclhaa", model.sku().tier());
-        Assertions.assertEquals("babphlwrqlfk", model.sku().name());
-        Assertions.assertEquals(1003967781, model.sku().capacity());
-        Assertions.assertEquals(3711072422112516968L, model.maxSizeBytes());
-        Assertions.assertEquals("cmnyyazttb", model.collation());
-        Assertions.assertEquals("wrqpue", model.sourceDatabaseId());
-        Assertions.assertEquals("kzywbiex", model.recoverableDatabaseId());
-        Assertions.assertEquals("eyueaxibxujwb", model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T04:08:23Z"), model.restorePointInTime());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
-        Assertions.assertEquals(StorageAccountType.LRS, model.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:36:20Z"), model.sourceDatabaseDeletionDate());
+        SqlPoolPatchInfo model = BinaryData.fromString(
+            "{\"tags\":{\"jixisxyawjoyaqcs\":\"flhhcaal\",\"eli\":\"yjpkiidzyexz\"},\"location\":\"nr\",\"sku\":{\"tier\":\"o\",\"name\":\"bnxknalaulppg\",\"capacity\":1987785731},\"properties\":{\"maxSizeBytes\":5149418490652934677,\"collation\":\"yiropu\",\"sourceDatabaseId\":\"igvpgylg\",\"recoverableDatabaseId\":\"itxmedjvcslynqww\",\"provisioningState\":\"wzz\",\"status\":\"gktrmgucnapkte\",\"restorePointInTime\":\"2021-08-31T01:54:16Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-03-29T03:31:11Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-10-30T20:36:32Z\"}}")
+            .toObject(SqlPoolPatchInfo.class);
+        Assertions.assertEquals("flhhcaal", model.tags().get("jixisxyawjoyaqcs"));
+        Assertions.assertEquals("nr", model.location());
+        Assertions.assertEquals("o", model.sku().tier());
+        Assertions.assertEquals("bnxknalaulppg", model.sku().name());
+        Assertions.assertEquals(1987785731, model.sku().capacity());
+        Assertions.assertEquals(5149418490652934677L, model.maxSizeBytes());
+        Assertions.assertEquals("yiropu", model.collation());
+        Assertions.assertEquals("igvpgylg", model.sourceDatabaseId());
+        Assertions.assertEquals("itxmedjvcslynqww", model.recoverableDatabaseId());
+        Assertions.assertEquals("wzz", model.provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T01:54:16Z"), model.restorePointInTime());
+        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, model.createMode());
+        Assertions.assertEquals(StorageAccountType.GRS, model.storageAccountType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T20:36:32Z"), model.sourceDatabaseDeletionDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolPatchInfo model =
-            new SqlPoolPatchInfo()
-                .withTags(mapOf("henbtkcxywnytn", "xmyskp"))
-                .withLocation("yn")
-                .withSku(new Sku().withTier("dybyxczfclhaa").withName("babphlwrqlfk").withCapacity(1003967781))
-                .withMaxSizeBytes(3711072422112516968L)
-                .withCollation("cmnyyazttb")
-                .withSourceDatabaseId("wrqpue")
-                .withRecoverableDatabaseId("kzywbiex")
-                .withProvisioningState("eyueaxibxujwb")
-                .withRestorePointInTime(OffsetDateTime.parse("2021-11-10T04:08:23Z"))
-                .withCreateMode(CreateMode.RESTORE)
-                .withStorageAccountType(StorageAccountType.LRS)
-                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-06-08T12:36:20Z"));
+        SqlPoolPatchInfo model
+            = new SqlPoolPatchInfo().withTags(mapOf("jixisxyawjoyaqcs", "flhhcaal", "eli", "yjpkiidzyexz"))
+                .withLocation("nr")
+                .withSku(new Sku().withTier("o").withName("bnxknalaulppg").withCapacity(1987785731))
+                .withMaxSizeBytes(5149418490652934677L)
+                .withCollation("yiropu")
+                .withSourceDatabaseId("igvpgylg")
+                .withRecoverableDatabaseId("itxmedjvcslynqww")
+                .withProvisioningState("wzz")
+                .withRestorePointInTime(OffsetDateTime.parse("2021-08-31T01:54:16Z"))
+                .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withStorageAccountType(StorageAccountType.GRS)
+                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-10-30T20:36:32Z"));
         model = BinaryData.fromObject(model).toObject(SqlPoolPatchInfo.class);
-        Assertions.assertEquals("xmyskp", model.tags().get("henbtkcxywnytn"));
-        Assertions.assertEquals("yn", model.location());
-        Assertions.assertEquals("dybyxczfclhaa", model.sku().tier());
-        Assertions.assertEquals("babphlwrqlfk", model.sku().name());
-        Assertions.assertEquals(1003967781, model.sku().capacity());
-        Assertions.assertEquals(3711072422112516968L, model.maxSizeBytes());
-        Assertions.assertEquals("cmnyyazttb", model.collation());
-        Assertions.assertEquals("wrqpue", model.sourceDatabaseId());
-        Assertions.assertEquals("kzywbiex", model.recoverableDatabaseId());
-        Assertions.assertEquals("eyueaxibxujwb", model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T04:08:23Z"), model.restorePointInTime());
-        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
-        Assertions.assertEquals(StorageAccountType.LRS, model.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T12:36:20Z"), model.sourceDatabaseDeletionDate());
+        Assertions.assertEquals("flhhcaal", model.tags().get("jixisxyawjoyaqcs"));
+        Assertions.assertEquals("nr", model.location());
+        Assertions.assertEquals("o", model.sku().tier());
+        Assertions.assertEquals("bnxknalaulppg", model.sku().name());
+        Assertions.assertEquals(1987785731, model.sku().capacity());
+        Assertions.assertEquals(5149418490652934677L, model.maxSizeBytes());
+        Assertions.assertEquals("yiropu", model.collation());
+        Assertions.assertEquals("igvpgylg", model.sourceDatabaseId());
+        Assertions.assertEquals("itxmedjvcslynqww", model.recoverableDatabaseId());
+        Assertions.assertEquals("wzz", model.provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T01:54:16Z"), model.restorePointInTime());
+        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, model.createMode());
+        Assertions.assertEquals(StorageAccountType.GRS, model.storageAccountType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T20:36:32Z"), model.sourceDatabaseDeletionDate());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

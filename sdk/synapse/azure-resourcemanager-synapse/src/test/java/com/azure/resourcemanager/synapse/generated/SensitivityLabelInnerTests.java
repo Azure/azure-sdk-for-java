@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"schemaName\":\"odko\",\"tableName\":\"bw\",\"columnName\":\"jhemms\",\"labelName\":\"dkcrodt\",\"labelId\":\"nfwjlfltkacjvefk\",\"informationType\":\"foakgg\",\"informationTypeId\":\"pagao\",\"isDisabled\":true,\"rank\":\"None\"},\"managedBy\":\"blylsyxkqjnsj\",\"id\":\"r\",\"name\":\"tiagx\",\"type\":\"dszue\"}")
-                .toObject(SensitivityLabelInner.class);
-        Assertions.assertEquals("dkcrodt", model.labelName());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.labelId());
-        Assertions.assertEquals("foakgg", model.informationType());
-        Assertions.assertEquals("pagao", model.informationTypeId());
+        SensitivityLabelInner model = BinaryData.fromString(
+            "{\"properties\":{\"schemaName\":\"u\",\"tableName\":\"kopbminrf\",\"columnName\":\"oyuhhziui\",\"labelName\":\"ozbhdmsmlmzq\",\"labelId\":\"ft\",\"informationType\":\"ae\",\"informationTypeId\":\"iahxicsl\",\"isDisabled\":true,\"rank\":\"None\"},\"managedBy\":\"iyylhalnswhccsp\",\"id\":\"kaivwit\",\"name\":\"scywuggwoluhc\",\"type\":\"bwemhairs\"}")
+            .toObject(SensitivityLabelInner.class);
+        Assertions.assertEquals("ozbhdmsmlmzq", model.labelName());
+        Assertions.assertEquals("ft", model.labelId());
+        Assertions.assertEquals("ae", model.informationType());
+        Assertions.assertEquals("iahxicsl", model.informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.NONE, model.rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelInner model =
-            new SensitivityLabelInner()
-                .withLabelName("dkcrodt")
-                .withLabelId("nfwjlfltkacjvefk")
-                .withInformationType("foakgg")
-                .withInformationTypeId("pagao")
-                .withRank(SensitivityLabelRank.NONE);
+        SensitivityLabelInner model = new SensitivityLabelInner().withLabelName("ozbhdmsmlmzq")
+            .withLabelId("ft")
+            .withInformationType("ae")
+            .withInformationTypeId("iahxicsl")
+            .withRank(SensitivityLabelRank.NONE);
         model = BinaryData.fromObject(model).toObject(SensitivityLabelInner.class);
-        Assertions.assertEquals("dkcrodt", model.labelName());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.labelId());
-        Assertions.assertEquals("foakgg", model.informationType());
-        Assertions.assertEquals("pagao", model.informationTypeId());
+        Assertions.assertEquals("ozbhdmsmlmzq", model.labelName());
+        Assertions.assertEquals("ft", model.labelId());
+        Assertions.assertEquals("ae", model.informationType());
+        Assertions.assertEquals("iahxicsl", model.informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.NONE, model.rank());
     }
 }

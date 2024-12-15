@@ -44,7 +44,8 @@ public class PerfStressProgram {
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
         double operationsPerSecond = 0.0D;
         for (PerfTestBase<?> test : tests) {
-            double temp = test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND);
+            double temp
+                = test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND);
             if (!Double.isNaN(temp)) {
                 operationsPerSecond += temp;
             }
@@ -74,8 +75,7 @@ public class PerfStressProgram {
             throw new RuntimeException(e);
         }
 
-        String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName()))
-            .toArray(i -> new String[i]);
+        String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName())).toArray(i -> new String[i]);
 
         PerfStressOptions[] options = classList.stream().map(c -> {
             try {
@@ -161,9 +161,7 @@ public class PerfStressProgram {
 
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
-                        options.isVirtualThread(),
-                        options.getParallel(),
-                        options.getWarmup(), "Warmup");
+                        options.isVirtualThread(), options.getParallel(), options.getWarmup(), "Warmup");
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -215,8 +213,7 @@ public class PerfStressProgram {
             Map<String, Object> parameters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             for (Method method : options.getClass().getMethods()) {
                 String methodName = method.getName();
-                if ((!methodName.startsWith("get") && !methodName.startsWith("is"))
-                    || methodName.equals("getClass")) {
+                if ((!methodName.startsWith("get") && !methodName.startsWith("is")) || methodName.equals("getClass")) {
                     continue;
                 }
 
@@ -272,14 +269,13 @@ public class PerfStressProgram {
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
-                                boolean executorService, boolean virtualThread, int parallel, int durationSeconds,
-                                String title) {
+        boolean executorService, boolean virtualThread, int parallel, int durationSeconds, String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
-        long[] lastCompleted = new long[]{0};
-        Timer progressStatus = printStatus(
-            "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
+        long[] lastCompleted = new long[] { 0 };
+        Timer progressStatus
+            = printStatus("=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
                 long totalCompleted = getCompletedOperations(tests);
                 long currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond(tests);
@@ -307,8 +303,8 @@ public class PerfStressProgram {
                 for (PerfTestBase<?> test : tests) {
                     futures.add(test.runAllAsyncWithCompletableFuture(endNanoTime));
                 }
-                CompletableFuture<Void> allFutures =
-                    CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+                CompletableFuture<Void> allFutures
+                    = CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
                 allFutures.get(); // Wait for all futures to complete
             } else if (executorService) {
                 // when updated to concurrentTaskLimit, the performance drops?
@@ -369,17 +365,16 @@ public class PerfStressProgram {
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
         System.out.printf("Completed %,d operations in a weighted-average of %ss (%s ops/s, %s s/op)%n",
-            totalOperations,
-            NumberFormatter.Format(weightedAverageSeconds, 4),
-            NumberFormatter.Format(operationsPerSecond, 4),
-            NumberFormatter.Format(secondsPerOperation, 4));
+            totalOperations, NumberFormatter.Format(weightedAverageSeconds, 4),
+            NumberFormatter.Format(operationsPerSecond, 4), NumberFormatter.Format(secondsPerOperation, 4));
         System.out.println();
     }
 
-    private static Timer printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {
+    private static Timer printStatus(String header, Supplier<Object> status, boolean newLine,
+        boolean printFinalStatus) {
         System.out.println(header);
 
-        boolean[] needsExtraNewline = new boolean[]{false};
+        boolean[] needsExtraNewline = new boolean[] { false };
 
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {

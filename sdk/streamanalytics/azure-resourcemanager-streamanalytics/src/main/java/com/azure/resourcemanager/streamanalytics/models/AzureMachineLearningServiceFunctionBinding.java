@@ -5,29 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureMachineLearningServiceFunctionBindingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The binding to an Azure Machine Learning web service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.MachineLearningServices")
 @Fluent
 public final class AzureMachineLearningServiceFunctionBinding extends FunctionBinding {
     /*
+     * Indicates the function binding type.
+     */
+    private String type = "Microsoft.MachineLearningServices";
+
+    /*
      * The binding properties associated with an Azure Machine learning web service.
      */
-    @JsonProperty(value = "properties")
     private AzureMachineLearningServiceFunctionBindingProperties innerProperties;
 
     /**
      * Creates an instance of AzureMachineLearningServiceFunctionBinding class.
      */
     public AzureMachineLearningServiceFunctionBinding() {
+    }
+
+    /**
+     * Get the type property: Indicates the function binding type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -235,9 +248,49 @@ public final class AzureMachineLearningServiceFunctionBinding extends FunctionBi
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningServiceFunctionBinding from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningServiceFunctionBinding if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningServiceFunctionBinding.
+     */
+    public static AzureMachineLearningServiceFunctionBinding fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningServiceFunctionBinding deserializedAzureMachineLearningServiceFunctionBinding
+                = new AzureMachineLearningServiceFunctionBinding();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBinding.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBinding.innerProperties
+                        = AzureMachineLearningServiceFunctionBindingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningServiceFunctionBinding;
+        });
     }
 }

@@ -9,27 +9,28 @@ import com.azure.resourcemanager.networkcloud.models.IpAllocationType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for L3Networks CreateOrUpdate. */
+/**
+ * Samples for L3Networks CreateOrUpdate.
+ */
 public final class L3NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L3Networks_Create.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * L3Networks_Create.json
      */
     /**
      * Sample code: Create or update L3 network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void createOrUpdateL3Network(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .l3Networks()
+        manager.l3Networks()
             .define("l3NetworkName")
             .withRegion("location")
             .withExistingResourceGroup("resourceGroupName")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
-                    .withType("CustomLocation"))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                .withType("CustomLocation"))
             .withL3IsolationDomainId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")
             .withVlan(12L)

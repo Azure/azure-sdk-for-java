@@ -38,32 +38,33 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     public void writeBehaviorWriteCallsToClientCorrectly(int offset, ShareRequestConditions conditions,
         FileLastWrittenMode mode) throws IOException {
         // Stubbed ShareFileUploadInfo
-        ShareFileUploadInfo stubbedUploadInfo = new ShareFileUploadInfo("randomEtag", testResourceNamer.now(),
-            new byte[0], false);
+        ShareFileUploadInfo stubbedUploadInfo
+            = new ShareFileUploadInfo("randomEtag", testResourceNamer.now(), new byte[0], false);
         // Stubbed Response
-        Response<ShareFileUploadInfo> stubbedResponse = new SimpleResponse<>(null, 200, new HttpHeaders(),
-            stubbedUploadInfo);
+        Response<ShareFileUploadInfo> stubbedResponse
+            = new SimpleResponse<>(null, 200, new HttpHeaders(), stubbedUploadInfo);
 
         AtomicInteger uploadRangeCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), "testshare", "testpath", null, null, null, null) {
-            @Override
-            public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
-                Duration timeout, Context context) {
-                assertNull(timeout);
-                assertNull(context);
-                uploadRangeCallCount.incrementAndGet();
-                assertEquals(offset, options.getOffset());
-                assertEquals(conditions, options.getRequestConditions());
-                assertEquals(mode, options.getLastWrittenMode());
-                TestUtils.assertArraysEqual(DATA.getDefaultBytes(), getBytes(options.getDataStream()));
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null) {
+                @Override
+                public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
+                    Duration timeout, Context context) {
+                    assertNull(timeout);
+                    assertNull(context);
+                    uploadRangeCallCount.incrementAndGet();
+                    assertEquals(offset, options.getOffset());
+                    assertEquals(conditions, options.getRequestConditions());
+                    assertEquals(mode, options.getLastWrittenMode());
+                    TestUtils.assertArraysEqual(DATA.getDefaultBytes(), getBytes(options.getDataStream()));
 
-                return stubbedResponse;
-            }
-        };
+                    return stubbedResponse;
+                }
+            };
 
-        StorageSeekableByteChannelShareFileWriteBehavior behavior =
-            new StorageSeekableByteChannelShareFileWriteBehavior(client, conditions, mode);
+        StorageSeekableByteChannelShareFileWriteBehavior behavior
+            = new StorageSeekableByteChannelShareFileWriteBehavior(client, conditions, mode);
 
         behavior.write(DATA.getDefaultData(), offset);
         assertEquals(1, uploadRangeCallCount.get());
@@ -86,37 +87,33 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     }
 
     private static Stream<Arguments> writeBehaviorWriteCallsToClientCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0, null, null),
-            Arguments.of(50, null, null),
-            Arguments.of(0, new ShareRequestConditions(), null),
-            Arguments.of(0, null, FileLastWrittenMode.PRESERVE));
+        return Stream.of(Arguments.of(0, null, null), Arguments.of(50, null, null),
+            Arguments.of(0, new ShareRequestConditions(), null), Arguments.of(0, null, FileLastWrittenMode.PRESERVE));
     }
 
     @ParameterizedTest
     @MethodSource("writeBehaviorCanSeekAnywhereInFileRangeSupplier")
     public void writeBehaviorCanSeekAnywhereInFileRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), "testshare", "testpath", null, null, null, null) {
-            @Override
-            public ShareFileProperties getProperties() {
-                getPropertiesCallCount.incrementAndGet();
-                return new ShareFileProperties(null, null, null, null, fileSize, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null);
-            }
-        };
-        StorageSeekableByteChannelShareFileWriteBehavior behavior =
-            new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null) {
+                @Override
+                public ShareFileProperties getProperties() {
+                    getPropertiesCallCount.incrementAndGet();
+                    return new ShareFileProperties(null, null, null, null, fileSize, null, null, null, null, null, null,
+                        null, null, null, null, null, null, null);
+                }
+            };
+        StorageSeekableByteChannelShareFileWriteBehavior behavior
+            = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
 
         behavior.assertCanSeek(position);
         assertEquals(1, getPropertiesCallCount.get());
     }
 
     private static Stream<Arguments> writeBehaviorCanSeekAnywhereInFileRangeSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.KB, 0),
-            Arguments.of(Constants.KB, 500),
+        return Stream.of(Arguments.of(Constants.KB, 0), Arguments.of(Constants.KB, 500),
             Arguments.of(Constants.KB, Constants.KB));
     }
 
@@ -124,35 +121,35 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @MethodSource("writeBehaviorThrowsWhenSeekingBeyondRangeSupplier")
     public void writeBehaviorThrowsWhenSeekingBeyondRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), "testshare", "testpath", null, null, null, null) {
-            @Override
-            public ShareFileProperties getProperties() {
-                getPropertiesCallCount.incrementAndGet();
-                return new ShareFileProperties(null, null, null, null, fileSize, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null);
-            }
-        };
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null) {
+                @Override
+                public ShareFileProperties getProperties() {
+                    getPropertiesCallCount.incrementAndGet();
+                    return new ShareFileProperties(null, null, null, null, fileSize, null, null, null, null, null, null,
+                        null, null, null, null, null, null, null);
+                }
+            };
 
-        StorageSeekableByteChannelShareFileWriteBehavior behavior =
-            new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
+        StorageSeekableByteChannelShareFileWriteBehavior behavior
+            = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
 
         assertThrows(UnsupportedOperationException.class, () -> behavior.assertCanSeek(position));
         assertEquals(1, getPropertiesCallCount.get());
     }
 
     private static Stream<Arguments> writeBehaviorThrowsWhenSeekingBeyondRangeSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.KB, Constants.KB + 1),
-            Arguments.of(Constants.KB, -1));
+        return Stream.of(Arguments.of(Constants.KB, Constants.KB + 1), Arguments.of(Constants.KB, -1));
     }
 
     @Test
     public void writeBehaviorTruncateUnsupported() {
-        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), "testshare", "testpath", null, null, null, null);
-        StorageSeekableByteChannelShareFileWriteBehavior behavior =
-            new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null);
+        StorageSeekableByteChannelShareFileWriteBehavior behavior
+            = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));
     }
 

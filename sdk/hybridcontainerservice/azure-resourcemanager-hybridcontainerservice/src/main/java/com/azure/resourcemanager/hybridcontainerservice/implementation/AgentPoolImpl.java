@@ -69,14 +69,16 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool create() {
-        this.innerObject = serviceManager.serviceClient().getAgentPools().createOrUpdate(connectedClusterResourceUri,
-            agentPoolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate(connectedClusterResourceUri, agentPoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AgentPool create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAgentPools().createOrUpdate(connectedClusterResourceUri,
-            agentPoolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate(connectedClusterResourceUri, agentPoolName, this.innerModel(), context);
         return this;
     }
 
@@ -92,14 +94,16 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool apply() {
-        this.innerObject = serviceManager.serviceClient().getAgentPools().createOrUpdate(connectedClusterResourceUri,
-            agentPoolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate(connectedClusterResourceUri, agentPoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AgentPool apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAgentPools().createOrUpdate(connectedClusterResourceUri,
-            agentPoolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .createOrUpdate(connectedClusterResourceUri, agentPoolName, this.innerModel(), context);
         return this;
     }
 
@@ -116,14 +120,18 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     public AgentPool refresh() {
-        this.innerObject = serviceManager.serviceClient().getAgentPools()
-            .getWithResponse(connectedClusterResourceUri, agentPoolName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .getWithResponse(connectedClusterResourceUri, agentPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AgentPool refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAgentPools()
-            .getWithResponse(connectedClusterResourceUri, agentPoolName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAgentPools()
+            .getWithResponse(connectedClusterResourceUri, agentPoolName, context)
+            .getValue();
         return this;
     }
 

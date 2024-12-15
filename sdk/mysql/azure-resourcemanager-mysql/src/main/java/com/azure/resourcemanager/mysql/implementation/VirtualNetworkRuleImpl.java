@@ -60,20 +60,16 @@ public final class VirtualNetworkRuleImpl
     }
 
     public VirtualNetworkRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetworkRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -88,25 +84,21 @@ public final class VirtualNetworkRuleImpl
     }
 
     public VirtualNetworkRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetworkRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .createOrUpdate(resourceGroupName, serverName, virtualNetworkRuleName, this.innerModel(), context);
         return this;
     }
 
-    VirtualNetworkRuleImpl(
-        VirtualNetworkRuleInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    VirtualNetworkRuleImpl(VirtualNetworkRuleInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -115,22 +107,18 @@ public final class VirtualNetworkRuleImpl
     }
 
     public VirtualNetworkRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .getWithResponse(resourceGroupName, serverName, virtualNetworkRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .getWithResponse(resourceGroupName, serverName, virtualNetworkRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualNetworkRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkRules()
-                .getWithResponse(resourceGroupName, serverName, virtualNetworkRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkRules()
+            .getWithResponse(resourceGroupName, serverName, virtualNetworkRuleName, context)
+            .getValue();
         return this;
     }
 

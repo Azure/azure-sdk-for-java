@@ -15,11 +15,13 @@ import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionI
 import com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationInner;
 import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in ProviderRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderRegistrationsClient.
+ */
 public interface ProviderRegistrationsClient {
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Gets the provider registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +46,7 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,12 +55,12 @@ public interface ProviderRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties);
+    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties);
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -68,12 +70,12 @@ public interface ProviderRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context);
+    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties, Context context);
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +88,7 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Creates or updates the provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param properties The provider registration properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -96,12 +98,12 @@ public interface ProviderRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProviderRegistrationInner createOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context);
+    ProviderRegistrationInner createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
+        Context context);
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Deletes a provider registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,31 +127,31 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProviderRegistrationInner> list();
 
     /**
      * Gets the list of the provider registrations in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the provider registrations in the subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the provider registrations in the subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProviderRegistrationInner> list(Context context);
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +164,7 @@ public interface ProviderRegistrationsClient {
 
     /**
      * Generates the operations api for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

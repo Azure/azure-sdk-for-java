@@ -4,107 +4,107 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Exports Execute. */
+/**
+ * Samples for Exports Execute.
+ */
 public final class ExportsExecuteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByManagementGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunByManagementGroup.json
      */
     /**
      * Sample code: ExportRunByManagementGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunByManagementGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "providers/Microsoft.Management/managementGroups/TestMG",
-                "TestExport",
+    public static void
+        exportRunByManagementGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .executeWithResponse("providers/Microsoft.Management/managementGroups/TestMG", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByBillingAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunByBillingAccount.json
      */
     /**
      * Sample code: ExportRunByBillingAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunByBillingAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/123456", "TestExport", com.azure.core.util.Context.NONE);
+    public static void
+        exportRunByBillingAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunBySubscription.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunBySubscription.json
      */
     /**
      * Sample code: ExportRunBySubscription.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void exportRunBySubscription(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000", "TestExport", com.azure.core.util.Context.NONE);
+        manager.exports()
+            .executeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByDepartment.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunByDepartment.json
      */
     /**
      * Sample code: ExportRunByDepartment.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void exportRunByDepartment(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12/departments/1234",
-                "TestExport",
+        manager.exports()
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/12/departments/1234", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunByResourceGroup.json
      */
     /**
      * Sample code: ExportRunByResourceGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunByResourceGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
-                "TestExport",
-                com.azure.core.util.Context.NONE);
+    public static void
+        exportRunByResourceGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .executeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+                "TestExport", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunByEnrollmentAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunByEnrollmentAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunByEnrollmentAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .executeWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
-                "TestExport",
+    public static void
+        exportRunByEnrollmentAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 }

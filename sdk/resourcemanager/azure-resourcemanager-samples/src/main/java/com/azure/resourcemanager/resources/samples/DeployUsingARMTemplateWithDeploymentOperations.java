@@ -41,7 +41,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
      * @param defaultPollingInterval polling interval in seconds
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval) throws InterruptedException {
+    public static boolean runSample(final AzureResourceManager azureResourceManager, int defaultPollingInterval)
+        throws InterruptedException {
         final String rgPrefix = Utils.randomResourceName(azureResourceManager, "rgJavaTest", 16);
         final String deploymentPrefix = Utils.randomResourceName(azureResourceManager, "javaTest", 16);
         final String sshKey = getSSHPublicKey();
@@ -51,7 +52,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
         try {
             // Use the Simple VM Template with SSH Key auth from GH quickstarts
 
-            final String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json";
+            final String templateUri
+                = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json";
             final String templateContentVersion = "1.0.0.0";
 
             // Template only needs an SSH Key parameter
@@ -68,34 +70,29 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
             final List<Deployment> deploymentList = new ArrayList<>();
             final CountDownLatch latch = new CountDownLatch(1);
 
-            Flux.range(1, numDeployments)
-                    .flatMap(integer -> {
-                        try {
-                            String params;
-                            if (integer == numDeployments) {
-                                rootNode.set("adminPublicKey", mapper.createObjectNode().put("value", "bad content"));
-                                params = rootNode.toString(); // Invalid parameters as a negative path
-                            } else {
-                                params = parameters;
-                            }
-                            return azureResourceManager.deployments()
-                                    .define(deploymentPrefix + "-" + integer)
-                                    .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
-                                    .withTemplateLink(templateUri, templateContentVersion)
-                                    .withParameters(params)
-                                    .withMode(DeploymentMode.COMPLETE)
-                                    .beginCreateAsync();
-                        } catch (IOException e) {
-                            return Flux.error(e);
-                        }
-                    })
-                    .doOnNext(deployment -> {
-                        System.out.println("Deployment created: " + deployment.name());
-                        deploymentList.add(deployment);
-                    })
-                    .onErrorResume(e -> Mono.empty())
-                    .doOnComplete(() -> latch.countDown())
-                    .subscribe();
+            Flux.range(1, numDeployments).flatMap(integer -> {
+                try {
+                    String params;
+                    if (integer == numDeployments) {
+                        rootNode.set("adminPublicKey", mapper.createObjectNode().put("value", "bad content"));
+                        params = rootNode.toString(); // Invalid parameters as a negative path
+                    } else {
+                        params = parameters;
+                    }
+                    return azureResourceManager.deployments()
+                        .define(deploymentPrefix + "-" + integer)
+                        .withNewResourceGroup(rgPrefix + "-" + integer, Region.US_SOUTH_CENTRAL)
+                        .withTemplateLink(templateUri, templateContentVersion)
+                        .withParameters(params)
+                        .withMode(DeploymentMode.COMPLETE)
+                        .beginCreateAsync();
+                } catch (IOException e) {
+                    return Flux.error(e);
+                }
+            }).doOnNext(deployment -> {
+                System.out.println("Deployment created: " + deployment.name());
+                deploymentList.add(deployment);
+            }).onErrorResume(e -> Mono.empty()).doOnComplete(() -> latch.countDown()).subscribe();
 
             latch.await();
 
@@ -104,35 +101,33 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
             System.out.println("Checking deployment operations...");
             final CountDownLatch operationLatch = new CountDownLatch(1);
             Flux.fromIterable(deploymentList)
-                    .flatMap(deployment -> deployment.refreshAsync()
-                            .flatMapMany(dp -> dp.deploymentOperations().listAsync())
-                            .collectList()
-                            .map(deploymentOperations -> {
-                                synchronized (deploymentList) {
-                                    System.out.println("--------------------" + deployment.name() + "--------------------");
-                                    for (DeploymentOperation operation : deploymentOperations) {
-                                        if (operation.targetResource() != null) {
-                                            System.out.println(String.format("%s - %s: %s %s",
-                                                    operation.targetResource().resourceName(),
-                                                    operation.targetResource().resourceName(),
-                                                    operation.provisioningState(),
-                                                    operation.statusMessage() != null ? operation.statusMessage() : ""));
-                                        }
-                                    }
+                .flatMap(deployment -> deployment.refreshAsync()
+                    .flatMapMany(dp -> dp.deploymentOperations().listAsync())
+                    .collectList()
+                    .map(deploymentOperations -> {
+                        synchronized (deploymentList) {
+                            System.out.println("--------------------" + deployment.name() + "--------------------");
+                            for (DeploymentOperation operation : deploymentOperations) {
+                                if (operation.targetResource() != null) {
+                                    System.out.println(
+                                        String.format("%s - %s: %s %s", operation.targetResource().resourceName(),
+                                            operation.targetResource().resourceName(), operation.provisioningState(),
+                                            operation.statusMessage() != null ? operation.statusMessage() : ""));
                                 }
-                                return deploymentOperations;
-                            })
-                            .repeatWhen(observable -> observable.delaySubscription(Duration.ofSeconds(pollingInterval)))
-                            .takeUntil(deploymentOperations -> {
-                                return "Succeeded".equalsIgnoreCase(deployment.provisioningState())
-                                        || "Canceled".equalsIgnoreCase(deployment.provisioningState())
-                                        || "Failed".equalsIgnoreCase(deployment.provisioningState());
+                            }
+                        }
+                        return deploymentOperations;
+                    })
+                    .repeatWhen(observable -> observable.delaySubscription(Duration.ofSeconds(pollingInterval)))
+                    .takeUntil(deploymentOperations -> {
+                        return "Succeeded".equalsIgnoreCase(deployment.provisioningState())
+                            || "Canceled".equalsIgnoreCase(deployment.provisioningState())
+                            || "Failed".equalsIgnoreCase(deployment.provisioningState());
 
-                            })
-                    )
-                    .onErrorResume(e -> Mono.empty())
-                    .doOnComplete(() -> operationLatch.countDown())
-                    .subscribe();
+                    }))
+                .onErrorResume(e -> Mono.empty())
+                .doOnComplete(() -> operationLatch.countDown())
+                .subscribe();
 
             operationLatch.await();
 
@@ -147,8 +142,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                     failed.add(deployment.name());
                 }
             }
-            System.out.println(String.format("Deployments %s succeeded. %s failed.",
-                    String.join(", ", succeeded), String.join(", ", failed)));
+            System.out.println(String.format("Deployments %s succeeded. %s failed.", String.join(", ", succeeded),
+                String.join(", ", failed)));
 
             return true;
         } finally {
@@ -183,8 +178,7 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -200,7 +194,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
     private static String getSSHPublicKey() {
         byte[] content;
         try {
-            content = ByteStreams.toByteArray(DeployUsingARMTemplateWithDeploymentOperations.class.getResourceAsStream("/rsa.pub"));
+            content = ByteStreams
+                .toByteArray(DeployUsingARMTemplateWithDeploymentOperations.class.getResourceAsStream("/rsa.pub"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

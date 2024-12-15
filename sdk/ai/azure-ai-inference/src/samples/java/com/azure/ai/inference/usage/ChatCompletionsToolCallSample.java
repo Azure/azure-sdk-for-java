@@ -10,6 +10,7 @@ import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatCompletionsToolCall;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
@@ -17,15 +18,17 @@ import com.azure.ai.inference.models.ChatRequestToolMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.ChatResponseMessage;
 import com.azure.ai.inference.models.CompletionsFinishReason;
-import com.azure.ai.inference.models.ChatCompletionsToolCall;
 import com.azure.ai.inference.models.FunctionCall;
 import com.azure.ai.inference.models.FunctionDefinition;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.credential.AzureKeyCredential;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,8 +58,7 @@ public final class ChatCompletionsToolCallSample {
         ChatCompletions chatCompletions = client.complete(chatCompletionsOptions);
 
         // Take your function_call result as the input prompt to make another request to service.
-        chatMessages = handleFunctionCallResponse(chatCompletions.getChoices(),
-            chatMessages);
+        chatMessages = handleFunctionCallResponse(chatCompletions.getChoices(), chatMessages);
         ChatCompletions chatCompletionsAnswer = client.complete(new ChatCompletionsOptions(chatMessages));
 
         System.out.printf("Message: %s.%n", chatCompletionsAnswer.getChoice().getMessage().getContent());
@@ -90,7 +92,8 @@ public final class ChatCompletionsToolCallSample {
                 functionArguments.append(functionCall.getArguments());
 
                 // As an additional step, you may want to deserialize the parameters, so you can call your function
-                FunctionArguments parameters = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
+                FunctionArguments parameters = BinaryData.fromString(functionArguments.toString())
+                    .toObject(FunctionArguments.class);
                 System.out.println("Location Name: " + parameters.locationName);
                 System.out.println("Date: " + parameters.date);
                 String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
@@ -116,38 +119,164 @@ public final class ChatCompletionsToolCallSample {
         return functionDefinition;
     }
 
-    private static class FunctionArguments {
-        @JsonProperty(value = "location_name")
-        private String locationName;
+    public static final class FunctionArguments implements JsonSerializable<FunctionArguments> {
+        private final String locationName;
+        private final String date;
 
-        @JsonProperty(value = "date")
-        private String date;
+        private FunctionArguments(String location,  String date) {
+            this.locationName = location;
+            this.date = date;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("location_name", this.locationName);
+            jsonWriter.writeStringField("date", this.date);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static FunctionArguments fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String location = null;
+                String date = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("location_name".equals(fieldName)) {
+                        location = reader.getString();
+                    } else if ("date".equals(fieldName)) {
+                        date = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new FunctionArguments(location, date);
+            });
+        }
     }
 
-    private static class FutureTemperatureParameters {
-        @JsonProperty(value = "type")
-        private String type = "object";
+    private static final class FutureTemperatureParameters implements JsonSerializable<FutureTemperatureParameters> {
+        private final String type;
+        private final FutureTemperatureProperties properties;
 
-        @JsonProperty(value = "properties")
-        private FutureTemperatureProperties properties = new FutureTemperatureProperties();
+        private FutureTemperatureParameters() {
+            this.type = "object";
+            this.properties = new FutureTemperatureProperties();
+        }
+
+        private FutureTemperatureParameters(String type, FutureTemperatureProperties properties) {
+            this.type = type;
+            this.properties = properties;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeJsonField("properties", this.properties);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static FutureTemperatureParameters fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String type = null;
+                FutureTemperatureProperties properties = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("type".equals(fieldName)) {
+                        type = reader.getString();
+                    } else if ("properties".equals(fieldName)) {
+                        properties = FutureTemperatureProperties.fromJson(reader);
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new FutureTemperatureParameters(type, properties);
+            });
+        }
     }
 
-    private static class FutureTemperatureProperties {
-        @JsonProperty(value = "unit") StringField unit = new StringField("Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.");
-        @JsonProperty(value = "location_name") StringField locationName = new StringField("The name of the location to get the future temperature for.");
-        @JsonProperty(value = "date") StringField date = new StringField("The date to get the future temperature for. The format is YYYY-MM-DD.");
+    private static final class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties> {
+        StringField unit;
+        StringField locationName;
+        StringField date;
+
+        private FutureTemperatureProperties() {
+            this.unit = new StringField("Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.");
+            this.locationName = new StringField("The name of the location to get the future temperature for.");
+            this.date = new StringField("The date to get the future temperature for. The format is YYYY-MM-DD.");
+        }
+
+        private FutureTemperatureProperties(StringField unit, StringField locationName, StringField date) {
+            this.unit = unit;
+            this.locationName = locationName;
+            this.date = date;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("unit", this.unit);
+            jsonWriter.writeJsonField("location_name", this.locationName);
+            jsonWriter.writeJsonField("date", this.date);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static FutureTemperatureProperties fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                StringField unit = null;
+                StringField location = null;
+                StringField date = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("unit".equals(fieldName)) {
+                        unit = StringField.fromJson(reader);
+                    } else if ("date".equals(fieldName)) {
+                        date = StringField.fromJson(reader);
+                    } else if ("location_name".equals(fieldName)) {
+                        location = StringField.fromJson(reader);
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new FutureTemperatureProperties(unit, location, date);
+            });
+        }
     }
 
-    private static class StringField {
-        @JsonProperty(value = "type")
-        private final String type = "string";
+    private static class StringField implements JsonSerializable<StringField> {
+        private final String description;
 
-        @JsonProperty(value = "description")
-        private String description;
-
-        @JsonCreator
-        StringField(@JsonProperty(value = "description") String description) {
+        StringField(String description) {
             this.description = description;
         }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", "string");
+            jsonWriter.writeStringField("description", this.description);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static StringField fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String description = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("description".equals(fieldName)) {
+                        description = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new StringField(description);
+            });
+        }
+
     }
 }

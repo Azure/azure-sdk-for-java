@@ -37,13 +37,11 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        webPubSubManager = WebPubSubManager
-            .configure()
+        webPubSubManager = WebPubSubManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -54,10 +52,7 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -84,7 +79,8 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             webPubSubResource.refresh();
             Assertions.assertEquals(webPubSubResource.name(), resourceName);
-            Assertions.assertEquals(webPubSubResource.name(), webPubSubManager.webPubSubs().getById(webPubSubResource.id()).name());
+            Assertions.assertEquals(webPubSubResource.name(),
+                webPubSubManager.webPubSubs().getById(webPubSubResource.id()).name());
             Assertions.assertTrue(webPubSubManager.webPubSubs().list().stream().count() > 0);
         } finally {
             if (webPubSubResource != null) {

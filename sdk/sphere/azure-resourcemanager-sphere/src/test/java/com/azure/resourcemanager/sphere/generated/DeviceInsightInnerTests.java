@@ -27,10 +27,14 @@ public final class DeviceInsightInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceInsightInner model = new DeviceInsightInner().withDeviceId("ntypmrbpizcdrqj").withDescription("dpydn")
+        DeviceInsightInner model = new DeviceInsightInner().withDeviceId("ntypmrbpizcdrqj")
+            .withDescription("dpydn")
             .withStartTimestampUtc(OffsetDateTime.parse("2021-02-06T09:08:09Z"))
-            .withEndTimestampUtc(OffsetDateTime.parse("2021-07-10T19:26:28Z")).withEventCategory("xdeoejzic")
-            .withEventClass("ifsjttgzfbishcb").withEventType("hajdeyeamdpha").withEventCount(1536073800);
+            .withEndTimestampUtc(OffsetDateTime.parse("2021-07-10T19:26:28Z"))
+            .withEventCategory("xdeoejzic")
+            .withEventClass("ifsjttgzfbishcb")
+            .withEventType("hajdeyeamdpha")
+            .withEventCount(1536073800);
         model = BinaryData.fromObject(model).toObject(DeviceInsightInner.class);
         Assertions.assertEquals("ntypmrbpizcdrqj", model.deviceId());
         Assertions.assertEquals("dpydn", model.description());

@@ -204,8 +204,8 @@ public final class CreateSubscriptionOptions {
      *
      * @return the CreateSubscriptionOptions object itself.
      */
-    public CreateSubscriptionOptions setEnableDeadLetteringOnFilterEvaluationExceptions(
-        boolean deadLetteringOnFilterEvaluationExceptions) {
+    public CreateSubscriptionOptions
+        setEnableDeadLetteringOnFilterEvaluationExceptions(boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
     }

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPools ListByWorkspace. */
+/**
+ * Samples for KustoPools ListByWorkspace.
+ */
 public final class KustoPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListByWorkspace.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolsListByWorkspace.json
      */
     /**
      * Sample code: List Kusto pools in a workspace.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listKustoPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPools()
+        manager.kustoPools()
             .listByWorkspaceWithResponse("kustorptest", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }

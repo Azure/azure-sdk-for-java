@@ -47,15 +47,19 @@ public final class DataProductsAddUserRoleWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RoleAssignmentDetail response = manager.dataProducts()
             .addUserRoleWithResponse("babphlwrqlfk", "sthsu",
-                new RoleAssignmentCommonProperties().withRoleId("ocmnyyazttbtwwrq").withPrincipalId("uedck")
-                    .withUsername("ywbiexzfeyueax").withDataTypeScope(Arrays.asList("xujwbhqwalmuzyo"))
-                    .withPrincipalType("aepdkzjanc").withRole(DataProductUserRole.SENSITIVE_READER),
+                new RoleAssignmentCommonProperties().withRoleId("ocmnyyazttbtwwrq")
+                    .withPrincipalId("uedck")
+                    .withUsername("ywbiexzfeyueax")
+                    .withDataTypeScope(Arrays.asList("xujwbhqwalmuzyo"))
+                    .withPrincipalType("aepdkzjanc")
+                    .withRole(DataProductUserRole.SENSITIVE_READER),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

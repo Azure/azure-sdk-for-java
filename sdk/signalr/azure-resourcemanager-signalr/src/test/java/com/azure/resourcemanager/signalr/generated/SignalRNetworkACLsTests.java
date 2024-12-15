@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRNetworkACLsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRNetworkACLs model =
-            BinaryData
-                .fromString(
-                    "{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"Trace\",\"Trace\"],\"deny\":[\"RESTAPI\",\"Trace\",\"ServerConnection\"]},\"privateEndpoints\":[{\"name\":\"wycz\",\"allow\":[\"ClientConnection\",\"RESTAPI\"],\"deny\":[\"ServerConnection\",\"Trace\",\"RESTAPI\",\"ClientConnection\"]},{\"name\":\"hyus\",\"allow\":[\"ServerConnection\",\"Trace\"],\"deny\":[\"ServerConnection\",\"ServerConnection\",\"RESTAPI\",\"RESTAPI\"]}],\"ipRules\":[{\"value\":\"x\",\"action\":\"Allow\"}]}")
-                .toObject(SignalRNetworkACLs.class);
+        SignalRNetworkACLs model = BinaryData.fromString(
+            "{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"Trace\",\"Trace\"],\"deny\":[\"RESTAPI\",\"Trace\",\"ServerConnection\"]},\"privateEndpoints\":[{\"name\":\"wycz\",\"allow\":[\"ClientConnection\",\"RESTAPI\"],\"deny\":[\"ServerConnection\",\"Trace\",\"RESTAPI\",\"ClientConnection\"]},{\"name\":\"hyus\",\"allow\":[\"ServerConnection\",\"Trace\"],\"deny\":[\"ServerConnection\",\"ServerConnection\",\"RESTAPI\",\"RESTAPI\"]}],\"ipRules\":[{\"value\":\"x\",\"action\":\"Allow\"}]}")
+            .toObject(SignalRNetworkACLs.class);
         Assertions.assertEquals(AclAction.DENY, model.defaultAction());
         Assertions.assertEquals(SignalRRequestType.TRACE, model.publicNetwork().allow().get(0));
         Assertions.assertEquals(SignalRRequestType.RESTAPI, model.publicNetwork().deny().get(0));
@@ -34,43 +32,25 @@ public final class SignalRNetworkACLsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRNetworkACLs model =
-            new SignalRNetworkACLs()
-                .withDefaultAction(AclAction.DENY)
-                .withPublicNetwork(
-                    new NetworkAcl()
-                        .withAllow(Arrays.asList(SignalRRequestType.TRACE, SignalRRequestType.TRACE))
+        SignalRNetworkACLs model
+            = new SignalRNetworkACLs().withDefaultAction(AclAction.DENY)
+                .withPublicNetwork(new NetworkAcl()
+                    .withAllow(Arrays.asList(SignalRRequestType.TRACE, SignalRRequestType.TRACE))
+                    .withDeny(
+                        Arrays.asList(SignalRRequestType.RESTAPI, SignalRRequestType.TRACE,
+                            SignalRRequestType.SERVER_CONNECTION)))
+                .withPrivateEndpoints(Arrays.asList(new PrivateEndpointAcl()
+                    .withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION, SignalRRequestType.RESTAPI))
+                    .withDeny(
+                        Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.TRACE,
+                            SignalRRequestType.RESTAPI, SignalRRequestType.CLIENT_CONNECTION))
+                    .withName("wycz"),
+                    new PrivateEndpointAcl()
+                        .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.TRACE))
                         .withDeny(
-                            Arrays
-                                .asList(
-                                    SignalRRequestType.RESTAPI,
-                                    SignalRRequestType.TRACE,
-                                    SignalRRequestType.SERVER_CONNECTION)))
-                .withPrivateEndpoints(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays.asList(SignalRRequestType.CLIENT_CONNECTION, SignalRRequestType.RESTAPI))
-                                .withDeny(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.SERVER_CONNECTION,
-                                            SignalRRequestType.TRACE,
-                                            SignalRRequestType.RESTAPI,
-                                            SignalRRequestType.CLIENT_CONNECTION))
-                                .withName("wycz"),
-                            new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.TRACE))
-                                .withDeny(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.SERVER_CONNECTION,
-                                            SignalRRequestType.SERVER_CONNECTION,
-                                            SignalRRequestType.RESTAPI,
-                                            SignalRRequestType.RESTAPI))
-                                .withName("hyus")))
+                            Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.SERVER_CONNECTION,
+                                SignalRRequestType.RESTAPI, SignalRRequestType.RESTAPI))
+                        .withName("hyus")))
                 .withIpRules(Arrays.asList(new IpRule().withValue("x").withAction(AclAction.ALLOW)));
         model = BinaryData.fromObject(model).toObject(SignalRNetworkACLs.class);
         Assertions.assertEquals(AclAction.DENY, model.defaultAction());

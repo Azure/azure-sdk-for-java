@@ -20,7 +20,7 @@ public final class NotificationHubsListAuthorizationRulesSamples {
      */
     public static void notificationHubsListAuthorizationRules(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().listAuthorizationRules("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .listAuthorizationRules("5ktrial", "nh-sdk-ns", "nh-sdk-hub", com.azure.core.util.Context.NONE);
     }
 }

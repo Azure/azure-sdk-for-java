@@ -13,41 +13,41 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"fwyfwlwxjwet\",\"path\":\"sihclafzvaylp\",\"containerName\":\"sqqw\",\"uploadedTimestamp\":\"2021-10-08T01:02:03Z\",\"type\":\"w\",\"provisioningStatus\":\"chcxwaxfewzj\",\"creatorId\":\"exfdeqvhpsylk\"},\"etag\":\"hkbffmbm\",\"id\":\"zjrgyww\",\"name\":\"gjxsnptfu\",\"type\":\"gicgaaoepttaq\"},{\"properties\":{\"name\":\"dewemxswv\",\"path\":\"unzzjgehk\",\"containerName\":\"imrt\",\"uploadedTimestamp\":\"2021-10-31T23:30:22Z\",\"type\":\"fqyinljqepqw\",\"provisioningStatus\":\"xmonstshi\",\"creatorId\":\"gvelfc\"},\"etag\":\"uccbirdsvuw\",\"id\":\"o\",\"name\":\"iegstm\",\"type\":\"inwjizcilngh\"}],\"nextLink\":\"h\"}")
-                .toObject(LibraryListResponse.class);
-        Assertions.assertEquals("fwyfwlwxjwet", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("sihclafzvaylp", model.value().get(0).path());
-        Assertions.assertEquals("sqqw", model.value().get(0).containerName());
-        Assertions.assertEquals("w", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("h", model.nextLink());
+        LibraryListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"name\":\"pubowsepdfg\",\"path\":\"tdherngbtcjuahok\",\"containerName\":\"obkauxofsh\",\"uploadedTimestamp\":\"2021-10-19T08:31:07Z\",\"type\":\"pnulaiywzej\",\"provisioningStatus\":\"hs\",\"creatorId\":\"koj\"},\"etag\":\"l\",\"id\":\"dnpdwrpqaf\",\"name\":\"fugsnnfhyetefy\",\"type\":\"oc\"},{\"properties\":{\"name\":\"tfjgt\",\"path\":\"rjvzuyt\",\"containerName\":\"mlmuowol\",\"uploadedTimestamp\":\"2021-10-18T09:49:12Z\",\"type\":\"ropions\",\"provisioningStatus\":\"nw\",\"creatorId\":\"gajinnixjawrtmj\"},\"etag\":\"myccx\",\"id\":\"zhcoxovnekhe\",\"name\":\"lusfnrdtjxtxrdcq\",\"type\":\"jvidttge\"},{\"properties\":{\"name\":\"slvyjtcvuwkasi\",\"path\":\"esfuught\",\"containerName\":\"fecjxeygtuhx\",\"uploadedTimestamp\":\"2021-01-12T18:06:14Z\",\"type\":\"uewmrswnjlxuzrhw\",\"provisioningStatus\":\"sxjb\",\"creatorId\":\"ehgpdohzjqatu\"},\"etag\":\"igebxncnwfepb\",\"id\":\"wgfmx\",\"name\":\"gcgbjb\",\"type\":\"dlfgtdysnaq\"},{\"properties\":{\"name\":\"lqbctqhamzjrw\",\"path\":\"qzeqyjleziunjxdf\",\"containerName\":\"ntkwcegy\",\"uploadedTimestamp\":\"2021-02-09T22:26:38Z\",\"type\":\"nseqacjjvp\",\"provisioningStatus\":\"guooqjagmdit\",\"creatorId\":\"eiookjbsah\"},\"etag\":\"dt\",\"id\":\"delqacslmoto\",\"name\":\"bnfxofvc\",\"type\":\"k\"}],\"nextLink\":\"irazftxejwabmd\"}")
+            .toObject(LibraryListResponse.class);
+        Assertions.assertEquals("pubowsepdfg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("tdherngbtcjuahok", model.value().get(0).path());
+        Assertions.assertEquals("obkauxofsh", model.value().get(0).containerName());
+        Assertions.assertEquals("pnulaiywzej", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryListResponse model =
-            new LibraryListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LibraryResourceInner()
-                                .withNamePropertiesName("fwyfwlwxjwet")
-                                .withPath("sihclafzvaylp")
-                                .withContainerName("sqqw")
-                                .withTypePropertiesType("w"),
-                            new LibraryResourceInner()
-                                .withNamePropertiesName("dewemxswv")
-                                .withPath("unzzjgehk")
-                                .withContainerName("imrt")
-                                .withTypePropertiesType("fqyinljqepqw")))
-                .withNextLink("h");
+        LibraryListResponse model = new LibraryListResponse().withValue(Arrays.asList(
+            new LibraryResourceInner().withNamePropertiesName("pubowsepdfg")
+                .withPath("tdherngbtcjuahok")
+                .withContainerName("obkauxofsh")
+                .withTypePropertiesType("pnulaiywzej"),
+            new LibraryResourceInner().withNamePropertiesName("tfjgt")
+                .withPath("rjvzuyt")
+                .withContainerName("mlmuowol")
+                .withTypePropertiesType("ropions"),
+            new LibraryResourceInner().withNamePropertiesName("slvyjtcvuwkasi")
+                .withPath("esfuught")
+                .withContainerName("fecjxeygtuhx")
+                .withTypePropertiesType("uewmrswnjlxuzrhw"),
+            new LibraryResourceInner().withNamePropertiesName("lqbctqhamzjrw")
+                .withPath("qzeqyjleziunjxdf")
+                .withContainerName("ntkwcegy")
+                .withTypePropertiesType("nseqacjjvp")))
+            .withNextLink("irazftxejwabmd");
         model = BinaryData.fromObject(model).toObject(LibraryListResponse.class);
-        Assertions.assertEquals("fwyfwlwxjwet", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("sihclafzvaylp", model.value().get(0).path());
-        Assertions.assertEquals("sqqw", model.value().get(0).containerName());
-        Assertions.assertEquals("w", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("h", model.nextLink());
+        Assertions.assertEquals("pubowsepdfg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("tdherngbtcjuahok", model.value().get(0).path());
+        Assertions.assertEquals("obkauxofsh", model.value().get(0).containerName());
+        Assertions.assertEquals("pnulaiywzej", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
     }
 }

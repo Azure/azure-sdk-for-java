@@ -5,68 +5,68 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The DefaultRolloutSpecification model. */
+/**
+ * The DefaultRolloutSpecification model.
+ */
 @Fluent
-public class DefaultRolloutSpecification {
+public class DefaultRolloutSpecification implements JsonSerializable<DefaultRolloutSpecification> {
     /*
      * The canary property.
      */
-    @JsonProperty(value = "canary")
     private DefaultRolloutSpecificationCanary canary;
 
     /*
      * The lowTraffic property.
      */
-    @JsonProperty(value = "lowTraffic")
     private DefaultRolloutSpecificationLowTraffic lowTraffic;
 
     /*
      * The mediumTraffic property.
      */
-    @JsonProperty(value = "mediumTraffic")
     private DefaultRolloutSpecificationMediumTraffic mediumTraffic;
 
     /*
      * The highTraffic property.
      */
-    @JsonProperty(value = "highTraffic")
     private DefaultRolloutSpecificationHighTraffic highTraffic;
 
     /*
      * The restOfTheWorldGroupOne property.
      */
-    @JsonProperty(value = "restOfTheWorldGroupOne")
     private DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne;
 
     /*
      * The restOfTheWorldGroupTwo property.
      */
-    @JsonProperty(value = "restOfTheWorldGroupTwo")
     private DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo;
 
     /*
      * The providerRegistration property.
      */
-    @JsonProperty(value = "providerRegistration")
     private DefaultRolloutSpecificationProviderRegistration providerRegistration;
 
     /*
      * The resourceTypeRegistrations property.
      */
-    @JsonProperty(value = "resourceTypeRegistrations")
     private List<ResourceTypeRegistrationInner> resourceTypeRegistrations;
 
-    /** Creates an instance of DefaultRolloutSpecification class. */
+    /**
+     * Creates an instance of DefaultRolloutSpecification class.
+     */
     public DefaultRolloutSpecification() {
     }
 
     /**
      * Get the canary property: The canary property.
-     *
+     * 
      * @return the canary value.
      */
     public DefaultRolloutSpecificationCanary canary() {
@@ -75,7 +75,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the canary property: The canary property.
-     *
+     * 
      * @param canary the canary value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
@@ -86,7 +86,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Get the lowTraffic property: The lowTraffic property.
-     *
+     * 
      * @return the lowTraffic value.
      */
     public DefaultRolloutSpecificationLowTraffic lowTraffic() {
@@ -95,7 +95,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the lowTraffic property: The lowTraffic property.
-     *
+     * 
      * @param lowTraffic the lowTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
@@ -106,7 +106,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Get the mediumTraffic property: The mediumTraffic property.
-     *
+     * 
      * @return the mediumTraffic value.
      */
     public DefaultRolloutSpecificationMediumTraffic mediumTraffic() {
@@ -115,7 +115,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the mediumTraffic property: The mediumTraffic property.
-     *
+     * 
      * @param mediumTraffic the mediumTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
@@ -126,7 +126,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Get the highTraffic property: The highTraffic property.
-     *
+     * 
      * @return the highTraffic value.
      */
     public DefaultRolloutSpecificationHighTraffic highTraffic() {
@@ -135,7 +135,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the highTraffic property: The highTraffic property.
-     *
+     * 
      * @param highTraffic the highTraffic value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
@@ -146,7 +146,7 @@ public class DefaultRolloutSpecification {
 
     /**
      * Get the restOfTheWorldGroupOne property: The restOfTheWorldGroupOne property.
-     *
+     * 
      * @return the restOfTheWorldGroupOne value.
      */
     public DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne() {
@@ -155,19 +155,19 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the restOfTheWorldGroupOne property: The restOfTheWorldGroupOne property.
-     *
+     * 
      * @param restOfTheWorldGroupOne the restOfTheWorldGroupOne value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withRestOfTheWorldGroupOne(
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
+    public DefaultRolloutSpecification
+        withRestOfTheWorldGroupOne(DefaultRolloutSpecificationRestOfTheWorldGroupOne restOfTheWorldGroupOne) {
         this.restOfTheWorldGroupOne = restOfTheWorldGroupOne;
         return this;
     }
 
     /**
      * Get the restOfTheWorldGroupTwo property: The restOfTheWorldGroupTwo property.
-     *
+     * 
      * @return the restOfTheWorldGroupTwo value.
      */
     public DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo() {
@@ -176,19 +176,19 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the restOfTheWorldGroupTwo property: The restOfTheWorldGroupTwo property.
-     *
+     * 
      * @param restOfTheWorldGroupTwo the restOfTheWorldGroupTwo value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withRestOfTheWorldGroupTwo(
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
+    public DefaultRolloutSpecification
+        withRestOfTheWorldGroupTwo(DefaultRolloutSpecificationRestOfTheWorldGroupTwo restOfTheWorldGroupTwo) {
         this.restOfTheWorldGroupTwo = restOfTheWorldGroupTwo;
         return this;
     }
 
     /**
      * Get the providerRegistration property: The providerRegistration property.
-     *
+     * 
      * @return the providerRegistration value.
      */
     public DefaultRolloutSpecificationProviderRegistration providerRegistration() {
@@ -197,19 +197,19 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the providerRegistration property: The providerRegistration property.
-     *
+     * 
      * @param providerRegistration the providerRegistration value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withProviderRegistration(
-        DefaultRolloutSpecificationProviderRegistration providerRegistration) {
+    public DefaultRolloutSpecification
+        withProviderRegistration(DefaultRolloutSpecificationProviderRegistration providerRegistration) {
         this.providerRegistration = providerRegistration;
         return this;
     }
 
     /**
      * Get the resourceTypeRegistrations property: The resourceTypeRegistrations property.
-     *
+     * 
      * @return the resourceTypeRegistrations value.
      */
     public List<ResourceTypeRegistrationInner> resourceTypeRegistrations() {
@@ -218,19 +218,19 @@ public class DefaultRolloutSpecification {
 
     /**
      * Set the resourceTypeRegistrations property: The resourceTypeRegistrations property.
-     *
+     * 
      * @param resourceTypeRegistrations the resourceTypeRegistrations value to set.
      * @return the DefaultRolloutSpecification object itself.
      */
-    public DefaultRolloutSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public DefaultRolloutSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         this.resourceTypeRegistrations = resourceTypeRegistrations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -258,5 +258,71 @@ public class DefaultRolloutSpecification {
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("canary", this.canary);
+        jsonWriter.writeJsonField("lowTraffic", this.lowTraffic);
+        jsonWriter.writeJsonField("mediumTraffic", this.mediumTraffic);
+        jsonWriter.writeJsonField("highTraffic", this.highTraffic);
+        jsonWriter.writeJsonField("restOfTheWorldGroupOne", this.restOfTheWorldGroupOne);
+        jsonWriter.writeJsonField("restOfTheWorldGroupTwo", this.restOfTheWorldGroupTwo);
+        jsonWriter.writeJsonField("providerRegistration", this.providerRegistration);
+        jsonWriter.writeArrayField("resourceTypeRegistrations", this.resourceTypeRegistrations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRolloutSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRolloutSpecification if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRolloutSpecification.
+     */
+    public static DefaultRolloutSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRolloutSpecification deserializedDefaultRolloutSpecification = new DefaultRolloutSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("canary".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.canary = DefaultRolloutSpecificationCanary.fromJson(reader);
+                } else if ("lowTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.lowTraffic
+                        = DefaultRolloutSpecificationLowTraffic.fromJson(reader);
+                } else if ("mediumTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.mediumTraffic
+                        = DefaultRolloutSpecificationMediumTraffic.fromJson(reader);
+                } else if ("highTraffic".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.highTraffic
+                        = DefaultRolloutSpecificationHighTraffic.fromJson(reader);
+                } else if ("restOfTheWorldGroupOne".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.restOfTheWorldGroupOne
+                        = DefaultRolloutSpecificationRestOfTheWorldGroupOne.fromJson(reader);
+                } else if ("restOfTheWorldGroupTwo".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.restOfTheWorldGroupTwo
+                        = DefaultRolloutSpecificationRestOfTheWorldGroupTwo.fromJson(reader);
+                } else if ("providerRegistration".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecification.providerRegistration
+                        = DefaultRolloutSpecificationProviderRegistration.fromJson(reader);
+                } else if ("resourceTypeRegistrations".equals(fieldName)) {
+                    List<ResourceTypeRegistrationInner> resourceTypeRegistrations
+                        = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
+                    deserializedDefaultRolloutSpecification.resourceTypeRegistrations = resourceTypeRegistrations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRolloutSpecification;
+        });
     }
 }

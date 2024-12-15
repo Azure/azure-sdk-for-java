@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of firewall rules. */
 @Fluent
 public final class FirewallRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FirewallRuleListResult.class);
 
     /*
      * The list of firewall rules in a server.

@@ -10,8 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
  * Type representing access key of {@link DisasterRecoveryPairingAuthorizationRule}.
  */
 @Fluent
-public interface DisasterRecoveryPairingAuthorizationKey
-    extends HasInnerModel<AccessKeysInner> {
+public interface DisasterRecoveryPairingAuthorizationKey extends HasInnerModel<AccessKeysInner> {
     /**
      * @return primary access key
      */

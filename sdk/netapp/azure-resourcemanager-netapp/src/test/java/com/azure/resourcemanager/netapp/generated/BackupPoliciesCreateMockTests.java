@@ -23,7 +23,7 @@ public final class BackupPoliciesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"etag\":\"ylkmqp\",\"properties\":{\"backupPolicyId\":\"yhlfb\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1304757403,\"weeklyBackupsToKeep\":296049099,\"monthlyBackupsToKeep\":1159366069,\"volumesAssigned\":2022448357,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"hhpzpofoiyjwpf\",\"volumeResourceId\":\"kmkkholvdnd\",\"backupsCount\":772540044,\"policyEnabled\":true},{\"volumeName\":\"phuartv\",\"volumeResourceId\":\"ukyefchnmnahmnxh\",\"backupsCount\":1852256635,\"policyEnabled\":false},{\"volumeName\":\"wrweoo\",\"volumeResourceId\":\"fifhxwrsnew\",\"backupsCount\":2142810621,\"policyEnabled\":false},{\"volumeName\":\"ubqmamh\",\"volumeResourceId\":\"cx\",\"backupsCount\":874456434,\"policyEnabled\":true}]},\"location\":\"ttaboidvmfqh\",\"tags\":{\"g\":\"bowsepd\",\"c\":\"mtdherngb\",\"obkauxofsh\":\"uahokq\"},\"id\":\"phwpnulaiywzej\",\"name\":\"whslwkoj\",\"type\":\"llndnpd\"}";
+            = "{\"etag\":\"mlbnseq\",\"properties\":{\"backupPolicyId\":\"jjvpilguooqja\",\"provisioningState\":\"Succeeded\",\"dailyBackupsToKeep\":1892935943,\"weeklyBackupsToKeep\":436205084,\"monthlyBackupsToKeep\":1799619217,\"volumesAssigned\":1412186545,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"rtdtpdelq\",\"volumeResourceId\":\"slmot\",\"backupsCount\":1927909421,\"policyEnabled\":false},{\"volumeName\":\"o\",\"volumeResourceId\":\"cjkgdirazftxej\",\"backupsCount\":1368771016,\"policyEnabled\":true},{\"volumeName\":\"jtmvc\",\"volumeResourceId\":\"excmjurbuhhl\",\"backupsCount\":492324140,\"policyEnabled\":true},{\"volumeName\":\"srogtu\",\"volumeResourceId\":\"ffdjktsysidfvclg\",\"backupsCount\":35443299,\"policyEnabled\":false}]},\"location\":\"jtkbusqogsfika\",\"tags\":{\"ttvwkpqh\":\"nsharujtjiqxfzyj\",\"bqeqqekewvnqvcd\":\"penuy\",\"punj\":\"guaucmfdjwnla\",\"sserxhtvsoxhlwn\":\"ikczvvitacgxmf\"},\"id\":\"sjgqrsxyp\",\"name\":\"uuuybnchrsziz\",\"type\":\"yuel\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,21 @@ public final class BackupPoliciesCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BackupPolicy response = manager.backupPolicies()
-            .define("fr")
-            .withRegion("ugswvx")
-            .withExistingNetAppAccount("pqcbfrmbodthsq", "gvriibakclac")
-            .withTags(mapOf("njmxmcuqudtcvcl", "zqwmvt", "iyji", "ynpdkvgfab", "n", "uzphdugnei", "jiuqhibtozi", "gox"))
-            .withDailyBackupsToKeep(1264104137)
-            .withWeeklyBackupsToKeep(920817597)
-            .withMonthlyBackupsToKeep(1501794203)
+            .define("henlusfnr")
+            .withRegion("epbnwgfm")
+            .withExistingNetAppAccount("fjmyccxlzhco", "ovne")
+            .withTags(mapOf("y", "cgbjbgdlfgt", "ctqhamzjrwdk", "naquflq"))
+            .withDailyBackupsToKeep(2094654345)
+            .withWeeklyBackupsToKeep(791127597)
+            .withMonthlyBackupsToKeep(1952443392)
             .withEnabled(false)
             .create();
 
-        Assertions.assertEquals("ttaboidvmfqh", response.location());
-        Assertions.assertEquals("bowsepd", response.tags().get("g"));
-        Assertions.assertEquals(1304757403, response.dailyBackupsToKeep());
-        Assertions.assertEquals(296049099, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(1159366069, response.monthlyBackupsToKeep());
+        Assertions.assertEquals("jtkbusqogsfika", response.location());
+        Assertions.assertEquals("nsharujtjiqxfzyj", response.tags().get("ttvwkpqh"));
+        Assertions.assertEquals(1892935943, response.dailyBackupsToKeep());
+        Assertions.assertEquals(436205084, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(1799619217, response.monthlyBackupsToKeep());
         Assertions.assertEquals(false, response.enabled());
     }
 

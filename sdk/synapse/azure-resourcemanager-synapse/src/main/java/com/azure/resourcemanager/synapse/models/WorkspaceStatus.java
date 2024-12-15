@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** status of Start Integrationruntimes. */
+/**
+ * status of Start Integrationruntimes.
+ */
 public final class WorkspaceStatus extends ExpandableStringEnum<WorkspaceStatus> {
-    /** Static value InProgress for WorkspaceStatus. */
+    /**
+     * Static value InProgress for WorkspaceStatus.
+     */
     public static final WorkspaceStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for WorkspaceStatus. */
+    /**
+     * Static value Succeeded for WorkspaceStatus.
+     */
     public static final WorkspaceStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkspaceStatus. */
+    /**
+     * Static value Failed for WorkspaceStatus.
+     */
     public static final WorkspaceStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of WorkspaceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class WorkspaceStatus extends ExpandableStringEnum<WorkspaceStatus>
 
     /**
      * Creates or finds a WorkspaceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkspaceStatus.
      */
-    @JsonCreator
     public static WorkspaceStatus fromString(String name) {
         return fromString(name, WorkspaceStatus.class);
     }
 
     /**
      * Gets known WorkspaceStatus values.
-     *
+     * 
      * @return known WorkspaceStatus values.
      */
     public static Collection<WorkspaceStatus> values() {

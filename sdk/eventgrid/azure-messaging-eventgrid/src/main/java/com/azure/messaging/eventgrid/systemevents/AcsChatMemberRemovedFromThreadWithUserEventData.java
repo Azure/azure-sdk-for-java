@@ -93,8 +93,8 @@ public final class AcsChatMemberRemovedFromThreadWithUserEventData extends AcsCh
      * @param memberRemoved the memberRemoved value to set.
      * @return the AcsChatMemberRemovedFromThreadWithUserEventData object itself.
      */
-    public AcsChatMemberRemovedFromThreadWithUserEventData setMemberRemoved(
-            AcsChatThreadMemberProperties memberRemoved) {
+    public AcsChatMemberRemovedFromThreadWithUserEventData
+        setMemberRemoved(AcsChatThreadMemberProperties memberRemoved) {
         this.memberRemoved = memberRemoved;
         return this;
     }

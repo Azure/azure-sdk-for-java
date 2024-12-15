@@ -32,8 +32,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of group IDs for video analyzer account along with {@link Response}.
      */
-    Response<PrivateLinkResourceListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get group ID for video analyzer account.
@@ -60,6 +60,6 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group ID for video analyzer account along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 }

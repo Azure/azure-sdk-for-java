@@ -16,10 +16,40 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobScheduledEventData extends MediaJobStateChangeEventData {
+    /*
+     * The new state of the Job.
+     */
+    private MediaJobState state;
+
+    /*
+     * The previous state of the Job.
+     */
+    private MediaJobState previousState;
+
     /**
      * Creates an instance of MediaJobScheduledEventData class.
      */
     public MediaJobScheduledEventData() {
+    }
+
+    /**
+     * Get the state property: The new state of the Job.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the previousState property: The previous state of the Job.
+     * 
+     * @return the previousState value.
+     */
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
     }
 
     /**
@@ -31,6 +61,9 @@ public final class MediaJobScheduledEventData extends MediaJobStateChangeEventDa
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,10 +88,9 @@ public final class MediaJobScheduledEventData extends MediaJobStateChangeEventDa
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobScheduledEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobScheduledEventData.previousState = MediaJobState.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobScheduledEventData.setState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobScheduledEventData.state = MediaJobState.fromString(reader.getString());
                 } else if ("correlationData".equals(fieldName)) {
                     Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
                     deserializedMediaJobScheduledEventData.setCorrelationData(correlationData);

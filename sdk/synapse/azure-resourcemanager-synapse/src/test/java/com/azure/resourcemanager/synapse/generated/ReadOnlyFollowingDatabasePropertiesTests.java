@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ReadOnlyFollowingDatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReadOnlyFollowingDatabaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Creating\",\"softDeletePeriod\":\"PT21H33M36S\",\"hotCachePeriod\":\"PT30H42M39S\",\"statistics\":{\"size\":1.7092168},\"leaderClusterResourceId\":\"azyqbxyxoyfp\",\"attachedDatabaseConfigurationName\":\"qi\",\"principalsModificationKind\":\"None\"}")
-                .toObject(ReadOnlyFollowingDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT30H42M39S"), model.hotCachePeriod());
+        ReadOnlyFollowingDatabaseProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Running\",\"softDeletePeriod\":\"PT211H56M23S\",\"hotCachePeriod\":\"PT219H56M43S\",\"statistics\":{\"size\":62.897457},\"leaderClusterResourceId\":\"nl\",\"attachedDatabaseConfigurationName\":\"psimsf\",\"principalsModificationKind\":\"None\"}")
+            .toObject(ReadOnlyFollowingDatabaseProperties.class);
+        Assertions.assertEquals(Duration.parse("PT219H56M43S"), model.hotCachePeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReadOnlyFollowingDatabaseProperties model =
-            new ReadOnlyFollowingDatabaseProperties().withHotCachePeriod(Duration.parse("PT30H42M39S"));
+        ReadOnlyFollowingDatabaseProperties model
+            = new ReadOnlyFollowingDatabaseProperties().withHotCachePeriod(Duration.parse("PT219H56M43S"));
         model = BinaryData.fromObject(model).toObject(ReadOnlyFollowingDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT30H42M39S"), model.hotCachePeriod());
+        Assertions.assertEquals(Duration.parse("PT219H56M43S"), model.hotCachePeriod());
     }
 }

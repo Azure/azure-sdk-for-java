@@ -60,7 +60,8 @@ public final class ManageVirtualMachineExtension {
         final String linuxCustomScriptExtensionTypeName = "CustomScriptForLinux";
         final String linuxCustomScriptExtensionVersionName = "1.4";
 
-        final String mySqlLinuxInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
+        final String mySqlLinuxInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
         final String installMySQLLinuxCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
         final List<String> linuxScriptFileUris = new ArrayList<>();
         linuxScriptFileUris.add(mySqlLinuxInstallScript);
@@ -70,7 +71,8 @@ public final class ManageVirtualMachineExtension {
         final String windowsCustomScriptExtensionTypeName = "CustomScriptExtension";
         final String windowsCustomScriptExtensionVersionName = "1.7";
 
-        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/installMySQL.ps1";
+        final String mySqlWindowsInstallScript
+            = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/installMySQL.ps1";
         final String installMySQLWindowsCommand = "powershell.exe -ExecutionPolicy Unrestricted -File installMySQL.ps1";
         final List<String> windowsScriptFileUris = new ArrayList<>();
         windowsScriptFileUris.add(mySqlWindowsInstallScript);
@@ -98,24 +100,24 @@ public final class ManageVirtualMachineExtension {
         final String windowsVMAccessExtensionVersionName = "2.4";
         try {
 
-
             //=============================================================
             // Create a Linux VM with root (sudo) user
 
             System.out.println("Creating a Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipDnsLabelLinuxVM)
-                    // mysql-server-5.6 not available for Ubuntu 16 and 18
-                    .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
-                    .withRootUsername(firstLinuxUserName)
-                    .withRootPassword(firstLinuxUserPassword)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(pipDnsLabelLinuxVM)
+                // mysql-server-5.6 not available for Ubuntu 16 and 18
+                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
+                .withRootUsername(firstLinuxUserName)
+                .withRootPassword(firstLinuxUserPassword)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
 
             System.out.println("Created a Linux VM with" + linuxVM.id());
             Utils.print(linuxVM);
@@ -124,15 +126,15 @@ public final class ManageVirtualMachineExtension {
             // Add a second sudo user to Linux VM using VMAccess extension
 
             linuxVM.update()
-                    .defineNewExtension(linuxVMAccessExtensionName)
-                        .withPublisher(linuxVMAccessExtensionPublisherName)
-                        .withType(linuxVMAccessExtensionTypeName)
-                        .withVersion(linuxVMAccessExtensionVersionName)
-                        .withProtectedSetting("username", secondLinuxUserName)
-                        .withProtectedSetting("password", secondLinuxUserPassword)
-                        .withProtectedSetting("expiration", secondLinuxUserExpiration)
-                        .attach()
-                    .apply();
+                .defineNewExtension(linuxVMAccessExtensionName)
+                .withPublisher(linuxVMAccessExtensionPublisherName)
+                .withType(linuxVMAccessExtensionTypeName)
+                .withVersion(linuxVMAccessExtensionVersionName)
+                .withProtectedSetting("username", secondLinuxUserName)
+                .withProtectedSetting("password", secondLinuxUserPassword)
+                .withProtectedSetting("expiration", secondLinuxUserExpiration)
+                .attach()
+                .apply();
 
             System.out.println("Added a second sudo user to the Linux VM");
 
@@ -140,12 +142,12 @@ public final class ManageVirtualMachineExtension {
             // Add a third sudo user to Linux VM by updating VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVMAccessExtensionName)
-                        .withProtectedSetting("username", thirdLinuxUserName)
-                        .withProtectedSetting("password", thirdLinuxUserPassword)
-                        .withProtectedSetting("expiration", thirdLinuxUserExpiration)
-                        .parent()
-                    .apply();
+                .updateExtension(linuxVMAccessExtensionName)
+                .withProtectedSetting("username", thirdLinuxUserName)
+                .withProtectedSetting("password", thirdLinuxUserPassword)
+                .withProtectedSetting("expiration", thirdLinuxUserExpiration)
+                .parent()
+                .apply();
 
             System.out.println("Added a third sudo user to the Linux VM");
 
@@ -153,12 +155,12 @@ public final class ManageVirtualMachineExtension {
             // Reset ssh password of first user of Linux VM by updating VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVMAccessExtensionName)
-                        .withProtectedSetting("username", firstLinuxUserName)
-                        .withProtectedSetting("password", firstLinuxUserNewPassword)
-                        .withProtectedSetting("reset_ssh", "true")
-                        .parent()
-                    .apply();
+                .updateExtension(linuxVMAccessExtensionName)
+                .withProtectedSetting("username", firstLinuxUserName)
+                .withProtectedSetting("password", firstLinuxUserNewPassword)
+                .withProtectedSetting("reset_ssh", "true")
+                .parent()
+                .apply();
 
             System.out.println("Password of first user of Linux VM has been updated");
 
@@ -166,24 +168,24 @@ public final class ManageVirtualMachineExtension {
             // Removes the second sudo user from Linux VM using VMAccess extension
 
             linuxVM.update()
-                    .updateExtension(linuxVMAccessExtensionName)
-                        .withProtectedSetting("remove_user", secondLinuxUserName)
-                        .parent()
-                    .apply();
+                .updateExtension(linuxVMAccessExtensionName)
+                .withProtectedSetting("remove_user", secondLinuxUserName)
+                .parent()
+                .apply();
 
             //=============================================================
             // Install MySQL in Linux VM using CustomScript extension
 
             linuxVM.update()
-                    .defineNewExtension(linuxCustomScriptExtensionName)
-                        .withPublisher(linuxCustomScriptExtensionPublisherName)
-                        .withType(linuxCustomScriptExtensionTypeName)
-                        .withVersion(linuxCustomScriptExtensionVersionName)
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", linuxScriptFileUris)
-                        .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
-                        .attach()
-                    .apply();
+                .defineNewExtension(linuxCustomScriptExtensionName)
+                .withPublisher(linuxCustomScriptExtensionPublisherName)
+                .withType(linuxCustomScriptExtensionTypeName)
+                .withVersion(linuxCustomScriptExtensionVersionName)
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", linuxScriptFileUris)
+                .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
+                .attach()
+                .apply();
 
             System.out.println("Installed MySql using custom script extension");
             Utils.print(linuxVM);
@@ -192,9 +194,9 @@ public final class ManageVirtualMachineExtension {
             // Removes the extensions from Linux VM
 
             linuxVM.update()
-                    .withoutExtension(linuxCustomScriptExtensionName)
-                    .withoutExtension(linuxVMAccessExtensionName)
-                    .apply();
+                .withoutExtension(linuxCustomScriptExtensionName)
+                .withoutExtension(linuxVMAccessExtensionName)
+                .apply();
             System.out.println("Removed the custom script and VM Access extensions from Linux VM");
             Utils.print(linuxVM);
 
@@ -203,25 +205,26 @@ public final class ManageVirtualMachineExtension {
 
             System.out.println("Creating a Windows VM");
 
-            VirtualMachine windowsVM = azureResourceManager.virtualMachines().define(windowsVMName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipDnsLabelWindowsVM)
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(firstWindowsUserName)
-                    .withAdminPassword(firstWindowsUserPassword)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .defineNewExtension(windowsCustomScriptExtensionName)
-                        .withPublisher(windowsCustomScriptExtensionPublisherName)
-                        .withType(windowsCustomScriptExtensionTypeName)
-                        .withVersion(windowsCustomScriptExtensionVersionName)
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", windowsScriptFileUris)
-                        .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
-                        .attach()
-                    .create();
+            VirtualMachine windowsVM = azureResourceManager.virtualMachines()
+                .define(windowsVMName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(pipDnsLabelWindowsVM)
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(firstWindowsUserName)
+                .withAdminPassword(firstWindowsUserPassword)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .defineNewExtension(windowsCustomScriptExtensionName)
+                .withPublisher(windowsCustomScriptExtensionPublisherName)
+                .withType(windowsCustomScriptExtensionTypeName)
+                .withVersion(windowsCustomScriptExtensionVersionName)
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", windowsScriptFileUris)
+                .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
+                .attach()
+                .create();
 
             System.out.println("Created a Windows VM" + windowsVM.id());
             Utils.print(windowsVM);
@@ -230,14 +233,14 @@ public final class ManageVirtualMachineExtension {
             // Add a second admin user to Windows VM using VMAccess extension
 
             windowsVM.update()
-                    .defineNewExtension(windowsVMAccessExtensionName)
-                        .withPublisher(windowsVMAccessExtensionPublisherName)
-                        .withType(windowsVMAccessExtensionTypeName)
-                        .withVersion(windowsVMAccessExtensionVersionName)
-                        .withPublicSetting("UserName", secondWindowsUserName)
-                        .withProtectedSetting("Password", secondWindowsUserPassword)
-                        .attach()
-                    .apply();
+                .defineNewExtension(windowsVMAccessExtensionName)
+                .withPublisher(windowsVMAccessExtensionPublisherName)
+                .withType(windowsVMAccessExtensionTypeName)
+                .withVersion(windowsVMAccessExtensionVersionName)
+                .withPublicSetting("UserName", secondWindowsUserName)
+                .withProtectedSetting("Password", secondWindowsUserPassword)
+                .attach()
+                .apply();
 
             System.out.println("Added a second admin user to the Windows VM");
 
@@ -245,11 +248,11 @@ public final class ManageVirtualMachineExtension {
             // Add a third admin user to Windows VM by updating VMAccess extension
 
             windowsVM.update()
-                    .updateExtension(windowsVMAccessExtensionName)
-                        .withPublicSetting("UserName", thirdWindowsUserName)
-                        .withProtectedSetting("Password", thirdWindowsUserPassword)
-                        .parent()
-                    .apply();
+                .updateExtension(windowsVMAccessExtensionName)
+                .withPublicSetting("UserName", thirdWindowsUserName)
+                .withProtectedSetting("Password", thirdWindowsUserPassword)
+                .parent()
+                .apply();
 
             System.out.println("Added a third admin user to the Windows VM");
 
@@ -257,20 +260,18 @@ public final class ManageVirtualMachineExtension {
             // Reset admin password of first user of Windows VM by updating VMAccess extension
 
             windowsVM.update()
-                    .updateExtension(windowsVMAccessExtensionName)
-                        .withPublicSetting("UserName", firstWindowsUserName)
-                        .withProtectedSetting("Password", firstWindowsUserNewPassword)
-                        .parent()
-                    .apply();
+                .updateExtension(windowsVMAccessExtensionName)
+                .withPublicSetting("UserName", firstWindowsUserName)
+                .withProtectedSetting("Password", firstWindowsUserNewPassword)
+                .parent()
+                .apply();
 
             System.out.println("Password of first user of Windows VM has been updated");
 
             //=============================================================
             // Removes the extensions from Windows VM
 
-            windowsVM.update()
-                    .withoutExtension(windowsVMAccessExtensionName)
-                    .apply();
+            windowsVM.update().withoutExtension(windowsVMAccessExtensionName).apply();
             System.out.println("Removed the VM Access extensions from Windows VM");
             Utils.print(windowsVM);
             return true;
@@ -302,8 +303,7 @@ public final class ManageVirtualMachineExtension {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

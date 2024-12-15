@@ -110,17 +110,11 @@ public interface Snapshot
     Mono<Void> awaitCopyStartCompletionAsync();
 
     /** The entirety of the managed snapshot definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSnapshotSource,
-            DefinitionStages.WithWindowsSnapshotSource,
-            DefinitionStages.WithLinuxSnapshotSource,
-            DefinitionStages.WithDataSnapshotSource,
-            DefinitionStages.WithDataSnapshotFromVhd,
-            DefinitionStages.WithDataSnapshotFromDisk,
-            DefinitionStages.WithDataSnapshotFromSnapshot,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithSnapshotSource, DefinitionStages.WithWindowsSnapshotSource,
+        DefinitionStages.WithLinuxSnapshotSource, DefinitionStages.WithDataSnapshotSource,
+        DefinitionStages.WithDataSnapshotFromVhd, DefinitionStages.WithDataSnapshotFromDisk,
+        DefinitionStages.WithDataSnapshotFromSnapshot, DefinitionStages.WithCreate {
     }
 
     /** Grouping of managed snapshot definition stages. */
@@ -350,6 +344,7 @@ public interface Snapshot
              */
             WithCreate fromImage(VirtualMachineCustomImage image);
         }
+
         /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataSnapshotFromImage {
             /**
@@ -428,13 +423,8 @@ public interface Snapshot
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<Snapshot>,
-                Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
-                WithSize,
-                WithSku,
-                WithIncremental,
-                WithCopyStart,
-                WithPublicNetworkAccess {
+            extends Creatable<Snapshot>, Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>, WithSize,
+            WithSku, WithIncremental, WithCopyStart, WithPublicNetworkAccess {
         }
     }
 
@@ -470,6 +460,7 @@ public interface Snapshot
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
+
             /**
              * Disables public network access for the snapshot.
              *
@@ -480,11 +471,7 @@ public interface Snapshot
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Snapshot>,
-            Resource.UpdateWithTags<Snapshot.Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithOSSettings,
-            UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Appliable<Snapshot>, Resource.UpdateWithTags<Snapshot.Update>, UpdateStages.WithSku,
+        UpdateStages.WithOSSettings, UpdateStages.WithPublicNetworkAccess {
     }
 }

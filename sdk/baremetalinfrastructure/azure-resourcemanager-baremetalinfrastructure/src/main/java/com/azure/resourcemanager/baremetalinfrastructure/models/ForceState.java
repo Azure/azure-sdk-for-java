@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The active state empowers the server with the ability to forcefully terminate and halt any existing processes that
  * may be running on the server.
  */
 @Fluent
-public final class ForceState {
+public final class ForceState implements JsonSerializable<ForceState> {
     /*
      * Whether to force restart by shutting all processes.
      */
-    @JsonProperty(value = "forceState")
     private AzureBareMetalInstanceForcePowerState forceState;
 
-    /** Creates an instance of ForceState class. */
+    /**
+     * Creates an instance of ForceState class.
+     */
     public ForceState() {
     }
 
     /**
      * Get the forceState property: Whether to force restart by shutting all processes.
-     *
+     * 
      * @return the forceState value.
      */
     public AzureBareMetalInstanceForcePowerState forceState() {
@@ -34,7 +39,7 @@ public final class ForceState {
 
     /**
      * Set the forceState property: Whether to force restart by shutting all processes.
-     *
+     * 
      * @param forceState the forceState value to set.
      * @return the ForceState object itself.
      */
@@ -45,9 +50,46 @@ public final class ForceState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("forceState", this.forceState == null ? null : this.forceState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForceState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForceState if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ForceState.
+     */
+    public static ForceState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForceState deserializedForceState = new ForceState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forceState".equals(fieldName)) {
+                    deserializedForceState.forceState
+                        = AzureBareMetalInstanceForcePowerState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForceState;
+        });
     }
 }

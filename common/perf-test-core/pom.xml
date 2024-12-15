@@ -53,8 +53,6 @@
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-
                 <!-- Special allowance for performance libraries as they aren't shipped. -->
                 <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
@@ -77,22 +75,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.12.6</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.22</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.0.0-beta.24</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IpRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpRule model =
-            BinaryData.fromString("{\"value\":\"ytxifqjzgxmrh\",\"action\":\"Allow\"}").toObject(IpRule.class);
+        IpRule model
+            = BinaryData.fromString("{\"value\":\"ytxifqjzgxmrh\",\"action\":\"Allow\"}").toObject(IpRule.class);
         Assertions.assertEquals("ytxifqjzgxmrh", model.value());
         Assertions.assertEquals(AclAction.ALLOW, model.action());
     }

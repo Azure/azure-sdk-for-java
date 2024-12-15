@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the billing related details of the AzureBareMetalStorageInstance. */
+/**
+ * Describes the billing related details of the AzureBareMetalStorageInstance.
+ */
 @Fluent
-public final class StorageBillingProperties {
+public final class StorageBillingProperties implements JsonSerializable<StorageBillingProperties> {
     /*
      * the billing mode for the storage instance
      */
-    @JsonProperty(value = "billingMode")
     private String billingMode;
 
     /*
      * the SKU type that is provisioned
      */
-    @JsonProperty(value = "azureBareMetalStorageInstanceSize")
     private String azureBareMetalStorageInstanceSize;
 
-    /** Creates an instance of StorageBillingProperties class. */
+    /**
+     * Creates an instance of StorageBillingProperties class.
+     */
     public StorageBillingProperties() {
     }
 
     /**
      * Get the billingMode property: the billing mode for the storage instance.
-     *
+     * 
      * @return the billingMode value.
      */
     public String billingMode() {
@@ -37,7 +43,7 @@ public final class StorageBillingProperties {
 
     /**
      * Set the billingMode property: the billing mode for the storage instance.
-     *
+     * 
      * @param billingMode the billingMode value to set.
      * @return the StorageBillingProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class StorageBillingProperties {
 
     /**
      * Get the azureBareMetalStorageInstanceSize property: the SKU type that is provisioned.
-     *
+     * 
      * @return the azureBareMetalStorageInstanceSize value.
      */
     public String azureBareMetalStorageInstanceSize() {
@@ -57,7 +63,7 @@ public final class StorageBillingProperties {
 
     /**
      * Set the azureBareMetalStorageInstanceSize property: the SKU type that is provisioned.
-     *
+     * 
      * @param azureBareMetalStorageInstanceSize the azureBareMetalStorageInstanceSize value to set.
      * @return the StorageBillingProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class StorageBillingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingMode", this.billingMode);
+        jsonWriter.writeStringField("azureBareMetalStorageInstanceSize", this.azureBareMetalStorageInstanceSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageBillingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageBillingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageBillingProperties.
+     */
+    public static StorageBillingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageBillingProperties deserializedStorageBillingProperties = new StorageBillingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingMode".equals(fieldName)) {
+                    deserializedStorageBillingProperties.billingMode = reader.getString();
+                } else if ("azureBareMetalStorageInstanceSize".equals(fieldName)) {
+                    deserializedStorageBillingProperties.azureBareMetalStorageInstanceSize = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageBillingProperties;
+        });
     }
 }

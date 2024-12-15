@@ -35,10 +35,7 @@ public class RateLimiter implements AutoCloseable {
             return Mono.just(true);
         }
 
-        return Mono.delay(Duration.ofMillis(10))
-            .repeat(() -> !tryAcquire())
-            .then()
-            .thenReturn(true);
+        return Mono.delay(Duration.ofMillis(10)).repeat(() -> !tryAcquire()).then().thenReturn(true);
     }
 
     public boolean tryAcquire() {

@@ -18,9 +18,7 @@ import java.time.OffsetDateTime;
  * The implementation of {@link DeploymentOperation}.
  */
 final class DeploymentOperationImpl extends
-        IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>
-        implements
-        DeploymentOperation {
+    IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner> implements DeploymentOperation {
     private String resourceGroupName;
     private String deploymentName;
 

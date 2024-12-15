@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AttachedDatabaseConfigurations. */
+/**
+ * Resource collection API of AttachedDatabaseConfigurations.
+ */
 public interface AttachedDatabaseConfigurations {
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -22,15 +24,12 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -39,40 +38,40 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName);
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName);
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -82,12 +81,12 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response}.
      */
-    Response<AttachedDatabaseConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    Response<AttachedDatabaseConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -96,12 +95,12 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration.
      */
-    AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    AttachedDatabaseConfiguration get(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName);
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -113,7 +112,7 @@ public interface AttachedDatabaseConfigurations {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -122,12 +121,12 @@ public interface AttachedDatabaseConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+        Context context);
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +137,7 @@ public interface AttachedDatabaseConfigurations {
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +149,7 @@ public interface AttachedDatabaseConfigurations {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,7 +159,7 @@ public interface AttachedDatabaseConfigurations {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +170,7 @@ public interface AttachedDatabaseConfigurations {
 
     /**
      * Begins definition for a new AttachedDatabaseConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AttachedDatabaseConfiguration definition.
      */

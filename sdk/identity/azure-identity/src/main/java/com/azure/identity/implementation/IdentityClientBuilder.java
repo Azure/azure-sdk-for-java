@@ -103,7 +103,8 @@ public final class IdentityClientBuilder {
         return this;
     }
 
-    public IdentityClientBuilder clientAssertionSupplierWithHttpPipeline(Function<HttpPipeline, String> clientAssertionSupplier) {
+    public IdentityClientBuilder
+        clientAssertionSupplierWithHttpPipeline(Function<HttpPipeline, String> clientAssertionSupplier) {
         this.clientAssertionSupplierWithHttpPipeline = clientAssertionSupplier;
         return this;
     }
@@ -178,14 +179,14 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId, objectId,
-            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
-            identityClientOptions);
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+            objectId, clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate,
+            certificatePassword, sharedTokenCacheCred, clientAssertionTimeout, identityClientOptions);
     }
 
     public IdentitySyncClient buildSyncClient() {
-        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId, objectId,
-            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
-            identityClientOptions);
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath,
+            resourceId, objectId, clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate,
+            certificatePassword, sharedTokenCacheCred, clientAssertionTimeout, identityClientOptions);
     }
 }

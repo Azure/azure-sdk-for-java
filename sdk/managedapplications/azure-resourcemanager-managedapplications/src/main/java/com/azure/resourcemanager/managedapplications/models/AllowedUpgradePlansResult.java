@@ -7,18 +7,20 @@ package com.azure.resourcemanager.managedapplications.models;
 import com.azure.resourcemanager.managedapplications.fluent.models.AllowedUpgradePlansResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of AllowedUpgradePlansResult. */
+/**
+ * An immutable client-side representation of AllowedUpgradePlansResult.
+ */
 public interface AllowedUpgradePlansResult {
     /**
      * Gets the value property: The array of plans.
-     *
+     * 
      * @return the value value.
      */
     List<Plan> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.managedapplications.fluent.models.AllowedUpgradePlansResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     AllowedUpgradePlansResultInner innerModel();

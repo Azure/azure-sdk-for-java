@@ -12,41 +12,35 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"mtxpsiebtfh\",\"isDataAction\":false,\"display\":{\"provider\":\"pskrdqmh\",\"resource\":\"dhtldwkyz\",\"operation\":\"utknc\",\"description\":\"cwsvlxotog\"},\"origin\":\"rupqsxvnmicy\",\"properties\":\"dataceoveilovno\"}")
-                .toObject(OperationResponseInner.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("pskrdqmh", model.display().provider());
-        Assertions.assertEquals("dhtldwkyz", model.display().resource());
-        Assertions.assertEquals("utknc", model.display().operation());
-        Assertions.assertEquals("cwsvlxotog", model.display().description());
-        Assertions.assertEquals("rupqsxvnmicy", model.origin());
+        OperationResponseInner model = BinaryData.fromString(
+            "{\"name\":\"fkbey\",\"isDataAction\":true,\"display\":{\"provider\":\"jmwvvj\",\"resource\":\"tcxsenhwlrs\",\"operation\":\"rzpwvlqdqgbiq\",\"description\":\"ihkaetcktvfc\"},\"origin\":\"fsnkymuctq\",\"properties\":\"datafbebrjcxer\"}")
+            .toObject(OperationResponseInner.class);
+        Assertions.assertEquals("fkbey", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("jmwvvj", model.display().provider());
+        Assertions.assertEquals("tcxsenhwlrs", model.display().resource());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.display().operation());
+        Assertions.assertEquals("ihkaetcktvfc", model.display().description());
+        Assertions.assertEquals("fsnkymuctq", model.origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResponseInner model =
-            new OperationResponseInner()
-                .withName("mtxpsiebtfh")
-                .withIsDataAction(false)
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("pskrdqmh")
-                        .withResource("dhtldwkyz")
-                        .withOperation("utknc")
-                        .withDescription("cwsvlxotog"))
-                .withOrigin("rupqsxvnmicy")
-                .withProperties("dataceoveilovno");
+        OperationResponseInner model = new OperationResponseInner().withName("fkbey")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDisplay().withProvider("jmwvvj")
+                .withResource("tcxsenhwlrs")
+                .withOperation("rzpwvlqdqgbiq")
+                .withDescription("ihkaetcktvfc"))
+            .withOrigin("fsnkymuctq")
+            .withProperties("datafbebrjcxer");
         model = BinaryData.fromObject(model).toObject(OperationResponseInner.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("pskrdqmh", model.display().provider());
-        Assertions.assertEquals("dhtldwkyz", model.display().resource());
-        Assertions.assertEquals("utknc", model.display().operation());
-        Assertions.assertEquals("cwsvlxotog", model.display().description());
-        Assertions.assertEquals("rupqsxvnmicy", model.origin());
+        Assertions.assertEquals("fkbey", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("jmwvvj", model.display().provider());
+        Assertions.assertEquals("tcxsenhwlrs", model.display().resource());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.display().operation());
+        Assertions.assertEquals("ihkaetcktvfc", model.display().description());
+        Assertions.assertEquals("fsnkymuctq", model.origin());
     }
 }

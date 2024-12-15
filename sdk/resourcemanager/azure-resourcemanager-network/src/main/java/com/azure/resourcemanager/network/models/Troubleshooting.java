@@ -40,11 +40,8 @@ public interface Troubleshooting extends Executable<Troubleshooting>, HasParent<
     List<TroubleshootingDetails> results();
 
     /** The entirety of troubleshooting parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResource,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithStoragePath,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithTargetResource, DefinitionStages.WithStorageAccount,
+        DefinitionStages.WithStoragePath, DefinitionStages.WithExecute {
     }
 
     /** Grouping of troubleshooting definition stages. */

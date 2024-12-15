@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class StoreName extends ExpandableStringEnum<StoreName> {
      * @param name a name to look for.
      * @return the corresponding StoreName.
      */
-    @JsonCreator
     public static StoreName fromString(String name) {
         return fromString(name, StoreName.class);
     }

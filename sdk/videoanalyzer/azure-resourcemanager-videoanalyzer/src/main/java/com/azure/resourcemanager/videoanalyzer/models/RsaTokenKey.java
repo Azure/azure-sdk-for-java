@@ -109,9 +109,8 @@ public final class RsaTokenKey extends TokenKey {
     public void validate() {
         super.validate();
         if (alg() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property alg in model RsaTokenKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property alg in model RsaTokenKey"));
         }
         if (n() == null) {
             throw LOGGER

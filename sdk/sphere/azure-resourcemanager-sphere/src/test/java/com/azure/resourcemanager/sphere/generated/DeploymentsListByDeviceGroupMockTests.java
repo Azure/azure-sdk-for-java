@@ -46,12 +46,14 @@ public final class DeploymentsListByDeviceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Deployment> response = manager.deployments().listByDeviceGroup("cqqudf", "byxbaaabjy", "ayffim",
-            "zrtuzq", "gsexne", 850324011, 779817958, 1536688095, com.azure.core.util.Context.NONE);
+        PagedIterable<Deployment> response = manager.deployments()
+            .listByDeviceGroup("cqqudf", "byxbaaabjy", "ayffim", "zrtuzq", "gsexne", 850324011, 779817958, 1536688095,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("wmewzsyy", response.iterator().next().properties().deploymentId());
         Assertions.assertEquals("oibjudpfrxtrthz",

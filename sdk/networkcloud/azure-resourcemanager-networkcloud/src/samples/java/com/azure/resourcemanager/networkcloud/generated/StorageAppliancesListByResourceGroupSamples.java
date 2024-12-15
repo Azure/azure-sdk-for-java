@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for StorageAppliances ListByResourceGroup. */
+/**
+ * Samples for StorageAppliances ListByResourceGroup.
+ */
 public final class StorageAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * StorageAppliances_ListByResourceGroup.json
      */
     /**
      * Sample code: List storage appliances for resource group.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listStorageAppliancesForResourceGroup(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+    public static void
+        listStorageAppliancesForResourceGroup(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.storageAppliances().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
     }
 }

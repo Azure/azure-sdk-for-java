@@ -45,12 +45,14 @@ public final class DevicesListByDeviceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Device> response = manager.devices().listByDeviceGroup("sjabibs", "stawfsdjpvkv", "bjxbkzbzk",
-            "vncjabudurgk", com.azure.core.util.Context.NONE);
+        PagedIterable<Device> response = manager.devices()
+            .listByDeviceGroup("sjabibs", "stawfsdjpvkv", "bjxbkzbzk", "vncjabudurgk",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("o", response.iterator().next().properties().deviceId());
     }

@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeStorageAccountDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStorageAccountDetails model =
-            BinaryData
-                .fromString(
-                    "{\"accountUrl\":\"twzhhzjhfjmhv\",\"filesystem\":\"uvgp\",\"resourceId\":\"neqsxvmh\",\"createManagedPrivateEndpoint\":true}")
-                .toObject(DataLakeStorageAccountDetails.class);
-        Assertions.assertEquals("twzhhzjhfjmhv", model.accountUrl());
-        Assertions.assertEquals("uvgp", model.filesystem());
-        Assertions.assertEquals("neqsxvmh", model.resourceId());
+        DataLakeStorageAccountDetails model = BinaryData.fromString(
+            "{\"accountUrl\":\"iekkkzddrtkgdojb\",\"filesystem\":\"vavrefdees\",\"resourceId\":\"cuijpxt\",\"createManagedPrivateEndpoint\":true}")
+            .toObject(DataLakeStorageAccountDetails.class);
+        Assertions.assertEquals("iekkkzddrtkgdojb", model.accountUrl());
+        Assertions.assertEquals("vavrefdees", model.filesystem());
+        Assertions.assertEquals("cuijpxt", model.resourceId());
         Assertions.assertEquals(true, model.createManagedPrivateEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeStorageAccountDetails model =
-            new DataLakeStorageAccountDetails()
-                .withAccountUrl("twzhhzjhfjmhv")
-                .withFilesystem("uvgp")
-                .withResourceId("neqsxvmh")
-                .withCreateManagedPrivateEndpoint(true);
+        DataLakeStorageAccountDetails model = new DataLakeStorageAccountDetails().withAccountUrl("iekkkzddrtkgdojb")
+            .withFilesystem("vavrefdees")
+            .withResourceId("cuijpxt")
+            .withCreateManagedPrivateEndpoint(true);
         model = BinaryData.fromObject(model).toObject(DataLakeStorageAccountDetails.class);
-        Assertions.assertEquals("twzhhzjhfjmhv", model.accountUrl());
-        Assertions.assertEquals("uvgp", model.filesystem());
-        Assertions.assertEquals("neqsxvmh", model.resourceId());
+        Assertions.assertEquals("iekkkzddrtkgdojb", model.accountUrl());
+        Assertions.assertEquals("vavrefdees", model.filesystem());
+        Assertions.assertEquals("cuijpxt", model.resourceId());
         Assertions.assertEquals(true, model.createManagedPrivateEndpoint());
     }
 }

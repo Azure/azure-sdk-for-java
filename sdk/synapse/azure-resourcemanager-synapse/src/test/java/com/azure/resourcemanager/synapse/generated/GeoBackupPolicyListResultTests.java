@@ -14,26 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class GeoBackupPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GeoBackupPolicyListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"v\"},\"kind\":\"jkbegibtnmxiebww\",\"location\":\"oayqc\",\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"qpsrknftguvri\"},\"kind\":\"prwmdyvxqt\",\"location\":\"riwwroy\",\"id\":\"bexrmcq\",\"name\":\"bycnojvkn\",\"type\":\"e\"},{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"gzva\"},\"kind\":\"pjyzhpv\",\"location\":\"zcjrvxdjzlmwlx\",\"id\":\"vu\",\"name\":\"fhzovawjvzunluth\",\"type\":\"n\"},{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"xipeilpjzuaejx\"},\"kind\":\"ltskzbbtd\",\"location\":\"mv\",\"id\":\"ekg\",\"name\":\"wozuhkf\",\"type\":\"bsjyofdx\"}]}")
-                .toObject(GeoBackupPolicyListResult.class);
-        Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.value().get(0).state());
+        GeoBackupPolicyListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"xssadbzmnvdf\"},\"kind\":\"ud\",\"location\":\"dvxzbncblylpst\",\"id\":\"bhhxsrzdzuc\",\"name\":\"rsc\",\"type\":\"ntnev\"},{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"jmygtdsslswtmwer\"},\"kind\":\"fzp\",\"location\":\"semwabnet\",\"id\":\"hhszh\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"},{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"wwtppj\"},\"kind\":\"cxogaokonzm\",\"location\":\"ikvmkqzeqqk\",\"id\":\"l\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"}]}")
+            .toObject(GeoBackupPolicyListResult.class);
+        Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GeoBackupPolicyListResult model =
-            new GeoBackupPolicyListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED),
-                            new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED),
-                            new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED),
-                            new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED)));
+        GeoBackupPolicyListResult model = new GeoBackupPolicyListResult()
+            .withValue(Arrays.asList(new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED),
+                new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED),
+                new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(GeoBackupPolicyListResult.class);
-        Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.value().get(0).state());
+        Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.value().get(0).state());
     }
 }

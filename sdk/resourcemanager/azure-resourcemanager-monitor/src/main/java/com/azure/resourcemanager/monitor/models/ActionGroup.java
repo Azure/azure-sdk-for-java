@@ -16,10 +16,8 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Action Group. */
 @Fluent
-public interface ActionGroup
-    extends GroupableResource<MonitorManager, ActionGroupResourceInner>,
-        Refreshable<ActionGroup>,
-        Updatable<ActionGroup.Update> {
+public interface ActionGroup extends GroupableResource<MonitorManager, ActionGroupResourceInner>,
+    Refreshable<ActionGroup>, Updatable<ActionGroup.Update> {
     /**
      * Get the groupShortName value.
      *
@@ -130,8 +128,8 @@ public interface ActionGroup
          * @param region the region value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withItsm(
-            String workspaceId, String connectionId, String ticketConfiguration, String region);
+        ActionDefinition<ParentT> withItsm(String workspaceId, String connectionId, String ticketConfiguration,
+            String region);
 
         /**
          * Sets the Azure Mobile App Push Notification receiver.
@@ -150,8 +148,8 @@ public interface ActionGroup
          * @param isGlobalRunbook the isGlobalRunbook value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withAutomationRunbook(
-            String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
+        ActionDefinition<ParentT> withAutomationRunbook(String automationAccountId, String runbookName,
+            String webhookResourceId, boolean isGlobalRunbook);
 
         /**
          * Sets the Voice notification receiver.
@@ -179,8 +177,8 @@ public interface ActionGroup
          * @param httpTriggerUrl the httpTriggerUrl value to set
          * @return the next stage of the definition
          */
-        ActionDefinition<ParentT> withAzureFunction(
-            String functionAppResourceId, String functionName, String httpTriggerUrl);
+        ActionDefinition<ParentT> withAzureFunction(String functionAppResourceId, String functionName,
+            String httpTriggerUrl);
 
         /**
          * Attaches the defined receivers to the Action Group configuration.
@@ -191,9 +189,7 @@ public interface ActionGroup
     }
 
     /** The entirety of a Action Group definition. */
-    interface Definition<T> extends DefinitionStages.Blank,
-        ActionDefinition<T>,
-        DefinitionStages.WithCreate {
+    interface Definition<T> extends DefinitionStages.Blank, ActionDefinition<T>, DefinitionStages.WithCreate {
     }
 
     /** Grouping of Action Group definition stages. */
@@ -365,8 +361,8 @@ public interface ActionGroup
              * @param region the region value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withItsm(
-                String workspaceId, String connectionId, String ticketConfiguration, String region);
+            WithActionUpdateDefinition withItsm(String workspaceId, String connectionId, String ticketConfiguration,
+                String region);
 
             /**
              * Sets the Azure Mobile App Push Notification receiver.
@@ -385,8 +381,8 @@ public interface ActionGroup
              * @param isGlobalRunbook the isGlobalRunbook value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withAutomationRunbook(
-                String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook);
+            WithActionUpdateDefinition withAutomationRunbook(String automationAccountId, String runbookName,
+                String webhookResourceId, boolean isGlobalRunbook);
 
             /**
              * Sets the Voice notification receiver.
@@ -414,8 +410,8 @@ public interface ActionGroup
              * @param httpTriggerUrl the httpTriggerUrl value to set
              * @return the next stage of the update
              */
-            WithActionUpdateDefinition withAzureFunction(
-                String functionAppResourceId, String functionName, String httpTriggerUrl);
+            WithActionUpdateDefinition withAzureFunction(String functionAppResourceId, String functionName,
+                String httpTriggerUrl);
 
             /**
              * Returns to the Action Group update flow.

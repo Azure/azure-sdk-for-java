@@ -28,10 +28,7 @@ public class AvroIntegerSchema extends AvroCompositeSchema {
     public void pushToStack() {
         this.state.pushToStack(this);
         /* Read the Long, then convert it to an Integer. */
-        AvroLongSchema numberSchema = new AvroLongSchema(
-            this.state,
-            this::onNumber
-        );
+        AvroLongSchema numberSchema = new AvroLongSchema(this.state, this::onNumber);
         numberSchema.pushToStack();
     }
 

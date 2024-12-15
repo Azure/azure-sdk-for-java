@@ -6,83 +6,53 @@ package com.azure.resourcemanager.databricks.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databricks.AzureDatabricksManager;
 import com.azure.resourcemanager.databricks.models.AccessConnector;
 import com.azure.resourcemanager.databricks.models.AccessConnectorProperties;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.databricks.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"identity\":{\"principalId\":\"28bbe694-bfb2-4ed8-9e26-415f5e6a5f21\",\"tenantId\":\"794121f1-1e63-4979-91e5-2fa8dfa0de2d\",\"type\":\"None\",\"userAssignedIdentities\":{\"healmfmtda\":{\"principalId\":\"8cc5fbdc-bd5c-4570-979b-200af1b6abfa\",\"clientId\":\"580f91d8-ac00-453b-a09c-16185d59e72b\"}}},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"wvgpiohg\",\"tags\":{\"yqagvrvm\":\"tfudxepx\",\"dblx\":\"pkukghi\",\"fnjhfjxwmszkkfo\":\"wi\"},\"id\":\"rey\",\"name\":\"kzikfjawneaivxwc\",\"type\":\"elpcirelsfeaenwa\"}";
 
-        String responseStr =
-            "{\"identity\":{\"principalId\":\"64a35e2c-2994-4e63-8b74-7932ebffa657\",\"tenantId\":\"ab9c7717-6585-4711-ba47-88648b69f97a\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"quyfx\",\"tags\":{\"ptramxj\":\"l\",\"nwxuqlcvydyp\":\"zwl\",\"niodkooeb\":\"tdooaoj\"},\"id\":\"nuj\",\"name\":\"emmsbvdkc\",\"type\":\"odtji\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AccessConnector response = manager.accessConnectors()
+            .define("abikns")
+            .withRegion("gjltdtbnnhado")
+            .withExistingResourceGroup("mwzn")
+            .withTags(mapOf("hnvpamqgxq", "kvci", "zikywgg", "u", "uipiccjzk", "kallatmel"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("tlwwrlk", new UserAssignedIdentity(), "ncvokotllxdyhg", new UserAssignedIdentity())))
+            .withProperties(new AccessConnectorProperties())
+            .create();
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccessConnector response =
-            manager
-                .accessConnectors()
-                .define("imrzrtuzqog")
-                .withRegion("wmewzsyy")
-                .withExistingResourceGroup("yxbaaabjyvayf")
-                .withTags(mapOf("hzv", "zsoibjudpfrxtr", "qbrqubpaxhexiili", "ytdw"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withProperties(new AccessConnectorProperties())
-                .create();
-
-        Assertions.assertEquals("quyfx", response.location());
-        Assertions.assertEquals("l", response.tags().get("ptramxj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("wvgpiohg", response.location());
+        Assertions.assertEquals("tfudxepx", response.tags().get("yqagvrvm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

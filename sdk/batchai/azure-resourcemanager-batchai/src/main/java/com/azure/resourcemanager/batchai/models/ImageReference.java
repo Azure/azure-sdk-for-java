@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The OS image reference. */
 @Fluent
 public final class ImageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageReference.class);
 
     /*
      * Publisher of the image.
@@ -173,19 +174,16 @@ public final class ImageReference {
      */
     public void validate() {
         if (publisher() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisher in model ImageReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property publisher in model ImageReference"));
         }
         if (offer() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property offer in model ImageReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property offer in model ImageReference"));
         }
         if (sku() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ImageReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ImageReference"));
         }
     }
 }

@@ -20,12 +20,8 @@ import reactor.core.publisher.Mono;
 
 /** An object that represents a webhook for a container registry. */
 @Fluent
-public interface Webhook
-    extends ExternalChildResource<Webhook, Registry>,
-        Resource,
-        HasInnerModel<WebhookInner>,
-        Refreshable<Webhook>,
-        Updatable<Webhook.Update> {
+public interface Webhook extends ExternalChildResource<Webhook, Registry>, Resource, HasInnerModel<WebhookInner>,
+    Refreshable<Webhook>, Updatable<Webhook.Update> {
 
     /** @return the status of the webhook */
     boolean isEnabled();
@@ -196,12 +192,8 @@ public interface Webhook
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                DefinitionWithTags<WithAttach<ParentT>>,
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT> extends WithCustomHeaders<ParentT>, WithRepositoriesScope<ParentT>,
+            WithDefaultStatus<ParentT>, DefinitionWithTags<WithAttach<ParentT>>, Attachable.InDefinition<ParentT> {
         }
     }
 
@@ -211,10 +203,8 @@ public interface Webhook
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface WebhookDefinition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithTriggerWhen<ParentT>,
-            DefinitionStages.WithServiceUri<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithTriggerWhen<ParentT>,
+        DefinitionStages.WithServiceUri<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of webhook update definition stages. */
@@ -353,12 +343,8 @@ public interface Webhook
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                WithTags<ParentT>,
-                Attachable.InUpdate<ParentT> {
+        interface WithAttach<ParentT> extends WithCustomHeaders<ParentT>, WithRepositoriesScope<ParentT>,
+            WithDefaultStatus<ParentT>, WithTags<ParentT>, Attachable.InUpdate<ParentT> {
         }
     }
 
@@ -368,21 +354,14 @@ public interface Webhook
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithTriggerWhen<ParentT>,
-            UpdateDefinitionStages.WithServiceUri<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithTriggerWhen<ParentT>,
+        UpdateDefinitionStages.WithServiceUri<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** The entirety of a webhook update. */
-    interface Update
-        extends UpdateStages.WithTriggerWhen,
-            UpdateStages.WithServiceUri,
-            UpdateStages.WithCustomHeaders,
-            UpdateStages.WithRepositoriesScope,
-            UpdateStages.WithDefaultStatus,
-            Resource.UpdateWithTags<Update>,
-            Appliable<Webhook> {
+    interface Update extends UpdateStages.WithTriggerWhen, UpdateStages.WithServiceUri, UpdateStages.WithCustomHeaders,
+        UpdateStages.WithRepositoriesScope, UpdateStages.WithDefaultStatus, Resource.UpdateWithTags<Update>,
+        Appliable<Webhook> {
     }
 
     /** Grouping of webhook update stages. */
@@ -622,13 +601,8 @@ public interface Webhook
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends WithTriggerWhen<ParentT>,
-                WithServiceUri<ParentT>,
-                WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                WithOrWithoutTags<ParentT>,
-                Settable<ParentT> {
+            extends WithTriggerWhen<ParentT>, WithServiceUri<ParentT>, WithCustomHeaders<ParentT>,
+            WithRepositoriesScope<ParentT>, WithDefaultStatus<ParentT>, WithOrWithoutTags<ParentT>, Settable<ParentT> {
         }
     }
 }

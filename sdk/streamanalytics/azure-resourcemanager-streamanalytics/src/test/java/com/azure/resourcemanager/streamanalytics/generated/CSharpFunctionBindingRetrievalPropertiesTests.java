@@ -13,18 +13,18 @@ public final class CSharpFunctionBindingRetrievalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CSharpFunctionBindingRetrievalProperties model
-            = BinaryData.fromString("{\"script\":\"ccymvaolpsslql\",\"udfType\":\"Scalar\"}")
+            = BinaryData.fromString("{\"script\":\"iofz\",\"udfType\":\"Scalar\"}")
                 .toObject(CSharpFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("ccymvaolpsslql", model.script());
+        Assertions.assertEquals("iofz", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CSharpFunctionBindingRetrievalProperties model
-            = new CSharpFunctionBindingRetrievalProperties().withScript("ccymvaolpsslql").withUdfType(UdfType.SCALAR);
+            = new CSharpFunctionBindingRetrievalProperties().withScript("iofz").withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model).toObject(CSharpFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("ccymvaolpsslql", model.script());
+        Assertions.assertEquals("iofz", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

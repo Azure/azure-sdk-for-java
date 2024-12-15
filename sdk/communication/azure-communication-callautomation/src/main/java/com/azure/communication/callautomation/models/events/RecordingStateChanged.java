@@ -106,7 +106,8 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startDateTime".equals(fieldName)) {
-                    event.startDateTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    event.startDateTime
+                        = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                 } else if ("recordingId".equals(fieldName)) {
                     event.recordingId = reader.getString();
                 } else if ("state".equals(fieldName)) {

@@ -21,8 +21,7 @@ public final class AzureBareMetalStorageInstancesImpl implements AzureBareMetalS
 
     private final com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager;
 
-    public AzureBareMetalStorageInstancesImpl(
-        AzureBareMetalStorageInstancesClient innerClient,
+    public AzureBareMetalStorageInstancesImpl(AzureBareMetalStorageInstancesClient innerClient,
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,47 +29,46 @@ public final class AzureBareMetalStorageInstancesImpl implements AzureBareMetalS
 
     public PagedIterable<AzureBareMetalStorageInstance> list() {
         PagedIterable<AzureBareMetalStorageInstanceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalStorageInstance> list(Context context) {
         PagedIterable<AzureBareMetalStorageInstanceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalStorageInstance> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AzureBareMetalStorageInstanceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
+        PagedIterable<AzureBareMetalStorageInstanceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBareMetalStorageInstance> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<AzureBareMetalStorageInstanceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
+        PagedIterable<AzureBareMetalStorageInstanceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AzureBareMetalStorageInstanceImpl(inner1, this.manager()));
     }
 
-    public Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
-        Response<AzureBareMetalStorageInstanceInner> inner =
-            this
-                .serviceClient()
-                .getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, context);
+    public Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context) {
+        Response<AzureBareMetalStorageInstanceInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureBareMetalStorageInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AzureBareMetalStorageInstance getByResourceGroup(
-        String resourceGroupName, String azureBareMetalStorageInstanceName) {
-        AzureBareMetalStorageInstanceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, azureBareMetalStorageInstanceName);
+    public AzureBareMetalStorageInstance getByResourceGroup(String resourceGroupName,
+        String azureBareMetalStorageInstanceName) {
+        AzureBareMetalStorageInstanceInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, azureBareMetalStorageInstanceName);
         if (inner != null) {
             return new AzureBareMetalStorageInstanceImpl(inner, this.manager());
         } else {
@@ -78,8 +76,8 @@ public final class AzureBareMetalStorageInstancesImpl implements AzureBareMetalS
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, context);
     }
 
@@ -88,91 +86,62 @@ public final class AzureBareMetalStorageInstancesImpl implements AzureBareMetalS
     }
 
     public AzureBareMetalStorageInstance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureBareMetalStorageInstanceName = Utils.getValueFromIdByName(id, "bareMetalStorageInstances");
+        String azureBareMetalStorageInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalStorageInstances");
         if (azureBareMetalStorageInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, Context.NONE)
             .getValue();
     }
 
     public Response<AzureBareMetalStorageInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureBareMetalStorageInstanceName = Utils.getValueFromIdByName(id, "bareMetalStorageInstances");
+        String azureBareMetalStorageInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalStorageInstances");
         if (azureBareMetalStorageInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureBareMetalStorageInstanceName = Utils.getValueFromIdByName(id, "bareMetalStorageInstances");
+        String azureBareMetalStorageInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalStorageInstances");
         if (azureBareMetalStorageInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureBareMetalStorageInstanceName = Utils.getValueFromIdByName(id, "bareMetalStorageInstances");
+        String azureBareMetalStorageInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalStorageInstances");
         if (azureBareMetalStorageInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalStorageInstances'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, context);
     }

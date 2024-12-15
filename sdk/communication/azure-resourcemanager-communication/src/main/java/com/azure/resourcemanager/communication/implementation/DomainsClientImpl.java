@@ -1487,7 +1487,8 @@ public final class DomainsClientImpl implements DomainsClient {
     private Mono<Void> initiateVerificationAsync(String resourceGroupName, String emailServiceName, String domainName,
         VerificationParameter parameters, Context context) {
         return beginInitiateVerificationAsync(resourceGroupName, emailServiceName, domainName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

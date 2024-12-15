@@ -101,26 +101,21 @@ public final class ServerBlobAuditingPolicyImpl
     }
 
     public ServerBlobAuditingPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerBlobAuditingPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), context);
         return this;
     }
 
-    ServerBlobAuditingPolicyImpl(
-        BlobAuditingPolicyName name, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    ServerBlobAuditingPolicyImpl(BlobAuditingPolicyName name,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = new ServerBlobAuditingPolicyInner();
         this.serviceManager = serviceManager;
         this.blobAuditingPolicyName = name;
@@ -131,51 +126,42 @@ public final class ServerBlobAuditingPolicyImpl
     }
 
     public ServerBlobAuditingPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .createOrUpdate(
-                    resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerBlobAuditingPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .createOrUpdate(resourceGroupName, workspaceName, blobAuditingPolicyName, this.innerModel(), context);
         return this;
     }
 
-    ServerBlobAuditingPolicyImpl(
-        ServerBlobAuditingPolicyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    ServerBlobAuditingPolicyImpl(ServerBlobAuditingPolicyInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "auditingSettings"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.blobAuditingPolicyName = BlobAuditingPolicyName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "auditingSettings"));
     }
 
     public ServerBlobAuditingPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServerBlobAuditingPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaceManagedSqlServerBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaceManagedSqlServerBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context)
+            .getValue();
         return this;
     }
 

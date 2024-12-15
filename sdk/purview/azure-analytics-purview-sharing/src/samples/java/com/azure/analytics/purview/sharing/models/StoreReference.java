@@ -5,23 +5,26 @@
 package com.azure.analytics.purview.sharing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * A Store Reference for an artifact or sink.
  */
 @Fluent
-public final class StoreReference {
+public final class StoreReference implements JsonSerializable<StoreReference> {
     /*
      * Reference name for resource associated with the sink or artifact.
      */
-    @JsonProperty(value = "referenceName")
     private String referenceName;
 
     /*
      * Defines the type of resource being shared
      */
-    @JsonProperty(value = "type")
     private ReferenceNameType type;
 
     /**
@@ -32,7 +35,7 @@ public final class StoreReference {
 
     /**
      * Get the referenceName property: Reference name for resource associated with the sink or artifact.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -41,7 +44,7 @@ public final class StoreReference {
 
     /**
      * Set the referenceName property: Reference name for resource associated with the sink or artifact.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the StoreReference object itself.
      */
@@ -52,7 +55,7 @@ public final class StoreReference {
 
     /**
      * Get the type property: Defines the type of resource being shared.
-     * 
+     *
      * @return the type value.
      */
     public ReferenceNameType getType() {
@@ -61,12 +64,51 @@ public final class StoreReference {
 
     /**
      * Set the type property: Defines the type of resource being shared.
-     * 
+     *
      * @param type the type value to set.
      * @return the StoreReference object itself.
      */
     public StoreReference setType(ReferenceNameType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoreReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoreReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StoreReference.
+     */
+    public static StoreReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoreReference deserializedStoreReference = new StoreReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedStoreReference.referenceName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStoreReference.type = ReferenceNameType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStoreReference;
+        });
     }
 }

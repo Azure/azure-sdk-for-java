@@ -15,8 +15,7 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject,
+    OperationImpl(OperationInner innerObject,
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

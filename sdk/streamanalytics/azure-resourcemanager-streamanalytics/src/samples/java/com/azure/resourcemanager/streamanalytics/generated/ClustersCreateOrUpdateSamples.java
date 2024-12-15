@@ -24,9 +24,13 @@ public final class ClustersCreateOrUpdateSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createANewCluster(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.clusters().define("An Example Cluster").withRegion("North US").withExistingResourceGroup("sjrg")
+        manager.clusters()
+            .define("An Example Cluster")
+            .withRegion("North US")
+            .withExistingResourceGroup("sjrg")
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
-            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(48)).create();
+            .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(48))
+            .create();
     }
 
     // Use "Map.of" if available

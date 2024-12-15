@@ -10,8 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ArmStreamingEndpointSku;
 public final class ArmStreamingEndpointSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmStreamingEndpointSku model =
-            BinaryData.fromString("{\"name\":\"kdl\"}").toObject(ArmStreamingEndpointSku.class);
+        ArmStreamingEndpointSku model
+            = BinaryData.fromString("{\"name\":\"wmn\"}").toObject(ArmStreamingEndpointSku.class);
     }
 
     @org.junit.jupiter.api.Test

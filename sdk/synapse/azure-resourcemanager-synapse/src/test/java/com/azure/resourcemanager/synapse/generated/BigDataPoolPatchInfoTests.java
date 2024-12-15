@@ -13,18 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BigDataPoolPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BigDataPoolPatchInfo model =
-            BinaryData.fromString("{\"tags\":{\"rsnm\":\"hppr\"}}").toObject(BigDataPoolPatchInfo.class);
-        Assertions.assertEquals("hppr", model.tags().get("rsnm"));
+        BigDataPoolPatchInfo model = BinaryData.fromString(
+            "{\"tags\":{\"xlhslnel\":\"znmmaxrizkzobgo\",\"wcrojphslhcaw\":\"ieixynllxe\",\"i\":\"u\",\"tzh\":\"dwfmvigorqjb\"}}")
+            .toObject(BigDataPoolPatchInfo.class);
+        Assertions.assertEquals("znmmaxrizkzobgo", model.tags().get("xlhslnel"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BigDataPoolPatchInfo model = new BigDataPoolPatchInfo().withTags(mapOf("rsnm", "hppr"));
+        BigDataPoolPatchInfo model = new BigDataPoolPatchInfo().withTags(
+            mapOf("xlhslnel", "znmmaxrizkzobgo", "wcrojphslhcaw", "ieixynllxe", "i", "u", "tzh", "dwfmvigorqjb"));
         model = BinaryData.fromObject(model).toObject(BigDataPoolPatchInfo.class);
-        Assertions.assertEquals("hppr", model.tags().get("rsnm"));
+        Assertions.assertEquals("znmmaxrizkzobgo", model.tags().get("xlhslnel"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

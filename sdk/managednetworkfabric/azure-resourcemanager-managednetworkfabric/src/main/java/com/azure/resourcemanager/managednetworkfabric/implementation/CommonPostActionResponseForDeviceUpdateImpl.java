@@ -16,8 +16,7 @@ public final class CommonPostActionResponseForDeviceUpdateImpl implements Common
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    CommonPostActionResponseForDeviceUpdateImpl(
-        CommonPostActionResponseForDeviceUpdateInner innerObject,
+    CommonPostActionResponseForDeviceUpdateImpl(CommonPostActionResponseForDeviceUpdateInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

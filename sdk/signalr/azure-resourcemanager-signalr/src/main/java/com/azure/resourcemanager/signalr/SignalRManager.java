@@ -50,7 +50,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SignalRManager. REST API for Azure SignalR Service. */
+/**
+ * Entry point to SignalRManager.
+ * REST API for Azure SignalR Service.
+ */
 public final class SignalRManager {
     private Operations operations;
 
@@ -75,18 +78,16 @@ public final class SignalRManager {
     private SignalRManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SignalRManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SignalRManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of SignalR service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the SignalR service API instance.
@@ -99,7 +100,7 @@ public final class SignalRManager {
 
     /**
      * Creates an instance of SignalR service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the SignalR service API instance.
@@ -112,14 +113,16 @@ public final class SignalRManager {
 
     /**
      * Gets a Configurable instance that can be used to create SignalRManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SignalRManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -191,8 +194,8 @@ public final class SignalRManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -209,8 +212,8 @@ public final class SignalRManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -230,15 +233,13 @@ public final class SignalRManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.signalr")
                 .append("/")
-                .append("1.0.0-beta.8");
+                .append("1.0.0-beta.9");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -263,38 +264,28 @@ public final class SignalRManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SignalRManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -306,7 +297,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRs. It manages SignalRResource.
-     *
+     * 
      * @return Resource collection API of SignalRs.
      */
     public SignalRs signalRs() {
@@ -318,7 +309,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -330,20 +321,20 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRCustomCertificates. It manages CustomCertificate.
-     *
+     * 
      * @return Resource collection API of SignalRCustomCertificates.
      */
     public SignalRCustomCertificates signalRCustomCertificates() {
         if (this.signalRCustomCertificates == null) {
-            this.signalRCustomCertificates =
-                new SignalRCustomCertificatesImpl(clientObject.getSignalRCustomCertificates(), this);
+            this.signalRCustomCertificates
+                = new SignalRCustomCertificatesImpl(clientObject.getSignalRCustomCertificates(), this);
         }
         return signalRCustomCertificates;
     }
 
     /**
      * Gets the resource collection API of SignalRCustomDomains. It manages CustomDomain.
-     *
+     * 
      * @return Resource collection API of SignalRCustomDomains.
      */
     public SignalRCustomDomains signalRCustomDomains() {
@@ -355,33 +346,33 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRPrivateEndpointConnections.
-     *
+     * 
      * @return Resource collection API of SignalRPrivateEndpointConnections.
      */
     public SignalRPrivateEndpointConnections signalRPrivateEndpointConnections() {
         if (this.signalRPrivateEndpointConnections == null) {
-            this.signalRPrivateEndpointConnections =
-                new SignalRPrivateEndpointConnectionsImpl(clientObject.getSignalRPrivateEndpointConnections(), this);
+            this.signalRPrivateEndpointConnections
+                = new SignalRPrivateEndpointConnectionsImpl(clientObject.getSignalRPrivateEndpointConnections(), this);
         }
         return signalRPrivateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of SignalRPrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of SignalRPrivateLinkResources.
      */
     public SignalRPrivateLinkResources signalRPrivateLinkResources() {
         if (this.signalRPrivateLinkResources == null) {
-            this.signalRPrivateLinkResources =
-                new SignalRPrivateLinkResourcesImpl(clientObject.getSignalRPrivateLinkResources(), this);
+            this.signalRPrivateLinkResources
+                = new SignalRPrivateLinkResourcesImpl(clientObject.getSignalRPrivateLinkResources(), this);
         }
         return signalRPrivateLinkResources;
     }
 
     /**
      * Gets the resource collection API of SignalRReplicas. It manages Replica.
-     *
+     * 
      * @return Resource collection API of SignalRReplicas.
      */
     public SignalRReplicas signalRReplicas() {
@@ -393,13 +384,13 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRSharedPrivateLinkResources. It manages SharedPrivateLinkResource.
-     *
+     * 
      * @return Resource collection API of SignalRSharedPrivateLinkResources.
      */
     public SignalRSharedPrivateLinkResources signalRSharedPrivateLinkResources() {
         if (this.signalRSharedPrivateLinkResources == null) {
-            this.signalRSharedPrivateLinkResources =
-                new SignalRSharedPrivateLinkResourcesImpl(clientObject.getSignalRSharedPrivateLinkResources(), this);
+            this.signalRSharedPrivateLinkResources
+                = new SignalRSharedPrivateLinkResourcesImpl(clientObject.getSignalRSharedPrivateLinkResources(), this);
         }
         return signalRSharedPrivateLinkResources;
     }
@@ -407,7 +398,7 @@ public final class SignalRManager {
     /**
      * Gets wrapped service client SignalRManagementClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client SignalRManagementClient.
      */
     public SignalRManagementClient serviceClient() {

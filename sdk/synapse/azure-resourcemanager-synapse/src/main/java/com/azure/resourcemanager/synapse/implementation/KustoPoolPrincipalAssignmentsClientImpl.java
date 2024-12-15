@@ -41,26 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient.
+ */
 public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolPrincipalAssignmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolPrincipalAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolPrincipalAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolPrincipalAssignmentsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    KustoPoolPrincipalAssignmentsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(KustoPoolPrincipalAssignmentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,95 +73,65 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolPrincipalAssignmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/checkPrincipalAssignmentNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/checkPrincipalAssignmentNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterPrincipalAssignmentListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<ClusterPrincipalAssignmentListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterPrincipalAssignmentInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<ClusterPrincipalAssignmentInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ClusterPrincipalAssignmentInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("workspaceName") String workspaceName, @PathParam("kustoPoolName") String kustoPoolName,
             @PathParam("principalAssignmentName") String principalAssignmentName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -168,19 +140,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -189,44 +157,31 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         } else {
             principalAssignmentName.validate();
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            principalAssignmentName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), workspaceName,
+                kustoPoolName, this.client.getSubscriptionId(), resourceGroupName, apiVersion, principalAssignmentName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -236,20 +191,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -258,41 +208,29 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         } else {
             principalAssignmentName.validate();
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                principalAssignmentName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), workspaceName, kustoPoolName,
+            this.client.getSubscriptionId(), resourceGroupName, apiVersion, principalAssignmentName, accept, context);
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -303,19 +241,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityWithResponseAsync(
-                workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String workspaceName, String kustoPoolName,
+        String resourceGroupName, ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponseAsync(workspaceName, kustoPoolName, resourceGroupName,
+            principalAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -327,20 +261,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context) {
-        return checkNameAvailabilityWithResponseAsync(
-                workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName, context)
-            .block();
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(workspaceName, kustoPoolName, resourceGroupName,
+            principalAssignmentName, context).block();
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -351,19 +280,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityWithResponse(
-                workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName, Context.NONE)
-            .getValue();
+    public CheckNameResultInner checkNameAvailability(String workspaceName, String kustoPoolName,
+        String resourceGroupName, ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponse(workspaceName, kustoPoolName, resourceGroupName,
+            principalAssignmentName, Context.NONE).getValue();
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -371,16 +296,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
+    private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -389,10 +312,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,28 +322,16 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<ClusterPrincipalAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), workspaceName, kustoPoolName,
+                this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context))
+            .<PagedResponse<ClusterPrincipalAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -431,16 +340,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(String workspaceName,
+        String kustoPoolName, String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -449,10 +356,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -462,42 +367,33 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), workspaceName, kustoPoolName, this.client.getSubscriptionId(),
+                resourceGroupName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
+    private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(String workspaceName, String kustoPoolName,
+        String resourceGroupName) {
         return new PagedFlux<>(() -> listSinglePageAsync(workspaceName, kustoPoolName, resourceGroupName));
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -505,36 +401,36 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context) {
+    private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(workspaceName, kustoPoolName, resourceGroupName, context));
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClusterPrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName) {
+    public PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName) {
         return new PagedIterable<>(listAsync(workspaceName, kustoPoolName, resourceGroupName));
     }
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -542,18 +438,18 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClusterPrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context) {
+    public PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context) {
         return new PagedIterable<>(listAsync(workspaceName, kustoPoolName, resourceGroupName, context));
     }
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -564,13 +460,11 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return a Kusto pool principalAssignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(String workspaceName,
+        String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -579,15 +473,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -597,24 +488,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            principalAssignmentName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), workspaceName, kustoPoolName, principalAssignmentName,
+                    this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -626,17 +507,11 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return a Kusto pool principalAssignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(String workspaceName,
+        String kustoPoolName, String principalAssignmentName, String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -645,15 +520,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -662,22 +534,13 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                principalAssignmentName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), workspaceName, kustoPoolName, principalAssignmentName,
+            this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context);
     }
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -688,15 +551,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return a Kusto pool principalAssignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterPrincipalAssignmentInner> getAsync(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    private Mono<ClusterPrincipalAssignmentInner> getAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName) {
         return getWithResponseAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -708,19 +571,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return a Kusto pool principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterPrincipalAssignmentInner> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    public Response<ClusterPrincipalAssignmentInner> getWithResponse(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context) {
         return getWithResponseAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
             .block();
     }
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -731,15 +590,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return a Kusto pool principalAssignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterPrincipalAssignmentInner get(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    public ClusterPrincipalAssignmentInner get(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName) {
         return getWithResponse(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, Context.NONE)
             .getValue();
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -749,20 +608,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -771,15 +624,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -793,26 +643,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            principalAssignmentName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), workspaceName, kustoPoolName,
+                principalAssignmentName, this.client.getSubscriptionId(), resourceGroupName, apiVersion, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -823,21 +662,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -846,15 +679,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -868,23 +698,13 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                principalAssignmentName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), workspaceName, kustoPoolName, principalAssignmentName,
+            this.client.getSubscriptionId(), resourceGroupName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -897,28 +717,18 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner>
-        beginCreateOrUpdateAsync(
-            String workspaceName,
-            String kustoPoolName,
-            String principalAssignmentName,
-            String resourceGroupName,
-            ClusterPrincipalAssignmentInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters);
-        return this
-            .client
-            .<ClusterPrincipalAssignmentInner, ClusterPrincipalAssignmentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterPrincipalAssignmentInner.class,
-                ClusterPrincipalAssignmentInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String workspaceName, String kustoPoolName, String principalAssignmentName,
+            String resourceGroupName, ClusterPrincipalAssignmentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(workspaceName, kustoPoolName,
+            principalAssignmentName, resourceGroupName, parameters);
+        return this.client.<ClusterPrincipalAssignmentInner, ClusterPrincipalAssignmentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterPrincipalAssignmentInner.class, ClusterPrincipalAssignmentInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -932,30 +742,19 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner>
-        beginCreateOrUpdateAsync(
-            String workspaceName,
-            String kustoPoolName,
-            String principalAssignmentName,
-            String resourceGroupName,
-            ClusterPrincipalAssignmentInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String workspaceName, String kustoPoolName, String principalAssignmentName,
+            String resourceGroupName, ClusterPrincipalAssignmentInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<ClusterPrincipalAssignmentInner, ClusterPrincipalAssignmentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterPrincipalAssignmentInner.class,
-                ClusterPrincipalAssignmentInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(workspaceName, kustoPoolName,
+            principalAssignmentName, resourceGroupName, parameters, context);
+        return this.client.<ClusterPrincipalAssignmentInner, ClusterPrincipalAssignmentInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterPrincipalAssignmentInner.class, ClusterPrincipalAssignmentInner.class,
+            context);
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -968,20 +767,17 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName,
         ClusterPrincipalAssignmentInner parameters) {
         return this
-            .beginCreateOrUpdateAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters)
+            .beginCreateOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName,
+                parameters)
             .getSyncPoller();
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -995,21 +791,17 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
-        Context context) {
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName,
+        ClusterPrincipalAssignmentInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, context)
+            .beginCreateOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName,
+                parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1021,21 +813,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return class representing a cluster principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters) {
-        return beginCreateOrUpdateAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters) {
+        return beginCreateOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName,
+            parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1048,22 +834,16 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return class representing a cluster principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
+    private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName,
+            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1075,19 +855,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterPrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters) {
+    public ClusterPrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters) {
         return createOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters)
             .block();
     }
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1100,21 +876,16 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return class representing a cluster principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterPrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentInner parameters,
+    public ClusterPrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, ClusterPrincipalAssignmentInner parameters,
         Context context) {
-        return createOrUpdateAsync(
-                workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters, context)
-            .block();
+        return createOrUpdateAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, parameters,
+            context).block();
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1125,13 +896,11 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -1140,15 +909,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1156,26 +922,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            workspaceName,
-                            kustoPoolName,
-                            principalAssignmentName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), workspaceName, kustoPoolName,
+            principalAssignmentName, this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1187,17 +941,11 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -1206,15 +954,12 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             return Mono.error(new IllegalArgumentException("Parameter kustoPoolName is required and cannot be null."));
         }
         if (principalAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter principalAssignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1223,22 +968,13 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                workspaceName,
-                kustoPoolName,
-                principalAssignmentName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), workspaceName, kustoPoolName, principalAssignmentName,
+            this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1249,19 +985,17 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1273,23 +1007,18 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(workspaceName, kustoPoolName,
+            principalAssignmentName, resourceGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1300,16 +1029,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
-        return this
-            .beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName) {
+        return this.beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1321,20 +1049,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
-        return this
-            .beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName,
+        String principalAssignmentName, String resourceGroupName, Context context) {
+        return this.beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1345,16 +1068,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
-        return beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName)
-            .last()
+    private Mono<Void> deleteAsync(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName) {
+        return beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1366,12 +1088,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    private Mono<Void> deleteAsync(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName, Context context) {
         return beginDeleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1379,7 +1097,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1389,14 +1107,14 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+    public void delete(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName) {
         deleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName).block();
     }
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1407,12 +1125,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context) {
+    public void delete(String workspaceName, String kustoPoolName, String principalAssignmentName,
+        String resourceGroupName, Context context) {
         deleteAsync(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName, context).block();
     }
 }

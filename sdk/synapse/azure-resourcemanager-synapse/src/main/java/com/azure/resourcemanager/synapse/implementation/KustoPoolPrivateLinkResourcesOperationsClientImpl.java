@@ -36,24 +36,24 @@ import reactor.core.publisher.Mono;
  */
 public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
     implements KustoPoolPrivateLinkResourcesOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolPrivateLinkResourcesOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolPrivateLinkResourcesOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolPrivateLinkResourcesOperationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    KustoPoolPrivateLinkResourcesOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(KustoPoolPrivateLinkResourcesOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,26 +64,20 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolPrivateLinkResourcesOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/kustoPools/{kustoPoolName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResources>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResources>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("kustoPoolName") String kustoPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("kustoPoolName") String kustoPoolName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -91,22 +85,18 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto Private Link Resources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -121,28 +111,16 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            kustoPoolName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<KustoPoolPrivateLinkResourcesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, kustoPoolName, apiVersion, accept, context))
+            .<PagedResponse<KustoPoolPrivateLinkResourcesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -151,22 +129,18 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto Private Link Resources operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    private Mono<PagedResponse<KustoPoolPrivateLinkResourcesInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String kustoPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,24 +156,15 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                kustoPoolName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+                kustoPoolName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -209,14 +174,14 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @return the list Kusto Private Link Resources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<KustoPoolPrivateLinkResourcesInner> listAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    private PagedFlux<KustoPoolPrivateLinkResourcesInner> listAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, kustoPoolName));
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -227,32 +192,32 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @return the list Kusto Private Link Resources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<KustoPoolPrivateLinkResourcesInner> listAsync(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    private PagedFlux<KustoPoolPrivateLinkResourcesInner> listAsync(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, kustoPoolName, context));
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName) {
+    public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, kustoPoolName));
     }
 
     /**
      * Lists all Kusto pool PrivateLinkResources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -260,12 +225,12 @@ public final class KustoPoolPrivateLinkResourcesOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto Private Link Resources operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto Private Link Resources operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context) {
+    public PagedIterable<KustoPoolPrivateLinkResourcesInner> list(String resourceGroupName, String workspaceName,
+        String kustoPoolName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, kustoPoolName, context));
     }
 }

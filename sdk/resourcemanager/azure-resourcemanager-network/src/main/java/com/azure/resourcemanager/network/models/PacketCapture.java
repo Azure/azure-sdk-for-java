@@ -65,10 +65,8 @@ public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, 
     Mono<PacketCaptureStatus> getStatusAsync();
 
     /** The entirety of the packet capture definition. */
-    interface Definition
-        extends PacketCapture.DefinitionStages.WithTarget,
-            PacketCapture.DefinitionStages.WithStorageLocation,
-            PacketCapture.DefinitionStages.WithCreateAndStoragePath {
+    interface Definition extends PacketCapture.DefinitionStages.WithTarget,
+        PacketCapture.DefinitionStages.WithStorageLocation, PacketCapture.DefinitionStages.WithCreateAndStoragePath {
     }
 
     /** Grouping of Packet Capture definition stages. */

@@ -735,7 +735,8 @@ public final class ReplicationRecoveryServicesProvidersClientImpl
     private Mono<RecoveryServicesProviderInner> createAsync(String resourceName, String resourceGroupName,
         String fabricName, String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context) {
         return beginCreateAsync(resourceName, resourceGroupName, fabricName, providerName, addProviderInput, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

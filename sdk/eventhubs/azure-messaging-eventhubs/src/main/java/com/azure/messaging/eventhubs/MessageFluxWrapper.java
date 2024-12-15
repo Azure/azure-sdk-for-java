@@ -15,13 +15,14 @@ final class MessageFluxWrapper {
     private final boolean isV2;
 
     MessageFluxWrapper(Flux<Message> messageFlux) {
-        this.messageFlux = Objects.requireNonNull(messageFlux,  "'messageFlux' cannot be null.");
+        this.messageFlux = Objects.requireNonNull(messageFlux, "'messageFlux' cannot be null.");
         this.receiveLinkProcessor = null;
         this.isV2 = true;
     }
 
     MessageFluxWrapper(AmqpReceiveLinkProcessor receiveLinkProcessor) {
-        this.receiveLinkProcessor = Objects.requireNonNull(receiveLinkProcessor,  "'amqpReceiveLinkProcessor' cannot be null.");
+        this.receiveLinkProcessor
+            = Objects.requireNonNull(receiveLinkProcessor, "'amqpReceiveLinkProcessor' cannot be null.");
         this.messageFlux = null;
         this.isV2 = false;
     }

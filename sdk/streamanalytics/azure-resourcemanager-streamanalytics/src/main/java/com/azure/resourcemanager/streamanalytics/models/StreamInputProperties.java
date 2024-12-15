@@ -5,27 +5,54 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an input containing stream data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Stream")
 @Fluent
 public final class StreamInputProperties extends InputProperties {
     /*
+     * Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace)
+     * requests.
+     */
+    private String type = "Stream";
+
+    /*
      * Describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "datasource")
     private StreamInputDataSource datasource;
+
+    /*
+     * The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has
+     * changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for
+     * optimistic concurrency.
+     */
+    private String etag;
+
+    /*
+     * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
+     */
+    private Diagnostics diagnostics;
 
     /**
      * Creates an instance of StreamInputProperties class.
      */
     public StreamInputProperties() {
+    }
+
+    /**
+     * Get the type property: Indicates whether the input is a source of reference data or stream data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -48,6 +75,29 @@ public final class StreamInputProperties extends InputProperties {
     public StreamInputProperties withDatasource(StreamInputDataSource datasource) {
         this.datasource = datasource;
         return this;
+    }
+
+    /**
+     * Get the etag property: The current entity tag for the input. This is an opaque string. You can use it to detect
+     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
+     * for write operations for optimistic concurrency.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
+     * warrant customer attention.
+     * 
+     * @return the diagnostics value.
+     */
+    @Override
+    public Diagnostics diagnostics() {
+        return this.diagnostics;
     }
 
     /**
@@ -93,9 +143,75 @@ public final class StreamInputProperties extends InputProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (datasource() != null) {
             datasource().validate();
         }
+        if (serialization() != null) {
+            serialization().validate();
+        }
+        if (diagnostics() != null) {
+            diagnostics().validate();
+        }
+        if (compression() != null) {
+            compression().validate();
+        }
+        if (watermarkSettings() != null) {
+            watermarkSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serialization", serialization());
+        jsonWriter.writeJsonField("compression", compression());
+        jsonWriter.writeStringField("partitionKey", partitionKey());
+        jsonWriter.writeJsonField("watermarkSettings", watermarkSettings());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("datasource", this.datasource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamInputProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StreamInputProperties.
+     */
+    public static StreamInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamInputProperties deserializedStreamInputProperties = new StreamInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialization".equals(fieldName)) {
+                    deserializedStreamInputProperties.withSerialization(Serialization.fromJson(reader));
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedStreamInputProperties.diagnostics = Diagnostics.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedStreamInputProperties.etag = reader.getString();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedStreamInputProperties.withCompression(Compression.fromJson(reader));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedStreamInputProperties.withPartitionKey(reader.getString());
+                } else if ("watermarkSettings".equals(fieldName)) {
+                    deserializedStreamInputProperties.withWatermarkSettings(InputWatermarkProperties.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedStreamInputProperties.type = reader.getString();
+                } else if ("datasource".equals(fieldName)) {
+                    deserializedStreamInputProperties.datasource = StreamInputDataSource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamInputProperties;
+        });
     }
 }

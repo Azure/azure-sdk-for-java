@@ -5,8 +5,12 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
+import reactor.core.Exceptions;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class KafkaCosmosExceptionsHelper {
     public static boolean isTransientFailure(int statusCode, int substatusCode) {
@@ -80,5 +84,14 @@ public class KafkaCosmosExceptionsHelper {
         }
 
         return false;
+    }
+
+    public static boolean isOwnerResourceNotExistsException(Throwable throwable) {
+        checkNotNull(throwable, "Throwable should not be null");
+
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+        return cosmosException != null
+            && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+            && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS;
     }
 }

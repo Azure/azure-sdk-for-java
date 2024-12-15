@@ -31,6 +31,7 @@
     <revapi.skip>true</revapi.skip>
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
+    <spotless.skip>true</spotless.skip>
 
     <cosmos.spark.skip>false</cosmos.spark.skip>
     <cosmos-spark-version>3.5</cosmos-spark-version>
@@ -96,7 +97,7 @@
     <dependency>
       <groupId>com.azure.cosmos.spark</groupId>
       <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-      <version>4.35.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+      <version>4.36.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -118,12 +119,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.43.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.45.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -134,7 +135,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -292,7 +293,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
-                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.35.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.36.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
               </includes>
             </bannedDependencies>
           </rules>

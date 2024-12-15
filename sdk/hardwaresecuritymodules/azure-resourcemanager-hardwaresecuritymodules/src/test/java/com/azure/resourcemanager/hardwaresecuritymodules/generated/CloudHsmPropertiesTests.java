@@ -11,21 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class CloudHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudHsmProperties model = BinaryData
-            .fromString("{\"fqdn\":\"kwtmutduqktapspw\",\"state\":\"uertumk\",\"stateMessage\":\"svqwhbmdgbbjfd\"}")
-            .toObject(CloudHsmProperties.class);
-        Assertions.assertEquals("kwtmutduqktapspw", model.fqdn());
-        Assertions.assertEquals("uertumk", model.state());
-        Assertions.assertEquals("svqwhbmdgbbjfd", model.stateMessage());
+        CloudHsmProperties model
+            = BinaryData.fromString("{\"fqdn\":\"gnarxzxtheo\",\"state\":\"si\",\"stateMessage\":\"evcciqihnhun\"}")
+                .toObject(CloudHsmProperties.class);
+        Assertions.assertEquals("gnarxzxtheo", model.fqdn());
+        Assertions.assertEquals("si", model.state());
+        Assertions.assertEquals("evcciqihnhun", model.stateMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudHsmProperties model = new CloudHsmProperties().withFqdn("kwtmutduqktapspw").withState("uertumk")
-            .withStateMessage("svqwhbmdgbbjfd");
+        CloudHsmProperties model
+            = new CloudHsmProperties().withFqdn("gnarxzxtheo").withState("si").withStateMessage("evcciqihnhun");
         model = BinaryData.fromObject(model).toObject(CloudHsmProperties.class);
-        Assertions.assertEquals("kwtmutduqktapspw", model.fqdn());
-        Assertions.assertEquals("uertumk", model.state());
-        Assertions.assertEquals("svqwhbmdgbbjfd", model.stateMessage());
+        Assertions.assertEquals("gnarxzxtheo", model.fqdn());
+        Assertions.assertEquals("si", model.state());
+        Assertions.assertEquals("evcciqihnhun", model.stateMessage());
     }
 }

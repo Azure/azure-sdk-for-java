@@ -11,8 +11,10 @@ import java.util.List;
 public interface GeographicLocation extends HasName, HasInnerModel<Region> {
     /** @return the location code. */
     String code();
+
     /** @return list of immediate child locations grouped under this location in the Geographic Hierarchy. */
     List<GeographicLocation> childLocations();
+
     /** @return list of all descendant locations grouped under this location in the Geographic Hierarchy. */
     List<GeographicLocation> descendantLocations();
 }

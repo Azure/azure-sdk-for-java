@@ -60,8 +60,8 @@ public interface FirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a server firewall rule along with {@link Response}.
      */
-    Response<FirewallRule> getWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context);
+    Response<FirewallRule> getWithResponse(String resourceGroupName, String serverName, String firewallRuleName,
+        Context context);
 
     /**
      * List all the firewall rules in a given server.

@@ -92,6 +92,7 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
          */
         EventHubsManager authenticate(TokenCredential credential, AzureProfile profile);
     }
+
     /**
      * The implementation for Configurable interface.
      */
@@ -100,12 +101,10 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
             return EventHubsManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
+
     private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new EventHubManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new EventHubManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());

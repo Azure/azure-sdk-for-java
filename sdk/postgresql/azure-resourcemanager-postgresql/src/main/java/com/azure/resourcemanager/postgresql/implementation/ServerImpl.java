@@ -159,20 +159,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, createParameters, Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, createParameters, context);
         return this;
     }
 
@@ -189,20 +185,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
         return this;
     }
 
     public Server apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, context);
         return this;
     }
 
@@ -214,22 +206,18 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Server refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
+            .getValue();
         return this;
     }
 

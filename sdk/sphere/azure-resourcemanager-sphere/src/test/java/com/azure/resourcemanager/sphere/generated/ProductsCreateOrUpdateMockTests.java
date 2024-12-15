@@ -45,13 +45,16 @@ public final class ProductsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Product response
-            = manager.products().define("slyzrpzbchckqq").withExistingCatalog("jphuopxodlqi", "ntorzihleosjswsr")
-                .withProperties(new ProductProperties().withDescription("ox")).create();
+        Product response = manager.products()
+            .define("slyzrpzbchckqq")
+            .withExistingCatalog("jphuopxodlqi", "ntorzihleosjswsr")
+            .withProperties(new ProductProperties().withDescription("ox"))
+            .create();
 
         Assertions.assertEquals("g", response.properties().description());
     }

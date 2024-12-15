@@ -6,71 +6,40 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.SparkConfigurationResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SparkConfigurationsOperationsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"eszyaqgomlbmfgge\",\"configs\":{\"hh\":\"fekcjjlwkye\"},\"annotations\":[\"pulnrfcqufmcihp\",\"nowrerjpx\",\"tchdw\",\"qqidqim\"],\"notes\":\"bbfjmd\",\"createdBy\":\"v\",\"created\":\"2021-03-31T03:42:15Z\",\"configMergeRule\":{\"snlow\":\"mheftyaphqeofyt\"}},\"etag\":\"mcqixuanccqvjf\",\"id\":\"gfqpmq\",\"name\":\"xpjhcfaaradci\",\"type\":\"vmufzgug\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"abm\",\"configs\":{\"xduetbapfc\":\"s\",\"bpxya\":\"ewxtrl\",\"yegbthms\":\"kjpirgzxvbczw\"},\"annotations\":[\"jbuiggru\",\"ozfvualjt\",\"oivsdwsngkrf\"],\"notes\":\"sc\",\"createdBy\":\"akmhz\",\"created\":\"2021-01-22T22:10:09Z\",\"configMergeRule\":{\"nnx\":\"fbwih\"}},\"etag\":\"vynuqqkotauratn\",\"id\":\"cppfzsclefyrle\",\"name\":\"ndqlmfdggnbbuy\",\"type\":\"wovvv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<SparkConfigurationResource> response = manager.sparkConfigurationsOperations()
+            .listByWorkspace("pvdaahlfrcqklp", "vzp", com.azure.core.util.Context.NONE);
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SparkConfigurationResource> response =
-            manager
-                .sparkConfigurationsOperations()
-                .listByWorkspace("uppiyxlzm", "yddeeqz", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("abm", response.iterator().next().description());
-        Assertions.assertEquals("s", response.iterator().next().configs().get("xduetbapfc"));
-        Assertions.assertEquals("jbuiggru", response.iterator().next().annotations().get(0));
-        Assertions.assertEquals("sc", response.iterator().next().notes());
-        Assertions.assertEquals("akmhz", response.iterator().next().createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T22:10:09Z"), response.iterator().next().created());
-        Assertions.assertEquals("fbwih", response.iterator().next().configMergeRule().get("nnx"));
+        Assertions.assertEquals("eszyaqgomlbmfgge", response.iterator().next().description());
+        Assertions.assertEquals("fekcjjlwkye", response.iterator().next().configs().get("hh"));
+        Assertions.assertEquals("pulnrfcqufmcihp", response.iterator().next().annotations().get(0));
+        Assertions.assertEquals("bbfjmd", response.iterator().next().notes());
+        Assertions.assertEquals("v", response.iterator().next().createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T03:42:15Z"), response.iterator().next().created());
+        Assertions.assertEquals("mheftyaphqeofyt", response.iterator().next().configMergeRule().get("snlow"));
     }
 }

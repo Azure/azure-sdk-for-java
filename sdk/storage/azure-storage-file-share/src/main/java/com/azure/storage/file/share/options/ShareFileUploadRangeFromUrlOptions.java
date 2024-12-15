@@ -23,17 +23,21 @@ public final class ShareFileUploadRangeFromUrlOptions {
     private FileLastWrittenMode lastWrittenMode;
 
     /**
+     * Creates a new instance of {@link ShareFileUploadRangeFromUrlOptions}.
+     *
      * @param length data length to upload for this operation.
      * @param sourceUrl source URL for this operation.
+     * @throws NullPointerException if {@code sourceUrl} is null.
      */
-    public ShareFileUploadRangeFromUrlOptions(
-        long length, String sourceUrl) {
+    public ShareFileUploadRangeFromUrlOptions(long length, String sourceUrl) {
         StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.length = length;
         this.sourceUrl = sourceUrl;
     }
 
     /**
+     * Gets the length of the data to upload for this operation.
+     *
      * @return data length to upload for this operation.
      */
     public long getLength() {
@@ -41,6 +45,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Gets the source URL for this operation.
+     *
      * @return source URL for this operation.
      */
     public String getSourceUrl() {
@@ -48,6 +54,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Gets the destination offset for this operation.
+     *
      * @return destination offset for this operation.
      */
     public long getDestinationOffset() {
@@ -55,6 +63,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Sets the destination offset for this operation.
+     *
      * @param destinationOffset offset for upload destination.
      * @return modified options.
      */
@@ -64,6 +74,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Gets the source offset for this operation.
+     *
      * @return source offset for this operation.
      */
     public long getSourceOffset() {
@@ -71,6 +83,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Sets the source offset for this operation.
+     *
      * @param sourceOffset offset for upload source.
      * @return modified options.
      */
@@ -80,6 +94,9 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Gets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @return optional auth header for access to source URL for this operation.
      */
     public HttpAuthorization getSourceAuthorization() {
@@ -99,6 +116,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Gets {@link ShareRequestConditions} for this operation.
+     *
      * @return {@link ShareRequestConditions} for this operation.
      */
     public ShareRequestConditions getDestinationRequestConditions() {
@@ -106,11 +125,13 @@ public final class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Sets {@link ShareRequestConditions} for this operation.
+     *
      * @param destinationRequestConditions {@link ShareRequestConditions} for this operation.
      * @return modified options.
      */
-    public ShareFileUploadRangeFromUrlOptions setDestinationRequestConditions(
-        ShareRequestConditions destinationRequestConditions) {
+    public ShareFileUploadRangeFromUrlOptions
+        setDestinationRequestConditions(ShareRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }

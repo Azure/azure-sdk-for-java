@@ -44,12 +44,15 @@ public final class SummariesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SummaryResource response = manager.summaries().getWithResponse("ljuti", "swacffgdkzz", "wkfvhqcrailvp",
-            SummaryName.CRYPTO_CERTIFICATE, com.azure.core.util.Context.NONE).getValue();
+        SummaryResource response = manager.summaries()
+            .getWithResponse("ljuti", "swacffgdkzz", "wkfvhqcrailvp", SummaryName.CRYPTO_CERTIFICATE,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

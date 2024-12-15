@@ -14,35 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionForPrivateLinkHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ipazyxoegukgjnpi\",\"type\":\"gygev\",\"id\":\"ntypmrbpizcdrqj\",\"properties\":{\"privateEndpoint\":{\"id\":\"dnfyhxdeoejzicwi\"},\"privateLinkServiceConnectionState\":{\"status\":\"ttgzfbis\",\"description\":\"bkh\",\"actionsRequired\":\"deyeamdphagalpbu\"},\"provisioningState\":\"gipwhonowkg\"}}")
-                .toObject(PrivateEndpointConnectionForPrivateLinkHubInner.class);
-        Assertions.assertEquals("ntypmrbpizcdrqj", model.id());
-        Assertions.assertEquals("ttgzfbis", model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bkh", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ipazyxoegukgjnpi", model.name());
-        Assertions.assertEquals("gygev", model.type());
+        PrivateEndpointConnectionForPrivateLinkHubInner model = BinaryData.fromString(
+            "{\"name\":\"xqpvfadmw\",\"type\":\"crgvxpvgom\",\"id\":\"fmisg\",\"properties\":{\"privateEndpoint\":{\"id\":\"beldawkzbaliourq\"},\"privateLinkServiceConnectionState\":{\"status\":\"auhashsfwx\",\"description\":\"owzxcu\",\"actionsRequired\":\"cjooxdjebwpucwwf\"},\"provisioningState\":\"vbvmeu\"}}")
+            .toObject(PrivateEndpointConnectionForPrivateLinkHubInner.class);
+        Assertions.assertEquals("fmisg", model.id());
+        Assertions.assertEquals("auhashsfwx", model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("owzxcu", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xqpvfadmw", model.name());
+        Assertions.assertEquals("crgvxpvgom", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubInner model =
-            new PrivateEndpointConnectionForPrivateLinkHubInner()
-                .withId("ntypmrbpizcdrqj")
-                .withProperties(
-                    new PrivateEndpointConnectionProperties()
-                        .withPrivateEndpoint(new PrivateEndpoint())
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState().withStatus("ttgzfbis").withDescription("bkh")))
-                .withName("ipazyxoegukgjnpi")
-                .withType("gygev");
+        PrivateEndpointConnectionForPrivateLinkHubInner model
+            = new PrivateEndpointConnectionForPrivateLinkHubInner().withId("fmisg")
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(
+                        new PrivateLinkServiceConnectionState().withStatus("auhashsfwx").withDescription("owzxcu")))
+                .withName("xqpvfadmw")
+                .withType("crgvxpvgom");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionForPrivateLinkHubInner.class);
-        Assertions.assertEquals("ntypmrbpizcdrqj", model.id());
-        Assertions.assertEquals("ttgzfbis", model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bkh", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ipazyxoegukgjnpi", model.name());
-        Assertions.assertEquals("gygev", model.type());
+        Assertions.assertEquals("fmisg", model.id());
+        Assertions.assertEquals("auhashsfwx", model.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("owzxcu", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xqpvfadmw", model.name());
+        Assertions.assertEquals("crgvxpvgom", model.type());
     }
 }

@@ -4,6 +4,7 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   PreSteps: []
+  PreTestRunSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'LIVE'
@@ -24,6 +25,8 @@ parameters:
   UseHttpFaultInjector: false
   OSName:
   UseFederatedAuth: false
+  PersistOidcToken: false
+  VersionOverride: $(VersionOverride)
 
 jobs:
   - job:
@@ -59,7 +62,7 @@ jobs:
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
         # during testing if tests failed, and linting reports.
         - output: pipelineArtifact
-          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
           targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
@@ -113,6 +116,7 @@ jobs:
               SubscriptionConfiguration: $(SubscriptionConfiguration)
               ArmTemplateParameters: $(ArmTemplateParameters)
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              PersistOidcToken: ${{ parameters.PersistOidcToken }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
               EnvVars:
@@ -123,6 +127,7 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
+          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           BuildOptions: ${{ parameters.BuildOptions }}
@@ -138,6 +143,7 @@ jobs:
               ${{ var.key }}: ${{ var.value }}
           UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
           ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+          VersionOverride: ${{ parameters.VersionOverride }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 

@@ -16,16 +16,14 @@ public final class AnomalyDimensionValuesTest extends AnomalyDimensionValuesTest
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
-    public void listAnomalyDimensionValues(HttpClient httpClient,
-                                           MetricsAdvisorServiceVersion serviceVersion) {
+    public void listAnomalyDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
-        PagedIterable<String> dimensionValuesIterable = client.listAnomalyDimensionValues(
-            ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,
-            ListAnomalyDimensionValuesInput.INSTANCE.dimensionName,
-            ListAnomalyDimensionValuesInput.INSTANCE.startTime,
-            ListAnomalyDimensionValuesInput.INSTANCE.endTime,
-            ListAnomalyDimensionValuesInput.INSTANCE.options, Context.NONE);
+        PagedIterable<String> dimensionValuesIterable
+            = client.listAnomalyDimensionValues(ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,
+                ListAnomalyDimensionValuesInput.INSTANCE.dimensionName,
+                ListAnomalyDimensionValuesInput.INSTANCE.startTime, ListAnomalyDimensionValuesInput.INSTANCE.endTime,
+                ListAnomalyDimensionValuesInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         dimensionValuesIterable.forEach(value -> {

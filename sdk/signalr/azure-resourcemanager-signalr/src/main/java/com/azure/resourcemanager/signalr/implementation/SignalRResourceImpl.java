@@ -106,12 +106,9 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -120,12 +117,9 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
     public List<SharedPrivateLinkResource> sharedPrivateLinkResources() {
         List<SharedPrivateLinkResourceInner> inner = this.innerModel().sharedPrivateLinkResources();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -222,20 +216,16 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
     }
 
     public SignalRResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalRResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -250,48 +240,40 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
     }
 
     public SignalRResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .update(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .update(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalRResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .update(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .update(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    SignalRResourceImpl(
-        SignalRResourceInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
+    SignalRResourceImpl(SignalRResourceInner innerObject,
+        com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
     }
 
     public SignalRResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SignalRResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRs()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRs()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

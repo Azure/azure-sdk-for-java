@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** described the storage properties of the azure bare metal storage instance. */
+/**
+ * described the storage properties of the azure bare metal storage instance.
+ */
 @Fluent
-public final class StorageProperties {
+public final class StorageProperties implements JsonSerializable<StorageProperties> {
     /*
      * State of provisioning of the AzureBareMetalStorageInstance
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * the offering type for which the resource is getting provisioned
      */
-    @JsonProperty(value = "offeringType")
     private String offeringType;
 
     /*
      * the storage protocol for which the resource is getting provisioned
      */
-    @JsonProperty(value = "storageType")
     private String storageType;
 
     /*
      * the kind of storage instance
      */
-    @JsonProperty(value = "generation")
     private String generation;
 
     /*
      * the hardware type of the storage instance
      */
-    @JsonProperty(value = "hardwareType")
     private String hardwareType;
 
     /*
      * the workload for which the resource is getting provisioned
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * the billing related information for the resource
      */
-    @JsonProperty(value = "storageBillingProperties")
     private StorageBillingProperties storageBillingProperties;
 
-    /** Creates an instance of StorageProperties class. */
+    /**
+     * Creates an instance of StorageProperties class.
+     */
     public StorageProperties() {
     }
 
     /**
      * Get the provisioningState property: State of provisioning of the AzureBareMetalStorageInstance.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -67,7 +68,7 @@ public final class StorageProperties {
 
     /**
      * Set the provisioningState property: State of provisioning of the AzureBareMetalStorageInstance.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the StorageProperties object itself.
      */
@@ -78,7 +79,7 @@ public final class StorageProperties {
 
     /**
      * Get the offeringType property: the offering type for which the resource is getting provisioned.
-     *
+     * 
      * @return the offeringType value.
      */
     public String offeringType() {
@@ -87,7 +88,7 @@ public final class StorageProperties {
 
     /**
      * Set the offeringType property: the offering type for which the resource is getting provisioned.
-     *
+     * 
      * @param offeringType the offeringType value to set.
      * @return the StorageProperties object itself.
      */
@@ -98,7 +99,7 @@ public final class StorageProperties {
 
     /**
      * Get the storageType property: the storage protocol for which the resource is getting provisioned.
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -107,7 +108,7 @@ public final class StorageProperties {
 
     /**
      * Set the storageType property: the storage protocol for which the resource is getting provisioned.
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the StorageProperties object itself.
      */
@@ -118,7 +119,7 @@ public final class StorageProperties {
 
     /**
      * Get the generation property: the kind of storage instance.
-     *
+     * 
      * @return the generation value.
      */
     public String generation() {
@@ -127,7 +128,7 @@ public final class StorageProperties {
 
     /**
      * Set the generation property: the kind of storage instance.
-     *
+     * 
      * @param generation the generation value to set.
      * @return the StorageProperties object itself.
      */
@@ -138,7 +139,7 @@ public final class StorageProperties {
 
     /**
      * Get the hardwareType property: the hardware type of the storage instance.
-     *
+     * 
      * @return the hardwareType value.
      */
     public String hardwareType() {
@@ -147,7 +148,7 @@ public final class StorageProperties {
 
     /**
      * Set the hardwareType property: the hardware type of the storage instance.
-     *
+     * 
      * @param hardwareType the hardwareType value to set.
      * @return the StorageProperties object itself.
      */
@@ -158,7 +159,7 @@ public final class StorageProperties {
 
     /**
      * Get the workloadType property: the workload for which the resource is getting provisioned.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -167,7 +168,7 @@ public final class StorageProperties {
 
     /**
      * Set the workloadType property: the workload for which the resource is getting provisioned.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the StorageProperties object itself.
      */
@@ -178,7 +179,7 @@ public final class StorageProperties {
 
     /**
      * Get the storageBillingProperties property: the billing related information for the resource.
-     *
+     * 
      * @return the storageBillingProperties value.
      */
     public StorageBillingProperties storageBillingProperties() {
@@ -187,7 +188,7 @@ public final class StorageProperties {
 
     /**
      * Set the storageBillingProperties property: the billing related information for the resource.
-     *
+     * 
      * @param storageBillingProperties the storageBillingProperties value to set.
      * @return the StorageProperties object itself.
      */
@@ -198,12 +199,67 @@ public final class StorageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageBillingProperties() != null) {
             storageBillingProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("offeringType", this.offeringType);
+        jsonWriter.writeStringField("storageType", this.storageType);
+        jsonWriter.writeStringField("generation", this.generation);
+        jsonWriter.writeStringField("hardwareType", this.hardwareType);
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeJsonField("storageBillingProperties", this.storageBillingProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProperties.
+     */
+    public static StorageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProperties deserializedStorageProperties = new StorageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedStorageProperties.offeringType = reader.getString();
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedStorageProperties.storageType = reader.getString();
+                } else if ("generation".equals(fieldName)) {
+                    deserializedStorageProperties.generation = reader.getString();
+                } else if ("hardwareType".equals(fieldName)) {
+                    deserializedStorageProperties.hardwareType = reader.getString();
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedStorageProperties.workloadType = reader.getString();
+                } else if ("storageBillingProperties".equals(fieldName)) {
+                    deserializedStorageProperties.storageBillingProperties = StorageBillingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProperties;
+        });
     }
 }

@@ -44,12 +44,14 @@ public final class TargetTypesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TargetType response = manager.targetTypes()
-            .getWithResponse("qbmfpjbabwidf", "xsspuunnoxyhk", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("qbmfpjbabwidf", "xsspuunnoxyhk", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ddrihpf", response.location());
     }

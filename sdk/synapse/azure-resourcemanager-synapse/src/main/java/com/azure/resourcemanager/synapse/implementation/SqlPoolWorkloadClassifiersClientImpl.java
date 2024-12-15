@@ -38,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolWorkloadClassifiersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolWorkloadClassifiersClient.
+ */
 public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorkloadClassifiersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolWorkloadClassifiersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolWorkloadClassifiersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolWorkloadClassifiersClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolWorkloadClassifiersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolWorkloadClassifiersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,96 +70,63 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolWorkloadClassifiersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadClassifierInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
+        Mono<Response<WorkloadClassifierInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
+            @PathParam("workloadClassifierName") String workloadClassifierName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
             @PathParam("workloadClassifierName") String workloadClassifierName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WorkloadClassifierInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("workloadClassifierName") String workloadClassifierName,
-            @BodyParam("application/json") WorkloadClassifierInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
+            @PathParam("workloadClassifierName") String workloadClassifierName, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("workloadClassifierName") String workloadClassifierName,
-            Context context);
+        Mono<Response<WorkloadClassifierListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadClassifierListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadClassifierListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -165,26 +136,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier of Sql pool's workload group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,35 +164,23 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -240,27 +191,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier of Sql pool's workload group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -277,32 +219,21 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, accept, context);
     }
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -314,22 +245,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return a workload classifier of Sql pool's workload group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadClassifierInner> getAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<WorkloadClassifierInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -342,23 +268,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return a workload classifier of Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadClassifierInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
-            .block();
+    public Response<WorkloadClassifierInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, context).block();
     }
 
     /**
      * Get workload classifier
-     *
-     * <p>Get a workload classifier of Sql pool's workload group.
-     *
+     * 
+     * Get a workload classifier of Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -370,22 +290,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return a workload classifier of Sql pool's workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return getWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, Context.NONE)
-            .getValue();
+    public WorkloadClassifierInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+            Context.NONE).getValue();
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -396,27 +311,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, String workloadClassifierName,
         WorkloadClassifierInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -433,9 +340,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -445,29 +351,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+                workloadClassifierName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -479,28 +373,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, String workloadClassifierName,
+        WorkloadClassifierInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -517,9 +402,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -529,26 +413,16 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters,
+            accept, context);
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -562,30 +436,20 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters);
-        return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkloadClassifierInner.class,
-                WorkloadClassifierInner.class,
-                this.client.getContext());
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            sqlPoolName, workloadGroupName, workloadClassifierName, parameters);
+        return this.client.<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -600,38 +464,20 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context);
-        return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkloadClassifierInner.class,
-                WorkloadClassifierInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            sqlPoolName, workloadGroupName, workloadClassifierName, parameters, context);
+        return this.client.<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class, context);
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -645,23 +491,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+                workloadClassifierName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -676,30 +518,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+                workloadClassifierName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -712,24 +543,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return workload classifier operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadClassifierInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
+    private Mono<WorkloadClassifierInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName,
         WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -743,31 +568,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return workload classifier operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadClassifierInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
+    private Mono<WorkloadClassifierInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -780,23 +592,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters)
-            .block();
+    public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, parameters).block();
     }
 
     /**
      * Create Or Update workload classifier
-     *
-     * <p>Create Or Update workload classifier for a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update workload classifier for a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -810,30 +616,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .block();
+    public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, parameters, context).block();
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -845,23 +638,15 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -878,33 +663,22 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -917,24 +691,15 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -951,30 +716,20 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                workloadClassifierName,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context);
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -986,26 +741,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName,
+            workloadGroupName, workloadClassifierName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1018,27 +766,20 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName,
+            workloadGroupName, workloadClassifierName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1050,12 +791,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName) {
         return this
             .beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
             .getSyncPoller();
@@ -1063,9 +800,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1078,24 +815,19 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context) {
         return this
-            .beginDeleteAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
+            .beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1107,23 +839,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return beginDeleteAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1136,24 +862,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+            workloadClassifierName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1164,20 +883,16 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         String workloadClassifierName) {
         deleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName).block();
     }
 
     /**
      * Remove workload classifier
-     *
-     * <p>Remove workload classifier of a Sql pool's workload group.
-     *
+     * 
+     * Remove workload classifier of a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1189,22 +904,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, Context context) {
         deleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
             .block();
     }
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1213,22 +923,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Sql pool's workload classifier for workload groups along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadClassifierInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    private Mono<PagedResponse<WorkloadClassifierInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1247,36 +953,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<WorkloadClassifierInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, accept, context))
+            .<PagedResponse<WorkloadClassifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1286,22 +974,18 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Sql pool's workload classifier for workload groups along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadClassifierInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    private Mono<PagedResponse<WorkloadClassifierInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1321,32 +1005,17 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, workloadGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1357,8 +1026,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadClassifierInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    private PagedFlux<WorkloadClassifierInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1366,9 +1035,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1380,8 +1049,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadClassifierInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    private PagedFlux<WorkloadClassifierInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1389,9 +1058,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1399,20 +1068,20 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    public PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName));
     }
 
     /**
      * Sql pool's workload classifier
-     *
-     * <p>Get list of Sql pool's workload classifier for workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload classifier for workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -1421,26 +1090,25 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of Sql pool's workload classifier for workload groups as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    public PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadClassifierInner>> listNextSinglePageAsync(String nextLink) {
@@ -1448,37 +1116,26 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkloadClassifierInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkloadClassifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadClassifierInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1486,23 +1143,13 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

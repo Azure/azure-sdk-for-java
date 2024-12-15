@@ -161,9 +161,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSessionCollection>> getSparkSessionsWithResponseAsync(Integer from, Integer size,
         Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkSessions(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), from, size, detailed, accept, context));
+        return FluxUtil.withContext(context -> getSparkSessionsWithResponseAsync(from, size, detailed, context));
     }
 
     /**
@@ -303,10 +301,8 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> createSparkSessionWithResponseAsync(SparkSessionOptions sparkSessionOptions,
         Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createSparkSession(this.client.getEndpoint(), this.client.getLivyApiVersion(),
-                this.client.getSparkPoolName(), detailed, sparkSessionOptions, accept, context));
+        return FluxUtil
+            .withContext(context -> createSparkSessionWithResponseAsync(sparkSessionOptions, detailed, context));
     }
 
     /**
@@ -437,9 +433,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> getSparkSessionWithResponseAsync(int sessionId, Boolean detailed) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkSession(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, detailed, accept, context));
+        return FluxUtil.withContext(context -> getSparkSessionWithResponseAsync(sessionId, detailed, context));
     }
 
     /**
@@ -565,8 +559,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelSparkSessionWithResponseAsync(int sessionId) {
-        return FluxUtil.withContext(context -> service.cancelSparkSession(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, context));
+        return FluxUtil.withContext(context -> cancelSparkSessionWithResponseAsync(sessionId, context));
     }
 
     /**
@@ -653,8 +646,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetSparkSessionTimeoutWithResponseAsync(int sessionId) {
-        return FluxUtil.withContext(context -> service.resetSparkSessionTimeout(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, context));
+        return FluxUtil.withContext(context -> resetSparkSessionTimeoutWithResponseAsync(sessionId, context));
     }
 
     /**
@@ -742,9 +734,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCollection>> getSparkStatementsWithResponseAsync(int sessionId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkStatements(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, accept, context));
+        return FluxUtil.withContext(context -> getSparkStatementsWithResponseAsync(sessionId, context));
     }
 
     /**
@@ -837,10 +827,8 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> createSparkStatementWithResponseAsync(int sessionId,
         SparkStatementOptions sparkStatementOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createSparkStatement(this.client.getEndpoint(), this.client.getLivyApiVersion(),
-                this.client.getSparkPoolName(), sessionId, sparkStatementOptions, accept, context));
+        return FluxUtil
+            .withContext(context -> createSparkStatementWithResponseAsync(sessionId, sparkStatementOptions, context));
     }
 
     /**
@@ -941,9 +929,7 @@ public final class SparkSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> getSparkStatementWithResponseAsync(int sessionId, int statementId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkStatement(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, statementId, accept, context));
+        return FluxUtil.withContext(context -> getSparkStatementWithResponseAsync(sessionId, statementId, context));
     }
 
     /**
@@ -1043,9 +1029,7 @@ public final class SparkSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCancellationResult>> cancelSparkStatementWithResponseAsync(int sessionId,
         int statementId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelSparkStatement(this.client.getEndpoint(),
-            this.client.getLivyApiVersion(), this.client.getSparkPoolName(), sessionId, statementId, accept, context));
+        return FluxUtil.withContext(context -> cancelSparkStatementWithResponseAsync(sessionId, statementId, context));
     }
 
     /**

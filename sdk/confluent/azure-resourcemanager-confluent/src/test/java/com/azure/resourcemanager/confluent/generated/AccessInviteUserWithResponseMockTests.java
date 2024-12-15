@@ -46,14 +46,17 @@ public final class AccessInviteUserWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         InvitationRecord response = manager.access()
             .inviteUserWithResponse("phai", "mxyasflvgsgzw",
-                new AccessInviteUserAccountModel().withOrganizationId("akoi").withEmail("nsmjbl")
-                    .withUpn("jhlnymzotqyryu").withInvitedUserDetails(
+                new AccessInviteUserAccountModel().withOrganizationId("akoi")
+                    .withEmail("nsmjbl")
+                    .withUpn("jhlnymzotqyryu")
+                    .withInvitedUserDetails(
                         new AccessInvitedUserDetails().withInvitedEmail("mqqvxmvwfgtay").withAuthType("nsup")),
                 com.azure.core.util.Context.NONE)
             .getValue();

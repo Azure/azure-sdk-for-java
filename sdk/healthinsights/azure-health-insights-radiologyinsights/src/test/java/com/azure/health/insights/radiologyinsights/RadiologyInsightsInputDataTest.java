@@ -54,70 +54,71 @@ public class RadiologyInsightsInputDataTest {
         setOrderCode("MVLW");
         setOrderDescription("IH Hip 1 View Left");
         RadiologyInsightsData radiologyInsightsRequest = createRadiologyInsightsRequest();
-        
+
         RadiologyInsightsModelConfiguration configuration = radiologyInsightsRequest.getConfiguration();
-        
+
         assertTrue(configuration.isIncludeEvidence());
         assertFalse(configuration.isVerbose());
         assertEquals("en-US", configuration.getLocale());
-        
+
         RadiologyInsightsInferenceOptions inferenceOptions = configuration.getInferenceOptions();
-        
+
         FindingOptions findingOptions = inferenceOptions.getFindingOptions();
         assertFalse(findingOptions.isProvideFocusedSentenceEvidence());
-        
-        FollowupRecommendationOptions followupRecommendationOptions = inferenceOptions.getFollowupRecommendationOptions();
+
+        FollowupRecommendationOptions followupRecommendationOptions
+            = inferenceOptions.getFollowupRecommendationOptions();
         assertFalse(followupRecommendationOptions.isIncludeRecommendationsInReferences());
         assertFalse(followupRecommendationOptions.isIncludeRecommendationsWithNoSpecifiedModality());
         assertFalse(followupRecommendationOptions.isProvideFocusedSentenceEvidence());
-        
+
         List<RadiologyInsightsInferenceType> inferenceTypes = configuration.getInferenceTypes();
         assertEquals(1, inferenceTypes.size());
         RadiologyInsightsInferenceType inferenceType = inferenceTypes.get(0);
         assertEquals(RadiologyInsightsInferenceType.AGE_MISMATCH, inferenceType);
-        
+
         List<PatientRecord> patients = radiologyInsightsRequest.getPatients();
         assertEquals(1, patients.size());
         PatientRecord patientRecord = patients.get(0);
-        
+
         assertEquals("Sharona", patientRecord.getId());
-        
+
         PatientDetails info = patientRecord.getDetails();
         assertEquals(PatientSex.FEMALE, info.getSex());
         assertNull(info.getClinicalInfo());
         assertEquals(LocalDate.of(1959, 11, 11), info.getBirthDate());
-        
+
         List<PatientEncounter> encounters = patientRecord.getEncounters();
         assertEquals(1, encounters.size());
-        
+
         PatientEncounter encounter = encounters.get(0);
         assertEquals(EncounterClass.IN_PATIENT, encounter.getClassProperty());
         assertEquals("encounterid1", encounter.getId());
         assertEquals(OffsetDateTime.parse("2021-08-28T00:00:00Z"), encounter.getPeriod().getStart());
         assertEquals(OffsetDateTime.parse("2021-08-28T00:00:00Z"), encounter.getPeriod().getEnd());
-        
+
         List<PatientDocument> patientDocuments = patientRecord.getPatientDocuments();
         assertEquals(1, patientDocuments.size());
-        
+
         PatientDocument patientDocument = patientDocuments.get(0);
         DocumentAdministrativeMetadata administrativeMetadata = patientDocument.getAdministrativeMetadata();
         assertEquals("encounterid1", administrativeMetadata.getEncounterId());
-        
+
         List<OrderedProcedure> orderedProcedures = administrativeMetadata.getOrderedProcedures();
         assertEquals(1, orderedProcedures.size());
-        
+
         OrderedProcedure procedure = orderedProcedures.get(0);
         assertEquals("IH Hip 1 View Left", procedure.getDescription());
         assertNull(procedure.getExtension());
-        
+
         FhirR4CodeableConcept code = procedure.getCode();
         assertNull(code.getExtension());
         assertNull(code.getId());
         assertNull(code.getText());
-        
+
         List<FhirR4Coding> codingList = code.getCoding();
         assertEquals(1, codingList.size());
-        
+
         FhirR4Coding coding = codingList.get(0);
         assertEquals("MVLW", coding.getCode());
         assertEquals("IH Hip 1 View Left", coding.getDisplay());
@@ -125,26 +126,27 @@ public class RadiologyInsightsInputDataTest {
         assertNull(coding.getId());
         assertEquals("Http://hl7.org/fhir/ValueSet/cpt-all", coding.getSystem());
         assertNull(coding.getVersion());
-        
+
         List<ClinicalDocumentAuthor> authors = patientDocument.getAuthors();
         assertEquals(1, authors.size());
-        
+
         ClinicalDocumentAuthor documentAuthor = authors.get(0);
         assertEquals("authorname1", documentAuthor.getFullName());
         assertEquals("authorid1", documentAuthor.getId());
-        
+
         assertEquals(ClinicalDocumentType.RADIOLOGY_REPORT, patientDocument.getClinicalType());
         assertEquals(DocumentContentSourceType.INLINE, patientDocument.getContent().getSourceType());
         assertEquals("Test", patientDocument.getContent().getValue());
-        
-        assertEquals(OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")), patientDocument.getCreatedAt());
-        
+
+        assertEquals(OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00",
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")), patientDocument.getCreatedAt());
+
         assertEquals("docid1", patientDocument.getId());
         assertEquals("EN", patientDocument.getLanguage());
         assertEquals(SpecialtyType.RADIOLOGY, patientDocument.getSpecialtyType());
         assertEquals(ClinicalDocumentContentType.NOTE, patientDocument.getType());
     }
-    
+
     private String documentContent;
     private RadiologyInsightsInferenceType inferenceType;
     private String orderCode;
@@ -161,7 +163,7 @@ public class RadiologyInsightsInputDataTest {
         radiologyInsightsData.setConfiguration(modelConfiguration);
         return radiologyInsightsData;
     }
-    
+
     private List<PatientRecord> createPatientRecords() {
         List<PatientRecord> patientRecords = new ArrayList<>();
         // Patients
@@ -171,7 +173,7 @@ public class RadiologyInsightsInputDataTest {
         patientDetails.setSex(PatientSex.FEMALE);
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -228,12 +230,13 @@ public class RadiologyInsightsInputDataTest {
         patientRecords.add(patientRecord);
         return patientRecords;
     }
-    
+
     private PatientDocument getPatientDocument() {
-        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
+        ClinicalDocumentContent documentContent
+            = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
-   
+
     private RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
         RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
@@ -244,7 +247,7 @@ public class RadiologyInsightsInputDataTest {
         configuration.setIncludeEvidence(true);
         return configuration;
     }
-    
+
     private RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
         RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();

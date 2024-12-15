@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The compression type. */
+/**
+ * The compression type.
+ */
 public final class Compression extends ExpandableStringEnum<Compression> {
-    /** Static value None for Compression. */
+    /**
+     * Static value None for Compression.
+     */
     public static final Compression NONE = fromString("None");
 
-    /** Static value GZip for Compression. */
+    /**
+     * Static value GZip for Compression.
+     */
     public static final Compression GZIP = fromString("GZip");
 
     /**
      * Creates a new instance of Compression value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Compression extends ExpandableStringEnum<Compression> {
 
     /**
      * Creates or finds a Compression from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Compression.
      */
-    @JsonCreator
     public static Compression fromString(String name) {
         return fromString(name, Compression.class);
     }
 
     /**
      * Gets known Compression values.
-     *
+     * 
      * @return known Compression values.
      */
     public static Collection<Compression> values() {

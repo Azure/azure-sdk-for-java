@@ -12,21 +12,15 @@ import java.util.Arrays;
 public final class CreateJobValidationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateJobValidations model =
-            BinaryData
-                .fromString(
-                    "{\"validationCategory\":\"JobCreationValidation\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
-                .toObject(CreateJobValidations.class);
+        CreateJobValidations model = BinaryData.fromString(
+            "{\"validationCategory\":\"JobCreationValidation\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
+            .toObject(CreateJobValidations.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateJobValidations model =
-            new CreateJobValidations()
-                .withIndividualRequestDetails(
-                    Arrays
-                        .asList(
-                            new ValidationInputRequest(), new ValidationInputRequest(), new ValidationInputRequest()));
+        CreateJobValidations model = new CreateJobValidations().withIndividualRequestDetails(
+            Arrays.asList(new ValidationInputRequest(), new ValidationInputRequest(), new ValidationInputRequest()));
         model = BinaryData.fromObject(model).toObject(CreateJobValidations.class);
     }
 }

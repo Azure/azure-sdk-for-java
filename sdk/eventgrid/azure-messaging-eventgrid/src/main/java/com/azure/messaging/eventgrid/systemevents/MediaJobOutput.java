@@ -17,6 +17,11 @@ import java.io.IOException;
 @Fluent
 public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "MediaJobOutput";
+
+    /*
      * Gets the Job output error.
      */
     private MediaJobError error;
@@ -40,6 +45,15 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * Creates an instance of MediaJobOutput class.
      */
     public MediaJobOutput() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -122,11 +136,15 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("progress", this.progress);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeStringField("label", this.label);
         return jsonWriter.writeEndObject();
@@ -138,31 +156,30 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MediaJobOutput if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobOutput.
      */
     public static MediaJobOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
                 }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Media.JobOutputAsset".equals(discriminatorValue)) {
-                return MediaJobOutputAsset.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.JobOutputAsset".equals(discriminatorValue)) {
+                    return MediaJobOutputAsset.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
             }
         });
     }
@@ -178,6 +195,8 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
                     deserializedMediaJobOutput.progress = reader.getLong();
                 } else if ("state".equals(fieldName)) {
                     deserializedMediaJobOutput.state = MediaJobState.fromString(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedMediaJobOutput.odataType = reader.getString();
                 } else if ("error".equals(fieldName)) {
                     deserializedMediaJobOutput.error = MediaJobError.fromJson(reader);
                 } else if ("label".equals(fieldName)) {

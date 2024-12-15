@@ -15,29 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentKeyPolicyPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"policyId\":\"d74dd1bf-60e8-4184-a78d-3c5b7acb1ef7\",\"created\":\"2021-04-20T00:02:54Z\",\"lastModified\":\"2021-11-02T08:41:46Z\",\"description\":\"bnbbeldawkz\",\"options\":[{\"policyOptionId\":\"032636e8-063e-4335-94af-e4bc26e3c4e9\",\"name\":\"ourqhakau\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]}")
-                .toObject(ContentKeyPolicyPropertiesInner.class);
-        Assertions.assertEquals("bnbbeldawkz", model.description());
-        Assertions.assertEquals("ourqhakau", model.options().get(0).name());
+        ContentKeyPolicyPropertiesInner model = BinaryData.fromString(
+            "{\"policyId\":\"002d5bc7-b6d8-4de1-8fab-d04671067615\",\"created\":\"2021-05-25T15:51:06Z\",\"lastModified\":\"2021-11-16T11:11:20Z\",\"description\":\"vnhdldwmgxcxr\",\"options\":[{\"policyOptionId\":\"0881510e-777c-4d36-b2da-44071dfd949b\",\"name\":\"utwu\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"c35ba59a-6558-45e9-bb4a-10d41cb5c0f5\",\"name\":\"rpkhjwn\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"8dfed2cd-22ce-4f30-8d63-77d7b8814be6\",\"name\":\"sluicpdggkzz\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"b85e8137-4f71-42b0-94b3-0e07988750d2\",\"name\":\"bmpaxmodfvu\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]}")
+            .toObject(ContentKeyPolicyPropertiesInner.class);
+        Assertions.assertEquals("vnhdldwmgxcxr", model.description());
+        Assertions.assertEquals("utwu", model.options().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentKeyPolicyPropertiesInner model =
-            new ContentKeyPolicyPropertiesInner()
-                .withDescription("bnbbeldawkz")
-                .withOptions(
-                    Arrays
-                        .asList(
-                            new ContentKeyPolicyOption()
-                                .withName("ourqhakau")
-                                .withConfiguration(new ContentKeyPolicyConfiguration())
-                                .withRestriction(new ContentKeyPolicyRestriction())));
+        ContentKeyPolicyPropertiesInner model = new ContentKeyPolicyPropertiesInner().withDescription("vnhdldwmgxcxr")
+            .withOptions(Arrays.asList(
+                new ContentKeyPolicyOption().withName("utwu")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("rpkhjwn")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("sluicpdggkzz")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("bmpaxmodfvu")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction())));
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyPropertiesInner.class);
-        Assertions.assertEquals("bnbbeldawkz", model.description());
-        Assertions.assertEquals("ourqhakau", model.options().get(0).name());
+        Assertions.assertEquals("vnhdldwmgxcxr", model.description());
+        Assertions.assertEquals("utwu", model.options().get(0).name());
     }
 }

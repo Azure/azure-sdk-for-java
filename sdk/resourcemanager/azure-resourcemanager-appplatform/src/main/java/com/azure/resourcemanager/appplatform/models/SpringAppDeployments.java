@@ -16,13 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Spring App Deployments API. */
 @Fluent
-public interface SpringAppDeployments<T>
-    extends HasManager<AppPlatformManager>,
-    HasParent<SpringApp>,
-    SupportsCreating<SpringAppDeployment.DefinitionStages.Blank<T>>,
-    SupportsGettingById<SpringAppDeployment>,
-    SupportsGettingByName<SpringAppDeployment>,
-    SupportsListing<SpringAppDeployment>,
-    SupportsDeletingById,
+public interface SpringAppDeployments<T> extends HasManager<AppPlatformManager>, HasParent<SpringApp>,
+    SupportsCreating<SpringAppDeployment.DefinitionStages.Blank<T>>, SupportsGettingById<SpringAppDeployment>,
+    SupportsGettingByName<SpringAppDeployment>, SupportsListing<SpringAppDeployment>, SupportsDeletingById,
     SupportsDeletingByName {
 }

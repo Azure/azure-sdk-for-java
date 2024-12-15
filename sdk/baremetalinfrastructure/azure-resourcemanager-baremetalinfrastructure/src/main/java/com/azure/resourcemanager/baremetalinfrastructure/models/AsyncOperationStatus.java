@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the operation. */
+/**
+ * Status of the operation.
+ */
 public final class AsyncOperationStatus extends ExpandableStringEnum<AsyncOperationStatus> {
-    /** Static value Requesting for AsyncOperationStatus. */
+    /**
+     * Static value Requesting for AsyncOperationStatus.
+     */
     public static final AsyncOperationStatus REQUESTING = fromString("Requesting");
 
-    /** Static value Executing for AsyncOperationStatus. */
+    /**
+     * Static value Executing for AsyncOperationStatus.
+     */
     public static final AsyncOperationStatus EXECUTING = fromString("Executing");
 
-    /** Static value Succeeded for AsyncOperationStatus. */
+    /**
+     * Static value Succeeded for AsyncOperationStatus.
+     */
     public static final AsyncOperationStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for AsyncOperationStatus. */
+    /**
+     * Static value Failed for AsyncOperationStatus.
+     */
     public static final AsyncOperationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of AsyncOperationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class AsyncOperationStatus extends ExpandableStringEnum<AsyncOperat
 
     /**
      * Creates or finds a AsyncOperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AsyncOperationStatus.
      */
-    @JsonCreator
     public static AsyncOperationStatus fromString(String name) {
         return fromString(name, AsyncOperationStatus.class);
     }
 
     /**
      * Gets known AsyncOperationStatus values.
-     *
+     * 
      * @return known AsyncOperationStatus values.
      */
     public static Collection<AsyncOperationStatus> values() {

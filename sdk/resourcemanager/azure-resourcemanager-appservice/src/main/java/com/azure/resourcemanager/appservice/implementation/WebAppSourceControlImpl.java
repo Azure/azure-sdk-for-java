@@ -19,9 +19,8 @@ import reactor.core.publisher.Mono;
  */
 class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteSourceControlInner>
-    implements WebAppSourceControl,
-        WebAppSourceControl.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
+    implements WebAppSourceControl, WebAppSourceControl.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+    WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
     private String githubAccessToken;
@@ -96,8 +95,8 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(
-        String organization, String repository) {
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String organization,
+        String repository) {
         return withContinuouslyIntegratedGitHubRepository(
             String.format("https://github.com/%s/%s", organization, repository));
     }
@@ -119,7 +118,10 @@ class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends We
             return Mono.empty();
         }
         SourceControlInner sourceControlInner = new SourceControlInner().withToken(githubAccessToken);
-        return this.parent().manager().serviceClient().getResourceProviders()
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getResourceProviders()
             .updateSourceControlAsync("Github", sourceControlInner);
     }
 }

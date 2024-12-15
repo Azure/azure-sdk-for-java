@@ -45,12 +45,13 @@ public final class DevicesGenerateCapabilityImageMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SignedCapabilityImageResponse response
-            = manager.devices().generateCapabilityImage("hahhxvrhmzkwpj", "wws", "ughftqsx", "qxujxukndxd", "grjguufzd",
+        SignedCapabilityImageResponse response = manager.devices()
+            .generateCapabilityImage("hahhxvrhmzkwpj", "wws", "ughftqsx", "qxujxukndxd", "grjguufzd",
                 new GenerateCapabilityImageRequest().withCapabilities(
                     Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT, CapabilityType.FIELD_SERVICING)),
                 com.azure.core.util.Context.NONE);

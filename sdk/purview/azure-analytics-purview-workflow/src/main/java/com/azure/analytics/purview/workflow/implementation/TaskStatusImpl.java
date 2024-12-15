@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -28,23 +29,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TaskStatus. */
+/**
+ * An instance of this class provides access to all the operations defined in TaskStatus.
+ */
 public final class TaskStatusImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TaskStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of TaskStatusImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TaskStatusImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(TaskStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TaskStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -55,60 +71,39 @@ public final class TaskStatusImpl {
     @ServiceInterface(name = "PurviewWorkflowTaskS")
     public interface TaskStatusService {
         @Post("/workflowtasks/{taskId}/change-task-status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> update(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData taskUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> update(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData taskUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/workflowtasks/{taskId}/change-task-status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> updateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData taskUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> updateSync(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData taskUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Update the status of a workflow task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param taskUpdateCommand Request body of updating workflow task request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -119,33 +114,26 @@ public final class TaskStatusImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateWithResponseAsync(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(),
-                                taskId,
-                                this.client.getServiceVersion().getVersion(),
-                                taskUpdateCommand,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), taskId,
+            this.client.getServiceVersion().getVersion(), taskUpdateCommand, accept, requestOptions, context));
     }
 
     /**
      * Update the status of a workflow task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param taskUpdateCommand Request body of updating workflow task request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -156,16 +144,10 @@ public final class TaskStatusImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-            String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
+    public Response<Void> updateWithResponse(String taskId, BinaryData taskUpdateCommand,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateSync(
-                this.client.getEndpoint(),
-                taskId,
-                this.client.getServiceVersion().getVersion(),
-                taskUpdateCommand,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), taskId, this.client.getServiceVersion().getVersion(),
+            taskUpdateCommand, accept, requestOptions, Context.NONE);
     }
 }

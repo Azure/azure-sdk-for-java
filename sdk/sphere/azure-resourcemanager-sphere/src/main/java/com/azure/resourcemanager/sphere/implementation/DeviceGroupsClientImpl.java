@@ -762,7 +762,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     private Mono<DeviceGroupInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1043,7 +1044,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     private Mono<DeviceGroupInner> updateAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, DeviceGroupUpdate properties, Context context) {
         return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1535,8 +1537,10 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
         String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
-        return this.beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            claimDevicesRequest, context).getSyncPoller();
+        return this
+            .beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1557,7 +1561,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     private Mono<Void> claimDevicesAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
         return beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

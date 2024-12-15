@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Activity. */
 @Fluent
-public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolOperationInner>, HasResourceGroup, HasName, HasId {
+public interface ElasticPoolActivity
+    extends HasInnerModel<ElasticPoolOperationInner>, HasResourceGroup, HasName, HasId {
     /** @return the time the operation finished (ISO8601 format) */
     OffsetDateTime endTime();
 

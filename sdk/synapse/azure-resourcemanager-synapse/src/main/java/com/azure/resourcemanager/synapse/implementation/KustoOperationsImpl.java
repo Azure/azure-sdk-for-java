@@ -19,20 +19,20 @@ public final class KustoOperationsImpl implements KustoOperations {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public KustoOperationsImpl(
-        KustoOperationsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public KustoOperationsImpl(KustoOperationsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Operation> list() {
         PagedIterable<OperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Operation> list(Context context) {
         PagedIterable<OperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private KustoOperationsClient serviceClient() {

@@ -45,12 +45,13 @@ public final class CapabilityTypesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CapabilityType> response = manager.capabilityTypes().list("jvfbgofelja", "rqmq",
-            "ldvriiiojnalghfk", com.azure.core.util.Context.NONE);
+        PagedIterable<CapabilityType> response = manager.capabilityTypes()
+            .list("jvfbgofelja", "rqmq", "ldvriiiojnalghfk", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("sexso", response.iterator().next().location());
     }

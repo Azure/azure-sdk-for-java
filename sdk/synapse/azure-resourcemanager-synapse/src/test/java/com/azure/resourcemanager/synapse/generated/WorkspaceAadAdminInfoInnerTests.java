@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceAadAdminInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceAadAdminInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"tenantId\":\"efdeesve\",\"login\":\"ijpxtx\",\"administratorType\":\"wprtu\",\"sid\":\"sawddjibabxvi\"},\"id\":\"itvtzeexavo\",\"name\":\"tfgle\",\"type\":\"dmdqb\"}")
-                .toObject(WorkspaceAadAdminInfoInner.class);
-        Assertions.assertEquals("efdeesve", model.tenantId());
-        Assertions.assertEquals("ijpxtx", model.login());
-        Assertions.assertEquals("wprtu", model.administratorType());
-        Assertions.assertEquals("sawddjibabxvi", model.sid());
+        WorkspaceAadAdminInfoInner model = BinaryData.fromString(
+            "{\"properties\":{\"tenantId\":\"libph\",\"login\":\"zmizakakan\",\"administratorType\":\"p\",\"sid\":\"jzhajoy\"},\"id\":\"hjlmu\",\"name\":\"y\",\"type\":\"primr\"}")
+            .toObject(WorkspaceAadAdminInfoInner.class);
+        Assertions.assertEquals("libph", model.tenantId());
+        Assertions.assertEquals("zmizakakan", model.login());
+        Assertions.assertEquals("p", model.administratorType());
+        Assertions.assertEquals("jzhajoy", model.sid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceAadAdminInfoInner model =
-            new WorkspaceAadAdminInfoInner()
-                .withTenantId("efdeesve")
-                .withLogin("ijpxtx")
-                .withAdministratorType("wprtu")
-                .withSid("sawddjibabxvi");
+        WorkspaceAadAdminInfoInner model = new WorkspaceAadAdminInfoInner().withTenantId("libph")
+            .withLogin("zmizakakan")
+            .withAdministratorType("p")
+            .withSid("jzhajoy");
         model = BinaryData.fromObject(model).toObject(WorkspaceAadAdminInfoInner.class);
-        Assertions.assertEquals("efdeesve", model.tenantId());
-        Assertions.assertEquals("ijpxtx", model.login());
-        Assertions.assertEquals("wprtu", model.administratorType());
-        Assertions.assertEquals("sawddjibabxvi", model.sid());
+        Assertions.assertEquals("libph", model.tenantId());
+        Assertions.assertEquals("zmizakakan", model.login());
+        Assertions.assertEquals("p", model.administratorType());
+        Assertions.assertEquals("jzhajoy", model.sid());
     }
 }

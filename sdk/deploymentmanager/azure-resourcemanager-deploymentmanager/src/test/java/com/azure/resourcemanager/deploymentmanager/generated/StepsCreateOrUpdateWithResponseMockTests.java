@@ -33,44 +33,32 @@ public final class StepsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"stepType\":\"StepProperties\"},\"location\":\"zksmondj\",\"tags\":{\"omgkopkwho\":\"xvy\",\"ajqgxy\":\"v\",\"xozap\":\"mocmbqfqvmk\",\"dd\":\"helxprglya\"},\"id\":\"kcbcue\",\"name\":\"rjxgciqib\",\"type\":\"hos\"}";
+        String responseStr
+            = "{\"properties\":{\"stepType\":\"StepProperties\"},\"location\":\"zksmondj\",\"tags\":{\"omgkopkwho\":\"xvy\",\"ajqgxy\":\"v\",\"xozap\":\"mocmbqfqvmk\",\"dd\":\"helxprglya\"},\"id\":\"kcbcue\",\"name\":\"rjxgciqib\",\"type\":\"hos\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeploymentManager manager =
-            DeploymentManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeploymentManager manager = DeploymentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        StepResource response =
-            manager
-                .steps()
-                .define("mutwuoe")
-                .withRegion("rpkhjwn")
-                .withExistingResourceGroup("wmgxcxrsl")
-                .withProperties(new StepProperties())
-                .withTags(mapOf("vmbmp", "sluicpdggkzz", "uefywsbpfvmwy", "xmodf"))
-                .create();
+        StepResource response = manager.steps()
+            .define("mutwuoe")
+            .withRegion("rpkhjwn")
+            .withExistingResourceGroup("wmgxcxrsl")
+            .withProperties(new StepProperties())
+            .withTags(mapOf("vmbmp", "sluicpdggkzz", "uefywsbpfvmwy", "xmodf"))
+            .create();
 
         Assertions.assertEquals("zksmondj", response.location());
         Assertions.assertEquals("xvy", response.tags().get("omgkopkwho"));

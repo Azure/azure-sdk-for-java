@@ -47,12 +47,15 @@ public final class AccessListUsersWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AccessListUsersSuccessResponse response = manager.access().listUsersWithResponse("qbnj", "rcgegydcwboxjum",
-            new ListAccessRequestModel().withSearchFilters(mapOf("ouau", "olihrra")), com.azure.core.util.Context.NONE)
+        AccessListUsersSuccessResponse response = manager.access()
+            .listUsersWithResponse("qbnj", "rcgegydcwboxjum",
+                new ListAccessRequestModel().withSearchFilters(mapOf("ouau", "olihrra")),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals("jtlo", response.kind());

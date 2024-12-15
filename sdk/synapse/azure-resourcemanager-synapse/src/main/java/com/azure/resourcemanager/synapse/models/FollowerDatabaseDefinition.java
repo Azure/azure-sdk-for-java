@@ -6,11 +6,13 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
 
-/** An immutable client-side representation of FollowerDatabaseDefinition. */
+/**
+ * An immutable client-side representation of FollowerDatabaseDefinition.
+ */
 public interface FollowerDatabaseDefinition {
     /**
      * Gets the kustoPoolResourceId property: Resource id of the cluster that follows a database owned by this cluster.
-     *
+     * 
      * @return the kustoPoolResourceId value.
      */
     String kustoPoolResourceId();
@@ -18,7 +20,7 @@ public interface FollowerDatabaseDefinition {
     /**
      * Gets the attachedDatabaseConfigurationName property: Resource name of the attached database configuration in the
      * follower cluster.
-     *
+     * 
      * @return the attachedDatabaseConfigurationName value.
      */
     String attachedDatabaseConfigurationName();
@@ -26,14 +28,14 @@ public interface FollowerDatabaseDefinition {
     /**
      * Gets the databaseName property: The database name owned by this cluster that was followed. * in case following
      * all databases.
-     *
+     * 
      * @return the databaseName value.
      */
     String databaseName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner object.
-     *
+     * 
      * @return the inner object.
      */
     FollowerDatabaseDefinitionInner innerModel();

@@ -26,9 +26,11 @@ public final class ImageListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageListResult model = new ImageListResult().withValue(Arrays.asList(
-            new ImageInner().withProperties(new ImageProperties().withImage("fouflmmnkzsmo").withImageId("glougpbk")
+            new ImageInner().withProperties(new ImageProperties().withImage("fouflmmnkzsmo")
+                .withImageId("glougpbk")
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
-            new ImageInner().withProperties(new ImageProperties().withImage("awrlyx").withImageId("kcprbnw")
+            new ImageInner().withProperties(new ImageProperties().withImage("awrlyx")
+                .withImageId("kcprbnw")
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
         model = BinaryData.fromObject(model).toObject(ImageListResult.class);
         Assertions.assertEquals("fouflmmnkzsmo", model.value().get(0).properties().image());

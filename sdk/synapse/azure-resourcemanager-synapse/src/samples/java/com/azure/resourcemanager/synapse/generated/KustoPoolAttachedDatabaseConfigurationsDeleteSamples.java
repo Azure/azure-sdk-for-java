@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPoolAttachedDatabaseConfigurations Delete. */
+/**
+ * Samples for KustoPoolAttachedDatabaseConfigurations Delete.
+ */
 public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsDelete.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolAttachedDatabaseConfigurationsDelete.json
      */
     /**
      * Sample code: KustoPoolAttachedDatabaseConfigurationsDelete.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void kustoPoolAttachedDatabaseConfigurationsDelete(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolAttachedDatabaseConfigurations()
-            .delete(
-                "kustorptest",
-                "kustoclusterrptest4",
-                "attachedDatabaseConfigurations1",
-                "kustorptest",
+    public static void
+        kustoPoolAttachedDatabaseConfigurationsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.kustoPoolAttachedDatabaseConfigurations()
+            .delete("kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest",
                 com.azure.core.util.Context.NONE);
     }
 }

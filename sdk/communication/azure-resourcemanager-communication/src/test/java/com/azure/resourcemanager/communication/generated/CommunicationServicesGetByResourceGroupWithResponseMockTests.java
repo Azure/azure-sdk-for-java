@@ -45,12 +45,14 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CommunicationServiceResource response = manager.communicationServices()
-            .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("xuutkncwscwsv", response.location());
         Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));

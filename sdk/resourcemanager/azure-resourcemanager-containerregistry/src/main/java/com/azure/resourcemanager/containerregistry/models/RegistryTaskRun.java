@@ -53,15 +53,10 @@ public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<Re
     String runId();
 
     /** Container interface for all the definitions related to a RegistryTaskRun. */
-    interface Definition
-        extends DefinitionStages.BlankFromRegistry,
-            DefinitionStages.BlankFromRuns,
-            DefinitionStages.Platform,
-            DefinitionStages.PlatformAltTaskRunRequest,
-            DefinitionStages.RegistryTaskRunRequest,
-            DefinitionStages.RunRequestType,
-            DefinitionStages.RunRequestExecutableWithSourceLocation,
-            DefinitionStages.RunRequestExecutable {
+    interface Definition extends DefinitionStages.BlankFromRegistry, DefinitionStages.BlankFromRuns,
+        DefinitionStages.Platform, DefinitionStages.PlatformAltTaskRunRequest, DefinitionStages.RegistryTaskRunRequest,
+        DefinitionStages.RunRequestType, DefinitionStages.RunRequestExecutableWithSourceLocation,
+        DefinitionStages.RunRequestExecutable {
     }
 
     /** Grouping of registry task run definition stages. */

@@ -21,8 +21,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import java.util.Objects;
 
 /** Entry point to Azure container instance management. */
-public final class ContainerInstanceManager
-    extends Manager<ContainerInstanceManagementClient> {
+public final class ContainerInstanceManager extends Manager<ContainerInstanceManagementClient> {
 
     // The service managers
     private ContainerGroupsImpl containerGroups;
@@ -86,11 +85,8 @@ public final class ContainerInstanceManager
     }
 
     private ContainerInstanceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ContainerInstanceManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ContainerInstanceManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());

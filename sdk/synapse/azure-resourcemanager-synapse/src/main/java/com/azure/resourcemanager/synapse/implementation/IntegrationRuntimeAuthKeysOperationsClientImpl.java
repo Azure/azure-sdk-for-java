@@ -33,24 +33,24 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     implements IntegrationRuntimeAuthKeysOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeAuthKeysOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeAuthKeysOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeAuthKeysOperationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IntegrationRuntimeAuthKeysOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationRuntimeAuthKeysOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,45 +61,33 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeAuthKeysOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("integrationRuntimeName") String integrationRuntimeName,
             @BodyParam("application/json") IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationRuntimeAuthKeysInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<IntegrationRuntimeAuthKeysInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -108,25 +96,19 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
+    private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName,
         IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -136,14 +118,12 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (regenerateKeyParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
         } else {
             regenerateKeyParameters.validate();
         }
@@ -151,26 +131,16 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .regenerate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            integrationRuntimeName,
-                            regenerateKeyParameters,
-                            accept,
-                            context))
+                context -> service.regenerate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -180,26 +150,19 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
-        Context context) {
+    private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -209,38 +172,27 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (regenerateKeyParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
         } else {
             regenerateKeyParameters.validate();
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                integrationRuntimeName,
-                regenerateKeyParameters,
-                accept,
-                context);
+        return service.regenerate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, accept, context);
     }
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -251,21 +203,17 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeAuthKeysInner> regenerateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateWithResponseAsync(
-                resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<IntegrationRuntimeAuthKeysInner> regenerateAsync(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName,
+            regenerateKeyParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -277,22 +225,18 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
-        Context context) {
-        return regenerateWithResponseAsync(
-                resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, context)
-            .block();
+    public Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters, Context context) {
+        return regenerateWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName,
+            regenerateKeyParameters, context).block();
     }
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -303,21 +247,17 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateWithResponse(
-                resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters, Context.NONE)
-            .getValue();
+    public IntegrationRuntimeAuthKeysInner regenerate(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, regenerateKeyParameters,
+            Context.NONE).getValue();
     }
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -325,22 +265,18 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -350,33 +286,22 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            integrationRuntimeName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, integrationRuntimeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -385,22 +310,18 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+    private Mono<Response<IntegrationRuntimeAuthKeysInner>> listWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -410,30 +331,21 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                integrationRuntimeName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, integrationRuntimeName, accept, context);
     }
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -443,17 +355,17 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeAuthKeysInner> listAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    private Mono<IntegrationRuntimeAuthKeysInner> listAsync(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -464,16 +376,16 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeAuthKeysInner> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+    public Response<IntegrationRuntimeAuthKeysInner> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
     }
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -483,8 +395,8 @@ public final class IntegrationRuntimeAuthKeysOperationsClientImpl
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeAuthKeysInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public IntegrationRuntimeAuthKeysInner list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
         return listWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

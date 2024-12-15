@@ -6,42 +6,46 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contact Info. */
+/**
+ * Contact Info.
+ */
 @Fluent
-public final class ContactInfo {
+public final class ContactInfo implements JsonSerializable<ContactInfo> {
     /*
      * Contact name of the person.
      */
-    @JsonProperty(value = "contactName", required = true)
     private String contactName;
 
     /*
      * Phone number of the contact person.
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /*
      * Phone extension number of the contact person.
      */
-    @JsonProperty(value = "phoneExtension")
     private String phoneExtension;
 
     /*
      * Mobile number of the contact person.
      */
-    @JsonProperty(value = "mobile")
     private String mobile;
 
-    /** Creates an instance of ContactInfo class. */
+    /**
+     * Creates an instance of ContactInfo class.
+     */
     public ContactInfo() {
     }
 
     /**
      * Get the contactName property: Contact name of the person.
-     *
+     * 
      * @return the contactName value.
      */
     public String contactName() {
@@ -50,7 +54,7 @@ public final class ContactInfo {
 
     /**
      * Set the contactName property: Contact name of the person.
-     *
+     * 
      * @param contactName the contactName value to set.
      * @return the ContactInfo object itself.
      */
@@ -61,7 +65,7 @@ public final class ContactInfo {
 
     /**
      * Get the phone property: Phone number of the contact person.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -70,7 +74,7 @@ public final class ContactInfo {
 
     /**
      * Set the phone property: Phone number of the contact person.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ContactInfo object itself.
      */
@@ -81,7 +85,7 @@ public final class ContactInfo {
 
     /**
      * Get the phoneExtension property: Phone extension number of the contact person.
-     *
+     * 
      * @return the phoneExtension value.
      */
     public String phoneExtension() {
@@ -90,7 +94,7 @@ public final class ContactInfo {
 
     /**
      * Set the phoneExtension property: Phone extension number of the contact person.
-     *
+     * 
      * @param phoneExtension the phoneExtension value to set.
      * @return the ContactInfo object itself.
      */
@@ -101,7 +105,7 @@ public final class ContactInfo {
 
     /**
      * Get the mobile property: Mobile number of the contact person.
-     *
+     * 
      * @return the mobile value.
      */
     public String mobile() {
@@ -110,7 +114,7 @@ public final class ContactInfo {
 
     /**
      * Set the mobile property: Mobile number of the contact person.
-     *
+     * 
      * @param mobile the mobile value to set.
      * @return the ContactInfo object itself.
      */
@@ -121,21 +125,65 @@ public final class ContactInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contactName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactName in model ContactInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactName in model ContactInfo"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ContactInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model ContactInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContactInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contactName", this.contactName);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeStringField("phoneExtension", this.phoneExtension);
+        jsonWriter.writeStringField("mobile", this.mobile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactInfo.
+     */
+    public static ContactInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactInfo deserializedContactInfo = new ContactInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactName".equals(fieldName)) {
+                    deserializedContactInfo.contactName = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedContactInfo.phone = reader.getString();
+                } else if ("phoneExtension".equals(fieldName)) {
+                    deserializedContactInfo.phoneExtension = reader.getString();
+                } else if ("mobile".equals(fieldName)) {
+                    deserializedContactInfo.mobile = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactInfo;
+        });
+    }
 }

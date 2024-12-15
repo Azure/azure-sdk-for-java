@@ -9,7 +9,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class AdvancedThreatProtectionSettingsListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/AdvancedThreatProtectionSettingsList.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * AdvancedThreatProtectionSettingsList.json
      */
     /**
      * Sample code: Get list of server's Advanced Threat Protection settings.

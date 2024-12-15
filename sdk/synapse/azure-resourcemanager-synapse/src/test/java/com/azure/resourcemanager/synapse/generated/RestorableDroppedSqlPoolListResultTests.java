@@ -12,23 +12,16 @@ import java.util.Arrays;
 public final class RestorableDroppedSqlPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorableDroppedSqlPoolListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"qlgehg\",\"properties\":{\"databaseName\":\"pifhpfeoajvgcxtx\",\"edition\":\"sheafid\",\"maxSizeBytes\":\"ugsresmkssjhoi\",\"serviceLevelObjective\":\"xfkfwegprhptill\",\"elasticPoolName\":\"biqtgdq\",\"creationDate\":\"2021-07-05T05:21:27Z\",\"deletionDate\":\"2021-06-27T02:38:30Z\",\"earliestRestoreDate\":\"2021-05-01T07:33:50Z\"},\"id\":\"drizetpwbr\",\"name\":\"lllibph\",\"type\":\"qzmiza\"},{\"location\":\"kan\",\"properties\":{\"databaseName\":\"dnjzh\",\"edition\":\"oylhjlmuoyxprimr\",\"maxSizeBytes\":\"pteecjme\",\"serviceLevelObjective\":\"ls\",\"elasticPoolName\":\"asylwx\",\"creationDate\":\"2021-07-29T15:52:33Z\",\"deletionDate\":\"2021-01-12T02:29:32Z\",\"earliestRestoreDate\":\"2021-03-03T01:17:06Z\"},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"location\":\"p\",\"properties\":{\"databaseName\":\"xveabf\",\"edition\":\"nmwmqtibx\",\"maxSizeBytes\":\"jddtvqct\",\"serviceLevelObjective\":\"dija\",\"elasticPoolName\":\"kmr\",\"creationDate\":\"2021-09-17T14:17:20Z\",\"deletionDate\":\"2021-06-27T19:58:30Z\",\"earliestRestoreDate\":\"2021-03-21T22:02:33Z\"},\"id\":\"dzaapmudqme\",\"name\":\"wig\",\"type\":\"ibudqwy\"}]}")
-                .toObject(RestorableDroppedSqlPoolListResult.class);
+        RestorableDroppedSqlPoolListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"nzlrpiqywncvjt\",\"properties\":{\"databaseName\":\"ofizehtdhgbj\",\"edition\":\"reljeamur\",\"maxSizeBytes\":\"mlovuanashcxl\",\"serviceLevelObjective\":\"jerbdkelvidizozs\",\"elasticPoolName\":\"ccxjm\",\"creationDate\":\"2021-06-04T20:01:35Z\",\"deletionDate\":\"2021-06-26T18:58:09Z\",\"earliestRestoreDate\":\"2021-08-14T04:15:27Z\"},\"id\":\"n\",\"name\":\"ypuuwwltvuqjctze\",\"type\":\"keifzzhmkdasv\"},{\"location\":\"yhbxcudchxgs\",\"properties\":{\"databaseName\":\"ldforobwj\",\"edition\":\"izbfhfovvacq\",\"maxSizeBytes\":\"tuodxeszabbelaw\",\"serviceLevelObjective\":\"ua\",\"elasticPoolName\":\"zkwrrwoyc\",\"creationDate\":\"2021-09-03T12:36:18Z\",\"deletionDate\":\"2021-09-15T09:03:58Z\",\"earliestRestoreDate\":\"2021-10-10T12:18:59Z\"},\"id\":\"hnomdrkywuh\",\"name\":\"svfuurutlwexxwl\",\"type\":\"lniexz\"},{\"location\":\"zpgepqty\",\"properties\":{\"databaseName\":\"wpgdak\",\"edition\":\"zyvli\",\"maxSizeBytes\":\"nrkcxkj\",\"serviceLevelObjective\":\"nxm\",\"elasticPoolName\":\"uxswqrntvl\",\"creationDate\":\"2021-01-20T04:09:54Z\",\"deletionDate\":\"2021-02-06T14:09:09Z\",\"earliestRestoreDate\":\"2021-08-15T15:59:55Z\"},\"id\":\"exoqqpwcyyufm\",\"name\":\"runcuwmqspkcd\",\"type\":\"zhlctddunqndyfpc\"},{\"location\":\"qbnj\",\"properties\":{\"databaseName\":\"gegydcwboxjum\",\"edition\":\"qoli\",\"maxSizeBytes\":\"raiouaubrjtl\",\"serviceLevelObjective\":\"xfuojrn\",\"elasticPoolName\":\"flrzpas\",\"creationDate\":\"2021-04-15T05:35:24Z\",\"deletionDate\":\"2021-08-17T13:32:10Z\",\"earliestRestoreDate\":\"2021-02-19T12:22:52Z\"},\"id\":\"zdlyjdfqw\",\"name\":\"kyoqufdv\",\"type\":\"uzslzojhpctfnmdx\"}]}")
+            .toObject(RestorableDroppedSqlPoolListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestorableDroppedSqlPoolListResult model =
-            new RestorableDroppedSqlPoolListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RestorableDroppedSqlPoolInner(),
-                            new RestorableDroppedSqlPoolInner(),
-                            new RestorableDroppedSqlPoolInner()));
+        RestorableDroppedSqlPoolListResult model = new RestorableDroppedSqlPoolListResult()
+            .withValue(Arrays.asList(new RestorableDroppedSqlPoolInner(), new RestorableDroppedSqlPoolInner(),
+                new RestorableDroppedSqlPoolInner(), new RestorableDroppedSqlPoolInner()));
         model = BinaryData.fromObject(model).toObject(RestorableDroppedSqlPoolListResult.class);
     }
 }

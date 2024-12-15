@@ -709,8 +709,10 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName, StorageClassificationMappingInput pairingInput) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName, pairingInput).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, pairingInput)
+            .getSyncPoller();
     }
 
     /**
@@ -734,8 +736,10 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
         String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName, StorageClassificationMappingInput pairingInput, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName, pairingInput, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, pairingInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -785,7 +789,7 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         StorageClassificationMappingInput pairingInput, Context context) {
         return beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
             storageClassificationMappingName, pairingInput, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1007,8 +1011,10 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName)
+            .getSyncPoller();
     }
 
     /**
@@ -1030,8 +1036,10 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
-            storageClassificationMappingName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+                storageClassificationMappingName, context)
+            .getSyncPoller();
     }
 
     /**

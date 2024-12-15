@@ -19,7 +19,7 @@ public final class GrafanaCheckEnterpriseDetailsSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void enterpriseDetailsPost(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.grafanas().checkEnterpriseDetailsWithResponse("myResourceGroup", "myWorkspace",
-            com.azure.core.util.Context.NONE);
+        manager.grafanas()
+            .checkEnterpriseDetailsWithResponse("myResourceGroup", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

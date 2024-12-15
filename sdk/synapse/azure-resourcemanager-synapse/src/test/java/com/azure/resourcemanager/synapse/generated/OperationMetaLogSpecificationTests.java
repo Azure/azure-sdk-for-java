@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaLogSpecification model =
-            BinaryData
-                .fromString("{\"displayName\":\"toqcjmklja\",\"blobDuration\":\"qidtqajzyu\",\"name\":\"kudjkrlkhb\"}")
-                .toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("toqcjmklja", model.displayName());
-        Assertions.assertEquals("qidtqajzyu", model.blobDuration());
-        Assertions.assertEquals("kudjkrlkhb", model.name());
+        OperationMetaLogSpecification model = BinaryData
+            .fromString("{\"displayName\":\"asxazjpqyegualhb\",\"blobDuration\":\"hejjz\",\"name\":\"dudgwdslfhot\"}")
+            .toObject(OperationMetaLogSpecification.class);
+        Assertions.assertEquals("asxazjpqyegualhb", model.displayName());
+        Assertions.assertEquals("hejjz", model.blobDuration());
+        Assertions.assertEquals("dudgwdslfhot", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaLogSpecification model =
-            new OperationMetaLogSpecification()
-                .withDisplayName("toqcjmklja")
-                .withBlobDuration("qidtqajzyu")
-                .withName("kudjkrlkhb");
+        OperationMetaLogSpecification model = new OperationMetaLogSpecification().withDisplayName("asxazjpqyegualhb")
+            .withBlobDuration("hejjz")
+            .withName("dudgwdslfhot");
         model = BinaryData.fromObject(model).toObject(OperationMetaLogSpecification.class);
-        Assertions.assertEquals("toqcjmklja", model.displayName());
-        Assertions.assertEquals("qidtqajzyu", model.blobDuration());
-        Assertions.assertEquals("kudjkrlkhb", model.name());
+        Assertions.assertEquals("asxazjpqyegualhb", model.displayName());
+        Assertions.assertEquals("hejjz", model.blobDuration());
+        Assertions.assertEquals("dudgwdslfhot", model.name());
     }
 }

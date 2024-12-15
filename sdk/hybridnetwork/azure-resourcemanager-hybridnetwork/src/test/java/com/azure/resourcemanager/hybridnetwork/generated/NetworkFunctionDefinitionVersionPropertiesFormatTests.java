@@ -20,8 +20,9 @@ public final class NetworkFunctionDefinitionVersionPropertiesFormatTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkFunctionDefinitionVersionPropertiesFormat model = new NetworkFunctionDefinitionVersionPropertiesFormat()
-            .withDescription("bzdopcj").withDeployParameters("nhdldwmgxcx");
+        NetworkFunctionDefinitionVersionPropertiesFormat model
+            = new NetworkFunctionDefinitionVersionPropertiesFormat().withDescription("bzdopcj")
+                .withDeployParameters("nhdldwmgxcx");
         model = BinaryData.fromObject(model).toObject(NetworkFunctionDefinitionVersionPropertiesFormat.class);
         Assertions.assertEquals("bzdopcj", model.description());
         Assertions.assertEquals("nhdldwmgxcx", model.deployParameters());

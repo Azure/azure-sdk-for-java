@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionProxiesGetSamples {
      */
     public static void
         privateEndpointConnectionProxyGet(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().getWithResponse("test-rg", "contoso", "peexample01",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .getWithResponse("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }

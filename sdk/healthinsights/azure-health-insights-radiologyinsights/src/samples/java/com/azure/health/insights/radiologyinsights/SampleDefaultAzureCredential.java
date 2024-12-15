@@ -3,22 +3,14 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.core.util.Configuration;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -35,7 +27,6 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
@@ -43,14 +34,22 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 /**
- * The SampleDefaultAzureCredential class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize a synchronous 
- * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client 
+ * The SampleDefaultAzureCredential class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize a synchronous
+ * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client
  * and display the Critical Results extracted by the Radiology Insights service.
- *   
+ *
  * This is an example of how to use DefaultAzureCredential to authenticate the RadiologyInsightsClient.
- *  
+ *
  * Set these environment variables with your own values before running the sample:
  *   - AZURE_HEALTH_INSIGHTS_ENDPOINT - the endpoint to your source Health Insights resource.
  *   - AZURE_CLIENT_ID - the client ID of your Azure AD application.
@@ -97,7 +96,7 @@ public class SampleDefaultAzureCredential {
                 .credential(credential);
         RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
         // END: com.azure.health.insights.radiologyinsights.defaultazurecredential
-        
+
         RadiologyInsightsInferenceResult riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
 
         displayCriticalResults(riJobResponse);
@@ -117,7 +116,7 @@ public class SampleDefaultAzureCredential {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);                    
+                    System.out.println("Critical Result Inference found: " + description);
                 }
             }
         }
@@ -153,7 +152,7 @@ public class SampleDefaultAzureCredential {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -217,7 +216,7 @@ public class SampleDefaultAzureCredential {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 

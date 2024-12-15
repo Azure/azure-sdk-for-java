@@ -22,10 +22,8 @@ import java.util.Set;
  * An immutable client-side representation of an Azure CDN profile.
  */
 @Fluent
-public interface CdnProfile extends
-    GroupableResource<CdnManager, ProfileInner>,
-    Refreshable<CdnProfile>,
-    Updatable<CdnProfile.Update> {
+public interface CdnProfile
+    extends GroupableResource<CdnManager, ProfileInner>, Refreshable<CdnProfile>, Updatable<CdnProfile.Update> {
 
     /**
      * @return the SKU of the CDN profile
@@ -175,13 +173,8 @@ public interface CdnProfile extends
     /**
      * The entirety of a CDN profile definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithStandardCreate,
-            DefinitionStages.WithPremiumVerizonCreate,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithStandardCreate, DefinitionStages.WithPremiumVerizonCreate, DefinitionStages.WithCreate {
     }
 
     /**
@@ -286,8 +279,8 @@ public interface CdnProfile extends
              * @return the first stage of a new CDN endpoint definition
              */
             // Why is define() taking more than just the name?
-            CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(
-                String name, String endpointOriginHostname);
+            CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(String name,
+                String endpointOriginHostname);
         }
 
         /**
@@ -317,8 +310,8 @@ public interface CdnProfile extends
              * @param name a name for the endpoint
              * @return the first stage of a new CDN endpoint definition
              */
-            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(
-                String name);
+            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate>
+                defineNewPremiumEndpoint(String name);
 
             /**
              * Starts the definition of a new endpoint to be attached to the CDN profile.
@@ -328,17 +321,15 @@ public interface CdnProfile extends
              * @return the stage representing configuration for the endpoint
              */
             // Why is define() taking more than just the name?
-            CdnEndpoint.DefinitionStages.WithPremiumAttach<WithPremiumVerizonCreate> defineNewPremiumEndpoint(
-                String name, String endpointOriginHostname);
+            CdnEndpoint.DefinitionStages.WithPremiumAttach<WithPremiumVerizonCreate>
+                defineNewPremiumEndpoint(String name, String endpointOriginHostname);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<CdnProfile>,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<CdnProfile>, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -382,8 +373,8 @@ public interface CdnProfile extends
              * @return the first stage of an endpoint definition
              */
             // TODO: Why define() is taking more than the name?
-            CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(
-                String name, String endpointOriginHostname);
+            CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(String name,
+                String endpointOriginHostname);
 
             /**
              * Adds new endpoint to current Premium Verizon CDN profile.
@@ -417,8 +408,8 @@ public interface CdnProfile extends
              * @return the first stage of an endpoint definition
              */
             // TODO: why is this taking more than just the name?
-            CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<Update> defineNewPremiumEndpoint(
-                String name, String endpointOriginHostname);
+            CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<Update> defineNewPremiumEndpoint(String name,
+                String endpointOriginHostname);
 
             /**
              * Begins the description of an update of an existing endpoint in current profile.
@@ -449,9 +440,6 @@ public interface CdnProfile extends
     /**
      * The template for an update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<CdnProfile>,
-        UpdateStages.WithEndpoint,
-        Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<CdnProfile>, UpdateStages.WithEndpoint, Resource.UpdateWithTags<Update> {
     }
 }

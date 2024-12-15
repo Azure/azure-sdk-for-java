@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Service level objectives for performance tier. */
 @Fluent
 public final class PerformanceTierServiceLevelObjectives {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierServiceLevelObjectives.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PerformanceTierServiceLevelObjectives.class);
 
     /*
      * ID for the service level objective.

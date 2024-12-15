@@ -64,8 +64,7 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
     @Test
     public void nullSchemaRegistryClients() {
         // Arrange
-        builder.jsonSchemaGenerator(jsonSchemaGenerator)
-            .serializer(jsonSerializer);
+        builder.jsonSchemaGenerator(jsonSchemaGenerator).serializer(jsonSerializer);
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> builder.buildSerializer());
@@ -73,18 +72,18 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
 
     @Test
     public void doesNotThrowWhenOneClientIsSet() {
-        final SchemaRegistryJsonSchemaSerializerBuilder asyncBuilder = new SchemaRegistryJsonSchemaSerializerBuilder()
-            .schemaRegistryClient(schemaRegistryAsyncClient)
-            .schemaRegistryClient((SchemaRegistryClient) null)
-            .jsonSchemaGenerator(jsonSchemaGenerator);
+        final SchemaRegistryJsonSchemaSerializerBuilder asyncBuilder
+            = new SchemaRegistryJsonSchemaSerializerBuilder().schemaRegistryClient(schemaRegistryAsyncClient)
+                .schemaRegistryClient((SchemaRegistryClient) null)
+                .jsonSchemaGenerator(jsonSchemaGenerator);
 
         assertDoesNotThrow(() -> asyncBuilder.buildSerializer());
 
         final SchemaRegistryClient schemaRegistryClient = mock(SchemaRegistryClient.class);
-        final SchemaRegistryJsonSchemaSerializerBuilder syncBuilder = new SchemaRegistryJsonSchemaSerializerBuilder()
-            .schemaRegistryClient((SchemaRegistryAsyncClient) null)
-            .schemaRegistryClient(schemaRegistryClient)
-            .jsonSchemaGenerator(jsonSchemaGenerator);
+        final SchemaRegistryJsonSchemaSerializerBuilder syncBuilder
+            = new SchemaRegistryJsonSchemaSerializerBuilder().schemaRegistryClient((SchemaRegistryAsyncClient) null)
+                .schemaRegistryClient(schemaRegistryClient)
+                .jsonSchemaGenerator(jsonSchemaGenerator);
 
         assertDoesNotThrow(() -> syncBuilder.buildSerializer());
     }
@@ -92,8 +91,7 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
     @Test
     public void nullJsonSchemaGenerator() {
         // Arrange
-        builder.schemaRegistryClient(schemaRegistryAsyncClient)
-            .serializer(jsonSerializer);
+        builder.schemaRegistryClient(schemaRegistryAsyncClient).serializer(jsonSerializer);
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> builder.buildSerializer());
@@ -124,9 +122,8 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
         when(schemaProperties.getId()).thenReturn(schemaId);
 
         when(jsonSchemaGenerator.generateSchema(typeReference)).thenReturn(jsonSchema);
-        when(schemaRegistryAsyncClient.getSchemaProperties(eq(schemaGroup), eq(Address.class.getName()),
-            eq(jsonSchema), eq(SchemaFormat.JSON)))
-            .thenReturn(Mono.just(schemaProperties));
+        when(schemaRegistryAsyncClient.getSchemaProperties(eq(schemaGroup), eq(Address.class.getName()), eq(jsonSchema),
+            eq(SchemaFormat.JSON))).thenReturn(Mono.just(schemaProperties));
 
         when(jsonSerializer.serializeToBytes(address)).thenReturn(addressAsBytes);
         when(jsonSerializer.serializeToBytesAsync(address)).thenReturn(Mono.just(addressAsBytes));

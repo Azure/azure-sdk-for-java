@@ -33,13 +33,18 @@ public final class ListRegionsSuccessResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListRegionsSuccessResponseInner model = new ListRegionsSuccessResponseInner()
-            .withData(Arrays.asList(new RegionRecord().withKind("vvt").withId("einqf")
-                .withMetadata(new SCMetadataEntity().withSelf("qknp").withResourceName("gnepttwqmsni")
-                    .withCreatedTimestamp("cdm").withUpdatedTimestamp("r").withDeletedTimestamp("lpijnkrxfrd"))
-                .withSpec(
-                    new RegionSpecEntity().withName("ratiz").withCloud("onasxifto").withRegionName("yzhftwesgogczh")
-                        .withPackages(Arrays.asList("xkr", "gnyhmossxkkg", "h", "rghxjb")))));
+        ListRegionsSuccessResponseInner model
+            = new ListRegionsSuccessResponseInner().withData(Arrays.asList(new RegionRecord().withKind("vvt")
+                .withId("einqf")
+                .withMetadata(new SCMetadataEntity().withSelf("qknp")
+                    .withResourceName("gnepttwqmsni")
+                    .withCreatedTimestamp("cdm")
+                    .withUpdatedTimestamp("r")
+                    .withDeletedTimestamp("lpijnkrxfrd"))
+                .withSpec(new RegionSpecEntity().withName("ratiz")
+                    .withCloud("onasxifto")
+                    .withRegionName("yzhftwesgogczh")
+                    .withPackages(Arrays.asList("xkr", "gnyhmossxkkg", "h", "rghxjb")))));
         model = BinaryData.fromObject(model).toObject(ListRegionsSuccessResponseInner.class);
         Assertions.assertEquals("vvt", model.data().get(0).kind());
         Assertions.assertEquals("einqf", model.data().get(0).id());

@@ -10,10 +10,8 @@ import com.azure.resourcemanager.workloads.models.ProviderSpecificProperties;
 public final class ProviderSpecificPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderSpecificProperties model =
-            BinaryData
-                .fromString("{\"providerType\":\"ProviderSpecificProperties\"}")
-                .toObject(ProviderSpecificProperties.class);
+        ProviderSpecificProperties model = BinaryData.fromString("{\"providerType\":\"ProviderSpecificProperties\"}")
+            .toObject(ProviderSpecificProperties.class);
     }
 
     @org.junit.jupiter.api.Test

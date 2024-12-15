@@ -24,8 +24,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Gets the specified private endpoint connection associated with the workspace.
@@ -40,8 +40,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Update the state of specified private endpoint connection associated with the workspace.
@@ -56,11 +56,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner put(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties);
+    PrivateEndpointConnectionInner put(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the workspace.
@@ -76,12 +73,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> putWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context);
+    Response<PrivateEndpointConnectionInner> putWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the workspace.
@@ -109,6 +102,6 @@ public interface PrivateEndpointConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, Context context);
 }

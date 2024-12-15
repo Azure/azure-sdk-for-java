@@ -41,12 +41,14 @@ public final class TargetsDeleteWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.targets().deleteWithResponse("auzzptjazysd", "hezwwvaiq", "uvvfonkp", "hqyikvy", "auy",
-            com.azure.core.util.Context.NONE);
+        manager.targets()
+            .deleteWithResponse("auzzptjazysd", "hezwwvaiq", "uvvfonkp", "hqyikvy", "auy",
+                com.azure.core.util.Context.NONE);
 
     }
 }

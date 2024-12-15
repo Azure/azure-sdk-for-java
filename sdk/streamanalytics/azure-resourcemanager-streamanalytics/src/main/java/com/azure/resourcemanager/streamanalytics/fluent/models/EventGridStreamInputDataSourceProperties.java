@@ -5,39 +5,40 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.EventGridEventSchemaType;
 import com.azure.resourcemanager.streamanalytics.models.EventHubV2StreamInputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with an event grid input containing stream data.
  */
 @Fluent
-public final class EventGridStreamInputDataSourceProperties {
+public final class EventGridStreamInputDataSourceProperties
+    implements JsonSerializable<EventGridStreamInputDataSourceProperties> {
     /*
      * Subscribers for the Event Grid. Currently only EventHub Subscriber is supported.
      */
-    @JsonProperty(value = "subscriber")
     private EventHubV2StreamInputDataSource subscriber;
 
     /*
      * Indicates the Event Grid schema type.
      */
-    @JsonProperty(value = "schema")
     private EventGridEventSchemaType schema;
 
     /*
      * A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "storageAccounts")
     private List<StorageAccount> storageAccounts;
 
     /*
      * List of Event Types that are supported by the Event Grid adapter.
      */
-    @JsonProperty(value = "eventTypes")
     private List<String> eventTypes;
 
     /**
@@ -87,8 +88,8 @@ public final class EventGridStreamInputDataSourceProperties {
     }
 
     /**
-     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @return the storageAccounts value.
      */
@@ -97,8 +98,8 @@ public final class EventGridStreamInputDataSourceProperties {
     }
 
     /**
-     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT
-     * (CreateOrReplace) requests.
+     * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
+     * requests.
      * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the EventGridStreamInputDataSourceProperties object itself.
@@ -140,5 +141,57 @@ public final class EventGridStreamInputDataSourceProperties {
         if (storageAccounts() != null) {
             storageAccounts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subscriber", this.subscriber);
+        jsonWriter.writeStringField("schema", this.schema == null ? null : this.schema.toString());
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventTypes", this.eventTypes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventGridStreamInputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGridStreamInputDataSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventGridStreamInputDataSourceProperties.
+     */
+    public static EventGridStreamInputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGridStreamInputDataSourceProperties deserializedEventGridStreamInputDataSourceProperties
+                = new EventGridStreamInputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriber".equals(fieldName)) {
+                    deserializedEventGridStreamInputDataSourceProperties.subscriber
+                        = EventHubV2StreamInputDataSource.fromJson(reader);
+                } else if ("schema".equals(fieldName)) {
+                    deserializedEventGridStreamInputDataSourceProperties.schema
+                        = EventGridEventSchemaType.fromString(reader.getString());
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<StorageAccount> storageAccounts
+                        = reader.readArray(reader1 -> StorageAccount.fromJson(reader1));
+                    deserializedEventGridStreamInputDataSourceProperties.storageAccounts = storageAccounts;
+                } else if ("eventTypes".equals(fieldName)) {
+                    List<String> eventTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEventGridStreamInputDataSourceProperties.eventTypes = eventTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventGridStreamInputDataSourceProperties;
+        });
     }
 }

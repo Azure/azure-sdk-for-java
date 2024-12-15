@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The default principals modification kind. */
+/**
+ * The default principals modification kind.
+ */
 public final class DefaultPrincipalsModificationKind extends ExpandableStringEnum<DefaultPrincipalsModificationKind> {
-    /** Static value Union for DefaultPrincipalsModificationKind. */
+    /**
+     * Static value Union for DefaultPrincipalsModificationKind.
+     */
     public static final DefaultPrincipalsModificationKind UNION = fromString("Union");
 
-    /** Static value Replace for DefaultPrincipalsModificationKind. */
+    /**
+     * Static value Replace for DefaultPrincipalsModificationKind.
+     */
     public static final DefaultPrincipalsModificationKind REPLACE = fromString("Replace");
 
-    /** Static value None for DefaultPrincipalsModificationKind. */
+    /**
+     * Static value None for DefaultPrincipalsModificationKind.
+     */
     public static final DefaultPrincipalsModificationKind NONE = fromString("None");
 
     /**
      * Creates a new instance of DefaultPrincipalsModificationKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DefaultPrincipalsModificationKind extends ExpandableStringEnu
 
     /**
      * Creates or finds a DefaultPrincipalsModificationKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultPrincipalsModificationKind.
      */
-    @JsonCreator
     public static DefaultPrincipalsModificationKind fromString(String name) {
         return fromString(name, DefaultPrincipalsModificationKind.class);
     }
 
     /**
      * Gets known DefaultPrincipalsModificationKind values.
-     *
+     * 
      * @return known DefaultPrincipalsModificationKind values.
      */
     public static Collection<DefaultPrincipalsModificationKind> values() {

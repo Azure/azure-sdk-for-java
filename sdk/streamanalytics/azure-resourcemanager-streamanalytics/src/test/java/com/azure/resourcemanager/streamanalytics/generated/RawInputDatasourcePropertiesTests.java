@@ -12,18 +12,18 @@ public final class RawInputDatasourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RawInputDatasourceProperties model
-            = BinaryData.fromString("{\"payload\":\"rkwofyyvoqa\",\"payloadUri\":\"iexpbtgiwbwo\"}")
+            = BinaryData.fromString("{\"payload\":\"tkcnqxwb\",\"payloadUri\":\"kulpiujwaasi\"}")
                 .toObject(RawInputDatasourceProperties.class);
-        Assertions.assertEquals("rkwofyyvoqa", model.payload());
-        Assertions.assertEquals("iexpbtgiwbwo", model.payloadUri());
+        Assertions.assertEquals("tkcnqxwb", model.payload());
+        Assertions.assertEquals("kulpiujwaasi", model.payloadUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RawInputDatasourceProperties model
-            = new RawInputDatasourceProperties().withPayload("rkwofyyvoqa").withPayloadUri("iexpbtgiwbwo");
+            = new RawInputDatasourceProperties().withPayload("tkcnqxwb").withPayloadUri("kulpiujwaasi");
         model = BinaryData.fromObject(model).toObject(RawInputDatasourceProperties.class);
-        Assertions.assertEquals("rkwofyyvoqa", model.payload());
-        Assertions.assertEquals("iexpbtgiwbwo", model.payloadUri());
+        Assertions.assertEquals("tkcnqxwb", model.payload());
+        Assertions.assertEquals("kulpiujwaasi", model.payloadUri());
     }
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for KustoPools List. */
+/**
+ * Samples for KustoPools List.
+ */
 public final class KustoPoolsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.
+     * json
      */
     /**
      * Sample code: KustoPoolsListSkus.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {

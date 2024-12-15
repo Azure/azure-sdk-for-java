@@ -47,12 +47,15 @@ public final class MonitorsGetMetricRulesWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MetricRules response = manager.monitors().getMetricRulesWithResponse("bfovasrruvwbhsq", "sub",
-            new MetricsRequest().withUserEmail("gjb"), com.azure.core.util.Context.NONE).getValue();
+        MetricRules response = manager.monitors()
+            .getMetricRulesWithResponse("bfovasrruvwbhsq", "sub", new MetricsRequest().withUserEmail("gjb"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(SendMetricsStatus.ENABLED, response.sendMetrics());
         Assertions.assertEquals("bsrfbj", response.filteringTags().get(0).name());

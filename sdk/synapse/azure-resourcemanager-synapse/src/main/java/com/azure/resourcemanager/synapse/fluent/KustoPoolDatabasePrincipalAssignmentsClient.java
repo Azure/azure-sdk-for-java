@@ -22,7 +22,7 @@ import com.azure.resourcemanager.synapse.models.DatabasePrincipalAssignmentCheck
 public interface KustoPoolDatabasePrincipalAssignmentsClient {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -35,17 +35,13 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String databaseName, String resourceGroupName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -57,16 +53,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
+    CheckNameResultInner checkNameAvailability(String workspaceName, String kustoPoolName, String databaseName,
+        String resourceGroupName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Lists all Kusto pool database principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -74,16 +66,16 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName);
+    PagedIterable<DatabasePrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String databaseName, String resourceGroupName);
 
     /**
      * Lists all Kusto pool database principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -92,16 +84,16 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName, Context context);
+    PagedIterable<DatabasePrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
+        String databaseName, String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -114,17 +106,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return a Kusto pool database principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalAssignmentInner> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    Response<DatabasePrincipalAssignmentInner> getWithResponse(String workspaceName, String kustoPoolName,
+        String databaseName, String principalAssignmentName, String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -136,16 +123,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return a Kusto pool database principalAssignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner get(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName);
+    DatabasePrincipalAssignmentInner get(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName);
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -159,16 +142,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentInner parameters);
+        String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
+        String resourceGroupName, DatabasePrincipalAssignmentInner parameters);
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -183,17 +162,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner> beginCreateOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentInner parameters,
-        Context context);
+        String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
+        String resourceGroupName, DatabasePrincipalAssignmentInner parameters, Context context);
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -206,17 +180,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentInner parameters);
+    DatabasePrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName, DatabasePrincipalAssignmentInner parameters);
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -230,18 +199,13 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner createOrUpdate(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentInner parameters,
+    DatabasePrincipalAssignmentInner createOrUpdate(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName, DatabasePrincipalAssignmentInner parameters,
         Context context);
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -253,16 +217,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName);
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -275,17 +235,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName, Context context);
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -296,16 +251,12 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
+    void delete(String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
         String resourceGroupName);
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -317,11 +268,6 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    void delete(String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
+        String resourceGroupName, Context context);
 }

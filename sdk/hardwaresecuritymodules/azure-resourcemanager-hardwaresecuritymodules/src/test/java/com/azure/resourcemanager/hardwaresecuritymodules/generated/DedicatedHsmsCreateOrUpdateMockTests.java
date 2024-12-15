@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ApiEntityReference;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsm;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.NetworkInterface
 import com.azure.resourcemanager.hardwaresecuritymodules.models.NetworkProfile;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Sku;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.SkuName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,59 +24,52 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DedicatedHsmsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"systemData\":{\"createdBy\":\"vkbunzozudh\",\"createdByType\":\"Key\",\"createdAt\":\"2021-11-17T23:45:40Z\",\"lastModifiedBy\":\"yxcdyuibhmfdnbzy\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-30T00:46:53Z\"},\"properties\":{\"networkProfile\":{\"subnet\":{\"id\":\"aeoisrvh\"},\"networkInterfaces\":[{\"id\":\"ffukiscvw\",\"privateIpAddress\":\"hwplefaxvx\"},{\"id\":\"cbtgnhnz\",\"privateIpAddress\":\"qxtjjfzqlqhyca\"},{\"id\":\"dggxdbeesmi\",\"privateIpAddress\":\"nlrariaawiuagy\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"bylyrfgia\"},\"networkInterfaces\":[{\"id\":\"jocqwogfnzjvusf\",\"privateIpAddress\":\"dmozu\"},{\"id\":\"lfsbtkadpysow\",\"privateIpAddress\":\"tgkbugrjqctojc\"},{\"id\":\"sofieypefojyqd\",\"privateIpAddress\":\"u\"},{\"id\":\"cp\",\"privateIpAddress\":\"wkhihihlhzdsqt\"}]},\"stampId\":\"s\",\"statusMessage\":\"nowc\",\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS250\"},\"zones\":[\"actxmwoteyowc\"],\"location\":\"uqovekqvgqouwif\",\"tags\":{\"yivqikfxcvhrfsp\":\"j\",\"kvyklxubyjaffmm\":\"uagrttikteusqc\"},\"id\":\"bl\",\"name\":\"qcuubgqibrta\",\"type\":\"metttwgd\"}";
+            = "{\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"wzf\",\"tsttktlahbq\",\"ctxtgzukxi\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"tg\"},\"networkInterfaces\":[{\"resourceId\":\"hrnxrxc\",\"privateIpAddress\":\"uisavokq\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"azivjlfrqttbajl\"},\"networkInterfaces\":[{\"resourceId\":\"wxyiopidkqq\",\"privateIpAddress\":\"uvscxkdmligov\"},{\"resourceId\":\"rxkpmloazuruoc\",\"privateIpAddress\":\"oorb\"}]},\"stampId\":\"oybfhjxakvvj\",\"statusMessage\":\"lordilmywwtkgkxn\",\"provisioningState\":\"Succeeded\"},\"location\":\"b\",\"tags\":{\"hxuuwhcjyxccybvp\":\"udtjuewbc\",\"dzpxgwjpl\":\"yakk\",\"yohpfkyrkdbdgiog\":\"agst\",\"nobaiyhddviacegf\":\"jkmnwq\"},\"id\":\"m\",\"name\":\"tfpmvmemfnczdw\",\"type\":\"vbalxlllc\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DedicatedHsm response = manager.dedicatedHsms().define("iayz").withRegion("ppnvdxz")
-            .withExistingResourceGroup("irclnpk")
+        DedicatedHsm response = manager.dedicatedHsms()
+            .define("pzlrphw")
+            .withRegion("yo")
+            .withExistingResourceGroup("kwbqplhlvnuu")
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS2500))
             .withProperties(new DedicatedHsmProperties()
-                .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("p"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("vaiqyuvvf"))))
-                .withManagementNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("hhqyi"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("luwmncst"))))
-                .withStampId("jfybvpoekrsgsgb"))
-            .withTags(mapOf("vqagtltdhlf", "hfrbbc", "vgtrdcnifmzzs", "qojpy", "g", "ymbrnysuxmpraf"))
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60)).withZones(Arrays.asList("nk", "mtk", "bo"))
+                .withNetworkProfile(
+                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("miloxggdufiqndie"))
+                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("ys"))))
+                .withManagementNetworkProfile(
+                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("tcubiipuipwoqonm"))
+                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("zshq"),
+                            new NetworkInterface().withPrivateIpAddress("b"),
+                            new NetworkInterface().withPrivateIpAddress("icc"))))
+                .withStampId("wfscjfn"))
+            .withTags(mapOf("vutpthjoxo", "lgy", "pi", "smsks", "xkcgxxlxsffgcvi", "lqol"))
+            .withZones(Arrays.asList("wey", "qdunvmnnrwrbior", "talywjhhgdnhxms"))
             .create();
 
-        Assertions.assertEquals("uqovekqvgqouwif", response.location());
-        Assertions.assertEquals("j", response.tags().get("yivqikfxcvhrfsp"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS250, response.sku().name());
-        Assertions.assertEquals("actxmwoteyowc", response.zones().get(0));
-        Assertions.assertEquals("aeoisrvh", response.properties().networkProfile().subnet().id());
-        Assertions.assertEquals("hwplefaxvx",
+        Assertions.assertEquals("b", response.location());
+        Assertions.assertEquals("udtjuewbc", response.tags().get("hxuuwhcjyxccybvp"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.sku().name());
+        Assertions.assertEquals("wzf", response.zones().get(0));
+        Assertions.assertEquals("tg", response.properties().networkProfile().subnet().resourceId());
+        Assertions.assertEquals("uisavokq",
             response.properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("bylyrfgia", response.properties().managementNetworkProfile().subnet().id());
-        Assertions.assertEquals("dmozu",
+        Assertions.assertEquals("azivjlfrqttbajl",
+            response.properties().managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("uvscxkdmligov",
             response.properties().managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("s", response.properties().stampId());
+        Assertions.assertEquals("oybfhjxakvvj", response.properties().stampId());
     }
 
     // Use "Map.of" if available

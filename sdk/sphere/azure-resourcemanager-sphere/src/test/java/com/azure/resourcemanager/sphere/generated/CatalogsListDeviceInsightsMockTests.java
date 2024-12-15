@@ -45,12 +45,14 @@ public final class CatalogsListDeviceInsightsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DeviceInsight> response = manager.catalogs().listDeviceInsights("vawjvzunlu", "hnnpr",
-            "xipeilpjzuaejx", 677451354, 122222845, 1732418843, com.azure.core.util.Context.NONE);
+        PagedIterable<DeviceInsight> response = manager.catalogs()
+            .listDeviceInsights("vawjvzunlu", "hnnpr", "xipeilpjzuaejx", 677451354, 122222845, 1732418843,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("skzbb", response.iterator().next().deviceId());
         Assertions.assertEquals("dzumveekg", response.iterator().next().description());

@@ -7,26 +7,30 @@ package com.azure.resourcemanager.synapse.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateLinkHubs CreateOrUpdate. */
+/**
+ * Samples for PrivateLinkHubs CreateOrUpdate.
+ */
 public final class PrivateLinkHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdatePrivateLinkHub.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdatePrivateLinkHub.
+     * json
      */
     /**
      * Sample code: Create or update a privateLinkHub.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .privateLinkHubs()
+        manager.privateLinkHubs()
             .define("privateLinkHub1")
             .withRegion("East US")
             .withExistingResourceGroup("resourceGroup1")
-            .withTags(mapOf("key", "value"))
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

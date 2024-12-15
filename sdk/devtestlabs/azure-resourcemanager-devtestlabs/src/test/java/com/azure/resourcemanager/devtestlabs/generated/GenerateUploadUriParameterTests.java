@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateUploadUriParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateUploadUriParameter model =
-            BinaryData.fromString("{\"blobName\":\"bmdnafcbqwre\"}").toObject(GenerateUploadUriParameter.class);
+        GenerateUploadUriParameter model
+            = BinaryData.fromString("{\"blobName\":\"bmdnafcbqwre\"}").toObject(GenerateUploadUriParameter.class);
         Assertions.assertEquals("bmdnafcbqwre", model.blobName());
     }
 

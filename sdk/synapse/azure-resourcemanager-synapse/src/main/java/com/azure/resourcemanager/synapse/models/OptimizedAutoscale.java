@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A class that contains the optimized auto scale definition. */
+/**
+ * A class that contains the optimized auto scale definition.
+ */
 @Fluent
-public final class OptimizedAutoscale {
+public final class OptimizedAutoscale implements JsonSerializable<OptimizedAutoscale> {
     /*
      * The version of the template defined, for instance 1.
      */
-    @JsonProperty(value = "version", required = true)
     private int version;
 
     /*
      * A boolean value that indicate if the optimized autoscale feature is enabled or not.
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
      * Minimum allowed instances count.
      */
-    @JsonProperty(value = "minimum", required = true)
     private int minimum;
 
     /*
      * Maximum allowed instances count.
      */
-    @JsonProperty(value = "maximum", required = true)
     private int maximum;
 
-    /** Creates an instance of OptimizedAutoscale class. */
+    /**
+     * Creates an instance of OptimizedAutoscale class.
+     */
     public OptimizedAutoscale() {
     }
 
     /**
      * Get the version property: The version of the template defined, for instance 1.
-     *
+     * 
      * @return the version value.
      */
     public int version() {
@@ -49,7 +53,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Set the version property: The version of the template defined, for instance 1.
-     *
+     * 
      * @param version the version value to set.
      * @return the OptimizedAutoscale object itself.
      */
@@ -60,7 +64,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Get the isEnabled property: A boolean value that indicate if the optimized autoscale feature is enabled or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -69,7 +73,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Set the isEnabled property: A boolean value that indicate if the optimized autoscale feature is enabled or not.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the OptimizedAutoscale object itself.
      */
@@ -80,7 +84,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Get the minimum property: Minimum allowed instances count.
-     *
+     * 
      * @return the minimum value.
      */
     public int minimum() {
@@ -89,7 +93,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Set the minimum property: Minimum allowed instances count.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the OptimizedAutoscale object itself.
      */
@@ -100,7 +104,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Get the maximum property: Maximum allowed instances count.
-     *
+     * 
      * @return the maximum value.
      */
     public int maximum() {
@@ -109,7 +113,7 @@ public final class OptimizedAutoscale {
 
     /**
      * Set the maximum property: Maximum allowed instances count.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the OptimizedAutoscale object itself.
      */
@@ -120,9 +124,55 @@ public final class OptimizedAutoscale {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("version", this.version);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeIntField("minimum", this.minimum);
+        jsonWriter.writeIntField("maximum", this.maximum);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OptimizedAutoscale from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OptimizedAutoscale if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OptimizedAutoscale.
+     */
+    public static OptimizedAutoscale fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OptimizedAutoscale deserializedOptimizedAutoscale = new OptimizedAutoscale();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedOptimizedAutoscale.version = reader.getInt();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedOptimizedAutoscale.isEnabled = reader.getBoolean();
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedOptimizedAutoscale.minimum = reader.getInt();
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedOptimizedAutoscale.maximum = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOptimizedAutoscale;
+        });
     }
 }

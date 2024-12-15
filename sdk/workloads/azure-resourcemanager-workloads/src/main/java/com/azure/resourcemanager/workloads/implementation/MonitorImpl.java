@@ -128,20 +128,16 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
     }
 
     public Monitor create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Monitor create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), context);
         return this;
     }
 
@@ -157,49 +153,41 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
     }
 
     public Monitor apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .updateWithResponse(resourceGroupName, monitorName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Monitor apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .updateWithResponse(resourceGroupName, monitorName, updateBody, context)
+            .getValue();
         return this;
     }
 
     MonitorImpl(MonitorInner innerObject, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
     }
 
     public Monitor refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Monitor refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
+            .getValue();
         return this;
     }
 

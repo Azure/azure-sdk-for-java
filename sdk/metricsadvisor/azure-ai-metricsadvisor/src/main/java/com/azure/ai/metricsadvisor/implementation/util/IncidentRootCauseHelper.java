@@ -14,15 +14,19 @@ import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 public final class IncidentRootCauseHelper {
     private static IncidentRootCauseAccessor accessor;
 
-    private IncidentRootCauseHelper() { }
+    private IncidentRootCauseHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link IncidentRootCause} instance.
      */
     public interface IncidentRootCauseAccessor {
         void setSeriesKey(IncidentRootCause rootCause, DimensionKey seriesKey);
+
         void setPaths(IncidentRootCause rootCause, List<String> paths);
+
         void setContributionScore(IncidentRootCause rootCause, double confidenceScore);
+
         void setDescription(IncidentRootCause rootCause, String description);
     }
 

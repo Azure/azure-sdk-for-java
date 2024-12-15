@@ -9,9 +9,8 @@ import com.azure.analytics.purview.datamap.models.SuggestOptions;
 import com.azure.analytics.purview.datamap.models.SuggestResult;
 import com.azure.analytics.purview.datamap.models.SuggestResultValue;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,13 +20,12 @@ import org.junit.jupiter.api.Test;
 public final class DiscoverySuggestTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoverySuggestTests() throws IOException {
+    public void testDiscoverySuggestTests() {
         // method invocation
         SuggestResult response = discoveryClient.suggest(new SuggestOptions().setKeywords("fakeTokenPlaceholder")
             .setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize("{\"and\":[{\"entityType\":\"azure_blob_path\",\"includeSubTypes\":false}]}", Object.class,
-                    SerializerEncoding.JSON)));
+            .setFilter(BinaryData.fromBytes(
+                "{and=[{entityType=azure_blob_path, includeSubTypes=false}]}".getBytes(StandardCharsets.UTF_8))));
 
         // response assertion
         Assertions.assertNotNull(response);

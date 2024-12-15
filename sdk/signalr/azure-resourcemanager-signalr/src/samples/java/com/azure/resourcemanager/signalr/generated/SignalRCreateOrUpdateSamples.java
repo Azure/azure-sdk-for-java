@@ -30,19 +30,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SignalR CreateOrUpdate. */
+/**
+ * Samples for SignalR CreateOrUpdate.
+ */
 public final class SignalRCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalR_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalR_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRCreateOrUpdate(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRs()
+        manager.signalRs()
             .define("mySignalRService")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
@@ -51,57 +54,36 @@ public final class SignalRCreateOrUpdateSamples {
             .withKind(ServiceKind.SIGNALR)
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new SignalRTlsSettings().withClientCertEnabled(false))
-            .withFeatures(
-                Arrays
-                    .asList(
-                        new SignalRFeature()
-                            .withFlag(FeatureFlags.SERVICE_MODE)
-                            .withValue("Serverless")
-                            .withProperties(mapOf()),
-                        new SignalRFeature()
-                            .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
-                            .withValue("True")
-                            .withProperties(mapOf()),
-                        new SignalRFeature()
-                            .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
-                            .withValue("False")
-                            .withProperties(mapOf()),
-                        new SignalRFeature()
-                            .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
-                            .withValue("False")
-                            .withProperties(mapOf())))
-            .withLiveTraceConfiguration(
-                new LiveTraceConfiguration()
-                    .withEnabled("false")
-                    .withCategories(
-                        Arrays.asList(new LiveTraceCategory().withName("ConnectivityLogs").withEnabled("true"))))
+            .withFeatures(Arrays.asList(
+                new SignalRFeature().withFlag(FeatureFlags.SERVICE_MODE)
+                    .withValue("Serverless")
+                    .withProperties(mapOf()),
+                new SignalRFeature().withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                    .withValue("True")
+                    .withProperties(mapOf()),
+                new SignalRFeature().withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
+                    .withValue("False")
+                    .withProperties(mapOf()),
+                new SignalRFeature().withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
+                    .withValue("False")
+                    .withProperties(mapOf())))
+            .withLiveTraceConfiguration(new LiveTraceConfiguration().withEnabled("false")
+                .withCategories(
+                    Arrays.asList(new LiveTraceCategory().withName("ConnectivityLogs").withEnabled("true"))))
             .withCors(new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("https://foo.com", "https://bar.com")))
             .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(5))
             .withUpstream(
-                new ServerlessUpstreamSettings()
-                    .withTemplates(
-                        Arrays
-                            .asList(
-                                new UpstreamTemplate()
-                                    .withHubPattern("*")
-                                    .withEventPattern("connect,disconnect")
-                                    .withCategoryPattern("*")
-                                    .withUrlTemplate("https://example.com/chat/api/connect")
-                                    .withAuth(
-                                        new UpstreamAuthSettings()
-                                            .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                                            .withManagedIdentity(
-                                                new ManagedIdentitySettings().withResource("api://example"))))))
-            .withNetworkACLs(
-                new SignalRNetworkACLs()
-                    .withDefaultAction(AclAction.DENY)
-                    .withPublicNetwork(new NetworkAcl().withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION)))
-                    .withPrivateEndpoints(
-                        Arrays
-                            .asList(
-                                new PrivateEndpointAcl()
-                                    .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
-                                    .withName("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"))))
+                new ServerlessUpstreamSettings().withTemplates(Arrays.asList(new UpstreamTemplate().withHubPattern("*")
+                    .withEventPattern("connect,disconnect")
+                    .withCategoryPattern("*")
+                    .withUrlTemplate("https://example.com/chat/api/connect")
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.MANAGED_IDENTITY)
+                        .withManagedIdentity(new ManagedIdentitySettings().withResource("api://example"))))))
+            .withNetworkACLs(new SignalRNetworkACLs().withDefaultAction(AclAction.DENY)
+                .withPublicNetwork(new NetworkAcl().withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION)))
+                .withPrivateEndpoints(Arrays
+                    .asList(new PrivateEndpointAcl().withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
+                        .withName("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"))))
             .withPublicNetworkAccess("Enabled")
             .withDisableLocalAuth(false)
             .withDisableAadAuth(false)

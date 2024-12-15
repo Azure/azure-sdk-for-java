@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetworkPacketBrokers. */
+/**
+ * Resource collection API of NetworkPacketBrokers.
+ */
 public interface NetworkPacketBrokers {
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface NetworkPacketBrokers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response}.
      */
-    Response<NetworkPacketBroker> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    Response<NetworkPacketBroker> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkPacketBrokerName, Context context);
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkPacketBrokerName Name of the Network Packet Broker.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * List all Network Packet Brokers under resource group.
-     *
-     * <p>Displays NetworkPacketBrokers list by resource group GET method.
-     *
+     * 
+     * Displays NetworkPacketBrokers list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkPacketBrokers as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * List Network Packet Brokers by subscription.
-     *
-     * <p>Displays Network Packet Brokers list by subscription GET method.
-     *
+     * 
+     * Displays Network Packet Brokers list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Gets a Network Packet Broker.
-     *
-     * <p>Retrieves details of this Network Packet Broker.
-     *
+     * 
+     * Retrieves details of this Network Packet Broker.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface NetworkPacketBrokers {
 
     /**
      * Deletes a Network Packet Broker.
-     *
-     * <p>Deletes Network Packet Broker.
-     *
+     * 
+     * Deletes Network Packet Broker.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface NetworkPacketBrokers {
 
     /**
      * Begins definition for a new NetworkPacketBroker resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetworkPacketBroker definition.
      */

@@ -36,15 +36,24 @@ public final class ProvisionedClusterPropertiesAutoScalerProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProvisionedClusterPropertiesAutoScalerProfile model = new ProvisionedClusterPropertiesAutoScalerProfile()
-            .withBalanceSimilarNodeGroups("htnapczwlokjyem").withExpander(Expander.MOST_PODS)
-            .withMaxEmptyBulkDelete("ipjoxzjnchgejs").withMaxGracefulTerminationSec("dmailzydehojw")
-            .withMaxNodeProvisionTime("huxinpmqnj").withMaxTotalUnreadyPercentage("wixjsprozvcp")
-            .withNewPodScaleUpDelay("eg").withOkTotalUnreadyCount("wmfdatscmdvpjhul").withScanInterval("uvm")
-            .withScaleDownDelayAfterAdd("ozkrwfndiodjpslw").withScaleDownDelayAfterDelete("dpvwryoqpsoaccta")
-            .withScaleDownDelayAfterFailure("kljla").withScaleDownUnneededTime("cr")
-            .withScaleDownUnreadyTime("fdfdosygexpa").withScaleDownUtilizationThreshold("akhmsbzjhcrz")
-            .withSkipNodesWithLocalStorage("dphlxaolt").withSkipNodesWithSystemPods("trg");
+        ProvisionedClusterPropertiesAutoScalerProfile model
+            = new ProvisionedClusterPropertiesAutoScalerProfile().withBalanceSimilarNodeGroups("htnapczwlokjyem")
+                .withExpander(Expander.MOST_PODS)
+                .withMaxEmptyBulkDelete("ipjoxzjnchgejs")
+                .withMaxGracefulTerminationSec("dmailzydehojw")
+                .withMaxNodeProvisionTime("huxinpmqnj")
+                .withMaxTotalUnreadyPercentage("wixjsprozvcp")
+                .withNewPodScaleUpDelay("eg")
+                .withOkTotalUnreadyCount("wmfdatscmdvpjhul")
+                .withScanInterval("uvm")
+                .withScaleDownDelayAfterAdd("ozkrwfndiodjpslw")
+                .withScaleDownDelayAfterDelete("dpvwryoqpsoaccta")
+                .withScaleDownDelayAfterFailure("kljla")
+                .withScaleDownUnneededTime("cr")
+                .withScaleDownUnreadyTime("fdfdosygexpa")
+                .withScaleDownUtilizationThreshold("akhmsbzjhcrz")
+                .withSkipNodesWithLocalStorage("dphlxaolt")
+                .withSkipNodesWithSystemPods("trg");
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterPropertiesAutoScalerProfile.class);
         Assertions.assertEquals("htnapczwlokjyem", model.balanceSimilarNodeGroups());
         Assertions.assertEquals(Expander.MOST_PODS, model.expander());

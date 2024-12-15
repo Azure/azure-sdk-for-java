@@ -15,11 +15,8 @@ import java.util.Map;
 
 /** Entry point for Express Route Circuit management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuit
-    extends GroupableResource<NetworkManager, ExpressRouteCircuitInner>,
-        Refreshable<ExpressRouteCircuit>,
-        Updatable<ExpressRouteCircuit.Update>,
-        UpdatableWithTags<ExpressRouteCircuit> {
+public interface ExpressRouteCircuit extends GroupableResource<NetworkManager, ExpressRouteCircuitInner>,
+    Refreshable<ExpressRouteCircuit>, Updatable<ExpressRouteCircuit.Update>, UpdatableWithTags<ExpressRouteCircuit> {
 
     // Actions
 
@@ -64,14 +61,9 @@ public interface ExpressRouteCircuit
     String provisioningState();
 
     /** The entirety of the express route circuit definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithServiceProvider,
-            DefinitionStages.WithPeeringLocation,
-            DefinitionStages.WithBandwidth,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithServiceProvider, DefinitionStages.WithPeeringLocation, DefinitionStages.WithBandwidth,
+        DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /** Grouping of express route circuit definition stages. */
@@ -153,11 +145,8 @@ public interface ExpressRouteCircuit
          * The stage of the express route circuit definition which contains all the minimum required inputs for the
          * resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<ExpressRouteCircuit>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithAllowClassicOperations,
-                WithAuthorization {
+        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>,
+            WithAllowClassicOperations, WithAuthorization {
         }
     }
 
@@ -216,11 +205,7 @@ public interface ExpressRouteCircuit
 
     /** The template for a express route circuit update operation, containing all the settings that can be modified. */
     interface Update
-        extends Appliable<ExpressRouteCircuit>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithBandwidth,
-            UpdateStages.WithSku,
-            UpdateStages.WithAllowClassicOperations,
-            UpdateStages.WithAuthorization {
+        extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithBandwidth,
+        UpdateStages.WithSku, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAuthorization {
     }
 }

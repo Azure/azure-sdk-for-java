@@ -43,12 +43,14 @@ public final class CatalogsCountDevicesWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CountDevicesResponse response = manager.catalogs()
-            .countDevicesWithResponse("cjooxdjebwpucwwf", "ovbvmeueciv", com.azure.core.util.Context.NONE).getValue();
+            .countDevicesWithResponse("cjooxdjebwpucwwf", "ovbvmeueciv", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(1560245881, response.value());
     }

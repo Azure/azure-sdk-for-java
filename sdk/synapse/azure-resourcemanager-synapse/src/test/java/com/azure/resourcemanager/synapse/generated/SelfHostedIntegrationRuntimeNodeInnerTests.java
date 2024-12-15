@@ -14,63 +14,29 @@ import java.util.Map;
 public final class SelfHostedIntegrationRuntimeNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfHostedIntegrationRuntimeNodeInner model =
-            BinaryData
-                .fromString(
-                    "{\"nodeName\":\"denxau\",\"machineName\":\"pakdkifmjnnawt\",\"hostServiceUri\":\"bpxuckpggqoweyi\",\"status\":\"Upgrading\",\"capabilities\":{\"wfl\":\"sn\",\"zruwn\":\"qmp\",\"iixtmkzj\":\"qxpxiwfcngjsaa\",\"irhgfgrwsdp\":\"kv\"},\"versionStatus\":\"atzv\",\"version\":\"glbyvi\",\"registerTime\":\"2021-05-26T01:46:31Z\",\"lastConnectTime\":\"2021-03-31T05:55:27Z\",\"expiryTime\":\"2021-10-06T10:18:17Z\",\"lastStartTime\":\"2021-07-31T12:16:42Z\",\"lastStopTime\":\"2021-01-04T19:12:22Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-04-03T23:49:09Z\",\"lastEndUpdateTime\":\"2021-12-06T00:37:58Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1340920016,\"maxConcurrentJobs\":1977846106,\"\":{\"clnapxbiygnugjkn\":\"datazxwopdbydpizq\",\"oiquvrehmrnjhvs\":\"datasmfcttuxuuyilfl\"}}")
-                .toObject(SelfHostedIntegrationRuntimeNodeInner.class);
+        SelfHostedIntegrationRuntimeNodeInner model = BinaryData.fromString(
+            "{\"nodeName\":\"hgbvqtan\",\"machineName\":\"fdlpukhpyr\",\"hostServiceUri\":\"izjcpeog\",\"status\":\"Online\",\"capabilities\":{\"hfhpfp\":\"brouxdd\",\"ntacn\":\"zjzoywjxhpdul\",\"rljyoogwxhnsdu\":\"qwtehtuevr\"},\"versionStatus\":\"wbsreur\",\"version\":\"kfuarenlv\",\"registerTime\":\"2021-07-13T00:13:17Z\",\"lastConnectTime\":\"2021-03-27T02:17:20Z\",\"expiryTime\":\"2021-05-09T13:31:11Z\",\"lastStartTime\":\"2021-02-05T00:41:51Z\",\"lastStopTime\":\"2021-09-08T16:13:33Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2020-12-28T15:08:46Z\",\"lastEndUpdateTime\":\"2021-03-29T16:51:14Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":451383418,\"maxConcurrentJobs\":705317709,\"\":{\"ymc\":\"dataqxypokkhminq\",\"ninvudbchaqdt\":\"datangnbdxxew\",\"tddmf\":\"dataqecrqctmxx\",\"pxbannovvoxc\":\"datahuytxzvtzn\"}}")
+            .toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfHostedIntegrationRuntimeNodeInner model =
-            new SelfHostedIntegrationRuntimeNodeInner()
-                .withAdditionalProperties(
-                    mapOf(
-                        "nodeName",
-                        "denxau",
-                        "lastStartUpdateTime",
-                        "2021-04-03T23:49:09Z",
-                        "lastConnectTime",
-                        "2021-03-31T05:55:27Z",
-                        "capabilities",
-                        JacksonAdapter
-                            .createDefaultSerializerAdapter()
-                            .deserialize(
-                                "{\"wfl\":\"sn\",\"zruwn\":\"qmp\",\"iixtmkzj\":\"qxpxiwfcngjsaa\",\"irhgfgrwsdp\":\"kv\"}",
-                                Object.class,
-                                SerializerEncoding.JSON),
-                        "hostServiceUri",
-                        "bpxuckpggqoweyi",
-                        "registerTime",
-                        "2021-05-26T01:46:31Z",
-                        "maxConcurrentJobs",
-                        1977846106,
-                        "lastStopTime",
-                        "2021-01-04T19:12:22Z",
-                        "version",
-                        "glbyvi",
-                        "machineName",
-                        "pakdkifmjnnawt",
-                        "versionStatus",
-                        "atzv",
-                        "concurrentJobsLimit",
-                        1340920016,
-                        "lastEndUpdateTime",
-                        "2021-12-06T00:37:58Z",
-                        "expiryTime",
-                        "2021-10-06T10:18:17Z",
-                        "lastStartTime",
-                        "2021-07-31T12:16:42Z",
-                        "lastUpdateResult",
-                        "Succeed",
-                        "isActiveDispatcher",
-                        false,
-                        "status",
-                        "Upgrading"));
+        SelfHostedIntegrationRuntimeNodeInner model = new SelfHostedIntegrationRuntimeNodeInner()
+            .withAdditionalProperties(mapOf("nodeName", "hgbvqtan", "lastStartUpdateTime", "2020-12-28T15:08:46Z",
+                "lastConnectTime", "2021-03-27T02:17:20Z", "capabilities",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(
+                        "{\"hfhpfp\":\"brouxdd\",\"ntacn\":\"zjzoywjxhpdul\",\"rljyoogwxhnsdu\":\"qwtehtuevr\"}",
+                        Object.class, SerializerEncoding.JSON),
+                "hostServiceUri", "izjcpeog", "registerTime", "2021-07-13T00:13:17Z", "maxConcurrentJobs", 705317709,
+                "lastStopTime", "2021-09-08T16:13:33Z", "version", "kfuarenlv", "machineName", "fdlpukhpyr",
+                "versionStatus", "wbsreur", "concurrentJobsLimit", 451383418, "lastEndUpdateTime",
+                "2021-03-29T16:51:14Z", "expiryTime", "2021-05-09T13:31:11Z", "lastStartTime", "2021-02-05T00:41:51Z",
+                "lastUpdateResult", "None", "isActiveDispatcher", false, "status", "Online"));
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

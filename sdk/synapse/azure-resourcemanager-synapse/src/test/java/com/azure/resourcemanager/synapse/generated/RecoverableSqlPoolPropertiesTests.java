@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RecoverableSqlPoolPropert
 public final class RecoverableSqlPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoverableSqlPoolProperties model =
-            BinaryData
-                .fromString(
-                    "{\"edition\":\"kb\",\"serviceLevelObjective\":\"pfajnjwltlwtjj\",\"elasticPoolName\":\"ktalhsnvkcdmxz\",\"lastAvailableBackupDate\":\"2021-05-04T00:50:01Z\"}")
-                .toObject(RecoverableSqlPoolProperties.class);
+        RecoverableSqlPoolProperties model = BinaryData.fromString(
+            "{\"edition\":\"wzhhzjhfjmhvvmuv\",\"serviceLevelObjective\":\"mun\",\"elasticPoolName\":\"sx\",\"lastAvailableBackupDate\":\"2020-12-27T00:07:16Z\"}")
+            .toObject(RecoverableSqlPoolProperties.class);
     }
 
     @org.junit.jupiter.api.Test

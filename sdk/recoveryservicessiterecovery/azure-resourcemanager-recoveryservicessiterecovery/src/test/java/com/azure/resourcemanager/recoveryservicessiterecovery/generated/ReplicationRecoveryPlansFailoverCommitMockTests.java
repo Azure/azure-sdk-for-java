@@ -45,12 +45,13 @@ public final class ReplicationRecoveryPlansFailoverCommitMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().failoverCommit("fsnqocybrh", "giknrlugseiqb",
-            "oqjfeamzkuxdgpks", com.azure.core.util.Context.NONE);
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .failoverCommit("fsnqocybrh", "giknrlugseiqb", "oqjfeamzkuxdgpks", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("bunvnjql", response.properties().friendlyName());
         Assertions.assertEquals("qqvcugusqlxlxedt", response.properties().primaryFabricId());

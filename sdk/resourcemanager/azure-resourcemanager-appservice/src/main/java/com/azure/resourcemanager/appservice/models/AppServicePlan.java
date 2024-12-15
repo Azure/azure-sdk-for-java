@@ -15,11 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure App service plan. */
 @Fluent
-public interface AppServicePlan
-    extends GroupableResource<AppServiceManager, AppServicePlanInner>,
-        HasName,
-        Refreshable<AppServicePlan>,
-        Updatable<AppServicePlan.Update> {
+public interface AppServicePlan extends GroupableResource<AppServiceManager, AppServicePlanInner>, HasName,
+    Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update> {
     /** @return maximum number of instances that can be assigned */
     int maxInstances();
 
@@ -43,12 +40,8 @@ public interface AppServicePlan
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithPricingTier,
-            DefinitionStages.WithOperatingSystem,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithPricingTier,
+        DefinitionStages.WithOperatingSystem, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the site definition stages. */
@@ -123,11 +116,8 @@ public interface AppServicePlan
          * An app service plan definition with sufficient inputs to create a new website in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends WithPerSiteScaling,
-                WithCapacity,
-                Creatable<AppServicePlan>,
-                GroupableResource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithPerSiteScaling, WithCapacity, Creatable<AppServicePlan>,
+            GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -168,11 +158,7 @@ public interface AppServicePlan
     }
 
     /** The template for a site update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<AppServicePlan>,
-            UpdateStages.WithCapacity,
-            UpdateStages.WithPerSiteScaling,
-            UpdateStages.WithPricingTier,
-            GroupableResource.UpdateWithTags<Update> {
+    interface Update extends Appliable<AppServicePlan>, UpdateStages.WithCapacity, UpdateStages.WithPerSiteScaling,
+        UpdateStages.WithPricingTier, GroupableResource.UpdateWithTags<Update> {
     }
 }

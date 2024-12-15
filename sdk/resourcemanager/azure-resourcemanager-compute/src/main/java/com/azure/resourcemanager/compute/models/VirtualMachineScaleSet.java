@@ -34,10 +34,8 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure virtual machine scale set. */
 @Fluent
-public interface VirtualMachineScaleSet
-    extends GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
-        Refreshable<VirtualMachineScaleSet>,
-        Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
+public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager, VirtualMachineScaleSetInner>,
+    Refreshable<VirtualMachineScaleSet>, Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
     /** @return entry point to manage virtual machine instances in the scale set. */
     VirtualMachineScaleSetVMs virtualMachines();
@@ -107,8 +105,8 @@ public interface VirtualMachineScaleSet
      * @param scriptParameters script parameters
      * @return result of PowerShell script execution
      */
-    RunCommandResult runPowerShellScriptInVMInstance(
-        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runPowerShellScriptInVMInstance(String vmId, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run PowerShell in a virtual machine instance in a scale set asynchronously.
@@ -118,8 +116,8 @@ public interface VirtualMachineScaleSet
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
-        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String vmId, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set.
@@ -129,8 +127,8 @@ public interface VirtualMachineScaleSet
      * @param scriptParameters script parameters
      * @return result of shell script execution
      */
-    RunCommandResult runShellScriptInVMInstance(
-        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    RunCommandResult runShellScriptInVMInstance(String vmId, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run shell script in a virtual machine instance in a scale set asynchronously.
@@ -140,8 +138,8 @@ public interface VirtualMachineScaleSet
      * @param scriptParameters script parameters
      * @return handle to the asynchronous execution
      */
-    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
-        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters);
+    Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String vmId, List<String> scriptLines,
+        List<RunCommandInputParameter> scriptParameters);
 
     /**
      * Run commands in a virtual machine instance in a scale set.
@@ -295,8 +293,8 @@ public interface VirtualMachineScaleSet
      * @param virtualMachineInstanceId the instance ID
      * @return the network interfaces
      */
-    PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(
-        String virtualMachineInstanceId);
+    PagedIterable<VirtualMachineScaleSetNetworkInterface>
+        listNetworkInterfacesByInstanceId(String virtualMachineInstanceId);
 
     /**
      * Lists the network interface associated with a specific virtual machine instance in the scale set asynchronously.
@@ -304,8 +302,8 @@ public interface VirtualMachineScaleSet
      * @param virtualMachineInstanceId the instance ID
      * @return the network interfaces
      */
-    PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
-        String virtualMachineInstanceId);
+    PagedFlux<VirtualMachineScaleSetNetworkInterface>
+        listNetworkInterfacesByInstanceIdAsync(String virtualMachineInstanceId);
 
     /** @return true if managed disk is used for the virtual machine scale set's disks (os, data) */
     boolean isManagedDiskEnabled();
@@ -410,57 +408,37 @@ public interface VirtualMachineScaleSet
      * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
      * definitions.
      */
-    interface DefinitionShared
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithProximityPlacementGroup,
-            DefinitionStages.WithNetworkSubnet,
-            DefinitionStages.WithPrimaryInternetFacingLoadBalancer,
-            DefinitionStages.WithPrimaryInternalLoadBalancer,
-            DefinitionStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
-            DefinitionStages.WithInternalLoadBalancerBackendOrNatPool,
-            DefinitionStages.WithPrimaryInternetFacingLoadBalancerNatPool,
-            DefinitionStages.WithInternalInternalLoadBalancerNatPool,
-            DefinitionStages.WithOS,
-            DefinitionStages.WithCreate {
+    interface DefinitionShared extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithNetworkSubnet,
+        DefinitionStages.WithPrimaryInternetFacingLoadBalancer, DefinitionStages.WithPrimaryInternalLoadBalancer,
+        DefinitionStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
+        DefinitionStages.WithInternalLoadBalancerBackendOrNatPool,
+        DefinitionStages.WithPrimaryInternetFacingLoadBalancerNatPool,
+        DefinitionStages.WithInternalInternalLoadBalancerNatPool, DefinitionStages.WithOS, DefinitionStages.WithCreate {
     }
 
     /** The entirety of the virtual machine scale set definition. */
     interface DefinitionManagedOrUnmanaged
-        extends DefinitionShared,
-            DefinitionStages.WithLinuxRootUsernameManagedOrUnmanaged,
-            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
-            DefinitionStages.WithWindowsAdminUsernameManagedOrUnmanaged,
-            DefinitionStages.WithWindowsAdminPasswordManagedOrUnmanaged,
-            DefinitionStages.WithLinuxCreateManagedOrUnmanaged,
-            DefinitionStages.WithWindowsCreateManagedOrUnmanaged,
-            DefinitionStages.WithManagedCreate,
-            DefinitionStages.WithUnmanagedCreate {
+        extends DefinitionShared, DefinitionStages.WithLinuxRootUsernameManagedOrUnmanaged,
+        DefinitionStages.WithLinuxRootPasswordOrPublicKeyManagedOrUnmanaged,
+        DefinitionStages.WithWindowsAdminUsernameManagedOrUnmanaged,
+        DefinitionStages.WithWindowsAdminPasswordManagedOrUnmanaged, DefinitionStages.WithLinuxCreateManagedOrUnmanaged,
+        DefinitionStages.WithWindowsCreateManagedOrUnmanaged, DefinitionStages.WithManagedCreate,
+        DefinitionStages.WithUnmanagedCreate {
     }
 
     /** The entirety of the managed disk based virtual machine scale set definition. */
-    interface DefinitionManaged
-        extends DefinitionShared,
-            DefinitionStages.WithLinuxRootUsernameManaged,
-            DefinitionStages.WithLinuxRootPasswordOrPublicKeyManaged,
-            DefinitionStages.WithWindowsAdminUsernameManaged,
-            DefinitionStages.WithWindowsAdminPasswordManaged,
-            DefinitionStages.WithLinuxCreateManaged,
-            DefinitionStages.WithWindowsCreateManaged,
-            DefinitionStages.WithManagedCreate {
+    interface DefinitionManaged extends DefinitionShared, DefinitionStages.WithLinuxRootUsernameManaged,
+        DefinitionStages.WithLinuxRootPasswordOrPublicKeyManaged, DefinitionStages.WithWindowsAdminUsernameManaged,
+        DefinitionStages.WithWindowsAdminPasswordManaged, DefinitionStages.WithLinuxCreateManaged,
+        DefinitionStages.WithWindowsCreateManaged, DefinitionStages.WithManagedCreate {
     }
 
     /** The entirety of the unmanaged disk based virtual machine scale set definition. */
-    interface DefinitionUnmanaged
-        extends DefinitionShared,
-            DefinitionStages.WithLinuxRootUsernameUnmanaged,
-            DefinitionStages.WithLinuxRootPasswordOrPublicKeyUnmanaged,
-            DefinitionStages.WithWindowsAdminUsernameUnmanaged,
-            DefinitionStages.WithWindowsAdminPasswordUnmanaged,
-            DefinitionStages.WithLinuxCreateUnmanaged,
-            DefinitionStages.WithWindowsCreateUnmanaged,
-            DefinitionStages.WithUnmanagedCreate {
+    interface DefinitionUnmanaged extends DefinitionShared, DefinitionStages.WithLinuxRootUsernameUnmanaged,
+        DefinitionStages.WithLinuxRootPasswordOrPublicKeyUnmanaged, DefinitionStages.WithWindowsAdminUsernameUnmanaged,
+        DefinitionStages.WithWindowsAdminPasswordUnmanaged, DefinitionStages.WithLinuxCreateUnmanaged,
+        DefinitionStages.WithWindowsCreateUnmanaged, DefinitionStages.WithUnmanagedCreate {
     }
 
     /** Grouping of virtual machine scale set definition stages. */
@@ -537,8 +515,8 @@ public interface VirtualMachineScaleSet
              * @param type the type of the group
              * @return the next stage of the definition.
              */
-            WithDoNotRunExtensionsOnOverprovisionedVms withNewProximityPlacementGroup(
-                String proximityPlacementGroupName, ProximityPlacementGroupType type);
+            WithDoNotRunExtensionsOnOverprovisionedVms
+                withNewProximityPlacementGroup(String proximityPlacementGroupName, ProximityPlacementGroupType type);
         }
 
         /**
@@ -554,8 +532,8 @@ public interface VirtualMachineScaleSet
              * @param doNotRunExtensionsOnOverprovisionedVMs the doNotRunExtensionsOnOverprovisionedVMs value to set
              * @return the next stage of the definition.
              */
-            WithAdditionalCapabilities withDoNotRunExtensionsOnOverprovisionedVMs(
-                Boolean doNotRunExtensionsOnOverprovisionedVMs);
+            WithAdditionalCapabilities
+                withDoNotRunExtensionsOnOverprovisionedVMs(Boolean doNotRunExtensionsOnOverprovisionedVMs);
         }
 
         /**
@@ -573,7 +551,6 @@ public interface VirtualMachineScaleSet
              */
             WithNetworkSubnet withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities);
         }
-
 
         /**
          * The stage of a virtual machine scale set definition allowing to specify the virtual network subnet for the
@@ -606,8 +583,8 @@ public interface VirtualMachineScaleSet
              * @param loadBalancer an existing Internet-facing load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withExistingPrimaryInternetFacingLoadBalancer(
-                LoadBalancer loadBalancer);
+            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool
+                withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
 
             /**
              * Specifies that no public load balancer should be associated with the virtual machine scale set.
@@ -658,8 +635,8 @@ public interface VirtualMachineScaleSet
              * @param backendNames the names of existing backends in the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(
-                String... backendNames);
+            WithPrimaryInternetFacingLoadBalancerNatPool
+                withPrimaryInternetFacingLoadBalancerBackends(String... backendNames);
         }
 
         /**
@@ -674,8 +651,8 @@ public interface VirtualMachineScaleSet
              * @param natPoolNames inbound NAT pools names existing on the selected load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(
-                String... natPoolNames);
+            WithPrimaryInternalLoadBalancer
+                withPrimaryInternetFacingLoadBalancerInboundNatPools(String... natPoolNames);
         }
 
         /**
@@ -718,8 +695,8 @@ public interface VirtualMachineScaleSet
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged withPopularWindowsImage(
-                KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsernameManagedOrUnmanaged
+                withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of the specified marketplace Windows image should be used.
@@ -729,8 +706,8 @@ public interface VirtualMachineScaleSet
              * @param sku specifies the SKU of the image
              * @return the next stage of the definition
              */
-            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(
-                String publisher, String offer, String sku);
+            WithWindowsAdminUsernameManagedOrUnmanaged withLatestWindowsImage(String publisher, String offer,
+                String sku);
 
             /**
              * Specifies the specific version of a marketplace Windows image needs to be used.
@@ -1202,8 +1179,8 @@ public interface VirtualMachineScaleSet
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine definition
              */
-            WithManagedCreate withNewDataDisk(
-                int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
+            WithManagedCreate withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType,
+                StorageAccountTypes storageAccountType);
 
             /**
              * Specifies the data disk to be created from the data disk image in the virtual machine image.
@@ -1232,8 +1209,8 @@ public interface VirtualMachineScaleSet
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine definition
              */
-            WithManagedCreate withNewDataDiskFromImage(
-                int imageLun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType);
+            WithManagedCreate withNewDataDiskFromImage(int imageLun, int newSizeInGB, CachingTypes cachingType,
+                StorageAccountTypes storageAccountType);
         }
 
         /** The optionals applicable only for managed disks. */
@@ -1472,8 +1449,8 @@ public interface VirtualMachineScaleSet
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                BuiltInRole role);
 
             /**
              * Specifies that virtual machine scale set's local identity should have the given access (described by the
@@ -1483,8 +1460,8 @@ public interface VirtualMachineScaleSet
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies that virtual machine scale set's system assigned (local) identity should have the access
@@ -1495,8 +1472,8 @@ public interface VirtualMachineScaleSet
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                String roleDefinitionId);
 
             /**
              * Specifies that virtual machine scale set's system assigned (local) identity should have the access
@@ -1506,8 +1483,8 @@ public interface VirtualMachineScaleSet
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**
@@ -1788,32 +1765,18 @@ public interface VirtualMachineScaleSet
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<VirtualMachineScaleSet>,
-                DefinitionStages.WithOSDiskSettings,
-                DefinitionStages.WithComputerNamePrefix,
-                DefinitionStages.WithCapacity,
-                DefinitionStages.WithUpgradePolicy,
-                DefinitionStages.WithOverProvision,
-                DefinitionStages.WithStorageAccount,
-                DefinitionStages.WithCustomData,
-                DefinitionStages.WithExtension,
-                DefinitionStages.WithSystemAssignedManagedServiceIdentity,
-                DefinitionStages.WithUserAssignedManagedServiceIdentity,
-                DefinitionStages.WithBootDiagnostics,
-                DefinitionStages.WithBillingProfile,
-                DefinitionStages.WithVMPriority,
-                DefinitionStages.WithVirtualMachinePublicIp,
-                DefinitionStages.WithAcceleratedNetworking,
-                DefinitionStages.WithIpForwarding,
-                DefinitionStages.WithNetworkSecurityGroup,
-                DefinitionStages.WithSinglePlacementGroup,
-                DefinitionStages.WithApplicationGateway,
-                DefinitionStages.WithApplicationSecurityGroup,
-                DefinitionStages.WithSecrets,
-                DefinitionStages.WithPlan,
-                DefinitionStages.WithEphemeralOSDisk,
-                Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
+        interface WithCreate extends Creatable<VirtualMachineScaleSet>, DefinitionStages.WithOSDiskSettings,
+            DefinitionStages.WithComputerNamePrefix, DefinitionStages.WithCapacity, DefinitionStages.WithUpgradePolicy,
+            DefinitionStages.WithOverProvision, DefinitionStages.WithStorageAccount, DefinitionStages.WithCustomData,
+            DefinitionStages.WithExtension, DefinitionStages.WithSystemAssignedManagedServiceIdentity,
+            DefinitionStages.WithUserAssignedManagedServiceIdentity, DefinitionStages.WithBootDiagnostics,
+            DefinitionStages.WithBillingProfile, DefinitionStages.WithVMPriority,
+            DefinitionStages.WithVirtualMachinePublicIp, DefinitionStages.WithAcceleratedNetworking,
+            DefinitionStages.WithIpForwarding, DefinitionStages.WithNetworkSecurityGroup,
+            DefinitionStages.WithSinglePlacementGroup, DefinitionStages.WithApplicationGateway,
+            DefinitionStages.WithApplicationSecurityGroup, DefinitionStages.WithSecrets, DefinitionStages.WithPlan,
+            DefinitionStages.WithEphemeralOSDisk,
+            Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }
 
@@ -1836,8 +1799,8 @@ public interface VirtualMachineScaleSet
              * @param loadBalancer the primary Internet-facing load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withExistingPrimaryInternetFacingLoadBalancer(
-                LoadBalancer loadBalancer);
+            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool
+                withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
         }
 
         /**
@@ -1854,8 +1817,8 @@ public interface VirtualMachineScaleSet
              * @param backendNames the backend names
              * @return the next stage of the update
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(
-                String... backendNames);
+            WithPrimaryInternetFacingLoadBalancerNatPool
+                withPrimaryInternetFacingLoadBalancerBackends(String... backendNames);
         }
 
         /**
@@ -1870,8 +1833,8 @@ public interface VirtualMachineScaleSet
              * @param natPoolNames the names of existing inbound NAT pools on the selected load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(
-                String... natPoolNames);
+            WithPrimaryInternalLoadBalancer
+                withPrimaryInternetFacingLoadBalancerInboundNatPools(String... natPoolNames);
         }
 
         /**
@@ -1891,8 +1854,8 @@ public interface VirtualMachineScaleSet
              * @param loadBalancer the primary Internet-facing load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternalLoadBalancerBackendOrNatPool withExistingPrimaryInternalLoadBalancer(
-                LoadBalancer loadBalancer);
+            WithPrimaryInternalLoadBalancerBackendOrNatPool
+                withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
         }
 
         /**
@@ -2148,8 +2111,8 @@ public interface VirtualMachineScaleSet
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                BuiltInRole role);
 
             /**
              * Specifies that virtual machine scale set's system assigned (local) identity should have the given access
@@ -2159,8 +2122,8 @@ public interface VirtualMachineScaleSet
              * @param role access role to assigned to the scale set local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrApply
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies that virtual machine scale set 's system assigned (local) identity should have the access
@@ -2171,8 +2134,8 @@ public interface VirtualMachineScaleSet
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                String roleDefinitionId);
 
             /**
              * Specifies that virtual machine scale set's system assigned (local) identity should have the access
@@ -2182,8 +2145,8 @@ public interface VirtualMachineScaleSet
              * @param roleDefinitionId access role definition to assigned to the scale set local identity
              * @return the next stage of the update
              */
-            WithSystemAssignedIdentityBasedAccessOrApply withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrApply
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**
@@ -2310,8 +2273,8 @@ public interface VirtualMachineScaleSet
              * @param storageAccountType the storage account type
              * @return the next stage of virtual machine scale set update
              */
-            WithApply withNewDataDisk(
-                int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
+            WithApply withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType,
+                StorageAccountTypes storageAccountType);
 
             /**
              * Detaches managed data disk with the given LUN from the virtual machine scale set instances.
@@ -2521,39 +2484,22 @@ public interface VirtualMachineScaleSet
         }
 
         /** The stage of a virtual machine scale set update containing inputs for the resource to be updated. */
-        interface WithApply
-            extends Appliable<VirtualMachineScaleSet>,
-                Resource.UpdateWithTags<WithApply>,
-                UpdateStages.WithManagedDataDisk,
-                UpdateStages.WithUnmanagedDataDisk,
-                UpdateStages.WithSku,
-                UpdateStages.WithAdditionalCapabilities,
-                UpdateStages.WithCapacity,
-                UpdateStages.WithCustomData,
-                UpdateStages.WithSecrets,
-                UpdateStages.WithExtension,
-                UpdateStages.WithoutPrimaryLoadBalancer,
-                UpdateStages.WithoutPrimaryLoadBalancerBackend,
-                UpdateStages.WithoutPrimaryLoadBalancerNatPool,
-                UpdateStages.WithSystemAssignedManagedServiceIdentity,
-                UpdateStages.WithUserAssignedManagedServiceIdentity,
-                UpdateStages.WithBootDiagnostics,
-                UpdateStages.WithBillingProfile,
-                UpdateStages.WithAvailabilityZone,
-                UpdateStages.WithVirtualMachinePublicIp,
-                UpdateStages.WithAcceleratedNetworking,
-                UpdateStages.WithIpForwarding,
-                UpdateStages.WithNetworkSecurityGroup,
-                UpdateStages.WithSinglePlacementGroup,
-                UpdateStages.WithApplicationGateway,
-                UpdateStages.WithApplicationSecurityGroup {
+        interface WithApply extends Appliable<VirtualMachineScaleSet>, Resource.UpdateWithTags<WithApply>,
+            UpdateStages.WithManagedDataDisk, UpdateStages.WithUnmanagedDataDisk, UpdateStages.WithSku,
+            UpdateStages.WithAdditionalCapabilities, UpdateStages.WithCapacity, UpdateStages.WithCustomData,
+            UpdateStages.WithSecrets, UpdateStages.WithExtension, UpdateStages.WithoutPrimaryLoadBalancer,
+            UpdateStages.WithoutPrimaryLoadBalancerBackend, UpdateStages.WithoutPrimaryLoadBalancerNatPool,
+            UpdateStages.WithSystemAssignedManagedServiceIdentity, UpdateStages.WithUserAssignedManagedServiceIdentity,
+            UpdateStages.WithBootDiagnostics, UpdateStages.WithBillingProfile, UpdateStages.WithAvailabilityZone,
+            UpdateStages.WithVirtualMachinePublicIp, UpdateStages.WithAcceleratedNetworking,
+            UpdateStages.WithIpForwarding, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithSinglePlacementGroup,
+            UpdateStages.WithApplicationGateway, UpdateStages.WithApplicationSecurityGroup {
         }
     }
 
     /** The entirety of the virtual machine scale set update. */
-    interface Update
-        extends UpdateStages.WithPrimaryLoadBalancer,
-            UpdateStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
-            UpdateStages.WithPrimaryInternalLoadBalancerBackendOrNatPool {
+    interface Update extends UpdateStages.WithPrimaryLoadBalancer,
+        UpdateStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
+        UpdateStages.WithPrimaryInternalLoadBalancerBackendOrNatPool {
     }
 }

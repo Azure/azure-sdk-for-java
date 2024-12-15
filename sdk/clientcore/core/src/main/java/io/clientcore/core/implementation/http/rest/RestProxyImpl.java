@@ -36,7 +36,7 @@ public class RestProxyImpl extends RestProxyBase {
      * to be used.
      */
     public RestProxyImpl(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                         SwaggerInterfaceParser interfaceParser) {
+        SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -51,7 +51,7 @@ public class RestProxyImpl extends RestProxyBase {
         return httpPipeline.send(request);
     }
 
-    @SuppressWarnings({"try", "unused"})
+    @SuppressWarnings({ "try", "unused" })
     @Override
     public Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request) {
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
@@ -93,8 +93,8 @@ public class RestProxyImpl extends RestProxyBase {
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         if (response.getBody() == null || response.getBody().toBytes().length == 0) {
             // No body, create an exception response with an empty body.
-            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                response, null, null);
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
+                null, null);
         } else {
             // Create an exception response containing the decoded response body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
@@ -103,7 +103,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
-                                                Type entityType) {
+        Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
@@ -127,8 +127,8 @@ public class RestProxyImpl extends RestProxyBase {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
                         handleResponseBody(response, methodParser, bodyType, response.getBody()));
                 } else {
-                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) ->
-                        handleResponseBody(response, methodParser, bodyType, body));
+                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response,
+                        (body) -> handleResponseBody(response, methodParser, bodyType, body));
                 }
 
                 Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
@@ -147,7 +147,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
-                                      BinaryData responseBody) {
+        BinaryData responseBody) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();

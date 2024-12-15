@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes how data from an input is serialized or how data is serialized when written to an output.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Serialization.class)
-@JsonTypeName("Serialization")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Delta", value = DeltaSerialization.class),
-    @JsonSubTypes.Type(name = "Parquet", value = ParquetSerialization.class),
-    @JsonSubTypes.Type(name = "CustomClr", value = CustomClrSerialization.class),
-    @JsonSubTypes.Type(name = "Csv", value = CsvSerialization.class),
-    @JsonSubTypes.Type(name = "Json", value = JsonSerialization.class),
-    @JsonSubTypes.Type(name = "Avro", value = AvroSerialization.class) })
 @Immutable
-public class Serialization {
+public class Serialization implements JsonSerializable<Serialization> {
+    /*
+     * Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+     */
+    private EventSerializationType type = EventSerializationType.fromString("Serialization");
+
     /**
      * Creates an instance of Serialization class.
      */
     public Serialization() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of serialization that the input or output uses. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    public EventSerializationType type() {
+        return this.type;
     }
 
     /**
@@ -39,5 +43,76 @@ public class Serialization {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Serialization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Serialization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Serialization.
+     */
+    public static Serialization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Delta".equals(discriminatorValue)) {
+                    return DeltaSerialization.fromJson(readerToUse.reset());
+                } else if ("Parquet".equals(discriminatorValue)) {
+                    return ParquetSerialization.fromJson(readerToUse.reset());
+                } else if ("CustomClr".equals(discriminatorValue)) {
+                    return CustomClrSerialization.fromJson(readerToUse.reset());
+                } else if ("Csv".equals(discriminatorValue)) {
+                    return CsvSerialization.fromJson(readerToUse.reset());
+                } else if ("Json".equals(discriminatorValue)) {
+                    return JsonSerialization.fromJson(readerToUse.reset());
+                } else if ("Avro".equals(discriminatorValue)) {
+                    return AvroSerialization.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Serialization fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Serialization deserializedSerialization = new Serialization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSerialization.type = EventSerializationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSerialization;
+        });
     }
 }

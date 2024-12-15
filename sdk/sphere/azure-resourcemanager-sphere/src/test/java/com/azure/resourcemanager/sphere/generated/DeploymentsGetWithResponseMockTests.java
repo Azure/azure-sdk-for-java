@@ -45,12 +45,15 @@ public final class DeploymentsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response = manager.deployments().getWithResponse("cckwyfzqwhxxbu", "qa", "zfeqztppri",
-            "lxorjaltolmncws", "bqwcsdbnwdcf", com.azure.core.util.Context.NONE).getValue();
+        Deployment response = manager.deployments()
+            .getWithResponse("cckwyfzqwhxxbu", "qa", "zfeqztppri", "lxorjaltolmncws", "bqwcsdbnwdcf",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("qdpfuvglsbjjca", response.properties().deploymentId());
         Assertions.assertEquals("t", response.properties().deployedImages().get(0).properties().image());

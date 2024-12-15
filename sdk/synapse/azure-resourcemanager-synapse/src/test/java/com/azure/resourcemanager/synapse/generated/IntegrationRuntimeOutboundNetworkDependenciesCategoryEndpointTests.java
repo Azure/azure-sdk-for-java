@@ -7,44 +7,46 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesEndpoint;
+import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"ixjawrtm\",\"endpoints\":[{\"domainName\":\"yccxlzhcox\",\"endpointDetails\":[]},{\"domainName\":\"khenlus\",\"endpointDetails\":[]},{\"domainName\":\"tjxtxr\",\"endpointDetails\":[]},{\"domainName\":\"jvidttge\",\"endpointDetails\":[]}]}")
-                .toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
-        Assertions.assertEquals("ixjawrtm", model.category());
-        Assertions.assertEquals("yccxlzhcox", model.endpoints().get(0).domainName());
+        IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model = BinaryData.fromString(
+            "{\"category\":\"kujrllfojui\",\"endpoints\":[{\"domainName\":\"uyjucejikzo\",\"endpointDetails\":[{\"port\":593311439},{\"port\":661153299},{\"port\":475806934}]},{\"domainName\":\"jklntikyj\",\"endpointDetails\":[{\"port\":1716135154}]},{\"domainName\":\"zolxrzvhqjwtr\",\"endpointDetails\":[{\"port\":623389331}]}]}")
+            .toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
+        Assertions.assertEquals("kujrllfojui", model.category());
+        Assertions.assertEquals("uyjucejikzo", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(593311439, model.endpoints().get(0).endpointDetails().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model =
-            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                .withCategory("ixjawrtm")
+        IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint model
+            = new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("kujrllfojui")
                 .withEndpoints(
-                    Arrays
-                        .asList(
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                .withDomainName("yccxlzhcox")
-                                .withEndpointDetails(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                .withDomainName("khenlus")
-                                .withEndpointDetails(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                .withDomainName("tjxtxr")
-                                .withEndpointDetails(Arrays.asList()),
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                .withDomainName("jvidttge")
-                                .withEndpointDetails(Arrays.asList())));
-        model =
-            BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
-        Assertions.assertEquals("ixjawrtm", model.category());
-        Assertions.assertEquals("yccxlzhcox", model.endpoints().get(0).domainName());
+                    Arrays.asList(
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                            .withDomainName("uyjucejikzo")
+                            .withEndpointDetails(Arrays.asList(
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(593311439),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(661153299),
+                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(
+                                    475806934))),
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("jklntikyj")
+                            .withEndpointDetails(Arrays
+                                .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()
+                                    .withPort(1716135154))),
+                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("zolxrzvhqjwtr")
+                            .withEndpointDetails(
+                                Arrays.asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()
+                                    .withPort(623389331)))));
+        model = BinaryData.fromObject(model)
+            .toObject(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
+        Assertions.assertEquals("kujrllfojui", model.category());
+        Assertions.assertEquals("uyjucejikzo", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(593311439, model.endpoints().get(0).endpointDetails().get(0).port());
     }
 }

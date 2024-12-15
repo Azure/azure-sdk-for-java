@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -169,6 +170,9 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,7 +209,8 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
                 reader.nextToken();
 
                 if ("timeStamp".equals(fieldName)) {
-                    timeStamp = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timeStamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                     timeStampFound = true;
                 } else if ("average".equals(fieldName)) {
                     average = reader.getNullable(JsonReader::getDouble);

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerlessSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerlessSettings model =
-            BinaryData.fromString("{\"connectionTimeoutInSeconds\":2062903356}").toObject(ServerlessSettings.class);
+        ServerlessSettings model
+            = BinaryData.fromString("{\"connectionTimeoutInSeconds\":2062903356}").toObject(ServerlessSettings.class);
         Assertions.assertEquals(2062903356, model.connectionTimeoutInSeconds());
     }
 

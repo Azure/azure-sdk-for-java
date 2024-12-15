@@ -136,8 +136,8 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public CreateCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }

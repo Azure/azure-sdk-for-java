@@ -17,8 +17,8 @@ public final class ApplicationAccountType extends ExpandableStringEnum<Applicati
     public static final ApplicationAccountType AZURE_AD_MULTIPLE_ORGS = fromString("AzureADMultipleOrgs");
 
     /** Users with a personal Microsoft account, or a work or school account in any organization’s Azure AD tenant. */
-    public static final ApplicationAccountType AZURE_AD_AND_PERSONAL_MICROSOFT_ACCOUNT =
-        fromString("AzureADandPersonalMicrosoftAccount");
+    public static final ApplicationAccountType AZURE_AD_AND_PERSONAL_MICROSOFT_ACCOUNT
+        = fromString("AzureADandPersonalMicrosoftAccount");
 
     /** Users with a personal Microsoft account only. */
     public static final ApplicationAccountType PERSONAL_MICROSOFT_ACCOUNT = fromString("PersonalMicrosoftAccount");

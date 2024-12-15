@@ -41,8 +41,8 @@ public final class RemoveParticipantsRequestInternal implements JsonSerializable
      * @param participantsToRemove the participantsToRemove value to set.
      * @return the RemoveParticipantsRequestInternal object itself.
      */
-    public RemoveParticipantsRequestInternal setParticipantsToRemove(
-            List<CommunicationIdentifierModel> participantsToRemove) {
+    public RemoveParticipantsRequestInternal
+        setParticipantsToRemove(List<CommunicationIdentifierModel> participantsToRemove) {
         this.participantsToRemove = participantsToRemove;
         return this;
     }

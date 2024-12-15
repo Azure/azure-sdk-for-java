@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PlanDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlanData model =
-            BinaryData
-                .fromString(
-                    "{\"usageType\":\"vnipjox\",\"billingCycle\":\"nchgej\",\"planDetails\":\"odmailzyd\",\"effectiveDate\":\"2021-10-17T17:25:15Z\"}")
-                .toObject(PlanData.class);
+        PlanData model = BinaryData.fromString(
+            "{\"usageType\":\"vnipjox\",\"billingCycle\":\"nchgej\",\"planDetails\":\"odmailzyd\",\"effectiveDate\":\"2021-10-17T17:25:15Z\"}")
+            .toObject(PlanData.class);
         Assertions.assertEquals("vnipjox", model.usageType());
         Assertions.assertEquals("nchgej", model.billingCycle());
         Assertions.assertEquals("odmailzyd", model.planDetails());
@@ -25,12 +23,10 @@ public final class PlanDataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanData model =
-            new PlanData()
-                .withUsageType("vnipjox")
-                .withBillingCycle("nchgej")
-                .withPlanDetails("odmailzyd")
-                .withEffectiveDate(OffsetDateTime.parse("2021-10-17T17:25:15Z"));
+        PlanData model = new PlanData().withUsageType("vnipjox")
+            .withBillingCycle("nchgej")
+            .withPlanDetails("odmailzyd")
+            .withEffectiveDate(OffsetDateTime.parse("2021-10-17T17:25:15Z"));
         model = BinaryData.fromObject(model).toObject(PlanData.class);
         Assertions.assertEquals("vnipjox", model.usageType());
         Assertions.assertEquals("nchgej", model.billingCycle());

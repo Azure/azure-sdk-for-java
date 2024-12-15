@@ -15,14 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Represents Express Route Cross Connection Peerings collection associated with Network Watcher. */
-class ExpressRouteCrossConnectionPeeringsImpl
-    extends IndependentChildrenImpl<
-        ExpressRouteCrossConnectionPeering,
-        ExpressRouteCrossConnectionPeeringImpl,
-        ExpressRouteCrossConnectionPeeringInner,
-        ExpressRouteCrossConnectionPeeringsClient,
-        NetworkManager,
-        ExpressRouteCrossConnection>
+class ExpressRouteCrossConnectionPeeringsImpl extends
+    IndependentChildrenImpl<ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeeringImpl, ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringsClient, NetworkManager, ExpressRouteCrossConnection>
     implements ExpressRouteCrossConnectionPeerings {
     private final ExpressRouteCrossConnectionImpl parent;
 
@@ -49,8 +43,8 @@ class ExpressRouteCrossConnectionPeeringsImpl
 
     @Override
     protected ExpressRouteCrossConnectionPeeringImpl wrapModel(String name) {
-        return new ExpressRouteCrossConnectionPeeringImpl(
-            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.fromString(name));
+        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(),
+            ExpressRoutePeeringType.fromString(name));
     }
 
     protected ExpressRouteCrossConnectionPeeringImpl wrapModel(ExpressRouteCrossConnectionPeeringInner inner) {
@@ -59,14 +53,14 @@ class ExpressRouteCrossConnectionPeeringsImpl
 
     @Override
     public ExpressRouteCrossConnectionPeeringImpl defineAzurePrivatePeering() {
-        return new ExpressRouteCrossConnectionPeeringImpl(
-            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
+        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(),
+            ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
     public ExpressRouteCrossConnectionPeeringImpl defineMicrosoftPeering() {
-        return new ExpressRouteCrossConnectionPeeringImpl(
-            parent, new ExpressRouteCrossConnectionPeeringInner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
+        return new ExpressRouteCrossConnectionPeeringImpl(parent, new ExpressRouteCrossConnectionPeeringInner(),
+            ExpressRoutePeeringType.MICROSOFT_PEERING);
     }
 
     @Override
@@ -96,19 +90,14 @@ class ExpressRouteCrossConnectionPeeringsImpl
 
     @Override
     public Mono<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this
-            .innerModel()
-            .deleteAsync(groupName, parentName, name)
-            .doOnSuccess(
-                result -> {
-                    parent.refresh();
-                })
-            .then();
+        return this.innerModel().deleteAsync(groupName, parentName, name).doOnSuccess(result -> {
+            parent.refresh();
+        }).then();
     }
 
     @Override
-    public Mono<ExpressRouteCrossConnectionPeering> getByParentAsync(
-        String resourceGroup, String parentName, String name) {
+    public Mono<ExpressRouteCrossConnectionPeering> getByParentAsync(String resourceGroup, String parentName,
+        String name) {
         return innerModel().getAsync(resourceGroup, parentName, name).map(inner -> wrapModel(inner));
     }
 

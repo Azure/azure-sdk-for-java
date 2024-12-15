@@ -5,38 +5,60 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current detailed status of the cluster. */
+/**
+ * The current detailed status of the cluster.
+ */
 public final class ClusterDetailedStatus extends ExpandableStringEnum<ClusterDetailedStatus> {
-    /** Static value PendingDeployment for ClusterDetailedStatus. */
+    /**
+     * Static value PendingDeployment for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus PENDING_DEPLOYMENT = fromString("PendingDeployment");
 
-    /** Static value Deploying for ClusterDetailedStatus. */
+    /**
+     * Static value Deploying for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus DEPLOYING = fromString("Deploying");
 
-    /** Static value Running for ClusterDetailedStatus. */
+    /**
+     * Static value Running for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus RUNNING = fromString("Running");
 
-    /** Static value Updating for ClusterDetailedStatus. */
+    /**
+     * Static value Updating for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus UPDATING = fromString("Updating");
 
-    /** Static value Degraded for ClusterDetailedStatus. */
+    /**
+     * Static value UpdatePaused for ClusterDetailedStatus.
+     */
+    public static final ClusterDetailedStatus UPDATE_PAUSED = fromString("UpdatePaused");
+
+    /**
+     * Static value Degraded for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus DEGRADED = fromString("Degraded");
 
-    /** Static value Deleting for ClusterDetailedStatus. */
+    /**
+     * Static value Deleting for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus DELETING = fromString("Deleting");
 
-    /** Static value Disconnected for ClusterDetailedStatus. */
+    /**
+     * Static value Disconnected for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Failed for ClusterDetailedStatus. */
+    /**
+     * Static value Failed for ClusterDetailedStatus.
+     */
     public static final ClusterDetailedStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ClusterDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +67,17 @@ public final class ClusterDetailedStatus extends ExpandableStringEnum<ClusterDet
 
     /**
      * Creates or finds a ClusterDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterDetailedStatus.
      */
-    @JsonCreator
     public static ClusterDetailedStatus fromString(String name) {
         return fromString(name, ClusterDetailedStatus.class);
     }
 
     /**
      * Gets known ClusterDetailedStatus values.
-     *
+     * 
      * @return known ClusterDetailedStatus values.
      */
     public static Collection<ClusterDetailedStatus> values() {

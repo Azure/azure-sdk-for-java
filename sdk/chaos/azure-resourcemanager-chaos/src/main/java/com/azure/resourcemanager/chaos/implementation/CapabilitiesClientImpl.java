@@ -854,7 +854,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
         CapabilityInner capability) {
         return createOrUpdateWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
             parentResourceName, targetName, capabilityName, capability)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -87,7 +87,7 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
 
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
             restProxy);
     }
 }

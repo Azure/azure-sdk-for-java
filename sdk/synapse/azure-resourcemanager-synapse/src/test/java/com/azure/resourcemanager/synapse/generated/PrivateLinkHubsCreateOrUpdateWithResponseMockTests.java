@@ -6,76 +6,46 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHub;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkHubsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"vsaaxwsp\",\"privateEndpointConnections\":[{\"id\":\"khfjqebglcxkx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"mvygysem\"}},{\"id\":\"esrfsvpinkzpatq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"xspvckojazb\"}}]},\"location\":\"gspftesu\",\"tags\":{\"srfjbdxzfxnx\":\"vpvdylytcovqse\",\"kjmdihdcyy\":\"lbmuos\"},\"id\":\"zlwhbwzjnufzrfgm\",\"name\":\"qgnnbz\",\"type\":\"tftedz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"xjsgbi\",\"privateEndpointConnections\":[]},\"location\":\"kdveksb\",\"tags\":{\"rdpibfd\":\"duchvls\",\"wlkaaggkrehbfrnu\":\"jdusspyszekb\",\"qtaadusrexxfavsq\":\"bffljfiimreoag\"},\"id\":\"udo\",\"name\":\"zilfmnlikps\",\"type\":\"msfeypofqpm\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateLinkHub response = manager.privateLinkHubs()
+            .define("zhwilzzh")
+            .withRegion("rhwv")
+            .withExistingResourceGroup("ukhsusmmorf")
+            .withTags(mapOf("rcl", "qggljkybs", "hxpcvrdnyeita", "vtzqnrbctbhp"))
+            .withProvisioningState("mriprlk")
+            .create();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateLinkHub response =
-            manager
-                .privateLinkHubs()
-                .define("es")
-                .withRegion("lajmllp")
-                .withExistingResourceGroup("kkwa")
-                .withTags(mapOf("mfowgwbtmkek", "vh", "xofqovchi", "pkzwa", "ztekxbyjgmsfep", "bplvfidu"))
-                .withProvisioningState("jlpzeqtoyrp")
-                .create();
-
-        Assertions.assertEquals("kdveksb", response.location());
-        Assertions.assertEquals("duchvls", response.tags().get("rdpibfd"));
-        Assertions.assertEquals("xjsgbi", response.provisioningState());
+        Assertions.assertEquals("gspftesu", response.location());
+        Assertions.assertEquals("vpvdylytcovqse", response.tags().get("srfjbdxzfxnx"));
+        Assertions.assertEquals("vsaaxwsp", response.provisioningState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

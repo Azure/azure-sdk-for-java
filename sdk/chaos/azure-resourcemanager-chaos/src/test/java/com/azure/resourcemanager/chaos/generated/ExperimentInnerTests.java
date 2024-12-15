@@ -36,24 +36,22 @@ public final class ExperimentInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentInner model
-            = new ExperimentInner().withLocation("axdbabph")
-                .withTags(
-                    mapOf("cocmnyyaztt", "qlfktsths", "edckzywbiexzfey", "twwrqp", "ujwb", "eaxib", "zjancuxr",
-                        "qwalmuzyoxaepd"))
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
-                            mapOf("hagalpbuxwgipwh", new UserAssignedIdentity())))
-                .withSteps(Arrays.asList(
-                    new ChaosExperimentStep().withName("mryw").withBranches(Arrays.asList(
-                        new ChaosExperimentBranch().withName("zoqftiyqzrnkcqvy")
+        ExperimentInner model = new ExperimentInner().withLocation("axdbabph")
+            .withTags(mapOf("cocmnyyaztt", "qlfktsths", "edckzywbiexzfey", "twwrqp", "ujwb", "eaxib", "zjancuxr",
+                "qwalmuzyoxaepd"))
+            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("hagalpbuxwgipwh", new UserAssignedIdentity())))
+            .withSteps(Arrays.asList(
+                new ChaosExperimentStep().withName("mryw")
+                    .withBranches(Arrays
+                        .asList(new ChaosExperimentBranch().withName("zoqftiyqzrnkcqvy")
                             .withActions(Arrays.asList(new ChaosExperimentAction().withName("whzlsicohoq"))),
-                        new ChaosExperimentBranch().withName("nwvlryavwhheunmm")
-                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("gyxzk"),
-                                new ChaosExperimentAction().withName("noc"),
-                                new ChaosExperimentAction().withName("koklya"))))),
-                    new ChaosExperimentStep().withName("uconuqszfkbey").withBranches(Arrays.asList(
+                            new ChaosExperimentBranch().withName("nwvlryavwhheunmm")
+                                .withActions(Arrays.asList(new ChaosExperimentAction().withName("gyxzk"),
+                                    new ChaosExperimentAction().withName("noc"),
+                                    new ChaosExperimentAction().withName("koklya"))))),
+                new ChaosExperimentStep().withName("uconuqszfkbey")
+                    .withBranches(Arrays.asList(
                         new ChaosExperimentBranch().withName("wrmjmwvvjektc")
                             .withActions(Arrays.asList(new ChaosExperimentAction().withName("enhwlrs"),
                                 new ChaosExperimentAction().withName("frzpwvlqdqgb"))),
@@ -70,11 +68,13 @@ public final class ExperimentInnerTests {
                             .withActions(Arrays.asList(new ChaosExperimentAction().withName("jyoxgvclt"),
                                 new ChaosExperimentAction().withName("gsncghkjeszz"),
                                 new ChaosExperimentAction().withName("bijhtxfvgxbf")))))))
-                .withSelectors(Arrays.asList(
-                    new ChaosTargetSelector().withId("xnehmpvec").withFilter(new ChaosTargetFilter())
-                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                    new ChaosTargetSelector().withId("buynhijggm").withFilter(new ChaosTargetFilter())
-                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
+            .withSelectors(Arrays.asList(
+                new ChaosTargetSelector().withId("xnehmpvec")
+                    .withFilter(new ChaosTargetFilter())
+                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                new ChaosTargetSelector().withId("buynhijggm")
+                    .withFilter(new ChaosTargetFilter())
+                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
         model = BinaryData.fromObject(model).toObject(ExperimentInner.class);
         Assertions.assertEquals("axdbabph", model.location());
         Assertions.assertEquals("qlfktsths", model.tags().get("cocmnyyaztt"));

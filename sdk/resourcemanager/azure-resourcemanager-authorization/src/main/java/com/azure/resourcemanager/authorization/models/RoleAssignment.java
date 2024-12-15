@@ -49,11 +49,8 @@ public interface RoleAssignment
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithRole,
-            DefinitionStages.WithScope,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRole, DefinitionStages.WithScope,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the role assignment definition stages. */
@@ -122,6 +119,7 @@ public interface RoleAssignment
              * @return the next stage in role assignment definition
              */
             WithScope withBuiltInRole(BuiltInRole role);
+
             /**
              * Specifies the ID of the custom role for this assignment.
              *

@@ -20,7 +20,7 @@ public final class NetworkFunctionDefinitionGroupsDeleteSamples {
      */
     public static void
         deleteANetworkFunctionGroupResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionGroups().delete("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupName", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionGroups()
+            .delete("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupName", com.azure.core.util.Context.NONE);
     }
 }

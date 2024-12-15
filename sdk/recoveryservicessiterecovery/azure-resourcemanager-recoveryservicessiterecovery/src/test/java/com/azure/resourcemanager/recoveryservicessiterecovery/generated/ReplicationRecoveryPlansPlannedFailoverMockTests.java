@@ -50,17 +50,20 @@ public final class ReplicationRecoveryPlansPlannedFailoverMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().plannedFailover("sugqcglma", "fzto", "xvqlauu",
-            new RecoveryPlanPlannedFailoverInput().withProperties(new RecoveryPlanPlannedFailoverInputProperties()
-                .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
-                .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
-                    new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput(),
-                    new RecoveryPlanProviderSpecificFailoverInput()))),
-            com.azure.core.util.Context.NONE);
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .plannedFailover("sugqcglma", "fzto", "xvqlauu",
+                new RecoveryPlanPlannedFailoverInput().withProperties(new RecoveryPlanPlannedFailoverInputProperties()
+                    .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
+                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
+                        new RecoveryPlanProviderSpecificFailoverInput(),
+                        new RecoveryPlanProviderSpecificFailoverInput(),
+                        new RecoveryPlanProviderSpecificFailoverInput()))),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("mcer", response.properties().friendlyName());
         Assertions.assertEquals("feiqb", response.properties().primaryFabricId());

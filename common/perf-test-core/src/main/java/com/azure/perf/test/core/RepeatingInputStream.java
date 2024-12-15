@@ -21,8 +21,7 @@ public class RepeatingInputStream extends InputStream {
     private long pos = 0;
     private final byte[] source;
     static {
-        int randomLength = Integer.parseInt(
-            System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
+        int randomLength = Integer.parseInt(System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
 
         Random random = new Random(0);
         RANDOM_BYTES = new byte[randomLength];
@@ -64,7 +63,7 @@ public class RepeatingInputStream extends InputStream {
             return -1;
         }
 
-        int posSrc = (int)(pos % source.length);
+        int posSrc = (int) (pos % source.length);
         int readCount = Math.min(len, source.length - posSrc);
 
         long remainingDest = this.size - this.pos;
@@ -113,7 +112,6 @@ public class RepeatingInputStream extends InputStream {
     }
 
     private int getByte(long pos) {
-        return source[(int)(pos % source.length)] & 0xFF;
+        return source[(int) (pos % source.length)] & 0xFF;
     }
 }
-

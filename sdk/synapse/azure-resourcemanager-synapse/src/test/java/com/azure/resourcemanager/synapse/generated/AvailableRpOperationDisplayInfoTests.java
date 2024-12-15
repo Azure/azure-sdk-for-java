@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableRpOperationDisplayInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableRpOperationDisplayInfo model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"odjpslwejd\",\"resource\":\"wryoqpsoacc\",\"provider\":\"zakljlahbc\",\"operation\":\"ffdfdosygexpa\"}")
-                .toObject(AvailableRpOperationDisplayInfo.class);
-        Assertions.assertEquals("odjpslwejd", model.description());
-        Assertions.assertEquals("wryoqpsoacc", model.resource());
-        Assertions.assertEquals("zakljlahbc", model.provider());
-        Assertions.assertEquals("ffdfdosygexpa", model.operation());
+        AvailableRpOperationDisplayInfo model = BinaryData.fromString(
+            "{\"description\":\"datqxhocdgeabl\",\"resource\":\"huticndvkao\",\"provider\":\"yiftyhxhuro\",\"operation\":\"tyxolniwpwc\"}")
+            .toObject(AvailableRpOperationDisplayInfo.class);
+        Assertions.assertEquals("datqxhocdgeabl", model.description());
+        Assertions.assertEquals("huticndvkao", model.resource());
+        Assertions.assertEquals("yiftyhxhuro", model.provider());
+        Assertions.assertEquals("tyxolniwpwc", model.operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableRpOperationDisplayInfo model =
-            new AvailableRpOperationDisplayInfo()
-                .withDescription("odjpslwejd")
-                .withResource("wryoqpsoacc")
-                .withProvider("zakljlahbc")
-                .withOperation("ffdfdosygexpa");
+        AvailableRpOperationDisplayInfo model = new AvailableRpOperationDisplayInfo().withDescription("datqxhocdgeabl")
+            .withResource("huticndvkao")
+            .withProvider("yiftyhxhuro")
+            .withOperation("tyxolniwpwc");
         model = BinaryData.fromObject(model).toObject(AvailableRpOperationDisplayInfo.class);
-        Assertions.assertEquals("odjpslwejd", model.description());
-        Assertions.assertEquals("wryoqpsoacc", model.resource());
-        Assertions.assertEquals("zakljlahbc", model.provider());
-        Assertions.assertEquals("ffdfdosygexpa", model.operation());
+        Assertions.assertEquals("datqxhocdgeabl", model.description());
+        Assertions.assertEquals("huticndvkao", model.resource());
+        Assertions.assertEquals("yiftyhxhuro", model.provider());
+        Assertions.assertEquals("tyxolniwpwc", model.operation());
     }
 }

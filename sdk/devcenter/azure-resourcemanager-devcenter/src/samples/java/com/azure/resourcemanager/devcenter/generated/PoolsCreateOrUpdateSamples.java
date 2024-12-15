@@ -17,7 +17,8 @@ import java.util.Arrays;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Put.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Put.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -42,7 +43,8 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_PutWithManagedNetwork.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * Pools_PutWithManagedNetwork.json
      */
     /**
      * Sample code: Pools_CreateOrUpdateWithManagedNetwork.

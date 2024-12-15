@@ -37,6 +37,12 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -53,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -119,7 +125,6 @@
             <bannedDependencies>
               <includes>
                 <include>redis.clients:jedis:[5.2.0]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
-                <include>org.mockito:mockito-inline:[4.11.0]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

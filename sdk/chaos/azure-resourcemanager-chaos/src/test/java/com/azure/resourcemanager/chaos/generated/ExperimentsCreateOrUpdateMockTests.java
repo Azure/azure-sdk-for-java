@@ -54,28 +54,35 @@ public final class ExperimentsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Experiment response = manager.experiments().define("yjkqabqgzslesjcb").withRegion("axconfozauo")
-            .withExistingResourceGroup("aryeu")
-            .withSteps(Arrays.asList(new ChaosExperimentStep().withName("ebjvewzcjzn").withBranches(
-                Arrays.asList(new ChaosExperimentBranch().withName("cpmguaadraufact").withActions(Arrays.asList()),
-                    new ChaosExperimentBranch().withName("ahzovajjziuxxp").withActions(Arrays.asList()),
-                    new ChaosExperimentBranch().withName("hneekul").withActions(Arrays.asList()),
-                    new ChaosExperimentBranch().withName("gs").withActions(Arrays.asList())))))
-            .withSelectors(Arrays.asList(
-                new ChaosTargetSelector().withId("ubkwdle").withFilter(new ChaosTargetFilter())
-                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                new ChaosTargetSelector().withId("ygdxpgpqchis").withFilter(new ChaosTargetFilter())
-                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))))
-            .withTags(mapOf("epzl", "kokwbqplhlvnu", "vmnnrw", "phwzsoldweyuqdu", "wjhhgdnhxmsivf", "biorktal",
-                "zaofjchvcyy", "miloxggdufiqndie"))
-            .withIdentity(
-                new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
-                    mapOf("w", new UserAssignedIdentity(), "vbquwr", new UserAssignedIdentity())))
-            .create();
+        Experiment response
+            = manager.experiments()
+                .define("yjkqabqgzslesjcb")
+                .withRegion("axconfozauo")
+                .withExistingResourceGroup("aryeu")
+                .withSteps(Arrays.asList(new ChaosExperimentStep().withName("ebjvewzcjzn")
+                    .withBranches(Arrays.asList(
+                        new ChaosExperimentBranch().withName("cpmguaadraufact").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("ahzovajjziuxxp").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("hneekul").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("gs").withActions(Arrays.asList())))))
+                .withSelectors(Arrays.asList(
+                    new ChaosTargetSelector().withId("ubkwdle")
+                        .withFilter(new ChaosTargetFilter())
+                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                    new ChaosTargetSelector().withId("ygdxpgpqchis")
+                        .withFilter(new ChaosTargetFilter())
+                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))))
+                .withTags(mapOf("epzl", "kokwbqplhlvnu", "vmnnrw", "phwzsoldweyuqdu", "wjhhgdnhxmsivf", "biorktal",
+                    "zaofjchvcyy", "miloxggdufiqndie"))
+                .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf("w", new UserAssignedIdentity(), "vbquwr", new UserAssignedIdentity())))
+                .create();
 
         Assertions.assertEquals("yiopi", response.location());
         Assertions.assertEquals("qfkuvscxkdmli", response.tags().get("ovibrxkp"));

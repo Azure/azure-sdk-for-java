@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -177,6 +178,9 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,8 +191,10 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
         jsonWriter.writeStringField("deliveryStatusDetails", this.deliveryStatusDetails);
         jsonWriter.writeArrayField("deliveryAttempts", this.deliveryAttempts,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         jsonWriter.writeStringField("tag", this.tag);
         return jsonWriter.writeEndObject();
     }
@@ -224,8 +230,8 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
                         = reader.readArray(reader1 -> AcsSmsDeliveryAttemptProperties.fromJson(reader1));
                     deserializedAcsSmsDeliveryReportReceivedEventData.deliveryAttempts = deliveryAttempts;
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsSmsDeliveryReportReceivedEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsSmsDeliveryReportReceivedEventData.receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("tag".equals(fieldName)) {
                     deserializedAcsSmsDeliveryReportReceivedEventData.tag = reader.getString();
                 } else {

@@ -5,50 +5,54 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a benefit utilization summary. */
+/**
+ * The properties of a benefit utilization summary.
+ */
 @Fluent
-public class BenefitUtilizationSummaryProperties {
+public class BenefitUtilizationSummaryProperties implements JsonSerializable<BenefitUtilizationSummaryProperties> {
     /*
      * ARM SKU name. For example, 'Compute_Savings_Plan' for savings plan.
      */
-    @JsonProperty(value = "armSkuName", access = JsonProperty.Access.WRITE_ONLY)
     private String armSkuName;
 
     /*
      * The benefit ID is the identifier of the benefit.
      */
-    @JsonProperty(value = "benefitId", access = JsonProperty.Access.WRITE_ONLY)
     private String benefitId;
 
     /*
      * The benefit order ID is the identifier for a benefit purchase.
      */
-    @JsonProperty(value = "benefitOrderId", access = JsonProperty.Access.WRITE_ONLY)
     private String benefitOrderId;
 
     /*
      * The benefit type. Supported values: 'SavingsPlan'.
      */
-    @JsonProperty(value = "benefitType")
     private BenefitKind benefitType;
 
     /*
      * Date corresponding to the utilization summary record. If the grain of data is monthly, value for this field will
      * be first day of the month.
      */
-    @JsonProperty(value = "usageDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime usageDate;
 
-    /** Creates an instance of BenefitUtilizationSummaryProperties class. */
+    /**
+     * Creates an instance of BenefitUtilizationSummaryProperties class.
+     */
     public BenefitUtilizationSummaryProperties() {
     }
 
     /**
      * Get the armSkuName property: ARM SKU name. For example, 'Compute_Savings_Plan' for savings plan.
-     *
+     * 
      * @return the armSkuName value.
      */
     public String armSkuName() {
@@ -56,8 +60,19 @@ public class BenefitUtilizationSummaryProperties {
     }
 
     /**
+     * Set the armSkuName property: ARM SKU name. For example, 'Compute_Savings_Plan' for savings plan.
+     * 
+     * @param armSkuName the armSkuName value to set.
+     * @return the BenefitUtilizationSummaryProperties object itself.
+     */
+    BenefitUtilizationSummaryProperties withArmSkuName(String armSkuName) {
+        this.armSkuName = armSkuName;
+        return this;
+    }
+
+    /**
      * Get the benefitId property: The benefit ID is the identifier of the benefit.
-     *
+     * 
      * @return the benefitId value.
      */
     public String benefitId() {
@@ -65,8 +80,19 @@ public class BenefitUtilizationSummaryProperties {
     }
 
     /**
+     * Set the benefitId property: The benefit ID is the identifier of the benefit.
+     * 
+     * @param benefitId the benefitId value to set.
+     * @return the BenefitUtilizationSummaryProperties object itself.
+     */
+    BenefitUtilizationSummaryProperties withBenefitId(String benefitId) {
+        this.benefitId = benefitId;
+        return this;
+    }
+
+    /**
      * Get the benefitOrderId property: The benefit order ID is the identifier for a benefit purchase.
-     *
+     * 
      * @return the benefitOrderId value.
      */
     public String benefitOrderId() {
@@ -74,8 +100,19 @@ public class BenefitUtilizationSummaryProperties {
     }
 
     /**
+     * Set the benefitOrderId property: The benefit order ID is the identifier for a benefit purchase.
+     * 
+     * @param benefitOrderId the benefitOrderId value to set.
+     * @return the BenefitUtilizationSummaryProperties object itself.
+     */
+    BenefitUtilizationSummaryProperties withBenefitOrderId(String benefitOrderId) {
+        this.benefitOrderId = benefitOrderId;
+        return this;
+    }
+
+    /**
      * Get the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @return the benefitType value.
      */
     public BenefitKind benefitType() {
@@ -84,7 +121,7 @@ public class BenefitUtilizationSummaryProperties {
 
     /**
      * Set the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @param benefitType the benefitType value to set.
      * @return the BenefitUtilizationSummaryProperties object itself.
      */
@@ -96,7 +133,7 @@ public class BenefitUtilizationSummaryProperties {
     /**
      * Get the usageDate property: Date corresponding to the utilization summary record. If the grain of data is
      * monthly, value for this field will be first day of the month.
-     *
+     * 
      * @return the usageDate value.
      */
     public OffsetDateTime usageDate() {
@@ -104,10 +141,69 @@ public class BenefitUtilizationSummaryProperties {
     }
 
     /**
+     * Set the usageDate property: Date corresponding to the utilization summary record. If the grain of data is
+     * monthly, value for this field will be first day of the month.
+     * 
+     * @param usageDate the usageDate value to set.
+     * @return the BenefitUtilizationSummaryProperties object itself.
+     */
+    BenefitUtilizationSummaryProperties withUsageDate(OffsetDateTime usageDate) {
+        this.usageDate = usageDate;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("benefitType", this.benefitType == null ? null : this.benefitType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BenefitUtilizationSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BenefitUtilizationSummaryProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BenefitUtilizationSummaryProperties.
+     */
+    public static BenefitUtilizationSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BenefitUtilizationSummaryProperties deserializedBenefitUtilizationSummaryProperties
+                = new BenefitUtilizationSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("armSkuName".equals(fieldName)) {
+                    deserializedBenefitUtilizationSummaryProperties.armSkuName = reader.getString();
+                } else if ("benefitId".equals(fieldName)) {
+                    deserializedBenefitUtilizationSummaryProperties.benefitId = reader.getString();
+                } else if ("benefitOrderId".equals(fieldName)) {
+                    deserializedBenefitUtilizationSummaryProperties.benefitOrderId = reader.getString();
+                } else if ("benefitType".equals(fieldName)) {
+                    deserializedBenefitUtilizationSummaryProperties.benefitType
+                        = BenefitKind.fromString(reader.getString());
+                } else if ("usageDate".equals(fieldName)) {
+                    deserializedBenefitUtilizationSummaryProperties.usageDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBenefitUtilizationSummaryProperties;
+        });
     }
 }

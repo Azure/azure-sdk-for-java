@@ -7,14 +7,15 @@ package com.azure.resourcemanager.synapse.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.synapse.models.DataConnection;
+import com.azure.resourcemanager.synapse.models.DataConnectionKind;
 
 public final class DataConnectionImpl implements DataConnection {
     private DataConnectionInner innerObject;
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DataConnectionImpl(
-        DataConnectionInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DataConnectionImpl(DataConnectionInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -29,6 +30,10 @@ public final class DataConnectionImpl implements DataConnection {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public DataConnectionKind kind() {
+        return this.innerModel().kind();
     }
 
     public String location() {

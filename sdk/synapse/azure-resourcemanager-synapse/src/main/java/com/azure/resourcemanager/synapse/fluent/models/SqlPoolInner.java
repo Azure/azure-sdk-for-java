@@ -6,43 +6,57 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
  * SQL pool
- *
- * <p>A SQL Analytics pool.
+ * 
+ * A SQL Analytics pool.
  */
 @Fluent
 public final class SqlPoolInner extends Resource {
     /*
-     * Sku
-     *
      * SQL pool SKU
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * SQL pool properties
      */
-    @JsonProperty(value = "properties")
     private SqlPoolResourceProperties innerProperties;
 
-    /** Creates an instance of SqlPoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SqlPoolInner class.
+     */
     public SqlPoolInner() {
     }
 
     /**
-     * Get the sku property: Sku
-     *
-     * <p>SQL pool SKU.
-     *
+     * Get the sku property: SQL pool SKU.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -50,10 +64,8 @@ public final class SqlPoolInner extends Resource {
     }
 
     /**
-     * Set the sku property: Sku
-     *
-     * <p>SQL pool SKU.
-     *
+     * Set the sku property: SQL pool SKU.
+     * 
      * @param sku the sku value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -64,21 +76,55 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the innerProperties property: SQL pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlPoolResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -87,7 +133,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the maxSizeBytes property: Maximum size in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -96,7 +142,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the maxSizeBytes property: Maximum size in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -110,7 +156,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the collation property: Collation mode.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -119,7 +165,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the collation property: Collation mode.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -133,7 +179,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the sourceDatabaseId property: Source database to create from.
-     *
+     * 
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -142,7 +188,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the sourceDatabaseId property: Source database to create from.
-     *
+     * 
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -156,7 +202,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the recoverableDatabaseId property: Backup database to restore from.
-     *
+     * 
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -165,7 +211,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the recoverableDatabaseId property: Backup database to restore from.
-     *
+     * 
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -179,7 +225,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the provisioningState property: Resource state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -188,7 +234,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the provisioningState property: Resource state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -202,7 +248,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the status property: Resource status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -211,7 +257,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the restorePointInTime property: Snapshot time to restore.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -220,7 +266,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the restorePointInTime property: Snapshot time to restore.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -234,19 +280,19 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the createMode property: Specifies the mode of sql pool creation.
-     *
-     * <p>Default: regular sql pool creation.
-     *
-     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * 
+     * Default: regular sql pool creation.
+     * 
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
      * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
-     *
-     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * 
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverableDatabaseId to restore.
-     *
-     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * 
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
      * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
-     *
+     * 
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -255,19 +301,19 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the createMode property: Specifies the mode of sql pool creation.
-     *
-     * <p>Default: regular sql pool creation.
-     *
-     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * 
+     * Default: regular sql pool creation.
+     * 
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
      * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
-     *
-     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * 
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverableDatabaseId to restore.
-     *
-     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * 
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
      * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -281,7 +327,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the creationDate property: Date the SQL pool was created.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -290,7 +336,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the storageAccountType property: The storage account type used to store backups for this sql pool.
-     *
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountType storageAccountType() {
@@ -299,7 +345,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the storageAccountType property: The storage account type used to store backups for this sql pool.
-     *
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -313,7 +359,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Get the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     *
+     * 
      * @return the sourceDatabaseDeletionDate value.
      */
     public OffsetDateTime sourceDatabaseDeletionDate() {
@@ -322,7 +368,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Set the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     *
+     * 
      * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
      * @return the SqlPoolInner object itself.
      */
@@ -336,7 +382,7 @@ public final class SqlPoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -346,5 +392,58 @@ public final class SqlPoolInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlPoolInner.
+     */
+    public static SqlPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolInner deserializedSqlPoolInner = new SqlPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlPoolInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSqlPoolInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlPoolInner.innerProperties = SqlPoolResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolInner;
+        });
     }
 }

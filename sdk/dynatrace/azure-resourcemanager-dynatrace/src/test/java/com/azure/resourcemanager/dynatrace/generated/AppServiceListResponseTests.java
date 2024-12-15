@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AppServiceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppServiceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceId\":\"jqabcypmivkwlzuv\",\"version\":\"fwnfnb\",\"monitoringType\":\"CLOUD_INFRASTRUCTURE\",\"autoUpdateSetting\":\"DISABLED\",\"updateStatus\":\"SUPPRESSED\",\"availabilityState\":\"UNEXPECTED_SHUTDOWN\",\"logModule\":\"DISABLED\",\"hostGroup\":\"qgtz\",\"hostName\":\"pnqbqqwxrjfe\"}],\"nextLink\":\"lnwsubisn\"}")
-                .toObject(AppServiceListResponse.class);
+        AppServiceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"resourceId\":\"jqabcypmivkwlzuv\",\"version\":\"fwnfnb\",\"monitoringType\":\"CLOUD_INFRASTRUCTURE\",\"autoUpdateSetting\":\"DISABLED\",\"updateStatus\":\"SUPPRESSED\",\"availabilityState\":\"UNEXPECTED_SHUTDOWN\",\"logModule\":\"DISABLED\",\"hostGroup\":\"qgtz\",\"hostName\":\"pnqbqqwxrjfe\"}],\"nextLink\":\"lnwsubisn\"}")
+            .toObject(AppServiceListResponse.class);
         Assertions.assertEquals("jqabcypmivkwlzuv", model.value().get(0).resourceId());
         Assertions.assertEquals("fwnfnb", model.value().get(0).version());
         Assertions.assertEquals(MonitoringType.CLOUD_INFRASTRUCTURE, model.value().get(0).monitoringType());
@@ -37,22 +35,17 @@ public final class AppServiceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServiceListResponse model =
-            new AppServiceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AppServiceInfoInner()
-                                .withResourceId("jqabcypmivkwlzuv")
-                                .withVersion("fwnfnb")
-                                .withMonitoringType(MonitoringType.CLOUD_INFRASTRUCTURE)
-                                .withAutoUpdateSetting(AutoUpdateSetting.DISABLED)
-                                .withUpdateStatus(UpdateStatus.SUPPRESSED)
-                                .withAvailabilityState(AvailabilityState.UNEXPECTED_SHUTDOWN)
-                                .withLogModule(LogModule.DISABLED)
-                                .withHostGroup("qgtz")
-                                .withHostname("pnqbqqwxrjfe")))
-                .withNextLink("lnwsubisn");
+        AppServiceListResponse model = new AppServiceListResponse()
+            .withValue(Arrays.asList(new AppServiceInfoInner().withResourceId("jqabcypmivkwlzuv")
+                .withVersion("fwnfnb")
+                .withMonitoringType(MonitoringType.CLOUD_INFRASTRUCTURE)
+                .withAutoUpdateSetting(AutoUpdateSetting.DISABLED)
+                .withUpdateStatus(UpdateStatus.SUPPRESSED)
+                .withAvailabilityState(AvailabilityState.UNEXPECTED_SHUTDOWN)
+                .withLogModule(LogModule.DISABLED)
+                .withHostGroup("qgtz")
+                .withHostname("pnqbqqwxrjfe")))
+            .withNextLink("lnwsubisn");
         model = BinaryData.fromObject(model).toObject(AppServiceListResponse.class);
         Assertions.assertEquals("jqabcypmivkwlzuv", model.value().get(0).resourceId());
         Assertions.assertEquals("fwnfnb", model.value().get(0).version());

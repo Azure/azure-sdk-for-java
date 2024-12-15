@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.EventModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Event model collection. */
+/**
+ * Event model collection.
+ */
 @Fluent
-public final class EventModelCollection {
+public final class EventModelCollection implements JsonSerializable<EventModelCollection> {
     /*
      * Gets or sets the list of events.
      */
-    @JsonProperty(value = "value")
     private List<EventModelInner> value;
 
     /*
      * Gets or sets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EventModelCollection class. */
+    /**
+     * Creates an instance of EventModelCollection class.
+     */
     public EventModelCollection() {
     }
 
     /**
      * Get the value property: Gets or sets the list of events.
-     *
+     * 
      * @return the value value.
      */
     public List<EventModelInner> value() {
@@ -39,7 +45,7 @@ public final class EventModelCollection {
 
     /**
      * Set the value property: Gets or sets the list of events.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventModelCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class EventModelCollection {
 
     /**
      * Get the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class EventModelCollection {
 
     /**
      * Set the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EventModelCollection object itself.
      */
@@ -70,12 +76,52 @@ public final class EventModelCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventModelCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventModelCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventModelCollection.
+     */
+    public static EventModelCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventModelCollection deserializedEventModelCollection = new EventModelCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EventModelInner> value = reader.readArray(reader1 -> EventModelInner.fromJson(reader1));
+                    deserializedEventModelCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEventModelCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventModelCollection;
+        });
     }
 }

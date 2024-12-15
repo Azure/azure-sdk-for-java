@@ -6,13 +6,15 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolOperationResults. */
+/**
+ * Resource collection API of SqlPoolOperationResults.
+ */
 public interface SqlPoolOperationResults {
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -22,14 +24,14 @@ public interface SqlPoolOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a SQL pool operation.
      */
-    SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId);
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -40,6 +42,6 @@ public interface SqlPoolOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a SQL pool operation.
      */
-    SqlPool getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SqlPool getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context);
 }

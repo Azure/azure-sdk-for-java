@@ -12,9 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  * Type representing authorization rule defined for topic.
  */
 @Fluent
-public interface TopicAuthorizationRule extends
-    AuthorizationRule<TopicAuthorizationRule>,
-    Updatable<TopicAuthorizationRule.Update> {
+public interface TopicAuthorizationRule
+    extends AuthorizationRule<TopicAuthorizationRule>, Updatable<TopicAuthorizationRule.Update> {
     /**
      * @return the name of the namespace that the parent topic belongs to
      */
@@ -32,9 +31,8 @@ public interface TopicAuthorizationRule extends
         /**
          * The first stage of topic authorization rule definition.
          */
-        interface Blank extends AuthorizationRule
-                .DefinitionStages
-                .WithListenOrSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
+        interface Blank extends
+            AuthorizationRule.DefinitionStages.WithListenOrSendOrManage<TopicAuthorizationRule.DefinitionStages.WithCreate> {
         }
 
         /**
@@ -49,16 +47,14 @@ public interface TopicAuthorizationRule extends
     /**
      * The entirety of the topic authorization rule definition.
      */
-    interface Definition extends
-            TopicAuthorizationRule.DefinitionStages.Blank,
-            TopicAuthorizationRule.DefinitionStages.WithCreate {
+    interface Definition
+        extends TopicAuthorizationRule.DefinitionStages.Blank, TopicAuthorizationRule.DefinitionStages.WithCreate {
     }
 
     /**
      * The entirety of the topic authorization rule update.
      */
-    interface Update extends
-        Appliable<TopicAuthorizationRule>,
+    interface Update extends Appliable<TopicAuthorizationRule>,
         AuthorizationRule.UpdateStages.WithListenOrSendOrManage<TopicAuthorizationRule.Update> {
     }
 }

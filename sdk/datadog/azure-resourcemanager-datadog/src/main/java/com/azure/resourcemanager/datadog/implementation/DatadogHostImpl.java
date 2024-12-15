@@ -15,8 +15,8 @@ public final class DatadogHostImpl implements DatadogHost {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogHostImpl(
-        DatadogHostInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    DatadogHostImpl(DatadogHostInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

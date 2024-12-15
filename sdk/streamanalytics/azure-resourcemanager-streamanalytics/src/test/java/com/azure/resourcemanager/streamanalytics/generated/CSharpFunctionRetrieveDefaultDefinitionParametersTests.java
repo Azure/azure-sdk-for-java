@@ -13,19 +13,19 @@ public final class CSharpFunctionRetrieveDefaultDefinitionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CSharpFunctionRetrieveDefaultDefinitionParameters model = BinaryData.fromString(
-            "{\"bindingType\":\"Microsoft.StreamAnalytics/CLRUdf\",\"bindingRetrievalProperties\":{\"script\":\"kthumaqolbgycdui\",\"udfType\":\"Scalar\"}}")
+            "{\"bindingType\":\"Microsoft.StreamAnalytics/CLRUdf\",\"bindingRetrievalProperties\":{\"script\":\"ygtdsslswt\",\"udfType\":\"Scalar\"}}")
             .toObject(CSharpFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("kthumaqolbgycdui", model.script());
+        Assertions.assertEquals("ygtdsslswt", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CSharpFunctionRetrieveDefaultDefinitionParameters model
-            = new CSharpFunctionRetrieveDefaultDefinitionParameters().withScript("kthumaqolbgycdui")
+            = new CSharpFunctionRetrieveDefaultDefinitionParameters().withScript("ygtdsslswt")
                 .withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model).toObject(CSharpFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("kthumaqolbgycdui", model.script());
+        Assertions.assertEquals("ygtdsslswt", model.script());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

@@ -1017,6 +1017,9 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     seed: Integer (Optional)
      * }
@@ -1047,8 +1050,8 @@ public final class OpenAIClientImpl {
      *                 }
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }
@@ -1090,6 +1093,16 @@ public final class OpenAIClientImpl {
      *                     URL: String (Optional)
      *                     license: String (Optional)
      *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *             logprobs (Required): {
      *                 tokens (Required): [
@@ -1114,6 +1127,12 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      *     system_fingerprint: String (Optional)
      * }
@@ -1174,6 +1193,9 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     seed: Integer (Optional)
      * }
@@ -1204,8 +1226,8 @@ public final class OpenAIClientImpl {
      *                 }
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }
@@ -1247,6 +1269,16 @@ public final class OpenAIClientImpl {
      *                     URL: String (Optional)
      *                     license: String (Optional)
      *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *             logprobs (Required): {
      *                 tokens (Required): [
@@ -1271,6 +1303,12 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      *     system_fingerprint: String (Optional)
      * }
@@ -1318,11 +1356,12 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)
      *     max_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
@@ -1336,6 +1375,9 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
@@ -1362,6 +1404,7 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
+     *     parallel_tool_calls: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -1459,8 +1502,8 @@ public final class OpenAIClientImpl {
      *                 }
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }
@@ -1484,6 +1527,16 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
      *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -1532,6 +1585,12 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      * }
      * }
@@ -1579,11 +1638,12 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)
      *     max_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
@@ -1597,6 +1657,9 @@ public final class OpenAIClientImpl {
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
+     *     stream_options (Optional): {
+     *         include_usage: Boolean (Optional)
+     *     }
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
@@ -1623,6 +1686,7 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
+     *     parallel_tool_calls: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -1720,8 +1784,8 @@ public final class OpenAIClientImpl {
      *                 }
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }
@@ -1745,6 +1809,16 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                     URL: String (Optional)
      *                     license: String (Optional)
+     *                 }
+     *                 ungrounded_material (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             completion_start_offset: int (Required)
+     *                             completion_end_offset: int (Required)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             enhancements (Optional): {
@@ -1793,6 +1867,12 @@ public final class OpenAIClientImpl {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
+     *         prompt_tokens_details (Optional): {
+     *             cached_tokens: Integer (Optional)
+     *         }
+     *         completion_tokens_details (Optional): {
+     *             reasoning_tokens: Integer (Optional)
+     *         }
      *     }
      * }
      * }
@@ -1872,8 +1952,8 @@ public final class OpenAIClientImpl {
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }
@@ -1958,8 +2038,8 @@ public final class OpenAIClientImpl {
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *                 custom_blocklists (Optional): {
      *                     filtered: boolean (Required)
-     *                     details (Optional): [
-     *                          (Optional){
+     *                     details (Required): [
+     *                          (Required){
      *                             filtered: boolean (Required)
      *                             id: String (Required)
      *                         }

@@ -45,7 +45,9 @@ class ServiceBusJmsAutoConfigurationTests {
         new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(
+            JmsAutoConfiguration.class,
+            ServiceBusJmsAutoConfiguration.class))
         .withInitializer(context -> processor.postProcessEnvironment(context.getEnvironment(), null));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {

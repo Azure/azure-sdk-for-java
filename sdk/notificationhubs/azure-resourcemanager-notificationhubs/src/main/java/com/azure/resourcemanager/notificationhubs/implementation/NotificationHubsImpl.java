@@ -107,8 +107,8 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public Response<DebugSendResponse> debugSendWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, Context context) {
-        Response<DebugSendResponseInner> inner = this.serviceClient().debugSendWithResponse(resourceGroupName,
-            namespaceName, notificationHubName, context);
+        Response<DebugSendResponseInner> inner = this.serviceClient()
+            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DebugSendResponseImpl(inner.getValue(), this.manager()));
@@ -129,21 +129,22 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, String authorizationRuleName, Context context) {
-        return this.serviceClient().deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, authorizationRuleName, context);
+        return this.serviceClient()
+            .deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, context);
     }
 
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String notificationHubName,
         String authorizationRuleName) {
-        this.serviceClient().deleteAuthorizationRule(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName);
+        this.serviceClient()
+            .deleteAuthorizationRule(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName);
     }
 
     public Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String notificationHubName, String authorizationRuleName, Context context) {
-        Response<SharedAccessAuthorizationRuleResourceInner> inner
-            = this.serviceClient().getAuthorizationRuleWithResponse(resourceGroupName, namespaceName,
-                notificationHubName, authorizationRuleName, context);
+        Response<SharedAccessAuthorizationRuleResourceInner> inner = this.serviceClient()
+            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SharedAccessAuthorizationRuleResourceImpl(inner.getValue(), this.manager()));
@@ -154,8 +155,8 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public SharedAccessAuthorizationRuleResource getAuthorizationRule(String resourceGroupName, String namespaceName,
         String notificationHubName, String authorizationRuleName) {
-        SharedAccessAuthorizationRuleResourceInner inner = this.serviceClient().getAuthorizationRule(resourceGroupName,
-            namespaceName, notificationHubName, authorizationRuleName);
+        SharedAccessAuthorizationRuleResourceInner inner = this.serviceClient()
+            .getAuthorizationRule(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName);
         if (inner != null) {
             return new SharedAccessAuthorizationRuleResourceImpl(inner, this.manager());
         } else {
@@ -181,8 +182,9 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public Response<ResourceListKeys> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, String authorizationRuleName, Context context) {
-        Response<ResourceListKeysInner> inner = this.serviceClient().listKeysWithResponse(resourceGroupName,
-            namespaceName, notificationHubName, authorizationRuleName, context);
+        Response<ResourceListKeysInner> inner = this.serviceClient()
+            .listKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceListKeysImpl(inner.getValue(), this.manager()));
@@ -193,8 +195,8 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public ResourceListKeys listKeys(String resourceGroupName, String namespaceName, String notificationHubName,
         String authorizationRuleName) {
-        ResourceListKeysInner inner = this.serviceClient().listKeys(resourceGroupName, namespaceName,
-            notificationHubName, authorizationRuleName);
+        ResourceListKeysInner inner = this.serviceClient()
+            .listKeys(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName);
         if (inner != null) {
             return new ResourceListKeysImpl(inner, this.manager());
         } else {
@@ -204,8 +206,9 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public Response<ResourceListKeys> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String notificationHubName, String authorizationRuleName, PolicyKeyResource parameters, Context context) {
-        Response<ResourceListKeysInner> inner = this.serviceClient().regenerateKeysWithResponse(resourceGroupName,
-            namespaceName, notificationHubName, authorizationRuleName, parameters, context);
+        Response<ResourceListKeysInner> inner = this.serviceClient()
+            .regenerateKeysWithResponse(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName,
+                parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceListKeysImpl(inner.getValue(), this.manager()));
@@ -216,8 +219,8 @@ public final class NotificationHubsImpl implements NotificationHubs {
 
     public ResourceListKeys regenerateKeys(String resourceGroupName, String namespaceName, String notificationHubName,
         String authorizationRuleName, PolicyKeyResource parameters) {
-        ResourceListKeysInner inner = this.serviceClient().regenerateKeys(resourceGroupName, namespaceName,
-            notificationHubName, authorizationRuleName, parameters);
+        ResourceListKeysInner inner = this.serviceClient()
+            .regenerateKeys(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters);
         if (inner != null) {
             return new ResourceListKeysImpl(inner, this.manager());
         } else {
@@ -307,8 +310,10 @@ public final class NotificationHubsImpl implements NotificationHubs {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationRules'.", id)));
         }
-        return this.getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
-            authorizationRuleName, Context.NONE).getValue();
+        return this
+            .getAuthorizationRuleWithResponse(resourceGroupName, namespaceName, notificationHubName,
+                authorizationRuleName, Context.NONE)
+            .getValue();
     }
 
     public Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleByIdWithResponse(String id,
