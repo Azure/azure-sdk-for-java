@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class NodeTypesRestartSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/RestartNodes_example.json
      */
     /**
