@@ -42,6 +42,12 @@ public final class SalesforceV2Source extends TabularSource {
      */
     private Object includeDeletedObjects;
 
+    /*
+     * Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or
+     * Expression with resultType integer).
+     */
+    private Object pageSize;
+
     /**
      * Creates an instance of SalesforceV2Source class.
      */
@@ -131,6 +137,28 @@ public final class SalesforceV2Source extends TabularSource {
     }
 
     /**
+     * Get the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the pageSize value.
+     */
+    public Object pageSize() {
+        return this.pageSize;
+    }
+
+    /**
+     * Set the pageSize property: Page size for each http request, too large pageSize will caused timeout, default
+     * 300,000. Type: integer (or Expression with resultType integer).
+     * 
+     * @param pageSize the pageSize value to set.
+     * @return the SalesforceV2Source object itself.
+     */
+    public SalesforceV2Source withPageSize(Object pageSize) {
+        this.pageSize = pageSize;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -191,7 +219,6 @@ public final class SalesforceV2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -210,6 +237,7 @@ public final class SalesforceV2Source extends TabularSource {
         jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
         jsonWriter.writeUntypedField("query", this.query);
         jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        jsonWriter.writeUntypedField("pageSize", this.pageSize);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -254,6 +282,8 @@ public final class SalesforceV2Source extends TabularSource {
                     deserializedSalesforceV2Source.query = reader.readUntyped();
                 } else if ("includeDeletedObjects".equals(fieldName)) {
                     deserializedSalesforceV2Source.includeDeletedObjects = reader.readUntyped();
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedSalesforceV2Source.pageSize = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

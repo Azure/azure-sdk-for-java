@@ -130,7 +130,6 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

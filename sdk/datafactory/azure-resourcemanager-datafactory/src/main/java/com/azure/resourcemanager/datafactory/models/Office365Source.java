@@ -245,7 +245,6 @@ public final class Office365Source extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
