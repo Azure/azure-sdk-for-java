@@ -1,16 +1,77 @@
 # Release History
 
-## 1.0.0-beta.1 (2024-12-16)
+## 1.0.0 (2024-12-16)
 
 - Azure Resource Manager Playwright Testing client library for Java. This package contains Microsoft Azure SDK for Playwright Testing Management SDK. Microsoft.AzurePlaywrightService Resource Provider Management API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AccountListResult` was removed
 
-### Other Changes
+#### `models.OperationListResult` was removed
+
+#### `models.QuotaListResult` was removed
+
+#### `models.QuotaProperties` was modified
+
+* `withFreeTrial(models.FreeTrialProperties)` was removed
+
+#### `models.FreeTrialProperties` was modified
+
+* `usedValue()` was removed
+* `expiryAt()` was removed
+* `allocatedValue()` was removed
+* `createdAt()` was removed
+* `percentageUsed()` was removed
+
+### Features Added
+
+* `models.CheckNameAvailabilityResponse` was added
+
+* `implementation.models.AccountListResult` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `models.CheckNameAvailabilityReason` was added
+
+* `implementation.models.AccountQuotaListResult` was added
+
+* `models.AccountFreeTrialProperties` was added
+
+* `models.AccountQuotaProperties` was added
+
+* `models.CheckNameAvailabilityRequest` was added
+
+* `implementation.models.QuotaListResult` was added
+
+* `models.AccountQuota` was added
+
+* `models.OfferingType` was added
+
+* `models.AccountQuotas` was added
+
+#### `PlaywrightTestingManager` was modified
+
+* `accountQuotas()` was added
+
+#### `models.QuotaProperties` was modified
+
+* `offeringType()` was added
+
+#### `models.AccountProperties` was modified
+
+* `localAuth()` was added
+* `withLocalAuth(models.EnablementStatus)` was added
+
+#### `models.AccountUpdateProperties` was modified
+
+* `localAuth()` was added
+* `withLocalAuth(models.EnablementStatus)` was added
+
+#### `models.Accounts` was modified
+
+* `checkNameAvailabilityWithResponse(models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was added
+* `checkNameAvailability(models.CheckNameAvailabilityRequest)` was added
 
 ## 1.0.0-beta.3 (2024-12-03)
 
