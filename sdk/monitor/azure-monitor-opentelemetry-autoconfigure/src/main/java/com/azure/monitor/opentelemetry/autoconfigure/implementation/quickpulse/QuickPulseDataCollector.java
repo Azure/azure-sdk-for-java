@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
@@ -33,7 +32,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -60,8 +58,6 @@ final class QuickPulseDataCollector {
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
-
-    private static final ClientLogger logger = new ClientLogger(QuickPulseDataCollector.class);
 
     // TODO (harskaur): Track projection (runtime) related errors in future PR
     private final AtomicReference<FilteringConfiguration> configuration;
@@ -181,15 +177,7 @@ final class QuickPulseDataCollector {
 
     private void applyMetricFilters(TelemetryColumns columns, TelemetryType telemetryType,
         FilteringConfiguration currentConfig, Counters currentCounters) {
-        // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
         List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
-        try {
-            for (DerivedMetricInfo dmi : metricsConfig) {
-                logger.verbose(dmi.toJsonString());
-            }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
         for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
             if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
                 synchronized (currentCounters.derivedMetrics) {

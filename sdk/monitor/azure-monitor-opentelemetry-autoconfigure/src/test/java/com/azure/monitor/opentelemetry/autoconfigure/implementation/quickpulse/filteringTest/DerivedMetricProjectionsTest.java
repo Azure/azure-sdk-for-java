@@ -24,7 +24,7 @@ class DerivedMetricProjectionsTest {
     public static final String TRACE = "Trace";
 
     private DerivedMetricInfo createDerivedMetricInfoWithEmptyFilters(String id, String telemetryType,
-                                                                      AggregationType agg, AggregationType backendAgg, String projection) {
+        AggregationType agg, AggregationType backendAgg, String projection) {
         DerivedMetricInfo result = new DerivedMetricInfo();
         result.setId(id);
         result.setTelemetryType(telemetryType);
@@ -47,8 +47,8 @@ class DerivedMetricProjectionsTest {
         String exceptionId = "id-for-exception";
         String traceId = "id-for-trace";
 
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, REQUEST,
-            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, REQUEST, AggregationType.SUM,
+            AggregationType.SUM, DerivedMetricProjections.COUNT);
 
         DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters(dependencyId, DEPENDENCY,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
@@ -56,8 +56,8 @@ class DerivedMetricProjectionsTest {
         DerivedMetricInfo dmiException = createDerivedMetricInfoWithEmptyFilters(exceptionId, EXCEPTION,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
 
-        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters(traceId, TRACE,
-            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
+        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters(traceId, TRACE, AggregationType.SUM,
+            AggregationType.SUM, DerivedMetricProjections.COUNT);
 
         RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
             "GET /hiThere", new HashMap<>(), new HashMap<>());
