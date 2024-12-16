@@ -20,7 +20,7 @@ import java.util.concurrent.Exchanger;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-jms-passwordless-caching")
-@Import(TestServiceBusJmsConfiguration.PasswordlessQueuePoolApiConfig.class)
+@Import(TestServiceBusJmsConfiguration.PasswordlessQueueCachingApiConfig.class)
 public class ServiceBusJmsPasswordlessCachingIT extends TestServiceBusJmsConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsPasswordlessCachingIT.class);
 
