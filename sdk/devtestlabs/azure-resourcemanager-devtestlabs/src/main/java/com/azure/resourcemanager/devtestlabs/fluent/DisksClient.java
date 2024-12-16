@@ -16,11 +16,13 @@ import com.azure.resourcemanager.devtestlabs.models.AttachDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.DetachDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.DiskFragment;
 
-/** An instance of this class provides access to all the operations defined in DisksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DisksClient.
+ */
 public interface DisksClient {
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -34,7 +36,7 @@ public interface DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -54,7 +56,7 @@ public interface DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -72,7 +74,7 @@ public interface DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -87,7 +89,7 @@ public interface DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -104,7 +106,7 @@ public interface DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -122,7 +124,7 @@ public interface DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -138,7 +140,7 @@ public interface DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -156,7 +158,7 @@ public interface DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -172,7 +174,7 @@ public interface DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -189,7 +191,7 @@ public interface DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -203,7 +205,7 @@ public interface DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -218,7 +220,7 @@ public interface DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -236,7 +238,7 @@ public interface DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -252,7 +254,7 @@ public interface DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -269,7 +271,7 @@ public interface DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -287,7 +289,7 @@ public interface DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -303,7 +305,7 @@ public interface DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -321,7 +323,7 @@ public interface DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -339,7 +341,7 @@ public interface DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -358,7 +360,7 @@ public interface DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -375,7 +377,7 @@ public interface DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.

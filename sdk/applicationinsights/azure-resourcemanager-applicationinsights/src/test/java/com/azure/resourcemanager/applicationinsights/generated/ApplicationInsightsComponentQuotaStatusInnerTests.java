@@ -11,8 +11,7 @@ public final class ApplicationInsightsComponentQuotaStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentQuotaStatusInner model = BinaryData
-            .fromString(
-                "{\"AppId\":\"wnzlljfmppeeb\",\"ShouldBeThrottled\":false,\"ExpirationTime\":\"sabkyqduujitcjcz\"}")
+            .fromString("{\"AppId\":\"zevndhkrwpdappds\",\"ShouldBeThrottled\":true,\"ExpirationTime\":\"wrwjfeu\"}")
             .toObject(ApplicationInsightsComponentQuotaStatusInner.class);
     }
 

@@ -6,44 +6,25 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentProactiveDetectionConfiguration;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProactiveDetectionConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"Name\":\"joxoism\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"lqol\",\"xkcgxxlxsffgcvi\"],\"LastUpdatedTime\":\"zdwlvwlyoupfgfb\",\"RuleDefinitions\":{\"Name\":\"bdyhgkfminsgowz\",\"DisplayName\":\"tsttktlahbq\",\"Description\":\"tx\",\"HelpUrl\":\"zukxitmmqtgqq\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":false}}";
+            = "{\"Name\":\"sckdlp\",\"Enabled\":true,\"SendEmailsToSubscriptionOwners\":true,\"CustomEmails\":[\"a\",\"lc\"],\"LastUpdatedTime\":\"wmdboxdfgsftuf\",\"RuleDefinitions\":{\"Name\":\"rjlnacgcck\",\"DisplayName\":\"hxkizvytnrzv\",\"Description\":\"jraaeranokqguk\",\"HelpUrl\":\"qnvb\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":false}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -51,19 +32,19 @@ public final class ProactiveDetectionConfigurationsGetWithResponseMockTests {
 
         ApplicationInsightsComponentProactiveDetectionConfiguration response
             = manager.proactiveDetectionConfigurations()
-                .getWithResponse("fscjfnynszquji", "dvoqyt", "byowbblgyavutp", com.azure.core.util.Context.NONE)
+                .getWithResponse("vodhtn", "irudh", "m", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("joxoism", response.name());
-        Assertions.assertEquals(false, response.enabled());
-        Assertions.assertEquals(false, response.sendEmailsToSubscriptionOwners());
-        Assertions.assertEquals("lqol", response.customEmails().get(0));
-        Assertions.assertEquals("zdwlvwlyoupfgfb", response.lastUpdatedTime());
-        Assertions.assertEquals("bdyhgkfminsgowz", response.ruleDefinitions().name());
-        Assertions.assertEquals("tsttktlahbq", response.ruleDefinitions().displayName());
-        Assertions.assertEquals("tx", response.ruleDefinitions().description());
-        Assertions.assertEquals("zukxitmmqtgqq", response.ruleDefinitions().helpUrl());
-        Assertions.assertEquals(false, response.ruleDefinitions().isHidden());
+        Assertions.assertEquals("sckdlp", response.name());
+        Assertions.assertEquals(true, response.enabled());
+        Assertions.assertEquals(true, response.sendEmailsToSubscriptionOwners());
+        Assertions.assertEquals("a", response.customEmails().get(0));
+        Assertions.assertEquals("wmdboxdfgsftuf", response.lastUpdatedTime());
+        Assertions.assertEquals("rjlnacgcck", response.ruleDefinitions().name());
+        Assertions.assertEquals("hxkizvytnrzv", response.ruleDefinitions().displayName());
+        Assertions.assertEquals("jraaeranokqguk", response.ruleDefinitions().description());
+        Assertions.assertEquals("qnvb", response.ruleDefinitions().helpUrl());
+        Assertions.assertEquals(true, response.ruleDefinitions().isHidden());
         Assertions.assertEquals(false, response.ruleDefinitions().isEnabledByDefault());
         Assertions.assertEquals(true, response.ruleDefinitions().isInPreview());
         Assertions.assertEquals(false, response.ruleDefinitions().supportsEmailNotifications());

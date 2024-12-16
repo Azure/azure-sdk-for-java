@@ -6,23 +6,25 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * API version properties entity.
  */
 @Fluent
-public final class ApiVersionProperties {
+public final class ApiVersionProperties implements JsonSerializable<ApiVersionProperties> {
     /*
      * API version title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Current lifecycle stage of the API.
      */
-    @JsonProperty(value = "lifecycleStage", required = true)
     private LifecycleStage lifecycleStage;
 
     /**
@@ -78,14 +80,56 @@ public final class ApiVersionProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model ApiVersionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model ApiVersionProperties"));
         }
         if (lifecycleStage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property lifecycleStage in model ApiVersionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lifecycleStage in model ApiVersionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiVersionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("lifecycleStage",
+            this.lifecycleStage == null ? null : this.lifecycleStage.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiVersionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiVersionProperties.
+     */
+    public static ApiVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiVersionProperties deserializedApiVersionProperties = new ApiVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedApiVersionProperties.title = reader.getString();
+                } else if ("lifecycleStage".equals(fieldName)) {
+                    deserializedApiVersionProperties.lifecycleStage = LifecycleStage.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiVersionProperties;
+        });
+    }
 }

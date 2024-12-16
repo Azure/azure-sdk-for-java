@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Workbook list result. */
+/**
+ * Workbook list result.
+ */
 @Fluent
-public final class WorkbooksListResult {
+public final class WorkbooksListResult implements JsonSerializable<WorkbooksListResult> {
     /*
      * An array of workbooks.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkbookInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkbooksListResult class. */
+    /**
+     * Creates an instance of WorkbooksListResult class.
+     */
     public WorkbooksListResult() {
     }
 
     /**
      * Get the value property: An array of workbooks.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkbookInner> value() {
@@ -39,7 +45,7 @@ public final class WorkbooksListResult {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class WorkbooksListResult {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkbooksListResult object itself.
      */
@@ -59,12 +65,51 @@ public final class WorkbooksListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbooksListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbooksListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkbooksListResult.
+     */
+    public static WorkbooksListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbooksListResult deserializedWorkbooksListResult = new WorkbooksListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WorkbookInner> value = reader.readArray(reader1 -> WorkbookInner.fromJson(reader1));
+                    deserializedWorkbooksListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkbooksListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbooksListResult;
+        });
     }
 }

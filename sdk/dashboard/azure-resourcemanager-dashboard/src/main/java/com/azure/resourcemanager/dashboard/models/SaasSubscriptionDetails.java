@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SaaS subscription details of a Grafana instance.
  */
 @Fluent
-public final class SaasSubscriptionDetails {
+public final class SaasSubscriptionDetails implements JsonSerializable<SaasSubscriptionDetails> {
     /*
      * The plan Id of the SaaS subscription.
      */
-    @JsonProperty(value = "planId")
     private String planId;
 
     /*
      * The offer Id of the SaaS subscription.
      */
-    @JsonProperty(value = "offerId")
     private String offerId;
 
     /*
      * The publisher Id of the SaaS subscription.
      */
-    @JsonProperty(value = "publisherId")
     private String publisherId;
 
     /*
      * The billing term of the SaaS Subscription.
      */
-    @JsonProperty(value = "term")
     private SubscriptionTerm term;
 
     /**
@@ -131,5 +131,50 @@ public final class SaasSubscriptionDetails {
         if (term() != null) {
             term().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeStringField("offerId", this.offerId);
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeJsonField("term", this.term);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SaasSubscriptionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SaasSubscriptionDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SaasSubscriptionDetails.
+     */
+    public static SaasSubscriptionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SaasSubscriptionDetails deserializedSaasSubscriptionDetails = new SaasSubscriptionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("planId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetails.planId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetails.offerId = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetails.publisherId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedSaasSubscriptionDetails.term = SubscriptionTerm.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSaasSubscriptionDetails;
+        });
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The architecture of the image. Applicable to OS disks only.
+ * CPU architecture supported by an OS disk.
  */
 public final class Architecture extends ExpandableStringEnum<Architecture> {
     /**

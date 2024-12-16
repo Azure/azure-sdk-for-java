@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Profile for agent pool properties that can be updated.
  */
 @Fluent
-public class AgentPoolUpdateProfile {
+public class AgentPoolUpdateProfile implements JsonSerializable<AgentPoolUpdateProfile> {
     /*
      * Number of nodes in the agent pool. The default value is 1.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * The VM sku size of the agent pool node VMs.
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
      * cluster.
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /**
@@ -88,10 +89,63 @@ public class AgentPoolUpdateProfile {
     }
 
     /**
+     * Set the kubernetesVersion property: Version of Kubernetes in use by the agent pool. This is inherited from the
+     * kubernetesVersion of the provisioned cluster.
+     * 
+     * @param kubernetesVersion the kubernetesVersion value to set.
+     * @return the AgentPoolUpdateProfile object itself.
+     */
+    AgentPoolUpdateProfile withKubernetesVersion(String kubernetesVersion) {
+        this.kubernetesVersion = kubernetesVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolUpdateProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolUpdateProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolUpdateProfile.
+     */
+    public static AgentPoolUpdateProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolUpdateProfile deserializedAgentPoolUpdateProfile = new AgentPoolUpdateProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedAgentPoolUpdateProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedAgentPoolUpdateProfile.vmSize = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedAgentPoolUpdateProfile.kubernetesVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolUpdateProfile;
+        });
     }
 }

@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
-import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
@@ -26,7 +26,7 @@ public class ComposeDocumentModel {
         SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails> response
             = documentIntelligenceAdministrationClient
                 .beginComposeModel(
-                    new ComposeDocumentModelRequest("composedModel", "customClassifier",
+                    new ComposeDocumentModelOptions("composedModel", "customClassifier",
                         mapOf("formA", new DocumentTypeDetails().setModelId("model1"), "formB",
                             new DocumentTypeDetails().setModelId("model2")))
                                 .setDescription("Composed model description"));

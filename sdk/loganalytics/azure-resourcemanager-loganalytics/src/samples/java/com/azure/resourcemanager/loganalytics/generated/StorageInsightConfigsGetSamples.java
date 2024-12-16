@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for StorageInsightConfigs Get. */
+/**
+ * Samples for StorageInsightConfigs Get.
+ */
 public final class StorageInsightConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/StorageInsightsGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * StorageInsightsGet.json
      */
     /**
      * Sample code: StorageInsightsGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .storageInsightConfigs()
+        manager.storageInsightConfigs()
             .getWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", com.azure.core.util.Context.NONE);
     }
 }

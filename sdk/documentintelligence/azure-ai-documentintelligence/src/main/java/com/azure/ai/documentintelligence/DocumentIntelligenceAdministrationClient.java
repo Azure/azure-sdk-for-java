@@ -9,7 +9,7 @@ import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
-import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -810,27 +810,6 @@ public final class DocumentIntelligenceAdministrationClient {
     }
 
     /**
-     * Creates a new document model from document types of existing document models.
-     *
-     * @param composeRequest Compose request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
-        beginComposeModel(ComposeDocumentModelRequest composeRequest) {
-        // Generated convenience method for beginComposeModelWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginComposeModelWithModel(BinaryData.fromObject(composeRequest), requestOptions);
-    }
-
-    /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
      *
@@ -1118,5 +1097,26 @@ public final class DocumentIntelligenceAdministrationClient {
         // Generated convenience method for deleteClassifierWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteClassifierWithResponse(classifierId, requestOptions).getValue();
+    }
+
+    /**
+     * Creates a new document model from document types of existing document models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
+        beginComposeModel(ComposeDocumentModelOptions composeRequest) {
+        // Generated convenience method for beginComposeModelWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginComposeModelWithModel(BinaryData.fromObject(composeRequest), requestOptions);
     }
 }
