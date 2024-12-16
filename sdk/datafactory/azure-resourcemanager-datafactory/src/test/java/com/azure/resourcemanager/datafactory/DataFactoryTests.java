@@ -13,7 +13,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.datafactory.models.AzureBlobDataset;
 import com.azure.resourcemanager.datafactory.models.AzureStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.BlobSink;
@@ -50,12 +50,12 @@ public class DataFactoryTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void dataFactoryTest() {
-        StorageManager storageManager = StorageManager.authenticate(new DefaultAzureCredentialBuilder().build(),
+        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
             new AzureProfile(AzureEnvironment.AZURE));
 
         DataFactoryManager manager = DataFactoryManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
