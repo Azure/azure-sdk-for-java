@@ -903,7 +903,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }/*, timeOut = TIMEOUT*/)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
