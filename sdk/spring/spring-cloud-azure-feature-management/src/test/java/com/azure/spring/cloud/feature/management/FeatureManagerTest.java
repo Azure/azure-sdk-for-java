@@ -24,6 +24,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
+import com.azure.spring.cloud.feature.management.filters.ContextualFeatureFilter;
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
@@ -32,6 +33,7 @@ import com.azure.spring.cloud.feature.management.models.Conditions;
 import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
+import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 
 /**
  * Unit tests for FeatureManager.
@@ -49,6 +51,9 @@ public class FeatureManagerTest {
 
     @Mock
     private FeatureManagementProperties featureManagementPropertiesMock;
+
+    @Mock
+    private ContextualTargetingContextAccessor contextualAccessor;
 
     @BeforeEach
     public void setup() {
@@ -86,6 +91,19 @@ public class FeatureManagerTest {
         assertTrue(featureManager.isEnabled("On"));
         assertTrue(featureManager.isEnabledAsync("On").block());
         verify(featureManagementPropertiesMock, times(2)).getFeatureFlags();
+    }
+
+    @Test
+    public void isEnabledOnContext() throws InterruptedException, ExecutionException, FilterNotFoundException {
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true).setConditions(new Conditions()
+            .setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOnContext")))));
+
+        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
+
+        when(context.getBean(Mockito.matches("AlwaysOnContext"))).thenReturn(new AlwaysOnContextFilter());
+
+        assertFalse(featureManager.isEnabled("On", false));
+        assertFalse(featureManager.isEnabledAsync("On", false).block());
     }
 
     @Test
@@ -204,6 +222,17 @@ public class FeatureManagerTest {
             return true;
         }
 
+    }
+
+    class AlwaysOnContextFilter implements ContextualFeatureFilter {
+
+        @Override
+        public boolean evaluate(FeatureFilterEvaluationContext context, Object localContext) {
+            if (localContext == Boolean.FALSE) {
+                return false;
+            }
+            return true;
+        }
     }
 
     class AlwaysOffFilter implements FeatureFilter {
