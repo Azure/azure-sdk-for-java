@@ -94,6 +94,11 @@
       <artifactId>opentelemetry-semconv-incubating</artifactId>
       <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -179,12 +184,6 @@
       <artifactId>logcaptor</artifactId>
       <version>2.9.3</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
-        <scope>compile</scope>
     </dependency>
   </dependencies>
 

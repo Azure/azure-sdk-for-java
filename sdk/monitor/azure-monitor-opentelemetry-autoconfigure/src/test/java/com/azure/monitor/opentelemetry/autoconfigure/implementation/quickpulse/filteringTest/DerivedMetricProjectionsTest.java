@@ -15,9 +15,16 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DerivedMetricProjectionsTest {
+class DerivedMetricProjectionsTest {
+
+    public static final String REQUEST_AVG = "request-avg";
+    public static final String REQUEST = "Request";
+    public static final String DEPENDENCY = "Dependency";
+    public static final String EXCEPTION = "Exception";
+    public static final String TRACE = "Trace";
+
     private DerivedMetricInfo createDerivedMetricInfoWithEmptyFilters(String id, String telemetryType,
-        AggregationType agg, AggregationType backendAgg, String projection) {
+                                                                      AggregationType agg, AggregationType backendAgg, String projection) {
         DerivedMetricInfo result = new DerivedMetricInfo();
         result.setId(id);
         result.setTelemetryType(telemetryType);
@@ -35,13 +42,21 @@ public class DerivedMetricProjectionsTest {
 
     @Test
     void testCountProjection() {
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters("id-for-request", "Request",
+        String requestId = "id-for-request";
+        String dependencyId = "id-for-dependency";
+        String exceptionId = "id-for-exception";
+        String traceId = "id-for-trace";
+
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, REQUEST,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters("id-for-dependency", "Dependency",
+
+        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters(dependencyId, DEPENDENCY,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiException = createDerivedMetricInfoWithEmptyFilters("id-for-exception", "Exception",
+
+        DerivedMetricInfo dmiException = createDerivedMetricInfoWithEmptyFilters(exceptionId, EXCEPTION,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
-        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters("id-for-trace", "Trace",
+
+        DerivedMetricInfo dmiTrace = createDerivedMetricInfoWithEmptyFilters(traceId, TRACE,
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT);
 
         RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200000L, 200, true,
@@ -53,10 +68,10 @@ public class DerivedMetricProjectionsTest {
         TraceDataColumns trace = new TraceDataColumns("Message", new HashMap<>(), new HashMap<>());
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
-        projectionInfo.put("id-for-request", AggregationType.SUM);
-        projectionInfo.put("id-for-dependency", AggregationType.SUM);
-        projectionInfo.put("id-for-exception", AggregationType.SUM);
-        projectionInfo.put("id-for-trace", AggregationType.SUM);
+        projectionInfo.put(requestId, AggregationType.SUM);
+        projectionInfo.put(dependencyId, AggregationType.SUM);
+        projectionInfo.put(exceptionId, AggregationType.SUM);
+        projectionInfo.put(traceId, AggregationType.SUM);
         DerivedMetricProjections projections = new DerivedMetricProjections(projectionInfo);
 
         for (int i = 0; i < 2; i++) {
@@ -74,15 +89,15 @@ public class DerivedMetricProjectionsTest {
         projections.calculateProjection(dmiException, exception);
 
         Map<String, Double> finalValues = projections.fetchFinalDerivedMetricValues();
-        assertEquals(finalValues.get("id-for-request"), 2.0);
-        assertEquals(finalValues.get("id-for-dependency"), 3.0);
-        assertEquals(finalValues.get("id-for-exception"), 1.0);
-        assertEquals(finalValues.get("id-for-trace"), 4.0);
+        assertEquals(finalValues.get(requestId), 2.0);
+        assertEquals(finalValues.get(dependencyId), 3.0);
+        assertEquals(finalValues.get(exceptionId), 1.0);
+        assertEquals(finalValues.get(traceId), 4.0);
     }
 
     @Test
     void testDurationAvgProjection() {
-        testDurationProjectionWith("request-avg", "dependency-avg", AggregationType.AVG, 400.0);
+        testDurationProjectionWith(REQUEST_AVG, "dependency-avg", AggregationType.AVG, 400.0);
     }
 
     @Test
@@ -97,7 +112,7 @@ public class DerivedMetricProjectionsTest {
 
     @Test
     void testCustomDimensionAvgProjection() {
-        testCustomDimProjectionWith("request-avg", AggregationType.AVG, 8.0);
+        testCustomDimProjectionWith(REQUEST_AVG, AggregationType.AVG, 8.0);
     }
 
     @Test
@@ -117,11 +132,11 @@ public class DerivedMetricProjectionsTest {
 
     @Test
     void testInvalidCustomDimensionProjection() {
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters("request-avg", "Request",
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(REQUEST_AVG, REQUEST,
             AggregationType.AVG, AggregationType.AVG, "CustomDimensions.property");
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
-        projectionInfo.put("request-avg", AggregationType.AVG);
+        projectionInfo.put(REQUEST_AVG, AggregationType.AVG);
         DerivedMetricProjections projections = new DerivedMetricProjections(projectionInfo);
 
         // The case where the desired custom dimension property is not in the request
@@ -138,7 +153,7 @@ public class DerivedMetricProjectionsTest {
 
         // invalid values should not be counted.
         Map<String, Double> finalValues = projections.fetchFinalDerivedMetricValues();
-        assertEquals(finalValues.get("request-avg"), 0.0);
+        assertEquals(finalValues.get(REQUEST_AVG), 0.0);
     }
 
     private List<RequestDataColumns> createRequestsOfDurations(List<Long> durations) {
@@ -159,12 +174,12 @@ public class DerivedMetricProjectionsTest {
         return result;
     }
 
-    private void testDurationProjectionWith(String requestId, String depedencyId, AggregationType aggregationType,
+    private void testDurationProjectionWith(String requestId, String dependencyId, AggregationType aggregationType,
         double expectedValue) {
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, "Request", aggregationType,
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, REQUEST, aggregationType,
             aggregationType, KnownRequestColumns.DURATION);
 
-        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters(depedencyId, "Dependency", aggregationType,
+        DerivedMetricInfo dmiDep = createDerivedMetricInfoWithEmptyFilters(dependencyId, DEPENDENCY, aggregationType,
             aggregationType, KnownRequestColumns.DURATION);
 
         List<Long> durations = asList(200000L, 400000L, 600000L);
@@ -173,7 +188,7 @@ public class DerivedMetricProjectionsTest {
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
         projectionInfo.put(requestId, aggregationType);
-        projectionInfo.put(depedencyId, aggregationType);
+        projectionInfo.put(dependencyId, aggregationType);
 
         DerivedMetricProjections projections = new DerivedMetricProjections(projectionInfo);
 
@@ -189,11 +204,11 @@ public class DerivedMetricProjectionsTest {
 
         Map<String, Double> finalValues = projections.fetchFinalDerivedMetricValues();
         assertEquals(finalValues.get(requestId), expectedValue);
-        assertEquals(finalValues.get(depedencyId), expectedValue);
+        assertEquals(finalValues.get(dependencyId), expectedValue);
     }
 
     private void testCustomDimProjectionWith(String requestId, AggregationType aggregationType, double expectedValue) {
-        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, "Request", aggregationType,
+        DerivedMetricInfo dmiRequest = createDerivedMetricInfoWithEmptyFilters(requestId, REQUEST, aggregationType,
             aggregationType, "CustomDimensions.property");
 
         Map<String, AggregationType> projectionInfo = new HashMap<>();
