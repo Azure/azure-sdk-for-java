@@ -10,12 +10,13 @@ import com.azure.ai.inference.models.ChatCompletionsToolCall;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestToolMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
@@ -85,12 +86,6 @@ public final class ChatCompletionClientTracerTest {
 
     private static final String SYSTEM_MESSAGE = "You are a helpful assistant.";
     private static final String USER_MESSAGE = "What is the weather in Seattle?";
-    private static final String SYSTEM_EVENT_CONTENT
-        = String.format("{\"content\":\"%s\",\"role\":\"system\"}", SYSTEM_MESSAGE);
-    private static final String USER_MESSAGE_CONTENT
-        = String.format("{\"content\":\"%s\",\"role\":\"user\"}", USER_MESSAGE);
-
-    private ClientOptions clientOptions;
     private TestSpanProcessor spanProcessor;
     private Tracer tracer;
 
@@ -126,18 +121,14 @@ public final class ChatCompletionClientTracerTest {
             toCompleteRequest(completionsOptions), new RequestOptions());
 
         final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
-        final ReadableSpan chatSpan = getChatSpan(spans);
+        final ReadableSpan chatSpan = getChatSpan(spans, completionsOptions);
 
         final Attributes chatAttributes = chatSpan.getAttributes();
         assertChatSpanRequestAttributes(chatAttributes, completionsOptions);
         if (captureContent) {
-            assertChatEventContent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME, SYSTEM_EVENT_CONTENT);
-            assertChatEventContent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME, USER_MESSAGE_CONTENT);
+            assertCapturedChatEvents(chatSpan, messages);
         } else {
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_ASSISTANT_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_TOOL_MESSAGE_EVENT_NAME).isPresent());
+            assertNoChatEventsCaptured(chatSpan);
         }
         assertChatSpanResponseAttributes(chatAttributes, toolCallsResponse);
         assertEquals("[tool_calls]", chatAttributes.get(GEN_AI_RESPONSE_FINISH_REASONS));
@@ -164,19 +155,14 @@ public final class ChatCompletionClientTracerTest {
         StepVerifier.create(r).expectNextCount(1).verifyComplete();
 
         final List<ReadableSpan> spans = spanProcessor.getEndedSpans();
-        final ReadableSpan chatSpan = getChatSpan(spans);
+        final ReadableSpan chatSpan = getChatSpan(spans, completionsOptions);
 
         final Attributes chatAttributes = chatSpan.getAttributes();
         assertChatSpanRequestAttributes(chatAttributes, completionsOptions);
         if (captureContent) {
-            assertChatEventContent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME, SYSTEM_EVENT_CONTENT);
-            assertChatEventContent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME, USER_MESSAGE_CONTENT);
-            assertChatEventContent(chatSpan, GEN_AI_ASSISTANT_MESSAGE_EVENT_NAME, getExpectedAssistantMessageContent());
+            assertCapturedChatEvents(chatSpan, messages);
         } else {
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_ASSISTANT_MESSAGE_EVENT_NAME).isPresent());
-            Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_TOOL_MESSAGE_EVENT_NAME).isPresent());
+            assertNoChatEventsCaptured(chatSpan);
         }
         assertChatSpanResponseAttributes(chatAttributes, modelResponse);
         assertEquals("[stop]", chatAttributes.get(GEN_AI_RESPONSE_FINISH_REASONS));
@@ -184,36 +170,65 @@ public final class ChatCompletionClientTracerTest {
             getExpectedChoiceEventContent(false, captureContent));
     }
 
-    private static ReadableSpan getChatSpan(List<ReadableSpan> spans) {
-        Assertions.assertFalse(spans.isEmpty());
-        final Optional<ReadableSpan> chatSpan = spans.stream().filter(s -> s.getName().equals("chat")).findFirst();
-        Assertions.assertTrue(chatSpan.isPresent());
+    static ReadableSpan getChatSpan(List<ReadableSpan> spans, ChatCompletionsOptions completionRequest) {
+        Assertions.assertFalse(spans.isEmpty(), "Expects at least one span.");
+        final String name
+            = CoreUtils.isNullOrEmpty(completionRequest.getModel()) ? "chat" : "chat " + completionRequest.getModel();
+        final Optional<ReadableSpan> chatSpan = spans.stream().filter(s -> s.getName().equals(name)).findFirst();
+        Assertions.assertTrue(chatSpan.isPresent(), "Span describing chat completion operation not found.");
         return chatSpan.get();
     }
 
-    private static Optional<EventData> getChatEvent(ReadableSpan span, String eventName) {
-        Assertions.assertEquals("chat", span.getName());
-        final List<EventData> events = span.toSpanData().getEvents();
-        Assertions.assertFalse(events.isEmpty());
-        return events.stream().filter(s -> s.getName().equals(eventName)).findFirst();
-    }
-
-    private static void assertChatSpanRequestAttributes(Attributes chatAttributes,
-        ChatCompletionsOptions completionsOptions) {
+    static void assertChatSpanRequestAttributes(Attributes chatAttributes, ChatCompletionsOptions completionRequest) {
         assertEquals(AZ_NAMESPACE_NAME, chatAttributes.get(AZ_NAMESPACE));
         assertEquals(INFERENCE_GEN_AI_SYSTEM_NAME, chatAttributes.get(GEN_AI_SYSTEM));
         assertEquals(GEN_AI_CHAT_OPERATION_NAME, chatAttributes.get(GEN_AI_OPERATION_NAME));
-        assertEquals(GEN_AI_REQUEST_CHAT_MODEL, chatAttributes.get(GEN_AI_REQUEST_MODEL));
-        assertEquals(completionsOptions.getTopP(), chatAttributes.get(GEN_AI_REQUEST_TOP_P));
-        assertEquals(completionsOptions.getMaxTokens().longValue(), chatAttributes.get(GEN_AI_REQUEST_MAX_TOKENS));
-        assertEquals(completionsOptions.getTemperature(), chatAttributes.get(GEN_AI_REQUEST_TEMPERATURE));
+        final String modelId = completionRequest.getModel();
+        final String expectedModel = CoreUtils.isNullOrEmpty(modelId) ? "chat" : modelId;
+        assertEquals(expectedModel, chatAttributes.get(GEN_AI_REQUEST_MODEL));
+        assertEquals(completionRequest.getTopP(), chatAttributes.get(GEN_AI_REQUEST_TOP_P));
+        if (completionRequest.getMaxTokens() != null) {
+            assertEquals(completionRequest.getMaxTokens().longValue(), chatAttributes.get(GEN_AI_REQUEST_MAX_TOKENS));
+        }
+        assertEquals(completionRequest.getTemperature(), chatAttributes.get(GEN_AI_REQUEST_TEMPERATURE));
     }
 
-    private static void assertChatSpanResponseAttributes(Attributes chatAttributes, ChatCompletions modelResponse) {
-        assertEquals(modelResponse.getId(), chatAttributes.get(GEN_AI_RESPONSE_ID));
-        assertEquals(modelResponse.getModel(), chatAttributes.get(GEN_AI_RESPONSE_MODEL));
-        assertEquals(modelResponse.getUsage().getCompletionTokens(), chatAttributes.get(GEN_AI_USAGE_OUTPUT_TOKENS));
-        assertEquals(modelResponse.getUsage().getPromptTokens(), chatAttributes.get(GEN_AI_USAGE_INPUT_TOKENS));
+    static void assertNoChatEventsCaptured(ReadableSpan chatSpan) {
+        Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME).isPresent());
+        Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME).isPresent());
+        Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_ASSISTANT_MESSAGE_EVENT_NAME).isPresent());
+        Assertions.assertFalse(getChatEvent(chatSpan, GEN_AI_TOOL_MESSAGE_EVENT_NAME).isPresent());
+    }
+
+    static void assertCapturedChatEvents(ReadableSpan chatSpan, List<ChatRequestMessage> messages) {
+        for (ChatRequestMessage message : messages) {
+            final String expectedContent;
+            try {
+                expectedContent = message.toJsonString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (message instanceof ChatRequestAssistantMessage) {
+                assertChatEventContent(chatSpan, GEN_AI_ASSISTANT_MESSAGE_EVENT_NAME, expectedContent);
+            } else if (message instanceof ChatRequestSystemMessage) {
+                assertChatEventContent(chatSpan, GEN_AI_SYSTEM_MESSAGE_EVENT_NAME, expectedContent);
+            } else if (message instanceof ChatRequestToolMessage) {
+                assertChatEventContent(chatSpan, GEN_AI_TOOL_MESSAGE_EVENT_NAME, expectedContent);
+            } else if (message instanceof ChatRequestUserMessage) {
+                assertChatEventContent(chatSpan, GEN_AI_USER_MESSAGE_EVENT_NAME, expectedContent);
+            }
+        }
+    }
+
+    static void assertChatSpanResponseAttributes(Attributes chatAttributes, ChatCompletions completionResponse) {
+        assertEquals(completionResponse.getId(), chatAttributes.get(GEN_AI_RESPONSE_ID));
+        assertEquals(completionResponse.getModel(), chatAttributes.get(GEN_AI_RESPONSE_MODEL));
+        if (completionResponse.getUsage() != null) {
+            assertEquals(completionResponse.getUsage().getCompletionTokens(),
+                chatAttributes.get(GEN_AI_USAGE_OUTPUT_TOKENS));
+            assertEquals(completionResponse.getUsage().getPromptTokens(),
+                chatAttributes.get(GEN_AI_USAGE_INPUT_TOKENS));
+        }
     }
 
     private static void assertChatEventContent(ReadableSpan span, String eventName, String expectedContent) {
@@ -222,6 +237,13 @@ public final class ChatCompletionClientTracerTest {
         final Attributes eventAttributes = systemMessageEvent.get().getAttributes();
         Assertions.assertEquals(expectedContent, eventAttributes.get(GEN_AI_EVENT_CONTENT));
         assertEquals(INFERENCE_GEN_AI_SYSTEM_NAME, eventAttributes.get(GEN_AI_SYSTEM));
+    }
+
+    private static Optional<EventData> getChatEvent(ReadableSpan span, String eventName) {
+        Assertions.assertEquals("chat", span.getName());
+        final List<EventData> events = span.toSpanData().getEvents();
+        Assertions.assertFalse(events.isEmpty());
+        return events.stream().filter(s -> s.getName().equals(eventName)).findFirst();
     }
 
     private static BinaryData toCompleteRequest(ChatCompletionsOptions options) {
@@ -320,30 +342,6 @@ public final class ChatCompletionClientTracerTest {
                 writer.writeStringField("finish_reason", "stop");
                 writer.writeLongField("index", 0);
             }
-            writer.writeEndObject();
-            writer.flush();
-            return new String(stream.toByteArray(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private static String getExpectedAssistantMessageContent() {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            JsonWriter writer = JsonProviders.createWriter(stream)) {
-            writer.writeStartObject();
-            writer.writeStringField("role", "assistant");
-            writer.writeStringField("content", "");
-            writer.writeStartArray("tool_calls");
-            writer.writeStartObject();
-            writer.writeStringField("id", "tool_call_uuid0");
-            writer.writeStringField("type", "function");
-            writer.writeStartObject("function");
-            writer.writeStringField("name", "get_weather");
-            writer.writeStringField("arguments", "{\"city\":\"Seattle\"}");
-            writer.writeEndObject();
-            writer.writeEndObject();
-            writer.writeEndArray();
             writer.writeEndObject();
             writer.flush();
             return new String(stream.toByteArray(), StandardCharsets.UTF_8);

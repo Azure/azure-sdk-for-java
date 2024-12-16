@@ -50,6 +50,12 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <javaModulesSurefireArgLine>
+      --add-opens com.azure.ai.inference/com.azure.ai.inference=ALL-UNNAMED
+
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-reads com.azure.ai.inference=com.azure.http.netty
+
       --add-reads com.azure.ai.inference=com.azure.core.tracing.opentelemetry
     </javaModulesSurefireArgLine>
   </properties>
