@@ -57,13 +57,12 @@
       <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
       <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
-      <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationHelper" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Or>
-      <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationHelper" />
+      <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationDetailsHelper" />
     </Or>
   </Match>
 </FindBugsFilter>

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2024-12-13)
+## 1.0.0 (2024-12-16)
 
 ### Features Added
 - Added methods `getAnalyzeBatchResult`, `listAnalyzeBatchResults`, `deleteAnalyzeBatchResult`, and `deleteAnalyzeResult` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.

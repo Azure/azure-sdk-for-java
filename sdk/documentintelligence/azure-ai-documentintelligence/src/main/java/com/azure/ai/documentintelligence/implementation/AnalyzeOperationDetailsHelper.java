@@ -19,6 +19,11 @@ public final class AnalyzeOperationDetailsHelper {
      * Type defining the methods to set the non-public properties of an {@link AnalyzeOperationDetails} instance.
      */
     public interface AnalyzeOperationDetailsAccessor {
+        /**
+         * Sets the operationId property of an {@link AnalyzeOperationDetails} instance.
+         * @param analyzeOperation The AnalyzeOperationDetails instance.
+         * @param operationId The operationId value to set.
+         */
         void setOperationId(AnalyzeOperationDetails analyzeOperation, String operationId);
     }
 
@@ -31,6 +36,11 @@ public final class AnalyzeOperationDetailsHelper {
         accessor = analyzeOperationAccessor;
     }
 
+    /**
+     * Sets the operationId property of an {@link AnalyzeOperationDetails} instance.
+     * @param analyzeOperation The AnalyzeOperationDetails instance.
+     * @param operationId The operationId value to set.
+     */
     public static void setOperationId(AnalyzeOperationDetails analyzeOperation, String operationId) {
         accessor.setOperationId(analyzeOperation, operationId);
     }

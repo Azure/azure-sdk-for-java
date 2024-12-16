@@ -120,7 +120,7 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
         new AnalyzeDocumentOptions(layoutDocumentData));
 
@@ -129,32 +129,32 @@ AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 // pages
 analyzeLayoutResult.getPages().forEach(documentPage -> {
     System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
-                      documentPage.getWidth(),
+        documentPage.getWidth(),
         documentPage.getHeight(),
         documentPage.getUnit());
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-    System.out.printf("Line '%s' is within a bounding box %s.%n",
-                      documentLine.getContent(),
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
+            documentLine.getContent(),
             documentLine.getPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-    System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-                      documentSelectionMark.getState().toString(),
+        System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
+            documentSelectionMark.getState().toString(),
             documentSelectionMark.getPolygon().toString(),
             documentSelectionMark.getConfidence()));
-    });
+});
 
 // tables
 List<DocumentTable> tables = analyzeLayoutResult.getTables();
 for (int i = 0; i < tables.size(); i++) {
-DocumentTable documentTable = tables.get(i);
+    DocumentTable documentTable = tables.get(i);
     System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
         documentTable.getColumnCount());
     documentTable.getCells().forEach(documentTableCell -> {
-    System.out.printf("Cell '%s', has row index %d and column index %d.%n", documentTableCell.getContent(),
+        System.out.printf("Cell '%s', has row index %d and column index %d.%n", documentTableCell.getContent(),
             documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
     });
     System.out.println();
