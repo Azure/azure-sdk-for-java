@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.fluent.models.UsageMetricInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list workspace usages operation response. */
+/**
+ * The list workspace usages operation response.
+ */
 @Fluent
-public final class WorkspaceListUsagesResult {
+public final class WorkspaceListUsagesResult implements JsonSerializable<WorkspaceListUsagesResult> {
     /*
      * Gets or sets a list of usage metrics for a workspace.
      */
-    @JsonProperty(value = "value")
     private List<UsageMetricInner> value;
 
-    /** Creates an instance of WorkspaceListUsagesResult class. */
+    /**
+     * Creates an instance of WorkspaceListUsagesResult class.
+     */
     public WorkspaceListUsagesResult() {
     }
 
     /**
      * Get the value property: Gets or sets a list of usage metrics for a workspace.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageMetricInner> value() {
@@ -33,7 +40,7 @@ public final class WorkspaceListUsagesResult {
 
     /**
      * Set the value property: Gets or sets a list of usage metrics for a workspace.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceListUsagesResult object itself.
      */
@@ -44,12 +51,49 @@ public final class WorkspaceListUsagesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceListUsagesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceListUsagesResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceListUsagesResult.
+     */
+    public static WorkspaceListUsagesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceListUsagesResult deserializedWorkspaceListUsagesResult = new WorkspaceListUsagesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<UsageMetricInner> value = reader.readArray(reader1 -> UsageMetricInner.fromJson(reader1));
+                    deserializedWorkspaceListUsagesResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceListUsagesResult;
+        });
     }
 }

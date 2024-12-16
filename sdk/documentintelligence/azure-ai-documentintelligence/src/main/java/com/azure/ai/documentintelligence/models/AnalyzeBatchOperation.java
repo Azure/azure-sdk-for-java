@@ -4,6 +4,7 @@
 package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -16,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Status and result of the analyze batch operation.
  */
+@Immutable
 public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatchOperation> {
 
     /*
@@ -214,25 +216,5 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
             deserializedAnalyzeBatchOperation.result = result;
             return deserializedAnalyzeBatchOperation;
         });
-    }
-
-    private String operationId;
-
-    /**
-     * Gets the operationId property: Operation ID.
-     *
-     * @return the operationId value.
-     */
-    public String getOperationId() {
-        return operationId;
-    }
-
-    /**
-     * Sets the operationId property: Operation ID.
-     *
-     * @param operationId the operationId value to set.
-     */
-    public void setOperationId(String operationId) {
-        this.operationId = operationId;
     }
 }

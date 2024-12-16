@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Property overrides on a subnet of a virtual network. */
+/**
+ * Property overrides on a subnet of a virtual network.
+ */
 @Fluent
-public final class SubnetOverride {
+public final class SubnetOverride implements JsonSerializable<SubnetOverride> {
     /*
      * The resource ID of the subnet.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The name given to the subnet within the lab.
      */
-    @JsonProperty(value = "labSubnetName")
     private String labSubnetName;
 
     /*
      * Indicates whether this subnet can be used during virtual machine creation (i.e. Allow, Deny).
      */
-    @JsonProperty(value = "useInVmCreationPermission")
     private UsagePermissionType useInVmCreationPermission;
 
     /*
      * Indicates whether public IP addresses can be assigned to virtual machines on this subnet (i.e. Allow, Deny).
      */
-    @JsonProperty(value = "usePublicIpAddressPermission")
     private UsagePermissionType usePublicIpAddressPermission;
 
     /*
      * Properties that virtual machines on this subnet will share.
      */
-    @JsonProperty(value = "sharedPublicIpAddressConfiguration")
     private SubnetSharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration;
 
     /*
      * The virtual network pool associated with this subnet.
      */
-    @JsonProperty(value = "virtualNetworkPoolName")
     private String virtualNetworkPoolName;
 
-    /** Creates an instance of SubnetOverride class. */
+    /**
+     * Creates an instance of SubnetOverride class.
+     */
     public SubnetOverride() {
     }
 
     /**
      * Get the resourceId property: The resource ID of the subnet.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -61,7 +63,7 @@ public final class SubnetOverride {
 
     /**
      * Set the resourceId property: The resource ID of the subnet.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the SubnetOverride object itself.
      */
@@ -72,7 +74,7 @@ public final class SubnetOverride {
 
     /**
      * Get the labSubnetName property: The name given to the subnet within the lab.
-     *
+     * 
      * @return the labSubnetName value.
      */
     public String labSubnetName() {
@@ -81,7 +83,7 @@ public final class SubnetOverride {
 
     /**
      * Set the labSubnetName property: The name given to the subnet within the lab.
-     *
+     * 
      * @param labSubnetName the labSubnetName value to set.
      * @return the SubnetOverride object itself.
      */
@@ -93,7 +95,7 @@ public final class SubnetOverride {
     /**
      * Get the useInVmCreationPermission property: Indicates whether this subnet can be used during virtual machine
      * creation (i.e. Allow, Deny).
-     *
+     * 
      * @return the useInVmCreationPermission value.
      */
     public UsagePermissionType useInVmCreationPermission() {
@@ -103,7 +105,7 @@ public final class SubnetOverride {
     /**
      * Set the useInVmCreationPermission property: Indicates whether this subnet can be used during virtual machine
      * creation (i.e. Allow, Deny).
-     *
+     * 
      * @param useInVmCreationPermission the useInVmCreationPermission value to set.
      * @return the SubnetOverride object itself.
      */
@@ -115,7 +117,7 @@ public final class SubnetOverride {
     /**
      * Get the usePublicIpAddressPermission property: Indicates whether public IP addresses can be assigned to virtual
      * machines on this subnet (i.e. Allow, Deny).
-     *
+     * 
      * @return the usePublicIpAddressPermission value.
      */
     public UsagePermissionType usePublicIpAddressPermission() {
@@ -125,7 +127,7 @@ public final class SubnetOverride {
     /**
      * Set the usePublicIpAddressPermission property: Indicates whether public IP addresses can be assigned to virtual
      * machines on this subnet (i.e. Allow, Deny).
-     *
+     * 
      * @param usePublicIpAddressPermission the usePublicIpAddressPermission value to set.
      * @return the SubnetOverride object itself.
      */
@@ -136,7 +138,7 @@ public final class SubnetOverride {
 
     /**
      * Get the sharedPublicIpAddressConfiguration property: Properties that virtual machines on this subnet will share.
-     *
+     * 
      * @return the sharedPublicIpAddressConfiguration value.
      */
     public SubnetSharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration() {
@@ -145,7 +147,7 @@ public final class SubnetOverride {
 
     /**
      * Set the sharedPublicIpAddressConfiguration property: Properties that virtual machines on this subnet will share.
-     *
+     * 
      * @param sharedPublicIpAddressConfiguration the sharedPublicIpAddressConfiguration value to set.
      * @return the SubnetOverride object itself.
      */
@@ -157,7 +159,7 @@ public final class SubnetOverride {
 
     /**
      * Get the virtualNetworkPoolName property: The virtual network pool associated with this subnet.
-     *
+     * 
      * @return the virtualNetworkPoolName value.
      */
     public String virtualNetworkPoolName() {
@@ -166,7 +168,7 @@ public final class SubnetOverride {
 
     /**
      * Set the virtualNetworkPoolName property: The virtual network pool associated with this subnet.
-     *
+     * 
      * @param virtualNetworkPoolName the virtualNetworkPoolName value to set.
      * @return the SubnetOverride object itself.
      */
@@ -177,12 +179,68 @@ public final class SubnetOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sharedPublicIpAddressConfiguration() != null) {
             sharedPublicIpAddressConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("labSubnetName", this.labSubnetName);
+        jsonWriter.writeStringField("useInVmCreationPermission",
+            this.useInVmCreationPermission == null ? null : this.useInVmCreationPermission.toString());
+        jsonWriter.writeStringField("usePublicIpAddressPermission",
+            this.usePublicIpAddressPermission == null ? null : this.usePublicIpAddressPermission.toString());
+        jsonWriter.writeJsonField("sharedPublicIpAddressConfiguration", this.sharedPublicIpAddressConfiguration);
+        jsonWriter.writeStringField("virtualNetworkPoolName", this.virtualNetworkPoolName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubnetOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubnetOverride if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubnetOverride.
+     */
+    public static SubnetOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubnetOverride deserializedSubnetOverride = new SubnetOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedSubnetOverride.resourceId = reader.getString();
+                } else if ("labSubnetName".equals(fieldName)) {
+                    deserializedSubnetOverride.labSubnetName = reader.getString();
+                } else if ("useInVmCreationPermission".equals(fieldName)) {
+                    deserializedSubnetOverride.useInVmCreationPermission
+                        = UsagePermissionType.fromString(reader.getString());
+                } else if ("usePublicIpAddressPermission".equals(fieldName)) {
+                    deserializedSubnetOverride.usePublicIpAddressPermission
+                        = UsagePermissionType.fromString(reader.getString());
+                } else if ("sharedPublicIpAddressConfiguration".equals(fieldName)) {
+                    deserializedSubnetOverride.sharedPublicIpAddressConfiguration
+                        = SubnetSharedPublicIpAddressConfiguration.fromJson(reader);
+                } else if ("virtualNetworkPoolName".equals(fieldName)) {
+                    deserializedSubnetOverride.virtualNetworkPoolName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubnetOverride;
+        });
     }
 }

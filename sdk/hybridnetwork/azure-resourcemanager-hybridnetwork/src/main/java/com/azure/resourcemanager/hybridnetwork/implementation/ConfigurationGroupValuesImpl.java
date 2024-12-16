@@ -59,32 +59,32 @@ public final class ConfigurationGroupValuesImpl implements ConfigurationGroupVal
 
     public PagedIterable<ConfigurationGroupValue> list() {
         PagedIterable<ConfigurationGroupValueInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationGroupValue> list(Context context) {
         PagedIterable<ConfigurationGroupValueInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationGroupValue> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConfigurationGroupValueInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationGroupValue> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ConfigurationGroupValueInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupValueImpl(inner1, this.manager()));
     }
 
     public ConfigurationGroupValue getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationGroupValueName = Utils.getValueFromIdByName(id, "configurationGroupValues");
+        String configurationGroupValueName = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupValues");
         if (configurationGroupValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupValues'.", id)));
@@ -94,12 +94,12 @@ public final class ConfigurationGroupValuesImpl implements ConfigurationGroupVal
     }
 
     public Response<ConfigurationGroupValue> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationGroupValueName = Utils.getValueFromIdByName(id, "configurationGroupValues");
+        String configurationGroupValueName = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupValues");
         if (configurationGroupValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupValues'.", id)));
@@ -108,12 +108,12 @@ public final class ConfigurationGroupValuesImpl implements ConfigurationGroupVal
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationGroupValueName = Utils.getValueFromIdByName(id, "configurationGroupValues");
+        String configurationGroupValueName = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupValues");
         if (configurationGroupValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupValues'.", id)));
@@ -122,12 +122,12 @@ public final class ConfigurationGroupValuesImpl implements ConfigurationGroupVal
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configurationGroupValueName = Utils.getValueFromIdByName(id, "configurationGroupValues");
+        String configurationGroupValueName = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupValues");
         if (configurationGroupValueName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupValues'.", id)));

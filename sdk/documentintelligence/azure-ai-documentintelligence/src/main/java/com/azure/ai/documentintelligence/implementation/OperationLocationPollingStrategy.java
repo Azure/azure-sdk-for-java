@@ -5,7 +5,6 @@ package com.azure.ai.documentintelligence.implementation;
 
 import static com.azure.ai.documentintelligence.implementation.PollingUtils.parseOperationId;
 
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
 import com.azure.ai.documentintelligence.models.AnalyzeOperation;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
@@ -151,11 +150,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
             }
             if (pollResponse.getValue() instanceof AnalyzeOperation) {
                 AnalyzeOperation operation = (AnalyzeOperation) pollResponse.getValue();
-                operation.setOperationId(operationId);
-            }
-            if (pollResponse.getValue() instanceof AnalyzeBatchOperation) {
-                AnalyzeBatchOperation operation = (AnalyzeBatchOperation) pollResponse.getValue();
-                operation.setOperationId(operationId);
+                AnalyzeOperationHelper.setOperationId(operation, operationId);
             }
             return pollResponse;
         });

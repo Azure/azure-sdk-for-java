@@ -5,6 +5,7 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -55,12 +56,23 @@ public final class ClassifyDocumentOptions implements JsonSerializable<ClassifyD
     }
 
     /**
-     * Creates an instance of ClassifyDocumentOptions with the specified Base64 encoded source.
+     * Creates an instance of ClassifyDocumentOptions with the specified bytes of the document.
      *
-     * @param bytesSource the Base64 encoded bytes of the document to classify.
+     * @param bytesSource the encoded bytes of the document to classify.
      */
     public ClassifyDocumentOptions(byte[] bytesSource) {
         this.bytesSource = bytesSource;
+    }
+
+    /**
+     * Creates an instance of ClassifyDocumentOptions with the specified BinaryData source.
+     *
+     * @param binaryData the document to analyze.
+     */
+    public ClassifyDocumentOptions(BinaryData binaryData) {
+        if (binaryData != null) {
+            this.bytesSource = binaryData.toBytes();
+        }
     }
 
     /**

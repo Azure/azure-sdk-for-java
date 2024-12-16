@@ -81,7 +81,7 @@ public final class ReadmeSamples {
 
         SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
-                new AnalyzeDocumentOptions(Files.readAllBytes(layoutDocument.toPath())));
+                new AnalyzeDocumentOptions(layoutDocumentData));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

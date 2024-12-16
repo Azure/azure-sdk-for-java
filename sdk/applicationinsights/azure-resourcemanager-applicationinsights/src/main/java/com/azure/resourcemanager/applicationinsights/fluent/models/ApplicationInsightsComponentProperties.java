@@ -5,89 +5,86 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
 import com.azure.resourcemanager.applicationinsights.models.FlowType;
 import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties that define an Application Insights component resource. */
+/**
+ * Properties that define an Application Insights component resource.
+ */
 @Fluent
-public final class ApplicationInsightsComponentProperties {
+public final class ApplicationInsightsComponentProperties
+    implements JsonSerializable<ApplicationInsightsComponentProperties> {
     /*
      * The unique ID of your application. This field mirrors the 'Name' field and cannot be changed.
      */
-    @JsonProperty(value = "ApplicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationId;
 
     /*
      * Application Insights Unique ID for your Application.
      */
-    @JsonProperty(value = "AppId", access = JsonProperty.Access.WRITE_ONLY)
     private String appId;
 
     /*
      * Application name.
      */
-    @JsonProperty(value = "Name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Type of application being monitored.
      */
-    @JsonProperty(value = "Application_Type", required = true)
     private ApplicationType applicationType;
 
     /*
      * Used by the Application Insights system to determine what kind of flow this component was created by. This is to
      * be set to 'Bluefield' when creating/updating a component via the REST API.
      */
-    @JsonProperty(value = "Flow_Type")
     private FlowType flowType;
 
     /*
      * Describes what tool created this Application Insights component. Customers using this API should set this to the
      * default 'rest'.
      */
-    @JsonProperty(value = "Request_Source")
     private RequestSource requestSource;
 
     /*
-     * Application Insights Instrumentation key. A read-only value that applications can use to identify the
-     * destination for all telemetry sent to Azure Application Insights. This value will be supplied upon construction
-     * of each new Application Insights component.
+     * Application Insights Instrumentation key. A read-only value that applications can use to identify the destination
+     * for all telemetry sent to Azure Application Insights. This value will be supplied upon construction of each new
+     * Application Insights component.
      */
-    @JsonProperty(value = "InstrumentationKey", access = JsonProperty.Access.WRITE_ONLY)
     private String instrumentationKey;
 
     /*
      * Creation Date for the Application Insights component, in ISO 8601 format.
      */
-    @JsonProperty(value = "CreationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Azure Tenant Id. The values allowed for `tenant-id` are: `common`, `organizations`, `consumers`, or the tenant ID.
      */
-    @JsonProperty(value = "TenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The unique application ID created when a new application is added to HockeyApp, used for communications with
      * HockeyApp.
      */
-    @JsonProperty(value = "HockeyAppId")
     private String hockeyAppId;
 
     /*
      * Token used to authenticate communications with between Application Insights and HockeyApp.
      */
-    @JsonProperty(value = "HockeyAppToken", access = JsonProperty.Access.WRITE_ONLY)
     private String hockeyAppToken;
 
     /*
@@ -95,97 +92,85 @@ public final class ApplicationInsightsComponentProperties {
      * Users cannot change this value but are able to read from it. Values will include Succeeded, Deploying, Canceled,
      * and Failed.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * Percentage of the data produced by the application being monitored that is being sampled for Application
-     * Insights telemetry.
+     * Percentage of the data produced by the application being monitored that is being sampled for Application Insights
+     * telemetry.
      */
-    @JsonProperty(value = "SamplingPercentage")
     private Double samplingPercentage;
 
     /*
      * Application Insights component connection string.
      */
-    @JsonProperty(value = "ConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionString;
 
     /*
      * Retention period in days.
      */
-    @JsonProperty(value = "RetentionInDays")
     private Integer retentionInDays;
 
     /*
      * Disable IP masking.
      */
-    @JsonProperty(value = "DisableIpMasking")
     private Boolean disableIpMasking;
 
     /*
      * Purge data immediately after 30 days.
      */
-    @JsonProperty(value = "ImmediatePurgeDataOn30Days")
     private Boolean immediatePurgeDataOn30Days;
 
     /*
      * Resource Id of the log analytics workspace which the data will be ingested to. This property is required to
      * create an application with this API version. Applications from older versions will not have this property.
      */
-    @JsonProperty(value = "WorkspaceResourceId")
     private String workspaceResourceId;
 
     /*
      * The date which the component got migrated to LA, in ISO 8601 format.
      */
-    @JsonProperty(value = "LaMigrationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime laMigrationDate;
 
     /*
      * List of linked private link scope resources.
      */
-    @JsonProperty(value = "PrivateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateLinkScopedResource> privateLinkScopedResources;
 
     /*
      * The network access type for accessing Application Insights ingestion.
      */
-    @JsonProperty(value = "publicNetworkAccessForIngestion")
     private PublicNetworkAccessType publicNetworkAccessForIngestion;
 
     /*
      * The network access type for accessing Application Insights query.
      */
-    @JsonProperty(value = "publicNetworkAccessForQuery")
     private PublicNetworkAccessType publicNetworkAccessForQuery;
 
     /*
      * Indicates the flow of the ingestion.
      */
-    @JsonProperty(value = "IngestionMode")
     private IngestionMode ingestionMode;
 
     /*
      * Disable Non-AAD based Auth.
      */
-    @JsonProperty(value = "DisableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Force users to create their own storage account for profiler and debugger.
      */
-    @JsonProperty(value = "ForceCustomerStorageForProfiler")
     private Boolean forceCustomerStorageForProfiler;
 
-    /** Creates an instance of ApplicationInsightsComponentProperties class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentProperties class.
+     */
     public ApplicationInsightsComponentProperties() {
     }
 
     /**
      * Get the applicationId property: The unique ID of your application. This field mirrors the 'Name' field and cannot
      * be changed.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -194,7 +179,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the appId property: Application Insights Unique ID for your Application.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -203,7 +188,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the name property: Application name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -212,7 +197,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the applicationType property: Type of application being monitored.
-     *
+     * 
      * @return the applicationType value.
      */
     public ApplicationType applicationType() {
@@ -221,7 +206,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the applicationType property: Type of application being monitored.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -233,7 +218,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the flowType property: Used by the Application Insights system to determine what kind of flow this component
      * was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API.
-     *
+     * 
      * @return the flowType value.
      */
     public FlowType flowType() {
@@ -243,7 +228,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the flowType property: Used by the Application Insights system to determine what kind of flow this component
      * was created by. This is to be set to 'Bluefield' when creating/updating a component via the REST API.
-     *
+     * 
      * @param flowType the flowType value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -255,7 +240,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the requestSource property: Describes what tool created this Application Insights component. Customers using
      * this API should set this to the default 'rest'.
-     *
+     * 
      * @return the requestSource value.
      */
     public RequestSource requestSource() {
@@ -265,7 +250,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the requestSource property: Describes what tool created this Application Insights component. Customers using
      * this API should set this to the default 'rest'.
-     *
+     * 
      * @param requestSource the requestSource value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -278,7 +263,7 @@ public final class ApplicationInsightsComponentProperties {
      * Get the instrumentationKey property: Application Insights Instrumentation key. A read-only value that
      * applications can use to identify the destination for all telemetry sent to Azure Application Insights. This value
      * will be supplied upon construction of each new Application Insights component.
-     *
+     * 
      * @return the instrumentationKey value.
      */
     public String instrumentationKey() {
@@ -287,7 +272,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the creationDate property: Creation Date for the Application Insights component, in ISO 8601 format.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -296,7 +281,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the tenantId property: Azure Tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -306,7 +291,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the hockeyAppId property: The unique application ID created when a new application is added to HockeyApp,
      * used for communications with HockeyApp.
-     *
+     * 
      * @return the hockeyAppId value.
      */
     public String hockeyAppId() {
@@ -316,7 +301,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the hockeyAppId property: The unique application ID created when a new application is added to HockeyApp,
      * used for communications with HockeyApp.
-     *
+     * 
      * @param hockeyAppId the hockeyAppId value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -328,7 +313,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the hockeyAppToken property: Token used to authenticate communications with between Application Insights and
      * HockeyApp.
-     *
+     * 
      * @return the hockeyAppToken value.
      */
     public String hockeyAppToken() {
@@ -339,7 +324,7 @@ public final class ApplicationInsightsComponentProperties {
      * Get the provisioningState property: Current state of this component: whether or not is has been provisioned
      * within the resource group it is defined. Users cannot change this value but are able to read from it. Values will
      * include Succeeded, Deploying, Canceled, and Failed.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -349,7 +334,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the samplingPercentage property: Percentage of the data produced by the application being monitored that is
      * being sampled for Application Insights telemetry.
-     *
+     * 
      * @return the samplingPercentage value.
      */
     public Double samplingPercentage() {
@@ -359,7 +344,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the samplingPercentage property: Percentage of the data produced by the application being monitored that is
      * being sampled for Application Insights telemetry.
-     *
+     * 
      * @param samplingPercentage the samplingPercentage value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -370,7 +355,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the connectionString property: Application Insights component connection string.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -379,7 +364,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the retentionInDays property: Retention period in days.
-     *
+     * 
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
@@ -388,7 +373,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the retentionInDays property: Retention period in days.
-     *
+     * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -399,7 +384,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the disableIpMasking property: Disable IP masking.
-     *
+     * 
      * @return the disableIpMasking value.
      */
     public Boolean disableIpMasking() {
@@ -408,7 +393,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the disableIpMasking property: Disable IP masking.
-     *
+     * 
      * @param disableIpMasking the disableIpMasking value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -419,7 +404,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the immediatePurgeDataOn30Days property: Purge data immediately after 30 days.
-     *
+     * 
      * @return the immediatePurgeDataOn30Days value.
      */
     public Boolean immediatePurgeDataOn30Days() {
@@ -428,7 +413,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the immediatePurgeDataOn30Days property: Purge data immediately after 30 days.
-     *
+     * 
      * @param immediatePurgeDataOn30Days the immediatePurgeDataOn30Days value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -441,7 +426,7 @@ public final class ApplicationInsightsComponentProperties {
      * Get the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
      * to. This property is required to create an application with this API version. Applications from older versions
      * will not have this property.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -452,7 +437,7 @@ public final class ApplicationInsightsComponentProperties {
      * Set the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
      * to. This property is required to create an application with this API version. Applications from older versions
      * will not have this property.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -463,7 +448,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the laMigrationDate property: The date which the component got migrated to LA, in ISO 8601 format.
-     *
+     * 
      * @return the laMigrationDate value.
      */
     public OffsetDateTime laMigrationDate() {
@@ -472,7 +457,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
-     *
+     * 
      * @return the privateLinkScopedResources value.
      */
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
@@ -482,7 +467,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the publicNetworkAccessForIngestion property: The network access type for accessing Application Insights
      * ingestion.
-     *
+     * 
      * @return the publicNetworkAccessForIngestion value.
      */
     public PublicNetworkAccessType publicNetworkAccessForIngestion() {
@@ -492,7 +477,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the publicNetworkAccessForIngestion property: The network access type for accessing Application Insights
      * ingestion.
-     *
+     * 
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -504,7 +489,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the publicNetworkAccessForQuery property: The network access type for accessing Application Insights query.
-     *
+     * 
      * @return the publicNetworkAccessForQuery value.
      */
     public PublicNetworkAccessType publicNetworkAccessForQuery() {
@@ -513,7 +498,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the publicNetworkAccessForQuery property: The network access type for accessing Application Insights query.
-     *
+     * 
      * @param publicNetworkAccessForQuery the publicNetworkAccessForQuery value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -525,7 +510,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the ingestionMode property: Indicates the flow of the ingestion.
-     *
+     * 
      * @return the ingestionMode value.
      */
     public IngestionMode ingestionMode() {
@@ -534,7 +519,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the ingestionMode property: Indicates the flow of the ingestion.
-     *
+     * 
      * @param ingestionMode the ingestionMode value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -545,7 +530,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Get the disableLocalAuth property: Disable Non-AAD based Auth.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -554,7 +539,7 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Set the disableLocalAuth property: Disable Non-AAD based Auth.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -566,7 +551,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Get the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
      * and debugger.
-     *
+     * 
      * @return the forceCustomerStorageForProfiler value.
      */
     public Boolean forceCustomerStorageForProfiler() {
@@ -576,7 +561,7 @@ public final class ApplicationInsightsComponentProperties {
     /**
      * Set the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
      * and debugger.
-     *
+     * 
      * @param forceCustomerStorageForProfiler the forceCustomerStorageForProfiler value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
@@ -588,13 +573,14 @@ public final class ApplicationInsightsComponentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property applicationType in model ApplicationInsightsComponentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationType in model ApplicationInsightsComponentProperties"));
         }
         if (privateLinkScopedResources() != null) {
             privateLinkScopedResources().forEach(e -> e.validate());
@@ -602,4 +588,124 @@ public final class ApplicationInsightsComponentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationInsightsComponentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Application_Type",
+            this.applicationType == null ? null : this.applicationType.toString());
+        jsonWriter.writeStringField("Flow_Type", this.flowType == null ? null : this.flowType.toString());
+        jsonWriter.writeStringField("Request_Source",
+            this.requestSource == null ? null : this.requestSource.toString());
+        jsonWriter.writeStringField("HockeyAppId", this.hockeyAppId);
+        jsonWriter.writeNumberField("SamplingPercentage", this.samplingPercentage);
+        jsonWriter.writeNumberField("RetentionInDays", this.retentionInDays);
+        jsonWriter.writeBooleanField("DisableIpMasking", this.disableIpMasking);
+        jsonWriter.writeBooleanField("ImmediatePurgeDataOn30Days", this.immediatePurgeDataOn30Days);
+        jsonWriter.writeStringField("WorkspaceResourceId", this.workspaceResourceId);
+        jsonWriter.writeStringField("publicNetworkAccessForIngestion",
+            this.publicNetworkAccessForIngestion == null ? null : this.publicNetworkAccessForIngestion.toString());
+        jsonWriter.writeStringField("publicNetworkAccessForQuery",
+            this.publicNetworkAccessForQuery == null ? null : this.publicNetworkAccessForQuery.toString());
+        jsonWriter.writeStringField("IngestionMode", this.ingestionMode == null ? null : this.ingestionMode.toString());
+        jsonWriter.writeBooleanField("DisableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("ForceCustomerStorageForProfiler", this.forceCustomerStorageForProfiler);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentProperties.
+     */
+    public static ApplicationInsightsComponentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentProperties deserializedApplicationInsightsComponentProperties
+                = new ApplicationInsightsComponentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Application_Type".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.applicationType
+                        = ApplicationType.fromString(reader.getString());
+                } else if ("ApplicationId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.applicationId = reader.getString();
+                } else if ("AppId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.appId = reader.getString();
+                } else if ("Name".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.name = reader.getString();
+                } else if ("Flow_Type".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.flowType
+                        = FlowType.fromString(reader.getString());
+                } else if ("Request_Source".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.requestSource
+                        = RequestSource.fromString(reader.getString());
+                } else if ("InstrumentationKey".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.instrumentationKey = reader.getString();
+                } else if ("CreationDate".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("TenantId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.tenantId = reader.getString();
+                } else if ("HockeyAppId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.hockeyAppId = reader.getString();
+                } else if ("HockeyAppToken".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.hockeyAppToken = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.provisioningState = reader.getString();
+                } else if ("SamplingPercentage".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.samplingPercentage
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("ConnectionString".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.connectionString = reader.getString();
+                } else if ("RetentionInDays".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.retentionInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("DisableIpMasking".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.disableIpMasking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ImmediatePurgeDataOn30Days".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.immediatePurgeDataOn30Days
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("WorkspaceResourceId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.workspaceResourceId = reader.getString();
+                } else if ("LaMigrationDate".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.laMigrationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("PrivateLinkScopedResources".equals(fieldName)) {
+                    List<PrivateLinkScopedResource> privateLinkScopedResources
+                        = reader.readArray(reader1 -> PrivateLinkScopedResource.fromJson(reader1));
+                    deserializedApplicationInsightsComponentProperties.privateLinkScopedResources
+                        = privateLinkScopedResources;
+                } else if ("publicNetworkAccessForIngestion".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.publicNetworkAccessForIngestion
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("publicNetworkAccessForQuery".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.publicNetworkAccessForQuery
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("IngestionMode".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.ingestionMode
+                        = IngestionMode.fromString(reader.getString());
+                } else if ("DisableLocalAuth".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ForceCustomerStorageForProfiler".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentProperties.forceCustomerStorageForProfiler
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentProperties;
+        });
+    }
 }

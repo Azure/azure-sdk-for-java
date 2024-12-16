@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineTemplatesClient.
+ */
 public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTemplatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineTemplatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineTemplatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineTemplatesClientImpl(ConnectedVMwareClientImpl client) {
@@ -146,9 +152,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -188,9 +194,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -230,9 +236,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -253,9 +259,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,9 +282,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -302,9 +308,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,9 +327,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -342,9 +348,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -362,9 +368,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,9 +387,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -402,9 +408,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,9 +426,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements virtual machine template PUT method.
-     *
-     * <p>Create Or Update virtual machine template.
-     *
+     * 
+     * Create Or Update virtual machine template.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Request payload.
@@ -440,9 +446,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,9 +485,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param context The context to associate with this operation.
@@ -517,9 +523,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,9 +542,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param context The context to associate with this operation.
@@ -555,9 +561,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -572,9 +578,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Updates a virtual machine template.
-     *
-     * <p>API to update certain properties of the virtual machine template resource.
-     *
+     * 
+     * API to update certain properties of the virtual machine template resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Resource properties to update.
@@ -614,9 +620,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Updates a virtual machine template.
-     *
-     * <p>API to update certain properties of the virtual machine template resource.
-     *
+     * 
+     * API to update certain properties of the virtual machine template resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Resource properties to update.
@@ -656,9 +662,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Updates a virtual machine template.
-     *
-     * <p>API to update certain properties of the virtual machine template resource.
-     *
+     * 
+     * API to update certain properties of the virtual machine template resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,9 +681,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Updates a virtual machine template.
-     *
-     * <p>API to update certain properties of the virtual machine template resource.
-     *
+     * 
+     * API to update certain properties of the virtual machine template resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param body Resource properties to update.
@@ -695,9 +701,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Updates a virtual machine template.
-     *
-     * <p>API to update certain properties of the virtual machine template resource.
-     *
+     * 
+     * API to update certain properties of the virtual machine template resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -713,9 +719,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -752,9 +758,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -791,9 +797,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -813,9 +819,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,9 +841,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -859,9 +865,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -877,9 +883,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -897,9 +903,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -916,9 +922,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -935,9 +941,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -956,9 +962,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -973,9 +979,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -991,13 +997,13 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listSinglePageAsync() {
@@ -1020,15 +1026,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listSinglePageAsync(Context context) {
@@ -1051,9 +1057,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualMachineTemplates as paginated response with {@link PagedFlux}.
@@ -1065,9 +1071,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1082,9 +1088,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
@@ -1096,9 +1102,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,15 +1118,15 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>>
@@ -1148,16 +1154,16 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>>
@@ -1185,9 +1191,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,9 +1208,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,9 +1226,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1236,9 +1242,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1253,14 +1259,13 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listNextSinglePageAsync(String nextLink) {
@@ -1280,15 +1285,14 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1308,14 +1312,13 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1337,15 +1340,14 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of VirtualMachineTemplates along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

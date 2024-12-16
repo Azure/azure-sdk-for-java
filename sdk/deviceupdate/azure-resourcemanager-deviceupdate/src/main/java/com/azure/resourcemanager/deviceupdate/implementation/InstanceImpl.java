@@ -154,9 +154,9 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     InstanceImpl(InstanceInner innerObject, com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.instanceName = Utils.getValueFromIdByName(innerObject.id(), "instances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
     }
 
     public Instance refresh() {

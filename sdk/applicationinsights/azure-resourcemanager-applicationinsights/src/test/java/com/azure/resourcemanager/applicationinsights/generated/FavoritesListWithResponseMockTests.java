@@ -6,65 +6,46 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentFavorite;
 import com.azure.resourcemanager.applicationinsights.models.FavoriteSourceType;
 import com.azure.resourcemanager.applicationinsights.models.FavoriteType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FavoritesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "[{\"Name\":\"wva\",\"Config\":\"yuvvfonkp\",\"Version\":\"qyikvy\",\"FavoriteId\":\"uyav\",\"FavoriteType\":\"shared\",\"SourceType\":\"ncstt\",\"TimeModified\":\"fybvpoek\",\"Tags\":[\"sgbdhuz\",\"gnjdgkynscliqhz\",\"h\"],\"Category\":\"komtkubotppn\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"xhihfrbbcevqagtl\"},{\"Name\":\"hlfkqojpy\",\"Config\":\"gtrd\",\"Version\":\"ifmzzsd\",\"FavoriteId\":\"brn\",\"FavoriteType\":\"shared\",\"SourceType\":\"m\",\"TimeModified\":\"a\",\"Tags\":[\"ckh\"],\"Category\":\"xvd\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"afqr\"}]";
+            = "[{\"Name\":\"cxkjibnxmysuxswq\",\"Config\":\"tvlwijpsttexoq\",\"Version\":\"wcyyufmhruncu\",\"FavoriteId\":\"qspkcdqzhlctd\",\"FavoriteType\":\"user\",\"SourceType\":\"ndy\",\"TimeModified\":\"chrqb\",\"Tags\":[\"rcgegydcwboxjum\"],\"Category\":\"qoli\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"iouaubrjt\"},{\"Name\":\"qxfuojrngif\",\"Config\":\"z\",\"Version\":\"sccbiuimzd\",\"FavoriteId\":\"jdfqwmkyoqufdvr\",\"FavoriteType\":\"shared\",\"SourceType\":\"zojhpctfnmd\",\"TimeModified\":\"tngfdgugeyzihgr\",\"Tags\":[\"i\"],\"Category\":\"bsnmfpph\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"vyhyhsgzfc\"}]";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         List<ApplicationInsightsComponentFavorite> response = manager.favorites()
-            .listWithResponse("dynhdwdigum", "nraauzz", FavoriteType.SHARED, FavoriteSourceType.SEGMENTATION, false,
-                Arrays.asList("zysdzh"), com.azure.core.util.Context.NONE)
+            .listWithResponse("xzsrzpge", "q", FavoriteType.SHARED, FavoriteSourceType.RETENTION, true,
+                Arrays.asList("wwpgdakchzyvlixq"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wva", response.get(0).name());
-        Assertions.assertEquals("yuvvfonkp", response.get(0).config());
-        Assertions.assertEquals("qyikvy", response.get(0).version());
-        Assertions.assertEquals(FavoriteType.SHARED, response.get(0).favoriteType());
-        Assertions.assertEquals("ncstt", response.get(0).sourceType());
-        Assertions.assertEquals("sgbdhuz", response.get(0).tags().get(0));
-        Assertions.assertEquals("komtkubotppn", response.get(0).category());
-        Assertions.assertEquals(false, response.get(0).isGeneratedFromTemplate());
+        Assertions.assertEquals("cxkjibnxmysuxswq", response.get(0).name());
+        Assertions.assertEquals("tvlwijpsttexoq", response.get(0).config());
+        Assertions.assertEquals("wcyyufmhruncu", response.get(0).version());
+        Assertions.assertEquals(FavoriteType.USER, response.get(0).favoriteType());
+        Assertions.assertEquals("ndy", response.get(0).sourceType());
+        Assertions.assertEquals("rcgegydcwboxjum", response.get(0).tags().get(0));
+        Assertions.assertEquals("qoli", response.get(0).category());
+        Assertions.assertEquals(true, response.get(0).isGeneratedFromTemplate());
     }
 }

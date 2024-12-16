@@ -21,51 +21,71 @@ import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 public interface GenericResource extends GroupableResource<ResourceManager, GenericResourceInner>,
     Refreshable<GenericResource>, Updatable<GenericResource.Update> {
     /**
+     * Gets the namespace of the resource provider.
+     *
      * @return the namespace of the resource provider
      */
     String resourceProviderNamespace();
 
     /**
+     * Gets the id of the parent resource if this is a child resource.
+     *
      * @return the id of the parent resource if this is a child resource
      */
     String parentResourcePath();
 
     /**
+     * Gets the type of the resource.
+     *
      * @return the type of the resource
      */
     String resourceType();
 
     /**
+     * Gets the api version of the resource.
+     *
      * @return the api version of the resource
      */
     String apiVersion();
 
     /**
+     * Gets the plan of the resource.
+     *
      * @return the plan of the resource
      */
     Plan plan();
 
     /**
+     * Gets other properties of the resource.
+     *
      * @return other properties of the resource
      */
     Object properties();
 
     /**
+     * Gets the kind of the resource.
+     *
      * @return the kind of the resource
      */
     String kind();
 
     /**
+     * Gets the SKU of the resource.
+     *
      * @return the SKU of the resource
      */
     Sku sku();
 
     /**
+     * Gets the managed identity of the resource.
+     *
      * @return the managed identity of the resource
      */
     Identity identity();
 
     /**
+     * Gets the ID of the resource that manages this resource.
+     *
      * @return the ID of the resource that manages this resource
      */
     String managedBy();

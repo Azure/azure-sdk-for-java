@@ -167,7 +167,7 @@ BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocume
 
 SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
-        new AnalyzeDocumentOptions(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions(layoutDocumentData));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

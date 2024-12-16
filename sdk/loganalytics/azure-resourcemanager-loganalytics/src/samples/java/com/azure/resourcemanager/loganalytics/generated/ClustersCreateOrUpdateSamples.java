@@ -10,27 +10,28 @@ import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters CreateOrUpdate. */
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .define("oiautorest6685")
             .withRegion("australiasoutheast")
             .withExistingResourceGroup("oiautorest6685")
             .withTags(mapOf("tag1", "val1"))
-            .withSku(
-                new ClusterSku()
-                    .withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                    .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
+                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .create();
     }
 

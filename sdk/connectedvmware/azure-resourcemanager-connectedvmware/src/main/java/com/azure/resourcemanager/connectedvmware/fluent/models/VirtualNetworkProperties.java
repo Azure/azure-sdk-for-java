@@ -5,69 +5,69 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Network. */
+/**
+ * Describes the properties of a Virtual Network.
+ */
 @Fluent
-public final class VirtualNetworkProperties {
+public final class VirtualNetworkProperties implements JsonSerializable<VirtualNetworkProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this template resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual network.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the virtual network.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the virtual network.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualNetworkProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkProperties class.
+     */
     public VirtualNetworkProperties() {
     }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -76,7 +76,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this template resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -85,7 +85,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this template resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -96,7 +96,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual network.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -105,7 +105,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the virtual network.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -116,7 +116,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the virtual network.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -125,7 +125,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the virtual network.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -136,7 +136,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the virtual network.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -145,7 +145,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -154,7 +154,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -163,7 +163,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -172,12 +172,66 @@ public final class VirtualNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProperties.
+     */
+    public static VirtualNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProperties deserializedVirtualNetworkProperties = new VirtualNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.moName = reader.getString();
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.customResourceName = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProperties;
+        });
     }
 }

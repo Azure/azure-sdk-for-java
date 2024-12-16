@@ -18,7 +18,7 @@ public final class GrafanaGetByResourceGroupSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void grafanaGet(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.grafanas().getByResourceGroupWithResponse("myResourceGroup", "myWorkspace",
-            com.azure.core.util.Context.NONE);
+        manager.grafanas()
+            .getByResourceGroupWithResponse("myResourceGroup", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

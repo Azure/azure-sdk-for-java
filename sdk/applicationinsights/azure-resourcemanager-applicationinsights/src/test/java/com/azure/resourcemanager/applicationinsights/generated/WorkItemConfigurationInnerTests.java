@@ -12,27 +12,27 @@ public final class WorkItemConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkItemConfigurationInner model = BinaryData.fromString(
-            "{\"ConnectorId\":\"a\",\"ConfigDisplayName\":\"j\",\"IsDefault\":false,\"Id\":\"obnbdxkqpxokaj\",\"ConfigProperties\":\"npime\"}")
+            "{\"ConnectorId\":\"vmmcoofs\",\"ConfigDisplayName\":\"zevgb\",\"IsDefault\":true,\"Id\":\"abcypmivk\",\"ConfigProperties\":\"zuvccfwnfnbacfio\"}")
             .toObject(WorkItemConfigurationInner.class);
-        Assertions.assertEquals("a", model.connectorId());
-        Assertions.assertEquals("j", model.configDisplayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("obnbdxkqpxokaj", model.id());
-        Assertions.assertEquals("npime", model.configProperties());
+        Assertions.assertEquals("vmmcoofs", model.connectorId());
+        Assertions.assertEquals("zevgb", model.configDisplayName());
+        Assertions.assertEquals(true, model.isDefault());
+        Assertions.assertEquals("abcypmivk", model.id());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.configProperties());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkItemConfigurationInner model = new WorkItemConfigurationInner().withConnectorId("a")
-            .withConfigDisplayName("j")
-            .withIsDefault(false)
-            .withId("obnbdxkqpxokaj")
-            .withConfigProperties("npime");
+        WorkItemConfigurationInner model = new WorkItemConfigurationInner().withConnectorId("vmmcoofs")
+            .withConfigDisplayName("zevgb")
+            .withIsDefault(true)
+            .withId("abcypmivk")
+            .withConfigProperties("zuvccfwnfnbacfio");
         model = BinaryData.fromObject(model).toObject(WorkItemConfigurationInner.class);
-        Assertions.assertEquals("a", model.connectorId());
-        Assertions.assertEquals("j", model.configDisplayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("obnbdxkqpxokaj", model.id());
-        Assertions.assertEquals("npime", model.configProperties());
+        Assertions.assertEquals("vmmcoofs", model.connectorId());
+        Assertions.assertEquals("zevgb", model.configDisplayName());
+        Assertions.assertEquals(true, model.isDefault());
+        Assertions.assertEquals("abcypmivk", model.id());
+        Assertions.assertEquals("zuvccfwnfnbacfio", model.configProperties());
     }
 }
