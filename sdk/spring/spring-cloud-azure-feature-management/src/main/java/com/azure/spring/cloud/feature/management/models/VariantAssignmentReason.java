@@ -4,7 +4,8 @@
 package com.azure.spring.cloud.feature.management.models;
 
 /**
- * 
+ * The reason why a given boolean/variant was returned when calling 
+ * isEnabled/getVariant.
  */
 public enum VariantAssignmentReason {
 

@@ -11,8 +11,6 @@ public class VariantReference {
 
     private Object configurationValue;
 
-    private String configurationReference;
-
     private String statusOverride;
 
     /**
@@ -42,21 +40,6 @@ public class VariantReference {
      */
     public VariantReference setConfigurationValue(Object configurationValue) {
         this.configurationValue = configurationValue;
-        return this;
-    }
-
-    /**
-     * @return the configurationReference
-     */
-    public String getConfigurationReference() {
-        return configurationReference;
-    }
-
-    /**
-     * @param configurationReference the configurationReference to set
-     */
-    public VariantReference setConfigurationReference(String configurationReference) {
-        this.configurationReference = configurationReference;
         return this;
     }
 

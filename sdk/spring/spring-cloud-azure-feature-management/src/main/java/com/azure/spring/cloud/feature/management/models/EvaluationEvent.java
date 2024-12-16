@@ -6,7 +6,7 @@ public class EvaluationEvent {
 
     private String user = "";
 
-    private Boolean enabled = false;
+    private boolean enabled = false;
 
     private Variant variant;
 
@@ -41,14 +41,14 @@ public class EvaluationEvent {
     /**
      * @return the enabled
      */
-    public Boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
     /**
      * @param mono the enabled to set
      */
-    public EvaluationEvent setEnabled(Boolean enabled) {
+    public EvaluationEvent setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
