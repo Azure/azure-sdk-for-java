@@ -10,3 +10,8 @@ extends:
       - name: azure-resourcemanager-datafactory
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdatafactory
+    Clouds: 'Public'
+    UseFederatedAuth: true
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*
