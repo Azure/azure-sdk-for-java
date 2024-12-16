@@ -201,6 +201,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
             .add(new TestProxySanitizer("$..dataSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
         customSanitizers.add(new TestProxySanitizer(ACS_USERID_IN_URL_REGEX, "REDACTED", TestProxySanitizerType.URL));
+        customSanitizers
+            .add(new TestProxySanitizer("$..transportUrl", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
 
         interceptorManager.addSanitizers(customSanitizers);
 
