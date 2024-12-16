@@ -10,6 +10,7 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,13 +22,21 @@ import java.lang.reflect.Type;
 /**
  * Default implementation of the {@link JsonSerializer}.
  */
-public class DefaultJsonSerializer implements JsonSerializer {
+public class DefaultJsonSerializer extends JsonSerializer {
     // DefaultJsonSerializer is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonSerializer.class);
 
+    /**
+     * Creates an instance of the {@link DefaultJsonSerializer}.
+     */
+    public DefaultJsonSerializer() {
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromBytes(byte[] bytes, Type type) throws IOException {
+    public <T> T deserializeFromBytes(byte[] bytes, Type type, ObjectSerializer.Format format) throws IOException {
+        verifyFormat(format);
+
         try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
             if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
@@ -43,7 +52,10 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromStream(InputStream stream, Type type) throws IOException {
+    public <T> T deserializeFromStream(InputStream stream, Type type, ObjectSerializer.Format format)
+        throws IOException {
+        verifyFormat(format);
+
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
             if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
@@ -58,9 +70,15 @@ public class DefaultJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public byte[] serializeToBytes(Object value) throws IOException {
+    public byte[] serializeToBytes(Object value, ObjectSerializer.Format format) throws IOException {
+        verifyFormat(format);
+
         if (value == null) {
             return null;
+        }
+
+        if (value instanceof JsonSerializable<?>) {
+            return ((JsonSerializable<?>) value).toJsonBytes();
         }
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -74,13 +92,22 @@ public class DefaultJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public void serializeToStream(OutputStream stream, Object value) throws IOException {
+    public void serializeToStream(OutputStream stream, Object value, ObjectSerializer.Format format)
+        throws IOException {
+        verifyFormat(format);
+
         if (value == null) {
             return;
         }
 
         try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
             jsonWriter.writeUntyped(value);
+        }
+    }
+
+    private static void verifyFormat(ObjectSerializer.Format format) {
+        if (format != ObjectSerializer.Format.JSON) {
+            throw LOGGER.logThrowableAsError(new UnsupportedOperationException("Only JSON format is supported."));
         }
     }
 }

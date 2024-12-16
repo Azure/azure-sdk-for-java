@@ -9,62 +9,62 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 
 /**
- * Generic interface covering basic JSON serialization and deserialization methods.
+ * Generic interface covering basic XML serialization and deserialization methods.
  */
-public abstract class JsonSerializer extends ObjectSerializer {
+public abstract class XmlSerializer extends ObjectSerializer {
     /**
-     * Creates an instance of the {@link JsonSerializer}.
+     * Creates an instance of the {@link XmlSerializer}.
      */
-    public JsonSerializer() {
+    public XmlSerializer() {
     }
 
     /**
-     * Reads a JSON byte array into its object representation.
+     * Reads an XML byte array into its object representation.
      *
-     * @param data The JSON byte array.
+     * @param data The XML byte array.
      * @param type {@link Type} representing the object.
      * @param format The format to deserialize the object from.
      * @param <T> Type of the object.
-     * @return The object represented by the deserialized JSON byte array.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
+     * @return The object represented by the deserialized XML byte array.
+     * @throws UnsupportedOperationException If the provided format is not {@link Format#XML}.
      * @throws IOException If the deserialization fails.
      */
     @Override
     public abstract <T> T deserializeFromBytes(byte[] data, Type type, Format format) throws IOException;
 
     /**
-     * Reads a JSON stream into its object representation.
+     * Reads an XML stream into its object representation.
      *
-     * @param stream JSON stream.
+     * @param stream XML stream.
      * @param type {@link Type} representing the object.
      * @param format The format to deserialize the object from.
      * @param <T> Type of the object.
-     * @return The object represented by the deserialized JSON stream.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
+     * @return The object represented by the deserialized XML stream.
+     * @throws UnsupportedOperationException If the provided format is not {@link Format#XML}.
      * @throws IOException If the deserialization fails.
      */
     @Override
     public abstract <T> T deserializeFromStream(InputStream stream, Type type, Format format) throws IOException;
 
     /**
-     * Converts the object into a JSON byte array.
+     * Converts the object into an XML byte array.
      *
      * @param value The object.
      * @param format The format to deserialize the object from.
-     * @return The JSON binary representation of the serialized object.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
+     * @return The XML binary representation of the serialized object.
+     * @throws UnsupportedOperationException If the provided format is not {@link Format#XML}.
      * @throws IOException If the serialization fails.
      */
     @Override
     public abstract byte[] serializeToBytes(Object value, Format format) throws IOException;
 
     /**
-     * Writes an object's JSON representation into a stream.
+     * Writes an object's XML representation into a stream.
      *
-     * @param stream {@link OutputStream} where the object's JSON representation will be written.
+     * @param stream {@link OutputStream} where the object's XML representation will be written.
      * @param value The object to serialize.
      * @param format The format to deserialize the object from.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
+     * @throws UnsupportedOperationException If the provided format is not {@link Format#XML}.
      * @throws IOException If the serialization fails.
      */
     @Override
@@ -72,6 +72,6 @@ public abstract class JsonSerializer extends ObjectSerializer {
 
     @Override
     public final boolean supportsFormat(Format format) {
-        return format == Format.JSON;
+        return format == Format.XML;
     }
 }
