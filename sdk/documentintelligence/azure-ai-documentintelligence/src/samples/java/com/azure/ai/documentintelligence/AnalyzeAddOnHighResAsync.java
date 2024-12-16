@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentStyle;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
@@ -41,7 +41,7 @@ public class AnalyzeAddOnHighResAsync {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/highres.png");
 
-        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                     new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())));
 

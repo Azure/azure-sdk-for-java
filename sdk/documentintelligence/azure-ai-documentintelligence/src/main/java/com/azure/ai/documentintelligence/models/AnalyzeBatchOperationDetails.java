@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
  * Status and result of the analyze batch operation.
  */
 @Immutable
-public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatchOperation> {
+public final class AnalyzeBatchOperationDetails implements JsonSerializable<AnalyzeBatchOperationDetails> {
 
     /*
      * Analyze batch operation result ID.
@@ -63,14 +63,14 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
     private AnalyzeBatchResult result;
 
     /**
-     * Creates an instance of AnalyzeBatchOperation class.
+     * Creates an instance of AnalyzeBatchOperationDetails class.
      *
      * @param status the status value to set.
      * @param createdOn the createdOn value to set.
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      */
     @Generated
-    private AnalyzeBatchOperation(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
+    private AnalyzeBatchOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
         OffsetDateTime lastUpdatedOn) {
         this.status = status;
         this.createdOn = createdOn;
@@ -167,16 +167,16 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
     }
 
     /**
-     * Reads an instance of AnalyzeBatchOperation from the JsonReader.
+     * Reads an instance of AnalyzeBatchOperationDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeBatchOperation if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of AnalyzeBatchOperationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeBatchOperation.
+     * @throws IOException If an error occurs while reading the AnalyzeBatchOperationDetails.
      */
     @Generated
-    public static AnalyzeBatchOperation fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalyzeBatchOperationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIntelligenceOperationStatus status = null;
             OffsetDateTime createdOn = null;
@@ -208,13 +208,13 @@ public final class AnalyzeBatchOperation implements JsonSerializable<AnalyzeBatc
                     reader.skipChildren();
                 }
             }
-            AnalyzeBatchOperation deserializedAnalyzeBatchOperation
-                = new AnalyzeBatchOperation(status, createdOn, lastUpdatedOn);
-            deserializedAnalyzeBatchOperation.resultId = resultId;
-            deserializedAnalyzeBatchOperation.percentCompleted = percentCompleted;
-            deserializedAnalyzeBatchOperation.error = error;
-            deserializedAnalyzeBatchOperation.result = result;
-            return deserializedAnalyzeBatchOperation;
+            AnalyzeBatchOperationDetails deserializedAnalyzeBatchOperationDetails
+                = new AnalyzeBatchOperationDetails(status, createdOn, lastUpdatedOn);
+            deserializedAnalyzeBatchOperationDetails.resultId = resultId;
+            deserializedAnalyzeBatchOperationDetails.percentCompleted = percentCompleted;
+            deserializedAnalyzeBatchOperationDetails.error = error;
+            deserializedAnalyzeBatchOperationDetails.result = result;
+            return deserializedAnalyzeBatchOperationDetails;
         });
     }
 }
