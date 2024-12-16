@@ -31,9 +31,9 @@ import java.util.concurrent.TimeUnit;
         "spring.autoconfigure.exclude=org.springframework.cloud.stream.config.BindingServiceConfiguration"
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
-@ActiveProfiles("servicebus")
-public class ServiceBusIT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
+@ActiveProfiles("servicebus-sdk-clients")
+public class ServiceBusSdkClientsIT {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSdkClientsIT.class);
     private static final String DATA1 = "service bus test1";
     private static final String DATA2 = "service bus test2";
     private static CountDownLatch LATCH = new CountDownLatch(1);
@@ -67,7 +67,7 @@ public class ServiceBusIT {
 
     @Test
     public void testServiceBusOperation() throws InterruptedException {
-        LOGGER.info("ServiceBusIT begin.");
+        LOGGER.info("ServiceBusSdkClientsIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
         Assertions.assertEquals(1, receivedMessages.stream().count());
@@ -84,6 +84,6 @@ public class ServiceBusIT {
         Assertions.assertEquals(DATA2, MESSAGE);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
-        LOGGER.info("ServiceBusIT end.");
+        LOGGER.info("ServiceBusSdkClientsIT end.");
     }
 }
