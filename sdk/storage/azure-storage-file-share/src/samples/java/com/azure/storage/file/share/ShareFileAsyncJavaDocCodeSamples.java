@@ -1278,17 +1278,13 @@ public class ShareFileAsyncJavaDocCodeSamples {
         ShareFileAsyncClient sourceClient = createAsyncClientWithSASToken();
         ShareFileAsyncClient hardLinkClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String
-        sourceClient.create(1024).block();
         hardLinkClient.createHardLink(sourceClient.getFilePath())
             .subscribe(result -> System.out.printf("Link count is is %s.",
                 result.getPosixProperties().getLinkCount()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
-        sourceClient.create(1024).block();
-
-        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath())
-            .setRequestConditions(new ShareRequestConditions());
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath());
         hardLinkClient.createHardLinkWithResponse(options)
             .subscribe(result -> System.out.printf("Link count is is %s.",
                 result.getValue().getPosixProperties().getLinkCount()));

@@ -3350,7 +3350,6 @@ public class ShareFileAsyncClient {
      * NFS only. Creates a hard link to the file specified by path.
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
      * <pre>
-     * sourceClient.create&#40;1024&#41;.block&#40;&#41;;
      * hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;
      *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
      *         result.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
@@ -3370,10 +3369,7 @@ public class ShareFileAsyncClient {
      * NFS only. Creates a hard link to the file specified by path.
      * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
      * <pre>
-     * sourceClient.create&#40;1024&#41;.block&#40;&#41;;
-     *
-     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;&#41;;
+     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
      * hardLinkClient.createHardLinkWithResponse&#40;options&#41;
      *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
      *         result.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;

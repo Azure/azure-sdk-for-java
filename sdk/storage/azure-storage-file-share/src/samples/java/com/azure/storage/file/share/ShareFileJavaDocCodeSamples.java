@@ -1259,17 +1259,13 @@ public class ShareFileJavaDocCodeSamples {
         ShareFileClient sourceClient = createClientWithSASToken();
         ShareFileClient hardLinkClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#String
-        sourceClient.create(1024);
         ShareFileInfo response = hardLinkClient.createHardLink(sourceClient.getFilePath());
 
         System.out.printf("Link count is is %s.", response.getPosixProperties().getLinkCount());
         // END: com.azure.storage.file.share.ShareFileClient.createHardLink#String
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
-        sourceClient.create(1024);
-
-        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath())
-            .setRequestConditions(new ShareRequestConditions());
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath());
         ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse(options, null, null).getValue();
 
         System.out.printf("Link count is is %s.", response2.getPosixProperties().getLinkCount());

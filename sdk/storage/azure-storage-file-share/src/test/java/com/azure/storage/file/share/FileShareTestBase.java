@@ -11,6 +11,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -24,16 +25,20 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
@@ -367,6 +372,20 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected HttpClient getHttpClient() {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
+    }
+
+    protected ShareClient getPremiumNFSShareClient() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        return premiumFileServiceClient
+            .createShareWithResponse(generateShareName(), new ShareCreateOptions().setProtocols(enabledProtocol), null,
+                null)
+            .getValue();
+    }
+
+    protected Mono<Response<ShareAsyncClient>> getPremiumNFSShareClient(String shareName) {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        return premiumFileServiceAsyncClient.createShareWithResponse(shareName,
+            new ShareCreateOptions().setProtocols(enabledProtocol));
     }
 
     protected String getPrimaryConnectionString() {

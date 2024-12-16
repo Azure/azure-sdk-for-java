@@ -13,8 +13,12 @@ import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
+import com.azure.storage.file.share.models.ShareDirectoryInfo;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
@@ -46,6 +50,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FileShareTestHelper {
 
@@ -403,5 +408,27 @@ public class FileShareTestHelper {
     protected static Stream<Arguments> filePermissionFormatSupplier() {
         return Stream.of(Arguments.of(FilePermissionFormat.SDDL), Arguments.of(FilePermissionFormat.BINARY),
             Arguments.of((Object) null));
+    }
+
+    protected static void assertSmbPropertiesNull(Object response) {
+        if (response instanceof ShareFileInfo) {
+            ShareFileInfo fileInfo = (ShareFileInfo) response;
+            assertNull(fileInfo.getSmbProperties().getFilePermissionKey());
+            assertNull(fileInfo.getSmbProperties().getNtfsFileAttributes());
+        } else if (response instanceof ShareFileProperties) {
+            ShareFileProperties fileProperties = (ShareFileProperties) response;
+            assertNull(fileProperties.getSmbProperties().getFilePermissionKey());
+            assertNull(fileProperties.getSmbProperties().getNtfsFileAttributes());
+        } else if (response instanceof ShareDirectoryInfo) {
+            ShareDirectoryInfo directoryInfo = (ShareDirectoryInfo) response;
+            assertNull(directoryInfo.getSmbProperties().getFilePermissionKey());
+            assertNull(directoryInfo.getSmbProperties().getNtfsFileAttributes());
+        } else if (response instanceof ShareDirectoryProperties) {
+            ShareDirectoryProperties directoryProperties = (ShareDirectoryProperties) response;
+            assertNull(directoryProperties.getSmbProperties().getFilePermissionKey());
+            assertNull(directoryProperties.getSmbProperties().getNtfsFileAttributes());
+        } else {
+            throw new IllegalArgumentException("Unsupported response type");
+        }
     }
 }

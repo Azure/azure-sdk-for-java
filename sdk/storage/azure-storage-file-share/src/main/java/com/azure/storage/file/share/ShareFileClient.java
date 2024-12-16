@@ -3112,7 +3112,6 @@ public class ShareFileClient {
      * NFS only. Creates a hard link to the file specified by path.
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createHardLink#String -->
      * <pre>
-     * sourceClient.create&#40;1024&#41;;
      * ShareFileInfo response = hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Link count is is %s.&quot;, response.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
@@ -3133,10 +3132,7 @@ public class ShareFileClient {
      * NFS only. Creates a hard link to the file specified by path.
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context -->
      * <pre>
-     * sourceClient.create&#40;1024&#41;;
-     *
-     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;&#41;;
+     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
      * ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse&#40;options, null, null&#41;.getValue&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Link count is is %s.&quot;, response2.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
