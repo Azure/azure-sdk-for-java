@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
- * This is meant to be internally used only by our sdk.
+ * This is meant to be internally used only by our sdk. 
  *
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
