@@ -27,7 +27,17 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and
      * would sync back up to the cloud. In steady state, this should equal version.
      */
-    private Integer version;
+    private Long version;
+
+    /*
+     * Array of dataset statuses that describe the status of each dataset.
+     */
+    private List<AssetStatusDataset> datasets;
+
+    /*
+     * Array of event statuses that describe the status of each event.
+     */
+    private List<AssetStatusEvent> events;
 
     /**
      * Creates an instance of AssetStatus class.
@@ -51,8 +61,26 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
      * 
      * @return the version value.
      */
-    public Integer version() {
+    public Long version() {
         return this.version;
+    }
+
+    /**
+     * Get the datasets property: Array of dataset statuses that describe the status of each dataset.
+     * 
+     * @return the datasets value.
+     */
+    public List<AssetStatusDataset> datasets() {
+        return this.datasets;
+    }
+
+    /**
+     * Get the events property: Array of event statuses that describe the status of each event.
+     * 
+     * @return the events value.
+     */
+    public List<AssetStatusEvent> events() {
+        return this.events;
     }
 
     /**
@@ -64,6 +92,12 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+        if (datasets() != null) {
+            datasets().forEach(e -> e.validate());
+        }
+        if (events() != null) {
+            events().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -72,8 +106,6 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
@@ -96,7 +128,14 @@ public final class AssetStatus implements JsonSerializable<AssetStatus> {
                     List<AssetStatusError> errors = reader.readArray(reader1 -> AssetStatusError.fromJson(reader1));
                     deserializedAssetStatus.errors = errors;
                 } else if ("version".equals(fieldName)) {
-                    deserializedAssetStatus.version = reader.getNullable(JsonReader::getInt);
+                    deserializedAssetStatus.version = reader.getNullable(JsonReader::getLong);
+                } else if ("datasets".equals(fieldName)) {
+                    List<AssetStatusDataset> datasets
+                        = reader.readArray(reader1 -> AssetStatusDataset.fromJson(reader1));
+                    deserializedAssetStatus.datasets = datasets;
+                } else if ("events".equals(fieldName)) {
+                    List<AssetStatusEvent> events = reader.readArray(reader1 -> AssetStatusEvent.fromJson(reader1));
+                    deserializedAssetStatus.events = events;
                 } else {
                     reader.skipChildren();
                 }
