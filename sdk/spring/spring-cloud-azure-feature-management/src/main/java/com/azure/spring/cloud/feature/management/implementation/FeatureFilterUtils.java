@@ -3,12 +3,13 @@
 
 package com.azure.spring.cloud.feature.management.implementation;
 
-import org.springframework.util.StringUtils;
-
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 public class FeatureFilterUtils {
+
     /**
      * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
      *
@@ -21,6 +22,8 @@ public class FeatureFilterUtils {
         if (objectMap instanceof Map) {
             Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
+        } else if (objectMap != null) {
+            parameters.put(key, objectMap);
         }
     }
 
@@ -30,4 +33,5 @@ public class FeatureFilterUtils {
         }
         return StringUtils.uncapitalize(key);
     }
+
 }
