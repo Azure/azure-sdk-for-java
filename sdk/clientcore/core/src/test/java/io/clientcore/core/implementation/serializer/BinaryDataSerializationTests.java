@@ -3,7 +3,6 @@
 
 package io.clientcore.core.implementation.serializer;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -34,7 +33,7 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BinaryDataSerializationTests {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
     private static final byte[] HELLO_BYTES = "hello".getBytes(StandardCharsets.UTF_8);
     private static final String BASE64_HELLO_BYTES = Base64.getEncoder().encodeToString(HELLO_BYTES);
     private static final SimplePojo SIMPLE_POJO = new SimplePojo().setString("hello").setNumber(3.14).setBool(true);

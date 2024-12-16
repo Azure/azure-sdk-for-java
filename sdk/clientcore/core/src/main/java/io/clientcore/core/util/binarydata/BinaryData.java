@@ -3,8 +3,8 @@
 
 package io.clientcore.core.util.binarydata;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.util.serializer.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
@@ -118,7 +118,7 @@ import java.util.List;
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
-    static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    static final ObjectSerializer SERIALIZER = new JsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     static final String TOO_LARGE_FOR_BYTE_ARRAY

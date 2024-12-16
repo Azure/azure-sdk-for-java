@@ -6,12 +6,11 @@ package io.clientcore.core.util.serializer;
 import io.clientcore.core.http.exception.HttpExceptionType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.models.SimpleClass;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,8 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DefaultJsonSerializerTests {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+public class JsonSerializerTests {
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
 
     @Test
     public void mapWithEmptyKeyAndNullValue() throws IOException {
@@ -100,8 +99,7 @@ public class DefaultJsonSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, DateTimeWrapper expected) throws IOException {
-        DateTimeWrapper actual
-            = new DefaultJsonSerializer().deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
+        DateTimeWrapper actual = new JsonSerializer().deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
 
         assertEquals(expected.getOffsetDateTime(), actual.getOffsetDateTime());
     }

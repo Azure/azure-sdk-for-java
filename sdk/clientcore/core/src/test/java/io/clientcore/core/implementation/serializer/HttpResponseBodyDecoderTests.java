@@ -12,12 +12,12 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.util.serializer.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class HttpResponseBodyDecoderTests {
     private static final CompositeSerializer SERIALIZER
-        = new CompositeSerializer(Arrays.asList(new DefaultJsonSerializer()));
+        = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
@@ -100,7 +100,7 @@ public class HttpResponseBodyDecoderTests {
 
     @Test
     public void exceptionInErrorDeserializationReturnsException() {
-        CompositeSerializer ioExceptionThrower = new CompositeSerializer(Arrays.asList(new DefaultJsonSerializer() {
+        CompositeSerializer ioExceptionThrower = new CompositeSerializer(Arrays.asList(new JsonSerializer() {
             @Override
             public <T> T deserializeFromBytes(byte[] bytes, Type type) {
                 throw new UncheckedIOException(new IOException());

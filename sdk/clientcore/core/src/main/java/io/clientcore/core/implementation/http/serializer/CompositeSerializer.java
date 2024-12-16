@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * An internal type that comprises multiple {@link ObjectSerializer}s and adds functionality to determine which
- * {@link SerializationFormat} to use each serialization and deserialize operation.
+ * {@link SerializationFormat} to use for each serialization and deserialize operation.
  */
 public final class CompositeSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(CompositeSerializer.class);

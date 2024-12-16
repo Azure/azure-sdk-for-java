@@ -29,7 +29,6 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
@@ -37,6 +36,7 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
+import io.clientcore.core.util.serializer.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
@@ -325,20 +325,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-    
+
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-    
+
         Response<?> response = createHttpClient()
             .send(request);
-    
+
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-    
+
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -1362,20 +1362,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        
+
         assertEquals(Headers.class, response.getHeaders().getClass());
-        
+
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-        
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-        
+
          */
     }
 
@@ -1497,7 +1497,7 @@ public abstract class HttpClientTests {
             .build();
 
         Response<HttpBinJSON> response
-            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new DefaultJsonSerializer())
+            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new JsonSerializer())
                 .put(getServerUri(isSecure()), data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
@@ -1560,13 +1560,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-    
+
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-    
+
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1578,12 +1578,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-    
+
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1595,7 +1595,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
@@ -2119,7 +2119,7 @@ public abstract class HttpClientTests {
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 
-        return RestProxy.create(serviceClass, httpPipeline, new DefaultJsonSerializer());
+        return RestProxy.create(serviceClass, httpPipeline, new JsonSerializer());
     }
 
     private static void assertMatchWithHttpOrHttps(String uri1, String uri2) {

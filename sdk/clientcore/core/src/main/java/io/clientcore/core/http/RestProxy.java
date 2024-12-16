@@ -8,9 +8,9 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.http.serializer.DefaultXmlSerializer;
+import io.clientcore.core.util.serializer.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.XmlSerializer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -74,7 +74,7 @@ public final class RestProxy implements InvocationHandler {
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
         final RestProxy restProxy
-            = new RestProxy(httpPipeline, interfaceParser, new DefaultJsonSerializer(), new DefaultXmlSerializer());
+            = new RestProxy(httpPipeline, interfaceParser, new JsonSerializer(), new XmlSerializer());
 
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
             restProxy);

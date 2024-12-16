@@ -11,13 +11,7 @@ import java.lang.reflect.Type;
 /**
  * Generic interface covering serializing and deserialization objects.
  */
-public abstract class ObjectSerializer {
-    /**
-     * Creates an instance of {@link ObjectSerializer}.
-     */
-    public ObjectSerializer() {
-    }
-
+public interface ObjectSerializer {
     /**
      * Reads a byte array into its object representation.
      *
@@ -27,7 +21,7 @@ public abstract class ObjectSerializer {
      * @return The object represented by the deserialized byte array.
      * @throws IOException If the deserialization fails.
      */
-    public abstract <T> T deserializeFromBytes(byte[] data, Type type) throws IOException;
+    <T> T deserializeFromBytes(byte[] data, Type type) throws IOException;
 
     /**
      * Reads a stream into its object representation.
@@ -38,7 +32,7 @@ public abstract class ObjectSerializer {
      * @return The object represented by the deserialized stream.
      * @throws IOException If the deserialization fails.
      */
-    public abstract <T> T deserializeFromStream(InputStream stream, Type type) throws IOException;
+    <T> T deserializeFromStream(InputStream stream, Type type) throws IOException;
 
     /**
      * Serializes an object into a byte array.
@@ -47,7 +41,7 @@ public abstract class ObjectSerializer {
      * @return The binary representation of the serialized object.
      * @throws IOException If the serialization fails.
      */
-    public abstract byte[] serializeToBytes(Object value) throws IOException;
+    byte[] serializeToBytes(Object value) throws IOException;
 
     /**
      * Serializes and writes an object into a provided stream.
@@ -56,7 +50,7 @@ public abstract class ObjectSerializer {
      * @param value The object to serialize.
      * @throws IOException If the serialization fails.
      */
-    public abstract void serializeToStream(OutputStream stream, Object value) throws IOException;
+    void serializeToStream(OutputStream stream, Object value) throws IOException;
 
     /**
      * Indicates whether the given implementation of {@link ObjectSerializer} supports the provided format.
@@ -68,5 +62,5 @@ public abstract class ObjectSerializer {
      * @param format The format to check support for.
      * @return Whether the format is supported.
      */
-    public abstract boolean supportsFormat(SerializationFormat format);
+    boolean supportsFormat(SerializationFormat format);
 }
