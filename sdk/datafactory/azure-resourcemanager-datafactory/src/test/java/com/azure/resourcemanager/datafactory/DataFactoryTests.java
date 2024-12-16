@@ -13,7 +13,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.datafactory.models.AzureBlobDataset;
 import com.azure.resourcemanager.datafactory.models.AzureStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.BlobSink;
@@ -43,7 +43,6 @@ public class DataFactoryTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST2;
-    private static final String STORAGE_ACCOUNT = "sa" + randomPadding();
     private static final String DATA_FACTORY = "df" + randomPadding();
 
     private static String resourceGroup = "rg" + randomPadding();
@@ -51,12 +50,12 @@ public class DataFactoryTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void dataFactoryTest() {
-        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
+        StorageManager storageManager = StorageManager.authenticate(new DefaultAzureCredentialBuilder().build(),
             new AzureProfile(AzureEnvironment.AZURE));
 
         DataFactoryManager manager = DataFactoryManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -67,22 +66,23 @@ public class DataFactoryTests extends TestProxyTestBase {
         }
 
         try {
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             // @embedmeStart
             // storage account
             StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(STORAGE_ACCOUNT)
+                .define(storageAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
             final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
             final String connectionString
-                = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
+                = getStorageConnectionString(storageAccountName, storageAccountKey, storageManager.environment());
 
             // container
             final String containerName = "adf";
             storageManager.blobContainers()
                 .defineContainer(containerName)
-                .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
+                .withExistingStorageAccount(resourceGroup, storageAccountName)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
