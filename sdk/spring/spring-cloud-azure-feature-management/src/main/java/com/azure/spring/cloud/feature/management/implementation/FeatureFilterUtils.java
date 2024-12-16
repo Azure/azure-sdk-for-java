@@ -3,17 +3,13 @@
 
 package com.azure.spring.cloud.feature.management.implementation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
 public class FeatureFilterUtils {
-    
-    public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
-        updateValueFromMapToList(parameters, key, false);
-    }
+
     /**
      * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
      *
@@ -21,13 +17,11 @@ public class FeatureFilterUtils {
      * @param key key of object int the parameters map
      */
     @SuppressWarnings("unchecked")
-    public static void updateValueFromMapToList(Map<String, Object> parameters, String key, boolean fixNull) {
+    public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
             Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
-        } else if ((objectMap != null && objectMap.equals("")) || (objectMap == null && fixNull)) {
-            parameters.put(key, new ArrayList<Object>());
         } else if (objectMap != null) {
             parameters.put(key, objectMap);
         }

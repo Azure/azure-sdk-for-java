@@ -20,7 +20,7 @@ public final class FeatureManagementException extends RuntimeException {
      *
      * @param message the error message.
      */
-    public FeatureManagementException(String message) {
+    FeatureManagementException(String message) {
         super(message);
         this.message = message;
     }
