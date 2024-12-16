@@ -4,28 +4,24 @@ package io.clientcore.core.implementation.http.serializer;
 
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * An implementation of {@link ObjectSerializer} which comprises multiple serializers.
- * <p>
- * This class is meant to aid situations where the serialization formats being used are unknown ahead of time, allowing
- * the consumer of {@link ObjectSerializer} to provide a list of serializers to try in order until one is successful,
- * or the list is exhausted.
+ * An internal type that comprises multiple {@link ObjectSerializer}s and adds functionality to determine which
+ * {@link SerializationFormat} to use each serialization and deserialize operation.
  */
-public final class CompositeSerializer extends ObjectSerializer {
+public final class CompositeSerializer {
     private static final ClientLogger LOGGER = new ClientLogger(CompositeSerializer.class);
 
     private final List<ObjectSerializer> serializers;
-    private final EnumSet<ObjectSerializer.Format> supportedFormats;
 
     /**
      * Creates an instance of the {@link CompositeSerializer}.
@@ -39,89 +35,61 @@ public final class CompositeSerializer extends ObjectSerializer {
         }
 
         this.serializers = new ArrayList<>(serializers);
-        this.supportedFormats = EnumSet.allOf(Format.class);
-
-        // Loop over all serializers and remove unsupported formats.
-        formatters_loop: for (Format format : supportedFormats) {
-            for (ObjectSerializer serializer : serializers) {
-                if (serializer.supportsFormat(format)) {
-                    break formatters_loop;
-                }
-            }
-
-            // Will only be reached if none of the serializers support the format.
-            supportedFormats.remove(format);
-        }
     }
 
-    @Override
-    public <T> T deserializeFromBytes(byte[] data, Type type, ObjectSerializer.Format format) throws IOException {
-        verifyFormat(format);
-
+    public <T> T deserializeFromBytes(byte[] data, Type type, SerializationFormat format) throws IOException {
         for (ObjectSerializer serializer : serializers) {
             if (serializer.supportsFormat(format)) {
-                return serializer.deserializeFromBytes(data, type, format);
+                return serializer.deserializeFromBytes(data, type);
             }
         }
 
-        // Should never be reached.
         throw LOGGER.logThrowableAsError(
             new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
     }
 
-    @Override
-    public <T> T deserializeFromStream(InputStream stream, Type type, ObjectSerializer.Format format)
-        throws IOException {
-        verifyFormat(format);
-
+    public <T> T deserializeFromStream(InputStream stream, Type type, SerializationFormat format) throws IOException {
         for (ObjectSerializer serializer : serializers) {
             if (serializer.supportsFormat(format)) {
-                return serializer.deserializeFromStream(stream, type, format);
+                return serializer.deserializeFromStream(stream, type);
             }
         }
 
-        // Should never be reached.
         throw LOGGER.logThrowableAsError(
             new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
     }
 
-    @Override
-    public byte[] serializeToBytes(Object value, ObjectSerializer.Format format) throws IOException {
-        verifyFormat(format);
-
+    public byte[] serializeToBytes(Object value, SerializationFormat format) throws IOException {
         for (ObjectSerializer serializer : serializers) {
             if (serializer.supportsFormat(format)) {
-                return serializer.serializeToBytes(value, format);
+                return serializer.serializeToBytes(value);
             }
         }
 
-        // Should never be reached.
         throw LOGGER.logThrowableAsError(
             new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
     }
 
-    @Override
-    public void serializeToStream(OutputStream stream, Object value, ObjectSerializer.Format format)
-        throws IOException {
-        verifyFormat(format);
-
+    public void serializeToStream(OutputStream stream, Object value, SerializationFormat format) throws IOException {
         for (ObjectSerializer serializer : serializers) {
             if (serializer.supportsFormat(format)) {
-                serializer.serializeToStream(stream, value, format);
+                serializer.serializeToStream(stream, value);
                 return;
             }
         }
+
+        throw LOGGER.logThrowableAsError(
+            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
     }
 
-    @Override
-    public boolean supportsFormat(ObjectSerializer.Format format) {
-        return supportedFormats.contains(format);
-    }
-
-    private void verifyFormat(ObjectSerializer.Format format) {
-        if (!supportsFormat(format)) {
-            throw LOGGER.logThrowableAsError(
-                new UnsupportedOperationException("The provided format (" + format + ") is not supported."));
+    public ObjectSerializer getSerializerForFormat(SerializationFormat format) {
+        for (ObjectSerializer serializer : serializers) {
+            if (serializer.supportsFormat(format)) {
+                return serializer;
+            }
         }
+
+        throw LOGGER.logThrowableAsError(
+            new UnsupportedOperationException("None of the provided serializers support the format: " + format + "."));
     }
 }

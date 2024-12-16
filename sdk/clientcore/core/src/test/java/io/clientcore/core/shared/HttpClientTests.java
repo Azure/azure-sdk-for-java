@@ -38,6 +38,7 @@ import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -406,7 +407,7 @@ public abstract class HttpClientTests {
         }
     }
 
-    private static class ByteArraySerializer implements ObjectSerializer {
+    private static class ByteArraySerializer extends ObjectSerializer {
         @Override
         public <T> T deserializeFromBytes(byte[] data, Type type) {
             return null;
@@ -429,6 +430,11 @@ public abstract class HttpClientTests {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public boolean supportsFormat(SerializationFormat format) {
+            return false;
         }
     }
 

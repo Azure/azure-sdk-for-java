@@ -11,13 +11,13 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -45,7 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final CompositeSerializer SERIALIZER
+        = new CompositeSerializer(Arrays.asList(new DefaultJsonSerializer()));
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
@@ -99,12 +100,12 @@ public class HttpResponseBodyDecoderTests {
 
     @Test
     public void exceptionInErrorDeserializationReturnsException() {
-        ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
+        CompositeSerializer ioExceptionThrower = new CompositeSerializer(Arrays.asList(new DefaultJsonSerializer() {
             @Override
             public <T> T deserializeFromBytes(byte[] bytes, Type type) {
                 throw new UncheckedIOException(new IOException());
             }
-        };
+        }));
 
         HttpResponseDecodeData noExpectedStatusCodes
             = new MockHttpResponseDecodeData(new UnexpectedExceptionInformation(null, null));

@@ -4,7 +4,6 @@
 package io.clientcore.core.util.binarydata;
 
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.http.serializer.DefaultXmlSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -21,7 +20,6 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -120,8 +118,7 @@ import java.util.List;
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
 
-    static final ObjectSerializer SERIALIZER
-        = ObjectSerializer.compositeSerializer(Arrays.asList(new DefaultJsonSerializer(), new DefaultXmlSerializer()));
+    static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     static final String TOO_LARGE_FOR_BYTE_ARRAY

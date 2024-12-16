@@ -8,7 +8,6 @@ import io.clientcore.core.serialization.xml.XmlReader;
 import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlWriter;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.XmlSerializer;
 
 import javax.xml.stream.XMLStreamException;
@@ -33,9 +32,7 @@ public class DefaultXmlSerializer extends XmlSerializer {
     }
 
     @Override
-    public <T> T deserializeFromBytes(byte[] bytes, Type type, ObjectSerializer.Format format) throws IOException {
-        verifyFormat(format);
-
+    public <T> T deserializeFromBytes(byte[] bytes, Type type) throws IOException {
         try (XmlReader xmlReader = XmlReader.fromBytes(bytes)) {
             return deserializeShared(xmlReader, type);
         } catch (XMLStreamException ex) {
@@ -44,10 +41,7 @@ public class DefaultXmlSerializer extends XmlSerializer {
     }
 
     @Override
-    public <T> T deserializeFromStream(InputStream stream, Type type, ObjectSerializer.Format format)
-        throws IOException {
-        verifyFormat(format);
-
+    public <T> T deserializeFromStream(InputStream stream, Type type) throws IOException {
         try (XmlReader xmlReader = XmlReader.fromStream(stream)) {
             return deserializeShared(xmlReader, type);
         } catch (XMLStreamException ex) {
@@ -73,9 +67,7 @@ public class DefaultXmlSerializer extends XmlSerializer {
     }
 
     @Override
-    public byte[] serializeToBytes(Object value, ObjectSerializer.Format format) throws IOException {
-        verifyFormat(format);
-
+    public byte[] serializeToBytes(Object value) throws IOException {
         if (value == null) {
             return null;
         }
@@ -91,10 +83,7 @@ public class DefaultXmlSerializer extends XmlSerializer {
     }
 
     @Override
-    public void serializeToStream(OutputStream stream, Object value, ObjectSerializer.Format format)
-        throws IOException {
-        verifyFormat(format);
-
+    public void serializeToStream(OutputStream stream, Object value) throws IOException {
         if (value == null) {
             return;
         }
@@ -117,12 +106,6 @@ public class DefaultXmlSerializer extends XmlSerializer {
             }
         } catch (XMLStreamException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
-        }
-    }
-
-    private static void verifyFormat(ObjectSerializer.Format format) {
-        if (format != ObjectSerializer.Format.XML) {
-            throw LOGGER.logThrowableAsError(new UnsupportedOperationException("Only XML format is supported."));
         }
     }
 }

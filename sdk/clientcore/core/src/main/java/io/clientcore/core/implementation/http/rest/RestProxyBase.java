@@ -16,6 +16,7 @@ import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.serialization.json.JsonSerializable;
@@ -30,32 +31,31 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE
-        = new ResponseExceptionConstructorCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyBase.class);
 
     final HttpPipeline httpPipeline;
-    final ObjectSerializer serializer;
+    final CompositeSerializer serializer;
     final SwaggerInterfaceParser interfaceParser;
 
     /**
      * Create a RestProxy.
      *
      * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the interface describing REST API methods that
      * this RestProxy "implements".
+     * @param serializers The serializers that will be used to convert response bodies to POJOs.
      */
-    public RestProxyBase(HttpPipeline httpPipeline, ObjectSerializer serializer,
-        SwaggerInterfaceParser interfaceParser) {
+    public RestProxyBase(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser,
+        ObjectSerializer... serializers) {
         this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
         this.interfaceParser = interfaceParser;
+        this.serializer = new CompositeSerializer(Arrays.asList(serializers));
     }
 
     public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
@@ -74,7 +74,7 @@ public abstract class RestProxyBase {
     protected abstract Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
-        ObjectSerializer objectSerializer) throws IOException;
+        CompositeSerializer serializer) throws IOException;
 
     @SuppressWarnings({ "unchecked" })
     public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
@@ -103,12 +103,10 @@ public abstract class RestProxyBase {
      *
      * @param methodParser The Swagger method parser to use.
      * @param args The arguments to use to populate the method's annotation values.
-     *
      * @return An HttpRequest.
-     *
      * @throws IOException If the body contents cannot be serialized.
      */
-    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer objectSerializer, Object[] args)
+    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, CompositeSerializer serializer, Object[] args)
         throws IOException, URISyntaxException {
 
         // Sometimes people pass in a full URI for the value of their PathParam annotated argument.
@@ -145,7 +143,7 @@ public abstract class RestProxyBase {
 
         final URI uri = uriBuilder.toUri();
         final HttpRequest request
-            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, objectSerializer, args);
+            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, serializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 
@@ -155,7 +153,7 @@ public abstract class RestProxyBase {
     }
 
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
-        ObjectSerializer objectSerializer, Object[] args) throws IOException {
+        CompositeSerializer objectSerializer, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
@@ -218,7 +216,6 @@ public abstract class RestProxyBase {
      * @param response The http response to parse when constructing exception
      * @param responseBody The response body to use when constructing exception
      * @param responseDecodedBody The decoded response content to use when constructing exception
-     *
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(
@@ -261,7 +258,6 @@ public abstract class RestProxyBase {
      * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
      *
      * @param bodyContentClass The body content class.
-     *
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
@@ -272,9 +268,7 @@ public abstract class RestProxyBase {
      * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
      *
      * @param jsonSerializable The {@code JsonSerializable} body content.
-     *
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
-     *
      * @throws IOException If an error occurs during serialization.
      */
     static ByteBuffer serializeAsJsonSerializable(JsonSerializable<?> jsonSerializable) throws IOException {

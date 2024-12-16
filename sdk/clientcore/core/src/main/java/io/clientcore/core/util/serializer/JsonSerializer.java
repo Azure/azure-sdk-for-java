@@ -23,55 +23,47 @@ public abstract class JsonSerializer extends ObjectSerializer {
      *
      * @param data The JSON byte array.
      * @param type {@link Type} representing the object.
-     * @param format The format to deserialize the object from.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON byte array.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
      * @throws IOException If the deserialization fails.
      */
     @Override
-    public abstract <T> T deserializeFromBytes(byte[] data, Type type, Format format) throws IOException;
+    public abstract <T> T deserializeFromBytes(byte[] data, Type type) throws IOException;
 
     /**
      * Reads a JSON stream into its object representation.
      *
      * @param stream JSON stream.
      * @param type {@link Type} representing the object.
-     * @param format The format to deserialize the object from.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON stream.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
      * @throws IOException If the deserialization fails.
      */
     @Override
-    public abstract <T> T deserializeFromStream(InputStream stream, Type type, Format format) throws IOException;
+    public abstract <T> T deserializeFromStream(InputStream stream, Type type) throws IOException;
 
     /**
      * Converts the object into a JSON byte array.
      *
      * @param value The object.
-     * @param format The format to deserialize the object from.
      * @return The JSON binary representation of the serialized object.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
      * @throws IOException If the serialization fails.
      */
     @Override
-    public abstract byte[] serializeToBytes(Object value, Format format) throws IOException;
+    public abstract byte[] serializeToBytes(Object value) throws IOException;
 
     /**
      * Writes an object's JSON representation into a stream.
      *
      * @param stream {@link OutputStream} where the object's JSON representation will be written.
      * @param value The object to serialize.
-     * @param format The format to deserialize the object from.
-     * @throws UnsupportedOperationException If the provided format is not {@link Format#JSON}.
      * @throws IOException If the serialization fails.
      */
     @Override
-    public abstract void serializeToStream(OutputStream stream, Object value, Format format) throws IOException;
+    public abstract void serializeToStream(OutputStream stream, Object value) throws IOException;
 
     @Override
-    public final boolean supportsFormat(Format format) {
-        return format == Format.JSON;
+    public final boolean supportsFormat(SerializationFormat format) {
+        return format == SerializationFormat.JSON;
     }
 }

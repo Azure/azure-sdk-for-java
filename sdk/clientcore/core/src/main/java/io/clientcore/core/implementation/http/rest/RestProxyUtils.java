@@ -5,15 +5,11 @@ package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.http.serializer.DefaultXmlSerializer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
 /**
  * Utility methods that aid processing in RestProxy.
@@ -77,15 +73,5 @@ public final class RestProxyUtils {
 
     static String bodyTooSmall(long length, long expectedLength) {
         return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
-    }
-
-    /**
-     * Create an instance of the default serializer.
-     *
-     * @return the default serializer
-     */
-    public static ObjectSerializer createDefaultSerializer() {
-        return ObjectSerializer
-            .compositeSerializer(Arrays.asList(new DefaultJsonSerializer(), new DefaultXmlSerializer()));
     }
 }
