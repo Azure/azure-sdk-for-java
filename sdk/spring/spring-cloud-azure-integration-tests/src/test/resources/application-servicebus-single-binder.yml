@@ -9,14 +9,14 @@ spring:
       default-binder: servicebus
       bindings:
         topicConsume-in-0:
-          destination: topic1
+          destination: single_binder_topic
           group: topicSub
         topicSupply-out-0:
-          destination: topic1
+          destination: single_binder_topic
         queueConsume-in-0:
-          destination: queue1
+          destination: single_binder_queue
         queueSupply-out-0:
-          destination: queue1
+          destination: single_binder_queue
       servicebus:
         bindings:
           queueConsume-in-0:

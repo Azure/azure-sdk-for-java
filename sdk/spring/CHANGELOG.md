@@ -15,6 +15,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix error: Service Bus connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
 - Fix warn logs: Mark the bean post processor related beans as internal to avoid the log 'Bean xxx of type xxx is not eligible for getting processed by all BeanPostProcessors'. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
 - Fix missing bean `springTokenCredentialProviderContextProvider`: Azure Identity Extensions and Spring Cloud Stream Binder cannot work together. [#43147](https://github.com/Azure/azure-sdk-for-java/issues/43147).
+- Fix bug: Property does not work when setting `spring.jms.servicebus.pool.enabled=false` using `@PropertySource`. [#43279](https://github.com/Azure/azure-sdk-for-java/issues/43279).
 
 ### Spring Integration Azure Core
 This section includes changes in the `spring-integration-azure-core` module.

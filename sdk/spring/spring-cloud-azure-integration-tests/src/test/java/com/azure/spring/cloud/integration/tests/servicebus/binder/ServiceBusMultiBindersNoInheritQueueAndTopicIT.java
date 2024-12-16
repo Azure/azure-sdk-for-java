@@ -8,9 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.messaging.Message;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Sinks;
+
+import java.util.concurrent.CountDownLatch;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-multi-binders-no-inherit")
@@ -24,6 +27,9 @@ class ServiceBusMultiBindersNoInheritQueueAndTopicIT extends TestServiceBusMulti
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersNoInheritQueueAndTopicIT.class);
 
     @Autowired
+    private Environment environment;
+
+    @Autowired
     private Sinks.Many<Message<String>> manyQueue;
 
     @Autowired
@@ -31,8 +37,10 @@ class ServiceBusMultiBindersNoInheritQueueAndTopicIT extends TestServiceBusMulti
 
     @Test
     void useMultiBindersNoInheritQueueAndTopic() throws InterruptedException {
+        String activeProfile = String.join("", environment.getActiveProfiles());
+        LATCH.put(activeProfile, new CountDownLatch(2));
         LOGGER.info("ServiceBusMultiBindersNoInheritQueueAndTopicIT begin, the property inherit-environment is set to false for binder servicebus-1.");
-        exchangeMessageAndVerify(manyQueue, manyTopic);
+        exchangeMessageAndVerify(activeProfile, manyQueue, manyTopic);
         LOGGER.info("ServiceBusMultiBindersNoInheritQueueAndTopicIT end.");
     }
 }
