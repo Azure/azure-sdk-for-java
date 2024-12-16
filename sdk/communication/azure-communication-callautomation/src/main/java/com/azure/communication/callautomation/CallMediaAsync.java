@@ -1014,18 +1014,6 @@ public final class CallMediaAsync {
 
     /**
     * Interrupt audio and play announment to the participant in call.
-    * @param playSources the list of play source.
-    * @param playTo the target.
-    * @return Response for successful operation.
-    */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> interruptAudioAndAnnounce(List<PlaySource> playSources, CommunicationIdentifier playTo) {
-        return interruptAudioAndAnnounceWithResponse(new InterruptAudioAndAnnounceOptions(playSources, playTo))
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-    * Interrupt audio and play announment to the participant in call.
     * @param playTo the target.
     * @param playSource the play source.
     * @return Response for successful operation.

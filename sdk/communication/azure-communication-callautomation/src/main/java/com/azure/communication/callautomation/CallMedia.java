@@ -389,16 +389,6 @@ public final class CallMedia {
     }
 
     /**
-    * Interrupt audio and play announment to the participant in call.
-    * @param playSources A {@link PlaySource} representing the list of source to play.
-    * @param playTo the target.
-    */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void interruptAudioAndAnnounce(List<PlaySource> playSources, CommunicationIdentifier playTo) {
-        callMediaAsync.interruptAudioAndAnnounce(playSources, playTo).block();
-    }
-
-    /**
      * Interrupt audio and play announment to the participant in call.
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the target.
