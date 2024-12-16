@@ -6,7 +6,6 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
-import io.clientcore.core.implementation.http.rest.RestProxyUtils;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
