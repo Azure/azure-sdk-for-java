@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.directconnectivity.ProxyStoreClient;
+import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -17,10 +19,21 @@ import java.util.List;
  *
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
-public class RxThinclientStoreModel implements RxStoreModel {
+public class ThinClientStoreModel implements RxStoreModel {
+
+    private final ProxyStoreClient storeClient;
+
+    public ThinClientStoreModel(ProxyStoreClient storeClient) {
+        this.storeClient = storeClient;
+    }
+
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        return null;
+        // direct/gateway mode validations? session token, bad consistency level header
+
+        // set headers here? .NET sets in client
+        request.setThinclientHeaders(request.getOperationType().toString(), request.getResourceType().toString());
+        return this.storeClient.processMessageAsync(request);
     }
 
     @Override

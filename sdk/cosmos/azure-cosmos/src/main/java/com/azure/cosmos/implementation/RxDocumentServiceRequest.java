@@ -1233,4 +1233,9 @@ public class RxDocumentServiceRequest implements Cloneable {
     public void setEffectivePartitionKey(String effectivePartitionKey) {
         this.effectivePartitionKey = effectivePartitionKey;
     }
+
+    public void setThinclientHeaders(String operationType, String resourceType) {
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
+    }
 }
