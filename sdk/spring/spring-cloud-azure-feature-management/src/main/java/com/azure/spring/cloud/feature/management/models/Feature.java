@@ -11,9 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
  */
-/**
- * 
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
     @JsonProperty("id")
@@ -27,7 +24,7 @@ public class Feature {
 
     @JsonProperty("conditions")
     private Conditions conditions = new Conditions();
-    
+
     @JsonProperty("allocation")
     private Allocation allocation;
     
@@ -93,7 +90,7 @@ public class Feature {
         this.conditions = conditions;
         return this;
     }
-
+  
     /**
      * @return the allocation
      */
@@ -123,6 +120,4 @@ public class Feature {
         this.variants = variants;
         return this;
     }
-    
-    
 }

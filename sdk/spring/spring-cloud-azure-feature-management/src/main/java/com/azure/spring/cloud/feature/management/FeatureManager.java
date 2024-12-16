@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import com.azure.spring.cloud.feature.management.filters.FeatureFilterAsync;
 import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
+
 import com.azure.spring.cloud.feature.management.models.Allocation;
 import com.azure.spring.cloud.feature.management.models.Conditions;
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
@@ -430,12 +432,4 @@ public class FeatureManager {
         return new HashSet<String>(
             featureManagementConfigurations.getFeatureFlags().stream().map(feature -> feature.getId()).toList());
     }
-
-    /**
-     * @return the featureManagement
-     */
-    List<Feature> getFeatureManagement() {
-        return featureManagementConfigurations.getFeatureFlags();
-    }
-
 }
