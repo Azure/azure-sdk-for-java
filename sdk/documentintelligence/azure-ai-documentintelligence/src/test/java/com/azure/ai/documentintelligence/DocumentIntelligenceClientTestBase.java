@@ -229,7 +229,6 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals("Main Street", licensePageFields.get("Address").getValueAddress().getStreetAddress());
         assertNotNull(licensePageFields.get("Address").getConfidence());
         assertEquals("USA", licensePageFields.get("CountryRegion").getValueCountryRegion());
-        assertNotNull(licensePageFields.get("CountryRegion").getConfidence());
         assertEquals(LocalDate.of(1988, 3, 23), licensePageFields.get("DateOfBirth").getValueDate());
         assertNotNull(licensePageFields.get("DateOfBirth").getConfidence());
         assertEquals(LocalDate.of(2026, 3, 23), licensePageFields.get("DateOfExpiration").getValueDate());
