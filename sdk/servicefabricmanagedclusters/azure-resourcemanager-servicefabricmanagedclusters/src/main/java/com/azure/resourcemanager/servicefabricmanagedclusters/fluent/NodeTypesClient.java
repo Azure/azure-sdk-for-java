@@ -397,16 +397,35 @@ public interface NodeTypesClient {
      * @param clusterName The name of the cluster resource.
      * @param nodeTypeName The name of the node type.
      * @param parameters The parameters to update the node type configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
+     * set of nodes in the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName, String clusterName,
+        String nodeTypeName, NodeTypeUpdateParameters parameters);
+
+    /**
+     * Update the tags of a node type resource of a given managed cluster.
+     * 
+     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The parameters to update the node type configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster along
-     * with {@link Response}.
+     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
+     * set of nodes in the cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NodeTypeInner> updateWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
-        NodeTypeUpdateParameters parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName, String clusterName,
+        String nodeTypeName, NodeTypeUpdateParameters parameters, Context context);
 
     /**
      * Update the tags of a node type resource of a given managed cluster.
@@ -425,6 +444,25 @@ public interface NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters);
+
+    /**
+     * Update the tags of a node type resource of a given managed cluster.
+     * 
+     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The parameters to update the node type configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
+        NodeTypeUpdateParameters parameters, Context context);
 
     /**
      * Deletes a Service Fabric node type.
