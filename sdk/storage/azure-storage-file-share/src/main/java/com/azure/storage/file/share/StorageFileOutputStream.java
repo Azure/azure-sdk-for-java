@@ -27,12 +27,13 @@ public class StorageFileOutputStream extends StorageOutputStream {
     }
 
     private Mono<Void> uploadData(Flux<ByteBuffer> inputData, long writeLength, long offset) {
-        return client.uploadWithResponse(inputData, writeLength, offset)
-            .then()
-            .onErrorResume(t -> t instanceof IOException || t instanceof ShareStorageException, e -> {
-                this.lastError = new IOException(e);
-                return null;
-            });
+        return client.uploadWithResponse(inputData, writeLength, offset).then();
+        //            .onErrorResume(t -> t instanceof IOException || t instanceof ShareStorageException, e -> {
+        //                this.lastError = new IOException(e);
+        //                //return null;
+        //                System.out.println("Error: " + e);
+        //                return Mono.empty();
+        //            });
     }
 
     @Override
