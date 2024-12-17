@@ -13,7 +13,6 @@ public class DerivedMetricProjections {
 
     public static final String COUNT = "Count()";
     private final Map<String, DerivedMetricAggregation> derivedMetricValues = new HashMap<>();
-    private final Object lock = new Object();
 
     public DerivedMetricProjections(Map<String, AggregationType> projectionInfo) {
         for (Map.Entry<String, AggregationType> entry : projectionInfo.entrySet()) {
@@ -35,20 +34,10 @@ public class DerivedMetricProjections {
     // This is intended to be called once for every post request
     public Map<String, Double> fetchFinalDerivedMetricValues() {
         Map<String, Double> result = new HashMap<>();
-        synchronized (lock) {
-            for (Map.Entry<String, DerivedMetricAggregation> entry : derivedMetricValues.entrySet()) {
-                String id = entry.getKey();
-                DerivedMetricAggregation dma = entry.getValue();
-                double intermediateValue = dma.aggregation;
-                long count = dma.count;
-                if (count == 0) {
-                    result.put(id, 0.0);
-                } else if (dma.aggregationType.equals(AggregationType.AVG)) {
-                    result.put(id, intermediateValue / count);
-                } else {
-                    result.put(id, intermediateValue);
-                }
-            }
+        for (Map.Entry<String, DerivedMetricAggregation> entry : derivedMetricValues.entrySet()) {
+            String id = entry.getKey();
+            DerivedMetricAggregation dma = entry.getValue();
+            result.put(id, dma.getFinalValue());
         }
         return result;
     }
@@ -78,17 +67,8 @@ public class DerivedMetricProjections {
     }
 
     private void calculateAggregation(AggregationType type, String id, double incrementBy) {
-        synchronized (lock) {
-            DerivedMetricAggregation dma = derivedMetricValues.get(id);
-            dma.count++;
-            if (type.equals(AggregationType.SUM) || type.equals(AggregationType.AVG)) {
-                dma.aggregation += incrementBy;
-            } else if (type.equals(AggregationType.MIN)) {
-                dma.aggregation = Math.min(dma.aggregation, incrementBy);
-            } else if (type.equals(AggregationType.MAX)) {
-                dma.aggregation = Math.max(dma.aggregation, incrementBy);
-            }
-        }
+        DerivedMetricAggregation dma = derivedMetricValues.get(id);
+        dma.update(incrementBy);
     }
 
     private static class DerivedMetricAggregation {
@@ -107,10 +87,36 @@ public class DerivedMetricProjections {
         double aggregation;
         long count = 0;
         final AggregationType aggregationType;
+        private final Object lock = new Object();
 
         DerivedMetricAggregation(double initValue, AggregationType type) {
             aggregation = initValue;
             aggregationType = type;
+        }
+
+        void update(double incrementBy) {
+            synchronized (lock) {
+                count++;
+                if (aggregationType.equals(AggregationType.SUM) || aggregationType.equals(AggregationType.AVG)) {
+                    aggregation += incrementBy;
+                } else if (aggregationType.equals(AggregationType.MIN)) {
+                    aggregation = Math.min(aggregation, incrementBy);
+                } else if (aggregationType.equals(AggregationType.MAX)) {
+                    aggregation = Math.max(aggregation, incrementBy);
+                }
+            }
+        }
+
+        double getFinalValue() {
+            synchronized (lock) {
+                if (count == 0) {
+                    return 0.0;
+                } else if (aggregationType.equals(AggregationType.AVG)) {
+                    return aggregation / count;
+                } else {
+                    return aggregation;
+                }
+            }
         }
     }
 }

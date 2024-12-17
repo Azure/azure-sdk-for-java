@@ -309,7 +309,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency" checks="EnforceFinalFieldsCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request" checks="EnforceFinalFieldsCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace" checks="EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections" checks="EnforceFinalFieldsCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.DefaultHeartBeatPropertyProvider.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
