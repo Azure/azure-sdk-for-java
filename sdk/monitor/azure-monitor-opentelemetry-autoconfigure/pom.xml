@@ -94,11 +94,6 @@
       <artifactId>opentelemetry-semconv-incubating</artifactId>
       <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
-    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -205,7 +200,6 @@
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
                 <include>io.opentelemetry.semconv:opentelemetry-semconv-incubating:[1.26.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.semconv:opentelemetry-semconv-incubating;external_dependency} -->
                 <include>com.squareup.okio:okio:[3.9.1]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
-                <include>com.google.guava:guava:[33.1.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

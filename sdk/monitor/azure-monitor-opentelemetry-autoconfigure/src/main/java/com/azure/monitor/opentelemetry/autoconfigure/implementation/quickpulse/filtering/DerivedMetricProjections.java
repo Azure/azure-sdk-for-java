@@ -5,25 +5,24 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class DerivedMetricProjections {
 
     public static final String COUNT = "Count()";
     private final Map<String, DerivedMetricAggregation> derivedMetricValues = new HashMap<>();
+    private final Object lock = new Object();
 
     public DerivedMetricProjections(Map<String, AggregationType> projectionInfo) {
         for (Map.Entry<String, AggregationType> entry : projectionInfo.entrySet()) {
             AggregationType aggregationType = entry.getValue();
             DerivedMetricAggregation value;
             if (aggregationType.equals(AggregationType.MIN)) {
-                value = new DerivedMetricAggregation(Long.MAX_VALUE, aggregationType);
+                value = new DerivedMetricAggregation(Double.MAX_VALUE, aggregationType);
             } else if (aggregationType.equals(AggregationType.MAX)) {
-                value = new DerivedMetricAggregation(Long.MIN_VALUE, aggregationType);
+                value = new DerivedMetricAggregation(Double.MIN_VALUE, aggregationType);
             } else if (aggregationType.equals(AggregationType.SUM) || aggregationType.equals(AggregationType.AVG)) {
                 value = new DerivedMetricAggregation(0, aggregationType);
             } else {
@@ -36,17 +35,19 @@ public class DerivedMetricProjections {
     // This is intended to be called once for every post request
     public Map<String, Double> fetchFinalDerivedMetricValues() {
         Map<String, Double> result = new HashMap<>();
-        for (Map.Entry<String, DerivedMetricAggregation> entry : derivedMetricValues.entrySet()) {
-            String id = entry.getKey();
-            DerivedMetricAggregation dma = entry.getValue();
-            double intermediateValue = dma.aggregation.get();
-            long count = dma.count.get();
-            if (count == 0) {
-                result.put(id, 0.0);
-            } else if (dma.aggregationType.equals(AggregationType.AVG)) {
-                result.put(id, intermediateValue / count);
-            } else {
-                result.put(id, intermediateValue);
+        synchronized (lock) {
+            for (Map.Entry<String, DerivedMetricAggregation> entry : derivedMetricValues.entrySet()) {
+                String id = entry.getKey();
+                DerivedMetricAggregation dma = entry.getValue();
+                double intermediateValue = dma.aggregation;
+                long count = dma.count;
+                if (count == 0) {
+                    result.put(id, 0.0);
+                } else if (dma.aggregationType.equals(AggregationType.AVG)) {
+                    result.put(id, intermediateValue / count);
+                } else {
+                    result.put(id, intermediateValue);
+                }
             }
         }
         return result;
@@ -61,7 +62,7 @@ public class DerivedMetricProjections {
         } else if (KnownRequestColumns.DURATION.equals(derivedMetricInfo.getProjection())) {
             long duration = columns.getFieldValue(KnownRequestColumns.DURATION, Long.class);
             // in case duration from telemetrycolumns doesn't parse correctly.
-            // also quickpulse expects duration derived metrics to be reported in ms.
+            // also quickpulse expects duration derived metrics to be reported in millis.
             incrementBy = duration != -1 ? (double) duration / 1000.0 : Double.NaN;
         } else if (derivedMetricInfo.getProjection().startsWith(Filter.CUSTOM_DIM_FIELDNAME_PREFIX)) {
             String customDimKey
@@ -77,18 +78,20 @@ public class DerivedMetricProjections {
     }
 
     private void calculateAggregation(AggregationType type, String id, double incrementBy) {
-        DerivedMetricAggregation dma = derivedMetricValues.get(id);
-        dma.count.getAndAdd(1);
-        if (type.equals(AggregationType.SUM) || type.equals(AggregationType.AVG)) {
-            dma.aggregation.getAndAdd(incrementBy);
-        } else if (type.equals(AggregationType.MIN)) {
-            dma.aggregation.getAndAccumulate(incrementBy, Math::min);
-        } else if (type.equals(AggregationType.MAX)) {
-            dma.aggregation.getAndAccumulate(incrementBy, Math::max);
+        synchronized (lock) {
+            DerivedMetricAggregation dma = derivedMetricValues.get(id);
+            dma.count++;
+            if (type.equals(AggregationType.SUM) || type.equals(AggregationType.AVG)) {
+                dma.aggregation += incrementBy;
+            } else if (type.equals(AggregationType.MIN)) {
+                dma.aggregation = Math.min(dma.aggregation, incrementBy);
+            } else if (type.equals(AggregationType.MAX)) {
+                dma.aggregation = Math.max(dma.aggregation, incrementBy);
+            }
         }
     }
 
-    static class DerivedMetricAggregation {
+    private static class DerivedMetricAggregation {
         // This class represents the intermediate state of a derived metric value.
         // It keeps track of the count and the aggregated value so that these two
         // fields can be used to determine the final value of a derived metric
@@ -101,12 +104,12 @@ public class DerivedMetricProjections {
         // When metric values are retrieved by the data fetcher, the final value will
         // be determined based on the count and the aggregation.
 
-        final AtomicDouble aggregation;
-        final AtomicLong count = new AtomicLong(0);
+        double aggregation;
+        long count = 0;
         final AggregationType aggregationType;
 
-        DerivedMetricAggregation(long initValue, AggregationType type) {
-            aggregation = new AtomicDouble(initValue);
+        DerivedMetricAggregation(double initValue, AggregationType type) {
+            aggregation = initValue;
             aggregationType = type;
         }
     }
