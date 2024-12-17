@@ -202,7 +202,7 @@ public class BatchTests extends TestProxyTestBase {
                 .withExistingResourceGroup(resourceGroup)
                 .create();
             // batch account
-            batchAccountName = "sa" + randomPadding();
+            batchAccountName = "ba" + randomPadding();
             account = batchManager.batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
@@ -211,7 +211,7 @@ public class BatchTests extends TestProxyTestBase {
                 .create();
 
             // create application with batch account
-            applicationName = "ba" + randomPadding();
+            applicationName = "baa" + randomPadding();
             String displayName = "badn" + randomPadding();
             application = batchManager.applications()
                 .define(applicationName)
