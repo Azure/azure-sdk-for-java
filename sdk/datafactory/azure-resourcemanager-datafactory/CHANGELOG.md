@@ -1,14 +1,154 @@
 # Release History
 
-## 1.0.0-beta.31 (Unreleased)
+## 1.0.0 (2024-12-16)
 
-### Features Added
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Expression` was modified
 
-### Other Changes
+* `withType(java.lang.String)` was removed
+
+#### `models.TumblingWindowTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.DatasetReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.CustomEventsTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.IntegrationRuntimeReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.MultiplePipelineTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.RerunTumblingWindowTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.ScheduleTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.LinkedServiceReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.PipelineReference` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.BlobEventsTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.BlobTrigger` was modified
+
+* `runtimeState()` was removed
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `dataFactoryName()` was removed
+* `state()` was removed
+
+#### `models.ManagedIntegrationRuntimeStatus` was modified
+
+* `dataFactoryName()` was removed
+* `state()` was removed
+
+#### `models.ChainingTrigger` was modified
+
+* `runtimeState()` was removed
+
+### Features Added
+
+* `models.IcebergSink` was added
+
+* `models.IcebergDataset` was added
+
+* `models.IcebergWriteSettings` was added
+
+#### `models.ScriptActivity` was modified
+
+* `returnMultistatementResult()` was added
+* `withReturnMultistatementResult(java.lang.Object)` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `pageSize()` was added
+* `withPageSize(java.lang.Object)` was added
+
+#### `models.MariaDBLinkedService` was modified
+
+* `withUseSystemTrustStore(java.lang.Object)` was added
+* `withSslMode(java.lang.Object)` was added
+* `useSystemTrustStore()` was added
+* `sslMode()` was added
+
+#### `models.ServiceNowV2Source` was modified
+
+* `pageSize()` was added
+* `withPageSize(java.lang.Object)` was added
+
+#### `models.SnowflakeV2LinkedService` was modified
+
+* `withHost(java.lang.Object)` was added
+* `host()` was added
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `withEncoding(java.lang.Object)` was added
+* `withPort(java.lang.Object)` was added
+* `timeout()` was added
+* `server()` was added
+* `sslMode()` was added
+* `encoding()` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withTimezone(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `trustServerCertificate()` was added
+* `withServer(java.lang.Object)` was added
+* `timezone()` was added
+* `username()` was added
+* `commandTimeout()` was added
+* `withDatabase(java.lang.Object)` was added
+* `withSslMode(java.lang.Object)` was added
+* `withTimeout(java.lang.Object)` was added
+* `database()` was added
+* `readBufferSize()` was added
+* `port()` was added
+* `withReadBufferSize(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+
+#### `models.PostgreSqlV2LinkedService` was modified
+
+* `withAuthenticationType(java.lang.Object)` was added
+* `authenticationType()` was added
+
+#### `models.MySqlLinkedService` was modified
+
+* `connectionTimeout()` was added
+* `withSslKey(java.lang.Object)` was added
+* `treatTinyAsBoolean()` was added
+* `sslCert()` was added
+* `withSslCert(java.lang.Object)` was added
+* `withTreatTinyAsBoolean(java.lang.Object)` was added
+* `convertZeroDateTime()` was added
+* `withGuidFormat(java.lang.Object)` was added
+* `allowZeroDateTime()` was added
+* `sslKey()` was added
+* `guidFormat()` was added
+* `withAllowZeroDateTime(java.lang.Object)` was added
+* `withConnectionTimeout(java.lang.Object)` was added
+* `withConvertZeroDateTime(java.lang.Object)` was added
 
 ## 1.0.0-beta.30 (2024-08-21)
 

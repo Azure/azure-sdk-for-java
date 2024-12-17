@@ -43,7 +43,6 @@ public class DataFactoryTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST2;
-    private static final String STORAGE_ACCOUNT = "sa" + randomPadding();
     private static final String DATA_FACTORY = "df" + randomPadding();
 
     private static String resourceGroup = "rg" + randomPadding();
@@ -67,22 +66,23 @@ public class DataFactoryTests extends TestProxyTestBase {
         }
 
         try {
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             // @embedmeStart
             // storage account
             StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(STORAGE_ACCOUNT)
+                .define(storageAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
             final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
             final String connectionString
-                = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
+                = getStorageConnectionString(storageAccountName, storageAccountKey, storageManager.environment());
 
             // container
             final String containerName = "adf";
             storageManager.blobContainers()
                 .defineContainer(containerName)
-                .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
+                .withExistingStorageAccount(resourceGroup, storageAccountName)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 

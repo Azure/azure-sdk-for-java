@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -172,11 +173,28 @@ public final class OrcDataset extends Dataset {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property linkedServiceName in model OrcDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrcDataset.class);
 
     /**
      * {@inheritDoc}

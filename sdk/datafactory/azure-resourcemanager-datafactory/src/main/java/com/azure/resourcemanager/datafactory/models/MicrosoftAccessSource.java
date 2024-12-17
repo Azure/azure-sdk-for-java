@@ -134,7 +134,6 @@ public final class MicrosoftAccessSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

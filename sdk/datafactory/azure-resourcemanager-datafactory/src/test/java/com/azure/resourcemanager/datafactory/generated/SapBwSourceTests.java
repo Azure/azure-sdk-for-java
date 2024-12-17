@@ -11,19 +11,19 @@ public final class SapBwSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapBwSource model = BinaryData.fromString(
-            "{\"type\":\"SapBwSource\",\"query\":\"dataprf\",\"queryTimeout\":\"datahfv\",\"additionalColumns\":\"datayqzhoikemhohxa\",\"sourceRetryCount\":\"dataxoowpoogozer\",\"sourceRetryWait\":\"datazvpbnkgkuujeqqjq\",\"maxConcurrentConnections\":\"datajkajlogvfnwq\",\"disableMetricsCollection\":\"datalvazkqkycg\",\"\":{\"c\":\"datawehjybboqyxi\"}}")
+            "{\"type\":\"SapBwSource\",\"query\":\"datacnk\",\"queryTimeout\":\"datamiecfmqc\",\"additionalColumns\":\"datapcdbvcxo\",\"sourceRetryCount\":\"datahefuhnbdl\",\"sourceRetryWait\":\"datawectz\",\"maxConcurrentConnections\":\"datagvcbt\",\"disableMetricsCollection\":\"datampnkyvujhej\",\"\":{\"nbqhmuqyz\":\"datavlguysbrn\",\"ffdaxlyhxpdq\":\"datakormrcjshtcfn\"}}")
             .toObject(SapBwSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapBwSource model = new SapBwSource().withSourceRetryCount("dataxoowpoogozer")
-            .withSourceRetryWait("datazvpbnkgkuujeqqjq")
-            .withMaxConcurrentConnections("datajkajlogvfnwq")
-            .withDisableMetricsCollection("datalvazkqkycg")
-            .withQueryTimeout("datahfv")
-            .withAdditionalColumns("datayqzhoikemhohxa")
-            .withQuery("dataprf");
+        SapBwSource model = new SapBwSource().withSourceRetryCount("datahefuhnbdl")
+            .withSourceRetryWait("datawectz")
+            .withMaxConcurrentConnections("datagvcbt")
+            .withDisableMetricsCollection("datampnkyvujhej")
+            .withQueryTimeout("datamiecfmqc")
+            .withAdditionalColumns("datapcdbvcxo")
+            .withQuery("datacnk");
         model = BinaryData.fromObject(model).toObject(SapBwSource.class);
     }
 }
