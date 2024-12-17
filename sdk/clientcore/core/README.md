@@ -2,13 +2,13 @@
 
 <!-- [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java) -->
 
-Core provides shared primitives, abstractions, and helpers for modern SDK client libraries. These libraries
+Client Core provides shared primitives, abstractions, and helpers for modern SDK client libraries. These libraries
 <!-- follow the [SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html) and -->
-can be easily identified by package names starting with `io.clientcore` and module names starting with `clientcore`,
+can be easily identified by package names starting with `io.clientcore` and module names starting with `core`,
 e.g. `io.clientcore.core` would be found within the `/sdk/clientcore/core` directory.
 <!-- A more complete list of client libraries using Core can be found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages). -->
 
-Core allows client libraries to expose common functionality consistently, so that once you learn how to use these
+Client Core allows client libraries to expose common functionality consistently, so that once you learn how to use these
 APIs in one client library, you will know how to use them in other client libraries.
 
 ## Getting started
