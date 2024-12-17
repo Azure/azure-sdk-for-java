@@ -42,7 +42,7 @@ import java.util.UUID;
 
 public class PostgreSqlManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private PostgreSqlManager postgreSqlManager;
     private ResourceManager resourceManager;
