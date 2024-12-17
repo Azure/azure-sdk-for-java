@@ -19,7 +19,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);
 
     /**
-     * Azure Key Vault endpoint. For instance, 'https://{your-unique-keyvault-name}.vault.azure.net/'.
+     * Azure Key Vault endpoint. For instance, `https://{your-unique-keyvault-name}.vault.azure.net/`.
      */
     private String endpoint;
     /**

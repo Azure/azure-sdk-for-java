@@ -111,12 +111,12 @@ public class AadAuthenticationProperties implements InitializingBean {
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The lifespan(duration) of the cached JWK set before it expires. The default value is `5m`.
+     * The lifespan(duration) of the cached JWK set before it expires.
      */
     private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
 
     /**
-     * The refresh time(duration) of the cached JWK set before it expires. The default value is `5m`.
+     * The refresh time(duration) of the cached JWK set before it expires.
      */
     private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
 
@@ -197,7 +197,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * Whether to use transitive way to get members. If `true`, use `v1.0/me/transitiveMemberOf` to get members. Otherwise, use `v1.0/me/memberOf`. The default value is `false`.
+         * Whether to use transitive way to get members. If `true`, use `v1.0/me/transitiveMemberOf` to get members. Otherwise, use `v1.0/me/memberOf`.
          */
         private boolean useTransitiveMembers = false;
 
