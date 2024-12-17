@@ -33,7 +33,6 @@
 # performed. So, if com.azure:azure-new-library is added with major version 2 it'll use
 # com.azure:azure-new-library;2.0.0-beta.1;2.0.0-beta.1 as its initial version tag.
 
-com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
@@ -209,7 +208,6 @@ com.azure:identity-test-function;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-vm;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
-com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.19.0;5.20.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config;5.19.0;5.20.0-beta.1
