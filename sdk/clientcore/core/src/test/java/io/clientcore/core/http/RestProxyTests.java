@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
@@ -86,12 +86,12 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-    
+
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-    
+
         streamResponse.close();
-    
+
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -205,7 +205,7 @@ public class RestProxyTests {
     @Test
     public void doesNotChangeEncodedPath() throws IOException {
         String nextLinkUri
-            = "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+            = "https://management.somecloud.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
             assertEquals(nextLinkUri, request.getUri().toString());
 

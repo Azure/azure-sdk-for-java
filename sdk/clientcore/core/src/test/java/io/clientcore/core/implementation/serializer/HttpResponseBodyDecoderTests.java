@@ -186,13 +186,13 @@ public class HttpResponseBodyDecoderTests {
         ParameterizedType stringList = mockParameterizedType(List.class, String.class);
         HttpResponseDecodeData stringListDecodeData
             = new MockHttpResponseDecodeData(200, stringList, String.class, true);
-        List<String> list = Arrays.asList("hello", "azure");
+        List<String> list = Arrays.asList("hello", "world");
         Response<?> stringListResponse = new MockHttpResponse(GET_REQUEST, 200, list);
 
         ParameterizedType mapStringString = mockParameterizedType(Map.class, String.class, String.class);
         HttpResponseDecodeData mapStringStringDecodeData
             = new MockHttpResponseDecodeData(200, mapStringString, String.class, true);
-        Map<String, String> map = Collections.singletonMap("hello", "azure");
+        Map<String, String> map = Collections.singletonMap("hello", "world");
         Response<?> mapStringStringResponse = new MockHttpResponse(GET_REQUEST, 200, map);
 
         return Stream.of(Arguments.of(stringResponse, stringDecodeData, "hello"),

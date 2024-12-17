@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Javadoc codesnippets for {@link com.azure.core.annotation} classes.
+ * Javadoc codesnippets for {@link io.clientcore.core.annotation} classes.
  */
 @SuppressWarnings("ALL")
 public interface AnnotationJavadocCodesnippets {
@@ -191,7 +191,7 @@ public interface AnnotationJavadocCodesnippets {
      */
     interface HostExamples {
         // BEGIN: io.clientcore.core.http.annotation.Host.class1
-        @ServiceInterface(name = "VirtualMachinesService", host = "https://management.azure.com")
+        @ServiceInterface(name = "VirtualMachinesService", host = "https://management.somecloud.com")
         interface VirtualMachinesService {
             @HttpRequestInformation(method = HttpMethod.GET, path = "/subscriptions/{subscriptionId}/resourceGroups/"
                 + "{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}",
@@ -202,8 +202,8 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Host.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Host.class2
-        @ServiceInterface(name = "KeyVaultService", host = "https://{vaultName}.vault.azure.net:443")
-        interface KeyVaultService {
+        @ServiceInterface(name = "SecretsService", host = "https://{instance}.somecloud.com:443")
+        interface SecretsService {
             @HttpRequestInformation(method = HttpMethod.GET, path = "secrets/{secretName}",
                 returnValueWireType = Secret.class)
             Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
@@ -336,7 +336,7 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Post.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Post.class2
-        @HttpRequestInformation(method = HttpMethod.POST, path = "https://{functionApp}.azurewebsites.net/admin/"
+        @HttpRequestInformation(method = HttpMethod.POST, path = "https://{functionApp}.somecloud.com/admin/"
             + "functions/{name}/keys/{keyName}", returnValueWireType = KeyValuePair.class)
         KeyValuePair generateFunctionKey(@PathParam("functionApp") String functionApp, @PathParam("name") String name,
             @PathParam("keyName") String keyName);

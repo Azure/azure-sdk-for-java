@@ -32,9 +32,9 @@ public final class BodyPublisherUtils {
      */
     public static HttpRequest.BodyPublisher toBodyPublisher(io.clientcore.core.http.models.HttpRequest request,
         Duration writeTimeout) {
-        // TODO (alzimmer): azure-core was using Flux.timeout to handle write timeouts. The logic will need to be
-        //  re-implemented to handle write timeouts in a similar manner.
+        // TODO (alzimmer): Handle write timeouts.
         BinaryData body = request.getBody();
+
         if (body == null) {
             return noBody();
         }
