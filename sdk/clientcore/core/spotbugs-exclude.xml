@@ -29,8 +29,6 @@
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyBase" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.http.serializer.CompositeSerializer" />
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer" />
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultXmlSerializer" />
       <Class name="io.clientcore.core.implementation.util.DateTimeRfc1123" />
       <Class name="io.clientcore.core.implementation.util.InternalContext" />
       <Class name="io.clientcore.core.implementation.util.Providers" />
@@ -43,6 +41,8 @@
       <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
       <Class name="io.clientcore.core.util.configuration.Configuration" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializer" />
+      <Class name="io.clientcore.core.util.serializer.XmlSerializer" />
     </Or>
   </Match>
   <Match>
@@ -124,7 +124,7 @@
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
       <Class name="io.clientcore.core.util.ClientLoggerTests" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
-      <Class name="io.clientcore.core.util.serializer.DefaultJsonSerializerTests" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -258,12 +258,12 @@
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer" />
-      <Class name="io.clientcore.core.implementation.http.serializer.DefaultXmlSerializer" />
       <Class name="io.clientcore.core.implementation.util.Base64Uri" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
       <Class name="io.clientcore.core.util.TestUtils" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializer" />
       <Class name="io.clientcore.core.util.serializer.MockSerializer" />
+      <Class name="io.clientcore.core.util.serializer.XmlSerializer" />
     </Or>
   </Match>
   <Match>
@@ -352,7 +352,7 @@
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
       <Class name="io.clientcore.core.util.binarydata.BinaryDataTest$BinaryDataAsProperty" />
-      <Class name="io.clientcore.core.util.serializer.DefaultJsonSerializerTests$DateTimeWrapper" />
+      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>

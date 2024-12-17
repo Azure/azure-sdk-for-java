@@ -12,6 +12,7 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
@@ -227,7 +228,7 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
-        if (supportsJsonSerializable(bodyContentObject.getClass())) {
+        if (ReflectionSerializable.supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(BinaryData.fromObject(bodyContentObject));
             return;
         }

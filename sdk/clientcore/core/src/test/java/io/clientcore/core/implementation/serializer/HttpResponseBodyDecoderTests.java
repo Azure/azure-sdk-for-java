@@ -45,8 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
-    private static final CompositeSerializer SERIALIZER
-        = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
+    private static final CompositeSerializer SERIALIZER = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");

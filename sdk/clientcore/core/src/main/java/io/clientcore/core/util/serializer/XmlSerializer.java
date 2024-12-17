@@ -75,14 +75,14 @@ public class XmlSerializer implements ObjectSerializer {
     @SuppressWarnings("unchecked")
     private static <T> T deserializeShared(XmlReader xmlReader, Type type) {
         try {
-            if (type instanceof Class<?> && XmlSerializer.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
+            if (XmlSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
 
                 return (T) clazz.getMethod("fromXml", XmlReader.class).invoke(null, xmlReader);
             } else {
                 // TODO (alzimmer): XML needs untyped support.
                 throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
-                    "DefaultXmlSerializer does not have support for untyped deserialization."));
+                    "XmlSerializer does not have support for untyped deserialization."));
             }
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
@@ -91,6 +91,8 @@ public class XmlSerializer implements ObjectSerializer {
 
     /**
      * Converts the object into an XML byte array.
+     * <p>
+     * This method writes both the XML declaration and contents of the object.
      *
      * @param value The object.
      * @return The XML binary representation of the serialized object.
@@ -114,6 +116,8 @@ public class XmlSerializer implements ObjectSerializer {
 
     /**
      * Writes an object's XML representation into a stream.
+     * <p>
+     * This method writes both the XML declaration and contents of the object.
      *
      * @param stream {@link OutputStream} where the object's XML representation will be written.
      * @param value The object to serialize.
@@ -135,11 +139,12 @@ public class XmlSerializer implements ObjectSerializer {
     private static void serializeShared(XmlWriter xmlWriter, Object value) {
         try {
             if (value instanceof XmlSerializable) {
+                xmlWriter.writeStartDocument();
                 ((XmlSerializable<?>) value).toXml(xmlWriter).flush();
             } else {
                 // TODO (alzimmer): XML needs untyped support.
                 throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
-                    "DefaultXmlSerializer does not have support for untyped serialization."));
+                    "XmlSerializer does not have support for untyped serialization."));
             }
         } catch (XMLStreamException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));

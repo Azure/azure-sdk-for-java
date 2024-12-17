@@ -12,14 +12,12 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
@@ -29,7 +27,6 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -252,26 +249,5 @@ public abstract class RestProxyBase {
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
         return new HttpResponseException(exceptionMessage.toString(), response, exceptionType, responseDecodedBody);
-    }
-
-    /**
-     * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
-     *
-     * @param bodyContentClass The body content class.
-     * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
-     */
-    static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
-        return ReflectionSerializable.supportsJsonSerializable(bodyContentClass);
-    }
-
-    /**
-     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
-     *
-     * @param jsonSerializable The {@code JsonSerializable} body content.
-     * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
-     * @throws IOException If an error occurs during serialization.
-     */
-    static ByteBuffer serializeAsJsonSerializable(JsonSerializable<?> jsonSerializable) throws IOException {
-        return ReflectionSerializable.serializeJsonSerializableToByteBuffer(jsonSerializable);
     }
 }

@@ -8,6 +8,7 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.util.serializer.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
