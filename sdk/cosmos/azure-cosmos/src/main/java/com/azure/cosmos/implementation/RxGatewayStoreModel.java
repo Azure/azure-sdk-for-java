@@ -12,7 +12,9 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
+import com.azure.cosmos.implementation.directconnectivity.ResourceOperation;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -20,6 +22,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -47,6 +50,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -54,7 +58,7 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  *
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
-public class RxGatewayStoreModel implements RxStoreModel {
+public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer {
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
 
     private final DiagnosticsClientContext clientContext;
@@ -83,29 +87,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
         ApiType apiType) {
 
         this.clientContext = clientContext;
-        this.defaultHeaders = new HashMap<>();
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
-            "no-cache");
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
-            HttpConstants.Versions.CURRENT_VERSION);
-        this.defaultHeaders.put(
-            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
-            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
-
-        if (apiType != null) {
-            this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
-        }
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();
         }
 
-        this.defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-
-        if (defaultConsistencyLevel != null) {
-            this.defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                defaultConsistencyLevel.toString());
-        }
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer, defaultConsistencyLevel);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -124,6 +111,40 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
+    }
+
+    protected Map<String, String> getDefaultHeaders(
+        ApiType apiType,
+        UserAgentContainer userAgentContainer,
+        ConsistencyLevel clientDefaultConsistencyLevel) {
+
+        checkNotNull(userAgentContainer, "Argument 'userAGentContainer' must not be null.");
+
+        Map<String, String> defaultHeaders = new HashMap<>();
+        defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
+            "no-cache");
+        defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
+            HttpConstants.Versions.CURRENT_VERSION);
+        defaultHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
+
+        if (apiType != null) {
+            defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
+
+        if (userAgentContainer == null) {
+            userAgentContainer = new UserAgentContainer();
+        }
+
+        defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+
+        if (clientDefaultConsistencyLevel != null) {
+            defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
+                clientDefaultConsistencyLevel.toString());
+        }
+
+        return defaultHeaders;
     }
 
     void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
@@ -162,40 +183,46 @@ public class RxGatewayStoreModel implements RxStoreModel {
         this.collectionCache = collectionCache;
     }
 
-    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.POST);
+    @Override
+    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
+        HttpMethod method = getHttpMethod(request);
+        HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
+
+        Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
+        return new HttpRequest(method,
+            requestUri,
+            requestUri.getPort(),
+            httpHeaders,
+            contentAsByteArray);
     }
 
-    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.PATCH);
-    }
+    @Override
+    public StoreResponse unwrapToStoreResponse(
+        RxDocumentServiceRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        ByteBuf content) {
 
-    private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.POST);
-    }
+        checkNotNull(headers, "Argument 'headers' must not be null.");
+        checkNotNull(
+            content,
+            "Argument 'content' must not be null - use empty ByteBuf when theres is no payload.");
 
-    private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.GET);
-    }
+        // If there is any error in the header response this throws exception
+        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, content);
 
-    private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.PUT);
-    }
+        int size;
+        if ((size = content.readableBytes()) > 0) {
+            return new StoreResponse(statusCode,
+                HttpUtils.unescape(headers.toMap()),
+                new ByteBufInputStream(content, true),
+                size);
+        }
 
-    private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.DELETE);
-    }
-
-    private Mono<RxDocumentServiceResponse> deleteByPartitionKey(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.POST);
-    }
-
-    private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.POST);
-    }
-
-    private Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        return this.performRequest(request, HttpMethod.GET);
+        return new StoreResponse(statusCode,
+            HttpUtils.unescape(headers.toMap()),
+            null,
+            0);
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
@@ -215,10 +242,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     RuntimeConstants.MediaTypes.QUERY_JSON);
                 break;
         }
-        return this.performRequest(request, HttpMethod.POST);
+        return this.performRequest(request);
     }
 
-    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
+    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request) {
         try {
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
@@ -228,10 +255,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
             request.requestContext.resourcePhysicalAddress = uri.toString();
 
             if (this.throughputControlStore != null) {
-                return this.throughputControlStore.processRequest(request, Mono.defer(() -> this.performRequestInternal(request, method, uri)));
+                return this.throughputControlStore.processRequest(request, Mono.defer(() -> this.performRequestInternal(request, uri)));
             }
 
-            return this.performRequestInternal(request, method, uri);
+            return this.performRequestInternal(request, uri);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -241,23 +268,21 @@ public class RxGatewayStoreModel implements RxStoreModel {
      * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
      *
      * @param request
-     * @param method
      * @param requestUri
      * @return Flux<RxDocumentServiceResponse>
      */
-    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
 
         try {
 
+            HttpMethod method = getHttpMethod(request);
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
-            HttpRequest httpRequest = new HttpRequest(method,
-                requestUri,
-                requestUri.getPort(),
-                httpHeaders,
-                contentAsByteArray);
+            HttpRequest httpRequest = request
+                .getEffectiveHttpTransportSerializer(this)
+                .wrapInHttpRequest(request, requestUri);
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
@@ -371,23 +396,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                         reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                     }
 
-                    // If there is any error in the header response this throws exception
-                    validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
-
-                    StoreResponse rsp;
-
-                    int size;
-                    if ((size = content.readableBytes()) > 0) {
-                        rsp = new StoreResponse(httpResponseStatus,
-                            HttpUtils.unescape(httpResponseHeaders.toMap()),
-                            new ByteBufInputStream(content, true),
-                            size);
-                    } else {
-                        rsp = new StoreResponse(httpResponseStatus,
-                            HttpUtils.unescape(httpResponseHeaders.toMap()),
-                            null,
-                            0);
-                    }
+                    StoreResponse rsp = request
+                        .getEffectiveHttpTransportSerializer(this)
+                        .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
@@ -518,28 +529,47 @@ public class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
+    private static HttpMethod getHttpMethod(RxDocumentServiceRequest request) {
+        switch (request.getOperationType()) {
+            case Create:
+            case Batch:
+            case Upsert:
+            case ExecuteJavaScript:
+            case SqlQuery:
+            case Query:
+            case QueryPlan:
+                return HttpMethod.POST;
+            case Patch:
+                return HttpMethod.PATCH;
+            case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return HttpMethod.POST;
+                }
+                return HttpMethod.DELETE;
+            case Read:
+            case ReadFeed:
+                return HttpMethod.GET;
+            case Replace:
+                return HttpMethod.PUT;
+            default:
+                throw new IllegalStateException(
+                    "Operation type " + request.getOperationType() + " cannot be processed in RxGatewayStoreModel.");
+        }
+    }
+
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request) {
         switch (request.getOperationType()) {
             case Create:
             case Batch:
-                return this.create(request);
             case Patch:
-                return this.patch(request);
             case Upsert:
-                return this.upsert(request);
             case Delete:
-                if (request.getResourceType() == ResourceType.PartitionKey) {
-                    return this.deleteByPartitionKey(request);
-                }
-                return this.delete(request);
             case ExecuteJavaScript:
-                return this.execute(request);
             case Read:
-                return this.read(request);
             case ReadFeed:
-                return this.readFeed(request);
             case Replace:
-                return this.replace(request);
+                return this.performRequest(request);
+
             case SqlQuery:
             case Query:
             case QueryPlan:

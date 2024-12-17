@@ -274,7 +274,7 @@ public class RxGatewayStoreModelTest {
             ResourceType.Document);
 
         try {
-            storeModel.performRequest(dsr, HttpMethod.POST).block();
+            storeModel.performRequest(dsr).block();
             fail("Request should fail");
         } catch (Exception e) {
             //no-op
