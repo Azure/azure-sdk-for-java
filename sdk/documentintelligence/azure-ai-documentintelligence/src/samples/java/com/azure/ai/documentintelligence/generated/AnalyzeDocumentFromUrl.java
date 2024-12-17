@@ -7,7 +7,7 @@ package com.azure.ai.documentintelligence.generated;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.util.polling.SyncPoller;
@@ -22,7 +22,7 @@ public class AnalyzeDocumentFromUrl {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzedocument.analyzedocumentfromurl
-        SyncPoller<AnalyzeOperation, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> response = documentIntelligenceClient.beginAnalyzeDocument(
             "customModel",
             new AnalyzeDocumentOptions("http://host.com/doc.pdf").setPages(Collections.singletonList("1-2,4"))
                 .setLocale("en-US")

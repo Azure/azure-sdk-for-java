@@ -28,7 +28,7 @@ public final class IntegrationRuntimesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .deleteWithResponse("mdlhxwwhusrod", "omozafwq", "ocwkwmqroqldacx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("yfi", "lpiqei", "jboghjdihtc", com.azure.core.util.Context.NONE);
 
     }
 }

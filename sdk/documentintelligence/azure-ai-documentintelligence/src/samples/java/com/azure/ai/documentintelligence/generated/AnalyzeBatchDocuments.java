@@ -7,7 +7,7 @@ package com.azure.ai.documentintelligence.generated;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.StringIndexType;
@@ -23,7 +23,7 @@ public class AnalyzeBatchDocuments {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.analyzebatchdocuments.analyzebatchdocuments
-        SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> response
+        SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> response
             = documentIntelligenceClient.beginAnalyzeBatchDocuments("customModel",
                 new AnalyzeBatchDocumentsOptions(new AzureBlobContentSource(
                     "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken").setPrefix("trainingDocs/"),

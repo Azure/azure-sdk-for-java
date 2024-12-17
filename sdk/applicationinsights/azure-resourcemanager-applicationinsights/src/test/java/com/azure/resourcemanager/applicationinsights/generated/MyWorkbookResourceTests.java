@@ -17,36 +17,36 @@ public final class MyWorkbookResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MyWorkbookResource model = BinaryData.fromString(
-            "{\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"lxyjr\",\"tenantId\":\"agafcnihgwqap\"},\"type\":\"None\"},\"id\":\"rfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\",\"etag\":{\"d\":\"zdopcjwvnhd\",\"twuoegrpkhjwni\":\"mgxcxrslpm\"},\"location\":\"qsluicp\",\"tags\":{\"uefywsbpfvmwy\":\"kzzlvmbmpaxmodf\"}}")
+            "{\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"yrcdlbhshfwprac\",\"tenantId\":\"wity\"},\"type\":\"None\"},\"id\":\"pjorwkqnyhg\",\"name\":\"ij\",\"type\":\"jivfxzsjabib\",\"etag\":{\"vfgbvfvpdboda\":\"qunyowxwlmdjr\"},\"location\":\"izsjqlhkrr\",\"tags\":{\"p\":\"eibq\",\"ndzwmkrefa\":\"kghv\"}}")
             .toObject(MyWorkbookResource.class);
-        Assertions.assertEquals("qsluicp", model.location());
-        Assertions.assertEquals("kzzlvmbmpaxmodf", model.tags().get("uefywsbpfvmwy"));
+        Assertions.assertEquals("izsjqlhkrr", model.location());
+        Assertions.assertEquals("eibq", model.tags().get("p"));
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("rfouyftaakcpw", model.id());
-        Assertions.assertEquals("yzvqt", model.name());
-        Assertions.assertEquals("nubexk", model.type());
-        Assertions.assertEquals("zdopcjwvnhd", model.etag().get("d"));
+        Assertions.assertEquals("pjorwkqnyhg", model.id());
+        Assertions.assertEquals("ij", model.name());
+        Assertions.assertEquals("jivfxzsjabib", model.type());
+        Assertions.assertEquals("qunyowxwlmdjr", model.etag().get("vfgbvfvpdboda"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MyWorkbookResource model = new MyWorkbookResource().withLocation("qsluicp")
-            .withTags(mapOf("uefywsbpfvmwy", "kzzlvmbmpaxmodf"))
+        MyWorkbookResource model = new MyWorkbookResource().withLocation("izsjqlhkrr")
+            .withTags(mapOf("p", "eibq", "ndzwmkrefa", "kghv"))
             .withIdentity(
                 new MyWorkbookManagedIdentity().withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
                     .withType(MyWorkbookManagedIdentityType.NONE))
-            .withId("rfouyftaakcpw")
-            .withName("yzvqt")
-            .withType("nubexk")
-            .withEtag(mapOf("d", "zdopcjwvnhd", "twuoegrpkhjwni", "mgxcxrslpm"));
+            .withId("pjorwkqnyhg")
+            .withName("ij")
+            .withType("jivfxzsjabib")
+            .withEtag(mapOf("vfgbvfvpdboda", "qunyowxwlmdjr"));
         model = BinaryData.fromObject(model).toObject(MyWorkbookResource.class);
-        Assertions.assertEquals("qsluicp", model.location());
-        Assertions.assertEquals("kzzlvmbmpaxmodf", model.tags().get("uefywsbpfvmwy"));
+        Assertions.assertEquals("izsjqlhkrr", model.location());
+        Assertions.assertEquals("eibq", model.tags().get("p"));
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("rfouyftaakcpw", model.id());
-        Assertions.assertEquals("yzvqt", model.name());
-        Assertions.assertEquals("nubexk", model.type());
-        Assertions.assertEquals("zdopcjwvnhd", model.etag().get("d"));
+        Assertions.assertEquals("pjorwkqnyhg", model.id());
+        Assertions.assertEquals("ij", model.name());
+        Assertions.assertEquals("jivfxzsjabib", model.type());
+        Assertions.assertEquals("qunyowxwlmdjr", model.etag().get("vfgbvfvpdboda"));
     }
 
     // Use "Map.of" if available

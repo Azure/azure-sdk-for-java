@@ -839,6 +839,7 @@
     {
       "filename": "/sdk/ai/**",
       "words": [
+        "OTEL",
         "ubinary",
         "UBINARY"
       ]
@@ -1029,6 +1030,7 @@
         "epoll",
         "fcgi",
         "flywaydb",
+        "fips",
         "gcloud",
         "gimap",
         "ginq",

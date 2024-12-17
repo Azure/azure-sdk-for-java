@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
@@ -42,7 +42,7 @@ public class AnalyzeInvoicesAsync {
 
         File invoice = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/invoices/sample_invoice.jpg");
-        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeInvoicePoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
                     new AnalyzeDocumentOptions(Files.readAllBytes(invoice.toPath()))
             );
@@ -132,10 +132,10 @@ public class AnalyzeInvoicesAsync {
                 if (invoiceItemsField != null) {
                     System.out.printf("Invoice Items: %n");
                     if (DocumentFieldType.ARRAY == invoiceItemsField.getType()) {
-                        List<DocumentField> invoiceItems = invoiceItemsField.getValueArray();
+                        List<DocumentField> invoiceItems = invoiceItemsField.getValueList();
                         invoiceItems.stream()
                             .filter(invoiceItem -> DocumentFieldType.OBJECT == invoiceItem.getType())
-                            .map(DocumentField::getValueObject)
+                            .map(DocumentField::getValueMap)
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 // See a full list of fields found on an invoice here:
                                 // https://aka.ms/formrecognizer/invoicefields

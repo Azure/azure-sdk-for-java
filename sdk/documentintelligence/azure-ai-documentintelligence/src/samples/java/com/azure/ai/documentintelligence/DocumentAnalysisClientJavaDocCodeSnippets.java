@@ -4,7 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
@@ -137,7 +137,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
         // analyze using custom-built model
         String modelId = customBuildModel.getModelId();
         String documentUrl = "documentUrl";
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller =
             documentIntelligenceClient.beginAnalyzeDocument(modelId,
                 new AnalyzeDocumentOptions(documentUrl));
 

@@ -22,9 +22,10 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityAlreadyExists(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.resourceProviders().checkNameAvailabilityWithResponse(
-            new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,8 +40,9 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityAvailable(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.resourceProviders().checkNameAvailabilityWithResponse(
-            new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("contoso").withType("Microsoft.DeviceUpdate/accounts"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchesListResultInner;
 
-/** An instance of this class provides access to all the operations defined in SavedSearchesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SavedSearchesClient.
+ */
 public interface SavedSearchesClient {
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -31,7 +33,7 @@ public interface SavedSearchesClient {
 
     /**
      * Deletes the specified saved search in a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -44,7 +46,7 @@ public interface SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -61,7 +63,7 @@ public interface SavedSearchesClient {
 
     /**
      * Creates or updates a saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -77,7 +79,7 @@ public interface SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -93,7 +95,7 @@ public interface SavedSearchesClient {
 
     /**
      * Gets the specified saved search for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
@@ -107,7 +109,7 @@ public interface SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -122,7 +124,7 @@ public interface SavedSearchesClient {
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

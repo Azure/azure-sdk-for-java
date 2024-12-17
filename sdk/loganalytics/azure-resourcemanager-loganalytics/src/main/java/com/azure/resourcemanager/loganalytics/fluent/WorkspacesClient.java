@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePatch;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public interface WorkspacesClient {
     /**
      * Gets the workspaces in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspaces in a subscription as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets the workspaces in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets workspaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets workspaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface WorkspacesClient {
 
     /**
      * Create or update a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
@@ -80,7 +82,7 @@ public interface WorkspacesClient {
 
     /**
      * Create or update a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
@@ -96,7 +98,7 @@ public interface WorkspacesClient {
 
     /**
      * Create or update a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
@@ -110,7 +112,7 @@ public interface WorkspacesClient {
 
     /**
      * Create or update a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to create or update a workspace.
@@ -128,7 +130,7 @@ public interface WorkspacesClient {
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
      * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
      * To remove the workspace completely and release the name, use the force flag.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,11 +145,11 @@ public interface WorkspacesClient {
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
      * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
      * To remove the workspace completely and release the name, use the force flag.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param force Deletes the workspace without the recovery option. A workspace that was deleted with this flag
-     *     cannot be recovered.
+     * cannot be recovered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +164,7 @@ public interface WorkspacesClient {
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
      * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
      * To remove the workspace completely and release the name, use the force flag.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,11 +178,11 @@ public interface WorkspacesClient {
      * Deletes a workspace resource. To recover the workspace, create it again with the same name, in the same
      * subscription, resource group and location. The name is kept for 14 days and cannot be used for another workspace.
      * To remove the workspace completely and release the name, use the force flag.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param force Deletes the workspace without the recovery option. A workspace that was deleted with this flag
-     *     cannot be recovered.
+     * cannot be recovered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,7 +193,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets a workspace instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -206,7 +208,7 @@ public interface WorkspacesClient {
 
     /**
      * Gets a workspace instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +221,7 @@ public interface WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to patch a workspace.
@@ -235,7 +237,7 @@ public interface WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The parameters required to patch a workspace.

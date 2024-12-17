@@ -341,19 +341,203 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @return the allowZeroDateTime value.
+     */
+    public Object allowZeroDateTime() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().allowZeroDateTime();
+    }
+
+    /**
+     * Set the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @param allowZeroDateTime the allowZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withAllowZeroDateTime(Object allowZeroDateTime) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAllowZeroDateTime(allowZeroDateTime);
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object connectionTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionTimeout();
+    }
+
+    /**
+     * Set the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withConnectionTimeout(Object connectionTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionTimeout(connectionTimeout);
+        return this;
+    }
+
+    /**
+     * Get the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @return the convertZeroDateTime value.
+     */
+    public Object convertZeroDateTime() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().convertZeroDateTime();
+    }
+
+    /**
+     * Set the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @param convertZeroDateTime the convertZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withConvertZeroDateTime(Object convertZeroDateTime) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConvertZeroDateTime(convertZeroDateTime);
+        return this;
+    }
+
+    /**
+     * Get the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @return the guidFormat value.
+     */
+    public Object guidFormat() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().guidFormat();
+    }
+
+    /**
+     * Set the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @param guidFormat the guidFormat value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withGuidFormat(Object guidFormat) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withGuidFormat(guidFormat);
+        return this;
+    }
+
+    /**
+     * Get the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @return the sslCert value.
+     */
+    public Object sslCert() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslCert();
+    }
+
+    /**
+     * Set the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @param sslCert the sslCert value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withSslCert(Object sslCert) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslCert(sslCert);
+        return this;
+    }
+
+    /**
+     * Get the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @return the sslKey value.
+     */
+    public Object sslKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslKey();
+    }
+
+    /**
+     * Set the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @param sslKey the sslKey value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withSslKey(Object sslKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslKey(sslKey);
+        return this;
+    }
+
+    /**
+     * Get the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @return the treatTinyAsBoolean value.
+     */
+    public Object treatTinyAsBoolean() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().treatTinyAsBoolean();
+    }
+
+    /**
+     * Set the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @param treatTinyAsBoolean the treatTinyAsBoolean value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withTreatTinyAsBoolean(Object treatTinyAsBoolean) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTreatTinyAsBoolean(treatTinyAsBoolean);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model MySqlLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

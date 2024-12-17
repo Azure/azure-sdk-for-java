@@ -20,8 +20,9 @@ public final class HybridIdentityMetadataDeleteSamples {
      */
     public static void deleteHybridIdentityMetadata(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().delete(
-            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
-            com.azure.core.util.Context.NONE);
+        manager.hybridIdentityMetadatas()
+            .delete(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                com.azure.core.util.Context.NONE);
     }
 }

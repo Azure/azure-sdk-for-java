@@ -6,7 +6,7 @@ package com.azure.ai.documentintelligence.generated;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceClient;
 import com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -17,7 +17,7 @@ public class ListAnalyzeBatchDocumentsResults {
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
         // BEGIN:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
-        PagedIterable<AnalyzeBatchOperation> response
+        PagedIterable<AnalyzeBatchOperationDetails> response
             = documentIntelligenceClient.listAnalyzeBatchResults("prebuilt-invoice");
         // END:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
     }

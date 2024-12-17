@@ -11,12 +11,12 @@ public final class SsisExecutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisExecutionParameter model
-            = BinaryData.fromString("{\"value\":\"datarbfepfwr\"}").toObject(SsisExecutionParameter.class);
+            = BinaryData.fromString("{\"value\":\"dataiblaumogu\"}").toObject(SsisExecutionParameter.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisExecutionParameter model = new SsisExecutionParameter().withValue("datarbfepfwr");
+        SsisExecutionParameter model = new SsisExecutionParameter().withValue("dataiblaumogu");
         model = BinaryData.fromObject(model).toObject(SsisExecutionParameter.class);
     }
 }

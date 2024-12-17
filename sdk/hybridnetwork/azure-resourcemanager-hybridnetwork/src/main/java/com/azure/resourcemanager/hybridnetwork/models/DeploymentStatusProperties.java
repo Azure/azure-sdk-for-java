@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The deployment status properties of the network function component.
  */
 @Fluent
-public final class DeploymentStatusProperties {
+public final class DeploymentStatusProperties implements JsonSerializable<DeploymentStatusProperties> {
     /*
      * The status of the component resource.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * The resource related to the component resource.
      */
-    @JsonProperty(value = "resources")
     private Resources resources;
 
     /*
      * The next expected update of deployment status.
      */
-    @JsonProperty(value = "nextExpectedUpdateAt")
     private OffsetDateTime nextExpectedUpdateAt;
 
     /**
@@ -106,5 +109,51 @@ public final class DeploymentStatusProperties {
         if (resources() != null) {
             resources().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeStringField("nextExpectedUpdateAt",
+            this.nextExpectedUpdateAt == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextExpectedUpdateAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentStatusProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentStatusProperties.
+     */
+    public static DeploymentStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentStatusProperties deserializedDeploymentStatusProperties = new DeploymentStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedDeploymentStatusProperties.status = Status.fromString(reader.getString());
+                } else if ("resources".equals(fieldName)) {
+                    deserializedDeploymentStatusProperties.resources = Resources.fromJson(reader);
+                } else if ("nextExpectedUpdateAt".equals(fieldName)) {
+                    deserializedDeploymentStatusProperties.nextExpectedUpdateAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentStatusProperties;
+        });
     }
 }
