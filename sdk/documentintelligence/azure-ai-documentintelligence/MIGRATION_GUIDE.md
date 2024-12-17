@@ -35,6 +35,8 @@ New features provided by the `azure-ai-documentintelligence` library include:
     - `AUTO`: let the service determine where to split.
     - `NONE`: the entire file is treated as a single document. No splitting is performed.
     - `PER_PAGE`: each page is treated as a separate document. Each empty page is kept as its own document.
+- **Batch analysis:** allows you to bulk process multiple documents using a single request.
+Rather than having to submit documents individually, you can analyze a collection of documents like invoices, a series of a loan documents, or a group of custom documents simultaneously.
 
 ## Breaking Changes
 
