@@ -55,12 +55,12 @@ public class ResourceHealthTests extends TestProxyTestBase {
         ComputeManager computeManager = ComputeManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         ResourceHealthManager resourceHealthManager = ResourceHealthManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
