@@ -88,7 +88,7 @@ public class DerivedMetricProjections {
         }
     }
 
-    static class DerivedMetricAggregation {
+    private static class DerivedMetricAggregation {
         // This class represents the intermediate state of a derived metric value.
         // It keeps track of the count and the aggregated value so that these two
         // fields can be used to determine the final value of a derived metric
