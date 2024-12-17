@@ -934,6 +934,7 @@ public class ImplementationBridgeHelpers {
                 Long opCountPerEvaluation,
                 Long opRetriedCountPerEvaluation,
                 Long globalOpCount,
+                Integer targetMaxMicroBatchSize,
                 CosmosDiagnostics diagnostics,
                 Throwable finalError);
 
@@ -970,6 +971,8 @@ public class ImplementationBridgeHelpers {
             Long getRetriedOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
 
             Long getGlobalOpCount(CosmosDiagnosticsContext ctx);
+
+            Integer getTargetMaxMicroBatchSize(CosmosDiagnosticsContext ctx);
         }
     }
 

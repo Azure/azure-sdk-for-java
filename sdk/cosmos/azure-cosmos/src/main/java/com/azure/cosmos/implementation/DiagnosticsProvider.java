@@ -265,12 +265,13 @@ public final class DiagnosticsProvider {
         Long opCountPerEvaluation,
         Long opRetriedCountPerEvaluation,
         Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, diagnostics, isSampledOut);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, opCountPerEvaluation, opRetriedCountPerEvaluation, globalOpCount, targetMaxMicroBatchSize, diagnostics, isSampledOut);
         } catch (Throwable error) {
             this.handleErrors(error, 9901);
         }
@@ -285,6 +286,7 @@ public final class DiagnosticsProvider {
         Long opCountPerEvaluation,
         Long opRetriedCountPerEvaluation,
         Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         boolean isSampledOut
     ) {
@@ -306,6 +308,7 @@ public final class DiagnosticsProvider {
                     opCountPerEvaluation,
                     opRetriedCountPerEvaluation,
                     globalOpCount,
+                    targetMaxMicroBatchSize,
                     diagnostics,
                     null,
                     context,
@@ -322,6 +325,7 @@ public final class DiagnosticsProvider {
                     opCountPerEvaluation,
                     opRetriedCountPerEvaluation,
                     globalOpCount,
+                    targetMaxMicroBatchSize,
                     diagnostics,
                     null,
                     context,
@@ -361,6 +365,7 @@ public final class DiagnosticsProvider {
                     opCountPerEvaluation,
                     opRetriedCountPerEvaluation,
                     globalOpCount,
+                    targetMaxMicroBatchSize,
                     effectiveDiagnostics,
                     throwable,
                     context,
@@ -397,6 +402,7 @@ public final class DiagnosticsProvider {
                 0L,
                 0L,
                 0L,
+                0,
                 effectiveDiagnostics,
                 throwable,
                 context,
@@ -419,6 +425,7 @@ public final class DiagnosticsProvider {
                 0L,
                 0L,
                 0L,
+                0,
                 null,
                 null,
                 context,
@@ -578,6 +585,7 @@ public final class DiagnosticsProvider {
             r -> 0L,
             r -> 0L,
             r -> 0L,
+            r -> 0,
             requestOptions,
             null);
     }
@@ -626,6 +634,7 @@ public final class DiagnosticsProvider {
             CosmosBatchResponse::getOpCountPerEvaluation,
             CosmosBatchResponse::getRetriedOpCountPerEvaluation,
             CosmosBatchResponse::getGlobalOpCount,
+            CosmosBatchResponse::getTargetMaxMicroBatchSize,
             requestOptions,
             null);
     }
@@ -675,6 +684,7 @@ public final class DiagnosticsProvider {
             r -> 0L,
             r -> 0L,
             r -> 0L,
+            r -> 0,
             requestOptions,
             null);
     }
@@ -729,6 +739,7 @@ public final class DiagnosticsProvider {
             r -> 0L,
             r -> 0L,
             r -> 0L,
+            r -> 0,
             requestOptions,
             ctx
         );
@@ -850,7 +861,8 @@ public final class DiagnosticsProvider {
       BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc,
       Function<T, Long> opCountPerEvaluationPeriodFunc,
       Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
-      Function<T, Long> globalOpCountPerEvaluationPeriodFunc) {
+      Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
+      Function<T, Integer> targetMaxMicroBatchSizeFunc) {
 
         final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
@@ -883,6 +895,7 @@ public final class DiagnosticsProvider {
                             opCountPerEvaluationPeriodFunc.apply(response),
                             opRetriedCountPerEvaluationPeriodFunc.apply(response),
                             globalOpCountPerEvaluationPeriodFunc.apply(response),
+                            targetMaxMicroBatchSizeFunc.apply(response),
                             diagnosticsFunc.apply(response, samplingRateSnapshot),
                             isSampledOut);
                         break;
@@ -893,6 +906,7 @@ public final class DiagnosticsProvider {
                             signal,
                             cosmosCtx,
                             ERROR_CODE,
+                            null,
                             null,
                             null,
                             null,
@@ -926,6 +940,7 @@ public final class DiagnosticsProvider {
                                                  Function<T, Long> opCountPerEvaluationPeriodFunc,
                                                  Function<T, Long> opRetriedCountPerEvaluationPeriodFunc,
                                                  Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
+                                                 Function<T, Integer> targetMaxMicroBatchSizeFunc,
                                                  RequestOptions requestOptions,
                                                  CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
@@ -969,7 +984,8 @@ public final class DiagnosticsProvider {
             diagnosticFunc,
             opCountPerEvaluationPeriodFunc,
             opRetriedCountPerEvaluationPeriodFunc,
-            globalOpCountPerEvaluationPeriodFunc);
+            globalOpCountPerEvaluationPeriodFunc,
+            targetMaxMicroBatchSizeFunc);
     }
 
     private void end(
@@ -981,6 +997,7 @@ public final class DiagnosticsProvider {
         Long opCountPerEvaluation,
         Long opRetriedCountPerEvaluation,
         Long globalOpCount,
+        Integer targetMaxMicroBatchSize,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
@@ -999,6 +1016,7 @@ public final class DiagnosticsProvider {
             opCountPerEvaluation,
             opRetriedCountPerEvaluation,
             globalOpCount,
+            targetMaxMicroBatchSize,
             diagnostics,
             throwable)) {
 

@@ -900,6 +900,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
                     cosmosBatchResponse.setOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentOperationCount.get());
                     cosmosBatchResponse.setRetriedOpCountPerEvaluation(currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
+                    cosmosBatchResponse.setTargetMaxMicroBatchSize(partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
 
                     return Mono.just(cosmosBatchResponse);
                 });

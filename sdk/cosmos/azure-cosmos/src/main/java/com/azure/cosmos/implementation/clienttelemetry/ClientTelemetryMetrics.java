@@ -160,7 +160,8 @@ public final class ClientTelemetryMetrics {
             diagnosticsContext.getDuration(),
             diagnosticsCtxAccessor.getOpCountPerEvaluation(diagnosticsContext),
             diagnosticsCtxAccessor.getRetriedOpCountPerEvaluation(diagnosticsContext),
-            diagnosticsCtxAccessor.getGlobalOpCount(diagnosticsContext)
+            diagnosticsCtxAccessor.getGlobalOpCount(diagnosticsContext),
+            diagnosticsCtxAccessor.getTargetMaxMicroBatchSize(diagnosticsContext)
         );
     }
 
@@ -225,7 +226,8 @@ public final class ClientTelemetryMetrics {
         Duration latency,
         Long opCountPerEvaluation,
         Long opRetriedCountPerEvaluation,
-        Long globalOpCount) {
+        Long globalOpCount,
+        Integer targetMaxMicroBatchSize) {
 
         boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
 
@@ -270,6 +272,7 @@ public final class ClientTelemetryMetrics {
             opCountPerEvaluation,
             opRetriedCountPerEvaluation,
             globalOpCount,
+            targetMaxMicroBatchSize,
             diagnosticsContext,
             contactedRegions
         );
@@ -438,6 +441,7 @@ public final class ClientTelemetryMetrics {
             long opCountPerEvaluation,
             long opRetriedCountPerEvaluation,
             long globalOpCount,
+            int targetMaxMicroBatchSize,
             CosmosDiagnosticsContext diagnosticsContext,
             Set<String> contactedRegions) {
 
@@ -522,7 +526,9 @@ public final class ClientTelemetryMetrics {
                             actualItemCount,
                             opCountPerEvaluation,
                             opRetriedCountPerEvaluation,
-                            globalOpCount);
+                            globalOpCount,
+                            targetMaxMicroBatchSize);
+
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -530,7 +536,9 @@ public final class ClientTelemetryMetrics {
                             -1,
                             -1,
                             -1,
+                            -1,
                             -1);
+
                         recordGatewayStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -540,7 +548,9 @@ public final class ClientTelemetryMetrics {
                             actualItemCount,
                             opCountPerEvaluation,
                             opRetriedCountPerEvaluation,
-                            globalOpCount);
+                            globalOpCount,
+                            targetMaxMicroBatchSize);
+
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -924,7 +934,8 @@ public final class ClientTelemetryMetrics {
             int actualItemCount,
             long opCountPerEvaluation,
             long opRetriedCountPerEvaluation,
-            long globalOpCount) {
+            long globalOpCount,
+            int targetMaxMicroBatchSize) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;
@@ -1096,6 +1107,26 @@ public final class ClientTelemetryMetrics {
                     globalOpCountMeter.record(Math.max(0, Math.min(globalOpCount, Double.MAX_VALUE)));
                 }
 
+
+                CosmosMeterOptions targetMaxMicroBatchSizeOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE
+                );
+
+                if (targetMaxMicroBatchSizeOptions.isEnabled()
+                    && (!targetMaxMicroBatchSizeOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary targetMaxMicroBatchSizeMeter = DistributionSummary
+                        .builder(targetMaxMicroBatchSizeOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Target max micro batch size")
+                        .maximumExpectedValue(101d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, targetMaxMicroBatchSizeOptions))
+                        .register(compositeRegistry);
+                    targetMaxMicroBatchSizeMeter.record(Math.max(0, Math.min(targetMaxMicroBatchSize, 101d)));
+                }
+
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
                         ctx,
@@ -1127,7 +1158,8 @@ public final class ClientTelemetryMetrics {
             int actualItemCount,
             long opCountPerEvaluation,
             long opRetriedCountPerEvaluation,
-            long globalOpCount) {
+            long globalOpCount,
+            int targetMaxMicroBatchSize) {
 
             if (gatewayStatisticsList == null
                 || gatewayStatisticsList.size() == 0
@@ -1286,6 +1318,25 @@ public final class ClientTelemetryMetrics {
                         .tags(getEffectiveTags(requestTags, globalOpCountOptions))
                         .register(compositeRegistry);
                     globalOpCountMeter.record(Math.max(0, Math.min(globalOpCount, Double.MAX_VALUE)));
+                }
+
+                CosmosMeterOptions targetMaxMicroBatchSizeOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE
+                );
+
+                if (targetMaxMicroBatchSizeOptions.isEnabled()
+                    && (!targetMaxMicroBatchSizeOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary targetMaxMicroBatchSizeMeter = DistributionSummary
+                        .builder(targetMaxMicroBatchSizeOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Target max micro batch size")
+                        .maximumExpectedValue(101d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, targetMaxMicroBatchSizeOptions))
+                        .register(compositeRegistry);
+                    targetMaxMicroBatchSizeMeter.record(Math.max(0, Math.min(targetMaxMicroBatchSize, 101d)));
                 }
 
                 recordRequestTimeline(

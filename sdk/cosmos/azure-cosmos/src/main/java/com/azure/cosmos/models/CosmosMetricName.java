@@ -126,6 +126,10 @@ public final class CosmosMetricName {
         nameOf("req.rntbd.globalOpCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
+        nameOf("req.rntbd.targetMaxMicroBatchSize"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
     /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
@@ -167,6 +171,10 @@ public final class CosmosMetricName {
 
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT = new CosmosMetricName(
         nameOf("req.gw.globalOpCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
+        nameOf("req.gw.targetMaxMicroBatchSize"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
@@ -416,6 +424,7 @@ public final class CosmosMetricName {
         map.put(nameOf("req.rntbd.opCountPerEvaluation"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION);
         map.put(nameOf("req.rntbd.opRetriedCountPerEvaluation"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION);
         map.put(nameOf("req.rntbd.globalOpCount"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT);
+        map.put(nameOf("req.rntbd.targetMaxMicroBatchSize"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE);
         map.put(nameOf("req.gw.requests"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
         map.put(nameOf("req.gw.latency"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
         map.put(nameOf("req.gw.rus"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
@@ -423,6 +432,7 @@ public final class CosmosMetricName {
         map.put(nameOf("req.gw.opCountPerEvaluation"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION);
         map.put(nameOf("req.gw.opRetriedCountPerEvaluation"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION);
         map.put(nameOf("req.gw.globalOpCount"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT);
+        map.put(nameOf("req.gw.targetMaxMicroBatchSize"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE);
         map.put(nameOf("req.reqpayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
         map.put(nameOf("req.rsppayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
         map.put(nameOf("req.rntbd.timeline"), CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
