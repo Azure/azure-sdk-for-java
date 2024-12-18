@@ -15,12 +15,24 @@ import java.util.List;
 public interface SpringServiceRegistry
     extends ExternalChildResource<SpringServiceRegistry, SpringService>, HasInnerModel<ServiceRegistryResourceInner> {
 
-    /** @return cpu for the Service Registry */
+    /**
+     * Gets cpu for the Service Registry.
+     *
+     * @return cpu for the Service Registry
+     */
     Double cpu();
 
-    /** @return memory for the Service Registry */
+    /**
+     * Gets memory for the Service Registry.
+     *
+     * @return memory for the Service Registry
+     */
     Double memory();
 
-    /** @return apps that have bindings to this Service Registry */
+    /**
+     * Gets apps that have bindings to this Service Registry.
+     *
+     * @return apps that have bindings to this Service Registry
+     */
     List<SpringApp> getAppBindings();
 }

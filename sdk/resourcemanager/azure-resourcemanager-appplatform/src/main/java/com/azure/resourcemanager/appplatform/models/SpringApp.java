@@ -16,61 +16,120 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SpringApp extends ExternalChildResource<SpringApp, SpringService>, HasInnerModel<AppResourceInner>,
     Updatable<SpringApp.Update> {
-    /** @return whether the app exposes public endpoint */
+    /**
+     * Check whether the app exposes public endpoint.
+     *
+     * @return whether the app exposes public endpoint
+     */
     boolean isPublic();
 
-    /** @return whether only https is allowed for the app */
+    /**
+     * Check whether only https is allowed for the app.
+     *
+     * @return whether only https is allowed for the app
+     */
     boolean isHttpsOnly();
 
-    /** @return the url of the app */
+    /**
+     * Gets the url of the app.
+     *
+     * @return the url of the app
+     */
     String url();
 
-    /** @return the fully qualified domain name (FQDN) of the app */
+    /**
+     * Gets the fully qualified domain name (FQDN) of the app.
+     *
+     * @return the fully qualified domain name (FQDN) of the app
+     */
     String fqdn();
 
-    /** @return the temporary disk of the app */
+    /**
+     * Gets the temporary disk of the app.
+     *
+     * @return the temporary disk of the app
+     */
     TemporaryDisk temporaryDisk();
 
-    /** @return the persistent disk of the app */
+    /**
+     * Gets the persistent disk of the app.
+     *
+     * @return the persistent disk of the app
+     */
     PersistentDisk persistentDisk();
 
-    /** @return the identity property of the app */
+    /**
+     * Gets the identity property of the app.
+     *
+     * @return the identity property of the app
+     */
     ManagedIdentityProperties identity();
 
-    /** @return the active deployment name */
+    /**
+     * Gets the active deployment name.
+     *
+     * @return the active deployment name
+     */
     String activeDeploymentName();
 
-    /** @return the active deployment */
+    /**
+     * Gets the active deployment.
+     *
+     * @return the active deployment
+     */
     SpringAppDeployment getActiveDeployment();
 
-    /** @return the active deployment */
+    /**
+     * Gets the active deployment.
+     *
+     * @return the active deployment
+     */
     Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /**
+     * Gets the entry point of the spring app deployment.
      * @param <T> derived type of {@link SpringAppDeployment.DefinitionStages.WithCreate}
      * @return the entry point of the spring app deployment
      */
     <T extends SpringAppDeployment.DefinitionStages.WithCreate<T>> SpringAppDeployments<T> deployments();
 
-    /** @return the entry point of the spring app service binding */
+    /**
+     * Gets the entry point of the spring app service binding.
+     *
+     * @return the entry point of the spring app service binding
+     */
     SpringAppServiceBindings serviceBindings();
 
-    /** @return the entry point of the spring app custom domain */
+    /**
+     * Gets the entry point of the spring app custom domain.
+     *
+     * @return the entry point of the spring app custom domain
+     */
     SpringAppDomains customDomains();
 
-    /** @return the blob url to upload deployment */
+    /**
+     * Gets the blob url to upload deployment
+     *
+     * @return the blob url to upload deployment
+     */
     Mono<ResourceUploadDefinition> getResourceUploadUrlAsync();
 
-    /** @return the blob url to upload deployment */
+    /**
+     * Gets the blob url to upload deployment
+     *
+     * @return the blob url to upload deployment.
+     */
     ResourceUploadDefinition getResourceUploadUrl();
 
     /**
+     * Check whether this app has binding to the default Configuration Service.
      * (Enterprise Tier Only)
      * @return whether this app has binding to the default Configuration Service
      */
     boolean hasConfigurationServiceBinding();
 
     /**
+     * Check whether this app has binding to the default Service Registry.
      * (Enterprise Tier Only)
      * @return whether this app has binding to the default Service Registry
      */
