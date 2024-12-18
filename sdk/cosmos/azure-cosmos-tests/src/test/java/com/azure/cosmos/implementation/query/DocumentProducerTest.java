@@ -567,7 +567,7 @@ public class DocumentProducerTest {
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
-            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
             doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
@@ -669,7 +669,7 @@ public class DocumentProducerTest {
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
-            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
             doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
@@ -775,7 +775,7 @@ public class DocumentProducerTest {
             doAnswer(invocation -> {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
-            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
             doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
@@ -917,7 +917,7 @@ public class DocumentProducerTest {
         doAnswer(invocation -> {
             RxDocumentServiceRequest req = invocation.getArgument(0);
             return Mono.just(req);
-        }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+        }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
         doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(client).getGlobalPartitionEndpointManagerForCircuitBreaker();
         doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());

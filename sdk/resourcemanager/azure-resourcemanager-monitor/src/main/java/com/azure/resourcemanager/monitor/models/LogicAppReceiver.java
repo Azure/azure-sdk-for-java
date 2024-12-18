@@ -6,35 +6,35 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A logic app receiver.
  */
 @Fluent
-public final class LogicAppReceiver {
+public final class LogicAppReceiver implements JsonSerializable<LogicAppReceiver> {
     /*
      * The name of the logic app receiver. Names must be unique across all receivers within an action group.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The azure resource id of the logic app receiver.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * The callback url where http request sent to.
      */
-    @JsonProperty(value = "callbackUrl", required = true)
     private String callbackUrl;
 
     /*
      * Indicates whether to use common alert schema.
      */
-    @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
     /**
@@ -132,18 +132,64 @@ public final class LogicAppReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
         }
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
         }
         if (callbackUrl() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogicAppReceiver.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("callbackUrl", this.callbackUrl);
+        jsonWriter.writeBooleanField("useCommonAlertSchema", this.useCommonAlertSchema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogicAppReceiver from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogicAppReceiver if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogicAppReceiver.
+     */
+    public static LogicAppReceiver fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogicAppReceiver deserializedLogicAppReceiver = new LogicAppReceiver();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLogicAppReceiver.name = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedLogicAppReceiver.resourceId = reader.getString();
+                } else if ("callbackUrl".equals(fieldName)) {
+                    deserializedLogicAppReceiver.callbackUrl = reader.getString();
+                } else if ("useCommonAlertSchema".equals(fieldName)) {
+                    deserializedLogicAppReceiver.useCommonAlertSchema = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogicAppReceiver;
+        });
+    }
 }

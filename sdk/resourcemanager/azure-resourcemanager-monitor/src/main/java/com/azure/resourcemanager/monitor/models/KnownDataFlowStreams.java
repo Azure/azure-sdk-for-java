@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class KnownDataFlowStreams extends ExpandableStringEnum<KnownDataFl
      * @param name a name to look for.
      * @return the corresponding KnownDataFlowStreams.
      */
-    @JsonCreator
     public static KnownDataFlowStreams fromString(String name) {
         return fromString(name, KnownDataFlowStreams.class);
     }

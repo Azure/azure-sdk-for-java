@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,7 +59,6 @@ public final class DatabaseSku {
     }
 
     /** @return the underneath sku description */
-    @JsonValue
     public Sku toSku() {
         return new Sku()
             .withName(sku.name())

@@ -5,35 +5,36 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A request body used to retrieve summary asset information. One and only one collection of summary identifiers must
- * be provided: filters, metrics, or metricCategories.
+ * A request body used to retrieve summary asset information. One and only one collection of summary identifiers must be
+ * provided: filters, metrics, or metricCategories.
  */
 @Fluent
-public final class ReportAssetSummaryRequest {
+public final class ReportAssetSummaryRequest implements JsonSerializable<ReportAssetSummaryRequest> {
 
     /*
      * Categories to retrieve risk reporting data for.
      */
     @Generated
-    @JsonProperty(value = "metricCategories")
     private List<String> metricCategories;
 
     /*
      * Metrics to retrieve risk reporting data for.
      */
     @Generated
-    @JsonProperty(value = "metrics")
     private List<String> metrics;
 
     /*
      * Query filters to apply to the asset summary.
      */
     @Generated
-    @JsonProperty(value = "filters")
     private List<String> filters;
 
     /*
@@ -41,7 +42,6 @@ public final class ReportAssetSummaryRequest {
      * filters.
      */
     @Generated
-    @JsonProperty(value = "groupBy")
     private String groupBy;
 
     /*
@@ -49,14 +49,12 @@ public final class ReportAssetSummaryRequest {
      * filters.
      */
     @Generated
-    @JsonProperty(value = "segmentBy")
     private String segmentBy;
 
     /*
      * Currently unused.
      */
     @Generated
-    @JsonProperty(value = "labelName")
     private String labelName;
 
     /**
@@ -133,8 +131,8 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Get the groupBy property: A parameter to group the assets by (first level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Get the groupBy property: A parameter to group the assets by (first level facet field), only used when the chosen
+     * summary identifier is filters.
      *
      * @return the groupBy value.
      */
@@ -144,8 +142,8 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Set the groupBy property: A parameter to group the assets by (first level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Set the groupBy property: A parameter to group the assets by (first level facet field), only used when the chosen
+     * summary identifier is filters.
      *
      * @param groupBy the groupBy value to set.
      * @return the ReportAssetSummaryRequest object itself.
@@ -200,5 +198,60 @@ public final class ReportAssetSummaryRequest {
     public ReportAssetSummaryRequest setLabelName(String labelName) {
         this.labelName = labelName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metricCategories", this.metricCategories,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("groupBy", this.groupBy);
+        jsonWriter.writeStringField("segmentBy", this.segmentBy);
+        jsonWriter.writeStringField("labelName", this.labelName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportAssetSummaryRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportAssetSummaryRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportAssetSummaryRequest.
+     */
+    @Generated
+    public static ReportAssetSummaryRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportAssetSummaryRequest deserializedReportAssetSummaryRequest = new ReportAssetSummaryRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("metricCategories".equals(fieldName)) {
+                    List<String> metricCategories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReportAssetSummaryRequest.metricCategories = metricCategories;
+                } else if ("metrics".equals(fieldName)) {
+                    List<String> metrics = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReportAssetSummaryRequest.metrics = metrics;
+                } else if ("filters".equals(fieldName)) {
+                    List<String> filters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReportAssetSummaryRequest.filters = filters;
+                } else if ("groupBy".equals(fieldName)) {
+                    deserializedReportAssetSummaryRequest.groupBy = reader.getString();
+                } else if ("segmentBy".equals(fieldName)) {
+                    deserializedReportAssetSummaryRequest.segmentBy = reader.getString();
+                } else if ("labelName".equals(fieldName)) {
+                    deserializedReportAssetSummaryRequest.labelName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedReportAssetSummaryRequest;
+        });
     }
 }

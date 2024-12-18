@@ -6,22 +6,25 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Url signing key parameters.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("UrlSigningKey")
 @Fluent
 public final class UrlSigningKeyParameters extends SecretParameters {
+    /*
+     * The type of the secret resource.
+     */
+    private SecretType type = SecretType.URL_SIGNING_KEY;
+
     /*
      * Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
      * the hash.
      */
-    @JsonProperty(value = "keyId", required = true)
     private String keyId;
 
     /*
@@ -31,19 +34,27 @@ public final class UrlSigningKeyParameters extends SecretParameters {
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
      * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
-    @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
 
     /*
      * Version of the secret to be used
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /**
      * Creates an instance of UrlSigningKeyParameters class.
      */
     public UrlSigningKeyParameters() {
+    }
+
+    /**
+     * Get the type property: The type of the secret resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SecretType type() {
+        return this.type;
     }
 
     /**
@@ -119,16 +130,63 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     public void validate() {
         super.validate();
         if (keyId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyId in model UrlSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyId in model UrlSigningKeyParameters"));
         }
         if (secretSource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretSource in model UrlSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretSource in model UrlSigningKeyParameters"));
         } else {
             secretSource().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UrlSigningKeyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyId", this.keyId);
+        jsonWriter.writeJsonField("secretSource", this.secretSource);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UrlSigningKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UrlSigningKeyParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UrlSigningKeyParameters.
+     */
+    public static UrlSigningKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UrlSigningKeyParameters deserializedUrlSigningKeyParameters = new UrlSigningKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyId".equals(fieldName)) {
+                    deserializedUrlSigningKeyParameters.keyId = reader.getString();
+                } else if ("secretSource".equals(fieldName)) {
+                    deserializedUrlSigningKeyParameters.secretSource = ResourceReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedUrlSigningKeyParameters.type = SecretType.fromString(reader.getString());
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedUrlSigningKeyParameters.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUrlSigningKeyParameters;
+        });
+    }
 }

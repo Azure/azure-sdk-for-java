@@ -6,48 +6,64 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A restorable dropped database resource. */
+/**
+ * A restorable dropped database resource.
+ */
 @Fluent
 public final class RestorableDroppedDatabaseInner extends ProxyResource {
     /*
      * The name and tier of the SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private RestorableDroppedDatabaseProperties innerProperties;
 
-    /** Creates an instance of RestorableDroppedDatabaseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RestorableDroppedDatabaseInner class.
+     */
     public RestorableDroppedDatabaseInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -56,7 +72,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -67,7 +83,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -76,7 +92,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -87,7 +103,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -96,7 +112,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RestorableDroppedDatabaseInner object itself.
      */
@@ -107,7 +123,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableDroppedDatabaseProperties innerProperties() {
@@ -115,8 +131,38 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -125,7 +171,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the maxSizeBytes property: The max size of the database expressed in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -134,7 +180,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -143,7 +189,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -152,7 +198,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -161,7 +207,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the backupStorageRedundancy property: The storage account type used to store backups for this database.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -170,7 +216,7 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -180,5 +226,60 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedDatabaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedDatabaseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorableDroppedDatabaseInner.
+     */
+    public static RestorableDroppedDatabaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedDatabaseInner deserializedRestorableDroppedDatabaseInner
+                = new RestorableDroppedDatabaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.sku = Sku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRestorableDroppedDatabaseInner.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseInner.innerProperties
+                        = RestorableDroppedDatabaseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedDatabaseInner;
+        });
     }
 }

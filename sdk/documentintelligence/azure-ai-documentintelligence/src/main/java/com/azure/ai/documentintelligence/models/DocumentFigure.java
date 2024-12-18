@@ -48,6 +48,12 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
     @Generated
     private List<DocumentFootnote> footnotes;
 
+    /*
+     * Figure ID.
+     */
+    @Generated
+    private String id;
+
     /**
      * Creates an instance of DocumentFigure class.
      * 
@@ -109,6 +115,16 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
     }
 
     /**
+     * Get the id property: Figure ID.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -121,6 +137,7 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
         jsonWriter.writeArrayField("elements", this.elements, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("caption", this.caption);
         jsonWriter.writeArrayField("footnotes", this.footnotes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +158,7 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
             List<String> elements = null;
             DocumentCaption caption = null;
             List<DocumentFootnote> footnotes = null;
+            String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,6 +173,8 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
                     caption = DocumentCaption.fromJson(reader);
                 } else if ("footnotes".equals(fieldName)) {
                     footnotes = reader.readArray(reader1 -> DocumentFootnote.fromJson(reader1));
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -164,6 +184,7 @@ public final class DocumentFigure implements JsonSerializable<DocumentFigure> {
             deserializedDocumentFigure.elements = elements;
             deserializedDocumentFigure.caption = caption;
             deserializedDocumentFigure.footnotes = footnotes;
+            deserializedDocumentFigure.id = id;
 
             return deserializedDocumentFigure;
         });

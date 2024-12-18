@@ -5,56 +5,57 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseCreateMode;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The managed database's properties. */
+/**
+ * The managed database's properties.
+ */
 @Fluent
-public final class ManagedDatabaseProperties {
+public final class ManagedDatabaseProperties implements JsonSerializable<ManagedDatabaseProperties> {
     /*
      * Collation of the managed database.
      */
-    @JsonProperty(value = "collation")
     private String collation;
 
     /*
      * Status of the database.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedDatabaseStatus status;
 
     /*
      * Creation date of the database.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Earliest restore point in time for point in time restore.
      */
-    @JsonProperty(value = "earliestRestorePoint", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestorePoint;
 
     /*
      * Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601
      * format) of the source database that will be restored to create the new database.
      */
-    @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
 
     /*
      * Geo paired region.
      */
-    @JsonProperty(value = "defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultSecondaryLocation;
 
     /*
      * Collation of the metadata catalog.
      */
-    @JsonProperty(value = "catalogCollation")
     private CatalogCollationType catalogCollation;
 
     /*
@@ -66,72 +67,64 @@ public final class ManagedDatabaseProperties {
      * RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
      */
-    @JsonProperty(value = "createMode")
     private ManagedDatabaseCreateMode createMode;
 
     /*
      * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage
      * container where backups for this restore are stored.
      */
-    @JsonProperty(value = "storageContainerUri")
     private String storageContainerUri;
 
     /*
      * The resource identifier of the source database associated with create operation of this database.
      */
-    @JsonProperty(value = "sourceDatabaseId")
     private String sourceDatabaseId;
 
     /*
      * The restorable dropped database resource id to restore when creating this database.
      */
-    @JsonProperty(value = "restorableDroppedDatabaseId")
     private String restorableDroppedDatabaseId;
 
     /*
      * Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas
      * token.
      */
-    @JsonProperty(value = "storageContainerSasToken")
     private String storageContainerSasToken;
 
     /*
      * Instance Failover Group resource identifier that this managed database belongs to.
      */
-    @JsonProperty(value = "failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverGroupId;
 
     /*
      * The resource identifier of the recoverable database associated with create operation of this database.
      */
-    @JsonProperty(value = "recoverableDatabaseId")
     private String recoverableDatabaseId;
 
     /*
      * The name of the Long Term Retention backup to be used for restore of this managed database.
      */
-    @JsonProperty(value = "longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
 
     /*
      * Whether to auto complete restore of this managed database.
      */
-    @JsonProperty(value = "autoCompleteRestore")
     private Boolean autoCompleteRestore;
 
     /*
      * Last backup file name for restore of this managed database.
      */
-    @JsonProperty(value = "lastBackupName")
     private String lastBackupName;
 
-    /** Creates an instance of ManagedDatabaseProperties class. */
+    /**
+     * Creates an instance of ManagedDatabaseProperties class.
+     */
     public ManagedDatabaseProperties() {
     }
 
     /**
      * Get the collation property: Collation of the managed database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -140,7 +133,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the collation property: Collation of the managed database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -151,7 +144,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the status property: Status of the database.
-     *
+     * 
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
@@ -160,7 +153,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the creationDate property: Creation date of the database.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -169,7 +162,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the earliestRestorePoint property: Earliest restore point in time for point in time restore.
-     *
+     * 
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
@@ -180,7 +173,7 @@ public final class ManagedDatabaseProperties {
      * Get the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -191,7 +184,7 @@ public final class ManagedDatabaseProperties {
      * Set the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -202,7 +195,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the defaultSecondaryLocation property: Geo paired region.
-     *
+     * 
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -211,7 +204,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -220,7 +213,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @param catalogCollation the catalogCollation value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -237,7 +230,7 @@ public final class ManagedDatabaseProperties {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
@@ -252,7 +245,7 @@ public final class ManagedDatabaseProperties {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -264,7 +257,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
@@ -274,7 +267,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @param storageContainerUri the storageContainerUri value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -286,7 +279,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -296,7 +289,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -308,7 +301,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -318,7 +311,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -330,7 +323,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the storage container sas token.
-     *
+     * 
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
@@ -340,7 +333,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the storage container sas token.
-     *
+     * 
      * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -352,7 +345,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the failoverGroupId property: Instance Failover Group resource identifier that this managed database belongs
      * to.
-     *
+     * 
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -362,7 +355,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -372,7 +365,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -384,7 +377,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Get the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -394,7 +387,7 @@ public final class ManagedDatabaseProperties {
     /**
      * Set the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -405,7 +398,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @return the autoCompleteRestore value.
      */
     public Boolean autoCompleteRestore() {
@@ -414,7 +407,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @param autoCompleteRestore the autoCompleteRestore value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -425,7 +418,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Get the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -434,7 +427,7 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Set the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @param lastBackupName the lastBackupName value to set.
      * @return the ManagedDatabaseProperties object itself.
      */
@@ -445,9 +438,98 @@ public final class ManagedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("collation", this.collation);
+        jsonWriter.writeStringField("restorePointInTime",
+            this.restorePointInTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restorePointInTime));
+        jsonWriter.writeStringField("catalogCollation",
+            this.catalogCollation == null ? null : this.catalogCollation.toString());
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeStringField("storageContainerUri", this.storageContainerUri);
+        jsonWriter.writeStringField("sourceDatabaseId", this.sourceDatabaseId);
+        jsonWriter.writeStringField("restorableDroppedDatabaseId", this.restorableDroppedDatabaseId);
+        jsonWriter.writeStringField("storageContainerSasToken", this.storageContainerSasToken);
+        jsonWriter.writeStringField("recoverableDatabaseId", this.recoverableDatabaseId);
+        jsonWriter.writeStringField("longTermRetentionBackupResourceId", this.longTermRetentionBackupResourceId);
+        jsonWriter.writeBooleanField("autoCompleteRestore", this.autoCompleteRestore);
+        jsonWriter.writeStringField("lastBackupName", this.lastBackupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseProperties.
+     */
+    public static ManagedDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseProperties deserializedManagedDatabaseProperties = new ManagedDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collation".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.collation = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.status = ManagedDatabaseStatus.fromString(reader.getString());
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("earliestRestorePoint".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.earliestRestorePoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("restorePointInTime".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.restorePointInTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("defaultSecondaryLocation".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.defaultSecondaryLocation = reader.getString();
+                } else if ("catalogCollation".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.catalogCollation
+                        = CatalogCollationType.fromString(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.createMode
+                        = ManagedDatabaseCreateMode.fromString(reader.getString());
+                } else if ("storageContainerUri".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.storageContainerUri = reader.getString();
+                } else if ("sourceDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.sourceDatabaseId = reader.getString();
+                } else if ("restorableDroppedDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.restorableDroppedDatabaseId = reader.getString();
+                } else if ("storageContainerSasToken".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.storageContainerSasToken = reader.getString();
+                } else if ("failoverGroupId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.failoverGroupId = reader.getString();
+                } else if ("recoverableDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.recoverableDatabaseId = reader.getString();
+                } else if ("longTermRetentionBackupResourceId".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.longTermRetentionBackupResourceId = reader.getString();
+                } else if ("autoCompleteRestore".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.autoCompleteRestore
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastBackupName".equals(fieldName)) {
+                    deserializedManagedDatabaseProperties.lastBackupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseProperties;
+        });
     }
 }

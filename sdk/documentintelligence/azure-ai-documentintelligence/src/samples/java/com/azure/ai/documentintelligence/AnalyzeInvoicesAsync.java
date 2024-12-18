@@ -50,6 +50,7 @@ public class AnalyzeInvoicesAsync {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath()))
             );
 

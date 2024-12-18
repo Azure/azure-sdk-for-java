@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2024-02-29-preview.
+     * Enum value 2024-07-31-preview.
      */
-    V2024_02_29_PREVIEW("2024-02-29-preview");
+    V2024_07_31_PREVIEW("2024-07-31-preview");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum DocumentIntelligenceServiceVersion implements ServiceVersion {
      * @return The latest {@link DocumentIntelligenceServiceVersion}.
      */
     public static DocumentIntelligenceServiceVersion getLatest() {
-        return V2024_02_29_PREVIEW;
+        return V2024_07_31_PREVIEW;
     }
 }

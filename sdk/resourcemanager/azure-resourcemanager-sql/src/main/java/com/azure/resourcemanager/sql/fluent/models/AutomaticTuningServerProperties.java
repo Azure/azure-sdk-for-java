@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerOptions;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Server-level Automatic Tuning properties. */
+/**
+ * Server-level Automatic Tuning properties.
+ */
 @Fluent
-public final class AutomaticTuningServerProperties {
+public final class AutomaticTuningServerProperties implements JsonSerializable<AutomaticTuningServerProperties> {
     /*
      * Automatic tuning desired state.
      */
-    @JsonProperty(value = "desiredState")
     private AutomaticTuningServerMode desiredState;
 
     /*
      * Automatic tuning actual state.
      */
-    @JsonProperty(value = "actualState", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningServerMode actualState;
 
     /*
      * Automatic tuning options definition.
      */
-    @JsonProperty(value = "options")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AutomaticTuningServerOptions> options;
 
-    /** Creates an instance of AutomaticTuningServerProperties class. */
+    /**
+     * Creates an instance of AutomaticTuningServerProperties class.
+     */
     public AutomaticTuningServerProperties() {
     }
 
     /**
      * Get the desiredState property: Automatic tuning desired state.
-     *
+     * 
      * @return the desiredState value.
      */
     public AutomaticTuningServerMode desiredState() {
@@ -48,7 +51,7 @@ public final class AutomaticTuningServerProperties {
 
     /**
      * Set the desiredState property: Automatic tuning desired state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the AutomaticTuningServerProperties object itself.
      */
@@ -59,7 +62,7 @@ public final class AutomaticTuningServerProperties {
 
     /**
      * Get the actualState property: Automatic tuning actual state.
-     *
+     * 
      * @return the actualState value.
      */
     public AutomaticTuningServerMode actualState() {
@@ -68,7 +71,7 @@ public final class AutomaticTuningServerProperties {
 
     /**
      * Get the options property: Automatic tuning options definition.
-     *
+     * 
      * @return the options value.
      */
     public Map<String, AutomaticTuningServerOptions> options() {
@@ -77,7 +80,7 @@ public final class AutomaticTuningServerProperties {
 
     /**
      * Set the options property: Automatic tuning options definition.
-     *
+     * 
      * @param options the options value to set.
      * @return the AutomaticTuningServerProperties object itself.
      */
@@ -88,19 +91,62 @@ public final class AutomaticTuningServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (options() != null) {
-            options()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            options().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("desiredState", this.desiredState == null ? null : this.desiredState.toString());
+        jsonWriter.writeMapField("options", this.options, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticTuningServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticTuningServerProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticTuningServerProperties.
+     */
+    public static AutomaticTuningServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticTuningServerProperties deserializedAutomaticTuningServerProperties
+                = new AutomaticTuningServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("desiredState".equals(fieldName)) {
+                    deserializedAutomaticTuningServerProperties.desiredState
+                        = AutomaticTuningServerMode.fromString(reader.getString());
+                } else if ("actualState".equals(fieldName)) {
+                    deserializedAutomaticTuningServerProperties.actualState
+                        = AutomaticTuningServerMode.fromString(reader.getString());
+                } else if ("options".equals(fieldName)) {
+                    Map<String, AutomaticTuningServerOptions> options
+                        = reader.readMap(reader1 -> AutomaticTuningServerOptions.fromJson(reader1));
+                    deserializedAutomaticTuningServerProperties.options = options;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticTuningServerProperties;
+        });
     }
 }

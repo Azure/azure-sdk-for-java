@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedManagedDatabaseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of restorable dropped managed databases. */
+/**
+ * A list of restorable dropped managed databases.
+ */
 @Immutable
-public final class RestorableDroppedManagedDatabaseListResult {
+public final class RestorableDroppedManagedDatabaseListResult
+    implements JsonSerializable<RestorableDroppedManagedDatabaseListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableDroppedManagedDatabaseInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RestorableDroppedManagedDatabaseListResult class. */
+    /**
+     * Creates an instance of RestorableDroppedManagedDatabaseListResult class.
+     */
     public RestorableDroppedManagedDatabaseListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorableDroppedManagedDatabaseInner> value() {
@@ -39,7 +46,7 @@ public final class RestorableDroppedManagedDatabaseListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +55,52 @@ public final class RestorableDroppedManagedDatabaseListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedManagedDatabaseListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedManagedDatabaseListResult if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDroppedManagedDatabaseListResult.
+     */
+    public static RestorableDroppedManagedDatabaseListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedManagedDatabaseListResult deserializedRestorableDroppedManagedDatabaseListResult
+                = new RestorableDroppedManagedDatabaseListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RestorableDroppedManagedDatabaseInner> value
+                        = reader.readArray(reader1 -> RestorableDroppedManagedDatabaseInner.fromJson(reader1));
+                    deserializedRestorableDroppedManagedDatabaseListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedManagedDatabaseListResult;
+        });
     }
 }

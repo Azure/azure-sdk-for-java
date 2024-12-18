@@ -6,16 +6,21 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DataMaskingState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a database data masking policy. */
+/**
+ * The properties of a database data masking policy.
+ */
 @Fluent
-public final class DataMaskingPolicyProperties {
+public final class DataMaskingPolicyProperties implements JsonSerializable<DataMaskingPolicyProperties> {
     /*
      * The state of the data masking policy.
      */
-    @JsonProperty(value = "dataMaskingState", required = true)
     private DataMaskingState dataMaskingState;
 
     /*
@@ -23,28 +28,27 @@ public final class DataMaskingPolicyProperties {
      * masking policy does not apply. The specified users receive data results without masking for all of the database
      * queries.
      */
-    @JsonProperty(value = "exemptPrincipals")
     private String exemptPrincipals;
 
     /*
      * The list of the application principals. This is a legacy parameter and is no longer used.
      */
-    @JsonProperty(value = "applicationPrincipals", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationPrincipals;
 
     /*
      * The masking level. This is a legacy parameter and is no longer used.
      */
-    @JsonProperty(value = "maskingLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String maskingLevel;
 
-    /** Creates an instance of DataMaskingPolicyProperties class. */
+    /**
+     * Creates an instance of DataMaskingPolicyProperties class.
+     */
     public DataMaskingPolicyProperties() {
     }
 
     /**
      * Get the dataMaskingState property: The state of the data masking policy.
-     *
+     * 
      * @return the dataMaskingState value.
      */
     public DataMaskingState dataMaskingState() {
@@ -53,7 +57,7 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Set the dataMaskingState property: The state of the data masking policy.
-     *
+     * 
      * @param dataMaskingState the dataMaskingState value to set.
      * @return the DataMaskingPolicyProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class DataMaskingPolicyProperties {
      * Get the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
      * database users for which the data masking policy does not apply. The specified users receive data results without
      * masking for all of the database queries.
-     *
+     * 
      * @return the exemptPrincipals value.
      */
     public String exemptPrincipals() {
@@ -77,7 +81,7 @@ public final class DataMaskingPolicyProperties {
      * Set the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
      * database users for which the data masking policy does not apply. The specified users receive data results without
      * masking for all of the database queries.
-     *
+     * 
      * @param exemptPrincipals the exemptPrincipals value to set.
      * @return the DataMaskingPolicyProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class DataMaskingPolicyProperties {
     /**
      * Get the applicationPrincipals property: The list of the application principals. This is a legacy parameter and is
      * no longer used.
-     *
+     * 
      * @return the applicationPrincipals value.
      */
     public String applicationPrincipals() {
@@ -98,7 +102,7 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Get the maskingLevel property: The masking level. This is a legacy parameter and is no longer used.
-     *
+     * 
      * @return the maskingLevel value.
      */
     public String maskingLevel() {
@@ -107,17 +111,62 @@ public final class DataMaskingPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataMaskingState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataMaskingPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataMaskingState",
+            this.dataMaskingState == null ? null : this.dataMaskingState.toString());
+        jsonWriter.writeStringField("exemptPrincipals", this.exemptPrincipals);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMaskingPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMaskingPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataMaskingPolicyProperties.
+     */
+    public static DataMaskingPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMaskingPolicyProperties deserializedDataMaskingPolicyProperties = new DataMaskingPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataMaskingState".equals(fieldName)) {
+                    deserializedDataMaskingPolicyProperties.dataMaskingState
+                        = DataMaskingState.fromString(reader.getString());
+                } else if ("exemptPrincipals".equals(fieldName)) {
+                    deserializedDataMaskingPolicyProperties.exemptPrincipals = reader.getString();
+                } else if ("applicationPrincipals".equals(fieldName)) {
+                    deserializedDataMaskingPolicyProperties.applicationPrincipals = reader.getString();
+                } else if ("maskingLevel".equals(fieldName)) {
+                    deserializedDataMaskingPolicyProperties.maskingLevel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMaskingPolicyProperties;
+        });
+    }
 }

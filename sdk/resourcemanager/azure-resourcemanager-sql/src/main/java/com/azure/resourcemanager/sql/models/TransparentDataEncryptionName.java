@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TransparentDataEncryptionName. */
+/**
+ * Defines values for TransparentDataEncryptionName.
+ */
 public final class TransparentDataEncryptionName extends ExpandableStringEnum<TransparentDataEncryptionName> {
-    /** Static value current for TransparentDataEncryptionName. */
+    /**
+     * Static value current for TransparentDataEncryptionName.
+     */
     public static final TransparentDataEncryptionName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of TransparentDataEncryptionName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransparentDataEncryptionName() {
+    }
+
+    /**
      * Creates or finds a TransparentDataEncryptionName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TransparentDataEncryptionName.
      */
-    @JsonCreator
     public static TransparentDataEncryptionName fromString(String name) {
         return fromString(name, TransparentDataEncryptionName.class);
     }
 
     /**
      * Gets known TransparentDataEncryptionName values.
-     *
+     * 
      * @return known TransparentDataEncryptionName values.
      */
     public static Collection<TransparentDataEncryptionName> values() {

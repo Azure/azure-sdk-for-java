@@ -6,24 +6,40 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ARM resource. */
+/**
+ * ARM resource.
+ */
 @Fluent
 public class ResourceWithWritableName extends ProxyResource {
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ResourceWithWritableName class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ResourceWithWritableName class.
+     */
     public ResourceWithWritableName() {
     }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -32,7 +48,7 @@ public class ResourceWithWritableName extends ProxyResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceWithWritableName object itself.
      */
@@ -42,10 +58,71 @@ public class ResourceWithWritableName extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceWithWritableName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceWithWritableName if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceWithWritableName.
+     */
+    public static ResourceWithWritableName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceWithWritableName deserializedResourceWithWritableName = new ResourceWithWritableName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceWithWritableName.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceWithWritableName.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceWithWritableName.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceWithWritableName;
+        });
     }
 }

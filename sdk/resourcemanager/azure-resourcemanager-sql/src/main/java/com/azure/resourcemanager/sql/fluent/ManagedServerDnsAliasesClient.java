@@ -20,13 +20,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedServerDnsAliasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedServerDnsAliasesClient.
+ */
 public interface ManagedServerDnsAliasesClient {
     /**
      * Gets a list of managed server DNS aliases for a managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,47 +36,47 @@ public interface ManagedServerDnsAliasesClient {
      * @return a list of managed server DNS aliases for a managed server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedServerDnsAliasInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<ManagedServerDnsAliasInner> listByManagedInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of managed server DNS aliases for a managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed server DNS aliases for a managed server as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of managed server DNS aliases for a managed server as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName);
+    PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of managed server DNS aliases for a managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed server DNS aliases for a managed server as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of managed server DNS aliases for a managed server as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName, Context context);
 
     /**
      * Gets a server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,14 +85,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedServerDnsAliasInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName);
+    Mono<Response<ManagedServerDnsAliasInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String dnsAliasName);
 
     /**
      * Gets a server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,14 +101,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedServerDnsAliasInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName);
+    Mono<ManagedServerDnsAliasInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName);
 
     /**
      * Gets a server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @param context The context to associate with this operation.
@@ -116,14 +118,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return a server DNS alias along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedServerDnsAliasInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName, Context context);
+    Response<ManagedServerDnsAliasInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName, Context context);
 
     /**
      * Gets a server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,32 +138,29 @@ public interface ManagedServerDnsAliasesClient {
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasCreation parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String dnsAliasName, ManagedServerDnsAliasCreation parameters);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -169,19 +168,17 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasCreation parameters);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -189,19 +186,17 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasCreation parameters);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,60 +205,51 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasCreation parameters,
-        Context context);
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
+        ManagedServerDnsAliasCreation parameters, Context context);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedServerDnsAliasInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasCreation parameters);
+    Mono<ManagedServerDnsAliasInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName, ManagedServerDnsAliasCreation parameters);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedServerDnsAliasInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+    ManagedServerDnsAliasInner createOrUpdate(String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasCreation parameters);
 
     /**
      * Creates a managed server DNS alias.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server dns alias creation request.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,18 +257,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return a managed server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedServerDnsAliasInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasCreation parameters,
-        Context context);
+    ManagedServerDnsAliasInner createOrUpdate(String resourceGroupName, String managedInstanceName, String dnsAliasName,
+        ManagedServerDnsAliasCreation parameters, Context context);
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,14 +273,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName);
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,14 +289,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName);
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,14 +305,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName);
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @param context The context to associate with this operation.
@@ -340,14 +322,14 @@ public interface ManagedServerDnsAliasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String dnsAliasName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName, Context context);
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,9 +342,9 @@ public interface ManagedServerDnsAliasesClient {
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -374,9 +356,9 @@ public interface ManagedServerDnsAliasesClient {
 
     /**
      * Deletes the managed server DNS alias with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
      * @param context The context to associate with this operation.
@@ -389,32 +371,29 @@ public interface ManagedServerDnsAliasesClient {
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasAcquisition parameters);
+    Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName, ManagedServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -422,19 +401,17 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquireAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,19 +419,17 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquire(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -463,60 +438,51 @@ public interface ManagedServerDnsAliasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquire(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasAcquisition parameters,
-        Context context);
+        String resourceGroupName, String managedInstanceName, String dnsAliasName,
+        ManagedServerDnsAliasAcquisition parameters, Context context);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedServerDnsAliasInner> acquireAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasAcquisition parameters);
+    Mono<ManagedServerDnsAliasInner> acquireAsync(String resourceGroupName, String managedInstanceName,
+        String dnsAliasName, ManagedServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedServerDnsAliasInner acquire(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
+    ManagedServerDnsAliasInner acquire(String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires managed server DNS alias from another managed server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters A managed server DNS alias acquisition request.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -524,10 +490,6 @@ public interface ManagedServerDnsAliasesClient {
      * @return a managed server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedServerDnsAliasInner acquire(
-        String resourceGroupName,
-        String managedInstanceName,
-        String dnsAliasName,
-        ManagedServerDnsAliasAcquisition parameters,
-        Context context);
+    ManagedServerDnsAliasInner acquire(String resourceGroupName, String managedInstanceName, String dnsAliasName,
+        ManagedServerDnsAliasAcquisition parameters, Context context);
 }

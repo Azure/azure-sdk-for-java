@@ -1,7 +1,7 @@
 {
   "flavor": "azure", 
   "CrossLanguageDefinitionId": {
-    "com.azure.ai.translation.text.TextTranslationAsyncClient": "TextTranslation.TextTranslationClient",
+    "com.azure.ai.translation.text.TextTranslationAsyncClient": "TextTranslation",
     "com.azure.ai.translation.text.TextTranslationAsyncClient.findSentenceBoundaries": "TextTranslation.findSentenceBoundaries",
     "com.azure.ai.translation.text.TextTranslationAsyncClient.findSentenceBoundariesWithResponse": "TextTranslation.findSentenceBoundaries",
     "com.azure.ai.translation.text.TextTranslationAsyncClient.getSupportedLanguages": "TextTranslation.getSupportedLanguages",
@@ -14,7 +14,7 @@
     "com.azure.ai.translation.text.TextTranslationAsyncClient.translateWithResponse": "TextTranslation.translate",
     "com.azure.ai.translation.text.TextTranslationAsyncClient.transliterate": "TextTranslation.transliterate",
     "com.azure.ai.translation.text.TextTranslationAsyncClient.transliterateWithResponse": "TextTranslation.transliterate",
-    "com.azure.ai.translation.text.TextTranslationClient": "TextTranslation.TextTranslationClient",
+    "com.azure.ai.translation.text.TextTranslationClient": "TextTranslation",
     "com.azure.ai.translation.text.TextTranslationClient.findSentenceBoundaries": "TextTranslation.findSentenceBoundaries",
     "com.azure.ai.translation.text.TextTranslationClient.findSentenceBoundariesWithResponse": "TextTranslation.findSentenceBoundaries",
     "com.azure.ai.translation.text.TextTranslationClient.getSupportedLanguages": "TextTranslation.getSupportedLanguages",
@@ -27,7 +27,7 @@
     "com.azure.ai.translation.text.TextTranslationClient.translateWithResponse": "TextTranslation.translate",
     "com.azure.ai.translation.text.TextTranslationClient.transliterate": "TextTranslation.transliterate",
     "com.azure.ai.translation.text.TextTranslationClient.transliterateWithResponse": "TextTranslation.transliterate",
-    "com.azure.ai.translation.text.TextTranslationClientBuilder": "TextTranslation.TextTranslationClient",
+    "com.azure.ai.translation.text.TextTranslationClientBuilder": "TextTranslation",
     "com.azure.ai.translation.text.models.BackTranslation": "TextTranslation.BackTranslation",
     "com.azure.ai.translation.text.models.BreakSentenceItem": "TextTranslation.BreakSentenceItem",
     "com.azure.ai.translation.text.models.DetectedLanguage": "TextTranslation.DetectedLanguage",

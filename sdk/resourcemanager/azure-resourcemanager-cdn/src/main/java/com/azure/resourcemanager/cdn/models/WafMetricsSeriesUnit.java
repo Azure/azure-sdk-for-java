@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class WafMetricsSeriesUnit extends ExpandableStringEnum<WafMetricsS
      * @param name a name to look for.
      * @return the corresponding WafMetricsSeriesUnit.
      */
-    @JsonCreator
     public static WafMetricsSeriesUnit fromString(String name) {
         return fromString(name, WafMetricsSeriesUnit.class);
     }

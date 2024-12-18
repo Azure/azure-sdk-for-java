@@ -24,6 +24,12 @@ class ConfigurationUtils {
             if (configuration.maxmemoryPolicy() != null) {
                 map.put("maxmemory-policy", configuration.maxmemoryPolicy());
             }
+            if (configuration.storageSubscriptionId() != null) {
+                map.put("storage-subscription-id", configuration.storageSubscriptionId());
+            }
+            if (configuration.aadEnabled() != null) {
+                map.put("aad-enabled", configuration.aadEnabled());
+            }
             if (configuration.rdbBackupEnabled() != null) {
                 map.put("rdb-backup-enabled", configuration.rdbBackupEnabled());
             }
@@ -53,6 +59,9 @@ class ConfigurationUtils {
             }
             if (configuration.maxmemoryDelta() != null) {
                 map.put("maxmemory-delta", configuration.maxmemoryDelta());
+            }
+            if (configuration.notifyKeyspaceEvents() != null) {
+                map.put("notify-keyspace-events", configuration.notifyKeyspaceEvents());
             }
             if (configuration.maxfragmentationmemoryReserved() != null) {
                 map.put("maxfragmentationmemory-reserved", configuration.maxfragmentationmemoryReserved());
@@ -85,6 +94,12 @@ class ConfigurationUtils {
             case "maxmemory-policy":
                 configuration.withMaxmemoryPolicy(value);
                 break;
+            case "storage-subscription-id":
+                configuration.withStorageSubscriptionId(value);
+                break;
+            case "aad-enabled":
+                configuration.withAadEnabled(value);
+                break;
             case "rdb-backup-enabled":
                 configuration.withRdbBackupEnabled(value);
                 break;
@@ -111,6 +126,9 @@ class ConfigurationUtils {
                 break;
             case "maxmemory-delta":
                 configuration.withMaxmemoryDelta(value);
+                break;
+            case "notify-keyspace-events":
+                configuration.withNotifyKeyspaceEvents(value);
                 break;
             case "maxfragmentationmemory-reserved":
                 configuration.withMaxfragmentationmemoryReserved(value);
@@ -141,6 +159,12 @@ class ConfigurationUtils {
             case "maxmemory-policy":
                 configuration.withMaxmemoryPolicy(null);
                 break;
+            case "storage-subscription-id":
+                configuration.withStorageSubscriptionId(null);
+                break;
+            case "aad-enabled":
+                configuration.withAadEnabled(null);
+                break;
             case "rdb-backup-enabled":
                 configuration.withRdbBackupEnabled(null);
                 break;
@@ -167,6 +191,9 @@ class ConfigurationUtils {
                 break;
             case "maxmemory-delta":
                 configuration.withMaxmemoryDelta(null);
+                break;
+            case "notify-keyspace-events":
+                configuration.withNotifyKeyspaceEvents(null);
                 break;
             case "maxfragmentationmemory-reserved":
                 configuration.withMaxfragmentationmemoryReserved(null);

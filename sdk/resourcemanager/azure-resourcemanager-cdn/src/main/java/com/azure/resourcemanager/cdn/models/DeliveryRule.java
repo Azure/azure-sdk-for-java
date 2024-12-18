@@ -6,18 +6,21 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A rule that specifies a set of actions and conditions.
  */
 @Fluent
-public final class DeliveryRule {
+public final class DeliveryRule implements JsonSerializable<DeliveryRule> {
     /*
      * Name of the rule
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -25,19 +28,16 @@ public final class DeliveryRule {
      * order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not
      * require any condition and actions listed in it will always be applied.
      */
-    @JsonProperty(value = "order", required = true)
     private int order;
 
     /*
      * A list of conditions that must be matched for the actions to be executed
      */
-    @JsonProperty(value = "conditions")
     private List<DeliveryRuleCondition> conditions;
 
     /*
      * A list of actions that are executed when all the conditions of a rule are satisfied.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<DeliveryRuleAction> actions;
 
     /**
@@ -67,9 +67,9 @@ public final class DeliveryRule {
     }
 
     /**
-     * Get the order property: The order in which the rules are applied for the endpoint. Possible values
-     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
-     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * Get the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
+     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
+     * rule. It does not require any condition and actions listed in it will always be applied.
      * 
      * @return the order value.
      */
@@ -78,9 +78,9 @@ public final class DeliveryRule {
     }
 
     /**
-     * Set the order property: The order in which the rules are applied for the endpoint. Possible values
-     * {0,1,2,3,………}. A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0
-     * is a special rule. It does not require any condition and actions listed in it will always be applied.
+     * Set the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
+     * A rule with a lesser order will be applied before a rule with a greater order. Rule with order 0 is a special
+     * rule. It does not require any condition and actions listed in it will always be applied.
      * 
      * @param order the order value to set.
      * @return the DeliveryRule object itself.
@@ -140,12 +140,62 @@ public final class DeliveryRule {
             conditions().forEach(e -> e.validate());
         }
         if (actions() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property actions in model DeliveryRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actions in model DeliveryRule"));
         } else {
             actions().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeliveryRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("order", this.order);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("conditions", this.conditions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeliveryRule.
+     */
+    public static DeliveryRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryRule deserializedDeliveryRule = new DeliveryRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("order".equals(fieldName)) {
+                    deserializedDeliveryRule.order = reader.getInt();
+                } else if ("actions".equals(fieldName)) {
+                    List<DeliveryRuleAction> actions
+                        = reader.readArray(reader1 -> DeliveryRuleAction.fromJson(reader1));
+                    deserializedDeliveryRule.actions = actions;
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeliveryRule.name = reader.getString();
+                } else if ("conditions".equals(fieldName)) {
+                    List<DeliveryRuleCondition> conditions
+                        = reader.readArray(reader1 -> DeliveryRuleCondition.fromJson(reader1));
+                    deserializedDeliveryRule.conditions = conditions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryRule;
+        });
+    }
 }

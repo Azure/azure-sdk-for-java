@@ -6,49 +6,53 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for an encryption protector execution. */
+/**
+ * Properties for an encryption protector execution.
+ */
 @Fluent
-public final class ManagedInstanceEncryptionProtectorProperties {
+public final class ManagedInstanceEncryptionProtectorProperties
+    implements JsonSerializable<ManagedInstanceEncryptionProtectorProperties> {
     /*
      * The name of the managed instance key.
      */
-    @JsonProperty(value = "serverKeyName")
     private String serverKeyName;
 
     /*
      * The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
      */
-    @JsonProperty(value = "serverKeyType", required = true)
     private ServerKeyType serverKeyType;
 
     /*
      * The URI of the server key.
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * Thumbprint of the server key.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Key auto rotation opt-in flag. Either true or false.
      */
-    @JsonProperty(value = "autoRotationEnabled")
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of ManagedInstanceEncryptionProtectorProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceEncryptionProtectorProperties class.
+     */
     public ManagedInstanceEncryptionProtectorProperties() {
     }
 
     /**
      * Get the serverKeyName property: The name of the managed instance key.
-     *
+     * 
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -57,7 +61,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Set the serverKeyName property: The name of the managed instance key.
-     *
+     * 
      * @param serverKeyName the serverKeyName value to set.
      * @return the ManagedInstanceEncryptionProtectorProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -77,7 +81,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceEncryptionProtectorProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Get the uri property: The URI of the server key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -97,7 +101,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -106,7 +110,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -115,7 +119,7 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @param autoRotationEnabled the autoRotationEnabled value to set.
      * @return the ManagedInstanceEncryptionProtectorProperties object itself.
      */
@@ -126,18 +130,66 @@ public final class ManagedInstanceEncryptionProtectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model"
-                            + " ManagedInstanceEncryptionProtectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model ManagedInstanceEncryptionProtectorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedInstanceEncryptionProtectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverKeyType", this.serverKeyType == null ? null : this.serverKeyType.toString());
+        jsonWriter.writeStringField("serverKeyName", this.serverKeyName);
+        jsonWriter.writeBooleanField("autoRotationEnabled", this.autoRotationEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceEncryptionProtectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceEncryptionProtectorProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceEncryptionProtectorProperties.
+     */
+    public static ManagedInstanceEncryptionProtectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceEncryptionProtectorProperties deserializedManagedInstanceEncryptionProtectorProperties
+                = new ManagedInstanceEncryptionProtectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverKeyType".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorProperties.serverKeyType
+                        = ServerKeyType.fromString(reader.getString());
+                } else if ("serverKeyName".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorProperties.serverKeyName = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorProperties.uri = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorProperties.thumbprint = reader.getString();
+                } else if ("autoRotationEnabled".equals(fieldName)) {
+                    deserializedManagedInstanceEncryptionProtectorProperties.autoRotationEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceEncryptionProtectorProperties;
+        });
+    }
 }

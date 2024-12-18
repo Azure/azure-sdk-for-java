@@ -6,9 +6,12 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.fluent.models.RedisCreateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,36 +19,30 @@ import java.util.Map;
  * Parameters supplied to the Create Redis operation.
  */
 @Fluent
-public final class RedisCreateParameters {
+public final class RedisCreateParameters implements JsonSerializable<RedisCreateParameters> {
     /*
      * Redis cache properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RedisCreateProperties innerProperties = new RedisCreateProperties();
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /**
@@ -516,4 +513,55 @@ public final class RedisCreateParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisCreateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisCreateParameters.
+     */
+    public static RedisCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisCreateParameters deserializedRedisCreateParameters = new RedisCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRedisCreateParameters.innerProperties = RedisCreateProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRedisCreateParameters.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRedisCreateParameters.zones = zones;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisCreateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRedisCreateParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisCreateParameters;
+        });
+    }
 }

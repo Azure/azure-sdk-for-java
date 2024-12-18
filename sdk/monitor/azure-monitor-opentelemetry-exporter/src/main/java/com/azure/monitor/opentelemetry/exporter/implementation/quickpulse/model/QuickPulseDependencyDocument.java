@@ -3,32 +3,20 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class QuickPulseDependencyDocument extends QuickPulseDocument {
+import java.io.IOException;
 
-    @JsonProperty(value = "Name")
+public final class QuickPulseDependencyDocument extends QuickPulseDocument {
     private String name;
-
-    @JsonProperty(value = "Target")
     private String target;
-
-    @JsonProperty(value = "Success")
     private boolean success;
-
-    @JsonProperty(value = "Duration")
     private String duration;
-
-    @JsonProperty(value = "ResultCode")
     private String resultCode;
-
-    @JsonProperty(value = "CommandName")
     private String commandName;
-
-    @JsonProperty(value = "DependencyTypeName")
     private String dependencyTypeName;
-
-    @JsonProperty(value = "OperationName")
     private String operationName;
 
     public String getName() {
@@ -93,5 +81,55 @@ public class QuickPulseDependencyDocument extends QuickPulseDocument {
 
     public void setOperationName(String operationName) {
         this.operationName = operationName;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("Name", name)
+            .writeStringField("Target", target)
+            .writeBooleanField("Success", success)
+            .writeStringField("Duration", duration)
+            .writeStringField("ResultCode", resultCode)
+            .writeStringField("CommandName", commandName)
+            .writeStringField("DependencyTypeName", dependencyTypeName)
+            .writeStringField("OperationName", operationName)
+            .writeEndObject();
+    }
+
+    public static QuickPulseDependencyDocument fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuickPulseDependencyDocument document = new QuickPulseDependencyDocument();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (fromJsonShared(document, fieldName, reader)) {
+                    continue;
+                }
+
+                if ("Name".equals(fieldName)) {
+                    document.name = reader.getString();
+                } else if ("Target".equals(fieldName)) {
+                    document.target = reader.getString();
+                } else if ("Success".equals(fieldName)) {
+                    document.success = reader.getBoolean();
+                } else if ("Duration".equals(fieldName)) {
+                    document.duration = reader.getString();
+                } else if ("ResultCode".equals(fieldName)) {
+                    document.resultCode = reader.getString();
+                } else if ("CommandName".equals(fieldName)) {
+                    document.commandName = reader.getString();
+                } else if ("DependencyTypeName".equals(fieldName)) {
+                    document.dependencyTypeName = reader.getString();
+                } else if ("OperationName".equals(fieldName)) {
+                    document.operationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return document;
+        });
     }
 }

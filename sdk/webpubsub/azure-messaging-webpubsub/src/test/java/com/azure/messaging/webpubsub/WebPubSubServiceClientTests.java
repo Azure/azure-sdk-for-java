@@ -292,20 +292,13 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     public void testAddConnectionsToGroups() {
         List<String> groupList = Arrays.asList("group1", "group2");
         String filter = "userId eq 'user 1'";
-        assertDoesNotThrow(() -> client.addConnectionsToGroups(TestUtils.HUB_NAME, groupList, filter));
-    }
-
-    @Test
-    public void testAddConnectionsToGroupsThrowErrorWhenHubIsNull() {
-        List<String> groupList = Arrays.asList("group1", "group2");
-        String filter = "userId eq 'user 1'";
-        assertThrows(IllegalArgumentException.class, () -> client.addConnectionsToGroups(null, groupList, filter));
+        assertDoesNotThrow(() -> client.addConnectionsToGroups(groupList, filter));
     }
 
     @Test
     public void testAddConnectionsToGroupsThrowErrorWhenGroupsIsNull() {
         String filter = "userId eq 'user 1'";
-        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroups(TestUtils.HUB_NAME, null, filter));
+        assertThrows(HttpResponseException.class, () -> client.addConnectionsToGroups(null, filter));
     }
 
     @Test

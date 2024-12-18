@@ -15,16 +15,14 @@ import com.azure.analytics.purview.datamap.GlossaryClient;
 import com.azure.analytics.purview.datamap.LineageClient;
 import com.azure.analytics.purview.datamap.RelationshipClient;
 import com.azure.analytics.purview.datamap.TypeDefinitionClient;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import reactor.core.publisher.Mono;
 
 class DataMapClientTestBase extends TestProxyTestBase {
     protected EntityClient entityClient;
@@ -47,7 +45,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             entityClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             entityClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -62,7 +60,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             glossaryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             glossaryClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -77,7 +75,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             discoveryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             discoveryClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -92,7 +90,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             lineageClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             lineageClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -107,7 +105,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             relationshipClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             relationshipClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
@@ -122,7 +120,7 @@ class DataMapClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             typeDefinitionClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             typeDefinitionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());

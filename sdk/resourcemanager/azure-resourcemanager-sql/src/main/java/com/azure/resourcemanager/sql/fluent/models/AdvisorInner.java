@@ -6,41 +6,60 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdvisorStatus;
 import com.azure.resourcemanager.sql.models.AutoExecuteStatus;
 import com.azure.resourcemanager.sql.models.AutoExecuteStatusInheritedFrom;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Database, Server or Elastic Pool Advisor. */
+/**
+ * Database, Server or Elastic Pool Advisor.
+ */
 @Fluent
 public final class AdvisorInner extends ProxyResource {
     /*
      * Resource kind.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private AdvisorProperties innerProperties;
 
-    /** Creates an instance of AdvisorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AdvisorInner class.
+     */
     public AdvisorInner() {
     }
 
     /**
      * Get the kind property: Resource kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -49,7 +68,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -58,7 +77,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdvisorProperties innerProperties() {
@@ -66,9 +85,39 @@ public final class AdvisorInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the advisorStatus property: Gets the status of availability of this advisor to customers. Possible values are
      * 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
-     *
+     * 
      * @return the advisorStatus value.
      */
     public AdvisorStatus advisorStatus() {
@@ -78,7 +127,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Get the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @return the autoExecuteStatus value.
      */
     public AutoExecuteStatus autoExecuteStatus() {
@@ -88,7 +137,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Set the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @param autoExecuteStatus the autoExecuteStatus value to set.
      * @return the AdvisorInner object itself.
      */
@@ -105,7 +154,7 @@ public final class AdvisorInner extends ProxyResource {
      * status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource
      * hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is
      * not explicitly set on any level).
-     *
+     * 
      * @return the autoExecuteStatusInheritedFrom value.
      */
     public AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom() {
@@ -116,7 +165,7 @@ public final class AdvisorInner extends ProxyResource {
      * Get the recommendationsStatus property: Gets that status of recommendations for this advisor and reason for not
      * having any recommendations. Possible values include, but are not limited to, 'Ok' (Recommendations
      * available),LowActivity (not enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
-     *
+     * 
      * @return the recommendationsStatus value.
      */
     public String recommendationsStatus() {
@@ -126,7 +175,7 @@ public final class AdvisorInner extends ProxyResource {
     /**
      * Get the lastChecked property: Gets the time when the current resource was analyzed for recommendations by this
      * advisor.
-     *
+     * 
      * @return the lastChecked value.
      */
     public OffsetDateTime lastChecked() {
@@ -135,7 +184,7 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Get the recommendedActions property: Gets the recommended actions for this advisor.
-     *
+     * 
      * @return the recommendedActions value.
      */
     public List<RecommendedActionInner> recommendedActions() {
@@ -144,12 +193,59 @@ public final class AdvisorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvisorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvisorInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdvisorInner.
+     */
+    public static AdvisorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvisorInner deserializedAdvisorInner = new AdvisorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAdvisorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAdvisorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdvisorInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAdvisorInner.kind = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAdvisorInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAdvisorInner.innerProperties = AdvisorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvisorInner;
+        });
     }
 }

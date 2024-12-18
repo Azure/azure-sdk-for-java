@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of list patch schedules Redis operation.
  */
 @Fluent
-public final class RedisPatchScheduleListResult {
+public final class RedisPatchScheduleListResult implements JsonSerializable<RedisPatchScheduleListResult> {
     /*
      * Results of the list patch schedules operation.
      */
-    @JsonProperty(value = "value")
     private List<RedisPatchScheduleInner> value;
 
     /*
      * Link for next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class RedisPatchScheduleListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisPatchScheduleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisPatchScheduleListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisPatchScheduleListResult.
+     */
+    public static RedisPatchScheduleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisPatchScheduleListResult deserializedRedisPatchScheduleListResult = new RedisPatchScheduleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RedisPatchScheduleInner> value
+                        = reader.readArray(reader1 -> RedisPatchScheduleInner.fromJson(reader1));
+                    deserializedRedisPatchScheduleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRedisPatchScheduleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisPatchScheduleListResult;
+        });
     }
 }

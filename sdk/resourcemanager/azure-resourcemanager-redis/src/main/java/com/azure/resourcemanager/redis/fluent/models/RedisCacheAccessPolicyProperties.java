@@ -6,31 +6,32 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.AccessPolicyProvisioningState;
 import com.azure.resourcemanager.redis.models.AccessPolicyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * All properties of an access policy.
  */
 @Fluent
-public final class RedisCacheAccessPolicyProperties {
+public final class RedisCacheAccessPolicyProperties implements JsonSerializable<RedisCacheAccessPolicyProperties> {
     /*
      * Provisioning state of access policy
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AccessPolicyProvisioningState provisioningState;
 
     /*
      * Built-In or Custom access policy
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private AccessPolicyType type;
 
     /*
      * Permissions for the access policy. Learn how to configure permissions at https://aka.ms/redis/AADPreRequisites
      */
-    @JsonProperty(value = "permissions", required = true)
     private String permissions;
 
     /**
@@ -93,4 +94,47 @@ public final class RedisCacheAccessPolicyProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisCacheAccessPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("permissions", this.permissions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisCacheAccessPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisCacheAccessPolicyProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisCacheAccessPolicyProperties.
+     */
+    public static RedisCacheAccessPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisCacheAccessPolicyProperties deserializedRedisCacheAccessPolicyProperties
+                = new RedisCacheAccessPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("permissions".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyProperties.permissions = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyProperties.provisioningState
+                        = AccessPolicyProvisioningState.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyProperties.type = AccessPolicyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisCacheAccessPolicyProperties;
+        });
+    }
 }

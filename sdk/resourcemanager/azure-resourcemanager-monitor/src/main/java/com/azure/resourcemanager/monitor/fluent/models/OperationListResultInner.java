@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Operation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,15 @@ import java.util.List;
  * the next set of results.
  */
 @Fluent
-public final class OperationListResultInner {
+public final class OperationListResultInner implements JsonSerializable<OperationListResultInner> {
     /*
      * List of operations supported by the Microsoft.Insights provider.
      */
-    @JsonProperty(value = "value")
     private List<Operation> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -82,5 +84,45 @@ public final class OperationListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationListResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationListResultInner.
+     */
+    public static OperationListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationListResultInner deserializedOperationListResultInner = new OperationListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<Operation> value = reader.readArray(reader1 -> Operation.fromJson(reader1));
+                    deserializedOperationListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationListResultInner;
+        });
     }
 }

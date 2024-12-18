@@ -62,14 +62,16 @@ class AttachStatsbeat extends BaseStatsbeat {
     }
 
     // visible for testing
-    static String initResourceProviderId(
-            ResourceProvider resourceProvider, @Nullable MetadataInstanceResponse response, Function<String, String> envVarFn) {
+    static String initResourceProviderId(ResourceProvider resourceProvider, @Nullable MetadataInstanceResponse response,
+        Function<String, String> envVarFn) {
         switch (resourceProvider) {
             case RP_APPSVC:
                 // Linux App Services doesn't have WEBSITE_HOME_STAMPNAME yet. An ask has been submitted.
                 return envVarFn.apply(WEBSITE_SITE_NAME) + "/" + envVarFn.apply(WEBSITE_HOME_STAMPNAME);
+
             case RP_FUNCTIONS:
                 return envVarFn.apply(WEBSITE_HOSTNAME);
+
             case RP_VM:
                 if (response != null) {
                     return response.getVmId() + "/" + response.getSubscriptionId();
@@ -78,6 +80,7 @@ class AttachStatsbeat extends BaseStatsbeat {
                 }
             case RP_AKS:
                 return envVarFn.apply("AKS_ARM_NAMESPACE_ID");
+
             case UNKNOWN:
                 return UNKNOWN_RP_ID;
         }

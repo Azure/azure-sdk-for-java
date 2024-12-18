@@ -43,10 +43,9 @@ import static org.assertj.core.api.Assertions.entry;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class AzureMonitorStatsbeatTest {
-    private static final String STATSBEAT_CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
-            + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
-            + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
+    private static final String STATSBEAT_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
     @Test
@@ -54,9 +53,9 @@ public class AzureMonitorStatsbeatTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry =
-            TestUtils.createOpenTelemetrySdk(
-                getHttpPipeline(customValidationPolicy, HttpClient.createDefault()), getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        OpenTelemetrySdk openTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, HttpClient.createDefault()),
+                getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
 
         // generate a metric
         generateMetric(openTelemetry);
@@ -75,31 +74,31 @@ public class AzureMonitorStatsbeatTest {
     }
 
     @Test
-    @DisabledOnOs(value = {OS.MAC}, disabledReason = "Unstable")
+    @DisabledOnOs(value = { OS.MAC }, disabledReason = "Unstable")
     public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
-        String fakeBody = "{\"itemsReceived\":4,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":1,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":2,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":3,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
+        String fakeBody
+            = "{\"itemsReceived\":4,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":1,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":2,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":3,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
         verifyStatsbeatShutdownOrnNot(fakeBody, true);
     }
 
     @Test
     public void testStatsbeatNotShutDownWhen400InvalidDataReturned() throws Exception {
-        String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"102: Field 'time' on type 'Envelope' is not a valid time string. Expected: date, Actual: fake\"}]}";
+        String fakeBody
+            = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"102: Field 'time' on type 'Envelope' is not a valid time string. Expected: date, Actual: fake\"}]}";
         verifyStatsbeatShutdownOrnNot(fakeBody, false);
     }
 
     private void verifyStatsbeatShutdownOrnNot(String fakeBody, boolean shutdown) throws Exception {
-        MockedHttpClient mockedHttpClient =
-            new MockedHttpClient(
-                request -> {
-                    return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
-                });
+        MockedHttpClient mockedHttpClient = new MockedHttpClient(request -> {
+            return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
+        });
 
         // create OpenTelemetrySdk
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetrySdk =
-            TestUtils.createOpenTelemetrySdk(
-                getHttpPipeline(customValidationPolicy, mockedHttpClient), getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        OpenTelemetrySdk openTelemetrySdk
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, mockedHttpClient),
+                getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
 
         generateMetric(openTelemetrySdk);
 
@@ -114,16 +113,18 @@ public class AzureMonitorStatsbeatTest {
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
         if (shutdown) {
-            assertThat(customValidationPolicy.getActualTelemetryItems().stream().filter(item -> item.getName().equals("Statsbeat")).count()).isEqualTo(0);
+            assertThat(customValidationPolicy.getActualTelemetryItems()
+                .stream()
+                .filter(item -> item.getName().equals("Statsbeat"))
+                .count()).isEqualTo(0);
         } else {
             verifyStatsbeatTelemetry(customValidationPolicy);
         }
     }
 
     private HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
-        return new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(policy == null ? new HttpPipelinePolicy[0] : new HttpPipelinePolicy[]{policy})
+        return new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(policy == null ? new HttpPipelinePolicy[0] : new HttpPipelinePolicy[] { policy })
             .tracer(new NoopTracer())
             .build();
     }
@@ -131,31 +132,28 @@ public class AzureMonitorStatsbeatTest {
     private static void generateMetric(OpenTelemetry openTelemetry) {
         Meter meter = openTelemetry.getMeter("Sample");
         LongCounter counter = meter.counterBuilder("test").build();
-        counter.add(
-            1L,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
+        counter.add(1L, Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
     }
 
     private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) {
-        TelemetryItem attachStatsbeat =
-            customValidationPolicy.getActualTelemetryItems().stream()
-                .filter(item -> item.getName().equals("Statsbeat"))
-                .filter(item -> {
-                    return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Attach");
-                })
-                .findFirst()
-                .get();
+        TelemetryItem attachStatsbeat = customValidationPolicy.getActualTelemetryItems()
+            .stream()
+            .filter(item -> item.getName().equals("Statsbeat"))
+            .filter(item -> {
+                return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Attach");
+            })
+            .findFirst()
+            .get();
         validateAttachStatsbeat(attachStatsbeat);
 
-        TelemetryItem featureStatsbeat =
-            customValidationPolicy.getActualTelemetryItems().stream()
-                .filter(item -> item.getName().equals("Statsbeat"))
-                .filter(item -> {
-                    return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Feature");
-                })
-                .findFirst()
-                .get();
+        TelemetryItem featureStatsbeat = customValidationPolicy.getActualTelemetryItems()
+            .stream()
+            .filter(item -> item.getName().equals("Statsbeat"))
+            .filter(item -> {
+                return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Feature");
+            })
+            .findFirst()
+            .get();
         validateFeatureStatsbeat(featureStatsbeat);
     }
 
@@ -171,8 +169,10 @@ public class AzureMonitorStatsbeatTest {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
         MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
         assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
-        assertThat(metricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
-        assertThat(metricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+        assertThat(metricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"),
+            entry("language", "java"));
+        assertThat(metricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp",
+            "runtimeVersion", "version");
     }
 
     private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
@@ -180,7 +180,8 @@ public class AzureMonitorStatsbeatTest {
         MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
         assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Feature");
         assertThat(metricsData.getProperties()).contains(entry("type", "0"), entry("language", "java"));
-        assertThat(metricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+        assertThat(metricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp",
+            "runtimeVersion", "version");
     }
 
     private static class MockedHttpClient implements HttpClient {

@@ -6,24 +6,45 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Active Directory only authentication. */
+/**
+ * Azure Active Directory only authentication.
+ */
 @Fluent
 public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedInstanceAzureADOnlyAuthProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceAzureADOnlyAuthenticationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ManagedInstanceAzureADOnlyAuthenticationInner class.
+     */
     public ManagedInstanceAzureADOnlyAuthenticationInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceAzureADOnlyAuthProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -41,12 +92,12 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ManagedInstanceAzureADOnlyAuthenticationInner object itself.
      */
-    public ManagedInstanceAzureADOnlyAuthenticationInner withAzureADOnlyAuthentication(
-        Boolean azureADOnlyAuthentication) {
+    public ManagedInstanceAzureADOnlyAuthenticationInner
+        withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstanceAzureADOnlyAuthProperties();
         }
@@ -56,12 +107,57 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceAzureADOnlyAuthenticationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceAzureADOnlyAuthenticationInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceAzureADOnlyAuthenticationInner.
+     */
+    public static ManagedInstanceAzureADOnlyAuthenticationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceAzureADOnlyAuthenticationInner deserializedManagedInstanceAzureADOnlyAuthenticationInner
+                = new ManagedInstanceAzureADOnlyAuthenticationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedInstanceAzureADOnlyAuthenticationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceAzureADOnlyAuthenticationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedInstanceAzureADOnlyAuthenticationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedInstanceAzureADOnlyAuthenticationInner.innerProperties
+                        = ManagedInstanceAzureADOnlyAuthProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceAzureADOnlyAuthenticationInner;
+        });
     }
 }

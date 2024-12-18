@@ -5,37 +5,41 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdvisorStatus;
 import com.azure.resourcemanager.sql.models.AutoExecuteStatus;
 import com.azure.resourcemanager.sql.models.AutoExecuteStatusInheritedFrom;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties for a Database, Server or Elastic Pool Advisor. */
+/**
+ * Properties for a Database, Server or Elastic Pool Advisor.
+ */
 @Fluent
-public final class AdvisorProperties {
+public final class AdvisorProperties implements JsonSerializable<AdvisorProperties> {
     /*
      * Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview',
      * 'LimitedPublicPreview' and 'PrivatePreview'.
      */
-    @JsonProperty(value = "advisorStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AdvisorStatus advisorStatus;
 
     /*
      * Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor. Possible
      * values are 'Enabled' and 'Disabled'
      */
-    @JsonProperty(value = "autoExecuteStatus", required = true)
     private AutoExecuteStatus autoExecuteStatus;
 
     /*
-     * Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set
-     * on (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription',
-     * 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
+     * Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on
+     * (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription', 'Server',
+     * 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
      */
-    @JsonProperty(value = "autoExecuteStatusInheritedFrom", access = JsonProperty.Access.WRITE_ONLY)
     private AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom;
 
     /*
@@ -43,29 +47,28 @@ public final class AdvisorProperties {
      * values include, but are not limited to, 'Ok' (Recommendations available),LowActivity (not enough workload to
      * analyze), 'DbSeemsTuned' (Database is doing well), etc.
      */
-    @JsonProperty(value = "recommendationsStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendationsStatus;
 
     /*
      * Gets the time when the current resource was analyzed for recommendations by this advisor.
      */
-    @JsonProperty(value = "lastChecked", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastChecked;
 
     /*
      * Gets the recommended actions for this advisor.
      */
-    @JsonProperty(value = "recommendedActions", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedActionInner> recommendedActions;
 
-    /** Creates an instance of AdvisorProperties class. */
+    /**
+     * Creates an instance of AdvisorProperties class.
+     */
     public AdvisorProperties() {
     }
 
     /**
      * Get the advisorStatus property: Gets the status of availability of this advisor to customers. Possible values are
      * 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
-     *
+     * 
      * @return the advisorStatus value.
      */
     public AdvisorStatus advisorStatus() {
@@ -75,7 +78,7 @@ public final class AdvisorProperties {
     /**
      * Get the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @return the autoExecuteStatus value.
      */
     public AutoExecuteStatus autoExecuteStatus() {
@@ -85,7 +88,7 @@ public final class AdvisorProperties {
     /**
      * Set the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @param autoExecuteStatus the autoExecuteStatus value to set.
      * @return the AdvisorProperties object itself.
      */
@@ -99,7 +102,7 @@ public final class AdvisorProperties {
      * status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource
      * hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is
      * not explicitly set on any level).
-     *
+     * 
      * @return the autoExecuteStatusInheritedFrom value.
      */
     public AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom() {
@@ -110,7 +113,7 @@ public final class AdvisorProperties {
      * Get the recommendationsStatus property: Gets that status of recommendations for this advisor and reason for not
      * having any recommendations. Possible values include, but are not limited to, 'Ok' (Recommendations
      * available),LowActivity (not enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
-     *
+     * 
      * @return the recommendationsStatus value.
      */
     public String recommendationsStatus() {
@@ -120,7 +123,7 @@ public final class AdvisorProperties {
     /**
      * Get the lastChecked property: Gets the time when the current resource was analyzed for recommendations by this
      * advisor.
-     *
+     * 
      * @return the lastChecked value.
      */
     public OffsetDateTime lastChecked() {
@@ -129,7 +132,7 @@ public final class AdvisorProperties {
 
     /**
      * Get the recommendedActions property: Gets the recommended actions for this advisor.
-     *
+     * 
      * @return the recommendedActions value.
      */
     public List<RecommendedActionInner> recommendedActions() {
@@ -138,15 +141,14 @@ public final class AdvisorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (autoExecuteStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property autoExecuteStatus in model AdvisorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property autoExecuteStatus in model AdvisorProperties"));
         }
         if (recommendedActions() != null) {
             recommendedActions().forEach(e -> e.validate());
@@ -154,4 +156,56 @@ public final class AdvisorProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdvisorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoExecuteStatus",
+            this.autoExecuteStatus == null ? null : this.autoExecuteStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvisorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvisorProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdvisorProperties.
+     */
+    public static AdvisorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvisorProperties deserializedAdvisorProperties = new AdvisorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoExecuteStatus".equals(fieldName)) {
+                    deserializedAdvisorProperties.autoExecuteStatus = AutoExecuteStatus.fromString(reader.getString());
+                } else if ("advisorStatus".equals(fieldName)) {
+                    deserializedAdvisorProperties.advisorStatus = AdvisorStatus.fromString(reader.getString());
+                } else if ("autoExecuteStatusInheritedFrom".equals(fieldName)) {
+                    deserializedAdvisorProperties.autoExecuteStatusInheritedFrom
+                        = AutoExecuteStatusInheritedFrom.fromString(reader.getString());
+                } else if ("recommendationsStatus".equals(fieldName)) {
+                    deserializedAdvisorProperties.recommendationsStatus = reader.getString();
+                } else if ("lastChecked".equals(fieldName)) {
+                    deserializedAdvisorProperties.lastChecked = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recommendedActions".equals(fieldName)) {
+                    List<RecommendedActionInner> recommendedActions
+                        = reader.readArray(reader1 -> RecommendedActionInner.fromJson(reader1));
+                    deserializedAdvisorProperties.recommendedActions = recommendedActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvisorProperties;
+        });
+    }
 }

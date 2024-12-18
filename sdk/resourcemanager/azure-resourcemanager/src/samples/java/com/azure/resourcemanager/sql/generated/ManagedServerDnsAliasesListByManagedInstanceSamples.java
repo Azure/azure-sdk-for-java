@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedServerDnsAliases ListByManagedInstance. */
+/**
+ * Samples for ManagedServerDnsAliases ListByManagedInstance.
+ */
 public final class ManagedServerDnsAliasesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerDnsAliasList.json
      */
     /**
      * Sample code: List managed server DNS aliases.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedServerDNSAliases(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedServerDnsAliases()
-            .listByManagedInstance("Default", "dns-mi", Context.NONE);
+            .listByManagedInstance("Default", "dns-mi", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,68 +5,69 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a long term retention backup. */
+/**
+ * Properties of a long term retention backup.
+ */
 @Fluent
-public final class LongTermRetentionBackupProperties {
+public final class LongTermRetentionBackupProperties implements JsonSerializable<LongTermRetentionBackupProperties> {
     /*
      * The server name that the backup database belong to.
      */
-    @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /*
      * The create time of the server.
      */
-    @JsonProperty(value = "serverCreateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime serverCreateTime;
 
     /*
      * The name of the database the backup belong to
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * The delete time of the database
      */
-    @JsonProperty(value = "databaseDeletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime databaseDeletionTime;
 
     /*
      * The time the backup was taken
      */
-    @JsonProperty(value = "backupTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupTime;
 
     /*
      * The time the long term retention backup will expire.
      */
-    @JsonProperty(value = "backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupExpirationTime;
 
     /*
      * The storage redundancy type of the backup
      */
-    @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy backupStorageRedundancy;
 
     /*
      * The storage redundancy type of the backup
      */
-    @JsonProperty(value = "requestedBackupStorageRedundancy")
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
-    /** Creates an instance of LongTermRetentionBackupProperties class. */
+    /**
+     * Creates an instance of LongTermRetentionBackupProperties class.
+     */
     public LongTermRetentionBackupProperties() {
     }
 
     /**
      * Get the serverName property: The server name that the backup database belong to.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -75,7 +76,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the serverCreateTime property: The create time of the server.
-     *
+     * 
      * @return the serverCreateTime value.
      */
     public OffsetDateTime serverCreateTime() {
@@ -84,7 +85,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -93,7 +94,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -102,7 +103,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -111,7 +112,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -120,7 +121,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -129,7 +130,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -138,21 +139,79 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the LongTermRetentionBackupProperties object itself.
      */
-    public LongTermRetentionBackupProperties withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public LongTermRetentionBackupProperties
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("requestedBackupStorageRedundancy",
+            this.requestedBackupStorageRedundancy == null ? null : this.requestedBackupStorageRedundancy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionBackupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionBackupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LongTermRetentionBackupProperties.
+     */
+    public static LongTermRetentionBackupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionBackupProperties deserializedLongTermRetentionBackupProperties
+                = new LongTermRetentionBackupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverName".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.serverName = reader.getString();
+                } else if ("serverCreateTime".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.serverCreateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.databaseName = reader.getString();
+                } else if ("databaseDeletionTime".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.databaseDeletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupTime".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.backupTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupExpirationTime".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.backupExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupStorageRedundancy".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.backupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("requestedBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedLongTermRetentionBackupProperties.requestedBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionBackupProperties;
+        });
     }
 }

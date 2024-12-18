@@ -21,9 +21,15 @@ public final class AfdOriginsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDOriginsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdOrigins().update("RG", "profile1", "origingroup1",
-            "origin1", new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net").withHttpPort(80)
-                .withHttpsPort(443).withEnabledState(EnabledState.ENABLED),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdOrigins()
+            .update("RG", "profile1", "origingroup1", "origin1",
+                new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net")
+                    .withHttpPort(80)
+                    .withHttpsPort(443)
+                    .withEnabledState(EnabledState.ENABLED),
+                com.azure.core.util.Context.NONE);
     }
 }

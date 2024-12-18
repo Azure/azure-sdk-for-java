@@ -6,17 +6,20 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request body for CanMigrate operation.
  */
 @Fluent
-public final class CanMigrateParameters {
+public final class CanMigrateParameters implements JsonSerializable<CanMigrateParameters> {
     /*
      * Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
      */
-    @JsonProperty(value = "classicResourceReference", required = true)
     private ResourceReference classicResourceReference;
 
     /**
@@ -54,12 +57,50 @@ public final class CanMigrateParameters {
      */
     public void validate() {
         if (classicResourceReference() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property classicResourceReference in model CanMigrateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property classicResourceReference in model CanMigrateParameters"));
         } else {
             classicResourceReference().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CanMigrateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("classicResourceReference", this.classicResourceReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanMigrateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanMigrateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CanMigrateParameters.
+     */
+    public static CanMigrateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanMigrateParameters deserializedCanMigrateParameters = new CanMigrateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("classicResourceReference".equals(fieldName)) {
+                    deserializedCanMigrateParameters.classicResourceReference = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanMigrateParameters;
+        });
+    }
 }

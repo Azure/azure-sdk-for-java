@@ -52,6 +52,7 @@ public class AnalyzeAddOnFormulasAsync {
                 Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

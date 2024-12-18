@@ -54,8 +54,7 @@ public final class StatsbeatTestUtils {
         // index 36 retired in 3.3.0 GA (was jaxrs-client-2.0-resteasy-3.0)
         // index 37 retired in 3.3.0 GA (was logback-1.0)
         INSTRUMENTATION_MAP_DECODING.put(38, "io.opentelemetry.micrometer-1.0");
-        INSTRUMENTATION_MAP_DECODING.put(
-            39, "io.opentelemetry.mongo-3.1"); // mongo 4.0 is covered in 3.1
+        INSTRUMENTATION_MAP_DECODING.put(39, "io.opentelemetry.mongo-3.1"); // mongo 4.0 is covered in 3.1
         INSTRUMENTATION_MAP_DECODING.put(40, "io.opentelemetry.grizzly-2.0");
         INSTRUMENTATION_MAP_DECODING.put(41, "io.opentelemetry.quartz-2.0");
         INSTRUMENTATION_MAP_DECODING.put(42, "io.opentelemetry.apache-camel-2.20");
@@ -80,11 +79,9 @@ public final class StatsbeatTestUtils {
         INSTRUMENTATION_MAP_DECODING.put(61, "io.opentelemetry.jetty-11.0");
         INSTRUMENTATION_MAP_DECODING.put(62, "io.opentelemetry.liberty");
         INSTRUMENTATION_MAP_DECODING.put(63, "io.opentelemetry.liberty-dispatcher");
-        INSTRUMENTATION_MAP_DECODING.put(
-            64, "io.opentelemetry.methods"); // used by "custom instrumentation"
+        INSTRUMENTATION_MAP_DECODING.put(64, "io.opentelemetry.methods"); // used by "custom instrumentation"
         INSTRUMENTATION_MAP_DECODING.put(65, "io.opentelemetry.okhttp-2.2");
-        INSTRUMENTATION_MAP_DECODING.put(
-            66, "io.opentelemetry.opentelemetry-instrumentation-annotations-1.16");
+        INSTRUMENTATION_MAP_DECODING.put(66, "io.opentelemetry.opentelemetry-instrumentation-annotations-1.16");
         INSTRUMENTATION_MAP_DECODING.put(67, "io.opentelemetry.undertow-1.4");
         INSTRUMENTATION_MAP_DECODING.put(68, "io.opentelemetry.play-ws-1.0");
         INSTRUMENTATION_MAP_DECODING.put(69, "io.opentelemetry.play-ws-2.0");
@@ -143,8 +140,7 @@ public final class StatsbeatTestUtils {
         return decode(false, num, FEATURE_MAP_DECODING);
     }
 
-    private static <E> Set<E> decode(
-        boolean greaterThan64Bits, long num, Map<Integer, E> decodedMap) {
+    private static <E> Set<E> decode(boolean greaterThan64Bits, long num, Map<Integer, E> decodedMap) {
         Set<E> result = new HashSet<>();
         for (Map.Entry<Integer, E> entry : decodedMap.entrySet()) {
             int value = entry.getKey();

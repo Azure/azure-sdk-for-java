@@ -32,13 +32,13 @@ public final class ResourceParser {
     }
 
     // visible for testing
-    public void updateRoleNameAndInstance(
-        AbstractTelemetryBuilder builder, Resource resource) {
+    public void updateRoleNameAndInstance(AbstractTelemetryBuilder builder, Resource resource) {
 
         // update AKS role name and role instance
         if (AksResourceAttributes.isAks(resource)) {
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), AksResourceAttributes.getAksRoleName(resource));
-            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), AksResourceAttributes.getAksRoleInstance(resource));
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(),
+                AksResourceAttributes.getAksRoleInstance(resource));
             return;
         }
 

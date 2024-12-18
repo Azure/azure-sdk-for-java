@@ -729,14 +729,14 @@
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
 
 # PRLabel: %WebPubSub
-/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy
-/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy
+/sdk/webpubsub/azure-messaging-webpubsub-client/     @vicancy @chenkennt @zackliu
+/sdk/webpubsub/azure-messaging-webpubsub/            @vicancy @chenkennt 
 
 # ServiceLabel:  %WebPubSub
-# ServiceOwners:                                     @vicancy
+# ServiceOwners:                                     @vicancy @chenkennt
 
 # ServiceLabel:  %SignalR
-# ServiceOwners:                                     @vicancy
+# ServiceOwners:                                     @vicancy @chenkennt
 
 # ServiceLabel:  %SQL
 # ServiceOwners:                                     @azureSQLGitHub

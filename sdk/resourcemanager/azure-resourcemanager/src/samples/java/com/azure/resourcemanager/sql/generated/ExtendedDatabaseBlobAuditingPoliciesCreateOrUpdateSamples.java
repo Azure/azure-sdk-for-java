@@ -4,68 +4,59 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ExtendedDatabaseBlobAuditingPolicyInner;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
 import java.util.Arrays;
 import java.util.UUID;
 
-/** Samples for ExtendedDatabaseBlobAuditingPolicies CreateOrUpdate. */
+/**
+ * Samples for ExtendedDatabaseBlobAuditingPolicies CreateOrUpdate.
+ */
 public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMin
+     * .json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with minimal parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnExtendedDatabaseSBlobAuditingPolicyWithMinimalParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getExtendedDatabaseBlobAuditingPolicies()
-            .createOrUpdateWithResponse(
-                "blobauditingtest-4799",
-                "blobauditingtest-6440",
-                "testdb",
-                new ExtendedDatabaseBlobAuditingPolicyInner()
-                    .withState(BlobAuditingPolicyState.ENABLED)
+            .createOrUpdateWithResponse("blobauditingtest-4799", "blobauditingtest-6440", "testdb",
+                new ExtendedDatabaseBlobAuditingPolicyInner().withState(BlobAuditingPolicyState.ENABLED)
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseBlobAuditingCreateMax
+     * .json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with all parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnExtendedDatabaseSBlobAuditingPolicyWithAllParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getExtendedDatabaseBlobAuditingPolicies()
-            .createOrUpdateWithResponse(
-                "blobauditingtest-4799",
-                "blobauditingtest-6440",
-                "testdb",
-                new ExtendedDatabaseBlobAuditingPolicyInner()
-                    .withPredicateExpression("statement = 'select 1'")
+            .createOrUpdateWithResponse("blobauditingtest-4799", "blobauditingtest-6440", "testdb",
+                new ExtendedDatabaseBlobAuditingPolicyInner().withPredicateExpression("statement = 'select 1'")
                     .withRetentionDays(6)
-                    .withAuditActionsAndGroups(
-                        Arrays
-                            .asList(
-                                "DATABASE_LOGOUT_GROUP",
-                                "DATABASE_ROLE_MEMBER_CHANGE_GROUP",
-                                "UPDATE on database::TestDatabaseName by public"))
+                    .withAuditActionsAndGroups(Arrays.asList("DATABASE_LOGOUT_GROUP",
+                        "DATABASE_ROLE_MEMBER_CHANGE_GROUP", "UPDATE on database::TestDatabaseName by public"))
                     .withIsStorageSecondaryKeyInUse(false)
                     .withIsAzureMonitorTargetEnabled(true)
                     .withQueueDelayMs(4000)
@@ -73,31 +64,27 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
                     .withStorageEndpoint("https://mystorage.blob.core.windows.net")
                     .withStorageAccountAccessKey("fakeTokenPlaceholder")
                     .withStorageAccountSubscriptionId(UUID.fromString("00000000-1234-0000-5678-000000000000")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * ExtendedDatabaseAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's azure monitor auditing policy with minimal parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnExtendedDatabaseSAzureMonitorAuditingPolicyWithMinimalParameters(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getExtendedDatabaseBlobAuditingPolicies()
-            .createOrUpdateWithResponse(
-                "blobauditingtest-4799",
-                "blobauditingtest-6440",
-                "testdb",
-                new ExtendedDatabaseBlobAuditingPolicyInner()
-                    .withIsAzureMonitorTargetEnabled(true)
+            .createOrUpdateWithResponse("blobauditingtest-4799", "blobauditingtest-6440", "testdb",
+                new ExtendedDatabaseBlobAuditingPolicyInner().withIsAzureMonitorTargetEnabled(true)
                     .withState(BlobAuditingPolicyState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

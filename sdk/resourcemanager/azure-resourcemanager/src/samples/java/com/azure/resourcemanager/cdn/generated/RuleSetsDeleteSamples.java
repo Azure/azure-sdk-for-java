@@ -18,7 +18,10 @@ public final class RuleSetsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void ruleSetsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getRuleSets().delete("RG", "profile1", "ruleSet1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getRuleSets()
+            .delete("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

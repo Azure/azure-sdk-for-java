@@ -76,20 +76,11 @@ public enum Feature {
 
     static {
         javaVendorFeatureMap = new HashMap<>();
-        javaVendorFeatureMap.put(
-            "Oracle Corporation",
-            Feature
-                .JAVA_VENDOR_ORACLE); // https://www.oracle.com/technetwork/java/javase/downloads/index.html
-        javaVendorFeatureMap.put(
-            "Azul Systems, Inc.",
-            Feature.JAVA_VENDOR_MICROSOFT); // https://www.azul.com/downloads/zulu/
-        javaVendorFeatureMap.put(
-            "Microsoft", Feature.JAVA_VENDOR_MICROSOFT); // https://www.azul.com/downloads/zulu/
-        javaVendorFeatureMap.put(
-            "AdoptOpenJDK", Feature.JAVA_VENDOR_ADOPT_OPENJDK); // https://adoptopenjdk.net/
-        javaVendorFeatureMap.put(
-            "Red Hat, Inc.",
-            Feature.JAVA_VENDOR_REDHAT); // https://developers.redhat.com/products/openjdk/download/
+        javaVendorFeatureMap.put("Oracle Corporation", Feature.JAVA_VENDOR_ORACLE); // https://www.oracle.com/technetwork/java/javase/downloads/index.html
+        javaVendorFeatureMap.put("Azul Systems, Inc.", Feature.JAVA_VENDOR_MICROSOFT); // https://www.azul.com/downloads/zulu/
+        javaVendorFeatureMap.put("Microsoft", Feature.JAVA_VENDOR_MICROSOFT); // https://www.azul.com/downloads/zulu/
+        javaVendorFeatureMap.put("AdoptOpenJDK", Feature.JAVA_VENDOR_ADOPT_OPENJDK); // https://adoptopenjdk.net/
+        javaVendorFeatureMap.put("Red Hat, Inc.", Feature.JAVA_VENDOR_REDHAT); // https://developers.redhat.com/products/openjdk/download/
     }
 
     private final int bitmapIndex;

@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Read-only endpoint of the failover group instance. */
+/**
+ * Read-only endpoint of the failover group instance.
+ */
 @Fluent
-public final class InstanceFailoverGroupReadOnlyEndpoint {
+public final class InstanceFailoverGroupReadOnlyEndpoint
+    implements JsonSerializable<InstanceFailoverGroupReadOnlyEndpoint> {
     /*
      * Failover policy of the read-only endpoint for the failover group.
      */
-    @JsonProperty(value = "failoverPolicy")
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
 
-    /** Creates an instance of InstanceFailoverGroupReadOnlyEndpoint class. */
+    /**
+     * Creates an instance of InstanceFailoverGroupReadOnlyEndpoint class.
+     */
     public InstanceFailoverGroupReadOnlyEndpoint() {
     }
 
     /**
      * Get the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.
-     *
+     * 
      * @return the failoverPolicy value.
      */
     public ReadOnlyEndpointFailoverPolicy failoverPolicy() {
@@ -31,7 +39,7 @@ public final class InstanceFailoverGroupReadOnlyEndpoint {
 
     /**
      * Set the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.
-     *
+     * 
      * @param failoverPolicy the failoverPolicy value to set.
      * @return the InstanceFailoverGroupReadOnlyEndpoint object itself.
      */
@@ -42,9 +50,48 @@ public final class InstanceFailoverGroupReadOnlyEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverPolicy",
+            this.failoverPolicy == null ? null : this.failoverPolicy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstanceFailoverGroupReadOnlyEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstanceFailoverGroupReadOnlyEndpoint if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstanceFailoverGroupReadOnlyEndpoint.
+     */
+    public static InstanceFailoverGroupReadOnlyEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstanceFailoverGroupReadOnlyEndpoint deserializedInstanceFailoverGroupReadOnlyEndpoint
+                = new InstanceFailoverGroupReadOnlyEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverPolicy".equals(fieldName)) {
+                    deserializedInstanceFailoverGroupReadOnlyEndpoint.failoverPolicy
+                        = ReadOnlyEndpointFailoverPolicy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstanceFailoverGroupReadOnlyEndpoint;
+        });
     }
 }

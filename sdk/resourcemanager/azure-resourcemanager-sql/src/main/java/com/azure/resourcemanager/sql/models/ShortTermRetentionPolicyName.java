@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShortTermRetentionPolicyName. */
+/**
+ * Defines values for ShortTermRetentionPolicyName.
+ */
 public final class ShortTermRetentionPolicyName extends ExpandableStringEnum<ShortTermRetentionPolicyName> {
-    /** Static value default for ShortTermRetentionPolicyName. */
+    /**
+     * Static value default for ShortTermRetentionPolicyName.
+     */
     public static final ShortTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ShortTermRetentionPolicyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShortTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ShortTermRetentionPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ShortTermRetentionPolicyName.
      */
-    @JsonCreator
     public static ShortTermRetentionPolicyName fromString(String name) {
         return fromString(name, ShortTermRetentionPolicyName.class);
     }
 
     /**
      * Gets known ShortTermRetentionPolicyName values.
-     *
+     * 
      * @return known ShortTermRetentionPolicyName values.
      */
     public static Collection<ShortTermRetentionPolicyName> values() {

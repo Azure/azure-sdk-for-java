@@ -9,8 +9,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.Assertions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,11 +18,15 @@ import org.junit.jupiter.api.TestMethodOrder;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -31,7 +35,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     // Helpers
 
     private Map<String, Object> getTestRunBodyFromDict(String testId) {
-        Map<String, Object> testRunMap = new HashMap<String, Object>();
+        Map<String, Object> testRunMap = new HashMap<>();
         testRunMap.put("testId", testId);
         testRunMap.put("displayName", "Java SDK Sample Test Run Async");
         testRunMap.put("description", "Sample Test Run Async");
@@ -48,29 +52,32 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
         PollerFlux<BinaryData, BinaryData> poller = getLoadTestRunAsyncClient().beginTestRun(newTestRunIdAsync, body,
                 null);
         poller = setPlaybackPollerFluxPollInterval(poller);
-        StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete()).last()
-                .flatMap(AsyncPollResponse::getFinalResult)).assertNext(testRunBinary -> {
-                    try {
-                        JsonNode testRunNode = OBJECT_MAPPER.readTree(testRunBinary.toString());
-                        Assertions.assertTrue(testRunNode.get("testRunId").asText().equals(newTestRunIdAsync)
-                                && testRunNode.get("status").asText().equals("DONE"));
-                    } catch (Exception e) {
-                        Assertions.assertTrue(false);
-                    }
-                }).verifyComplete();
+        StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult))
+            .assertNext(testRunBinary -> {
+                try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                    assertEquals(newTestRunIdAsync, jsonTree.get("testRunId"));
+                    assertEquals("DONE", jsonTree.get("status"));
+                } catch (IOException e) {
+                    fail("Encountered exception while reading test run data", e);
+                }
+            })
+            .verifyComplete();
     }
 
     @Test
     @Order(2)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient().createOrUpdateAppComponentsWithResponse(
-                newTestRunIdAsync,
-                body,
-                null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
-        }).verifyComplete();
+        Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
+            .createOrUpdateAppComponentsWithResponse(newTestRunIdAsync, body, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode())))
+            .verifyComplete();
     }
 
     @Test
@@ -78,13 +85,11 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .createOrUpdateServerMetricsConfigWithResponse(
-                        newTestRunIdAsync,
-                        body,
-                        null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
-        }).verifyComplete();
+            .createOrUpdateServerMetricsConfigWithResponse(newTestRunIdAsync, body, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode())))
+            .verifyComplete();
     }
 
     // Gets
@@ -93,120 +98,162 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     @Order(4)
     public void getTestRunFile() {
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .getTestRunFileWithResponse(newTestRunIdAsync, uploadJmxFileName, null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName)
-                        && file.get("fileType").asText().equals("JMX_FILE"));
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
-            }
-            Assertions.assertEquals(200, response.getStatusCode());
-        }).verifyComplete();
+            .getTestRunFileWithResponse(newTestRunIdAsync, uploadJmxFileName, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                    assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
+                    assertEquals("JMX_FILE", jsonTree.get("fileType"));
+                } catch (IOException e) {
+                    fail("Encountered exception while reading test run file data", e);
+                }
+            })
+            .verifyComplete();
     }
 
     @Test
     @Order(5)
     public void getTestRun() {
-        Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient().getTestRunWithResponse(newTestRunIdAsync,
-                null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(test.get("testRunId").asText().equals(newTestRunIdAsync));
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
-            }
-            Assertions.assertEquals(200, response.getStatusCode());
-        }).verifyComplete();
+        Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
+            .getTestRunWithResponse(newTestRunIdAsync, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> {
+                try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                    assertEquals(newTestRunIdAsync, jsonTree.get("testRunId"));
+                } catch (IOException e) {
+                    fail("Encountered exception while reading test run data", e);
+                }
+
+                assertEquals(200, response.getStatusCode());
+            })
+            .verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(6)
     public void getAppComponents() {
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .getAppComponentsWithResponse(newTestRunIdAsync, null);
+            .getAppComponentsWithResponse(newTestRunIdAsync, null);
+
         StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId)
-                        && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText()
-                                .equalsIgnoreCase(defaultAppComponentResourceId));
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
+            assertEquals(200, response.getStatusCode());
+
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                Map<String, Object> components = (Map<String, Object>) jsonTree.get("components");
+
+                assertTrue(components.containsKey(defaultAppComponentResourceId));
+
+                Map<String, Object> appComponentResource =
+                    (Map<String, Object>) components.get(defaultAppComponentResourceId);
+
+                assertTrue(defaultAppComponentResourceId
+                    .equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
+            } catch (IOException e) {
+                fail("Encountered exception while reading app components", e);
             }
-            Assertions.assertEquals(200, response.getStatusCode());
         }).verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(7)
     public void getServerMetricsConfig() {
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .getServerMetricsConfigWithResponse(newTestRunIdAsync, null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-                Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics")
-                        .get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
-            } catch (Exception e) {
-                e.printStackTrace();
-                Assertions.assertTrue(false);
-            }
-            Assertions.assertEquals(200, response.getStatusCode());
-        }).verifyComplete();
+            .getServerMetricsConfigWithResponse(newTestRunIdAsync, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+
+                try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                    Map<String, Object> components = (Map<String, Object>) jsonTree.get("metrics");
+
+                    assertTrue(components.containsKey(defaultServerMetricId));
+
+                    Map<String, Object> appComponentResource =
+                        (Map<String, Object>) components.get(defaultServerMetricId);
+
+                    assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
+                } catch (IOException e) {
+                    fail("Encountered exception while reading server metrics", e);
+                }
+            })
+            .verifyComplete();
     }
 
+    @SuppressWarnings({ "WriteOnlyObject", "unchecked" })
     @Test
     @Order(8)
     public void listMetricNamespaces() {
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .getMetricNamespacesWithResponse(newTestRunIdAsync, null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                Iterator<JsonNode> metricNamespacesIterator = OBJECT_MAPPER.readTree(response.getValue().toString())
-                        .get("value").iterator();
-                boolean found = false;
-                while (metricNamespacesIterator.hasNext()) {
-                    JsonNode namespace = metricNamespacesIterator.next();
-                    if (namespace.get("name").asText().equals("LoadTestRunMetrics")) {
-                        found = true;
-                        break;
-                    }
+            .getMetricNamespacesWithResponse(newTestRunIdAsync, null);
+
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> {
+                try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                    List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
+                    AtomicBoolean found = new AtomicBoolean(false);
+
+                    metricNamespaces.forEach(namespace -> {
+                        Map<String, Object> namespaceMap = (Map<String, Object>) namespace;
+
+                        if (namespaceMap.get("name").equals("LoadTestRunMetrics")) {
+                            found.set(true);
+                        }
+                    });
+
+                    assertTrue(found.get());
+                } catch (IOException e) {
+                    fail("Encountered exception while reading metric namespaces", e);
                 }
-                Assertions.assertTrue(found);
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
-            }
-        }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(9)
     public void listMetricDefinitions() {
         Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient()
-                .getMetricDefinitionsWithResponse(newTestRunIdAsync, "LoadTestRunMetrics", null);
+            .getMetricDefinitionsWithResponse(newTestRunIdAsync, "LoadTestRunMetrics", null);
+
         StepVerifier.create(monoResponse).assertNext(response -> {
-            try {
-                Iterator<JsonNode> metricDefinitionsIterator = OBJECT_MAPPER.readTree(response.getValue().toString())
-                        .get("value").iterator();
-                boolean found = false;
-                while (metricDefinitionsIterator.hasNext()) {
-                    JsonNode definition = metricDefinitionsIterator.next();
-                    if (definition.get("namespace").asText().equals("LoadTestRunMetrics")
-                            && definition.get("name").asText() != null && definition.has("dimensions")) {
-                        found = true;
-                        break;
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
+                AtomicBoolean found = new AtomicBoolean(false);
+
+                metricDefinitions.forEach(definition -> {
+                    Map<String, Object> definitionMap = (Map<String, Object>) definition;
+
+                    if (definitionMap.get("namespace").equals("LoadTestRunMetrics")
+                        && definitionMap.get("name") != null
+                        && definitionMap.containsKey("dimensions")) {
+
+                        found.set(true);
                     }
-                }
-                Assertions.assertTrue(found);
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
+                });
+
+                assertTrue(found.get());
+            } catch (IOException e) {
+                fail("Encountered exception while reading metric definitions", e);
             }
         }).verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(10)
     public void listMetrics() {
@@ -214,29 +261,42 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
             .getTestRunWithResponse(newTestRunIdAsync, null)
             .flatMap(response -> {
                 String startDateTime = "", endDateTime = "";
-                try {
-                    JsonNode testRun = OBJECT_MAPPER.readTree(response.getValue().toString());
 
-                    startDateTime = testRun.get("startDateTime").asText();
-                    endDateTime = testRun.get("endDateTime").asText();
-                } catch (Exception e) {
-                    fail();
+                try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                    startDateTime = jsonTree.get("startDateTime").toString();
+                    endDateTime = jsonTree.get("endDateTime").toString();
+                } catch (IOException e) {
+                    fail("Encountered exception while reading metrics data", e);
                 }
 
                 String timespan = startDateTime + "/" + endDateTime;
-                PagedFlux<BinaryData> metricsResponse = getLoadTestRunAsyncClient().listMetrics(newTestRunIdAsync,
-                    "VirtualUsers", "LoadTestRunMetrics", timespan, null);
+                PagedFlux<BinaryData> metricsResponse = getLoadTestRunAsyncClient()
+                    .listMetrics(newTestRunIdAsync, "VirtualUsers", "LoadTestRunMetrics", timespan, null);
 
-                return metricsResponse.any((metricsBinary) -> {
-                    try {
-                        JsonNode metric = OBJECT_MAPPER.readTree(metricsBinary.toString());
-                        if (metric.has("data") && metric.get("data").get(0).has("value")) {
-                            return true;
+                return metricsResponse.any(metricsBinary -> {
+                    AtomicBoolean found = new AtomicBoolean(false);
+
+                    try (JsonReader jsonReader = JsonProviders.createReader(metricsBinary.toBytes())) {
+                        Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                        if (jsonTree.containsKey("data")) {
+                            List<Object> data = (List<Object>) jsonTree.get("data");
+
+                            data.forEach(metric -> {
+                                Map<String, Object> metricMap = (Map<String, Object>) metric;
+
+                                if (metricMap.containsKey("value")) {
+                                    found.set(true);
+                                }
+                            });
                         }
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         // no-op
                     }
-                    return false;
+
+                    return found.get();
                 });
             });
 
@@ -251,21 +311,26 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     @Test
     @Order(11)
     public void listTestRuns() {
-        RequestOptions reqOpts = new RequestOptions()
-                .addQueryParam("testId", existingTestId);
+        RequestOptions reqOpts = new RequestOptions().addQueryParam("testId", existingTestId);
         PagedFlux<BinaryData> response = getLoadTestRunAsyncClient().listTestRuns(reqOpts);
-        StepVerifier.create(response).expectNextMatches(testRunBinary -> {
-            try {
-                JsonNode testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
-                if (testRun.get("testRunId").asText().equals(newTestRunIdAsync)
-                        && testRun.get("testId").asText().equals(existingTestId)) {
+
+        StepVerifier.create(response)
+            .expectNextMatches(testRunBinary -> {
+                try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+                    Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                    assertEquals(newTestRunIdAsync, jsonTree.get("testRunId"));
+                    assertEquals(existingTestId, jsonTree.get("testId"));
+
                     return true;
+                } catch (IOException e) {
+                    // no-op
                 }
-            } catch (Exception e) {
-                // no-op
-            }
-            return false;
-        }).thenConsumeWhile(testRunBinary -> true).verifyComplete();
+
+                return false;
+            })
+            .thenConsumeWhile(testRunBinary -> true)
+            .verifyComplete();
     }
 
     // Deletes
@@ -274,6 +339,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     @Order(12)
     public void deleteTestRun() {
         StepVerifier.create(getLoadTestRunAsyncClient().deleteTestRunWithResponse(newTestRunIdAsync, null))
-                .expectNextCount(1).verifyComplete();
+            .expectNextCount(1)
+            .verifyComplete();
     }
 }

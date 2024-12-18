@@ -62,7 +62,6 @@ public class CustomDimensionsTest {
         customDimensions.populateProperties(telemetryBuilder, null);
 
         MetricsData data = (MetricsData) telemetryBuilder.build().getData().getBaseData();
-        assertThat(data.getProperties().get("runtimeVersion"))
-            .isEqualTo(System.getProperty("java.version"));
+        assertThat(data.getProperties().get("runtimeVersion")).isEqualTo(System.getProperty("java.version"));
     }
 }

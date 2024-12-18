@@ -45,6 +45,7 @@ public class AnalyzeIdentityDocumentsFromUrl {
             null,
             null,
             null,
+            null,
             null, new AnalyzeDocumentRequest().setUrlSource(licenseDocumentUrl));
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();

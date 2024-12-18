@@ -4,27 +4,34 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview',
  * 'LimitedPublicPreview' and 'PrivatePreview'.
  */
 public enum AdvisorStatus {
-    /** Enum value GA. */
+    /**
+     * Enum value GA.
+     */
     GA("GA"),
 
-    /** Enum value PublicPreview. */
+    /**
+     * Enum value PublicPreview.
+     */
     PUBLIC_PREVIEW("PublicPreview"),
 
-    /** Enum value LimitedPublicPreview. */
+    /**
+     * Enum value LimitedPublicPreview.
+     */
     LIMITED_PUBLIC_PREVIEW("LimitedPublicPreview"),
 
-    /** Enum value PrivatePreview. */
+    /**
+     * Enum value PrivatePreview.
+     */
     PRIVATE_PREVIEW("PrivatePreview");
 
-    /** The actual serialized value for a AdvisorStatus instance. */
+    /**
+     * The actual serialized value for a AdvisorStatus instance.
+     */
     private final String value;
 
     AdvisorStatus(String value) {
@@ -33,11 +40,10 @@ public enum AdvisorStatus {
 
     /**
      * Parses a serialized value to a AdvisorStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AdvisorStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static AdvisorStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +57,9 @@ public enum AdvisorStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

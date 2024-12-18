@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.28</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+  <version>1.0.0-beta.29</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
 
   <name>Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter</name>
   <description>This package contains Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter.</description>
@@ -38,6 +38,7 @@
       --add-opens com.azure.monitor.opentelemetry.exporter/com.azure.monitor.opentelemetry.exporter=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -162,7 +163,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The units that the limit is expressed in. */
+/**
+ * The units that the limit is expressed in.
+ */
 public final class LogSizeUnit extends ExpandableStringEnum<LogSizeUnit> {
-    /** Static value Megabytes for LogSizeUnit. */
+    /**
+     * Static value Megabytes for LogSizeUnit.
+     */
     public static final LogSizeUnit MEGABYTES = fromString("Megabytes");
 
-    /** Static value Gigabytes for LogSizeUnit. */
+    /**
+     * Static value Gigabytes for LogSizeUnit.
+     */
     public static final LogSizeUnit GIGABYTES = fromString("Gigabytes");
 
-    /** Static value Terabytes for LogSizeUnit. */
+    /**
+     * Static value Terabytes for LogSizeUnit.
+     */
     public static final LogSizeUnit TERABYTES = fromString("Terabytes");
 
-    /** Static value Petabytes for LogSizeUnit. */
+    /**
+     * Static value Petabytes for LogSizeUnit.
+     */
     public static final LogSizeUnit PETABYTES = fromString("Petabytes");
 
-    /** Static value Percent for LogSizeUnit. */
+    /**
+     * Static value Percent for LogSizeUnit.
+     */
     public static final LogSizeUnit PERCENT = fromString("Percent");
 
     /**
+     * Creates a new instance of LogSizeUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogSizeUnit() {
+    }
+
+    /**
      * Creates or finds a LogSizeUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogSizeUnit.
      */
-    @JsonCreator
     public static LogSizeUnit fromString(String name) {
         return fromString(name, LogSizeUnit.class);
     }
 
     /**
      * Gets known LogSizeUnit values.
-     *
+     * 
      * @return known LogSizeUnit values.
      */
     public static Collection<LogSizeUnit> values() {

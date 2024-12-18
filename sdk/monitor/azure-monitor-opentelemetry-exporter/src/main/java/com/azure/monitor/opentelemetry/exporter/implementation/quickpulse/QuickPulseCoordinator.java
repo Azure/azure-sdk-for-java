@@ -64,6 +64,7 @@ final class QuickPulseCoordinator implements Runnable {
             logger.error("QuickPulseCoordinator failed", t);
         }
     }
+
     @SuppressWarnings("try")
     private long sendData() {
         dataFetcher.prepareQuickPulseDataForSend(qpsServiceRedirectedEndpoint);
@@ -107,6 +108,7 @@ final class QuickPulseCoordinator implements Runnable {
                 pingMode = false;
                 dataSender.startSending();
                 return waitBetweenPostsInMillis;
+
             case QP_IS_OFF:
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis

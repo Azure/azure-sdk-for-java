@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * the type of action that should occur when the scale rule fires.
  */
@@ -46,7 +43,6 @@ public enum ScaleType {
      * @param value the serialized value to parse.
      * @return the parsed ScaleType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScaleType fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum ScaleType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.Integers;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -25,6 +26,7 @@ import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -211,56 +213,62 @@ public class ConsistencyWriter {
                 replicaStatusList.put(Uri.IGNORING, replicaStatuses);
                 replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryUri.getHealthStatusDiagnosticString())));
 
-                return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
-                                           .doOnError(
-                                               t -> {
-                                                   try {
-                                                       Throwable unwrappedException = Exceptions.unwrap(t);
-                                                       CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
-                                                       Exception rawException = null;
-                                                       if (ex == null) {
-                                                           rawException = Utils.as(unwrappedException, Exception.class);
+                return Mono.defer(() -> this.transportClient.invokeResourceOperationAsync(primaryUri, request)
+                        .doOnError(
+                            t -> {
+                                try {
+                                    Throwable unwrappedException = Exceptions.unwrap(t);
+                                    CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
+                                    Exception rawException = null;
+                                    if (ex == null) {
+                                        rawException = Utils.as(unwrappedException, Exception.class);
 
-                                                           if (rawException == null) {
-                                                               throw unwrappedException;
-                                                           }
-                                                       }
+                                        if (rawException == null) {
+                                            throw unwrappedException;
+                                        }
+                                    }
 
-                                                       storeReader.createAndRecordStoreResult(
-                                                           request,
-                                                           null, ex != null ? ex: rawException,
-                                                           false,
-                                                           false,
-                                                           primaryUri,
-                                                           replicaStatusList);
-                                                       String value = ex != null ?
-                                                           ex
-                                                               .getResponseHeaders()
-                                                               .get(HttpConstants
-                                                                   .HttpHeaders
-                                                                   .WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH) :
-                                                           null;
-                                                       if (!Strings.isNullOrWhiteSpace(value)) {
-                                                           Integer result = Integers.tryParse(value);
-                                                           if (result != null && result == 1) {
-                                                               startBackgroundAddressRefresh(request);
-                                                           }
-                                                       }
-                                                   } catch (Throwable throwable) {
-                                                       if (throwable instanceof Error) {
-                                                           logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
-                                                           logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
-                                                           throw (Error) throwable;
-                                                       } else {
-                                                           // this happens before any retry policy - like for example GoneAndRetryRetryPolicy
-                                                           // kicks in - no need to spam warn/error level logs yet
-                                                           logger.info("Unexpected failure in handling orig [{}]", t.getMessage(), t);
-                                                           logger.info("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
-                                                       }
-                                                   }
-                                               }
-                                           );
+                                    storeReader.createAndRecordStoreResult(
+                                        request,
+                                        null, ex != null ? ex : rawException,
+                                        false,
+                                        false,
+                                        primaryUri,
+                                        replicaStatusList);
+                                    String value = ex != null ?
+                                        ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH) : null;
+                                        if (!Strings.isNullOrWhiteSpace(value)) {
+                                            Integer result = Integers.tryParse(value);
+                                            if (result != null && result == 1) {
+                                                startBackgroundAddressRefresh(request);
+                                            }
+                                        }
+                                    } catch (Throwable throwable) {
+                                        if (throwable instanceof Error) {
+                                            logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
+                                            throw (Error) throwable;
+                                        } else {
+                                            // this happens before any retry policy - like for example GoneAndRetryRetryPolicy
+                                            // kicks in - no need to spam warn/error level logs yet
+                                            logger.info("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
+                                        }
+                                    }
+                                }
+                            ))
+                        .doOnError(throwable -> {
+                            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
+                            if (cosmosException != null) {
+                                throw cosmosException;
+                            }
+
+                            String errorMessage = "Unexpected exception " + throwable.getMessage() + " received while reading from store.";
+
+                            throw new InternalServerErrorException(
+                                com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
+                                (Exception) throwable,
+                                HttpConstants.SubStatusCodes.INVALID_RESULT);
+                        });
             }).flatMap(response -> {
                 storeReader.createAndRecordStoreResult(
                         request,

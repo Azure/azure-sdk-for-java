@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Role of the linked server.
  */
@@ -36,7 +33,6 @@ public enum ReplicationRole {
      * @param value the serialized value to parse.
      * @return the parsed ReplicationRole object, or null if unable to parse.
      */
-    @JsonCreator
     public static ReplicationRole fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum ReplicationRole {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

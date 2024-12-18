@@ -5,16 +5,22 @@
 package com.azure.mixedreality.authentication.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Represents a token response message from the STS service. */
 @Fluent
-public final class StsTokenResponseMessage {
+public final class StsTokenResponseMessage implements JsonSerializable<StsTokenResponseMessage> {
     /*
      * An access token for the account.
      */
-    @JsonProperty(value = "AccessToken", required = true)
     private String accessToken;
+
+    /** Creates an instance of StsTokenResponseMessage class. */
+    public StsTokenResponseMessage() {}
 
     /**
      * Get the accessToken property: An access token for the account.
@@ -34,5 +40,40 @@ public final class StsTokenResponseMessage {
     public StsTokenResponseMessage setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("AccessToken", this.accessToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StsTokenResponseMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StsTokenResponseMessage if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StsTokenResponseMessage.
+     */
+    public static StsTokenResponseMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("AccessToken".equals(fieldName)) {
+                            deserializedStsTokenResponseMessage.accessToken = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedStsTokenResponseMessage;
+                });
     }
 }

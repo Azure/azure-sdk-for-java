@@ -5,77 +5,74 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The latest run of this disco group with some limited information, null if the group has never been run.
  */
 @Immutable
-public final class DiscoRunResult {
+public final class DiscoRunResult implements JsonSerializable<DiscoRunResult> {
 
     /*
      * The date for when the disco run was created in the system.
      */
     @Generated
-    @JsonProperty(value = "submittedDate")
     private OffsetDateTime submittedDate;
 
     /*
      * The date for when the disco run was actually started by the system.
      */
     @Generated
-    @JsonProperty(value = "startedDate")
     private OffsetDateTime startedDate;
 
     /*
      * The date for when the disco run was completed by the system.
      */
     @Generated
-    @JsonProperty(value = "completedDate")
     private OffsetDateTime completedDate;
 
     /*
      * The tier which will affect the algorithm used for the disco run.
      */
     @Generated
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The State of the disco run.
      */
     @Generated
-    @JsonProperty(value = "state")
     private DiscoRunState state;
 
     /*
      * The total count of assets that were found this disco run.
      */
     @Generated
-    @JsonProperty(value = "totalAssetsFoundCount")
     private Long totalAssetsFoundCount;
 
     /*
      * The list of seeds used for the disco run.
      */
     @Generated
-    @JsonProperty(value = "seeds")
     private List<DiscoSource> seeds;
 
     /*
      * The list of excludes used for the disco run, aka assets to exclude from the discovery algorithm.
      */
     @Generated
-    @JsonProperty(value = "excludes")
     private List<DiscoSource> excludes;
 
     /*
      * The list of names used for the disco run.
      */
     @Generated
-    @JsonProperty(value = "names")
     private List<String> names;
 
     /**
@@ -174,5 +171,74 @@ public final class DiscoRunResult {
     @Generated
     public List<String> getNames() {
         return this.names;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("submittedDate",
+            this.submittedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.submittedDate));
+        jsonWriter.writeStringField("startedDate",
+            this.startedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedDate));
+        jsonWriter.writeStringField("completedDate",
+            this.completedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedDate));
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeNumberField("totalAssetsFoundCount", this.totalAssetsFoundCount);
+        jsonWriter.writeArrayField("seeds", this.seeds, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("excludes", this.excludes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("names", this.names, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoRunResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoRunResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiscoRunResult.
+     */
+    @Generated
+    public static DiscoRunResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoRunResult deserializedDiscoRunResult = new DiscoRunResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("submittedDate".equals(fieldName)) {
+                    deserializedDiscoRunResult.submittedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startedDate".equals(fieldName)) {
+                    deserializedDiscoRunResult.startedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedDate".equals(fieldName)) {
+                    deserializedDiscoRunResult.completedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tier".equals(fieldName)) {
+                    deserializedDiscoRunResult.tier = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDiscoRunResult.state = DiscoRunState.fromString(reader.getString());
+                } else if ("totalAssetsFoundCount".equals(fieldName)) {
+                    deserializedDiscoRunResult.totalAssetsFoundCount = reader.getNullable(JsonReader::getLong);
+                } else if ("seeds".equals(fieldName)) {
+                    List<DiscoSource> seeds = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
+                    deserializedDiscoRunResult.seeds = seeds;
+                } else if ("excludes".equals(fieldName)) {
+                    List<DiscoSource> excludes = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
+                    deserializedDiscoRunResult.excludes = excludes;
+                } else if ("names".equals(fieldName)) {
+                    List<String> names = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoRunResult.names = names;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDiscoRunResult;
+        });
     }
 }

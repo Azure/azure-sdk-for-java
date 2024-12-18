@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class KnownLogFilesDataSourceFormat extends ExpandableStringEnum<Kn
      * @param name a name to look for.
      * @return the corresponding KnownLogFilesDataSourceFormat.
      */
-    @JsonCreator
     public static KnownLogFilesDataSourceFormat fromString(String name) {
         return fromString(name, KnownLogFilesDataSourceFormat.class);
     }

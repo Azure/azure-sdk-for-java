@@ -52,6 +52,7 @@ public class AnalyzeAddOnFonts {
                 Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

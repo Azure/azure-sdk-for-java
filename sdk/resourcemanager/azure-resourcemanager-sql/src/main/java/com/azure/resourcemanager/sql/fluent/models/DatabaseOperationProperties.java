@@ -5,104 +5,99 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a database operation. */
+/**
+ * The properties of a database operation.
+ */
 @Immutable
-public final class DatabaseOperationProperties {
+public final class DatabaseOperationProperties implements JsonSerializable<DatabaseOperationProperties> {
     /*
      * The name of the database the operation is being performed on.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * The name of operation.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The friendly name of operation.
      */
-    @JsonProperty(value = "operationFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String operationFriendlyName;
 
     /*
      * The percentage of the operation completed.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
      * The name of the server.
      */
-    @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /*
      * The operation start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The operation state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementOperationState state;
 
     /*
      * The operation error code.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /*
      * The operation error description.
      */
-    @JsonProperty(value = "errorDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String errorDescription;
 
     /*
      * The operation error severity.
      */
-    @JsonProperty(value = "errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorSeverity;
 
     /*
      * Whether or not the error is a user error.
      */
-    @JsonProperty(value = "isUserError", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isUserError;
 
     /*
      * The estimated completion time of the operation.
      */
-    @JsonProperty(value = "estimatedCompletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime estimatedCompletionTime;
 
     /*
      * The operation description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Whether the operation can be cancelled.
      */
-    @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
-    /** Creates an instance of DatabaseOperationProperties class. */
+    /**
+     * Creates an instance of DatabaseOperationProperties class.
+     */
     public DatabaseOperationProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database the operation is being performed on.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -111,7 +106,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the operation property: The name of operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -120,7 +115,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the operationFriendlyName property: The friendly name of operation.
-     *
+     * 
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
@@ -129,7 +124,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the percentComplete property: The percentage of the operation completed.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -138,7 +133,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the serverName property: The name of the server.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -147,7 +142,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the startTime property: The operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -156,7 +151,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the state property: The operation state.
-     *
+     * 
      * @return the state value.
      */
     public ManagementOperationState state() {
@@ -165,7 +160,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorCode property: The operation error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -174,7 +169,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorDescription property: The operation error description.
-     *
+     * 
      * @return the errorDescription value.
      */
     public String errorDescription() {
@@ -183,7 +178,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorSeverity property: The operation error severity.
-     *
+     * 
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -192,7 +187,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the isUserError property: Whether or not the error is a user error.
-     *
+     * 
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -201,7 +196,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the estimatedCompletionTime property: The estimated completion time of the operation.
-     *
+     * 
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
@@ -210,7 +205,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the description property: The operation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -219,7 +214,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the isCancellable property: Whether the operation can be cancelled.
-     *
+     * 
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
@@ -228,9 +223,73 @@ public final class DatabaseOperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseOperationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseOperationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseOperationProperties.
+     */
+    public static DatabaseOperationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseOperationProperties deserializedDatabaseOperationProperties = new DatabaseOperationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.databaseName = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.operation = reader.getString();
+                } else if ("operationFriendlyName".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.operationFriendlyName = reader.getString();
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.serverName = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.state
+                        = ManagementOperationState.fromString(reader.getString());
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorDescription".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.errorDescription = reader.getString();
+                } else if ("errorSeverity".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.errorSeverity = reader.getNullable(JsonReader::getInt);
+                } else if ("isUserError".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.isUserError = reader.getNullable(JsonReader::getBoolean);
+                } else if ("estimatedCompletionTime".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.estimatedCompletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.description = reader.getString();
+                } else if ("isCancellable".equals(fieldName)) {
+                    deserializedDatabaseOperationProperties.isCancellable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseOperationProperties;
+        });
     }
 }

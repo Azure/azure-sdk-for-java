@@ -6,44 +6,43 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Create properties for a linked server.
  */
 @Fluent
-public class RedisLinkedServerCreateProperties {
+public class RedisLinkedServerCreateProperties implements JsonSerializable<RedisLinkedServerCreateProperties> {
     /*
      * Fully qualified resourceId of the linked redis cache.
      */
-    @JsonProperty(value = "linkedRedisCacheId", required = true)
     private String linkedRedisCacheId;
 
     /*
      * Location of the linked redis cache.
      */
-    @JsonProperty(value = "linkedRedisCacheLocation", required = true)
     private String linkedRedisCacheLocation;
 
     /*
      * Role of the linked server.
      */
-    @JsonProperty(value = "serverRole", required = true)
     private ReplicationRole serverRole;
 
     /*
      * The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
      * seamless Geo Failover experience.
      */
-    @JsonProperty(value = "geoReplicatedPrimaryHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String geoReplicatedPrimaryHostname;
 
     /*
      * The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
      * after the Geo Failover.
      */
-    @JsonProperty(value = "primaryHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryHostname;
 
     /**
@@ -123,6 +122,18 @@ public class RedisLinkedServerCreateProperties {
     }
 
     /**
+     * Set the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     * 
+     * @param geoReplicatedPrimaryHostname the geoReplicatedPrimaryHostname value to set.
+     * @return the RedisLinkedServerCreateProperties object itself.
+     */
+    RedisLinkedServerCreateProperties withGeoReplicatedPrimaryHostname(String geoReplicatedPrimaryHostname) {
+        this.geoReplicatedPrimaryHostname = geoReplicatedPrimaryHostname;
+        return this;
+    }
+
+    /**
      * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
      * linked redis caches before or after the Geo Failover.
      * 
@@ -130,6 +141,18 @@ public class RedisLinkedServerCreateProperties {
      */
     public String primaryHostname() {
         return this.primaryHostname;
+    }
+
+    /**
+     * Set the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     * 
+     * @param primaryHostname the primaryHostname value to set.
+     * @return the RedisLinkedServerCreateProperties object itself.
+     */
+    RedisLinkedServerCreateProperties withPrimaryHostname(String primaryHostname) {
+        this.primaryHostname = primaryHostname;
+        return this;
     }
 
     /**
@@ -156,4 +179,53 @@ public class RedisLinkedServerCreateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisLinkedServerCreateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linkedRedisCacheId", this.linkedRedisCacheId);
+        jsonWriter.writeStringField("linkedRedisCacheLocation", this.linkedRedisCacheLocation);
+        jsonWriter.writeStringField("serverRole", this.serverRole == null ? null : this.serverRole.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisLinkedServerCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisLinkedServerCreateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisLinkedServerCreateProperties.
+     */
+    public static RedisLinkedServerCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisLinkedServerCreateProperties deserializedRedisLinkedServerCreateProperties
+                = new RedisLinkedServerCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedRedisCacheId".equals(fieldName)) {
+                    deserializedRedisLinkedServerCreateProperties.linkedRedisCacheId = reader.getString();
+                } else if ("linkedRedisCacheLocation".equals(fieldName)) {
+                    deserializedRedisLinkedServerCreateProperties.linkedRedisCacheLocation = reader.getString();
+                } else if ("serverRole".equals(fieldName)) {
+                    deserializedRedisLinkedServerCreateProperties.serverRole
+                        = ReplicationRole.fromString(reader.getString());
+                } else if ("geoReplicatedPrimaryHostName".equals(fieldName)) {
+                    deserializedRedisLinkedServerCreateProperties.geoReplicatedPrimaryHostname = reader.getString();
+                } else if ("primaryHostName".equals(fieldName)) {
+                    deserializedRedisLinkedServerCreateProperties.primaryHostname = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisLinkedServerCreateProperties;
+        });
+    }
 }

@@ -6,33 +6,53 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.InstancePoolLicenseType;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An Azure SQL instance pool. */
+/**
+ * An Azure SQL instance pool.
+ */
 @Fluent
 public final class InstancePoolInner extends Resource {
     /*
      * The name and tier of the SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private InstancePoolProperties innerProperties;
 
-    /** Creates an instance of InstancePoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InstancePoolInner class.
+     */
     public InstancePoolInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -41,7 +61,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -52,21 +72,55 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InstancePoolProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstancePoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstancePoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +129,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -84,7 +138,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -98,7 +152,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Get the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -107,7 +161,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Set the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -122,7 +176,7 @@ public final class InstancePoolInner extends Resource {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
@@ -132,7 +186,7 @@ public final class InstancePoolInner extends Resource {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InstancePoolInner object itself.
      */
@@ -146,7 +200,7 @@ public final class InstancePoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -156,5 +210,58 @@ public final class InstancePoolInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstancePoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstancePoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InstancePoolInner.
+     */
+    public static InstancePoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstancePoolInner deserializedInstancePoolInner = new InstancePoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInstancePoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInstancePoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInstancePoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedInstancePoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInstancePoolInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedInstancePoolInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInstancePoolInner.innerProperties = InstancePoolProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstancePoolInner;
+        });
     }
 }

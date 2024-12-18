@@ -5,21 +5,26 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
+import com.azure.digitaltwins.core.DigitalTwinsClient;
 
 /**
- * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions)}
+ * The optional parameters for {@link DigitalTwinsClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions, Context)}
+ * and {@link DigitalTwinsAsyncClient#listEventRoutes(ListDigitalTwinsEventRoutesOptions)}
  */
 @Fluent
 public final class ListDigitalTwinsEventRoutesOptions {
     /*
-     * The maximum number of items to retrieve per request. The server may
-     * choose to return less than the requested number.
+     * The maximum number of items to retrieve per request. The server may choose to return less than the requested
+     * number.
      */
-    @JsonProperty(value = "MaxItemsPerPage")
     private Integer maxItemsPerPage;
+
+    /**
+     * Creates a new instance of {@link ListDigitalTwinsEventRoutesOptions}.
+     */
+    public ListDigitalTwinsEventRoutesOptions() {
+    }
 
     /**
      * Get the maxItemsPerPage property: The maximum number of items to retrieve per request. The server may choose to

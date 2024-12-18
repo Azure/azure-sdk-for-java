@@ -19,7 +19,6 @@ import java.util.concurrent.CountDownLatch;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.deserialize;
 
-
 final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     private final CountDownLatch countDown;
@@ -31,17 +30,14 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(
-        HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         url = context.getHttpRequest().getUrl();
-        Mono<byte[]> asyncBytes =
-            FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                .map(LocalStorageTelemetryPipelineListener::ungzip);
-        asyncBytes.subscribe(
-            value -> {
-                actualTelemetryItems.addAll(deserialize(value));
-                countDown.countDown();
-            });
+        Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+            .map(LocalStorageTelemetryPipelineListener::ungzip);
+        asyncBytes.subscribe(value -> {
+            actualTelemetryItems.addAll(deserialize(value));
+            countDown.countDown();
+        });
         return next.process();
     }
 

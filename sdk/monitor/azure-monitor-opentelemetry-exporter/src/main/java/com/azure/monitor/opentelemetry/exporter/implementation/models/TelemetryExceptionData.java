@@ -203,7 +203,8 @@ public final class TelemetryExceptionData extends MonitorDomain {
                 if ("ver".equals(fieldName)) {
                     deserializedTelemetryExceptionData.setVersion(reader.getInt());
                 } else if ("exceptions".equals(fieldName)) {
-                    deserializedTelemetryExceptionData.exceptions = reader.readArray(TelemetryExceptionDetails::fromJson);
+                    deserializedTelemetryExceptionData.exceptions
+                        = reader.readArray(TelemetryExceptionDetails::fromJson);
                 } else if ("severityLevel".equals(fieldName)) {
                     deserializedTelemetryExceptionData.severityLevel = SeverityLevel.fromString(reader.getString());
                 } else if ("problemId".equals(fieldName)) {

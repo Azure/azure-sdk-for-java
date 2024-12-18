@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Principal Type of the sever administrator. */
+/**
+ * Principal Type of the sever administrator.
+ */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
-    /** Static value User for PrincipalType. */
+    /**
+     * Static value User for PrincipalType.
+     */
     public static final PrincipalType USER = fromString("User");
 
-    /** Static value Group for PrincipalType. */
+    /**
+     * Static value Group for PrincipalType.
+     */
     public static final PrincipalType GROUP = fromString("Group");
 
-    /** Static value Application for PrincipalType. */
+    /**
+     * Static value Application for PrincipalType.
+     */
     public static final PrincipalType APPLICATION = fromString("Application");
 
     /**
+     * Creates a new instance of PrincipalType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrincipalType() {
+    }
+
+    /**
      * Creates or finds a PrincipalType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrincipalType.
      */
-    @JsonCreator
     public static PrincipalType fromString(String name) {
         return fromString(name, PrincipalType.class);
     }
 
     /**
      * Gets known PrincipalType values.
-     *
+     * 
      * @return known PrincipalType values.
      */
     public static Collection<PrincipalType> values() {

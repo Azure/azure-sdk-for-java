@@ -25,31 +25,24 @@ class LocalFilePurger implements Runnable {
 
     private final OperationLogger operationLogger;
 
-    private final ScheduledExecutorService scheduledExecutor =
-        Executors.newSingleThreadScheduledExecutor(
-            ThreadPoolUtils.createDaemonThreadFactory(LocalFilePurger.class));
+    private final ScheduledExecutorService scheduledExecutor
+        = Executors.newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(LocalFilePurger.class));
 
-    LocalFilePurger(
-        File folder, boolean suppressWarnings) { // used to suppress warnings from statsbeat
+    LocalFilePurger(File folder, boolean suppressWarnings) { // used to suppress warnings from statsbeat
         this(folder, TimeUnit.DAYS.toSeconds(2), TimeUnit.DAYS.toSeconds(1), suppressWarnings);
     }
 
     // visible for testing
-    LocalFilePurger(
-        File folder,
-        long expiredIntervalSeconds,
-        long purgeIntervalSeconds,
-        boolean suppressWarnings) { // used to suppress warnings from statsbeat
+    LocalFilePurger(File folder, long expiredIntervalSeconds, long purgeIntervalSeconds, boolean suppressWarnings) { // used to suppress warnings from statsbeat
         this.folder = folder;
         this.expiredIntervalSeconds = expiredIntervalSeconds;
 
-        operationLogger =
-            suppressWarnings
-                ? OperationLogger.NOOP
-                : new OperationLogger(LocalFilePurger.class, "Purging expired telemetry from disk");
+        operationLogger = suppressWarnings
+            ? OperationLogger.NOOP
+            : new OperationLogger(LocalFilePurger.class, "Purging expired telemetry from disk");
 
-        scheduledExecutor.scheduleWithFixedDelay(
-            this, Math.min(purgeIntervalSeconds, 60), purgeIntervalSeconds, SECONDS);
+        scheduledExecutor.scheduleWithFixedDelay(this, Math.min(purgeIntervalSeconds, 60), purgeIntervalSeconds,
+            SECONDS);
     }
 
     void shutdown() {
@@ -65,8 +58,8 @@ class LocalFilePurger implements Runnable {
         for (File file : FileUtil.listTrnFiles(folder)) {
             if (LocalFileCache.isExpired(file, expiredIntervalSeconds)) {
                 if (!FileUtil.deleteFileWithRetries(file)) {
-                    operationLogger.recordFailure(
-                        "Unable to delete file: " + file.getAbsolutePath(), DISK_PERSISTENCE_PURGE_ERROR);
+                    operationLogger.recordFailure("Unable to delete file: " + file.getAbsolutePath(),
+                        DISK_PERSISTENCE_PURGE_ERROR);
                 } else {
                     operationLogger.recordSuccess();
                 }

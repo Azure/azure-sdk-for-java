@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains information of estimated or observed impact on various metrics for an Azure SQL Database, Server or Elastic
  * Pool Recommended Action.
  */
 @Immutable
-public final class RecommendedActionImpactRecord {
+public final class RecommendedActionImpactRecord implements JsonSerializable<RecommendedActionImpactRecord> {
     /*
      * Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange, NumberOfQueriesAffected.
      */
-    @JsonProperty(value = "dimensionName", access = JsonProperty.Access.WRITE_ONLY)
     private String dimensionName;
 
     /*
      * Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange, NumberOfQueriesAffected.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * Gets the absolute value of this dimension if applicable. e.g., Number of Queries affected
      */
-    @JsonProperty(value = "absoluteValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double absoluteValue;
 
     /*
      * Gets the absolute change in the value of this dimension. e.g., Absolute Disk space change in Megabytes
      */
-    @JsonProperty(value = "changeValueAbsolute", access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueAbsolute;
 
     /*
      * Gets the relative change in the value of this dimension. e.g., Relative Disk space change in Percentage
      */
-    @JsonProperty(value = "changeValueRelative", access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueRelative;
 
-    /** Creates an instance of RecommendedActionImpactRecord class. */
+    /**
+     * Creates an instance of RecommendedActionImpactRecord class.
+     */
     public RecommendedActionImpactRecord() {
     }
 
     /**
      * Get the dimensionName property: Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange,
      * NumberOfQueriesAffected.
-     *
+     * 
      * @return the dimensionName value.
      */
     public String dimensionName() {
@@ -60,7 +61,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the unit property: Gets the name of the impact dimension. e.g., CPUChange, DiskSpaceChange,
      * NumberOfQueriesAffected.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -70,7 +71,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the absoluteValue property: Gets the absolute value of this dimension if applicable. e.g., Number of Queries
      * affected.
-     *
+     * 
      * @return the absoluteValue value.
      */
     public Double absoluteValue() {
@@ -80,7 +81,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the changeValueAbsolute property: Gets the absolute change in the value of this dimension. e.g., Absolute
      * Disk space change in Megabytes.
-     *
+     * 
      * @return the changeValueAbsolute value.
      */
     public Double changeValueAbsolute() {
@@ -90,7 +91,7 @@ public final class RecommendedActionImpactRecord {
     /**
      * Get the changeValueRelative property: Gets the relative change in the value of this dimension. e.g., Relative
      * Disk space change in Percentage.
-     *
+     * 
      * @return the changeValueRelative value.
      */
     public Double changeValueRelative() {
@@ -99,9 +100,55 @@ public final class RecommendedActionImpactRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedActionImpactRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedActionImpactRecord if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendedActionImpactRecord.
+     */
+    public static RecommendedActionImpactRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedActionImpactRecord deserializedRecommendedActionImpactRecord
+                = new RecommendedActionImpactRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dimensionName".equals(fieldName)) {
+                    deserializedRecommendedActionImpactRecord.dimensionName = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedRecommendedActionImpactRecord.unit = reader.getString();
+                } else if ("absoluteValue".equals(fieldName)) {
+                    deserializedRecommendedActionImpactRecord.absoluteValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("changeValueAbsolute".equals(fieldName)) {
+                    deserializedRecommendedActionImpactRecord.changeValueAbsolute
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("changeValueRelative".equals(fieldName)) {
+                    deserializedRecommendedActionImpactRecord.changeValueRelative
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedActionImpactRecord;
+        });
     }
 }

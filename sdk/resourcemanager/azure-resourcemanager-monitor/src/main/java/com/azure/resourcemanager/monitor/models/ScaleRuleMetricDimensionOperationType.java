@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class ScaleRuleMetricDimensionOperationType
      * @param name a name to look for.
      * @return the corresponding ScaleRuleMetricDimensionOperationType.
      */
-    @JsonCreator
     public static ScaleRuleMetricDimensionOperationType fromString(String name) {
         return fromString(name, ScaleRuleMetricDimensionOperationType.class);
     }

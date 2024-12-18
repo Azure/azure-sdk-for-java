@@ -13,7 +13,7 @@ public enum DigitalTwinsServiceVersion implements ServiceVersion {
      * Service version {@code 2020-10-31}.
      */
     V2020_10_31("2020-10-31"),
-    
+
     /**
      * Service version {@code 2022-05-31}.
      */
@@ -35,6 +35,7 @@ public enum DigitalTwinsServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service API version of Azure Digital Twins that is supported by this client.
+     *
      * @return The latest service API version of Azure Digital Twins that is supported by this client.
      */
     public static DigitalTwinsServiceVersion getLatest() {

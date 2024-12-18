@@ -47,10 +47,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
     }
 
     public String toString() {
-        return "ErrorResponse{" +
-            "index=" + index +
-            ", statusCode=" + statusCode +
-            ", message='" + message + '}';
+        return "ErrorResponse{" + "index=" + index + ", statusCode=" + statusCode + ", message='" + message + '}';
     }
 
     @Override
@@ -90,4 +87,3 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
         });
     }
 }
-

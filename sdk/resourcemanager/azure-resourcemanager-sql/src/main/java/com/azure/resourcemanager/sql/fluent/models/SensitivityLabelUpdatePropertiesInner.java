@@ -6,49 +6,53 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SensitivityLabelUpdateKind;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an operation executed on a sensitivity label. */
+/**
+ * Properties of an operation executed on a sensitivity label.
+ */
 @Fluent
-public final class SensitivityLabelUpdatePropertiesInner {
+public final class SensitivityLabelUpdatePropertiesInner
+    implements JsonSerializable<SensitivityLabelUpdatePropertiesInner> {
     /*
      * The op property.
      */
-    @JsonProperty(value = "op", required = true)
     private SensitivityLabelUpdateKind op;
 
     /*
      * Schema name of the column to update.
      */
-    @JsonProperty(value = "schema", required = true)
     private String schema;
 
     /*
      * Table name of the column to update.
      */
-    @JsonProperty(value = "table", required = true)
     private String table;
 
     /*
      * Column name to update.
      */
-    @JsonProperty(value = "column", required = true)
     private String column;
 
     /*
      * The sensitivity label information to apply on a column.
      */
-    @JsonProperty(value = "sensitivityLabel")
     private SensitivityLabelInner sensitivityLabel;
 
-    /** Creates an instance of SensitivityLabelUpdatePropertiesInner class. */
+    /**
+     * Creates an instance of SensitivityLabelUpdatePropertiesInner class.
+     */
     public SensitivityLabelUpdatePropertiesInner() {
     }
 
     /**
      * Get the op property: The op property.
-     *
+     * 
      * @return the op value.
      */
     public SensitivityLabelUpdateKind op() {
@@ -57,7 +61,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the op property: The op property.
-     *
+     * 
      * @param op the op value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -68,7 +72,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the schema property: Schema name of the column to update.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -77,7 +81,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the schema property: Schema name of the column to update.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -88,7 +92,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the table property: Table name of the column to update.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -97,7 +101,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the table property: Table name of the column to update.
-     *
+     * 
      * @param table the table value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -108,7 +112,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the column property: Column name to update.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -117,7 +121,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the column property: Column name to update.
-     *
+     * 
      * @param column the column value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -128,7 +132,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Get the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @return the sensitivityLabel value.
      */
     public SensitivityLabelInner sensitivityLabel() {
@@ -137,7 +141,7 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Set the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @param sensitivityLabel the sensitivityLabel value to set.
      * @return the SensitivityLabelUpdatePropertiesInner object itself.
      */
@@ -148,33 +152,29 @@ public final class SensitivityLabelUpdatePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (op() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (schema() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (column() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (sensitivityLabel() != null) {
             sensitivityLabel().validate();
@@ -182,4 +182,56 @@ public final class SensitivityLabelUpdatePropertiesInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SensitivityLabelUpdatePropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("op", this.op == null ? null : this.op.toString());
+        jsonWriter.writeStringField("schema", this.schema);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeStringField("column", this.column);
+        jsonWriter.writeJsonField("sensitivityLabel", this.sensitivityLabel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SensitivityLabelUpdatePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SensitivityLabelUpdatePropertiesInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SensitivityLabelUpdatePropertiesInner.
+     */
+    public static SensitivityLabelUpdatePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SensitivityLabelUpdatePropertiesInner deserializedSensitivityLabelUpdatePropertiesInner
+                = new SensitivityLabelUpdatePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("op".equals(fieldName)) {
+                    deserializedSensitivityLabelUpdatePropertiesInner.op
+                        = SensitivityLabelUpdateKind.fromString(reader.getString());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSensitivityLabelUpdatePropertiesInner.schema = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedSensitivityLabelUpdatePropertiesInner.table = reader.getString();
+                } else if ("column".equals(fieldName)) {
+                    deserializedSensitivityLabelUpdatePropertiesInner.column = reader.getString();
+                } else if ("sensitivityLabel".equals(fieldName)) {
+                    deserializedSensitivityLabelUpdatePropertiesInner.sensitivityLabel
+                        = SensitivityLabelInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSensitivityLabelUpdatePropertiesInner;
+        });
+    }
 }

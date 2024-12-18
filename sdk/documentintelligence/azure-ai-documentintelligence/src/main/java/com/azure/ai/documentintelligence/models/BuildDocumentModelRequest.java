@@ -56,6 +56,18 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     @Generated
     private Map<String, String> tags;
 
+    /*
+     * Max number of V100-equivalent GPU hours to use for model training. Default=0.5.
+     */
+    @Generated
+    private Double maxTrainingHours;
+
+    /*
+     * Allow overwriting an existing model with the same name.
+     */
+    @Generated
+    private Boolean allowOverwrite;
+
     /**
      * Creates an instance of BuildDocumentModelRequest class.
      * 
@@ -182,6 +194,52 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
+     * Get the maxTrainingHours property: Max number of V100-equivalent GPU hours to use for model training.
+     * Default=0.5.
+     * 
+     * @return the maxTrainingHours value.
+     */
+    @Generated
+    public Double getMaxTrainingHours() {
+        return this.maxTrainingHours;
+    }
+
+    /**
+     * Set the maxTrainingHours property: Max number of V100-equivalent GPU hours to use for model training.
+     * Default=0.5.
+     * 
+     * @param maxTrainingHours the maxTrainingHours value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    @Generated
+    public BuildDocumentModelRequest setMaxTrainingHours(Double maxTrainingHours) {
+        this.maxTrainingHours = maxTrainingHours;
+        return this;
+    }
+
+    /**
+     * Get the allowOverwrite property: Allow overwriting an existing model with the same name.
+     * 
+     * @return the allowOverwrite value.
+     */
+    @Generated
+    public Boolean isAllowOverwrite() {
+        return this.allowOverwrite;
+    }
+
+    /**
+     * Set the allowOverwrite property: Allow overwriting an existing model with the same name.
+     * 
+     * @param allowOverwrite the allowOverwrite value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    @Generated
+    public BuildDocumentModelRequest setAllowOverwrite(Boolean allowOverwrite) {
+        this.allowOverwrite = allowOverwrite;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -194,6 +252,8 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
         jsonWriter.writeJsonField("azureBlobSource", this.azureBlobSource);
         jsonWriter.writeJsonField("azureBlobFileListSource", this.azureBlobFileListSource);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxTrainingHours", this.maxTrainingHours);
+        jsonWriter.writeBooleanField("allowOverwrite", this.allowOverwrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -215,6 +275,8 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
             AzureBlobContentSource azureBlobSource = null;
             AzureBlobFileListContentSource azureBlobFileListSource = null;
             Map<String, String> tags = null;
+            Double maxTrainingHours = null;
+            Boolean allowOverwrite = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -231,6 +293,10 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
                     azureBlobFileListSource = AzureBlobFileListContentSource.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("maxTrainingHours".equals(fieldName)) {
+                    maxTrainingHours = reader.getNullable(JsonReader::getDouble);
+                } else if ("allowOverwrite".equals(fieldName)) {
+                    allowOverwrite = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -241,6 +307,8 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
             deserializedBuildDocumentModelRequest.azureBlobSource = azureBlobSource;
             deserializedBuildDocumentModelRequest.azureBlobFileListSource = azureBlobFileListSource;
             deserializedBuildDocumentModelRequest.tags = tags;
+            deserializedBuildDocumentModelRequest.maxTrainingHours = maxTrainingHours;
+            deserializedBuildDocumentModelRequest.allowOverwrite = allowOverwrite;
 
             return deserializedBuildDocumentModelRequest;
         });

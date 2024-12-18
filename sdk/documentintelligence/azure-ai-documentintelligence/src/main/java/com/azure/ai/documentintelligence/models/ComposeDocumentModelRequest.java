@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +31,22 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     private String description;
 
     /*
-     * List of component document models to compose.
+     * Custom classifier to split and classify the input file.
      */
     @Generated
-    private final List<ComponentDocumentModelDetails> componentModels;
+    private final String classifierId;
+
+    /*
+     * File splitting behavior.
+     */
+    @Generated
+    private SplitMode split;
+
+    /*
+     * Dictionary mapping supported docTypes to the corresponding document models.
+     */
+    @Generated
+    private final Map<String, DocumentTypeDetails> docTypes;
 
     /*
      * List of key-value tag attributes associated with the document model.
@@ -47,12 +58,14 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * Creates an instance of ComposeDocumentModelRequest class.
      * 
      * @param modelId the modelId value to set.
-     * @param componentModels the componentModels value to set.
+     * @param classifierId the classifierId value to set.
+     * @param docTypes the docTypes value to set.
      */
     @Generated
-    public ComposeDocumentModelRequest(String modelId, List<ComponentDocumentModelDetails> componentModels) {
+    public ComposeDocumentModelRequest(String modelId, String classifierId, Map<String, DocumentTypeDetails> docTypes) {
         this.modelId = modelId;
-        this.componentModels = componentModels;
+        this.classifierId = classifierId;
+        this.docTypes = docTypes;
     }
 
     /**
@@ -88,13 +101,45 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     }
 
     /**
-     * Get the componentModels property: List of component document models to compose.
+     * Get the classifierId property: Custom classifier to split and classify the input file.
      * 
-     * @return the componentModels value.
+     * @return the classifierId value.
      */
     @Generated
-    public List<ComponentDocumentModelDetails> getComponentModels() {
-        return this.componentModels;
+    public String getClassifierId() {
+        return this.classifierId;
+    }
+
+    /**
+     * Get the split property: File splitting behavior.
+     * 
+     * @return the split value.
+     */
+    @Generated
+    public SplitMode getSplit() {
+        return this.split;
+    }
+
+    /**
+     * Set the split property: File splitting behavior.
+     * 
+     * @param split the split value to set.
+     * @return the ComposeDocumentModelRequest object itself.
+     */
+    @Generated
+    public ComposeDocumentModelRequest setSplit(SplitMode split) {
+        this.split = split;
+        return this;
+    }
+
+    /**
+     * Get the docTypes property: Dictionary mapping supported docTypes to the corresponding document models.
+     * 
+     * @return the docTypes value.
+     */
+    @Generated
+    public Map<String, DocumentTypeDetails> getDocTypes() {
+        return this.docTypes;
     }
 
     /**
@@ -127,9 +172,10 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("modelId", this.modelId);
-        jsonWriter.writeArrayField("componentModels", this.componentModels,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("classifierId", this.classifierId);
+        jsonWriter.writeMapField("docTypes", this.docTypes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("split", this.split == null ? null : this.split.toString());
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -147,8 +193,10 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     public static ComposeDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelId = null;
-            List<ComponentDocumentModelDetails> componentModels = null;
+            String classifierId = null;
+            Map<String, DocumentTypeDetails> docTypes = null;
             String description = null;
+            SplitMode split = null;
             Map<String, String> tags = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -156,10 +204,14 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
 
                 if ("modelId".equals(fieldName)) {
                     modelId = reader.getString();
-                } else if ("componentModels".equals(fieldName)) {
-                    componentModels = reader.readArray(reader1 -> ComponentDocumentModelDetails.fromJson(reader1));
+                } else if ("classifierId".equals(fieldName)) {
+                    classifierId = reader.getString();
+                } else if ("docTypes".equals(fieldName)) {
+                    docTypes = reader.readMap(reader1 -> DocumentTypeDetails.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("split".equals(fieldName)) {
+                    split = SplitMode.fromString(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else {
@@ -167,8 +219,9 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
                 }
             }
             ComposeDocumentModelRequest deserializedComposeDocumentModelRequest
-                = new ComposeDocumentModelRequest(modelId, componentModels);
+                = new ComposeDocumentModelRequest(modelId, classifierId, docTypes);
             deserializedComposeDocumentModelRequest.description = description;
+            deserializedComposeDocumentModelRequest.split = split;
             deserializedComposeDocumentModelRequest.tags = tags;
 
             return deserializedComposeDocumentModelRequest;

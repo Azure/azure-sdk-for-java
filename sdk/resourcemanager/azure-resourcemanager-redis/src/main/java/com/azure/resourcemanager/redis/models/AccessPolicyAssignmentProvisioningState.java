@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class AccessPolicyAssignmentProvisioningState
      * @param name a name to look for.
      * @return the corresponding AccessPolicyAssignmentProvisioningState.
      */
-    @JsonCreator
     public static AccessPolicyAssignmentProvisioningState fromString(String name) {
         return fromString(name, AccessPolicyAssignmentProvisioningState.class);
     }

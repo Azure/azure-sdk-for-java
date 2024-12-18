@@ -14,8 +14,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 
-import com.azure.spring.cloud.feature.management.implementation.TestConfiguration;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContext;

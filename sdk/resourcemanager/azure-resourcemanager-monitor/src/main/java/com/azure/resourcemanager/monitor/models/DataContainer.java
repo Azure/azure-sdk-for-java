@@ -6,17 +6,20 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about a container with data for a given resource.
  */
 @Fluent
-public final class DataContainer {
+public final class DataContainer implements JsonSerializable<DataContainer> {
     /*
      * Log Analytics workspace information.
      */
-    @JsonProperty(value = "workspace", required = true)
     private WorkspaceInfo workspace;
 
     /**
@@ -52,12 +55,49 @@ public final class DataContainer {
      */
     public void validate() {
         if (workspace() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property workspace in model DataContainer"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property workspace in model DataContainer"));
         } else {
             workspace().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataContainer.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("workspace", this.workspace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataContainer.
+     */
+    public static DataContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataContainer deserializedDataContainer = new DataContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspace".equals(fieldName)) {
+                    deserializedDataContainer.workspace = WorkspaceInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataContainer;
+        });
+    }
 }

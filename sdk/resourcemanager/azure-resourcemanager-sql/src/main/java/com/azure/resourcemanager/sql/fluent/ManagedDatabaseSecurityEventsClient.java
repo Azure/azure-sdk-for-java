@@ -11,13 +11,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SecurityEventInner;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabaseSecurityEventsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabaseSecurityEventsClient.
+ */
 public interface ManagedDatabaseSecurityEventsClient {
     /**
      * Gets a list of security events.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security events are retrieved.
      * @param filter An OData filter expression that filters elements in the collection.
@@ -30,20 +32,14 @@ public interface ManagedDatabaseSecurityEventsClient {
      * @return a list of security events as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SecurityEventInner> listByDatabaseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String filter,
-        Long skip,
-        Long top,
-        String skiptoken);
+    PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String filter, Long skip, Long top, String skiptoken);
 
     /**
      * Gets a list of security events.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security events are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,14 +48,14 @@ public interface ManagedDatabaseSecurityEventsClient {
      * @return a list of security events as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SecurityEventInner> listByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedFlux<SecurityEventInner> listByDatabaseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Gets a list of security events.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security events are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,14 +64,14 @@ public interface ManagedDatabaseSecurityEventsClient {
      * @return a list of security events as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SecurityEventInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Gets a list of security events.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security events are retrieved.
      * @param filter An OData filter expression that filters elements in the collection.
@@ -89,13 +85,6 @@ public interface ManagedDatabaseSecurityEventsClient {
      * @return a list of security events as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SecurityEventInner> listByDatabase(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String filter,
-        Long skip,
-        Long top,
-        String skiptoken,
-        Context context);
+    PagedIterable<SecurityEventInner> listByDatabase(String resourceGroupName, String managedInstanceName,
+        String databaseName, String filter, Long skip, Long top, String skiptoken, Context context);
 }

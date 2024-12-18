@@ -6,25 +6,46 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An Azure SQL Database sync agent linked database. */
+/**
+ * An Azure SQL Database sync agent linked database.
+ */
 @Immutable
 public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SyncAgentLinkedDatabaseProperties innerProperties;
 
-    /** Creates an instance of SyncAgentLinkedDatabaseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SyncAgentLinkedDatabaseInner class.
+     */
     public SyncAgentLinkedDatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SyncAgentLinkedDatabaseProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the databaseType property: Type of the sync agent linked database.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -42,7 +93,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseId property: Id of the sync agent linked database.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -51,7 +102,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the sync agent linked database.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +111,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the serverName property: Server name of the sync agent linked database.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -69,7 +120,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseName property: Database name of the sync agent linked database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -78,7 +129,7 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Get the username property: User name of the sync agent linked database.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -87,12 +138,56 @@ public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncAgentLinkedDatabaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncAgentLinkedDatabaseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SyncAgentLinkedDatabaseInner.
+     */
+    public static SyncAgentLinkedDatabaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncAgentLinkedDatabaseInner deserializedSyncAgentLinkedDatabaseInner = new SyncAgentLinkedDatabaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSyncAgentLinkedDatabaseInner.innerProperties
+                        = SyncAgentLinkedDatabaseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncAgentLinkedDatabaseInner;
+        });
     }
 }

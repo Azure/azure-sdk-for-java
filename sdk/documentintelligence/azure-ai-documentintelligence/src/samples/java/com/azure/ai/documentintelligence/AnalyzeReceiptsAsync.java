@@ -51,6 +51,7 @@ public class AnalyzeReceiptsAsync {
             null,
             null,
             null,
+            null,
             new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
 

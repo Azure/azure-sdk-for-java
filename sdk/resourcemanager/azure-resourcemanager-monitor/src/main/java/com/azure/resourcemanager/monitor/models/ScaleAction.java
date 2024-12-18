@@ -5,39 +5,40 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * The parameters for the scaling action.
  */
 @Fluent
-public final class ScaleAction {
+public final class ScaleAction implements JsonSerializable<ScaleAction> {
     /*
      * the scale direction. Whether the scaling action increases or decreases the number of instances.
      */
-    @JsonProperty(value = "direction", required = true)
     private ScaleDirection direction;
 
     /*
      * the type of action that should occur when the scale rule fires.
      */
-    @JsonProperty(value = "type", required = true)
     private ScaleType type;
 
     /*
      * the number of instances that are involved in the scaling action. This value must be 1 or greater. The default
      * value is 1.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
-     * the amount of time to wait since the last scaling action before this action occurs. It must be between 1 week
-     * and 1 minute in ISO 8601 format.
+     * the amount of time to wait since the last scaling action before this action occurs. It must be between 1 week and
+     * 1 minute in ISO 8601 format.
      */
-    @JsonProperty(value = "cooldown", required = true)
     private Duration cooldown;
 
     /**
@@ -111,8 +112,8 @@ public final class ScaleAction {
     }
 
     /**
-     * Get the cooldown property: the amount of time to wait since the last scaling action before this action occurs.
-     * It must be between 1 week and 1 minute in ISO 8601 format.
+     * Get the cooldown property: the amount of time to wait since the last scaling action before this action occurs. It
+     * must be between 1 week and 1 minute in ISO 8601 format.
      * 
      * @return the cooldown value.
      */
@@ -121,8 +122,8 @@ public final class ScaleAction {
     }
 
     /**
-     * Set the cooldown property: the amount of time to wait since the last scaling action before this action occurs.
-     * It must be between 1 week and 1 minute in ISO 8601 format.
+     * Set the cooldown property: the amount of time to wait since the last scaling action before this action occurs. It
+     * must be between 1 week and 1 minute in ISO 8601 format.
      * 
      * @param cooldown the cooldown value to set.
      * @return the ScaleAction object itself.
@@ -139,18 +140,65 @@ public final class ScaleAction {
      */
     public void validate() {
         if (direction() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property direction in model ScaleAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property direction in model ScaleAction"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ScaleAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ScaleAction"));
         }
         if (cooldown() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property cooldown in model ScaleAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property cooldown in model ScaleAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScaleAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("cooldown", CoreUtils.durationToStringWithDays(this.cooldown));
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScaleAction.
+     */
+    public static ScaleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleAction deserializedScaleAction = new ScaleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("direction".equals(fieldName)) {
+                    deserializedScaleAction.direction = ScaleDirection.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedScaleAction.type = ScaleType.fromString(reader.getString());
+                } else if ("cooldown".equals(fieldName)) {
+                    deserializedScaleAction.cooldown
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedScaleAction.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleAction;
+        });
+    }
 }

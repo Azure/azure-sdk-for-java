@@ -39,22 +39,28 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobExecutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobExecutionsClient.
+ */
 public final class JobExecutionsClientImpl implements JobExecutionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobExecutionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of JobExecutionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobExecutionsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(JobExecutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JobExecutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,149 +71,95 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
     public interface JobExecutionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/executions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/executions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobExecutionListResult>> listByAgent(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
+        Mono<Response<JobExecutionListResult>> listByAgent(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
+            @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
+            @QueryParam("endTimeMin") OffsetDateTime endTimeMin, @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
+            @QueryParam("isActive") Boolean isActive, @QueryParam("$skip") Long skip, @QueryParam("$top") Long top,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobExecutionListResult>> listByJob(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
             @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
             @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
-            @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
-            @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
-            @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("endTimeMin") OffsetDateTime endTimeMin, @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
+            @QueryParam("isActive") Boolean isActive, @QueryParam("$skip") Long skip, @QueryParam("$top") Long top,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobExecutionListResult>> listByJob(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("createTimeMin") OffsetDateTime createTimeMin,
-            @QueryParam("createTimeMax") OffsetDateTime createTimeMax,
-            @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
-            @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
-            @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Long skip,
-            @QueryParam("$top") Long top,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobExecutionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionId") UUID jobExecutionId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobExecutionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobExecutionId") UUID jobExecutionId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionId") UUID jobExecutionId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobExecutionId") UUID jobExecutionId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> cancel(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionId") UUID jobExecutionId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancel(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobExecutionId") UUID jobExecutionId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("jobName") String jobName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByAgentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
@@ -223,22 +175,12 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
+    private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(String resourceGroupName,
+        String serverName, String jobAgentName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -251,49 +193,24 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAgent(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            createTimeMin,
-                            createTimeMax,
-                            endTimeMin,
-                            endTimeMax,
-                            isActive,
-                            skip,
-                            top,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<JobExecutionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAgent(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<JobExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
@@ -310,23 +227,12 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
+    private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(String resourceGroupName,
+        String serverName, String jobAgentName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -339,46 +245,24 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAgent(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAgent(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, createTimeMin,
+                createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
@@ -394,38 +278,19 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByAgentAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
-        return new PagedFlux<>(
-            () ->
-                listByAgentSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
+    public PagedFlux<JobExecutionInner> listByAgentAsync(String resourceGroupName, String serverName,
+        String jobAgentName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax, OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top) {
+        return new PagedFlux<>(() -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName,
+            createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
             nextLink -> listByAgentNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,8 +299,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByAgentAsync(
-        String resourceGroupName, String serverName, String jobAgentName) {
+    public PagedFlux<JobExecutionInner> listByAgentAsync(String resourceGroupName, String serverName,
+        String jobAgentName) {
         final OffsetDateTime createTimeMin = null;
         final OffsetDateTime createTimeMax = null;
         final OffsetDateTime endTimeMin = null;
@@ -443,27 +308,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final Boolean isActive = null;
         final Long skip = null;
         final Long top = null;
-        return new PagedFlux<>(
-            () ->
-                listByAgentSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
+        return new PagedFlux<>(() -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName,
+            createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
             nextLink -> listByAgentNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
@@ -480,40 +334,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobExecutionInner> listByAgentAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
+    private PagedFlux<JobExecutionInner> listByAgentAsync(String resourceGroupName, String serverName,
+        String jobAgentName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax, OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByAgentSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top,
-                    context),
+            () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, createTimeMin, createTimeMax,
+                endTimeMin, endTimeMax, isActive, skip, top, context),
             nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,8 +356,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByAgent(
-        String resourceGroupName, String serverName, String jobAgentName) {
+    public PagedIterable<JobExecutionInner> listByAgent(String resourceGroupName, String serverName,
+        String jobAgentName) {
         final OffsetDateTime createTimeMin = null;
         final OffsetDateTime createTimeMax = null;
         final OffsetDateTime endTimeMin = null;
@@ -531,25 +365,15 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final Boolean isActive = null;
         final Long skip = null;
         final Long top = null;
-        return new PagedIterable<>(
-            listByAgentAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
+        return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName, createTimeMin,
+            createTimeMax, endTimeMin, endTimeMax, isActive, skip, top));
     }
 
     /**
      * Lists all executions in a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
@@ -566,38 +390,18 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByAgent(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
-        return new PagedIterable<>(
-            listByAgentAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                context));
+    public PagedIterable<JobExecutionInner> listByAgent(String resourceGroupName, String serverName,
+        String jobAgentName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax, OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
+        return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName, createTimeMin,
+            createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, context));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -614,23 +418,12 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
+    private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -646,50 +439,24 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByJob(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            createTimeMin,
-                            createTimeMax,
-                            endTimeMin,
-                            endTimeMax,
-                            isActive,
-                            skip,
-                            top,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<JobExecutionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByJob(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, jobName, createTimeMin, createTimeMax, endTimeMin, endTimeMax, isActive, skip, top,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<JobExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -707,24 +474,12 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
+    private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -740,47 +495,24 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJob(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByJob(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+                createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -797,40 +529,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByJobAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top) {
+    public PagedFlux<JobExecutionInner> listByJobAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax, OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top) {
         return new PagedFlux<>(
-            () ->
-                listByJobSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
+            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+                createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
             nextLink -> listByJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -840,8 +552,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobExecutionInner> listByJobAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+    public PagedFlux<JobExecutionInner> listByJobAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName) {
         final OffsetDateTime createTimeMin = null;
         final OffsetDateTime createTimeMax = null;
         final OffsetDateTime endTimeMin = null;
@@ -850,27 +562,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final Long skip = null;
         final Long top = null;
         return new PagedFlux<>(
-            () ->
-                listByJobSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top),
+            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+                createTimeMax, endTimeMin, endTimeMax, isActive, skip, top),
             nextLink -> listByJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -888,42 +589,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobExecutionInner> listByJobAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
+    private PagedFlux<JobExecutionInner> listByJobAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax,
+        OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByJobSinglePageAsync(
-                    resourceGroupName,
-                    serverName,
-                    jobAgentName,
-                    jobName,
-                    createTimeMin,
-                    createTimeMax,
-                    endTimeMin,
-                    endTimeMax,
-                    isActive,
-                    skip,
-                    top,
-                    context),
+            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+                createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, context),
             nextLink -> listByJobNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -933,8 +612,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+    public PagedIterable<JobExecutionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName) {
         final OffsetDateTime createTimeMin = null;
         final OffsetDateTime createTimeMax = null;
         final OffsetDateTime endTimeMin = null;
@@ -942,26 +621,15 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         final Boolean isActive = null;
         final Long skip = null;
         final Long top = null;
-        return new PagedIterable<>(
-            listByJobAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
+        return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+            createTimeMax, endTimeMin, endTimeMax, isActive, skip, top));
     }
 
     /**
      * Lists a job's executions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -979,40 +647,18 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJob(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context) {
-        return new PagedIterable<>(
-            listByJobAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top,
-                context));
+    public PagedIterable<JobExecutionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, OffsetDateTime createTimeMin, OffsetDateTime createTimeMax, OffsetDateTime endTimeMin,
+        OffsetDateTime endTimeMax, Boolean isActive, Long skip, Long top, Context context) {
+        return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName, createTimeMin,
+            createTimeMax, endTimeMin, endTimeMax, isActive, skip, top, context));
     }
 
     /**
      * Gets a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1023,13 +669,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobExecutionInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public Mono<Response<JobExecutionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1048,35 +692,21 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobExecutionId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+                jobName, jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1088,18 +718,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobExecutionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    private Mono<Response<JobExecutionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1118,32 +741,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
+            jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1154,17 +765,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobExecutionInner> getAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public Mono<JobExecutionInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1176,22 +787,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a job execution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobExecutionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    public Response<JobExecutionInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .block();
     }
 
     /**
      * Gets a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1202,17 +808,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return a job execution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner get(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public JobExecutionInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        UUID jobExecutionId) {
         return getWithResponse(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1223,13 +829,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1248,35 +852,22 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobExecutionId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, jobName, jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1288,18 +879,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName, UUID jobExecutionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1318,32 +902,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
+            jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1356,23 +928,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId);
-        return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobExecutionInner.class,
-                JobExecutionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId);
+        return this.client.<JobExecutionInner, JobExecutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobExecutionInner.class, JobExecutionInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1385,75 +951,64 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            jobAgentName, jobName, jobExecutionId, context);
+        return this.client.<JobExecutionInner, JobExecutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobExecutionInner.class, JobExecutionInner.class, context);
+    }
+
+    /**
+     * Creates or updates a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The job execution id to create the job execution under.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a job execution.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The job execution id to create the job execution under.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName, UUID jobExecutionId, Context context) {
         return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, context);
-    }
-
-    /**
-     * Creates or updates a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The job execution id to create the job execution under.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The job execution id to create the job execution under.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an execution of a job.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1464,18 +1019,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobExecutionInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
-            .last()
+    public Mono<JobExecutionInner> createOrUpdateAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1487,13 +1041,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobExecutionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    private Mono<JobExecutionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1501,9 +1050,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1514,16 +1063,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner createOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public JobExecutionInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId).block();
     }
 
     /**
      * Creates or updates a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1535,22 +1084,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    public JobExecutionInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .block();
     }
 
     /**
      * Requests cancellation of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1561,13 +1105,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1586,33 +1128,21 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobExecutionId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+                context -> service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+                    jobName, jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Requests cancellation of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1624,18 +1154,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1654,30 +1177,19 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobExecutionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.cancel(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
+            jobExecutionId, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Requests cancellation of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1688,17 +1200,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public Mono<Void> cancelAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        UUID jobExecutionId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Requests cancellation of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1710,22 +1222,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        Context context) {
+    public Response<Void> cancelWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .block();
     }
 
     /**
      * Requests cancellation of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
@@ -1735,16 +1242,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+    public void cancel(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        UUID jobExecutionId) {
         cancelWithResponse(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, Context.NONE);
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1754,13 +1261,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1776,34 +1281,21 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, jobName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1814,13 +1306,11 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1836,31 +1326,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, jobName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1870,25 +1349,19 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link PollerFlux} for polling of an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName);
-        return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobExecutionInner.class,
-                JobExecutionInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName);
+        return this.client.<JobExecutionInner, JobExecutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobExecutionInner.class, JobExecutionInner.class, this.client.getContext());
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1899,22 +1372,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link PollerFlux} for polling of an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context);
-        return this
-            .client
-            .<JobExecutionInner, JobExecutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobExecutionInner.class, JobExecutionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context);
+        return this.client.<JobExecutionInner, JobExecutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobExecutionInner.class, JobExecutionInner.class, context);
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1924,16 +1395,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link SyncPoller} for polling of an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName) {
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1944,16 +1415,16 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return the {@link SyncPoller} for polling of an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
+    public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(String resourceGroupName,
+        String serverName, String jobAgentName, String jobName, Context context) {
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1963,18 +1434,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobExecutionInner> createAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName)
-            .last()
+    public Mono<JobExecutionInner> createAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName) {
+        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -1985,18 +1455,17 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobExecutionInner> createAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context)
-            .last()
+    private Mono<JobExecutionInner> createAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -2012,9 +1481,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
     /**
      * Starts an elastic job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -2025,16 +1494,15 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @return an execution of a job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobExecutionInner create(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
+    public JobExecutionInner create(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        Context context) {
         return createAsync(resourceGroupName, serverName, jobAgentName, jobName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2046,31 +1514,21 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobExecutionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2083,31 +1541,20 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2119,31 +1566,21 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobExecutionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2156,23 +1593,13 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

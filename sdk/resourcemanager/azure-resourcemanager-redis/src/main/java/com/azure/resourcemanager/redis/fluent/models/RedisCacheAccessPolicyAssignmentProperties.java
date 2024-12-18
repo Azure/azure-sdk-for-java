@@ -6,36 +6,37 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.AccessPolicyAssignmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties for an access policy assignment.
  */
 @Fluent
-public final class RedisCacheAccessPolicyAssignmentProperties {
+public final class RedisCacheAccessPolicyAssignmentProperties
+    implements JsonSerializable<RedisCacheAccessPolicyAssignmentProperties> {
     /*
      * Provisioning state of an access policy assignment set
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AccessPolicyAssignmentProvisioningState provisioningState;
 
     /*
      * Object Id to assign access policy to
      */
-    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /*
      * User friendly name for object id. Also represents username for token based authentication
      */
-    @JsonProperty(value = "objectIdAlias", required = true)
     private String objectIdAlias;
 
     /*
      * The name of the access policy that is being assigned
      */
-    @JsonProperty(value = "accessPolicyName", required = true)
     private String accessPolicyName;
 
     /**
@@ -139,4 +140,51 @@ public final class RedisCacheAccessPolicyAssignmentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisCacheAccessPolicyAssignmentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("objectIdAlias", this.objectIdAlias);
+        jsonWriter.writeStringField("accessPolicyName", this.accessPolicyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisCacheAccessPolicyAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisCacheAccessPolicyAssignmentProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisCacheAccessPolicyAssignmentProperties.
+     */
+    public static RedisCacheAccessPolicyAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisCacheAccessPolicyAssignmentProperties deserializedRedisCacheAccessPolicyAssignmentProperties
+                = new RedisCacheAccessPolicyAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectId".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyAssignmentProperties.objectId = reader.getString();
+                } else if ("objectIdAlias".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyAssignmentProperties.objectIdAlias = reader.getString();
+                } else if ("accessPolicyName".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyAssignmentProperties.accessPolicyName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRedisCacheAccessPolicyAssignmentProperties.provisioningState
+                        = AccessPolicyAssignmentProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisCacheAccessPolicyAssignmentProperties;
+        });
+    }
 }

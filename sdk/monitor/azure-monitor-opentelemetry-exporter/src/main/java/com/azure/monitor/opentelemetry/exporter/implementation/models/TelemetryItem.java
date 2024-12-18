@@ -269,11 +269,8 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
     public TelemetryItem setConnectionString(StatsbeatConnectionString connectionString) {
         instrumentationKey = connectionString.getInstrumentationKey();
         // TODO (heya) turn StatsbeatConnectionString into a real connection string?
-        this.connectionString =
-            "InstrumentationKey="
-                + instrumentationKey
-                + ";IngestionEndpoint="
-                + connectionString.getIngestionEndpoint();
+        this.connectionString = "InstrumentationKey=" + instrumentationKey + ";IngestionEndpoint="
+            + connectionString.getIngestionEndpoint();
         return this;
     }
 

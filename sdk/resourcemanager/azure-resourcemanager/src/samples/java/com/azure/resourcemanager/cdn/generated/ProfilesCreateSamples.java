@@ -22,8 +22,12 @@ public final class ProfilesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getProfiles().create("RG", "profile1",
-            new ProfileInner().withLocation("global").withSku(new Sku().withName(SkuName.PREMIUM_AZURE_FRONT_DOOR)),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .create("RG", "profile1",
+                new ProfileInner().withLocation("global").withSku(new Sku().withName(SkuName.PREMIUM_AZURE_FRONT_DOOR)),
+                com.azure.core.util.Context.NONE);
     }
 }

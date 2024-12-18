@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The maximum size range capability. */
+/**
+ * The maximum size range capability.
+ */
 @Fluent
-public final class MaxSizeRangeCapability {
+public final class MaxSizeRangeCapability implements JsonSerializable<MaxSizeRangeCapability> {
     /*
      * Minimum value.
      */
-    @JsonProperty(value = "minValue", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability minValue;
 
     /*
      * Maximum value.
      */
-    @JsonProperty(value = "maxValue", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability maxValue;
 
     /*
      * Scale/step size for discrete values between the minimum value and the maximum value.
      */
-    @JsonProperty(value = "scaleSize", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability scaleSize;
 
     /*
      * Size of transaction log.
      */
-    @JsonProperty(value = "logSize", access = JsonProperty.Access.WRITE_ONLY)
     private LogSizeCapability logSize;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of MaxSizeRangeCapability class. */
+    /**
+     * Creates an instance of MaxSizeRangeCapability class.
+     */
     public MaxSizeRangeCapability() {
     }
 
     /**
      * Get the minValue property: Minimum value.
-     *
+     * 
      * @return the minValue value.
      */
     public MaxSizeCapability minValue() {
@@ -61,7 +63,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the maxValue property: Maximum value.
-     *
+     * 
      * @return the maxValue value.
      */
     public MaxSizeCapability maxValue() {
@@ -70,7 +72,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the scaleSize property: Scale/step size for discrete values between the minimum value and the maximum value.
-     *
+     * 
      * @return the scaleSize value.
      */
     public MaxSizeCapability scaleSize() {
@@ -79,7 +81,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the logSize property: Size of transaction log.
-     *
+     * 
      * @return the logSize value.
      */
     public LogSizeCapability logSize() {
@@ -88,7 +90,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -97,7 +99,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -106,7 +108,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the MaxSizeRangeCapability object itself.
      */
@@ -117,7 +119,7 @@ public final class MaxSizeRangeCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -133,5 +135,51 @@ public final class MaxSizeRangeCapability {
         if (logSize() != null) {
             logSize().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaxSizeRangeCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaxSizeRangeCapability if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaxSizeRangeCapability.
+     */
+    public static MaxSizeRangeCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaxSizeRangeCapability deserializedMaxSizeRangeCapability = new MaxSizeRangeCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minValue".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.minValue = MaxSizeCapability.fromJson(reader);
+                } else if ("maxValue".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.maxValue = MaxSizeCapability.fromJson(reader);
+                } else if ("scaleSize".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.scaleSize = MaxSizeCapability.fromJson(reader);
+                } else if ("logSize".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.logSize = LogSizeCapability.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedMaxSizeRangeCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaxSizeRangeCapability;
+        });
     }
 }

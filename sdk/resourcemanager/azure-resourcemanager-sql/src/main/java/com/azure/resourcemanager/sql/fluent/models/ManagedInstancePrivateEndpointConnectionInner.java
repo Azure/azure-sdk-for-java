@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateEndpointProperty;
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkServiceConnectionStateProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A private endpoint connection. */
+/**
+ * A private endpoint connection.
+ */
 @Fluent
 public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedInstancePrivateEndpointConnectionProperties innerProperties;
 
-    /** Creates an instance of ManagedInstancePrivateEndpointConnectionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ManagedInstancePrivateEndpointConnectionInner class.
+     */
     public ManagedInstancePrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstancePrivateEndpointConnectionProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ManagedInstancePrivateEndpointProperty privateEndpoint() {
@@ -43,12 +94,12 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the ManagedInstancePrivateEndpointConnectionInner object itself.
      */
-    public ManagedInstancePrivateEndpointConnectionInner withPrivateEndpoint(
-        ManagedInstancePrivateEndpointProperty privateEndpoint) {
+    public ManagedInstancePrivateEndpointConnectionInner
+        withPrivateEndpoint(ManagedInstancePrivateEndpointProperty privateEndpoint) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstancePrivateEndpointConnectionProperties();
         }
@@ -58,7 +109,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Get the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public ManagedInstancePrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
@@ -67,7 +118,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Set the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ManagedInstancePrivateEndpointConnectionInner object itself.
      */
@@ -82,7 +133,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Get the provisioningState property: State of the Private Endpoint Connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -91,12 +142,57 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstancePrivateEndpointConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstancePrivateEndpointConnectionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstancePrivateEndpointConnectionInner.
+     */
+    public static ManagedInstancePrivateEndpointConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstancePrivateEndpointConnectionInner deserializedManagedInstancePrivateEndpointConnectionInner
+                = new ManagedInstancePrivateEndpointConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedInstancePrivateEndpointConnectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedInstancePrivateEndpointConnectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedInstancePrivateEndpointConnectionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedInstancePrivateEndpointConnectionInner.innerProperties
+                        = ManagedInstancePrivateEndpointConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstancePrivateEndpointConnectionInner;
+        });
     }
 }

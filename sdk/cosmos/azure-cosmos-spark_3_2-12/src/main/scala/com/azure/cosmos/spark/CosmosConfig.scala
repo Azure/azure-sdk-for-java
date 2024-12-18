@@ -242,9 +242,17 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig  extends BasicLoggingTrait {
-  def getAccountDataResolver(config: Map[String, String]): Option[AccountDataResolver] = {
-    val accountDataResolverServiceName : Option[String] = config.get(CosmosConfigNames.AccountDataResolverServiceName)
 
+  val accountDataResolvers: TrieMap[Option[String], Option[AccountDataResolver]] =
+    new TrieMap[Option[String], Option[AccountDataResolver]]()
+
+  def getAccountDataResolver(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
+     accountDataResolvers.getOrElseUpdate(
+      accountDataResolverServiceName,
+       getAccountDataResolverImpl(accountDataResolverServiceName))
+  }
+
+  private def getAccountDataResolverImpl(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
     logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
@@ -283,7 +291,8 @@ private object CosmosConfig  extends BasicLoggingTrait {
       case None => effectiveUserConfig.toMap
     }
 
-    val accountDataResolverCls = getAccountDataResolver(mergedConfig)
+    val accountDataResolverServiceName : Option[String] = mergedConfig.get(CosmosConfigNames.AccountDataResolverServiceName)
+    val accountDataResolverCls = getAccountDataResolver(accountDataResolverServiceName)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
@@ -744,7 +753,8 @@ private object CosmosAuthConfig {
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
           assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-          val accountDataResolver = CosmosConfig.getAccountDataResolver(CaseInsensitiveMap(cfg))
+          val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
+          val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
           if (!accountDataResolver.isDefined) {
             throw new IllegalArgumentException(
               s"For auth type '${authType.get}' you have to provide an implementation of the " +

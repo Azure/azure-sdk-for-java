@@ -38,31 +38,13 @@ public class InstrumentationsTest {
         instrumentations.add("io.opentelemetry.runtime-telemetry-java17"); // 81 INDEX
 
         EXPECTED_INSTRUMENTATIONS = new long[2];
-        EXPECTED_INSTRUMENTATIONS[0] =
-            (long)
-                (Math.pow(2, 5)
-                    + Math.pow(2, 13)
-                    + Math.pow(2, 21)
-                    + Math.pow(2, 42)
-                    + Math.pow(2, 47));
+        EXPECTED_INSTRUMENTATIONS[0]
+            = (long) (Math.pow(2, 5) + Math.pow(2, 13) + Math.pow(2, 21) + Math.pow(2, 42) + Math.pow(2, 47));
         // Exponents are keys from StatsbeatTestUtils.INSTRUMENTATION_MAP_DECODING.
-        EXPECTED_INSTRUMENTATIONS[1] =
-            (long)
-                (Math.pow(2, 64 - 64)
-                    + Math.pow(2, 65 - 64)
-                    + Math.pow(2, 69 - 64)
-                    + Math.pow(2, 71 - 64)
-                    + Math.pow(2, 72 - 64)
-                    + Math.pow(2, 73 - 64)
-                    + Math.pow(2, 74 - 64)
-                    + Math.pow(2, 75 - 64)
-                    + Math.pow(2, 76 - 64)
-                    + Math.pow(2, 77 - 64)
-                    + Math.pow(2, 78 - 64)
-                    + Math.pow(2, 79 - 64)
-                    + Math.pow(2, 80 - 64)
-                    + Math.pow(2, 81 - 64)
-                );
+        EXPECTED_INSTRUMENTATIONS[1] = (long) (Math.pow(2, 64 - 64) + Math.pow(2, 65 - 64) + Math.pow(2, 69 - 64)
+            + Math.pow(2, 71 - 64) + Math.pow(2, 72 - 64) + Math.pow(2, 73 - 64) + Math.pow(2, 74 - 64)
+            + Math.pow(2, 75 - 64) + Math.pow(2, 76 - 64) + Math.pow(2, 77 - 64) + Math.pow(2, 78 - 64)
+            + Math.pow(2, 79 - 64) + Math.pow(2, 80 - 64) + Math.pow(2, 81 - 64));
         // Exponents are keys from StatsbeatTestUtils.INSTRUMENTATION_MAP_DECODING - 64.
     }
 

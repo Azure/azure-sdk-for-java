@@ -70,6 +70,6 @@ public class CustomDimensions {
             return VersionGenerator.getSdkVersion();
         }
         String qualifiedSdkVersionString = PropertyHelper.getQualifiedSdkVersionString();
-        return qualifiedSdkVersionString.substring(qualifiedSdkVersionString.lastIndexOf(':')+1);
+        return qualifiedSdkVersionString.substring(qualifiedSdkVersionString.lastIndexOf(':') + 1);
     }
 }

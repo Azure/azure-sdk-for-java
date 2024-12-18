@@ -36,7 +36,7 @@ extends:
         parameters:
           MatrixConfigs:
             - Name: Cosmos_live_test_integration
-              Path: sdk/spring/pipeline/cosmos-integration-matrix.json
+              Path: sdk/spring/pipeline/cosmos-integration-matrix-compatible.json
               Selection: all
               GenerateVMJobs: true
               NonSparseParameters:

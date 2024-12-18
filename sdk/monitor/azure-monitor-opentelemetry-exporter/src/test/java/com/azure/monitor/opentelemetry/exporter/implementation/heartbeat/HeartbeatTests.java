@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class HeartbeatTests {
     // Dummy consumer that does nothing.
-    private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = ignored -> {};
+    private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = ignored -> {
+    };
 
     @Test
     @LiveOnly

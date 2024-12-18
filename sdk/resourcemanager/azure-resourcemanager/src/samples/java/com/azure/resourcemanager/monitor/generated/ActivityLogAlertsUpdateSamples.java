@@ -23,10 +23,15 @@ public final class ActivityLogAlertsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchAnActivityLogAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActivityLogAlerts().updateWithResponse(
-            "MyResourceGroup", "SampleActivityLogAlertRule", new AlertRulePatchObject()
-                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).withEnabled(false),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActivityLogAlerts()
+            .updateWithResponse("MyResourceGroup", "SampleActivityLogAlertRule",
+                new AlertRulePatchObject()
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withEnabled(false),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

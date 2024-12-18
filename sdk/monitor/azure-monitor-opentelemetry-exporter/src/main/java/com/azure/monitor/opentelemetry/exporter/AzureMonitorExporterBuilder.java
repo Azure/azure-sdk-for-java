@@ -70,22 +70,22 @@ public final class AzureMonitorExporterBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
-    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
-        "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
-        "https://monitor.azure.com//.default";
+    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
 
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME
+        = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
+        = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
 
     private ConnectionString connectionString;
     private TokenCredential credential;
 
     // suppress warnings is needed in ApplicationInsights-Java repo, can be removed when upstreaming
-    @SuppressWarnings({"UnusedVariable", "FieldCanBeLocal"})
+    @SuppressWarnings({ "UnusedVariable", "FieldCanBeLocal" })
     private AzureMonitorExporterServiceVersion serviceVersion;
 
     private HttpPipeline httpPipeline;
@@ -170,8 +170,7 @@ public final class AzureMonitorExporterBuilder {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipelinePolicies cannot be added after any of the build methods have been called"));
         }
-        httpPipelinePolicies.add(
-            Objects.requireNonNull(httpPipelinePolicy, "'policy' cannot be null."));
+        httpPipelinePolicies.add(Objects.requireNonNull(httpPipelinePolicy, "'policy' cannot be null."));
         return this;
     }
 
@@ -213,8 +212,7 @@ public final class AzureMonitorExporterBuilder {
      * @param serviceVersion The Azure Monitor service version.
      * @return The update {@link AzureMonitorExporterBuilder} object.
      */
-    public AzureMonitorExporterBuilder serviceVersion(
-        AzureMonitorExporterServiceVersion serviceVersion) {
+    public AzureMonitorExporterBuilder serviceVersion(AzureMonitorExporterServiceVersion serviceVersion) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "serviceVersion cannot be changed after any of the build methods have been called"));
@@ -300,52 +298,38 @@ public final class AzureMonitorExporterBuilder {
             props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
             return props;
         });
-        sdkBuilder.addSpanExporterCustomizer(
-            (spanExporter, configProperties) -> {
-                if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    spanExporter = buildTraceExporter(configProperties);
-                }
-                return spanExporter;
-            });
-        sdkBuilder.addMetricExporterCustomizer(
-            (metricExporter, configProperties) -> {
-                if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    metricExporter = buildMetricExporter(configProperties);
-                }
-                return metricExporter;
-            });
-        sdkBuilder.addLogRecordExporterCustomizer(
-            (logRecordExporter, configProperties) -> {
-                if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                    internalBuildAndFreeze(configProperties);
-                    logRecordExporter = buildLogRecordExporter(configProperties);
-                }
-                return logRecordExporter;
-            });
+        sdkBuilder.addSpanExporterCustomizer((spanExporter, configProperties) -> {
+            if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
+                internalBuildAndFreeze(configProperties);
+                spanExporter = buildTraceExporter(configProperties);
+            }
+            return spanExporter;
+        });
+        sdkBuilder.addMetricExporterCustomizer((metricExporter, configProperties) -> {
+            if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
+                internalBuildAndFreeze(configProperties);
+                metricExporter = buildMetricExporter(configProperties);
+            }
+            return metricExporter;
+        });
+        sdkBuilder.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
+            if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
+                internalBuildAndFreeze(configProperties);
+                logRecordExporter = buildLogRecordExporter(configProperties);
+            }
+            return logRecordExporter;
+        });
         // TODO (trask)
-//        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
-//            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
-//            return sdkTracerProviderBuilder.addSpanProcessor(
-//                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
-//        });
-        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
-            sdkMeterProviderBuilder.registerView(
-                InstrumentSelector.builder()
-                    .setMeterName("io.opentelemetry.sdk.trace")
-                    .build(),
-                View.builder()
-                    .setAggregation(Aggregation.drop())
-                    .build()
-            ).registerView(
-                InstrumentSelector.builder()
-                    .setMeterName("io.opentelemetry.sdk.logs")
-                    .build(),
-                View.builder()
-                    .setAggregation(Aggregation.drop())
-                    .build()
-            ));
+        //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
+        //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
+        //            return sdkTracerProviderBuilder.addSpanProcessor(
+        //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
+        //        });
+        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) -> sdkMeterProviderBuilder
+            .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.trace").build(),
+                View.builder().setAggregation(Aggregation.drop()).build())
+            .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.logs").build(),
+                View.builder().setAggregation(Aggregation.drop()).build()));
     }
 
     // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
@@ -356,26 +340,26 @@ public final class AzureMonitorExporterBuilder {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
-            File tempDir =
-                TempDirs.getApplicationInsightsTempDir(
-                    LOGGER,
-                    "Telemetry will not be stored to disk and retried on sporadic network failures");
+            File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
+                "Telemetry will not be stored to disk and retried on sporadic network failures");
             // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
-            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir, LocalStorageStats.noop());
+            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
+                tempDir, LocalStorageStats.noop());
             startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
     }
 
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter, statsbeatModule);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
+            statsbeatModule);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
-        HeartbeatExporter.start(
-            MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(
-            new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
+        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
+            builtTelemetryItemExporter::send);
+        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties), true),
+            builtTelemetryItemExporter);
     }
 
     private Set<Feature> initStatsbeatFeatures() {
@@ -395,11 +379,8 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
-        return new SpanDataMapper(
-            true,
-            createDefaultsPopulator(configProperties),
-            (event, instrumentationName) -> false,
-            (span, event) -> false);
+        return new SpanDataMapper(true, createDefaultsPopulator(configProperties),
+            (event, instrumentationName) -> false, (span, event) -> false);
     }
 
     private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
@@ -408,8 +389,7 @@ public final class AzureMonitorExporterBuilder {
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
             builder.setResource(resource);
-            builder.addTag(
-                ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
+            builder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
             // TODO (trask) unify these
             resourceParser.updateRoleNameAndInstance(builder, resource);
         };
@@ -419,7 +399,8 @@ public final class AzureMonitorExporterBuilder {
         if (connectionString != null) {
             return connectionString;
         }
-        ConnectionString connectionString = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
+        ConnectionString connectionString
+            = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
         return Objects.requireNonNull(connectionString, "'connectionString' cannot be null");
     }
 
@@ -427,12 +408,12 @@ public final class AzureMonitorExporterBuilder {
 
         if (httpPipeline != null) {
             if (credential != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'credential' is not supported when custom 'httpPipeline' is specified"));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("'credential' is not supported when custom 'httpPipeline' is specified"));
             }
             if (httpClient != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpClient' is not supported when custom 'httpPipeline' is specified"));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("'httpClient' is not supported when custom 'httpPipeline' is specified"));
             }
             if (httpLogOptions != null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -455,38 +436,35 @@ public final class AzureMonitorExporterBuilder {
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
+        policies
+            .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         }
         policies.addAll(httpPipelinePolicies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new com.azure.core.http.HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(new NoopTracer())
             .build();
     }
 
-
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
-    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties, File tempDir) {
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties,
+        File tempDir) {
         HttpPipeline statsbeatHttpPipeline = createStatsbeatHttpPipeline();
-        TelemetryItemExporter statsbeatTelemetryItemExporter = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
+        TelemetryItemExporter statsbeatTelemetryItemExporter
+            = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
 
-        statsbeatModule.start(
-            statsbeatTelemetryItemExporter,
-            this::getStatsbeatConnectionString,
-            getConnectionString(configProperties)::getInstrumentationKey,
-            false,
+        statsbeatModule.start(statsbeatTelemetryItemExporter, this::getStatsbeatConnectionString,
+            getConnectionString(configProperties)::getInstrumentationKey, false,
             configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
             configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
-            false,
-            initStatsbeatFeatures());
+            false, initStatsbeatFeatures());
     }
 
     private HttpPipeline createStatsbeatHttpPipeline() {
@@ -500,12 +478,12 @@ public final class AzureMonitorExporterBuilder {
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
+        policies
+            .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
         policies.addAll(httpPipelinePolicies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new com.azure.core.http.HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(new NoopTracer())
             .build();

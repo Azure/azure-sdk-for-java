@@ -30,10 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocalFileLoaderTests {
 
     private static final String GZIPPED_RAW_BYTES_WITHOUT_IKEY = "gzipped-raw-bytes-without-ikey.trn";
-    private static final String GZIPPED_RAW_BYTES_WITHOUT_INGESTION_ENDPOINT =
-        "gzipped-raw-bytes-without-ingestion-endpoint.trn";
-    private static final String CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+    private static final String GZIPPED_RAW_BYTES_WITHOUT_INGESTION_ENDPOINT
+        = "gzipped-raw-bytes-without-ingestion-endpoint.trn";
+    private static final String CONNECTION_STRING
+        = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
 
     @TempDir
     File tempFolder;
@@ -51,8 +51,7 @@ public class LocalFileLoaderTests {
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
         LocalFileLoader.PersistedFile loadedPersistedFile = localFileLoader.loadTelemetriesFromDisk();
         assertThat(loadedPersistedFile).isNull();
-        assertThat(persistedFile.exists())
-            .isFalse(); // verify the old formatted trn is deleted successfully.
+        assertThat(persistedFile.exists()).isFalse(); // verify the old formatted trn is deleted successfully.
     }
 
     @Test
@@ -69,29 +68,24 @@ public class LocalFileLoaderTests {
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
         LocalFileLoader.PersistedFile loadedPersistedFile = localFileLoader.loadTelemetriesFromDisk();
         assertThat(loadedPersistedFile).isNull();
-        assertThat(persistedFile.exists())
-            .isFalse(); // verify the old formatted trn is deleted successfully.
+        assertThat(persistedFile.exists()).isFalse(); // verify the old formatted trn is deleted successfully.
     }
 
     @Test
     public void testDeleteFilePermanentlyOnSuccess() throws Exception {
         HttpClient mockedClient = getMockHttpClientSuccess();
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
-            .httpClient(mockedClient)
-            .tracer(new NoopTracer());
+        HttpPipelineBuilder pipelineBuilder
+            = new HttpPipelineBuilder().httpClient(mockedClient).tracer(new NoopTracer());
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
-        LocalFileWriter localFileWriter =
-            new LocalFileWriter(50, localFileCache, tempFolder, null, false);
+        LocalFileWriter localFileWriter = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
 
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
-            localFileWriter.writeToDisk(
-                CONNECTION_STRING,
-                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))),
-                "original error message");
+            localFileWriter.writeToDisk(CONNECTION_STRING,
+                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))), "original error message");
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(10);
@@ -104,10 +98,8 @@ public class LocalFileLoaderTests {
         // send persisted files one by one and then delete it permanently.
         for (int i = 0; i < 10; i++) {
             LocalFileLoader.PersistedFile persistedFile = localFileLoader.loadTelemetriesFromDisk();
-            CompletableResultCode completableResultCode =
-                telemetryPipeline.send(
-                    singletonList(persistedFile.rawBytes),
-                    persistedFile.connectionString,
+            CompletableResultCode completableResultCode
+                = telemetryPipeline.send(singletonList(persistedFile.rawBytes), persistedFile.connectionString,
                     new LocalFileSenderTelemetryPipelineListener(localFileLoader, persistedFile.file));
             completableResultCode.join(10, SECONDS);
             assertThat(completableResultCode.isSuccess()).isEqualTo(true);
@@ -124,25 +116,21 @@ public class LocalFileLoaderTests {
 
     @Test
     public void testDeleteFilePermanentlyOnFailure() {
-        HttpClient mockedClient = httpRequest ->
-            Mono.error(() -> new Exception("this is expected to be logged by the operation logger"));
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
-            .httpClient(mockedClient)
-            .tracer(new NoopTracer());
+        HttpClient mockedClient
+            = httpRequest -> Mono.error(() -> new Exception("this is expected to be logged by the operation logger"));
+        HttpPipelineBuilder pipelineBuilder
+            = new HttpPipelineBuilder().httpClient(mockedClient).tracer(new NoopTracer());
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
 
         LocalFileLoader localFileLoader = new LocalFileLoader(localFileCache, tempFolder, null, false);
-        LocalFileWriter localFileWriter =
-            new LocalFileWriter(50, localFileCache, tempFolder, null, false);
+        LocalFileWriter localFileWriter = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
 
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
 
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
-            localFileWriter.writeToDisk(
-                CONNECTION_STRING,
-                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))),
-                "original error message");
+            localFileWriter.writeToDisk(CONNECTION_STRING,
+                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))), "original error message");
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(10);
@@ -155,10 +143,8 @@ public class LocalFileLoaderTests {
             LocalFileLoader.PersistedFile persistedFile = localFileLoader.loadTelemetriesFromDisk();
             assertThat(persistedFile.connectionString).isEqualTo(CONNECTION_STRING);
 
-            CompletableResultCode completableResultCode =
-                telemetryPipeline.send(
-                    singletonList(persistedFile.rawBytes),
-                    persistedFile.connectionString,
+            CompletableResultCode completableResultCode
+                = telemetryPipeline.send(singletonList(persistedFile.rawBytes), persistedFile.connectionString,
                     new LocalFileSenderTelemetryPipelineListener(localFileLoader, persistedFile.file));
             completableResultCode.join(10, SECONDS);
             assertThat(completableResultCode.isSuccess()).isEqualTo(false);
@@ -170,10 +156,9 @@ public class LocalFileLoaderTests {
     }
 
     private static HttpClient getMockHttpClientSuccess() {
-        return new MockHttpClient(
-            request -> {
-                return Mono.just(new MockHttpResponse(request, 200));
-            });
+        return new MockHttpClient(request -> {
+            return Mono.just(new MockHttpResponse(request, 200));
+        });
     }
 
     private static class MockHttpClient implements HttpClient {

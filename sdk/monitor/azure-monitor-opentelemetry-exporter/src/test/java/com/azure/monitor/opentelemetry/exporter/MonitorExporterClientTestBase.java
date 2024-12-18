@@ -50,8 +50,7 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        return new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        return new HttpPipelineBuilder().httpClient(httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .tracer(new NoopTracer())
             .build();
@@ -63,49 +62,31 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
-        telemetryItems.add(
-            createRequestData(
-                "200",
-                "GET /service/resource-name",
-                true,
-                Duration.ofMillis(100),
-                Instant.now().minus(10, ChronoUnit.DAYS)));
-        telemetryItems.add(
-            createRequestData(
-                "400",
-                "GET /service/resource-name",
-                false,
-                Duration.ofMillis(50),
-                Instant.now().minus(10, ChronoUnit.DAYS)));
-        telemetryItems.add(
-            createRequestData(
-                "202",
-                "GET /service/resource-name",
-                true,
-                Duration.ofMillis(125),
-                Instant.now().minus(10, ChronoUnit.DAYS)));
+        telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100),
+            Instant.now().minus(10, ChronoUnit.DAYS)));
+        telemetryItems.add(createRequestData("400", "GET /service/resource-name", false, Duration.ofMillis(50),
+            Instant.now().minus(10, ChronoUnit.DAYS)));
+        telemetryItems.add(createRequestData("202", "GET /service/resource-name", true, Duration.ofMillis(125),
+            Instant.now().minus(10, ChronoUnit.DAYS)));
         return telemetryItems;
     }
 
-    TelemetryItem createRequestData(
-        String responseCode, String requestName, boolean success, Duration duration, Instant time) {
-        MonitorDomain requestData =
-            new RequestData()
-                .setId(UUID.randomUUID().toString())
-                .setDuration(FormattedDuration.fromNanos(duration.toNanos()))
-                .setResponseCode(responseCode)
-                .setSuccess(success)
-                .setUrl("http://localhost:8080/")
-                .setName(requestName)
-                .setVersion(2);
+    TelemetryItem createRequestData(String responseCode, String requestName, boolean success, Duration duration,
+        Instant time) {
+        MonitorDomain requestData = new RequestData().setId(UUID.randomUUID().toString())
+            .setDuration(FormattedDuration.fromNanos(duration.toNanos()))
+            .setResponseCode(responseCode)
+            .setSuccess(success)
+            .setUrl("http://localhost:8080/")
+            .setName(requestName)
+            .setVersion(2);
 
         MonitorBase monitorBase = new MonitorBase().setBaseType("RequestData").setBaseData(requestData);
 
-        String connectionString =
-            Configuration.getGlobalConfiguration().get("APPLICATIONINSIGHTS_CONNECTION_STRING", "");
+        String connectionString
+            = Configuration.getGlobalConfiguration().get("APPLICATIONINSIGHTS_CONNECTION_STRING", "");
 
-        return new TelemetryItem()
-            .setVersion(1)
+        return new TelemetryItem().setVersion(1)
             .setConnectionString(ConnectionString.parse(connectionString))
             .setName("test-event-name")
             .setSampleRate(100.0f)

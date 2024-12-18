@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties for a key execution. */
+/**
+ * Properties for a key execution.
+ */
 @Fluent
-public final class ManagedInstanceKeyProperties {
+public final class ManagedInstanceKeyProperties implements JsonSerializable<ManagedInstanceKeyProperties> {
     /*
      * The key type like 'ServiceManaged', 'AzureKeyVault'.
      */
-    @JsonProperty(value = "serverKeyType", required = true)
     private ServerKeyType serverKeyType;
 
     /*
      * The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Thumbprint of the key.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * The key creation date.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * Key auto rotation opt-in flag. Either true or false.
      */
-    @JsonProperty(value = "autoRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of ManagedInstanceKeyProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceKeyProperties class.
+     */
     public ManagedInstanceKeyProperties() {
     }
 
     /**
      * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -58,7 +62,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Set the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceKeyProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -78,7 +82,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Set the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ManagedInstanceKeyProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -98,7 +102,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the creationDate property: The key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -107,7 +111,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -116,17 +120,65 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model ManagedInstanceKeyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model ManagedInstanceKeyProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedInstanceKeyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverKeyType", this.serverKeyType == null ? null : this.serverKeyType.toString());
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceKeyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceKeyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceKeyProperties.
+     */
+    public static ManagedInstanceKeyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceKeyProperties deserializedManagedInstanceKeyProperties = new ManagedInstanceKeyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverKeyType".equals(fieldName)) {
+                    deserializedManagedInstanceKeyProperties.serverKeyType
+                        = ServerKeyType.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedManagedInstanceKeyProperties.uri = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedManagedInstanceKeyProperties.thumbprint = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedManagedInstanceKeyProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("autoRotationEnabled".equals(fieldName)) {
+                    deserializedManagedInstanceKeyProperties.autoRotationEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceKeyProperties;
+        });
+    }
 }

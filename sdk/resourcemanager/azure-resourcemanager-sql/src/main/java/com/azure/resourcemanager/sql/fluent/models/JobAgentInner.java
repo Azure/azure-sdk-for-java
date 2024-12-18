@@ -6,33 +6,53 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobAgentState;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An Azure SQL job agent. */
+/**
+ * An Azure SQL job agent.
+ */
 @Fluent
 public final class JobAgentInner extends Resource {
     /*
      * The name and tier of the SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private JobAgentProperties innerProperties;
 
-    /** Creates an instance of JobAgentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobAgentInner class.
+     */
     public JobAgentInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -41,7 +61,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the JobAgentInner object itself.
      */
@@ -52,21 +72,55 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobAgentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobAgentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobAgentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +129,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Get the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -84,7 +138,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Set the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @param databaseId the databaseId value to set.
      * @return the JobAgentInner object itself.
      */
@@ -98,7 +152,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Get the state property: The state of the job agent.
-     *
+     * 
      * @return the state value.
      */
     public JobAgentState state() {
@@ -107,7 +161,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -117,5 +171,58 @@ public final class JobAgentInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobAgentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobAgentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobAgentInner.
+     */
+    public static JobAgentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobAgentInner deserializedJobAgentInner = new JobAgentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobAgentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobAgentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobAgentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedJobAgentInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobAgentInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedJobAgentInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobAgentInner.innerProperties = JobAgentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobAgentInner;
+        });
     }
 }

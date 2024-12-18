@@ -5,29 +5,33 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The collection of asset summaries.
  */
 @Immutable
-public final class AssetSummaryResult {
+public final class AssetSummaryResult implements JsonSerializable<AssetSummaryResult> {
 
     /*
      * The name of the summary response. Depending on the request time this will either be the asset filter, risk
      * category, or risk metric.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the summary response. Filters don't have a description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
@@ -35,57 +39,49 @@ public final class AssetSummaryResult {
      * which always pull the live asset data.
      */
     @Generated
-    @JsonProperty(value = "updatedAt")
     private OffsetDateTime updatedAt;
 
     /*
      * If the request is for a metric category, this will contain the requested unique category name.
      */
     @Generated
-    @JsonProperty(value = "metricCategory")
     private String metricCategory;
 
     /*
      * If the request is for a metric, this will contain the requested unique metric name.
      */
     @Generated
-    @JsonProperty(value = "metric")
     private String metric;
 
     /*
      * If the request is for an asset filter, this will contain the corresponding filter.
      */
     @Generated
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * An optional label used to filter requests results.
      */
     @Generated
-    @JsonProperty(value = "labelName")
     private String labelName;
 
     /*
      * The count of assets matching the request parameters.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The link to the corresponding asset details.
      */
     @Generated
-    @JsonProperty(value = "link")
     private String link;
 
     /*
-     * The corresponding child entities. For metric categories this will contain metrics. For filters with groupBy
-     * and segmentBy this will contain facets.
+     * The corresponding child entities. For metric categories this will contain metrics. For filters with groupBy and
+     * segmentBy this will contain facets.
      */
     @Generated
-    @JsonProperty(value = "children")
     private List<AssetSummaryResult> children;
 
     /**
@@ -96,8 +92,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the displayName property: The name of the summary response. Depending on the request time this will either
-     * be the asset filter, risk category, or risk metric.
+     * Get the displayName property: The name of the summary response. Depending on the request time this will either be
+     * the asset filter, risk category, or risk metric.
      *
      * @return the displayName value.
      */
@@ -189,13 +185,80 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the children property: The corresponding child entities. For metric categories this will contain metrics.
-     * For filters with groupBy and segmentBy this will contain facets.
+     * Get the children property: The corresponding child entities. For metric categories this will contain metrics. For
+     * filters with groupBy and segmentBy this will contain facets.
      *
      * @return the children value.
      */
     @Generated
     public List<AssetSummaryResult> getChildren() {
         return this.children;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("updatedAt",
+            this.updatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedAt));
+        jsonWriter.writeStringField("metricCategory", this.metricCategory);
+        jsonWriter.writeStringField("metric", this.metric);
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeStringField("labelName", this.labelName);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("link", this.link);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetSummaryResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetSummaryResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetSummaryResult.
+     */
+    @Generated
+    public static AssetSummaryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetSummaryResult deserializedAssetSummaryResult = new AssetSummaryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("displayName".equals(fieldName)) {
+                    deserializedAssetSummaryResult.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAssetSummaryResult.description = reader.getString();
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedAssetSummaryResult.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metricCategory".equals(fieldName)) {
+                    deserializedAssetSummaryResult.metricCategory = reader.getString();
+                } else if ("metric".equals(fieldName)) {
+                    deserializedAssetSummaryResult.metric = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedAssetSummaryResult.filter = reader.getString();
+                } else if ("labelName".equals(fieldName)) {
+                    deserializedAssetSummaryResult.labelName = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedAssetSummaryResult.count = reader.getNullable(JsonReader::getLong);
+                } else if ("link".equals(fieldName)) {
+                    deserializedAssetSummaryResult.link = reader.getString();
+                } else if ("children".equals(fieldName)) {
+                    List<AssetSummaryResult> children
+                        = reader.readArray(reader1 -> AssetSummaryResult.fromJson(reader1));
+                    deserializedAssetSummaryResult.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssetSummaryResult;
+        });
     }
 }

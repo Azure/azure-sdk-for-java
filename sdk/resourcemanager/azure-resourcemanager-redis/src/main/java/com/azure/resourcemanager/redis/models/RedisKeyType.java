@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The Redis access key to regenerate.
  */
@@ -36,7 +33,6 @@ public enum RedisKeyType {
      * @param value the serialized value to parse.
      * @return the parsed RedisKeyType object, or null if unable to parse.
      */
-    @JsonCreator
     public static RedisKeyType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum RedisKeyType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

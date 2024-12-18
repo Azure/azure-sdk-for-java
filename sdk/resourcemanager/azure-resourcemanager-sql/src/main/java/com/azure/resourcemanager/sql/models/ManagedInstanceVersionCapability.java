@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The managed instance capability. */
+/**
+ * The managed instance capability.
+ */
 @Fluent
-public final class ManagedInstanceVersionCapability {
+public final class ManagedInstanceVersionCapability implements JsonSerializable<ManagedInstanceVersionCapability> {
     /*
      * The server version name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported managed instance editions.
      */
-    @JsonProperty(value = "supportedEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceEditionCapability> supportedEditions;
 
     /*
      * The list of supported instance pool editions.
      */
-    @JsonProperty(value = "supportedInstancePoolEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstancePoolEditionCapability> supportedInstancePoolEditions;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceVersionCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceVersionCapability class.
+     */
     public ManagedInstanceVersionCapability() {
     }
 
     /**
      * Get the name property: The server version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the supportedEditions property: The list of supported managed instance editions.
-     *
+     * 
      * @return the supportedEditions value.
      */
     public List<ManagedInstanceEditionCapability> supportedEditions() {
@@ -65,7 +68,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the supportedInstancePoolEditions property: The list of supported instance pool editions.
-     *
+     * 
      * @return the supportedInstancePoolEditions value.
      */
     public List<InstancePoolEditionCapability> supportedInstancePoolEditions() {
@@ -74,7 +77,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +86,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +95,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceVersionCapability object itself.
      */
@@ -103,7 +106,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -113,5 +116,56 @@ public final class ManagedInstanceVersionCapability {
         if (supportedInstancePoolEditions() != null) {
             supportedInstancePoolEditions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceVersionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceVersionCapability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceVersionCapability.
+     */
+    public static ManagedInstanceVersionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceVersionCapability deserializedManagedInstanceVersionCapability
+                = new ManagedInstanceVersionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceVersionCapability.name = reader.getString();
+                } else if ("supportedEditions".equals(fieldName)) {
+                    List<ManagedInstanceEditionCapability> supportedEditions
+                        = reader.readArray(reader1 -> ManagedInstanceEditionCapability.fromJson(reader1));
+                    deserializedManagedInstanceVersionCapability.supportedEditions = supportedEditions;
+                } else if ("supportedInstancePoolEditions".equals(fieldName)) {
+                    List<InstancePoolEditionCapability> supportedInstancePoolEditions
+                        = reader.readArray(reader1 -> InstancePoolEditionCapability.fromJson(reader1));
+                    deserializedManagedInstanceVersionCapability.supportedInstancePoolEditions
+                        = supportedInstancePoolEditions;
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedInstanceVersionCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedManagedInstanceVersionCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceVersionCapability;
+        });
     }
 }

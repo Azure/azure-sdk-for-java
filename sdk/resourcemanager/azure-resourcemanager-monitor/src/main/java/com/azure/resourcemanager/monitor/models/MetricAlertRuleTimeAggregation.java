@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MetricAlertRuleTimeAggregation. */
@@ -30,7 +29,6 @@ public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<M
      * @param name a name to look for
      * @return the corresponding MetricAlertRuleTimeAggregation
      */
-    @JsonCreator
     public static MetricAlertRuleTimeAggregation fromString(String name) {
         return fromString(name, MetricAlertRuleTimeAggregation.class);
     }

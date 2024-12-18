@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
     private static final ClientLogger logger = new ClientLogger(LocalStorageTelemetryPipelineListener.class);
@@ -40,19 +39,13 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
     // telemetryFolder must already exist and be writable
-    public LocalStorageTelemetryPipelineListener(
-        int diskPersistenceMaxSizeMb,
-        File telemetryFolder,
-        TelemetryPipeline pipeline,
-        LocalStorageStats stats,
-        boolean suppressWarnings) { // used to suppress warnings from statsbeat
+    public LocalStorageTelemetryPipelineListener(int diskPersistenceMaxSizeMb, File telemetryFolder,
+        TelemetryPipeline pipeline, LocalStorageStats stats, boolean suppressWarnings) { // used to suppress warnings from statsbeat
 
         LocalFileCache localFileCache = new LocalFileCache(telemetryFolder);
-        LocalFileLoader loader =
-            new LocalFileLoader(localFileCache, telemetryFolder, stats, suppressWarnings);
-        localFileWriter =
-            new LocalFileWriter(
-                diskPersistenceMaxSizeMb, localFileCache, telemetryFolder, stats, suppressWarnings);
+        LocalFileLoader loader = new LocalFileLoader(localFileCache, telemetryFolder, stats, suppressWarnings);
+        localFileWriter
+            = new LocalFileWriter(diskPersistenceMaxSizeMb, localFileCache, telemetryFolder, stats, suppressWarnings);
 
         // send persisted telemetries from local disk every 30 seconds by default.
         // if diskPersistenceMaxSizeMb is greater than 50, it will get changed to 10 seconds.
@@ -65,8 +58,8 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         int statusCode = response.getStatusCode();
         if (StatusCode.isRetryable(statusCode)) {
-            localFileWriter.writeToDisk(
-                request.getConnectionString(), request.getByteBuffers(), getOriginalErrorMessage(response));
+            localFileWriter.writeToDisk(request.getConnectionString(), request.getByteBuffers(),
+                getOriginalErrorMessage(response));
         } else if (statusCode == 206) {
             processStatusCode206(request, response);
         }
@@ -88,8 +81,8 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             }
 
             if (!toBePersisted.isEmpty()) {
-                localFileWriter.writeToDisk(
-                    request.getConnectionString(), gzip(toBePersisted), "Received partial response code 206");
+                localFileWriter.writeToDisk(request.getConnectionString(), gzip(toBePersisted),
+                    "Received partial response code 206");
             }
         }
     }
@@ -127,14 +120,15 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             }
             return result.getByteBuffers();
         } catch (IOException e) {
-            throw new IllegalArgumentException("Failed to encode list of ByteBuffers before persisting to the offline disk", e);
+            throw new IllegalArgumentException(
+                "Failed to encode list of ByteBuffers before persisting to the offline disk", e);
         }
     }
 
     // un-gzip TelemetryItems raw bytes back to original un-gzipped TelemetryItems raw bytes
     public static byte[] ungzip(byte[] rawBytes) {
         try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes));
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             byte[] data = new byte[1024];
             int read;
             while ((read = in.read(data)) != -1) {
@@ -163,8 +157,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     }
 
     @Override
-    public void onException(
-        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+    public void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
         localFileWriter.writeToDisk(request.getConnectionString(), request.getByteBuffers(), errorMessage);
     }
 
@@ -182,8 +175,8 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     private static String getOriginalErrorMessage(TelemetryPipelineResponse response) {
         int statusCode = response.getStatusCode();
         if (statusCode == 401 || statusCode == 403) {
-            return DiagnosticTelemetryPipelineListener
-                .getErrorMessageFromCredentialRelatedResponse(statusCode, response.getBody());
+            return DiagnosticTelemetryPipelineListener.getErrorMessageFromCredentialRelatedResponse(statusCode,
+                response.getBody());
         } else {
             return "Received response code " + statusCode;
         }

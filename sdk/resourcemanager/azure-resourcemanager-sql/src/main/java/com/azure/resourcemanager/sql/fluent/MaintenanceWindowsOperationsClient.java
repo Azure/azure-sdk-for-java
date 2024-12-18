@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.MaintenanceWindowsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MaintenanceWindowsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MaintenanceWindowsOperationsClient.
+ */
 public interface MaintenanceWindowsOperationsClient {
     /**
      * Gets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
@@ -25,17 +27,17 @@ public interface MaintenanceWindowsOperationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return maintenance windows settings for a database along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowName);
+    Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String maintenanceWindowName);
 
     /**
      * Gets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
@@ -45,14 +47,14 @@ public interface MaintenanceWindowsOperationsClient {
      * @return maintenance windows settings for a database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MaintenanceWindowsInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowName);
+    Mono<MaintenanceWindowsInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowName);
 
     /**
      * Gets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
@@ -63,18 +65,14 @@ public interface MaintenanceWindowsOperationsClient {
      * @return maintenance windows settings for a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceWindowsInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowName,
-        Context context);
+    Response<MaintenanceWindowsInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowName, Context context);
 
     /**
      * Gets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
@@ -84,62 +82,54 @@ public interface MaintenanceWindowsOperationsClient {
      * @return maintenance windows settings for a database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MaintenanceWindowsInner get(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowName);
+    MaintenanceWindowsInner get(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowName);
 
     /**
      * Sets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to set maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
-     * @param parameters Maintenance windows.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters);
+    Mono<Response<Void>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String maintenanceWindowName, MaintenanceWindowsInner parameters);
 
     /**
      * Sets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to set maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
-     * @param parameters Maintenance windows.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters);
+    Mono<Void> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters);
 
     /**
      * Sets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to set maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
-     * @param parameters Maintenance windows.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,32 +137,23 @@ public interface MaintenanceWindowsOperationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context);
+    Response<Void> createOrUpdateWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context);
 
     /**
      * Sets maintenance windows settings for a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to set maintenance windows for.
      * @param maintenanceWindowName Maintenance window name.
-     * @param parameters Maintenance windows.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowName,
+    void createOrUpdate(String resourceGroupName, String serverName, String databaseName, String maintenanceWindowName,
         MaintenanceWindowsInner parameters);
 }

@@ -20,8 +20,12 @@ public final class PredictiveMetricGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getMetricForData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPredictiveMetrics().getWithResponse("myRG",
-            "vmss1-Autoscale-775", "2021-10-14T22:00:00.000Z/2021-10-16T22:00:00.000Z", Duration.parse("PT1H"),
-            "Microsoft.Compute/virtualMachineScaleSets", "PercentageCPU", "Total", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPredictiveMetrics()
+            .getWithResponse("myRG", "vmss1-Autoscale-775", "2021-10-14T22:00:00.000Z/2021-10-16T22:00:00.000Z",
+                Duration.parse("PT1H"), "Microsoft.Compute/virtualMachineScaleSets", "PercentageCPU", "Total",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies which Redis node(s) to reboot.
  */
 @Fluent
-public final class RedisRebootParameters {
+public final class RedisRebootParameters implements JsonSerializable<RedisRebootParameters> {
     /*
      * Which Redis node(s) to reboot. Depending on this value data loss is possible.
      */
-    @JsonProperty(value = "rebootType")
     private RebootType rebootType;
 
     /*
      * If clustering is enabled, the ID of the shard to be rebooted.
      */
-    @JsonProperty(value = "shardId")
     private Integer shardId;
 
     /*
      * A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
      */
-    @JsonProperty(value = "ports")
     private List<Integer> ports;
 
     /**
@@ -105,5 +106,48 @@ public final class RedisRebootParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rebootType", this.rebootType == null ? null : this.rebootType.toString());
+        jsonWriter.writeNumberField("shardId", this.shardId);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisRebootParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisRebootParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisRebootParameters.
+     */
+    public static RedisRebootParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisRebootParameters deserializedRedisRebootParameters = new RedisRebootParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rebootType".equals(fieldName)) {
+                    deserializedRedisRebootParameters.rebootType = RebootType.fromString(reader.getString());
+                } else if ("shardId".equals(fieldName)) {
+                    deserializedRedisRebootParameters.shardId = reader.getNullable(JsonReader::getInt);
+                } else if ("ports".equals(fieldName)) {
+                    List<Integer> ports = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRedisRebootParameters.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisRebootParameters;
+        });
     }
 }

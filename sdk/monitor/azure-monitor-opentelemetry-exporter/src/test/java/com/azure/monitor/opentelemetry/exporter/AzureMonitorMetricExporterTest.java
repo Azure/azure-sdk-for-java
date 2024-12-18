@@ -44,9 +44,8 @@ public class AzureMonitorMetricExporterTest {
     public void testDoubleCounter() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-                .registerMetricReader(
-                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
-                .build();
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
         DoubleCounter counter = meter.counterBuilder("testDoubleCounter").ofDoubles().build();
@@ -60,8 +59,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            MetricDataMapper.updateMetricPointBuilder(
-                builder, metricDataList.get(0), pointData, true, false);
+            MetricDataMapper.updateMetricPointBuilder(builder, metricDataList.get(0), pointData, true, false);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(3.1415);
@@ -75,17 +73,14 @@ public class AzureMonitorMetricExporterTest {
     public void testDoubleGauge() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-                .registerMetricReader(
-                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
-                .build();
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
-        meter
-            .gaugeBuilder("testDoubleGauge")
+        meter.gaugeBuilder("testDoubleGauge")
             .setDescription("the current temperature")
             .setUnit("C")
-            .buildWithCallback(
-                m -> m.record(20.0, Attributes.of(AttributeKey.stringKey("thing"), "engine")));
+            .buildWithCallback(m -> m.record(20.0, Attributes.of(AttributeKey.stringKey("thing"), "engine")));
 
         meterProvider.forceFlush();
 
@@ -111,16 +106,13 @@ public class AzureMonitorMetricExporterTest {
     public void testAttributesOnCustomMetric() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(
-                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
             .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
         DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
-        Attributes attributes = Attributes.builder()
-            .put(SERVER_ADDRESS, "example.io")
-            .put(AttributeKey.stringKey("foo"), "bar")
-            .build();
+        Attributes attributes
+            = Attributes.builder().put(SERVER_ADDRESS, "example.io").put(AttributeKey.stringKey("foo"), "bar").build();
 
         counter.add(1, attributes);
 
@@ -131,8 +123,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metric = metricDatas.get(0);
         PointData pointData = metric.getData().getPoints().stream().findFirst().get();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(
-            builder, metric, pointData, true, false);
+        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, false);
 
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
@@ -147,8 +138,7 @@ public class AzureMonitorMetricExporterTest {
     public void testAttributesOnStandardMetric() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(
-                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
             .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
@@ -167,8 +157,7 @@ public class AzureMonitorMetricExporterTest {
         MetricData metric = metricDatas.get(0);
         PointData pointData = metric.getData().getPoints().stream().findFirst().get();
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-        MetricDataMapper.updateMetricPointBuilder(
-            builder, metric, pointData, true, true);
+        MetricDataMapper.updateMetricPointBuilder(builder, metric, pointData, true, true);
 
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
@@ -186,36 +175,21 @@ public class AzureMonitorMetricExporterTest {
     public void testLongCounter() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-                .registerMetricReader(
-                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
-                .build();
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
         LongCounter counter = meter.counterBuilder("testLongCounter").build();
-        counter.add(
-            1,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
-        counter.add(
-            2,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
-        counter.add(
-            1,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
-        counter.add(
-            2,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "green"));
-        counter.add(
-            5,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
-        counter.add(
-            4,
-            Attributes.of(
-                AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
+        counter.add(1, Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
+        counter.add(2,
+            Attributes.of(AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
+        counter.add(1,
+            Attributes.of(AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
+        counter.add(2,
+            Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "green"));
+        counter.add(5, Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
+        counter.add(4,
+            Attributes.of(AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
 
         meterProvider.forceFlush();
 
@@ -227,32 +201,23 @@ public class AzureMonitorMetricExporterTest {
         Collection<LongPointData> points = (Collection<LongPointData>) metricData.getData().getPoints();
         assertThat(points.size()).isEqualTo(3);
 
-        points =
-            points.stream()
-                .sorted(Comparator.comparing(LongPointData::getValue))
-                .collect(Collectors.toList());
+        points = points.stream().sorted(Comparator.comparing(LongPointData::getValue)).collect(Collectors.toList());
 
         Iterator<LongPointData> iterator = points.iterator();
         LongPointData longPointData1 = iterator.next();
         assertThat(longPointData1.getValue()).isEqualTo(2L);
-        assertThat(longPointData1.getAttributes().get(AttributeKey.stringKey("name")))
-            .isEqualTo("apple");
-        assertThat(longPointData1.getAttributes().get(AttributeKey.stringKey("color")))
-            .isEqualTo("green");
+        assertThat(longPointData1.getAttributes().get(AttributeKey.stringKey("name"))).isEqualTo("apple");
+        assertThat(longPointData1.getAttributes().get(AttributeKey.stringKey("color"))).isEqualTo("green");
 
         LongPointData longPointData2 = iterator.next();
         assertThat(longPointData2.getValue()).isEqualTo(6L);
-        assertThat(longPointData2.getAttributes().get(AttributeKey.stringKey("name")))
-            .isEqualTo("apple");
-        assertThat(longPointData2.getAttributes().get(AttributeKey.stringKey("color")))
-            .isEqualTo("red");
+        assertThat(longPointData2.getAttributes().get(AttributeKey.stringKey("name"))).isEqualTo("apple");
+        assertThat(longPointData2.getAttributes().get(AttributeKey.stringKey("color"))).isEqualTo("red");
 
         LongPointData longPointData3 = iterator.next();
         assertThat(longPointData3.getValue()).isEqualTo(7L);
-        assertThat(longPointData3.getAttributes().get(AttributeKey.stringKey("name")))
-            .isEqualTo("lemon");
-        assertThat(longPointData3.getAttributes().get(AttributeKey.stringKey("color")))
-            .isEqualTo("yellow");
+        assertThat(longPointData3.getAttributes().get(AttributeKey.stringKey("name"))).isEqualTo("lemon");
+        assertThat(longPointData3.getAttributes().get(AttributeKey.stringKey("color"))).isEqualTo("yellow");
 
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
         MetricDataMapper.updateMetricPointBuilder(builder, metricData, longPointData1, true, false);
@@ -298,20 +263,17 @@ public class AzureMonitorMetricExporterTest {
     public void testLongGauge() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-                .registerMetricReader(
-                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
-                .build();
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
-        meter
-            .gaugeBuilder("testLongGauge")
+        meter.gaugeBuilder("testLongGauge")
             .ofLongs()
             .setDescription("the current temperature")
             .setUnit("C")
-            .buildWithCallback(
-                m -> {
-                    m.record(20, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
-                });
+            .buildWithCallback(m -> {
+                m.record(20, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
+            });
 
         meterProvider.forceFlush();
 
@@ -337,17 +299,14 @@ public class AzureMonitorMetricExporterTest {
     public void testDoubleHistogram() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-                .registerMetricReader(
-                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
-                .build();
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
-        DoubleHistogram doubleHistogram =
-            meter
-                .histogramBuilder("testDoubleHistogram")
-                .setDescription("http.client.duration")
-                .setUnit("ms")
-                .build();
+        DoubleHistogram doubleHistogram = meter.histogramBuilder("testDoubleHistogram")
+            .setDescription("http.client.duration")
+            .setUnit("ms")
+            .build();
 
         doubleHistogram.record(25.45);
 
@@ -377,18 +336,16 @@ public class AzureMonitorMetricExporterTest {
     public void testNoAttributeWithPrefixApplicationInsightsInternal() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(
-                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .registerMetricReader(PeriodicMetricReader.builder(inMemoryMetricExporter).build())
             .build();
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
         // create a long counter with two attributes including one with "applicationinsights.internal." as prefix
-        LongCounter longCounter =
-            meter.counterBuilder("testLongCounter")
-                .setDescription("testLongCounter")
-                .setUnit("1").build();
+        LongCounter longCounter
+            = meter.counterBuilder("testLongCounter").setDescription("testLongCounter").setUnit("1").build();
 
-        Attributes attributes = Attributes.of(AttributeKey.stringKey("applicationinsights.internal.test"), "test", AttributeKey.stringKey("foo"), "bar");
+        Attributes attributes = Attributes.of(AttributeKey.stringKey("applicationinsights.internal.test"), "test",
+            AttributeKey.stringKey("foo"), "bar");
         longCounter.add(1, attributes);
 
         meterProvider.forceFlush();

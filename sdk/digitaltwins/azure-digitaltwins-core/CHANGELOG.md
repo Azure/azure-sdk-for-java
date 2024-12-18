@@ -4,7 +4,12 @@
 
 ### Features Added
 
+- Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for 
+  more serialization frameworks than just Jackson.
+
 ### Breaking Changes
+
+- Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
 ### Bugs Fixed
 
@@ -19,7 +24,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.13` to version `1.4.14`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
-
 
 ## 1.3.21 (2024-06-27)
 
@@ -41,7 +45,6 @@
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
-
 
 ## 1.3.19 (2024-04-23)
 

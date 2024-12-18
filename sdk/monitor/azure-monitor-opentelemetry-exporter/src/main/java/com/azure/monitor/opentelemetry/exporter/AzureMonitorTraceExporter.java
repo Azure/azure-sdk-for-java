@@ -27,8 +27,8 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorTraceExporter.class);
-    private static final OperationLogger OPERATION_LOGGER =
-        new OperationLogger(AzureMonitorTraceExporter.class, "Exporting span");
+    private static final OperationLogger OPERATION_LOGGER
+        = new OperationLogger(AzureMonitorTraceExporter.class, "Exporting span");
 
     private final TelemetryItemExporter telemetryItemExporter;
     private final SpanDataMapper mapper;
@@ -38,7 +38,8 @@ final class AzureMonitorTraceExporter implements SpanExporter {
      * Creates an instance of exporter that is configured with given exporter client that sends
      * telemetry events to Application Insights resource identified by the instrumentation key.
      */
-    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter, StatsbeatModule statsbeatModule) {
+    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter,
+        StatsbeatModule statsbeatModule) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
         this.statsbeatModule = statsbeatModule;

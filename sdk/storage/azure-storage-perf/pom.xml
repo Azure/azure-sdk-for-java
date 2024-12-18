@@ -25,25 +25,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.28.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.28.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.24.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
 
     <dependency>

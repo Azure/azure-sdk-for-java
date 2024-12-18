@@ -25,7 +25,6 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -37,8 +36,6 @@ import java.util.Map;
 class LoadTestingClientTestBase extends TestProxyTestBase {
     private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
     private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
-
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID",
             "11111111-1234-1234-1234-123456789012");

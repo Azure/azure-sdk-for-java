@@ -19,13 +19,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FailoverGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FailoverGroupsClient.
+ */
 public interface FailoverGroupsClient {
     /**
      * Lists the failover groups in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,9 +39,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Lists the failover groups in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,9 +53,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Lists the failover groups in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,9 +68,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Gets a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,14 +79,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FailoverGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<Response<FailoverGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Gets a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,9 +99,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Gets a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -109,14 +111,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FailoverGroupInner> getWithResponse(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context);
+    Response<FailoverGroupInner> getWithResponse(String resourceGroupName, String serverName, String failoverGroupName,
+        Context context);
 
     /**
      * Gets a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -141,14 +143,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String failoverGroupName, FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -158,14 +160,14 @@ public interface FailoverGroupsClient {
      * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -175,14 +177,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -193,18 +195,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupInner parameters,
-        Context context);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupInner parameters, Context context);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -214,14 +212,14 @@ public interface FailoverGroupsClient {
      * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FailoverGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+    Mono<FailoverGroupInner> createOrUpdateAsync(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -231,14 +229,14 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner createOrUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupInner parameters);
+    FailoverGroupInner createOrUpdate(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupInner parameters);
 
     /**
      * Creates or updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -249,18 +247,14 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupInner parameters,
-        Context context);
+    FailoverGroupInner createOrUpdate(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupInner parameters, Context context);
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,14 +263,14 @@ public interface FailoverGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,14 +279,14 @@ public interface FailoverGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,14 +295,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -318,14 +312,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String failoverGroupName, Context context);
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,9 +332,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,9 +346,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Deletes a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -367,9 +361,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -379,14 +373,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String failoverGroupName, FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -396,14 +390,14 @@ public interface FailoverGroupsClient {
      * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -413,14 +407,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -431,18 +425,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupUpdate parameters,
-        Context context);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginUpdate(String resourceGroupName,
+        String serverName, String failoverGroupName, FailoverGroupUpdate parameters, Context context);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -452,14 +442,14 @@ public interface FailoverGroupsClient {
      * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FailoverGroupInner> updateAsync(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+    Mono<FailoverGroupInner> updateAsync(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -469,14 +459,14 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner update(
-        String resourceGroupName, String serverName, String failoverGroupName, FailoverGroupUpdate parameters);
+    FailoverGroupInner update(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupUpdate parameters);
 
     /**
      * Updates a failover group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param parameters The failover group parameters.
@@ -487,18 +477,14 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner update(
-        String resourceGroupName,
-        String serverName,
-        String failoverGroupName,
-        FailoverGroupUpdate parameters,
-        Context context);
+    FailoverGroupInner update(String resourceGroupName, String serverName, String failoverGroupName,
+        FailoverGroupUpdate parameters, Context context);
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,14 +493,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,14 +509,14 @@ public interface FailoverGroupsClient {
      * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailoverAsync(String resourceGroupName,
+        String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -539,14 +525,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
+        String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -556,14 +542,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginFailover(String resourceGroupName,
+        String serverName, String failoverGroupName, Context context);
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -576,9 +562,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -591,9 +577,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Fails over from the current primary server to this server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -607,9 +593,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -618,14 +604,14 @@ public interface FailoverGroupsClient {
      * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(String resourceGroupName,
+        String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,14 +620,14 @@ public interface FailoverGroupsClient {
      * @return the {@link PollerFlux} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    PollerFlux<PollResult<FailoverGroupInner>, FailoverGroupInner>
+        beginForceFailoverAllowDataLossAsync(String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -650,14 +636,14 @@ public interface FailoverGroupsClient {
      * @return the {@link SyncPoller} for polling of a failover group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner> beginForceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    SyncPoller<PollResult<FailoverGroupInner>, FailoverGroupInner>
+        beginForceFailoverAllowDataLoss(String resourceGroupName, String serverName, String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -672,9 +658,9 @@ public interface FailoverGroupsClient {
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -683,14 +669,14 @@ public interface FailoverGroupsClient {
      * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<FailoverGroupInner> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,14 +685,14 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner forceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName);
+    FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName,
+        String failoverGroupName);
 
     /**
      * Fails over from the current primary server to this server. This operation might result in data loss.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server containing the failover group.
      * @param failoverGroupName The name of the failover group.
      * @param context The context to associate with this operation.
@@ -716,6 +702,6 @@ public interface FailoverGroupsClient {
      * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FailoverGroupInner forceFailoverAllowDataLoss(
-        String resourceGroupName, String serverName, String failoverGroupName, Context context);
+    FailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String serverName, String failoverGroupName,
+        Context context);
 }

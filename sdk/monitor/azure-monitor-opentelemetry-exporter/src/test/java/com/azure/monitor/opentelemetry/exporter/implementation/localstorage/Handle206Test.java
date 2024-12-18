@@ -32,8 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Handle206Test {
 
-    private static final String CONNECTION_STRING =
-        "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+    private static final String CONNECTION_STRING
+        = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
     private TelemetryItemExporter telemetryItemExporter;
 
     @TempDir
@@ -51,16 +51,13 @@ public class Handle206Test {
             }
             return Mono.just(new MockHttpResponse(httpRequest, 206, mockedResponseBody[0].getBytes()));
         };
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
-            .httpClient(mockedClient)
-            .tracer(new NoopTracer());
+        HttpPipelineBuilder pipelineBuilder
+            = new HttpPipelineBuilder().httpClient(mockedClient).tracer(new NoopTracer());
 
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
-        telemetryItemExporter =
-            new TelemetryItemExporter(
-                telemetryPipeline,
-                new LocalStorageTelemetryPipelineListener(
-                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false));
+        telemetryItemExporter
+            = new TelemetryItemExporter(telemetryPipeline, new LocalStorageTelemetryPipelineListener(50, tempFolder,
+                telemetryPipeline, LocalStorageStats.noop(), false));
     }
 
     @Test
@@ -71,7 +68,8 @@ public class Handle206Test {
             if (i >= 20 && i <= 26) {
                 metricName = "to_be_persisted_offline_metric" + i;
             }
-            TelemetryItem item = TestUtils.createMetricTelemetry(metricName, i, CONNECTION_STRING, "state", "to_be_persisted_offline");
+            TelemetryItem item
+                = TestUtils.createMetricTelemetry(metricName, i, CONNECTION_STRING, "state", "to_be_persisted_offline");
             item.setTime(OffsetDateTime.parse("2024-05-31T00:00:00.00Z"));
             telemetryItems.add(item);
         }
@@ -82,8 +80,8 @@ public class Handle206Test {
         Thread.sleep(1000);
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
-        LocalFileLoader localFileLoader =
-            new LocalFileLoader(localFileCache, tempFolder, LocalStorageStats.noop(), false);
+        LocalFileLoader localFileLoader
+            = new LocalFileLoader(localFileCache, tempFolder, LocalStorageStats.noop(), false);
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
 
@@ -110,26 +108,33 @@ public class Handle206Test {
             MetricsData actualMetricsData = toMetricsData(actualTelemetryItems.get(i).getData().getBaseData());
 
             // verify metric name
-            assertThat(expectedMetricsData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
-            assertThat(actualMetricsData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
-            assertThat(expectedMetricsData.getMetrics().get(0).getName()).isEqualTo(actualMetricsData.getMetrics().get(0).getName());
+            assertThat(expectedMetricsData.getMetrics().get(0).getName())
+                .startsWith("to_be_persisted_offline_metric2" + i);
+            assertThat(actualMetricsData.getMetrics().get(0).getName())
+                .startsWith("to_be_persisted_offline_metric2" + i);
+            assertThat(expectedMetricsData.getMetrics().get(0).getName())
+                .isEqualTo(actualMetricsData.getMetrics().get(0).getName());
 
             // verify metric value
-            assertThat(expectedMetricsData.getMetrics().get(0).getValue()).isEqualTo(actualMetricsData.getMetrics().get(0).getValue());
+            assertThat(expectedMetricsData.getMetrics().get(0).getValue())
+                .isEqualTo(actualMetricsData.getMetrics().get(0).getValue());
 
             // verify metric count
-            assertThat(expectedMetricsData.getMetrics().get(0).getCount()).isEqualTo(actualMetricsData.getMetrics().get(0).getCount());
+            assertThat(expectedMetricsData.getMetrics().get(0).getCount())
+                .isEqualTo(actualMetricsData.getMetrics().get(0).getCount());
 
             // verify metric properties
             assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
             assertThat(actualMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
-            assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo(actualMetricsData.getProperties().get("state"));
+            assertThat(expectedMetricsData.getProperties().get("state"))
+                .isEqualTo(actualMetricsData.getProperties().get("state"));
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(0);
     }
 
     private static void sort(List<TelemetryItem> telemetryItems) {
-        telemetryItems.sort(Comparator.comparing(telemetryItem -> toMetricsData(telemetryItem.getData().getBaseData()).getMetrics().get(0).getName()));
+        telemetryItems.sort(Comparator.comparing(
+            telemetryItem -> toMetricsData(telemetryItem.getData().getBaseData()).getMetrics().get(0).getName()));
     }
 }

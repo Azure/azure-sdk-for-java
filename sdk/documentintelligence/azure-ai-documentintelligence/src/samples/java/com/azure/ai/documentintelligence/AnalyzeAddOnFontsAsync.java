@@ -58,6 +58,7 @@ public class AnalyzeAddOnFontsAsync {
                 Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

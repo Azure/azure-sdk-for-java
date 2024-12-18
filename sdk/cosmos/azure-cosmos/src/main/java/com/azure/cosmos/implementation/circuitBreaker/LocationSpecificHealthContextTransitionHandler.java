@@ -5,11 +5,9 @@ package com.azure.cosmos.implementation.circuitBreaker;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.OperationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +76,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 regionWithSuccess);
                         }
 
-                        return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Healthy);
+                        return this.transitionHealthStatus(LocationHealthStatus.Healthy, isReadOnlyRequest);
                     } else {
                         return locationSpecificHealthContextInner;
                     }
@@ -97,7 +95,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                                 regionWithSuccess);
                         }
 
-                        return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
+                        return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative, isReadOnlyRequest);
                     }
                 } else {
 
@@ -109,7 +107,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             regionWithSuccess);
                     }
 
-                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyTentative);
+                    return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative, isReadOnlyRequest);
                 }
                 break;
             default:
@@ -139,7 +137,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                         regionWithException);
                 }
 
-                return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.HealthyWithFailures);
+                return this.transitionHealthStatus(LocationHealthStatus.HealthyWithFailures, isReadOnlyRequest);
             case HealthyWithFailures:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
 
@@ -172,7 +170,7 @@ public class LocationSpecificHealthContextTransitionHandler {
                             regionWithException);
                     }
 
-                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);
+                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable, isReadOnlyRequest);
                 }
             case HealthyTentative:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
@@ -192,14 +190,23 @@ public class LocationSpecificHealthContextTransitionHandler {
                             regionWithException);
                     }
 
-                    return this.transitionHealthStatus(locationSpecificHealthContext, LocationHealthStatus.Unavailable);
+                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable, isReadOnlyRequest);
                 }
+            case Unavailable:
+                return this.consecutiveExceptionBasedCircuitBreaker
+                    .handleException(
+                        locationSpecificHealthContext,
+                        partitionKeyRangeWrapper,
+                        regionWithException,
+                        isReadOnlyRequest);
             default:
                 throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
         }
     }
 
-    public LocationSpecificHealthContext transitionHealthStatus(LocationSpecificHealthContext locationSpecificHealthContext, LocationHealthStatus newStatus) {
+    public LocationSpecificHealthContext transitionHealthStatus(
+        LocationHealthStatus newStatus,
+        boolean isReadOnlyRequest) {
 
         LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
             .withSuccessCountForWriteForRecovery(0)
@@ -218,11 +225,20 @@ public class LocationSpecificHealthContextTransitionHandler {
 
             case HealthyWithFailures:
 
-                return builder
+                builder = builder
                     .withUnavailableSince(Instant.MAX)
                     .withLocationHealthStatus(LocationHealthStatus.HealthyWithFailures)
-                    .withExceptionThresholdBreached(false)
-                    .build();
+                    .withExceptionThresholdBreached(false);
+
+                if (isReadOnlyRequest) {
+                    return builder
+                        .withExceptionCountForReadForCircuitBreaking(1)
+                        .build();
+                } else {
+                    return builder
+                        .withExceptionCountForWriteForCircuitBreaking(1)
+                        .build();
+                }
 
             case Unavailable:
 

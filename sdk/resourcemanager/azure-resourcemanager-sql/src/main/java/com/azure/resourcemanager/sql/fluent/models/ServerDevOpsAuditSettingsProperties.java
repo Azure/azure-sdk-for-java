@@ -6,44 +6,50 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of a server DevOps audit settings. */
+/**
+ * Properties of a server DevOps audit settings.
+ */
 @Fluent
-public final class ServerDevOpsAuditSettingsProperties {
+public final class ServerDevOpsAuditSettingsProperties
+    implements JsonSerializable<ServerDevOpsAuditSettingsProperties> {
     /*
      * Specifies whether DevOps audit events are sent to Azure Monitor.
      * In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
      * true.
-     *
+     * 
      * When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
      * category on the master database should be also created.
-     *
+     * 
      * Diagnostic Settings URI format:
      * PUT
-     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.
+     * Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-
+     * version=2017-05-01-preview
+     * 
      * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
      * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
-     *
      */
-    @JsonProperty(value = "isAzureMonitorTargetEnabled")
     private Boolean isAzureMonitorTargetEnabled;
 
     /*
      * Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
      * required.
      */
-    @JsonProperty(value = "state", required = true)
     private BlobAuditingPolicyState state;
 
     /*
      * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled,
      * storageEndpoint or isAzureMonitorTargetEnabled is required.
      */
-    @JsonProperty(value = "storageEndpoint")
     private String storageEndpoint;
 
     /*
@@ -52,38 +58,39 @@ public final class ServerDevOpsAuditSettingsProperties {
      * server system-assigned managed identity to access the storage.
      * Prerequisites for using managed identity authentication:
      * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role
-     * to the server identity.
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to
+     * the server identity.
      * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
      */
-    @JsonProperty(value = "storageAccountAccessKey")
     private String storageAccountAccessKey;
 
     /*
      * Specifies the blob storage subscription Id.
      */
-    @JsonProperty(value = "storageAccountSubscriptionId")
     private UUID storageAccountSubscriptionId;
 
-    /** Creates an instance of ServerDevOpsAuditSettingsProperties class. */
+    /**
+     * Creates an instance of ServerDevOpsAuditSettingsProperties class.
+     */
     public ServerDevOpsAuditSettingsProperties() {
     }
 
     /**
-     * Get the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor. In
-     * order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
+     * Get the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
      * true.
-     *
-     * <p>When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-     * logs category on the master database should be also created.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * 
+     * When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should be also created.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @return the isAzureMonitorTargetEnabled value.
      */
     public Boolean isAzureMonitorTargetEnabled() {
@@ -91,19 +98,20 @@ public final class ServerDevOpsAuditSettingsProperties {
     }
 
     /**
-     * Set the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor. In
-     * order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
+     * Set the isAzureMonitorTargetEnabled property: Specifies whether DevOps audit events are sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as
      * true.
-     *
-     * <p>When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
-     * logs category on the master database should be also created.
-     *
-     * <p>Diagnostic Settings URI format: PUT
+     * 
+     * When using REST API to configure DevOps audit, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should be also created.
+     * 
+     * Diagnostic Settings URI format:
+     * PUT
      * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
-     *
-     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
-     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
-     *
+     * 
+     * For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     * 
      * @param isAzureMonitorTargetEnabled the isAzureMonitorTargetEnabled value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
@@ -115,7 +123,7 @@ public final class ServerDevOpsAuditSettingsProperties {
     /**
      * Get the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @return the state value.
      */
     public BlobAuditingPolicyState state() {
@@ -125,7 +133,7 @@ public final class ServerDevOpsAuditSettingsProperties {
     /**
      * Set the state property: Specifies the state of the audit. If state is Enabled, storageEndpoint or
      * isAzureMonitorTargetEnabled are required.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
@@ -138,7 +146,7 @@ public final class ServerDevOpsAuditSettingsProperties {
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is
      * required.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -149,7 +157,7 @@ public final class ServerDevOpsAuditSettingsProperties {
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is
      * required.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
@@ -159,14 +167,16 @@ public final class ServerDevOpsAuditSettingsProperties {
     }
 
     /**
-     * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
-     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
-     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
-     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-     * identity. For more information, see [Auditing to storage using Managed Identity
+     * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account.
+     * If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL
+     * server system-assigned managed identity to access the storage.
+     * Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to
+     * the server identity.
+     * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -174,14 +184,16 @@ public final class ServerDevOpsAuditSettingsProperties {
     }
 
     /**
-     * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
-     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
-     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
-     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-     * identity. For more information, see [Auditing to storage using Managed Identity
+     * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account.
+     * If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL
+     * server system-assigned managed identity to access the storage.
+     * Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to
+     * the server identity.
+     * For more information, see [Auditing to storage using Managed Identity
      * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
@@ -192,7 +204,7 @@ public final class ServerDevOpsAuditSettingsProperties {
 
     /**
      * Get the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @return the storageAccountSubscriptionId value.
      */
     public UUID storageAccountSubscriptionId() {
@@ -201,7 +213,7 @@ public final class ServerDevOpsAuditSettingsProperties {
 
     /**
      * Set the storageAccountSubscriptionId property: Specifies the blob storage subscription Id.
-     *
+     * 
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ServerDevOpsAuditSettingsProperties object itself.
      */
@@ -212,17 +224,70 @@ public final class ServerDevOpsAuditSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model ServerDevOpsAuditSettingsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model ServerDevOpsAuditSettingsProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerDevOpsAuditSettingsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeBooleanField("isAzureMonitorTargetEnabled", this.isAzureMonitorTargetEnabled);
+        jsonWriter.writeStringField("storageEndpoint", this.storageEndpoint);
+        jsonWriter.writeStringField("storageAccountAccessKey", this.storageAccountAccessKey);
+        jsonWriter.writeStringField("storageAccountSubscriptionId",
+            Objects.toString(this.storageAccountSubscriptionId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerDevOpsAuditSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerDevOpsAuditSettingsProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerDevOpsAuditSettingsProperties.
+     */
+    public static ServerDevOpsAuditSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerDevOpsAuditSettingsProperties deserializedServerDevOpsAuditSettingsProperties
+                = new ServerDevOpsAuditSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.state
+                        = BlobAuditingPolicyState.fromString(reader.getString());
+                } else if ("isAzureMonitorTargetEnabled".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.isAzureMonitorTargetEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storageEndpoint".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.storageEndpoint = reader.getString();
+                } else if ("storageAccountAccessKey".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.storageAccountAccessKey = reader.getString();
+                } else if ("storageAccountSubscriptionId".equals(fieldName)) {
+                    deserializedServerDevOpsAuditSettingsProperties.storageAccountSubscriptionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerDevOpsAuditSettingsProperties;
+        });
+    }
 }

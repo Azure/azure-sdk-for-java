@@ -5,47 +5,46 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SavedFilter model.
  */
 @Immutable
-public final class SavedFilter {
+public final class SavedFilter implements JsonSerializable<SavedFilter> {
 
     /*
      * The system generated unique id for the resource.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The caller provided unique name for the resource.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The name that can be used for display purposes.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The filter property.
      */
     @Generated
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * The description property.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -103,5 +102,53 @@ public final class SavedFilter {
     @Generated
     public String getDescription() {
         return this.description;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavedFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavedFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SavedFilter.
+     */
+    @Generated
+    public static SavedFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavedFilter deserializedSavedFilter = new SavedFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedSavedFilter.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSavedFilter.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSavedFilter.displayName = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedSavedFilter.filter = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSavedFilter.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedSavedFilter;
+        });
     }
 }

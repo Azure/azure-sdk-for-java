@@ -44,6 +44,7 @@ public class AnalyzeCustomDocumentFromUrl {
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
             ContentFormat.TEXT,
+            null,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
