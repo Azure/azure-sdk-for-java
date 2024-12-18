@@ -96,6 +96,11 @@ public final class Constants {
      */
     public static class CosmosExceptionStatusCodes {
         /**
+         * Default constructor.
+         */
+        private CosmosExceptionStatusCodes() {
+        }
+        /**
          * Bad Request Status Code.
          */
         public static final int BADREQUEST = 400;
@@ -157,6 +162,11 @@ public final class Constants {
      * Cosmos Exception Sub Status Codes.
      */
     public static class CosmosExceptionSubStatusCodes {
+        /**
+         * Default constructor.
+         */
+        private CosmosExceptionSubStatusCodes() {
+        }
         // For 410 GONE
         /**
          * Name Cache Is Stale Sub Status Code.
