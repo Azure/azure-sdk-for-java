@@ -26,6 +26,10 @@ public final class CosmosBatchResponse {
     private final List<CosmosBatchOperationResult> results;
     private final int subStatusCode;
     private final CosmosDiagnostics cosmosDiagnostics;
+    private long opCountPerEvaluation;
+    private long retriedOpCountPerEvaluation;
+    private long globalOpCount;
+    private int targetMaxMicroBatchSize;
 
     /**
      * Initializes a new instance of the {@link CosmosBatchResponse} class.
@@ -188,6 +192,71 @@ public final class CosmosBatchResponse {
 
         return this.cosmosDiagnostics.getDuration();
     }
+
+    /**
+     * Get operation count per evaluation
+     * @return Operation count per evaluation
+     * */
+    public long getOpCountPerEvaluation() {
+        return opCountPerEvaluation;
+    }
+
+    /**
+     * Set operation count per evaluation
+     * @param opCountPerEvaluation  Operation count per evaluation
+     * */
+    public void setOpCountPerEvaluation(long opCountPerEvaluation) {
+        this.opCountPerEvaluation = opCountPerEvaluation;
+    }
+
+    /**
+     * Get global operation count
+     * @return Global operation count
+     * */
+    public long getGlobalOpCount() {
+        return this.globalOpCount;
+    }
+
+    /**
+     * Set global operation count
+     * @param globalOpCount  Global operation count
+     * */
+    public void setGlobalOpCount(long globalOpCount) {
+        this.globalOpCount = globalOpCount;
+    }
+
+    /**
+     * Get retried operation count per evaluation
+     * @return retried operation count per evaluation
+     * */
+    public long getRetriedOpCountPerEvaluation() {
+        return retriedOpCountPerEvaluation;
+    }
+
+    /**
+     * Set retried operation count per evaluation
+     * @param retriedOpCountPerEvaluation  retried operation count per evaluation
+     * */
+    public void setRetriedOpCountPerEvaluation(long retriedOpCountPerEvaluation) {
+        this.retriedOpCountPerEvaluation = retriedOpCountPerEvaluation;
+    }
+
+    /**
+     * Get target max micro batch size
+     * @return target max micro batch size
+     * */
+    public int getTargetMaxMicroBatchSize() {
+        return this.targetMaxMicroBatchSize;
+    }
+
+    /**
+     * Set target max micro batch size
+     * @param targetMaxMicroBatchSize  target max micro batch size
+     * */
+    public void setTargetMaxMicroBatchSize(int targetMaxMicroBatchSize) {
+        this.targetMaxMicroBatchSize = targetMaxMicroBatchSize;
+    }
+
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
