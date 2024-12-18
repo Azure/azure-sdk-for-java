@@ -19,6 +19,6 @@ The main shared concepts of Client Core include:
 Client Core is split into a number of sub-components:
 
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core) is the primary library, used by all client libraries to offer the functionality outlined above.
-- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/http-okhttp3](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientore/http-okhttp3) provides an OkHttp derived HTTP client.
+- [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/http-okhttp3](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/http-okhttp3) provides an OkHttp derived HTTP client.
 
 For documentation on using Client Core, refer to the [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core).
