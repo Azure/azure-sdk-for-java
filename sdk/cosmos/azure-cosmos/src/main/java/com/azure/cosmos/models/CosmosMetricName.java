@@ -113,19 +113,34 @@ public final class CosmosMetricName {
     public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT = new CosmosMetricName(
         nameOf("req.rntbd.actualItemCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
-
+    /**
+     * Op count per evaluation - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
         nameOf("req.rntbd.opCountPerEvaluation"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Op retried count per evaluation - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
         nameOf("req.rntbd.opRetriedCountPerEvaluation"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Global op count - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT = new CosmosMetricName(
         nameOf("req.rntbd.globalOpCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Target max micro batch size - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
         nameOf("req.rntbd.targetMaxMicroBatchSize"),
         CosmosMetricCategory.REQUEST_SUMMARY);
@@ -161,18 +176,34 @@ public final class CosmosMetricName {
         nameOf("req.gw.actualItemCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Op count per evaluation - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
         nameOf("req.gw.opCountPerEvaluation"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Op retried count per evaluation - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
         nameOf("req.gw.opRetriedCountPerEvaluation"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Global op count - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_GLOBAL_OP_COUNT = new CosmosMetricName(
         nameOf("req.gw.globalOpCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    /**
+     * Target max micro batch size - relevant for batch operations executed by bulk executor
+     * NOTE: No percentiles or histogram supported
+     */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
         nameOf("req.gw.targetMaxMicroBatchSize"),
         CosmosMetricCategory.REQUEST_SUMMARY);
