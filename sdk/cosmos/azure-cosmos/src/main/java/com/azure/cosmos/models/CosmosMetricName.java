@@ -145,6 +145,22 @@ public final class CosmosMetricName {
         nameOf("req.rntbd.targetMaxMicroBatchSize"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.opCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.opRetriedCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_GLOBAL_OP_COUNT = new CosmosMetricName(
+        nameOf("req.rntbd.globalOpCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
+        nameOf("req.rntbd.targetMaxMicroBatchSize"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
     /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
