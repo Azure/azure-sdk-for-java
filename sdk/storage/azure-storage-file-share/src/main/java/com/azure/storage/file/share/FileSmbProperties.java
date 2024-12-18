@@ -247,11 +247,6 @@ public class FileSmbProperties {
     }
 
     static {
-        FileSmbPropertiesHelper.setAccessor(new FileSmbPropertiesHelper.FileSmbPropertiesAccessor() {
-            @Override
-            public FileSmbProperties create(HttpHeaders httpHeaders) {
-                return new FileSmbProperties(httpHeaders);
-            }
-        });
+        FileSmbPropertiesHelper.setAccessor(FileSmbProperties::new);
     }
 }

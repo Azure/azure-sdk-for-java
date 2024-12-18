@@ -128,11 +128,6 @@ public final class FilePosixProperties {
     }
 
     static {
-        FilePosixPropertiesHelper.setAccessor(new FilePosixPropertiesHelper.FilePosixPropertiesAccessor() {
-            @Override
-            public FilePosixProperties create(HttpHeaders httpHeaders) {
-                return new FilePosixProperties(httpHeaders);
-            }
-        });
+        FilePosixPropertiesHelper.setAccessor(FilePosixProperties::new);
     }
 }

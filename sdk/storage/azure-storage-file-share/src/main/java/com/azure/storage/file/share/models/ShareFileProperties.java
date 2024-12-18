@@ -188,21 +188,7 @@ public final class ShareFileProperties {
     }
 
     static {
-        ShareFilePropertiesHelper.setAccessor(new ShareFilePropertiesHelper.ShareFilePropertiesAccessor() {
-            @Override
-            public ShareFileProperties create(String eTag, OffsetDateTime lastModified, Map<String, String> metadata,
-                String fileType, Long contentLength, String contentType, byte[] contentMd5, String contentEncoding,
-                String cacheControl, String contentDisposition, LeaseStatusType leaseStatusType,
-                LeaseStateType leaseStateType, LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime,
-                String copyStatusDescription, String copyId, String copyProgress, String copySource,
-                CopyStatusType copyStatus, Boolean isServerEncrypted, FileSmbProperties smbProperties,
-                FilePosixProperties posixProperties) {
-                return new ShareFileProperties(eTag, lastModified, metadata, fileType, contentLength, contentType,
-                    contentMd5, contentEncoding, cacheControl, contentDisposition, leaseStatusType, leaseStateType,
-                    leaseDurationType, copyCompletionTime, copyStatusDescription, copyId, copyProgress, copySource,
-                    copyStatus, isServerEncrypted, smbProperties, posixProperties);
-            }
-        });
+        ShareFilePropertiesHelper.setAccessor(ShareFileProperties::new);
     }
 
     /**

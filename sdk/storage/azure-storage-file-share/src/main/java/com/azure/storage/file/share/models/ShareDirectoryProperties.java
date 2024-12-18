@@ -54,16 +54,7 @@ public final class ShareDirectoryProperties {
     }
 
     static {
-        ShareDirectoryPropertiesHelper
-            .setAccessor(new ShareDirectoryPropertiesHelper.ShareDirectoryPropertiesAccessor() {
-                @Override
-                public ShareDirectoryProperties create(Map<String, String> metadata, String eTag,
-                    OffsetDateTime lastModified, boolean isServerEncrypted, FileSmbProperties smbProperties,
-                    FilePosixProperties posixProperties) {
-                    return new ShareDirectoryProperties(metadata, eTag, lastModified, isServerEncrypted, smbProperties,
-                        posixProperties);
-                }
-            });
+        ShareDirectoryPropertiesHelper.setAccessor(ShareDirectoryProperties::new);
     }
 
     /**

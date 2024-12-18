@@ -43,13 +43,7 @@ public final class ShareDirectoryInfo {
     }
 
     static {
-        ShareDirectoryInfoHelper.setAccessor(new ShareDirectoryInfoHelper.ShareDirectoryInfoAccessor() {
-            @Override
-            public ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
-                FilePosixProperties posixProperties) {
-                return new ShareDirectoryInfo(eTag, lastModified, smbProperties, posixProperties);
-            }
-        });
+        ShareDirectoryInfoHelper.setAccessor(ShareDirectoryInfo::new);
     }
 
     /**

@@ -49,13 +49,7 @@ public final class ShareFileInfo {
     }
 
     static {
-        ShareFileInfoHelper.setAccessor(new ShareFileInfoHelper.ShareFileInfoAccessor() {
-            @Override
-            public ShareFileInfo create(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
-                FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
-                return new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, posixProperties);
-            }
-        });
+        ShareFileInfoHelper.setAccessor(ShareFileInfo::new);
     }
 
     /**
