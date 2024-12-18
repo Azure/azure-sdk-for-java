@@ -180,10 +180,8 @@ final class QuickPulseDataCollector {
         List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
         for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
             if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
-                synchronized (currentCounters.derivedMetrics) {
-                    // TODO (harskaur): In future PR, track any error that comes from calculateProjection
-                    currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
-                }
+                // TODO (harskaur): In future PR, track any error that comes from calculateProjection
+                currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
             }
         }
     }
@@ -432,9 +430,8 @@ final class QuickPulseDataCollector {
             synchronized (currentCounters.documentList) {
                 this.documentList.addAll(currentCounters.documentList);
             }
-            synchronized (currentCounters.derivedMetrics) {
-                this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
-            }
+            this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
+
         }
 
         private long getPhysicalMemory(@Nullable MemoryMXBean memory) {

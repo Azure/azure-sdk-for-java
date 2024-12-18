@@ -249,6 +249,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownTraceColumns.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricAggregation.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat.java" checks="MissingJavadocTypeCheck" />
