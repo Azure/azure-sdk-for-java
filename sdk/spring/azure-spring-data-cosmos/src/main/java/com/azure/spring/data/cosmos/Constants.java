@@ -95,19 +95,61 @@ public final class Constants {
      * Cosmos Exception Status Codes.
      */
     public static class CosmosExceptionStatusCodes {
+        /**
+         * Bad Request Status Code.
+         */
         public static final int BADREQUEST = 400;
+        /**
+         * Conflict Status Code.
+         */
         public static final int CONFLICT = 409;
+        /**
+         * Forbidden Status Code.
+         */
         public static final int FORBIDDEN = 403;
+        /**
+         * Gone Status Code.
+         */
         public static final int GONE = 410;
+        /**
+         * Internal Server Error Status Code.
+         */
         public static final int INTERNAL_SERVER_ERROR = 500;
+        /**
+         * Method Not Allowed Status Code.
+         */
         public static final int METHOD_NOT_ALLOWED = 405;
+        /**
+         * Not Found Status Code.
+         */
         public static final int NOTFOUND = 404;
+        /**
+         * Request Timeout Status Code.
+         */
         public static final int REQUEST_TIMEOUT = 408;
+        /**
+         * Precondition Failed Status Code.
+         */
         public static final int PRECONDITION_FAILED = 412;
+        /**
+         * Request Entity Too Large Status Code.
+         */
         public static final int REQUEST_ENTITY_TOO_LARGE = 413;
+        /**
+         * Too Many Requests Status Code.
+         */
         public static final int TOO_MANY_REQUESTS = 429;
+        /**
+         * Retry With Status Code.
+         */
         public static final int RETRY_WITH = 449;
+        /**
+         * Service Unavailable Status Code.
+         */
         public static final int SERVICE_UNAVAILABLE = 503;
+        /**
+         * Unauthorized Status Code.
+         */
         public static final int UNAUTHORIZED = 401;
     }
 
@@ -116,12 +158,27 @@ public final class Constants {
      */
     public static class CosmosExceptionSubStatusCodes {
         // For 410 GONE
+        /**
+         * Name Cache Is Stale Sub Status Code.
+         */
         public static final int NAME_CACHE_IS_STALE = 1000;
+        /**
+         * Partition Key Range Gone Sub Status Code.
+         */
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
+        /**
+         * Completing Split or Merge Sub Status Code.
+         */
         public static final int COMPLETING_SPLIT_OR_MERGE = 1007;
+        /**
+         * Completing Partition Migration Sub Status Code.
+         */
         public static final int COMPLETING_PARTITION_MIGRATION = 1008;
 
         // For 408 REQUEST_TIMEOUT
+        /**
+         * Client Operation Timeout Sub Status Code.
+         */
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
     }
 
