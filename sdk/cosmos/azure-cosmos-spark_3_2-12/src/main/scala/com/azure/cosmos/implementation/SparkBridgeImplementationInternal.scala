@@ -238,22 +238,44 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
   private[cosmos] def trySplitFeedRanges
   (
-   partitionKeyDefinitionJson: String,
-   feedRange: FeedRangeEpkImpl,
-   bucketCount: Int
-  ): Array[String] = {
+    cosmosClient: CosmosAsyncClient,
+    containerName: String,
+    databaseName: String,
+    targetedCount: Int
+  ): List[String] = {
+    val container = cosmosClient
+      .getDatabase(databaseName)
+      .getContainer(containerName)
 
-    val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    val feedRanges = FeedRangeInternal.trySplitCore(pkDefinition, feedRange.getRange, bucketCount)
-    val normalizedRanges = new Array[String](feedRanges.size())
+    val epkRange =  rangeToNormalizedRange(FeedRange.forFullRange().asInstanceOf[FeedRangeEpkImpl].getRange)
+    val feedRanges = SparkBridgeInternal.trySplitFeedRange(container, epkRange, targetedCount)
+    var normalizedRanges: List[String] = List()
     for (i <- feedRanges.indices) {
-      val normalizedRange = rangeToNormalizedRange(feedRanges(i).getRange)
-      normalizedRanges(i) = s"${normalizedRange.min}-${normalizedRange.max}"
+      normalizedRanges = normalizedRanges :+ s"${feedRanges(i).min}-${feedRanges(i).max}"
     }
     normalizedRanges
   }
 
-  def findBucket(feedRanges: Array[String], pkValue: Object, pkDefinition: PartitionKeyDefinition):Int = {
+  private[cosmos] def getFeedRangesForContainer
+  (
+    cosmosClient: CosmosAsyncClient,
+    containerName: String,
+    databaseName: String
+  ): List[String] = {
+    val container = cosmosClient
+      .getDatabase(databaseName)
+      .getContainer(containerName)
+
+    val feedRanges: List[String] = List()
+    container.getFeedRanges().block.map(feedRange => {
+      val effectiveRangeFromPk = feedRange.asInstanceOf[FeedRangeEpkImpl].getEffectiveRange(null, null, null).block
+      val normalizedRange = rangeToNormalizedRange(effectiveRangeFromPk)
+      s"${normalizedRange.min}-${normalizedRange.max}" :: feedRanges
+    })
+    feedRanges
+  }
+
+  def getOverlappingRange(feedRanges: Array[String], pkValue: Object, pkDefinition: PartitionKeyDefinition): String = {
     val pk = getPartitionKeyValue(pkDefinition, pkValue)
     val feedRangeFromPk = FeedRange.forLogicalPartition(pk).asInstanceOf[FeedRangePartitionKeyImpl]
     val effectiveRangeFromPk = feedRangeFromPk.getEffectiveRange(pkDefinition)
@@ -261,7 +283,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     for (i <- feedRanges.indices) {
       val range = SparkBridgeImplementationInternal.toCosmosRange(feedRanges(i))
       if (range.contains(effectiveRangeFromPk.getMin)) {
-        return i
+        return feedRanges(i)
       }
     }
     throw new IllegalArgumentException("The partition key value does not belong to any of the feed ranges")

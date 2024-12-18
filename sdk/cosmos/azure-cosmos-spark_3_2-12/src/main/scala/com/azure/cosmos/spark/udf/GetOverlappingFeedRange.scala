@@ -8,16 +8,16 @@ import com.azure.cosmos.spark.CosmosPredicates.requireNotNullOrEmpty
 import org.apache.spark.sql.api.java.UDF3
 
 @SerialVersionUID(1L)
-class GetBucketForPartitionKey extends UDF3[String, Object, Array[String], Int] {
+class GetOverlappingFeedRange extends UDF3[String, Object, Array[String], String] {
   override def call
   (
     partitionKeyDefinitionJson: String,
     partitionKeyValue: Object,
     feedRangesForBuckets: Array[String]
-  ): Int = {
+  ): String = {
     requireNotNullOrEmpty(partitionKeyDefinitionJson, "partitionKeyDefinitionJson")
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    SparkBridgeImplementationInternal.findBucket(feedRangesForBuckets, partitionKeyValue, pkDefinition)
+    SparkBridgeImplementationInternal.getOverlappingRange(feedRangesForBuckets, partitionKeyValue, pkDefinition)
   }
 }

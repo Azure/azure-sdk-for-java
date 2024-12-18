@@ -224,27 +224,23 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
                            return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
                        }
 
-                       return trySplitCore(pkDefinition, effectiveRange, targetedSplitCount);
+                       PartitionKeyDefinitionVersion effectivePKVersion =
+                               pkDefinition.getVersion() != null
+                                       ? pkDefinition.getVersion()
+                                       : PartitionKeyDefinitionVersion.V1;
+                       switch (effectivePKVersion) {
+                           case V1:
+                               return trySplitWithHashV1(effectiveRange, targetedSplitCount);
+
+                           case V2:
+                               return trySplitWithHashV2(effectiveRange, targetedSplitCount);
+
+                           default:
+                               return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
+                       }
                    });
     }
 
-    public static List<FeedRangeEpkImpl> trySplitCore(PartitionKeyDefinition pkDefinition, Range<String> effectiveRange, int targetedSplitCount) {
-        PartitionKeyDefinitionVersion effectivePKVersion =
-                pkDefinition.getVersion() != null
-                        ? pkDefinition.getVersion()
-                        : PartitionKeyDefinitionVersion.V1;
-        switch (effectivePKVersion) {
-            case V1:
-                return trySplitWithHashV1(effectiveRange, targetedSplitCount);
-
-            case V2:
-                return trySplitWithHashV2(effectiveRange, targetedSplitCount);
-
-            default:
-                return Collections.singletonList(new FeedRangeEpkImpl(effectiveRange));
-        }
-
-    }
 
     static List<FeedRangeEpkImpl> trySplitWithHashV1(
         Range<String> effectiveRange,
