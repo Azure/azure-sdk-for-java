@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public final class HttpPipeline {
         Objects.requireNonNull(pipelinePolicies, "'pipelinePolicies' cannot be null.");
 
         this.httpClient = httpClient;
-        this.pipelinePolicies = Collections.unmodifiableList(pipelinePolicies);
+        this.pipelinePolicies = Collections.unmodifiableList(new ArrayList<>(pipelinePolicies));
     }
 
     /**

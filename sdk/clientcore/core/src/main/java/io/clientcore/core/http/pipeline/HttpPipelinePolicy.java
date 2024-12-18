@@ -22,4 +22,15 @@ public interface HttpPipelinePolicy {
      * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
     Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+
+    /**
+     * Gets the position to place the policy.
+     * <p>
+     * By default pipeline policies are positioned {@link HttpPipelinePosition#PER_REQUEST}.
+     *
+     * @return The position to place the policy.
+     */
+    default HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.PER_REQUEST;
+    }
 }
