@@ -94,7 +94,7 @@ public final class Constants {
     /**
      * Cosmos Exception Status Codes.
      */
-    public static class CosmosExceptionStatusCodes {
+    public static final class CosmosExceptionStatusCodes {
         /**
          * Default constructor.
          */
@@ -161,7 +161,7 @@ public final class Constants {
     /**
      * Cosmos Exception Sub Status Codes.
      */
-    public static class CosmosExceptionSubStatusCodes {
+    public static final class CosmosExceptionSubStatusCodes {
         /**
          * Default constructor.
          */
