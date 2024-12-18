@@ -26,6 +26,10 @@ public final class CosmosBatchResponse {
     private final List<CosmosBatchOperationResult> results;
     private final int subStatusCode;
     private final CosmosDiagnostics cosmosDiagnostics;
+    private long opCountPerEvaluation;
+    private long retriedOpCountPerEvaluation;
+    private long globalOpCount;
+    private int targetMaxMicroBatchSize;
 
     /**
      * Initializes a new instance of the {@link CosmosBatchResponse} class.
@@ -188,6 +192,39 @@ public final class CosmosBatchResponse {
 
         return this.cosmosDiagnostics.getDuration();
     }
+
+    public long getOpCountPerEvaluation() {
+        return opCountPerEvaluation;
+    }
+
+    public void setOpCountPerEvaluation(long opCountPerEvaluation) {
+        this.opCountPerEvaluation = opCountPerEvaluation;
+    }
+
+    public long getGlobalOpCount() {
+        return this.globalOpCount;
+    }
+
+    public void setGlobalOpCount(long globalOpCount) {
+        this.globalOpCount = globalOpCount;
+    }
+
+    public long getRetriedOpCountPerEvaluation() {
+        return retriedOpCountPerEvaluation;
+    }
+
+    public void setRetriedOpCountPerEvaluation(long retriedOpCountPerEvaluation) {
+        this.retriedOpCountPerEvaluation = retriedOpCountPerEvaluation;
+    }
+
+    public int getTargetMaxMicroBatchSize() {
+        return this.targetMaxMicroBatchSize;
+    }
+
+    public void setTargetMaxMicroBatchSize(int targetMaxMicroBatchSize) {
+        this.targetMaxMicroBatchSize = targetMaxMicroBatchSize;
+    }
+
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
