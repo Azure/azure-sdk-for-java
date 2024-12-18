@@ -28,7 +28,7 @@ import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

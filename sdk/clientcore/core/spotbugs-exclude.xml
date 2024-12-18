@@ -41,8 +41,8 @@
       <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
       <Class name="io.clientcore.core.util.configuration.Configuration" />
-      <Class name="io.clientcore.core.util.serializer.JsonSerializer" />
-      <Class name="io.clientcore.core.util.serializer.XmlSerializer" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
     </Or>
   </Match>
   <Match>
@@ -261,9 +261,9 @@
       <Class name="io.clientcore.core.implementation.util.Base64Uri" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
       <Class name="io.clientcore.core.util.TestUtils" />
-      <Class name="io.clientcore.core.util.serializer.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.util.serializer.MockSerializer" />
-      <Class name="io.clientcore.core.util.serializer.XmlSerializer" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
     </Or>
   </Match>
   <Match>

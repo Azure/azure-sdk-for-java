@@ -36,7 +36,7 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.SerializationFormat;
 import org.junit.jupiter.api.Assertions;

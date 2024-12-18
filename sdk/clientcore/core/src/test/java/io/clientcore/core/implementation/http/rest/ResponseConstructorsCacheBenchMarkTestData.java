@@ -12,7 +12,7 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;

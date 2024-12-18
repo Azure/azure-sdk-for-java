@@ -11,7 +11,7 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

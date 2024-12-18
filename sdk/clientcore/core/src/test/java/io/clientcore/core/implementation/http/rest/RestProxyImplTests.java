@@ -18,7 +18,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.JsonSerializer;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

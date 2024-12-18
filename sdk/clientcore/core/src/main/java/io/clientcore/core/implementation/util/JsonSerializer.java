@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util.serializer;
+package io.clientcore.core.implementation.util;
 
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.serialization.json.JsonProviders;
@@ -9,6 +9,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
