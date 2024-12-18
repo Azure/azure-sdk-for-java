@@ -130,7 +130,6 @@ public final class MongoDbAtlasSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

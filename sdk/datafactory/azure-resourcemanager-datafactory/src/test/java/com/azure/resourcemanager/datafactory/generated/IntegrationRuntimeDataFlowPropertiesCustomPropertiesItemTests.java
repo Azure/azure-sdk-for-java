@@ -12,19 +12,18 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItemTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem model
-            = BinaryData.fromString("{\"name\":\"fyxhsppv\",\"value\":\"duouoqtenqsomuo\"}")
+            = BinaryData.fromString("{\"name\":\"kubzq\",\"value\":\"dlrkvitzk\"}")
                 .toObject(IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem.class);
-        Assertions.assertEquals("fyxhsppv", model.name());
-        Assertions.assertEquals("duouoqtenqsomuo", model.value());
+        Assertions.assertEquals("kubzq", model.name());
+        Assertions.assertEquals("dlrkvitzk", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem model
-            = new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("fyxhsppv")
-                .withValue("duouoqtenqsomuo");
+            = new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("kubzq").withValue("dlrkvitzk");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem.class);
-        Assertions.assertEquals("fyxhsppv", model.name());
-        Assertions.assertEquals("duouoqtenqsomuo", model.value());
+        Assertions.assertEquals("kubzq", model.name());
+        Assertions.assertEquals("dlrkvitzk", model.value());
     }
 }

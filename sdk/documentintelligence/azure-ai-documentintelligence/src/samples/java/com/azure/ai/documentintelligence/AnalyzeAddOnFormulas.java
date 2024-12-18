@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentFormula;
 import com.azure.ai.documentintelligence.models.DocumentFormulaKind;
@@ -41,7 +41,7 @@ public class AnalyzeAddOnFormulas {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/formulas.pdf");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.FORMULAS)));
 

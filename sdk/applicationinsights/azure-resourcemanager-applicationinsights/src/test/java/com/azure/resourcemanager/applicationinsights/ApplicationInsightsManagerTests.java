@@ -20,6 +20,7 @@ import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,18 +40,20 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        applicationInsightsManager = ApplicationInsightsManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        logAnalyticsManager = LogAnalyticsManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        applicationInsightsManager = ApplicationInsightsManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        logAnalyticsManager = LogAnalyticsManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");

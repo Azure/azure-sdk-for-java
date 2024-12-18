@@ -124,7 +124,6 @@ public final class Db2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

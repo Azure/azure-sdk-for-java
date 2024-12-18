@@ -839,6 +839,7 @@
     {
       "filename": "/sdk/ai/**",
       "words": [
+        "OTEL",
         "ubinary",
         "UBINARY"
       ]

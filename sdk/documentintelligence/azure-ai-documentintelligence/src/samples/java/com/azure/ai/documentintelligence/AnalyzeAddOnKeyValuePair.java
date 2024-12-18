@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.BoundingRegion;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentKeyValueElement;
@@ -40,7 +40,7 @@ public class AnalyzeAddOnKeyValuePair {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
                         new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS)));
 

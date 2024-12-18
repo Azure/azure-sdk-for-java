@@ -148,13 +148,29 @@ public final class SapTableResourceDataset extends Dataset {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model SapTableResourceDataset"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model SapTableResourceDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 
