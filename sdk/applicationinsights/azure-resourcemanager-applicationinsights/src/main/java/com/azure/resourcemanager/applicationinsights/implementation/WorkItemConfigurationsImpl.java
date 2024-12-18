@@ -30,13 +30,13 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
 
     public PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName) {
         PagedIterable<WorkItemConfigurationInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName, Context context) {
         PagedIterable<WorkItemConfigurationInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
     }
 
     public Response<WorkItemConfiguration> createWithResponse(String resourceGroupName, String resourceName,

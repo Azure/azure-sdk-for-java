@@ -213,7 +213,6 @@ public final class CosmosDbSqlApiSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

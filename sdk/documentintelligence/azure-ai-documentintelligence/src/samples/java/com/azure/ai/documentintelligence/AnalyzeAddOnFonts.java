@@ -4,7 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentFontStyle;
@@ -45,7 +45,7 @@ public class AnalyzeAddOnFonts {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath()))
                     .setDocumentAnalysisFeatures(Collections.singletonList(DocumentAnalysisFeature.STYLE_FONT)));

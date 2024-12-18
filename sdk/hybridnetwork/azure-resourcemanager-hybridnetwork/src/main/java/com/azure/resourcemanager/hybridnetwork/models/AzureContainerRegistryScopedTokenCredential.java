@@ -5,54 +5,65 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.ArtifactAccessCredentialInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The azure container registry scoped token credential definition.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "credentialType")
-@JsonTypeName("AzureContainerRegistryScopedToken")
 @Fluent
 public final class AzureContainerRegistryScopedTokenCredential extends ArtifactAccessCredentialInner {
     /*
+     * The credential type.
+     */
+    private CredentialType credentialType = CredentialType.AZURE_CONTAINER_REGISTRY_SCOPED_TOKEN;
+
+    /*
      * The username of the credential.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The credential value.
      */
-    @JsonProperty(value = "acrToken")
     private String acrToken;
 
     /*
      * The Acr server url
      */
-    @JsonProperty(value = "acrServerUrl")
     private String acrServerUrl;
 
     /*
      * The repositories that could be accessed using the current credential.
      */
-    @JsonProperty(value = "repositories")
     private List<String> repositories;
 
     /*
      * The UTC time when credential will expire.
      */
-    @JsonProperty(value = "expiry")
     private OffsetDateTime expiry;
 
     /**
      * Creates an instance of AzureContainerRegistryScopedTokenCredential class.
      */
     public AzureContainerRegistryScopedTokenCredential() {
+    }
+
+    /**
+     * Get the credentialType property: The credential type.
+     * 
+     * @return the credentialType value.
+     */
+    @Override
+    public CredentialType credentialType() {
+        return this.credentialType;
     }
 
     /**
@@ -162,6 +173,62 @@ public final class AzureContainerRegistryScopedTokenCredential extends ArtifactA
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("credentialType",
+            this.credentialType == null ? null : this.credentialType.toString());
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("acrToken", this.acrToken);
+        jsonWriter.writeStringField("acrServerUrl", this.acrServerUrl);
+        jsonWriter.writeArrayField("repositories", this.repositories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureContainerRegistryScopedTokenCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureContainerRegistryScopedTokenCredential if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureContainerRegistryScopedTokenCredential.
+     */
+    public static AzureContainerRegistryScopedTokenCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureContainerRegistryScopedTokenCredential deserializedAzureContainerRegistryScopedTokenCredential
+                = new AzureContainerRegistryScopedTokenCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentialType".equals(fieldName)) {
+                    deserializedAzureContainerRegistryScopedTokenCredential.credentialType
+                        = CredentialType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedAzureContainerRegistryScopedTokenCredential.username = reader.getString();
+                } else if ("acrToken".equals(fieldName)) {
+                    deserializedAzureContainerRegistryScopedTokenCredential.acrToken = reader.getString();
+                } else if ("acrServerUrl".equals(fieldName)) {
+                    deserializedAzureContainerRegistryScopedTokenCredential.acrServerUrl = reader.getString();
+                } else if ("repositories".equals(fieldName)) {
+                    List<String> repositories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureContainerRegistryScopedTokenCredential.repositories = repositories;
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedAzureContainerRegistryScopedTokenCredential.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureContainerRegistryScopedTokenCredential;
+        });
     }
 }

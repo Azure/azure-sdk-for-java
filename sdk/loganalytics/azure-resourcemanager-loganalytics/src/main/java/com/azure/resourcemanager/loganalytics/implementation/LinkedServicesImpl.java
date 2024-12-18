@@ -71,28 +71,28 @@ public final class LinkedServicesImpl implements LinkedServices {
     public PagedIterable<LinkedService> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<LinkedServiceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LinkedService> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<LinkedServiceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LinkedServiceImpl(inner1, this.manager()));
     }
 
     public LinkedService getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String linkedServiceName = Utils.getValueFromIdByName(id, "linkedServices");
+        String linkedServiceName = ResourceManagerUtils.getValueFromIdByName(id, "linkedServices");
         if (linkedServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedServices'.", id)));
@@ -101,17 +101,17 @@ public final class LinkedServicesImpl implements LinkedServices {
     }
 
     public Response<LinkedService> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String linkedServiceName = Utils.getValueFromIdByName(id, "linkedServices");
+        String linkedServiceName = ResourceManagerUtils.getValueFromIdByName(id, "linkedServices");
         if (linkedServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedServices'.", id)));
@@ -120,17 +120,17 @@ public final class LinkedServicesImpl implements LinkedServices {
     }
 
     public LinkedService deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String linkedServiceName = Utils.getValueFromIdByName(id, "linkedServices");
+        String linkedServiceName = ResourceManagerUtils.getValueFromIdByName(id, "linkedServices");
         if (linkedServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedServices'.", id)));
@@ -139,17 +139,17 @@ public final class LinkedServicesImpl implements LinkedServices {
     }
 
     public LinkedService deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String linkedServiceName = Utils.getValueFromIdByName(id, "linkedServices");
+        String linkedServiceName = ResourceManagerUtils.getValueFromIdByName(id, "linkedServices");
         if (linkedServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'linkedServices'.", id)));

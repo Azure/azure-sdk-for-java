@@ -25,7 +25,7 @@ import java.time.Duration;
 
 import static com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE;
 import static com.azure.messaging.servicebus.models.SubQueue.TRANSFER_DEAD_LETTER_QUEUE;
-import static com.azure.spring.cloud.autoconfigure.implementation.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

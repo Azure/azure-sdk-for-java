@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner;
 
-/** An instance of this class provides access to all the operations defined in DataSourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataSourcesClient.
+ */
 public interface DataSourcesClient {
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -32,7 +34,7 @@ public interface DataSourcesClient {
 
     /**
      * Create or update a data source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName The name of the datasource resource.
@@ -48,7 +50,7 @@ public interface DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -64,7 +66,7 @@ public interface DataSourcesClient {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -77,7 +79,7 @@ public interface DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -93,7 +95,7 @@ public interface DataSourcesClient {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -107,7 +109,7 @@ public interface DataSourcesClient {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -115,14 +117,14 @@ public interface DataSourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter);
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -132,7 +134,7 @@ public interface DataSourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter,

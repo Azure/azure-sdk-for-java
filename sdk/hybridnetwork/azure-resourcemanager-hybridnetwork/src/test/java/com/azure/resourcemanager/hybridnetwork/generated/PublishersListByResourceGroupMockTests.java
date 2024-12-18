@@ -6,47 +6,28 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridnetwork.models.Publisher;
 import com.azure.resourcemanager.hybridnetwork.models.PublisherScope;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PublishersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"aba1103d-059d-4d3f-928d-f96fdcedd8c1\",\"tenantId\":\"b35a1e49-14ea-4397-9fe5-8b74e05a8a80\",\"type\":\"None\",\"userAssignedIdentities\":{\"vfkakpold\":{\"principalId\":\"48991420-f441-4d6d-abc0-1606beaa268b\",\"clientId\":\"ee52b661-80b2-4994-b771-7fbbf5233b11\"},\"vboclzhzjk\":{\"principalId\":\"c9c03716-f393-4a1d-835e-4a4fbc9a2006\",\"clientId\":\"8ceaa400-7a19-4b98-95af-499dff03267f\"},\"xgvttxp\":{\"principalId\":\"682c33e6-5201-490a-818b-73408a0c3fb3\",\"clientId\":\"2ef7d47a-e762-493f-a4c1-4dd5dad472ce\"},\"pzaamrdixtreki\":{\"principalId\":\"5e3f1bce-847d-444f-91a4-a8a0d1a69225\",\"clientId\":\"24baef33-f493-4b31-b99a-7fc2cbb155b6\"}}},\"location\":\"wyskbruffgll\",\"tags\":{\"qhvmblcouqe\":\"utvlxhr\",\"randoypmb\":\"bhbcdszir\",\"ormkfqlwxldyk\":\"t\"},\"id\":\"lsygaol\",\"name\":\"jpnnbmjksibjgsj\",\"type\":\"xxahmrnadzyqegxy\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"scope\":\"Unknown\"},\"identity\":{\"principalId\":\"2070504c-2f8d-45fd-ba95-273c1ba4e300\",\"tenantId\":\"4b2adc2d-c08e-48cd-949e-ccc6648581eb\",\"type\":\"None\",\"userAssignedIdentities\":{\"vfkakpold\":{\"principalId\":\"abdcfb8f-5695-4016-bb20-046489d8e7f2\",\"clientId\":\"5ceac7de-19ff-4247-a0ef-0f66d2df463e\"},\"vboclzhzjk\":{\"principalId\":\"297ca9de-b695-4f7c-8115-b99137a4a4f7\",\"clientId\":\"53ece4fb-c849-49d4-90f6-c4e197aad8d2\"},\"xgvttxp\":{\"principalId\":\"c6741986-4f80-45a6-b361-b028ebb682be\",\"clientId\":\"10050a2d-4448-41d4-a243-3c41286deb8e\"},\"pzaamrdixtreki\":{\"principalId\":\"49511a7f-2d77-4fa3-86fc-09a6358d1ff8\",\"clientId\":\"622f70ec-8213-4964-b53d-3226139d731c\"}}},\"location\":\"wyskbruffgll\",\"tags\":{\"qhvmblcouqe\":\"utvlxhr\",\"randoypmb\":\"bhbcdszir\",\"ormkfqlwxldyk\":\"t\"},\"id\":\"lsygaol\",\"name\":\"jpnnbmjksibjgsj\",\"type\":\"xxahmrnadzyqegxy\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridNetworkManager manager = HybridNetworkManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

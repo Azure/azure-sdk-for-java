@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The reference information for an Azure Marketplace image. */
+/**
+ * The reference information for an Azure Marketplace image.
+ */
 @Fluent
-public final class GalleryImageReference {
+public final class GalleryImageReference implements JsonSerializable<GalleryImageReference> {
     /*
      * The offer of the gallery image.
      */
-    @JsonProperty(value = "offer")
     private String offer;
 
     /*
      * The publisher of the gallery image.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The SKU of the gallery image.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * The OS type of the gallery image.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The version of the gallery image.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of GalleryImageReference class. */
+    /**
+     * Creates an instance of GalleryImageReference class.
+     */
     public GalleryImageReference() {
     }
 
     /**
      * Get the offer property: The offer of the gallery image.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -55,7 +58,7 @@ public final class GalleryImageReference {
 
     /**
      * Set the offer property: The offer of the gallery image.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the GalleryImageReference object itself.
      */
@@ -66,7 +69,7 @@ public final class GalleryImageReference {
 
     /**
      * Get the publisher property: The publisher of the gallery image.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +78,7 @@ public final class GalleryImageReference {
 
     /**
      * Set the publisher property: The publisher of the gallery image.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the GalleryImageReference object itself.
      */
@@ -86,7 +89,7 @@ public final class GalleryImageReference {
 
     /**
      * Get the sku property: The SKU of the gallery image.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -95,7 +98,7 @@ public final class GalleryImageReference {
 
     /**
      * Set the sku property: The SKU of the gallery image.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the GalleryImageReference object itself.
      */
@@ -106,7 +109,7 @@ public final class GalleryImageReference {
 
     /**
      * Get the osType property: The OS type of the gallery image.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -115,7 +118,7 @@ public final class GalleryImageReference {
 
     /**
      * Set the osType property: The OS type of the gallery image.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the GalleryImageReference object itself.
      */
@@ -126,7 +129,7 @@ public final class GalleryImageReference {
 
     /**
      * Get the version property: The version of the gallery image.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -135,7 +138,7 @@ public final class GalleryImageReference {
 
     /**
      * Set the version property: The version of the gallery image.
-     *
+     * 
      * @param version the version value to set.
      * @return the GalleryImageReference object itself.
      */
@@ -146,9 +149,57 @@ public final class GalleryImageReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageReference.
+     */
+    public static GalleryImageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageReference deserializedGalleryImageReference = new GalleryImageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offer".equals(fieldName)) {
+                    deserializedGalleryImageReference.offer = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedGalleryImageReference.publisher = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGalleryImageReference.sku = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedGalleryImageReference.osType = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedGalleryImageReference.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageReference;
+        });
     }
 }

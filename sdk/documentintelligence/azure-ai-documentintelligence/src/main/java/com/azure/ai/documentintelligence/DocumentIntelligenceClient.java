@@ -5,10 +5,10 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
@@ -375,11 +375,11 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnalyzeBatchOperation> listAnalyzeBatchResults(String modelId) {
+    public PagedIterable<AnalyzeBatchOperationDetails> listAnalyzeBatchResults(String modelId) {
         // Generated convenience method for listAnalyzeBatchResults
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAnalyzeBatchResults(modelId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AnalyzeBatchOperation.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AnalyzeBatchOperationDetails.class));
     }
 
     /**
@@ -417,11 +417,11 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeBatchOperation getAnalyzeBatchResult(String modelId, String resultId) {
+    public AnalyzeBatchOperationDetails getAnalyzeBatchResult(String modelId, String resultId) {
         // Generated convenience method for getAnalyzeBatchResultWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).getValue()
-            .toObject(AnalyzeBatchOperation.class);
+            .toObject(AnalyzeBatchOperationDetails.class);
     }
 
     /**
@@ -442,7 +442,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentOptions classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -476,7 +476,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentOptions classifyDocumentOptions) {
         Objects.requireNonNull(classifyDocumentOptions, "'classifyDocumentOptions' cannot be null.");
         return this.beginClassifyDocument(classifierId, classifyDocumentOptions,
@@ -616,7 +616,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
+    SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocument(String modelId,
         AnalyzeDocumentOptions analyzeRequest, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
         List<AnalyzeOutputFormat> output) {
@@ -676,7 +676,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
+    public SyncPoller<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocument(String modelId,
         AnalyzeDocumentOptions analyzeDocumentOptions) {
         Objects.requireNonNull(analyzeDocumentOptions, "'analyzeDocumentOptions' cannot be null.");
         return this.beginAnalyzeDocument(modelId, analyzeDocumentOptions,
@@ -711,7 +711,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+    SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
         AnalyzeBatchDocumentsOptions analyzeBatchRequest, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
         List<AnalyzeOutputFormat> output) {
@@ -771,7 +771,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+    public SyncPoller<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
         AnalyzeBatchDocumentsOptions analyzeBatchDocumentOptions) {
         Objects.requireNonNull(analyzeBatchDocumentOptions, "'analyzeBatchDocumentOptions' cannot be null.");
         return this.beginAnalyzeBatchDocuments(modelId, analyzeBatchDocumentOptions,

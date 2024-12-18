@@ -13,21 +13,21 @@ public final class ApiKeyRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiKeyRequest model = BinaryData.fromString(
-            "{\"name\":\"bpf\",\"linkedReadProperties\":[\"inzgvfcj\"],\"linkedWriteProperties\":[\"oxxjtfelluwf\",\"it\"]}")
+            "{\"name\":\"fsinzgvfcjrwzoxx\",\"linkedReadProperties\":[\"elluwfziton\",\"eqfpj\",\"jlxofpdvhpfxxyp\",\"ninmayhuyb\"],\"linkedWriteProperties\":[\"odepoogin\",\"vamih\"]}")
             .toObject(ApiKeyRequest.class);
-        Assertions.assertEquals("bpf", model.name());
-        Assertions.assertEquals("inzgvfcj", model.linkedReadProperties().get(0));
-        Assertions.assertEquals("oxxjtfelluwf", model.linkedWriteProperties().get(0));
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.name());
+        Assertions.assertEquals("elluwfziton", model.linkedReadProperties().get(0));
+        Assertions.assertEquals("odepoogin", model.linkedWriteProperties().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiKeyRequest model = new ApiKeyRequest().withName("bpf")
-            .withLinkedReadProperties(Arrays.asList("inzgvfcj"))
-            .withLinkedWriteProperties(Arrays.asList("oxxjtfelluwf", "it"));
+        ApiKeyRequest model = new ApiKeyRequest().withName("fsinzgvfcjrwzoxx")
+            .withLinkedReadProperties(Arrays.asList("elluwfziton", "eqfpj", "jlxofpdvhpfxxyp", "ninmayhuyb"))
+            .withLinkedWriteProperties(Arrays.asList("odepoogin", "vamih"));
         model = BinaryData.fromObject(model).toObject(ApiKeyRequest.class);
-        Assertions.assertEquals("bpf", model.name());
-        Assertions.assertEquals("inzgvfcj", model.linkedReadProperties().get(0));
-        Assertions.assertEquals("oxxjtfelluwf", model.linkedWriteProperties().get(0));
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.name());
+        Assertions.assertEquals("elluwfziton", model.linkedReadProperties().get(0));
+        Assertions.assertEquals("odepoogin", model.linkedWriteProperties().get(0));
     }
 }

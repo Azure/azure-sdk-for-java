@@ -5,16 +5,16 @@ spring:
     stream:
       bindings:
         topicConsume-in-0:
-          destination: topic1
+          destination: single_multi_binder_topic
           group: topicSub
         topicSupply-out-0:
-          destination: topic1
+          destination: single_multi_binder_topic
         queueConsume-in-0:
           binder: servicebus-2
-          destination: queue1
+          destination: single_multi_binder_queue
         queueSupply-out-0:
           binder: servicebus-2
-          destination: queue1
+          destination: single_multi_binder_queue
       binders:
         servicebus-1:
           type: servicebus

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePurgeResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspacePurgeResponseInner model = BinaryData.fromString("{\"operationId\":\"sbvdkcrodtjinfw\"}")
-            .toObject(WorkspacePurgeResponseInner.class);
-        Assertions.assertEquals("sbvdkcrodtjinfw", model.operationId());
+        WorkspacePurgeResponseInner model
+            = BinaryData.fromString("{\"operationId\":\"hky\"}").toObject(WorkspacePurgeResponseInner.class);
+        Assertions.assertEquals("hky", model.operationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspacePurgeResponseInner model = new WorkspacePurgeResponseInner().withOperationId("sbvdkcrodtjinfw");
+        WorkspacePurgeResponseInner model = new WorkspacePurgeResponseInner().withOperationId("hky");
         model = BinaryData.fromObject(model).toObject(WorkspacePurgeResponseInner.class);
-        Assertions.assertEquals("sbvdkcrodtjinfw", model.operationId());
+        Assertions.assertEquals("hky", model.operationId());
     }
 }

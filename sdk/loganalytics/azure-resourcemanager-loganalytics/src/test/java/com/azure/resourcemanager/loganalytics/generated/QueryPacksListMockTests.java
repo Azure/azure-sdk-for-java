@@ -6,45 +6,26 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class QueryPacksListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"queryPackId\":\"hnze\",\"timeCreated\":\"2021-08-07T03:00:22Z\",\"timeModified\":\"2021-06-28T19:52:41Z\",\"provisioningState\":\"fzqlqhycavod\"},\"location\":\"gxdbeesmie\",\"tags\":{\"iaa\":\"ra\",\"agt\":\"iuagydwqfbylyrfg\",\"zjvusfzldmo\":\"ojocqwogf\"},\"id\":\"uxylfsbtkadpy\",\"name\":\"own\",\"type\":\"tgkbugrjqctojc\"}]}";
+            = "{\"value\":[{\"properties\":{\"queryPackId\":\"pkxztmoobkl\",\"timeCreated\":\"2021-05-25T12:15:23Z\",\"timeModified\":\"2021-09-03T03:39:31Z\",\"provisioningState\":\"cwq\"},\"location\":\"pimaqxzhemjyh\",\"tags\":{\"lkb\":\"jswtwkozzwc\"},\"id\":\"wpfaj\",\"name\":\"jwltlwtjjgu\",\"type\":\"talhsnvkcdmxzr\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -52,7 +33,7 @@ public final class QueryPacksListMockTests {
 
         PagedIterable<LogAnalyticsQueryPack> response = manager.queryPacks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gxdbeesmie", response.iterator().next().location());
-        Assertions.assertEquals("ra", response.iterator().next().tags().get("iaa"));
+        Assertions.assertEquals("pimaqxzhemjyh", response.iterator().next().location());
+        Assertions.assertEquals("jswtwkozzwc", response.iterator().next().tags().get("lkb"));
     }
 }

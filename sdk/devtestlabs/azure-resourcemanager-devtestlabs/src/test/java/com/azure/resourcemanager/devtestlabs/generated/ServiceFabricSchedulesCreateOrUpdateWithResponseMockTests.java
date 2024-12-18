@@ -6,11 +6,9 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.DayDetails;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.devtestlabs.models.HourDetails;
 import com.azure.resourcemanager.devtestlabs.models.NotificationSettings;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.WeekDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,32 +24,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServiceFabricSchedulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"x\",\"weeklyRecurrence\":{\"weekdays\":[\"zvoikvntwczf\",\"wushlcxpbl\"],\"time\":\"hhezpfkissaidq\"},\"dailyRecurrence\":{\"time\":\"aoq\"},\"hourlyRecurrence\":{\"minute\":1755690497},\"timeZoneId\":\"otxjqfiafcnlrtbf\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1825571960,\"webhookUrl\":\"ijolbuauktwieope\",\"emailRecipient\":\"lxqdwr\",\"notificationLocale\":\"yil\"},\"createdDate\":\"2021-08-05T08:51:23Z\",\"targetResourceId\":\"kgxyxyauxre\",\"provisioningState\":\"obmc\",\"uniqueIdentifier\":\"tmwytkujsqycm\"},\"location\":\"oxfab\",\"tags\":{\"iwrycgnwplrrb\":\"pwbmwhria\"},\"id\":\"hctsbbibti\",\"name\":\"uhqvums\",\"type\":\"bfs\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevTestLabsManager manager = DevTestLabsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

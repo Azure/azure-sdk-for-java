@@ -24,7 +24,8 @@ public final class SitesUpdateTagsSamples {
      */
     public static void updateNetworkSiteTags(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
         Site resource = manager.sites()
-            .getByResourceGroupWithResponse("rg1", "testSite", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg1", "testSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

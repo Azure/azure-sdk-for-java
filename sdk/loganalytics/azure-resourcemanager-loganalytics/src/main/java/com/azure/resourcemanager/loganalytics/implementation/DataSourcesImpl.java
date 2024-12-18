@@ -60,28 +60,28 @@ public final class DataSourcesImpl implements DataSources {
     public PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter) {
         PagedIterable<DataSourceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, filter);
-        return Utils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
         String skiptoken, Context context) {
         PagedIterable<DataSourceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, filter, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
     }
 
     public DataSource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String dataSourceName = Utils.getValueFromIdByName(id, "dataSources");
+        String dataSourceName = ResourceManagerUtils.getValueFromIdByName(id, "dataSources");
         if (dataSourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataSources'.", id)));
@@ -90,17 +90,17 @@ public final class DataSourcesImpl implements DataSources {
     }
 
     public Response<DataSource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String dataSourceName = Utils.getValueFromIdByName(id, "dataSources");
+        String dataSourceName = ResourceManagerUtils.getValueFromIdByName(id, "dataSources");
         if (dataSourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataSources'.", id)));
@@ -109,17 +109,17 @@ public final class DataSourcesImpl implements DataSources {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String dataSourceName = Utils.getValueFromIdByName(id, "dataSources");
+        String dataSourceName = ResourceManagerUtils.getValueFromIdByName(id, "dataSources");
         if (dataSourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataSources'.", id)));
@@ -128,17 +128,17 @@ public final class DataSourcesImpl implements DataSources {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String dataSourceName = Utils.getValueFromIdByName(id, "dataSources");
+        String dataSourceName = ResourceManagerUtils.getValueFromIdByName(id, "dataSources");
         if (dataSourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dataSources'.", id)));

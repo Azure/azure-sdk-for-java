@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class NodeTypesDeleteNodeSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/DeleteNodes_example.json
      */
     /**

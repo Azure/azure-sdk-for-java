@@ -18,7 +18,8 @@ public final class ApiDefinitionsHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01",
-            "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .headWithResponse("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }

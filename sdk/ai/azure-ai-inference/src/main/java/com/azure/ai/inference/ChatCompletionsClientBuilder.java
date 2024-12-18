@@ -340,6 +340,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
+            .tracer(createTracer())
             .build();
         return httpPipeline;
     }
@@ -349,9 +350,8 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
      *
      * @return an instance of ChatCompletionsAsyncClient.
      */
-    @Generated
     public ChatCompletionsAsyncClient buildAsyncClient() {
-        return new ChatCompletionsAsyncClient(buildInnerClient());
+        return new ChatCompletionsAsyncClient(buildInnerClient(), createInferenceTracer());
     }
 
     /**
@@ -359,9 +359,25 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
      *
      * @return an instance of ChatCompletionsClient.
      */
-    @Generated
     public ChatCompletionsClient buildClient() {
-        return new ChatCompletionsClient(buildInnerClient());
+        return new ChatCompletionsClient(buildInnerClient(), createInferenceTracer());
+    }
+
+    private com.azure.core.util.tracing.Tracer createTracer() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.LibraryTelemetryOptions telemetryOptions
+            = new com.azure.core.util.LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace("Microsoft.CognitiveServices")
+                .setSchemaUrl(com.azure.ai.inference.ChatCompletionClientTracer.OTEL_SCHEMA_URL);
+        final com.azure.core.util.TracingOptions tracingOptions
+            = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
+        return com.azure.core.util.tracing.TracerProvider.getDefaultProvider()
+            .createTracer(telemetryOptions, tracingOptions);
+    }
+
+    private ChatCompletionClientTracer createInferenceTracer() {
+        return new ChatCompletionClientTracer(this.endpoint, this.configuration, createTracer());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChatCompletionsClientBuilder.class);

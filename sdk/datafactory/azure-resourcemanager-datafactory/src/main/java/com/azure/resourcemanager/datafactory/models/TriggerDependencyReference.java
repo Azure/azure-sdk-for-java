@@ -69,7 +69,6 @@ public class TriggerDependencyReference extends DependencyReference {
      */
     @Override
     public void validate() {
-        super.validate();
         if (referenceTrigger() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

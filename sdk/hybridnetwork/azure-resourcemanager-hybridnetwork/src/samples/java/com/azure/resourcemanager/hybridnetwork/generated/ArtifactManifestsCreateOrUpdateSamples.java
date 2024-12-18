@@ -25,12 +25,16 @@ public final class ArtifactManifestsCreateOrUpdateSamples {
      */
     public static void createOrUpdateTheArtifactManifestResource(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.artifactManifests().define("TestManifest").withRegion("eastus")
+        manager.artifactManifests()
+            .define("TestManifest")
+            .withRegion("eastus")
             .withExistingArtifactStore("rg", "TestPublisher", "TestArtifactStore")
             .withProperties(new ArtifactManifestPropertiesFormat().withArtifacts(Arrays.asList(
-                new ManifestArtifactFormat().withArtifactName("fed-rbac").withArtifactType(ArtifactType.OCIARTIFACT)
+                new ManifestArtifactFormat().withArtifactName("fed-rbac")
+                    .withArtifactType(ArtifactType.OCIARTIFACT)
                     .withArtifactVersion("1.0.0"),
-                new ManifestArtifactFormat().withArtifactName("nginx").withArtifactType(ArtifactType.OCIARTIFACT)
+                new ManifestArtifactFormat().withArtifactName("nginx")
+                    .withArtifactType(ArtifactType.OCIARTIFACT)
                     .withArtifactVersion("v1"))))
             .create();
     }

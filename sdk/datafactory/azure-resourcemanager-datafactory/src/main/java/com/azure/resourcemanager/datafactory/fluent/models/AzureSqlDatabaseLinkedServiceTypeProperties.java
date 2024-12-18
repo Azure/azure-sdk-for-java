@@ -569,7 +569,6 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties extends SqlServer
      */
     @Override
     public void validate() {
-        super.validate();
         if (password() != null) {
             password().validate();
         }

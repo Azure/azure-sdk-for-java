@@ -26,6 +26,9 @@ import java.util.function.Function;
  * Defines a few utilities.
  */
 public final class ResourceManagerUtils {
+    /**
+     * Creates a new instance of ResourceManagerUtils.
+     */
     private ResourceManagerUtils() {
     }
 
@@ -248,6 +251,12 @@ public final class ResourceManagerUtils {
         private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
         private static DelayProvider delayProvider = new ResourceDelayProvider();
         private static Scheduler reactorScheduler = Schedulers.parallel();
+
+        /**
+         * Creates a new instance of InternalRuntimeContext.
+         */
+        public InternalRuntimeContext() {
+        }
 
         /**
          * Sets the resource namer

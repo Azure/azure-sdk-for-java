@@ -20,9 +20,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key
      * Vault, see [Add a key or secret to the key
-     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>
-     * "data":"<Base64-encoded-certificate>",<br> "dataType":"pfx",<br> "password":"<pfx-file-password>"<br>}
+     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add).
      */
     private String certificateUrl;
 
@@ -43,10 +41,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
     /**
      * Get the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret. For adding a secret to the Key Vault, see [Add a key or secret to the key
-     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
-     * &lt;br&gt;&lt;br&gt; {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt;
-     * "dataType":"pfx",&lt;br&gt; "password":"&lt;pfx-file-password&gt;"&lt;br&gt;}.
+     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add).
      * 
      * @return the certificateUrl value.
      */
@@ -57,10 +52,7 @@ public final class VaultCertificate implements JsonSerializable<VaultCertificate
     /**
      * Set the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret. For adding a secret to the Key Vault, see [Add a key or secret to the key
-     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
-     * &lt;br&gt;&lt;br&gt; {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt;
-     * "dataType":"pfx",&lt;br&gt; "password":"&lt;pfx-file-password&gt;"&lt;br&gt;}.
+     * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add).
      * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the VaultCertificate object itself.

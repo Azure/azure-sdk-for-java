@@ -102,27 +102,28 @@
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for Clusters Create. */
+/**
+ * Samples for Clusters Create.
+ */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateCluster.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateCluster.json
      */
     /**
      * Sample code: CreateCluster.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .define("HRCluster")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -134,14 +135,18 @@ public final class ClustersCreateSamples {
 ### Clusters_Delete
 
 ```java
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteCluster.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteCluster.json
      */
     /**
      * Sample code: DeleteCluster.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -153,14 +158,18 @@ public final class ClustersDeleteSamples {
 ### Clusters_GetByResourceGroup
 
 ```java
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetCluster.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetCluster.json
      */
     /**
      * Sample code: GetCluster.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -172,14 +181,18 @@ public final class ClustersGetByResourceGroupSamples {
 ### Clusters_List
 
 ```java
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListClusters.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListClusters.json
      */
     /**
      * Sample code: ListClusters.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listClusters(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -191,18 +204,22 @@ public final class ClustersListSamples {
 ### Clusters_ListByResourceGroup
 
 ```java
-/** Samples for Clusters ListByResourceGroup. */
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListClustersByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListClustersByResourceGroup.json
      */
     /**
      * Sample code: ListClustersByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listClustersByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listClustersByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.clusters().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -215,22 +232,24 @@ import com.azure.resourcemanager.connectedvmware.models.Cluster;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateCluster.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateCluster.json
      */
     /**
      * Sample code: UpdateCluster.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("testrg", "HRCluster", com.azure.core.util.Context.NONE)
-                .getValue();
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("testrg", "HRCluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -253,27 +272,28 @@ public final class ClustersUpdateSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for Datastores Create. */
+/**
+ * Samples for Datastores Create.
+ */
 public final class DatastoresCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateDatastore.json
      */
     /**
      * Sample code: CreateDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .datastores()
+        manager.datastores()
             .define("HRDatastore")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -285,14 +305,18 @@ public final class DatastoresCreateSamples {
 ### Datastores_Delete
 
 ```java
-/** Samples for Datastores Delete. */
+/**
+ * Samples for Datastores Delete.
+ */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteDatastore.json
      */
     /**
      * Sample code: DeleteDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -304,14 +328,18 @@ public final class DatastoresDeleteSamples {
 ### Datastores_GetByResourceGroup
 
 ```java
-/** Samples for Datastores GetByResourceGroup. */
+/**
+ * Samples for Datastores GetByResourceGroup.
+ */
 public final class DatastoresGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetDatastore.json
      */
     /**
      * Sample code: GetDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -323,14 +351,18 @@ public final class DatastoresGetByResourceGroupSamples {
 ### Datastores_List
 
 ```java
-/** Samples for Datastores List. */
+/**
+ * Samples for Datastores List.
+ */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListDatastores.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListDatastores.json
      */
     /**
      * Sample code: ListDatastores.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listDatastores(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -342,18 +374,22 @@ public final class DatastoresListSamples {
 ### Datastores_ListByResourceGroup
 
 ```java
-/** Samples for Datastores ListByResourceGroup. */
+/**
+ * Samples for Datastores ListByResourceGroup.
+ */
 public final class DatastoresListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListDatastoresByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListDatastoresByResourceGroup.json
      */
     /**
      * Sample code: ListDatastoresByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listDatastoresByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listDatastoresByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.datastores().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -366,22 +402,24 @@ import com.azure.resourcemanager.connectedvmware.models.Datastore;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Datastores Update. */
+/**
+ * Samples for Datastores Update.
+ */
 public final class DatastoresUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateDatastore.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateDatastore.json
      */
     /**
      * Sample code: UpdateDatastore.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateDatastore(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        Datastore resource =
-            manager
-                .datastores()
-                .getByResourceGroupWithResponse("testrg", "HRDatastore", com.azure.core.util.Context.NONE)
-                .getValue();
+        Datastore resource = manager.datastores()
+            .getByResourceGroupWithResponse("testrg", "HRDatastore", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -404,27 +442,28 @@ public final class DatastoresUpdateSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for Hosts Create. */
+/**
+ * Samples for Hosts Create.
+ */
 public final class HostsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateHost.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateHost.json
      */
     /**
      * Sample code: CreateHost.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .hosts()
+        manager.hosts()
             .define("HRHost")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -436,14 +475,18 @@ public final class HostsCreateSamples {
 ### Hosts_Delete
 
 ```java
-/** Samples for Hosts Delete. */
+/**
+ * Samples for Hosts Delete.
+ */
 public final class HostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteHost.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteHost.json
      */
     /**
      * Sample code: DeleteHost.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -455,14 +498,18 @@ public final class HostsDeleteSamples {
 ### Hosts_GetByResourceGroup
 
 ```java
-/** Samples for Hosts GetByResourceGroup. */
+/**
+ * Samples for Hosts GetByResourceGroup.
+ */
 public final class HostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetHost.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetHost.json
      */
     /**
      * Sample code: GetHost.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -474,14 +521,18 @@ public final class HostsGetByResourceGroupSamples {
 ### Hosts_List
 
 ```java
-/** Samples for Hosts List. */
+/**
+ * Samples for Hosts List.
+ */
 public final class HostsListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListHosts.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListHosts.json
      */
     /**
      * Sample code: ListHosts.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listHosts(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -493,18 +544,22 @@ public final class HostsListSamples {
 ### Hosts_ListByResourceGroup
 
 ```java
-/** Samples for Hosts ListByResourceGroup. */
+/**
+ * Samples for Hosts ListByResourceGroup.
+ */
 public final class HostsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListHostsByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListHostsByResourceGroup.json
      */
     /**
      * Sample code: ListHostsByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listHostsByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listHostsByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.hosts().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -517,22 +572,24 @@ import com.azure.resourcemanager.connectedvmware.models.HostModel;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Hosts Update. */
+/**
+ * Samples for Hosts Update.
+ */
 public final class HostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateHost.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateHost.json
      */
     /**
      * Sample code: UpdateHost.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateHost(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        HostModel resource =
-            manager
-                .hosts()
-                .getByResourceGroupWithResponse("testrg", "HRHost", com.azure.core.util.Context.NONE)
-                .getValue();
+        HostModel resource = manager.hosts()
+            .getByResourceGroupWithResponse("testrg", "HRHost", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -555,19 +612,22 @@ public final class HostsUpdateSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ResourcePoolInventoryItem;
 
-/** Samples for InventoryItems Create. */
+/**
+ * Samples for InventoryItems Create.
+ */
 public final class InventoryItemsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateInventoryItem.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateInventoryItem.json
      */
     /**
      * Sample code: CreateInventoryItem.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createInventoryItem(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .inventoryItems()
+        manager.inventoryItems()
             .define("testItem")
             .withExistingVcenter("testrg", "ContosoVCenter")
             .withProperties(new ResourcePoolInventoryItem())
@@ -579,19 +639,22 @@ public final class InventoryItemsCreateSamples {
 ### InventoryItems_Delete
 
 ```java
-/** Samples for InventoryItems Delete. */
+/**
+ * Samples for InventoryItems Delete.
+ */
 public final class InventoryItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteInventoryItem.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteInventoryItem.json
      */
     /**
      * Sample code: DeleteInventoryItem.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteInventoryItem(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .inventoryItems()
+        manager.inventoryItems()
             .deleteWithResponse("testrg", "ContosoVCenter", "testItem", com.azure.core.util.Context.NONE);
     }
 }
@@ -600,19 +663,22 @@ public final class InventoryItemsDeleteSamples {
 ### InventoryItems_Get
 
 ```java
-/** Samples for InventoryItems Get. */
+/**
+ * Samples for InventoryItems Get.
+ */
 public final class InventoryItemsGetSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetInventoryItem.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetInventoryItem.json
      */
     /**
      * Sample code: GetInventoryItem.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getInventoryItem(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .inventoryItems()
+        manager.inventoryItems()
             .getWithResponse("testrg", "ContosoVCenter", "testItem", com.azure.core.util.Context.NONE);
     }
 }
@@ -621,18 +687,22 @@ public final class InventoryItemsGetSamples {
 ### InventoryItems_ListByVCenter
 
 ```java
-/** Samples for InventoryItems ListByVCenter. */
+/**
+ * Samples for InventoryItems ListByVCenter.
+ */
 public final class InventoryItemsListByVCenterSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/InventoryItems_ListByVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * InventoryItems_ListByVCenter.json
      */
     /**
      * Sample code: InventoryItemsListByVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void inventoryItemsListByVCenter(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        inventoryItemsListByVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.inventoryItems().listByVCenter("testrg", "ContosoVCenter", com.azure.core.util.Context.NONE);
     }
 }
@@ -641,14 +711,18 @@ public final class InventoryItemsListByVCenterSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListOperations.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listOperations(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -662,27 +736,28 @@ public final class OperationsListSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for ResourcePools Create. */
+/**
+ * Samples for ResourcePools Create.
+ */
 public final class ResourcePoolsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateResourcePool.json
      */
     /**
      * Sample code: CreateResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .resourcePools()
+        manager.resourcePools()
             .define("HRPool")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -694,14 +769,18 @@ public final class ResourcePoolsCreateSamples {
 ### ResourcePools_Delete
 
 ```java
-/** Samples for ResourcePools Delete. */
+/**
+ * Samples for ResourcePools Delete.
+ */
 public final class ResourcePoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteResourcePool.json
      */
     /**
      * Sample code: DeleteResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -713,14 +792,18 @@ public final class ResourcePoolsDeleteSamples {
 ### ResourcePools_GetByResourceGroup
 
 ```java
-/** Samples for ResourcePools GetByResourceGroup. */
+/**
+ * Samples for ResourcePools GetByResourceGroup.
+ */
 public final class ResourcePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetResourcePool.json
      */
     /**
      * Sample code: GetResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -732,14 +815,18 @@ public final class ResourcePoolsGetByResourceGroupSamples {
 ### ResourcePools_List
 
 ```java
-/** Samples for ResourcePools List. */
+/**
+ * Samples for ResourcePools List.
+ */
 public final class ResourcePoolsListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListResourcePools.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListResourcePools.json
      */
     /**
      * Sample code: ListResourcePools.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listResourcePools(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -751,18 +838,22 @@ public final class ResourcePoolsListSamples {
 ### ResourcePools_ListByResourceGroup
 
 ```java
-/** Samples for ResourcePools ListByResourceGroup. */
+/**
+ * Samples for ResourcePools ListByResourceGroup.
+ */
 public final class ResourcePoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListResourcePoolsByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListResourcePoolsByResourceGroup.json
      */
     /**
      * Sample code: ListResourcePoolsByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listResourcePoolsByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listResourcePoolsByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.resourcePools().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -775,22 +866,24 @@ import com.azure.resourcemanager.connectedvmware.models.ResourcePool;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourcePools Update. */
+/**
+ * Samples for ResourcePools Update.
+ */
 public final class ResourcePoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateResourcePool.json
      */
     /**
      * Sample code: UpdateResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        ResourcePool resource =
-            manager
-                .resourcePools()
-                .getByResourceGroupWithResponse("testrg", "HRPool", com.azure.core.util.Context.NONE)
-                .getValue();
+        ResourcePool resource = manager.resourcePools()
+            .getByResourceGroupWithResponse("testrg", "HRPool", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -814,28 +907,29 @@ public final class ResourcePoolsUpdateSamples {
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 import com.azure.resourcemanager.connectedvmware.models.VICredential;
 
-/** Samples for VCenters Create. */
+/**
+ * Samples for VCenters Create.
+ */
 public final class VCentersCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVCenter.json
      */
     /**
      * Sample code: CreateVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vCenters()
+        manager.vCenters()
             .define("ContosoVCenter")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
             .withFqdn("ContosoVMware.contoso.com")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withPort(1234)
             .withCredentials(new VICredential().withUsername("tempuser").withPassword("fakeTokenPlaceholder"))
             .create();
@@ -846,14 +940,18 @@ public final class VCentersCreateSamples {
 ### VCenters_Delete
 
 ```java
-/** Samples for VCenters Delete. */
+/**
+ * Samples for VCenters Delete.
+ */
 public final class VCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVCenter.json
      */
     /**
      * Sample code: DeleteVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -865,14 +963,18 @@ public final class VCentersDeleteSamples {
 ### VCenters_GetByResourceGroup
 
 ```java
-/** Samples for VCenters GetByResourceGroup. */
+/**
+ * Samples for VCenters GetByResourceGroup.
+ */
 public final class VCentersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVCenter.json
      */
     /**
      * Sample code: GetVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -884,14 +986,18 @@ public final class VCentersGetByResourceGroupSamples {
 ### VCenters_List
 
 ```java
-/** Samples for VCenters List. */
+/**
+ * Samples for VCenters List.
+ */
 public final class VCentersListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVCenters.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVCenters.json
      */
     /**
      * Sample code: ListVCenters.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listVCenters(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -903,18 +1009,22 @@ public final class VCentersListSamples {
 ### VCenters_ListByResourceGroup
 
 ```java
-/** Samples for VCenters ListByResourceGroup. */
+/**
+ * Samples for VCenters ListByResourceGroup.
+ */
 public final class VCentersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVCentersByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVCentersByResourceGroup.json
      */
     /**
      * Sample code: ListVCentersByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listVCentersByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listVCentersByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.vCenters().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -927,22 +1037,24 @@ import com.azure.resourcemanager.connectedvmware.models.VCenter;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VCenters Update. */
+/**
+ * Samples for VCenters Update.
+ */
 public final class VCentersUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVCenter.json
      */
     /**
      * Sample code: UpdateVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        VCenter resource =
-            manager
-                .vCenters()
-                .getByResourceGroupWithResponse("testrg", "ContosoVCenter", com.azure.core.util.Context.NONE)
-                .getValue();
+        VCenter resource = manager.vCenters()
+            .getByResourceGroupWithResponse("testrg", "ContosoVCenter", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -968,19 +1080,22 @@ import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
 
-/** Samples for VMInstanceGuestAgents Create. */
+/**
+ * Samples for VMInstanceGuestAgents Create.
+ */
 public final class VMInstanceGuestAgentsCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVMInstanceGuestAgent.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVMInstanceGuestAgent.json
      */
     /**
      * Sample code: CreateGuestAgent.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createGuestAgent(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vMInstanceGuestAgents()
+        manager.vMInstanceGuestAgents()
             .create(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 new GuestAgentInner()
@@ -998,19 +1113,22 @@ public final class VMInstanceGuestAgentsCreateSamples {
 ### VMInstanceGuestAgents_Delete
 
 ```java
-/** Samples for VMInstanceGuestAgents Delete. */
+/**
+ * Samples for VMInstanceGuestAgents Delete.
+ */
 public final class VMInstanceGuestAgentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVMInstanceGuestAgent.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVMInstanceGuestAgent.json
      */
     /**
      * Sample code: DeleteGuestAgent.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteGuestAgent(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vMInstanceGuestAgents()
+        manager.vMInstanceGuestAgents()
             .delete(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1021,19 +1139,22 @@ public final class VMInstanceGuestAgentsDeleteSamples {
 ### VMInstanceGuestAgents_Get
 
 ```java
-/** Samples for VMInstanceGuestAgents Get. */
+/**
+ * Samples for VMInstanceGuestAgents Get.
+ */
 public final class VMInstanceGuestAgentsGetSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVMInstanceGuestAgent.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVMInstanceGuestAgent.json
      */
     /**
      * Sample code: GetGuestAgent.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getGuestAgent(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vMInstanceGuestAgents()
+        manager.vMInstanceGuestAgents()
             .getWithResponse(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1044,19 +1165,22 @@ public final class VMInstanceGuestAgentsGetSamples {
 ### VMInstanceGuestAgents_List
 
 ```java
-/** Samples for VMInstanceGuestAgents List. */
+/**
+ * Samples for VMInstanceGuestAgents List.
+ */
 public final class VMInstanceGuestAgentsListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/VMInstanceGuestAgent_ListByVm.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * VMInstanceGuestAgent_ListByVm.json
      */
     /**
      * Sample code: GuestAgentListByVm.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void guestAgentListByVm(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vMInstanceGuestAgents()
+        manager.vMInstanceGuestAgents()
             .list(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1073,38 +1197,34 @@ import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.InfrastructureProfile;
 import com.azure.resourcemanager.connectedvmware.models.PlacementProfile;
 
-/** Samples for VirtualMachineInstances CreateOrUpdate. */
+/**
+ * Samples for VirtualMachineInstances CreateOrUpdate.
+ */
 public final class VirtualMachineInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVirtualMachineInstance.json
      */
     /**
      * Sample code: CreateVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .createOrUpdate(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
-                new VirtualMachineInstanceInner()
-                    .withExtendedLocation(
-                        new ExtendedLocation()
-                            .withType("customLocation")
-                            .withName(
-                                "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
-                    .withPlacementProfile(
-                        new PlacementProfile()
-                            .withResourcePoolId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/ResourcePools/HRPool"))
+                new VirtualMachineInstanceInner().withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                    .withName(
+                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+                    .withPlacementProfile(new PlacementProfile().withResourcePoolId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/ResourcePools/HRPool"))
                     .withHardwareProfile(new HardwareProfile().withMemorySizeMB(4196).withNumCPUs(4))
-                    .withInfrastructureProfile(
-                        new InfrastructureProfile()
-                            .withTemplateId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VirtualMachineTemplates/WebFrontEndTemplate")
-                            .withVCenterId(
-                                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")),
+                    .withInfrastructureProfile(new InfrastructureProfile().withTemplateId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VirtualMachineTemplates/WebFrontEndTemplate")
+                        .withVCenterId(
+                            "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1113,24 +1233,25 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
 ### VirtualMachineInstances_Delete
 
 ```java
-/** Samples for VirtualMachineInstances Delete. */
+/**
+ * Samples for VirtualMachineInstances Delete.
+ */
 public final class VirtualMachineInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVirtualMachineInstance.json
      */
     /**
      * Sample code: DeleteVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .delete(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1138,19 +1259,22 @@ public final class VirtualMachineInstancesDeleteSamples {
 ### VirtualMachineInstances_Get
 
 ```java
-/** Samples for VirtualMachineInstances Get. */
+/**
+ * Samples for VirtualMachineInstances Get.
+ */
 public final class VirtualMachineInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVirtualMachineInstance.json
      */
     /**
      * Sample code: GetVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .getWithResponse(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1161,19 +1285,22 @@ public final class VirtualMachineInstancesGetSamples {
 ### VirtualMachineInstances_List
 
 ```java
-/** Samples for VirtualMachineInstances List. */
+/**
+ * Samples for VirtualMachineInstances List.
+ */
 public final class VirtualMachineInstancesListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualMachineInstances.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualMachineInstances.json
      */
     /**
      * Sample code: GetVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .list(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1184,19 +1311,22 @@ public final class VirtualMachineInstancesListSamples {
 ### VirtualMachineInstances_Restart
 
 ```java
-/** Samples for VirtualMachineInstances Restart. */
+/**
+ * Samples for VirtualMachineInstances Restart.
+ */
 public final class VirtualMachineInstancesRestartSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/RestartVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * RestartVirtualMachineInstance.json
      */
     /**
      * Sample code: RestartVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void restartVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .restart(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1207,19 +1337,22 @@ public final class VirtualMachineInstancesRestartSamples {
 ### VirtualMachineInstances_Start
 
 ```java
-/** Samples for VirtualMachineInstances Start. */
+/**
+ * Samples for VirtualMachineInstances Start.
+ */
 public final class VirtualMachineInstancesStartSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/StartVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * StartVirtualMachineInstance.json
      */
     /**
      * Sample code: StartVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void startVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .start(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1232,23 +1365,25 @@ public final class VirtualMachineInstancesStartSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.StopVirtualMachineOptions;
 
-/** Samples for VirtualMachineInstances Stop. */
+/**
+ * Samples for VirtualMachineInstances Stop.
+ */
 public final class VirtualMachineInstancesStopSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/StopVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * StopVirtualMachineInstance.json
      */
     /**
      * Sample code: StopVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void stopVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .stop(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
-                new StopVirtualMachineOptions().withSkipShutdown(true),
-                com.azure.core.util.Context.NONE);
+                new StopVirtualMachineOptions().withSkipShutdown(true), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1259,23 +1394,26 @@ public final class VirtualMachineInstancesStopSamples {
 import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.VirtualMachineInstanceUpdate;
 
-/** Samples for VirtualMachineInstances Update. */
+/**
+ * Samples for VirtualMachineInstances Update.
+ */
 public final class VirtualMachineInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVirtualMachineInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVirtualMachineInstance.json
      */
     /**
      * Sample code: UpdateVirtualMachine.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateVirtualMachine(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineInstances()
+        manager.virtualMachineInstances()
             .update(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
-                new VirtualMachineInstanceUpdate()
-                    .withHardwareProfile(new HardwareProfile().withMemorySizeMB(4196).withNumCPUs(4)),
+                new VirtualMachineInstanceUpdate().withHardwareProfile(
+                    new HardwareProfile().withMemorySizeMB(4196).withNumCPUs(4)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1286,28 +1424,29 @@ public final class VirtualMachineInstancesUpdateSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for VirtualMachineTemplates Create. */
+/**
+ * Samples for VirtualMachineTemplates Create.
+ */
 public final class VirtualMachineTemplatesCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVirtualMachineTemplate.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVirtualMachineTemplate.json
      */
     /**
      * Sample code: CreateVirtualMachineTemplate.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void createVirtualMachineTemplate(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineTemplates()
+    public static void
+        createVirtualMachineTemplate(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.virtualMachineTemplates()
             .define("WebFrontEndTemplate")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -1319,20 +1458,23 @@ public final class VirtualMachineTemplatesCreateSamples {
 ### VirtualMachineTemplates_Delete
 
 ```java
-/** Samples for VirtualMachineTemplates Delete. */
+/**
+ * Samples for VirtualMachineTemplates Delete.
+ */
 public final class VirtualMachineTemplatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVirtualMachineTemplate.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVirtualMachineTemplate.json
      */
     /**
      * Sample code: DeleteVirtualMachineTemplate.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void deleteVirtualMachineTemplate(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineTemplates()
+    public static void
+        deleteVirtualMachineTemplate(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.virtualMachineTemplates()
             .delete("testrg", "WebFrontEndTemplate", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1341,20 +1483,23 @@ public final class VirtualMachineTemplatesDeleteSamples {
 ### VirtualMachineTemplates_GetByResourceGroup
 
 ```java
-/** Samples for VirtualMachineTemplates GetByResourceGroup. */
+/**
+ * Samples for VirtualMachineTemplates GetByResourceGroup.
+ */
 public final class VirtualMachineTemplatesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVirtualMachineTemplate.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVirtualMachineTemplate.json
      */
     /**
      * Sample code: GetVirtualMachineTemplate.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void getVirtualMachineTemplate(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualMachineTemplates()
+    public static void
+        getVirtualMachineTemplate(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.virtualMachineTemplates()
             .getByResourceGroupWithResponse("testrg", "WebFrontEndTemplate", com.azure.core.util.Context.NONE);
     }
 }
@@ -1363,18 +1508,22 @@ public final class VirtualMachineTemplatesGetByResourceGroupSamples {
 ### VirtualMachineTemplates_List
 
 ```java
-/** Samples for VirtualMachineTemplates List. */
+/**
+ * Samples for VirtualMachineTemplates List.
+ */
 public final class VirtualMachineTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualMachineTemplates.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualMachineTemplates.json
      */
     /**
      * Sample code: ListVirtualMachineTemplates.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listVirtualMachineTemplates(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listVirtualMachineTemplates(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.virtualMachineTemplates().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -1383,14 +1532,18 @@ public final class VirtualMachineTemplatesListSamples {
 ### VirtualMachineTemplates_ListByResourceGroup
 
 ```java
-/** Samples for VirtualMachineTemplates ListByResourceGroup. */
+/**
+ * Samples for VirtualMachineTemplates ListByResourceGroup.
+ */
 public final class VirtualMachineTemplatesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualMachineTemplatesByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualMachineTemplatesByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualMachineTemplatesByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listVirtualMachineTemplatesByResourceGroup(
@@ -1407,23 +1560,25 @@ import com.azure.resourcemanager.connectedvmware.models.VirtualMachineTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachineTemplates Update. */
+/**
+ * Samples for VirtualMachineTemplates Update.
+ */
 public final class VirtualMachineTemplatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVirtualMachineTemplate.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVirtualMachineTemplate.json
      */
     /**
      * Sample code: UpdateVirtualMachineTemplate.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void updateVirtualMachineTemplate(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        VirtualMachineTemplate resource =
-            manager
-                .virtualMachineTemplates()
-                .getByResourceGroupWithResponse("testrg", "WebFrontEndTemplate", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateVirtualMachineTemplate(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        VirtualMachineTemplate resource = manager.virtualMachineTemplates()
+            .getByResourceGroupWithResponse("testrg", "WebFrontEndTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -1446,27 +1601,28 @@ public final class VirtualMachineTemplatesUpdateSamples {
 ```java
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 
-/** Samples for VirtualNetworks Create. */
+/**
+ * Samples for VirtualNetworks Create.
+ */
 public final class VirtualNetworksCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * CreateVirtualNetwork.json
      */
     /**
      * Sample code: CreateVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void createVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .define("ProdNetwork")
             .withRegion("East US")
             .withExistingResourceGroup("testrg")
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withType("customLocation")
-                    .withName(
-                        "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
+            .withExtendedLocation(new ExtendedLocation().withType("customLocation")
+                .withName(
+                    "/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.ExtendedLocation/customLocations/contoso"))
             .withVCenterId(
                 "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ConnectedVMwarevSphere/VCenters/ContosoVCenter")
             .withMoRefId("aaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -1478,14 +1634,18 @@ public final class VirtualNetworksCreateSamples {
 ### VirtualNetworks_Delete
 
 ```java
-/** Samples for VirtualNetworks Delete. */
+/**
+ * Samples for VirtualNetworks Delete.
+ */
 public final class VirtualNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVirtualNetwork.json
      */
     /**
      * Sample code: DeleteVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -1497,19 +1657,22 @@ public final class VirtualNetworksDeleteSamples {
 ### VirtualNetworks_GetByResourceGroup
 
 ```java
-/** Samples for VirtualNetworks GetByResourceGroup. */
+/**
+ * Samples for VirtualNetworks GetByResourceGroup.
+ */
 public final class VirtualNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVirtualNetwork.json
      */
     /**
      * Sample code: GetVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE);
     }
 }
@@ -1518,14 +1681,18 @@ public final class VirtualNetworksGetByResourceGroupSamples {
 ### VirtualNetworks_List
 
 ```java
-/** Samples for VirtualNetworks List. */
+/**
+ * Samples for VirtualNetworks List.
+ */
 public final class VirtualNetworksListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualNetworks.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualNetworks.json
      */
     /**
      * Sample code: ListVirtualNetworks.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listVirtualNetworks(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
@@ -1537,18 +1704,22 @@ public final class VirtualNetworksListSamples {
 ### VirtualNetworks_ListByResourceGroup
 
 ```java
-/** Samples for VirtualNetworks ListByResourceGroup. */
+/**
+ * Samples for VirtualNetworks ListByResourceGroup.
+ */
 public final class VirtualNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/ListVirtualNetworksByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualNetworksByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualNetworksByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listVirtualNetworksByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+    public static void
+        listVirtualNetworksByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
         manager.virtualNetworks().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -1561,22 +1732,24 @@ import com.azure.resourcemanager.connectedvmware.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks Update. */
+/**
+ * Samples for VirtualNetworks Update.
+ */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVirtualNetwork.json
      */
     /**
      * Sample code: UpdateVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        VirtualNetwork resource =
-            manager
-                .virtualNetworks()
-                .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE)
-                .getValue();
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
@@ -1597,20 +1770,23 @@ public final class VirtualNetworksUpdateSamples {
 ### VmInstanceHybridIdentityMetadata_Get
 
 ```java
-/** Samples for VmInstanceHybridIdentityMetadata Get. */
+/**
+ * Samples for VmInstanceHybridIdentityMetadata Get.
+ */
 public final class VmInstanceHybridIdentityMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVmInstanceHybridIdentityMetadata.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * GetVmInstanceHybridIdentityMetadata.json
      */
     /**
      * Sample code: GetHybridIdentityMetadata.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void getHybridIdentityMetadata(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vmInstanceHybridIdentityMetadatas()
+    public static void
+        getHybridIdentityMetadata(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.vmInstanceHybridIdentityMetadatas()
             .getWithResponse(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
@@ -1621,20 +1797,23 @@ public final class VmInstanceHybridIdentityMetadataGetSamples {
 ### VmInstanceHybridIdentityMetadata_List
 
 ```java
-/** Samples for VmInstanceHybridIdentityMetadata List. */
+/**
+ * Samples for VmInstanceHybridIdentityMetadata List.
+ */
 public final class VmInstanceHybridIdentityMetadataListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/HybridIdentityMetadata_ListByVmInstance.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * HybridIdentityMetadata_ListByVmInstance.json
      */
     /**
      * Sample code: HybridIdentityMetadataListByVm.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void hybridIdentityMetadataListByVm(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager
-            .vmInstanceHybridIdentityMetadatas()
+    public static void
+        hybridIdentityMetadataListByVm(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.vmInstanceHybridIdentityMetadatas()
             .list(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
                 com.azure.core.util.Context.NONE);
