@@ -99,9 +99,7 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
         when(mockClient.uploadWithResponse(any(Flux.class), eq((long) writeLength), eq(0L)))
             .thenReturn(Mono.error(new IOException()));
 
-        StepVerifier.create(outputStream.dispatchWrite(data, writeLength, 0))
-            .expectError(IOException.class)
-            .verify();
+        StepVerifier.create(outputStream.dispatchWrite(data, writeLength, 0)).expectError(IOException.class).verify();
 
         verify(mockClient, times(1)).uploadWithResponse(any(Flux.class), eq((long) writeLength), eq(0L));
     }
