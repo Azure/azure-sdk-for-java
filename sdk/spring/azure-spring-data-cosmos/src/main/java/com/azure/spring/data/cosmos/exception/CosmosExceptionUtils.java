@@ -53,22 +53,16 @@ public class CosmosExceptionUtils {
                     cosmosAccessException = new CosmosForbiddenException(message, cosmosException);
                     break;
                 case Constants.CosmosExceptionStatusCodes.GONE: {
-                    switch (cosmosException.getSubStatusCode()) {
-                        case Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE:
-                            cosmosAccessException = new CosmosInvalidPartitionException(message, cosmosException);
-                            break;
-                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION:
-                            cosmosAccessException = new CosmosPartitionIsMigratingException(message, cosmosException);
-                            break;
-                        case Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE:
-                            cosmosAccessException = new CosmosPartitionKeyRangeGoneException(message, cosmosException);
-                            break;
-                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
-                            cosmosAccessException = new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
-                            break;
-                        default:
-                            cosmosAccessException = new CosmosGoneException(message, cosmosException);
-                            break;
+                    if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE) {
+                        cosmosAccessException = new CosmosInvalidPartitionException(message, cosmosException);
+                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION) {
+                        cosmosAccessException = new CosmosPartitionIsMigratingException(message, cosmosException);
+                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE) {
+                        cosmosAccessException = new CosmosPartitionKeyRangeGoneException(message, cosmosException);
+                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
+                        cosmosAccessException = new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
+                    } else {
+                        cosmosAccessException = new CosmosGoneException(message, cosmosException);
                     }
                     break;
                 }

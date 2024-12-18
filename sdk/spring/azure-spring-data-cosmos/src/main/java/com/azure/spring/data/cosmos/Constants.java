@@ -91,6 +91,9 @@ public final class Constants {
      */
     public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss:SSSXXX";
 
+    /**
+     * Cosmos Exception Status Codes.
+     */
     public static class CosmosExceptionStatusCodes {
         public static final int BADREQUEST = 400;
         public static final int CONFLICT = 409;
@@ -108,6 +111,9 @@ public final class Constants {
         public static final int UNAUTHORIZED = 401;
     }
 
+    /**
+     * Cosmos Exception Sub Status Codes.
+     */
     public static class CosmosExceptionSubStatusCodes {
         // For 410 GONE
         public static final int NAME_CACHE_IS_STALE = 1000;
