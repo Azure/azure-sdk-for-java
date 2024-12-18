@@ -62,11 +62,11 @@ public class DerivedMetricProjections {
         }
 
         if (!Double.isNaN(incrementBy)) {
-            calculateAggregation(derivedMetricInfo.getAggregation(), derivedMetricInfo.getId(), incrementBy);
+            calculateAggregation(derivedMetricInfo.getId(), incrementBy);
         }
     }
 
-    private void calculateAggregation(AggregationType type, String id, double incrementBy) {
+    private void calculateAggregation(String id, double incrementBy) {
         DerivedMetricAggregation dma = derivedMetricValues.get(id);
         dma.update(incrementBy);
     }
