@@ -1,12 +1,8 @@
 # Core shared library for Java
 
-<!-- [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java) -->
-
 Client Core provides shared primitives, abstractions, and helpers for modern SDK client libraries. These libraries
-<!-- follow the [SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html) and -->
-can be easily identified by package names starting with `io.clientcore` and module names starting with `core`,
-e.g. `io.clientcore.core` would be found within the `/sdk/clientcore/core` directory.
-<!-- A more complete list of client libraries using Core can be found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages). -->
+can be easily identified by package names starting with `io.clientcore`, e.g. `io.clientcore.core` would be found within
+the `/sdk/clientcore/core` directory.
 
 Client Core allows client libraries to expose common functionality consistently, so that once you learn how to use these
 APIs in one client library, you will know how to use them in other client libraries.
@@ -15,7 +11,7 @@ APIs in one client library, you will know how to use them in other client librar
 
 ### Prerequisites
 
-- A Java Development Kit (JDK), version 8 or later.
+- A Java Development Kit (JDK), version 17 or later.
 
 ### Include the package
 
@@ -159,11 +155,10 @@ the necessary functionality.
 #### HttpTrait<T>
 
 `HttpTrait<T>` contains methods for setting key configurations for HTTP-based clients. This interface will allow you to
-configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and `ClientOptions` 
-(preferably `HttpClientOptions` as it is more specific for HTTP-based service clients).
+configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, and `HttpLogOptions`.
 
 For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be 
-created based on classpath configurations and the `ClientOptions` based to the builder. This can cause confusion if 
+created based on classpath configurations. This can cause confusion if 
 you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To 
 avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your 
 configurations aren't based on the environment running the application.
@@ -193,47 +188,15 @@ passing credentials to some client builders that support it, and more.
 Core SDKs provide a few, consistent ways to configure timeouts on API calls. Each timeout effects a different scope
 of the Core SDKs and calling application.
 
-#### HTTP Timeouts
-
-HTTP timeouts are the lowest level of timeout handling the Core SDKs provide. These timeouts can be configured when
-building `HttpClient`s or using `HttpClientOptions` when building service clients without configuring an `HttpClient`
-yourself. The following table lists the HTTP timeout, the corresponding `HttpClientOptions` method that can be used to
-set it, environment variable to control the default value, the default value if the environment value isn't set, and a
-brief description of what the timeout effects.
-
-| HTTP Timeout     | `HttpClientOptions` Method     | Environment Variable     | Default Value | Description                                                                                                       |
-|------------------|--------------------------------|--------------------------|---------------|-------------------------------------------------------------------------------------------------------------------|
-| Connect Timeout  | `setConnectTimeout(Duration)`  | REQUEST_CONNECT_TIMEOUT  | 10 seconds    | The amount of time for a connection to be established before timing out.                                          |
-| Write Timeout    | `setWriteTimeout(Duration)`    | REQUEST_WRITE_TIMEOUT    | 60 seconds    | The amount of time between each request data write to the network before timing out.                              |
-| Response Timeout | `setResponseTimeout(Duration)` | REQUEST_RESPONSE_TIMEOUT | 60 seconds    | The amount of time between finishing sending the request to receiving the first response bytes before timing out. |
-| Read Timeout     | `setReadTimeout(Duration)`     | REQUEST_READ_TIMEOUT     | 60 seconds    | The amount of time between each response data read from the network before timing out.                            |
-
-Since these timeouts are closest to the network, if they trigger they will be propagated back through the `HttpPipeline`
-and generally should be retried by the `RetryPolicy`.
-
 #### HttpPipeline Timeouts
 
 HttpPipeline timeouts are the next level of timeout handling Client Core provides. These timeouts are configured using
-an `HttpPipelinePolicy` and configuring a timeout using either `Mono.timeout` for asynchronous requests or an 
-`ExecutorService` with a timed `get(long, TimeUnit)` for synchronous requests.
+an `HttpPipelinePolicy` and configuring an `ExecutorService` with a timed `get(long, TimeUnit)`.
 
 Depending on the location within the `HttpPipeline`, these timeouts may be captured by the `RetryPolicy` and retried.
 If the timeout policy is `PER_RETRY` (`HttpPipelinePolicy.getPipelinePosition()`) the timeout will be captured by the
 `RetryPolicy` as it will be positioned after the `RetryPolicy`, therefore in its capture scope, if it is `PER_CALL`
 retrying the request will need to be handled by application logic.
-
-#### Service Client Timeouts
-
-Service client timeouts are the highest level of timeout handling the Client Core provides. These timeouts are configured
-by passing `Duration timeout` into synchronous service methods that support timeouts or by using `Mono.timeout` or
-`Flux.timeout` on asynchronous service methods.
-
-Since these timeouts are on the API call itself they cannot be captured by any retry mechanisms within the Client Core
-and must be handled by application logic.
-
-<!-- ## Next steps
-
-Get started with libraries that are [built using Client Core](https://azure.github.io/azure-sdk/releases/latest/#java). -->
 
 ## Troubleshooting
 
@@ -246,7 +209,6 @@ or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questio
 Client Core provides a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue.
-<!-- View the [logging][logging] documentation for guidance about enabling logging. -->
 
 #### HTTP Request and Response Logging
 
@@ -286,11 +248,3 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
-<!-- links -->
-
-<!-- [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview -->
-
-<!-- [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable -->
-
-<!-- ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fgeneric-core%2FREADME.png) -->

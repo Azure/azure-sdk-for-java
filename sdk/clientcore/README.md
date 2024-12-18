@@ -1,12 +1,8 @@
 # Client Core shared library for Java
 
-<!-- [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java) -->
-
 Client Core provides shared primitives, abstractions, and helpers for modern SDK client libraries. These libraries
-<!-- follow the [SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html) and -->
-can be easily identified by package names starting with `io.clientcore` and module names starting with `core`,
-e.g. `io.clientcore.core` would be found within the `/sdk/clientcore/core` directory.
-<!-- A more complete list of client libraries using Core can be found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages). -->
+can be easily identified by package names starting with `io.clientcore`, e.g. `io.clientcore.core` would be found within
+the `/sdk/clientcore/core` directory.
 
 Client Core allows client libraries to expose common functionality in a consistent fashion, so that once you learn how
 to use these APIs in one client library, you will know how to use them in other client libraries.
@@ -15,8 +11,6 @@ The main shared concepts of Client Core include:
 
 - Configuring service clients, e.g. configuring retries, logging, etc.
 - Accessing HTTP response details (`Response<T>`).
-<!-- - Calling long-running operations (`Poller<T>`). -->
-<!-- - Paging (`PagedResponse<T>`). -->
 - Exceptions for reporting errors from service requests in a consistent fashion.
 - Abstractions for representing credentials.
 
@@ -28,5 +22,3 @@ Client Core is split into a number of sub-components:
 - [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/http-okhttp3](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientore/http-okhttp3) provides an OkHttp derived HTTP client.
 
 For documentation on using Client Core, refer to the [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/clientcore/core).
-
-<!-- ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2FREADME.png) -->~~~~

@@ -1,12 +1,12 @@
 # Client Core OkHttp HTTP plugin library for Java
 
-Client Core OkHttp HTTP client is a plugin for the `azure-core` HTTP client API.
+Client Core OkHttp HTTP client is a plugin for the `io.clientcore.core` HTTP client API.
 
 ## Getting started
 
 ### Prerequisites
 
-- A Java Development Kit (JDK), version 8 or later.
+- A Java Development Kit (JDK), version 17 or later.
 
 ### Include the package
 
@@ -31,7 +31,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
+Create an OkHttp client.
 
 ```java readme-sample-createBasicClient
 HttpClient client = new OkHttpHttpClientBuilder().build();
@@ -68,10 +68,6 @@ HttpClient client = new OkHttpHttpClientBuilder(
     .build();
 ```
 
-<!-- ## Next steps
-
-Get started with Azure libraries that are [built using Client Core](https://azure.github.io/azure-sdk/releases/latest/#java). -->
-
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
@@ -79,10 +75,9 @@ or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questio
 
 ### Enabling Logging
 
-Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue.
-<!-- View the [logging][logging] wiki for guidance about enabling logging. -->
+Client Core libraries for Java provide a consistent logging story to help aid in troubleshooting application errors and
+expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state
+to help locate the root issue.
 
 ## Contributing
 
@@ -93,11 +88,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
-
-<!-- Links -->
-
-<!-- [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK -->
-
-<!-- [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable -->
-
-<!-- ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-okhttp%2FREADME.png) -->

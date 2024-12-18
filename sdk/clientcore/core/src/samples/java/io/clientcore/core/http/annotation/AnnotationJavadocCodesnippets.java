@@ -206,7 +206,7 @@ public interface AnnotationJavadocCodesnippets {
         interface SecretsService {
             @HttpRequestInformation(method = HttpMethod.GET, path = "secrets/{secretName}",
                 returnValueWireType = Secret.class)
-            Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
+            Secret get(@HostParam("instance") String vaultName, @PathParam("secretName") String secretName);
         }
         // END: io.clientcore.core.http.annotation.Host.class2
     }
