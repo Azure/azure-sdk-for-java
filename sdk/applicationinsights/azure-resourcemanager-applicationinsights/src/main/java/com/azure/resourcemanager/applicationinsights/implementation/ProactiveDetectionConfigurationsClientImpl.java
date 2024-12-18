@@ -32,15 +32,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProactiveDetectionConfigurationsClient.
  */
 public final class ProactiveDetectionConfigurationsClientImpl implements ProactiveDetectionConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProactiveDetectionConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ProactiveDetectionConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProactiveDetectionConfigurationsClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -89,14 +93,14 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
@@ -126,15 +130,15 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
@@ -163,14 +167,14 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ProactiveDetection configurations of an Application Insights component on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
@@ -180,15 +184,15 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
-     *     Response}.
+     * @return a list of ProactiveDetection configurations of an Application Insights component along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
@@ -198,7 +202,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,16 +218,16 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ProactiveDetection configuration for this configuration id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
@@ -257,17 +261,17 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ProactiveDetection configuration for this configuration id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
@@ -300,11 +304,11 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,11 +323,11 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,11 +342,11 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,18 +360,18 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param proactiveDetectionProperties Properties that need to be specified to update the ProactiveDetection
-     *     configuration.
+     * configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a ProactiveDetection configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
@@ -409,19 +413,19 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param proactiveDetectionProperties Properties that need to be specified to update the ProactiveDetection
-     *     configuration.
+     * configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a ProactiveDetection configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
@@ -462,13 +466,13 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param proactiveDetectionProperties Properties that need to be specified to update the ProactiveDetection
-     *     configuration.
+     * configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -484,13 +488,13 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param proactiveDetectionProperties Properties that need to be specified to update the ProactiveDetection
-     *     configuration.
+     * configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -508,13 +512,13 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights
-     *     component.
+     * component.
      * @param proactiveDetectionProperties Properties that need to be specified to update the ProactiveDetection
-     *     configuration.
+     * configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

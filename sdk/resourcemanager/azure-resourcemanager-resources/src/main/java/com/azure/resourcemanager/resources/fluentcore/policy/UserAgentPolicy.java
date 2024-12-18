@@ -29,6 +29,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     private final Configuration configuration;
 
     /**
+     * Creates a UserAgentPolicy with the {@link HttpLogOptions} and {@link Configuration} in the User-Agent header value.
+     *
      * @param httpLogOptions used for get application id
      * @param configuration used for check telemetry enable or not
      */

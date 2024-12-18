@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.SharedKeysInner;
 
-/** An instance of this class provides access to all the operations defined in SharedKeysOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SharedKeysOperationsClient.
+ */
 public interface SharedKeysOperationsClient {
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -29,7 +31,7 @@ public interface SharedKeysOperationsClient {
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface SharedKeysOperationsClient {
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface SharedKeysOperationsClient {
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

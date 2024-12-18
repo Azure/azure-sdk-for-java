@@ -11,7 +11,7 @@ public final class ApplicationInsightsComponentFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentFeature model = BinaryData.fromString(
-            "{\"FeatureName\":\"qw\",\"MeterId\":\"mdgbbjfdd\",\"MeterRateFrequency\":\"bmbexppbhtqqro\",\"ResouceId\":\"p\",\"IsHidden\":false,\"Capabilities\":[{\"Name\":\"bquxigjy\",\"Description\":\"zjaoyfhrtxil\",\"Value\":\"rkujy\",\"Unit\":\"l\",\"MeterId\":\"uvfqawrlyxwj\",\"MeterRateFrequency\":\"prbnwbxgjvtbv\"},{\"Name\":\"sszdnru\",\"Description\":\"guhmuouqfpr\",\"Value\":\"wbnguitnwui\",\"Unit\":\"a\",\"MeterId\":\"ufizuckyf\",\"MeterRateFrequency\":\"rfidfvzwdz\"}],\"Title\":\"tymw\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"fthwxmnteiwa\"}")
+            "{\"FeatureName\":\"pyqr\",\"MeterId\":\"z\",\"MeterRateFrequency\":\"pvswjdkirso\",\"ResouceId\":\"qxhcrmn\",\"IsHidden\":true,\"Capabilities\":[{\"Name\":\"whdsoifiyip\",\"Description\":\"sqwpgrjb\",\"Value\":\"orcjxvsnby\",\"Unit\":\"abnmocpcyshu\",\"MeterId\":\"afbljjgpbtoqcjmk\",\"MeterRateFrequency\":\"a\"},{\"Name\":\"qidtqajzyu\",\"Description\":\"kudjkrlkhb\",\"Value\":\"fepgzgq\",\"Unit\":\"zloc\",\"MeterId\":\"c\",\"MeterRateFrequency\":\"ierhhbcsglummaj\"}],\"Title\":\"aodxo\",\"IsMainFeature\":true,\"SupportedAddonFeatures\":\"xkqpxo\"}")
             .toObject(ApplicationInsightsComponentFeature.class);
     }
 

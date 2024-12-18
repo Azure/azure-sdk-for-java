@@ -5,71 +5,72 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.ExternalSubnet;
 import com.azure.resourcemanager.devtestlabs.models.Subnet;
 import com.azure.resourcemanager.devtestlabs.models.SubnetOverride;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of a virtual network. */
+/**
+ * Properties of a virtual network.
+ */
 @Fluent
-public final class VirtualNetworkProperties {
+public final class VirtualNetworkProperties implements JsonSerializable<VirtualNetworkProperties> {
     /*
      * The allowed subnets of the virtual network.
      */
-    @JsonProperty(value = "allowedSubnets")
     private List<Subnet> allowedSubnets;
 
     /*
      * The description of the virtual network.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Microsoft.Network resource identifier of the virtual network.
      */
-    @JsonProperty(value = "externalProviderResourceId")
     private String externalProviderResourceId;
 
     /*
      * The external subnet properties.
      */
-    @JsonProperty(value = "externalSubnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExternalSubnet> externalSubnets;
 
     /*
      * The subnet overrides of the virtual network.
      */
-    @JsonProperty(value = "subnetOverrides")
     private List<SubnetOverride> subnetOverrides;
 
     /*
      * The creation date of the virtual network.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of VirtualNetworkProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkProperties class.
+     */
     public VirtualNetworkProperties() {
     }
 
     /**
      * Get the allowedSubnets property: The allowed subnets of the virtual network.
-     *
+     * 
      * @return the allowedSubnets value.
      */
     public List<Subnet> allowedSubnets() {
@@ -78,7 +79,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the allowedSubnets property: The allowed subnets of the virtual network.
-     *
+     * 
      * @param allowedSubnets the allowedSubnets value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -89,7 +90,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the description property: The description of the virtual network.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -98,7 +99,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the description property: The description of the virtual network.
-     *
+     * 
      * @param description the description value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -109,7 +110,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
-     *
+     * 
      * @return the externalProviderResourceId value.
      */
     public String externalProviderResourceId() {
@@ -118,7 +119,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
-     *
+     * 
      * @param externalProviderResourceId the externalProviderResourceId value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -129,7 +130,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the externalSubnets property: The external subnet properties.
-     *
+     * 
      * @return the externalSubnets value.
      */
     public List<ExternalSubnet> externalSubnets() {
@@ -138,7 +139,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the subnetOverrides property: The subnet overrides of the virtual network.
-     *
+     * 
      * @return the subnetOverrides value.
      */
     public List<SubnetOverride> subnetOverrides() {
@@ -147,7 +148,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Set the subnetOverrides property: The subnet overrides of the virtual network.
-     *
+     * 
      * @param subnetOverrides the subnetOverrides value to set.
      * @return the VirtualNetworkProperties object itself.
      */
@@ -158,7 +159,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the createdDate property: The creation date of the virtual network.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -167,7 +168,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -176,7 +177,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -185,7 +186,7 @@ public final class VirtualNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -198,5 +199,66 @@ public final class VirtualNetworkProperties {
         if (subnetOverrides() != null) {
             subnetOverrides().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedSubnets", this.allowedSubnets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("externalProviderResourceId", this.externalProviderResourceId);
+        jsonWriter.writeArrayField("subnetOverrides", this.subnetOverrides,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProperties.
+     */
+    public static VirtualNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProperties deserializedVirtualNetworkProperties = new VirtualNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedSubnets".equals(fieldName)) {
+                    List<Subnet> allowedSubnets = reader.readArray(reader1 -> Subnet.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.allowedSubnets = allowedSubnets;
+                } else if ("description".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.description = reader.getString();
+                } else if ("externalProviderResourceId".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.externalProviderResourceId = reader.getString();
+                } else if ("externalSubnets".equals(fieldName)) {
+                    List<ExternalSubnet> externalSubnets
+                        = reader.readArray(reader1 -> ExternalSubnet.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.externalSubnets = externalSubnets;
+                } else if ("subnetOverrides".equals(fieldName)) {
+                    List<SubnetOverride> subnetOverrides
+                        = reader.readArray(reader1 -> SubnetOverride.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.subnetOverrides = subnetOverrides;
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProperties;
+        });
     }
 }

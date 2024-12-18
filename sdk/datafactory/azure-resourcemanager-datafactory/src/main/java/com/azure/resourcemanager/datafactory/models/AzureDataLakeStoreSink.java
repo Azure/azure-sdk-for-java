@@ -151,7 +151,6 @@ public final class AzureDataLakeStoreSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
@@ -41,7 +41,7 @@ public class AnalyzeIdentityDocuments {
         File licenseDocumentFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/identityDocuments/license.png");
 
-        SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
                 new AnalyzeDocumentOptions(Files.readAllBytes(licenseDocumentFile.toPath())));
 

@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.devtestlabs.generated;
 
-/** Samples for VirtualNetworks Delete. */
+/**
+ * Samples for VirtualNetworks Delete.
+ */
 public final class VirtualNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Delete
+     * .json
      */
     /**
      * Sample code: VirtualNetworks_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .delete("resourceGroupName", "{labName}", "{virtualNetworkName}", com.azure.core.util.Context.NONE);
     }
 }

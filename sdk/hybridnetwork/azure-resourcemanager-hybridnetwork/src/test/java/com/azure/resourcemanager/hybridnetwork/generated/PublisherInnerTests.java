@@ -19,7 +19,7 @@ public final class PublisherInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublisherInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleted\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"c2cb2eaf-bc41-4519-a2d3-6e67f581cdac\",\"tenantId\":\"b1a7f716-75ff-42a7-9ffc-a462d7f5d07f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ljagrqmqhl\":{\"principalId\":\"0a2fcf51-7983-443c-b384-5ec42203756f\",\"clientId\":\"d1e8f8e6-2a16-4433-872d-5f65f56e3b68\"}}},\"location\":\"riiiojnalghfkv\",\"tags\":{\"owueluqh\":\"ex\",\"zkw\":\"ahhxvrh\"},\"id\":\"jgwwspughftq\",\"name\":\"xhqxujxukndxdigr\",\"type\":\"guufzd\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"scope\":\"Private\"},\"identity\":{\"principalId\":\"1fc3be67-ddc7-495e-9f05-2f0b06210e1d\",\"tenantId\":\"31abd4e9-380f-4996-885c-aeb1f1b8dd61\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ljagrqmqhl\":{\"principalId\":\"e013a167-2395-4ecd-a8e8-ba100393d3dd\",\"clientId\":\"eadaf829-879f-480f-ad3f-e324f62dc020\"}}},\"location\":\"riiiojnalghfkv\",\"tags\":{\"owueluqh\":\"ex\",\"zkw\":\"ahhxvrh\"},\"id\":\"jgwwspughftq\",\"name\":\"xhqxujxukndxdigr\",\"type\":\"guufzd\"}")
             .toObject(PublisherInner.class);
         Assertions.assertEquals("riiiojnalghfkv", model.location());
         Assertions.assertEquals("ex", model.tags().get("owueluqh"));

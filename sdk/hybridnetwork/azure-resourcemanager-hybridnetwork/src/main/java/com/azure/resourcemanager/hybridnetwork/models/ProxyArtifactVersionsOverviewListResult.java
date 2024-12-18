@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.ProxyArtifactVersionsListOverviewInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The proxy artifact list result.
  */
 @Fluent
-public final class ProxyArtifactVersionsOverviewListResult {
+public final class ProxyArtifactVersionsOverviewListResult
+    implements JsonSerializable<ProxyArtifactVersionsOverviewListResult> {
     /*
      * A list of available proxy artifacts.
      */
-    @JsonProperty(value = "value")
     private List<ProxyArtifactVersionsListOverviewInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +73,46 @@ public final class ProxyArtifactVersionsOverviewListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProxyArtifactVersionsOverviewListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProxyArtifactVersionsOverviewListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProxyArtifactVersionsOverviewListResult.
+     */
+    public static ProxyArtifactVersionsOverviewListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProxyArtifactVersionsOverviewListResult deserializedProxyArtifactVersionsOverviewListResult
+                = new ProxyArtifactVersionsOverviewListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProxyArtifactVersionsListOverviewInner> value
+                        = reader.readArray(reader1 -> ProxyArtifactVersionsListOverviewInner.fromJson(reader1));
+                    deserializedProxyArtifactVersionsOverviewListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProxyArtifactVersionsOverviewListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProxyArtifactVersionsOverviewListResult;
+        });
     }
 }

@@ -217,7 +217,6 @@ public final class DedicatedHostUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarcodeKind> {
 
     /**
-     * QR code, as defined in ISO/IEC 18004:2015.
-     */
-    @Generated
-    public static final DocumentBarcodeKind QRCODE = fromString("QRCode");
-
-    /**
      * PDF417, as defined in ISO 15438.
      */
     @Generated
@@ -91,12 +85,6 @@ public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarc
     public static final DocumentBarcodeKind ITF = fromString("ITF");
 
     /**
-     * Micro QR code, as defined in ISO/IEC 23941:2022.
-     */
-    @Generated
-    public static final DocumentBarcodeKind MICRO_QRCODE = fromString("MicroQRCode");
-
-    /**
      * Aztec code, as defined in ISO/IEC 24778:2008.
      */
     @Generated
@@ -144,4 +132,16 @@ public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarc
     public static Collection<DocumentBarcodeKind> values() {
         return values(DocumentBarcodeKind.class);
     }
+
+    /**
+     * QR code, as defined in ISO/IEC 18004:2015.
+     */
+    @Generated
+    public static final DocumentBarcodeKind QR_CODE = fromString("QRCode");
+
+    /**
+     * Micro QR code, as defined in ISO/IEC 23941:2022.
+     */
+    @Generated
+    public static final DocumentBarcodeKind MICRO_QR_CODE = fromString("MicroQRCode");
 }

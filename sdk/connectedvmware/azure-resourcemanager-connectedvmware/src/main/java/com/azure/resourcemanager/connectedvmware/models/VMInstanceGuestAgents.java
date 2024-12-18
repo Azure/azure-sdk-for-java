@@ -9,15 +9,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.GuestAgentInner;
 
-/** Resource collection API of VMInstanceGuestAgents. */
+/**
+ * Resource collection API of VMInstanceGuestAgents.
+ */
 public interface VMInstanceGuestAgents {
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,11 +29,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,11 +45,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,11 +60,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,11 +74,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,11 +87,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,11 +101,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -113,11 +115,11 @@ public interface VMInstanceGuestAgents {
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

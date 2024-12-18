@@ -49,6 +49,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.TransportProtocol;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
+    private ResourceManager resourceManager = null;
     private ComputeFleetManager computeFleetManager = null;
     private NetworkManager networkManager = null;
     private boolean testEnv;
@@ -70,11 +72,18 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         networkManager = NetworkManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
         computeFleetManager = ComputeFleetManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(networkManager.resourceManager()))
             .authenticate(credential, profile);
@@ -85,14 +94,14 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            networkManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            networkManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 

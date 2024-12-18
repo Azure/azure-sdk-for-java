@@ -7,18 +7,20 @@ package com.azure.resourcemanager.devtestlabs.models;
 import com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of EvaluatePoliciesResponse. */
+/**
+ * An immutable client-side representation of EvaluatePoliciesResponse.
+ */
 public interface EvaluatePoliciesResponse {
     /**
      * Gets the results property: Results of evaluating a policy set.
-     *
+     * 
      * @return the results value.
      */
     List<PolicySetResult> results();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     EvaluatePoliciesResponseInner innerModel();

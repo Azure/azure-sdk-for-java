@@ -104,7 +104,7 @@
 public final class ApplicationTypeVersionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeVersionPutOperation_example.json
      */
     /**
@@ -133,7 +133,7 @@ public final class ApplicationTypeVersionsCreateOrUpdateSamples {
 public final class ApplicationTypeVersionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeVersionDeleteOperation_example.json
      */
     /**
@@ -158,7 +158,7 @@ public final class ApplicationTypeVersionsDeleteSamples {
 public final class ApplicationTypeVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeVersionGetOperation_example.json
      */
     /**
@@ -183,7 +183,7 @@ public final class ApplicationTypeVersionsGetSamples {
 public final class ApplicationTypeVersionsListByApplicationTypesSa {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeVersionListOperation_example.json
      */
     /**
@@ -212,7 +212,7 @@ import java.util.Map;
 public final class ApplicationTypeVersionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeVersionPatchOperation_example.json
      */
     /**
@@ -251,7 +251,7 @@ public final class ApplicationTypeVersionsUpdateSamples {
 public final class ApplicationTypesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeNamePutOperation_example.json
      */
     /**
@@ -279,7 +279,7 @@ public final class ApplicationTypesCreateOrUpdateSamples {
 public final class ApplicationTypesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeNameDeleteOperation_example.json
      */
     /**
@@ -303,7 +303,7 @@ public final class ApplicationTypesDeleteSamples {
 public final class ApplicationTypesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeNameGetOperation_example.json
      */
     /**
@@ -327,7 +327,7 @@ public final class ApplicationTypesGetSamples {
 public final class ApplicationTypesListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeNameListOperation_example.json
      */
     /**
@@ -355,7 +355,7 @@ import java.util.Map;
 public final class ApplicationTypesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationTypeNamePatchOperation_example.json
      */
     /**
@@ -403,7 +403,7 @@ import java.util.Map;
 public final class ApplicationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationPutOperation_example_max.json
      */
     /**
@@ -448,7 +448,7 @@ public final class ApplicationsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationPutOperation_example_min.json
      */
     /**
@@ -490,7 +490,7 @@ public final class ApplicationsCreateOrUpdateSamples {
 public final class ApplicationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationDeleteOperation_example.json
      */
     /**
@@ -514,7 +514,7 @@ public final class ApplicationsDeleteSamples {
 public final class ApplicationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationGetOperation_example.json
      */
     /**
@@ -538,7 +538,7 @@ public final class ApplicationsGetSamples {
 public final class ApplicationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationListOperation_example.json
      */
     /**
@@ -562,7 +562,7 @@ public final class ApplicationsListSamples {
 public final class ApplicationsReadUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationActionGetUpgrade_example.json
      */
     /**
@@ -588,7 +588,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResu
 public final class ApplicationsResumeUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationActionResumeUpgrade_example.json
      */
     /**
@@ -615,7 +615,7 @@ public final class ApplicationsResumeUpgradeSamples {
 public final class ApplicationsStartRollbackSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationActionStartRollback_example.json
      */
     /**
@@ -643,7 +643,7 @@ import java.util.Map;
 public final class ApplicationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ApplicationPatchOperation_example.json
      */
     /**
@@ -682,7 +682,7 @@ public final class ApplicationsUpdateSamples {
 public final class ManagedApplyMaintenanceWindowPostSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedApplyMaintenanceWindowPost_example.json
      */
     /**
@@ -707,7 +707,7 @@ public final class ManagedApplyMaintenanceWindowPostSamples {
 public final class ManagedAzResiliencyStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/managedAzResiliencyStatusGet_example.json
      */
     /**
@@ -732,7 +732,7 @@ public final class ManagedAzResiliencyStatusesGetSamples {
 public final class ManagedClusterVersionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterVersionGet_example.json
      */
     /**
@@ -758,7 +758,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
 public final class ManagedClusterVersionGetByEnvironmentSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterVersionGetByEnvironment_example.json
      */
     /**
@@ -784,7 +784,7 @@ public final class ManagedClusterVersionGetByEnvironmentSamples {
 public final class ManagedClusterVersionListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterVersionList_example.json
      */
     /**
@@ -810,7 +810,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClus
 public final class ManagedClusterVersionListByEnvironmentSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterVersionListByEnvironment.json
      */
     /**
@@ -866,7 +866,7 @@ import java.util.Map;
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterPutOperation_example_max.json
      */
     /**
@@ -968,12 +968,13 @@ public final class ManagedClustersCreateOrUpdateSamples {
             .withHttpGatewayTokenAuthConnectionPort(19081)
             .withEnableHttpGatewayExclusiveAuthMode(true)
             .withAutoGeneratedDomainNameLabelScope(AutoGeneratedDomainNameLabelScope.SUBSCRIPTION_REUSE)
+            .withAllocatedOutboundPorts(0)
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterPutOperation_example_min.json
      */
     /**
@@ -1022,7 +1023,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
 public final class ManagedClustersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterDeleteOperation_example.json
      */
     /**
@@ -1046,7 +1047,7 @@ public final class ManagedClustersDeleteSamples {
 public final class ManagedClustersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterGetOperation_example.json
      */
     /**
@@ -1071,7 +1072,7 @@ public final class ManagedClustersGetByResourceGroupSamples {
 public final class ManagedClustersListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterListBySubscriptionOperation_example.json
      */
     /**
@@ -1095,7 +1096,7 @@ public final class ManagedClustersListSamples {
 public final class ManagedClustersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterListByResourceGroupOperation_example.json
      */
     /**
@@ -1123,7 +1124,7 @@ import java.util.Map;
 public final class ManagedClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedClusterPatchOperation_example.json
      */
     /**
@@ -1162,7 +1163,7 @@ public final class ManagedClustersUpdateSamples {
 public final class ManagedMaintenanceWindowStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ManagedMaintenanceWindowStatusGet_example.json
      */
     /**
@@ -1187,7 +1188,7 @@ public final class ManagedMaintenanceWindowStatusesGetSamples {
 public final class ManagedUnsupportedVMSizesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/managedUnsupportedVMSizesGet_example.json
      */
     /**
@@ -1212,7 +1213,7 @@ public final class ManagedUnsupportedVMSizesGetSamples {
 public final class ManagedUnsupportedVMSizesListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/managedUnsupportedVMSizesList_example.json
      */
     /**
@@ -1236,7 +1237,7 @@ public final class ManagedUnsupportedVMSizesListSamples {
 public final class NodeTypeSkusListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypeSkusListOperation_example.json
      */
     /**
@@ -1287,7 +1288,7 @@ import java.util.Map;
 public final class NodeTypesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationStateless_example.json
      */
     /**
@@ -1324,7 +1325,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperation_example_max.json
      */
     /**
@@ -1440,7 +1441,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationAutoScale_example.json
      */
     /**
@@ -1488,7 +1489,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperation_example_min.json
      */
     /**
@@ -1514,7 +1515,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationDedicatedHost_example.json
      */
     /**
@@ -1546,7 +1547,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationVmImagePlan_example.json
      */
     /**
@@ -1575,7 +1576,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationCustomSharedGalleriesImage_example.json
      */
     /**
@@ -1599,7 +1600,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationCustomImage_example.json
      */
     /**
@@ -1644,7 +1645,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 public final class NodeTypesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypeDeleteOperation_example.json
      */
     /**
@@ -1671,7 +1672,7 @@ import java.util.Arrays;
 public final class NodeTypesDeleteNodeSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/DeleteNodes_example.json
      */
     /**
@@ -1698,7 +1699,7 @@ public final class NodeTypesDeleteNodeSamples {
 public final class NodeTypesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypeGetOperation_example.json
      */
     /**
@@ -1722,7 +1723,7 @@ public final class NodeTypesGetSamples {
 public final class NodeTypesListByManagedClustersSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypeListOperation_example.json
      */
     /**
@@ -1750,7 +1751,7 @@ import java.util.Arrays;
 public final class NodeTypesReimageSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ReimageNodes_example.json
      */
     /**
@@ -1768,7 +1769,7 @@ public final class NodeTypesReimageSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ReimageNodes_UD_example.json
      */
     /**
@@ -1798,7 +1799,7 @@ import java.util.Arrays;
 public final class NodeTypesRestartSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/RestartNodes_example.json
      */
     /**
@@ -1830,7 +1831,7 @@ import java.util.Map;
 public final class NodeTypesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePatchOperation_example.json
      */
     /**
@@ -1848,7 +1849,7 @@ public final class NodeTypesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePatchOperationAutoScale_example.json
      */
     /**
@@ -1890,7 +1891,7 @@ public final class NodeTypesUpdateSamples {
 public final class OperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/Long_running_operation_result.json
      */
     /**
@@ -1915,7 +1916,7 @@ public final class OperationResultsGetSamples {
 public final class OperationStatusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/Long_running_operation_status_succeeded.json
      */
     /**
@@ -1931,7 +1932,7 @@ public final class OperationStatusGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/Long_running_operation_status_failed.json
      */
     /**
@@ -1956,7 +1957,7 @@ public final class OperationStatusGetSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/Operations_example.json
      */
     /**
@@ -1996,7 +1997,7 @@ import java.util.Map;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServicePutOperation_example_min.json
      */
     /**
@@ -2018,7 +2019,7 @@ public final class ServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServicePutOperation_example_max.json
      */
     /**
@@ -2084,7 +2085,7 @@ public final class ServicesCreateOrUpdateSamples {
 public final class ServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServiceDeleteOperation_example.json
      */
     /**
@@ -2108,7 +2109,7 @@ public final class ServicesDeleteSamples {
 public final class ServicesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServiceGetOperation_example.json
      */
     /**
@@ -2133,7 +2134,7 @@ public final class ServicesGetSamples {
 public final class ServicesListByApplicationsSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServiceListOperation_example.json
      */
     /**
@@ -2161,7 +2162,7 @@ import java.util.Map;
 public final class ServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/ServicePatchOperation_example.json
      */
     /**

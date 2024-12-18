@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Server information of the environment.
  */
 @Fluent
-public final class EnvironmentServer {
+public final class EnvironmentServer implements JsonSerializable<EnvironmentServer> {
     /*
      * Type of the server that represents the environment.
      */
-    @JsonProperty(value = "type")
     private EnvironmentServerType type;
 
     /*
      * The location of the management portal
      */
-    @JsonProperty(value = "managementPortalUri")
     private List<String> managementPortalUri;
 
     /**
@@ -77,5 +79,46 @@ public final class EnvironmentServer {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("managementPortalUri", this.managementPortalUri,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentServer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentServer.
+     */
+    public static EnvironmentServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentServer deserializedEnvironmentServer = new EnvironmentServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedEnvironmentServer.type = EnvironmentServerType.fromString(reader.getString());
+                } else if ("managementPortalUri".equals(fieldName)) {
+                    List<String> managementPortalUri = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEnvironmentServer.managementPortalUri = managementPortalUri;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentServer;
+        });
     }
 }

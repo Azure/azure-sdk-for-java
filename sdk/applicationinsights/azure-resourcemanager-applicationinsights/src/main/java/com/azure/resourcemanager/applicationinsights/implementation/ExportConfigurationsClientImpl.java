@@ -31,17 +31,23 @@ import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsC
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExportConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportConfigurationsClient.
+ */
 public final class ExportConfigurationsClientImpl implements ExportConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExportConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of ExportConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExportConfigurationsClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -109,14 +115,14 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a list of Continuous Export configuration of an Application Insights component along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>>
@@ -146,15 +152,15 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a list of Continuous Export configuration of an Application Insights component along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>>
@@ -183,14 +189,14 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Continuous Export configuration of an Application Insights component on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> listAsync(String resourceGroupName,
@@ -200,15 +206,15 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
-     *     Response}.
+     * @return a list of Continuous Export configuration of an Application Insights component along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>>
@@ -218,7 +224,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Gets a list of Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,16 +240,16 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
@@ -279,17 +285,17 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
@@ -325,11 +331,11 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,11 +350,11 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -364,11 +370,11 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Create a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportProperties Properties that need to be specified to create a Continuous Export configuration of a
-     *     Application Insights component.
+     * Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -382,7 +388,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -390,7 +396,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a Continuous Export configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
@@ -423,7 +429,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -432,7 +438,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a Continuous Export configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
@@ -464,7 +470,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -482,7 +488,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -500,7 +506,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Delete a Continuous Export configuration of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -517,7 +523,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -525,7 +531,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Continuous Export configuration for this export id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
@@ -558,7 +564,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -567,7 +573,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Continuous Export configuration for this export id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>>
@@ -599,7 +605,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -617,7 +623,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -635,7 +641,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Get the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -652,7 +658,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -661,7 +667,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a Continuous Export configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
@@ -701,7 +707,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -711,7 +717,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a Continuous Export configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
@@ -750,7 +756,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -769,7 +775,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -789,7 +795,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
 
     /**
      * Update the Continuous Export configuration for this export id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.

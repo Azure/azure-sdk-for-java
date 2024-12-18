@@ -157,7 +157,6 @@ public final class SapEccSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

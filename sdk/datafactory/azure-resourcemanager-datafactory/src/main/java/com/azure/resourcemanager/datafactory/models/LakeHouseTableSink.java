@@ -182,7 +182,6 @@ public final class LakeHouseTableSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

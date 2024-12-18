@@ -137,9 +137,9 @@ public final class DataExportImpl implements DataExport, DataExport.Definition, 
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.dataExportName = Utils.getValueFromIdByName(innerObject.id(), "dataExports");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.dataExportName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataExports");
     }
 
     public DataExport refresh() {

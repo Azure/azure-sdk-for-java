@@ -7,11 +7,13 @@ package com.azure.resourcemanager.devtestlabs.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Costs. */
+/**
+ * Resource collection API of Costs.
+ */
 public interface Costs {
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -27,7 +29,7 @@ public interface Costs {
 
     /**
      * Get cost.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the cost.
@@ -40,7 +42,7 @@ public interface Costs {
 
     /**
      * Get cost.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +53,7 @@ public interface Costs {
 
     /**
      * Get cost.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($expand=labCostDetails)'.
      * @param context The context to associate with this operation.
@@ -64,7 +66,7 @@ public interface Costs {
 
     /**
      * Begins definition for a new LabCost resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LabCost definition.
      */

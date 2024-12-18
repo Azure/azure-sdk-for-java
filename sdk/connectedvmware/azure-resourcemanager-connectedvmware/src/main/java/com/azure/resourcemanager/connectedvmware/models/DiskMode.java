@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the different types of disk modes. */
+/**
+ * Defines the different types of disk modes.
+ */
 public final class DiskMode extends ExpandableStringEnum<DiskMode> {
-    /** Static value persistent for DiskMode. */
+    /**
+     * Static value persistent for DiskMode.
+     */
     public static final DiskMode PERSISTENT = fromString("persistent");
 
-    /** Static value independent_persistent for DiskMode. */
+    /**
+     * Static value independent_persistent for DiskMode.
+     */
     public static final DiskMode INDEPENDENT_PERSISTENT = fromString("independent_persistent");
 
-    /** Static value independent_nonpersistent for DiskMode. */
+    /**
+     * Static value independent_nonpersistent for DiskMode.
+     */
     public static final DiskMode INDEPENDENT_NONPERSISTENT = fromString("independent_nonpersistent");
 
     /**
      * Creates a new instance of DiskMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DiskMode extends ExpandableStringEnum<DiskMode> {
 
     /**
      * Creates or finds a DiskMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskMode.
      */
-    @JsonCreator
     public static DiskMode fromString(String name) {
         return fromString(name, DiskMode.class);
     }
 
     /**
      * Gets known DiskMode values.
-     *
+     * 
      * @return known DiskMode values.
      */
     public static Collection<DiskMode> values() {

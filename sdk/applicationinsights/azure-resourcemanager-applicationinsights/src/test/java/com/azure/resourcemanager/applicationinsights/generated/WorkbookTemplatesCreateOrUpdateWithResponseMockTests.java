@@ -6,16 +6,13 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateLocalizedGallery;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,106 +20,86 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkbookTemplatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"priority\":400870213,\"author\":\"abzxrvxcushsp\",\"templateData\":\"dataaivmxyasflvgs\",\"galleries\":[{\"name\":\"ywakoihk\",\"category\":\"mjblmljhlny\",\"type\":\"otqyry\",\"order\":782840551,\"resourceType\":\"mqqvxmvwfgtay\"},{\"name\":\"nsup\",\"category\":\"jlzqnhc\",\"type\":\"ql\",\"order\":1936009218,\"resourceType\":\"ibg\"}],\"localized\":{\"bxiqxeiiqbimht\":[{\"templateData\":\"datafyq\",\"galleries\":[{},{}]},{\"templateData\":\"dataqoxwd\",\"galleries\":[{},{}]}]}},\"location\":\"wwinhehf\",\"tags\":{\"embnkbw\":\"fvwbcb\",\"vqihebwtswbzuwf\":\"qvxkd\"},\"id\":\"duragegizvc\",\"name\":\"felisdjub\",\"type\":\"gbqi\"}";
+            = "{\"properties\":{\"priority\":378655951,\"author\":\"hhlkyqltqsrogtu\",\"templateData\":\"datakffdjktsys\",\"galleries\":[{\"name\":\"vclglxnfuij\",\"category\":\"busqogsfi\",\"type\":\"yi\",\"order\":2036577427,\"resourceType\":\"arujt\"},{\"name\":\"qxfzyjqttvwk\",\"category\":\"hjpenuygbq\",\"type\":\"qekewvnqvcd\",\"order\":1408895656,\"resourceType\":\"ucmfdj\"},{\"name\":\"laxpunj\",\"category\":\"kczvvita\",\"type\":\"xmfcsserxhtv\",\"order\":817459269,\"resourceType\":\"lwntsjgqrs\"}],\"localized\":{\"trwahzj\":[{\"templateData\":\"datauuybnchrsz\",\"galleries\":[{},{},{}]},{\"templateData\":\"datauelyetndn\",\"galleries\":[{},{}]},{\"templateData\":\"dataggagfln\",\"galleries\":[{},{}]}]}},\"location\":\"ucftbyrp\",\"tags\":{\"lsnoxaxmqeqalh\":\"hkpigqfusuckzmkw\",\"svkhgbv\":\"jnhgwydyyn\",\"arfdlpukhpyrnei\":\"ta\"},\"id\":\"jcpeogkhnmg\",\"name\":\"ro\",\"type\":\"xddbhfhpfpaz\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkbookTemplate response = manager.workbookTemplates()
-            .define("zrxcczurt")
-            .withRegion("fmvigorqjbttzh")
-            .withExistingResourceGroup("okbzef")
-            .withTags(mapOf("ckpzvcpopmxeln", "lkafhonqjuje"))
-            .withPriority(1572244952)
-            .withAuthor("xbkwv")
-            .withTemplateData("datagnzvdfbzdixzm")
+            .define("obkauxofsh")
+            .withRegion("xdfzantkw")
+            .withExistingResourceGroup("uahokq")
+            .withTags(
+                mapOf("ac", "yamlbnse", "m", "jvpilguooqja", "hrtdtpdelq", "itgueiookjbs", "vcjkgd", "cslmotoebnfxo"))
+            .withPriority(1507125195)
+            .withAuthor("nulaiywzejywhsl")
+            .withTemplateData("datakoj")
             .withGalleries(Arrays.asList(
-                new WorkbookTemplateGallery().withName("odawopqhewjptmcg")
-                    .withCategory("ostzelndlatu")
-                    .withType("zlbiojlvfhrbbpn")
-                    .withOrder(1669443889)
-                    .withResourceType("wwyyurmoch"),
-                new WorkbookTemplateGallery().withName("rprsnm")
-                    .withCategory("ayzejnhlbkpbz")
-                    .withType("piljhahzvech")
-                    .withOrder(491953314)
-                    .withResourceType("wieholewjwiu"),
-                new WorkbookTemplateGallery().withName("wefqsfapaqtferr")
-                    .withCategory("ex")
-                    .withType("mfxapjwogqqno")
-                    .withOrder(1623831151)
-                    .withResourceType("cdabtqwpwya")))
-            .withLocalized(mapOf("zsvtuikzhajqgl", Arrays.asList(
-                new WorkbookTemplateLocalizedGallery().withTemplateData("dataqbucljgkyexaoguy")
-                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
-                new WorkbookTemplateLocalizedGallery().withTemplateData("datadsdaultxijjumf")
-                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
-                        new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
-                new WorkbookTemplateLocalizedGallery().withTemplateData("datalnqnmcjn")
-                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
-                new WorkbookTemplateLocalizedGallery().withTemplateData("dataqxtbjwgnyf")
-                    .withGalleries(Arrays.asList(
-                        new WorkbookTemplateGallery(), new WorkbookTemplateGallery(), new WorkbookTemplateGallery()))),
-                "sovwxznptgoeiyb",
-                Arrays.asList(new WorkbookTemplateLocalizedGallery().withTemplateData("datamlrqryxynqnz")
-                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery()))),
-                "zid",
+                new WorkbookTemplateGallery().withName("ndnpdwrpqafgfug")
+                    .withCategory("n")
+                    .withType("yetefyp")
+                    .withOrder(1953030957)
+                    .withResourceType("tfjgt"),
+                new WorkbookTemplateGallery().withName("rjvzuyt")
+                    .withCategory("mlmuowol")
+                    .withType("uir")
+                    .withOrder(110888706)
+                    .withResourceType("nszonwpngaj")))
+            .withLocalized(mapOf("henlusfnr",
                 Arrays.asList(
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("datapfhvfslk")
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datajawrtmjfjmyc")
                         .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
                             new WorkbookTemplateGallery())),
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("datalrigjkskyri")
-                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
-                            new WorkbookTemplateGallery()))),
-                "awjutifd",
+                    new WorkbookTemplateLocalizedGallery()
+                        .withTemplateData("datahcoxov")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery()))),
+                "sfuughtuqfecjx",
                 Arrays.asList(
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("dataaabzmif")
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("dataxtxrdcqtjvidt")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datauslvyjtcvuwkasi")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery()))),
+                "jbaqehgpdoh",
+                Arrays.asList(
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datatuhxuicb")
                         .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
                             new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("datanmmaxrizkzob")
-                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("datalhslnelxieixyn")
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datarswnjlxuzrhwp")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery(), new WorkbookTemplateGallery()))),
+                "zeqyjleziun",
+                Arrays.asList(
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("dataatucoigebxncn")
                         .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
-                    new WorkbookTemplateLocalizedGallery().withTemplateData("datacwcrojphs")
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("databnwgfmxj")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datajbgdlfgtdysnaquf")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datatqhamzjrw")
                         .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
                             new WorkbookTemplateGallery(), new WorkbookTemplateGallery())))))
             .create();
 
-        Assertions.assertEquals("wwinhehf", response.location());
-        Assertions.assertEquals("fvwbcb", response.tags().get("embnkbw"));
-        Assertions.assertEquals(400870213, response.priority());
-        Assertions.assertEquals("abzxrvxcushsp", response.author());
-        Assertions.assertEquals("ywakoihk", response.galleries().get(0).name());
-        Assertions.assertEquals("mjblmljhlny", response.galleries().get(0).category());
-        Assertions.assertEquals("otqyry", response.galleries().get(0).type());
-        Assertions.assertEquals(782840551, response.galleries().get(0).order());
-        Assertions.assertEquals("mqqvxmvwfgtay", response.galleries().get(0).resourceType());
+        Assertions.assertEquals("ucftbyrp", response.location());
+        Assertions.assertEquals("hkpigqfusuckzmkw", response.tags().get("lsnoxaxmqeqalh"));
+        Assertions.assertEquals(378655951, response.priority());
+        Assertions.assertEquals("hhlkyqltqsrogtu", response.author());
+        Assertions.assertEquals("vclglxnfuij", response.galleries().get(0).name());
+        Assertions.assertEquals("busqogsfi", response.galleries().get(0).category());
+        Assertions.assertEquals("yi", response.galleries().get(0).type());
+        Assertions.assertEquals(2036577427, response.galleries().get(0).order());
+        Assertions.assertEquals("arujt", response.galleries().get(0).resourceType());
     }
 
     // Use "Map.of" if available

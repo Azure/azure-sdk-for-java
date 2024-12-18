@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,55 +17,46 @@ import java.util.Map;
  * Profile for agent pool properties specified during creation.
  */
 @Fluent
-public class AgentPoolProfile {
+public class AgentPoolProfile implements JsonSerializable<AgentPoolProfile> {
     /*
      * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
-    @JsonProperty(value = "osType")
     private OsType osType;
 
     /*
      * Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is
      * Windows2019 when OSType is Windows.
      */
-    @JsonProperty(value = "osSKU")
     private Ossku osSku;
 
     /*
      * The node labels to be persisted across all nodes in agent pool.
      */
-    @JsonProperty(value = "nodeLabels")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> nodeLabels;
 
     /*
      * Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
      */
-    @JsonProperty(value = "nodeTaints")
     private List<String> nodeTaints;
 
     /*
      * The maximum number of nodes for auto-scaling
      */
-    @JsonProperty(value = "maxCount")
     private Integer maxCount;
 
     /*
      * The minimum number of nodes for auto-scaling
      */
-    @JsonProperty(value = "minCount")
     private Integer minCount;
 
     /*
      * Whether to enable auto-scaler. Default value is false
      */
-    @JsonProperty(value = "enableAutoScaling")
     private Boolean enableAutoScaling;
 
     /*
      * The maximum number of pods that can run on a node.
      */
-    @JsonProperty(value = "maxPods")
     private Integer maxPods;
 
     /**
@@ -241,5 +235,64 @@ public class AgentPoolProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("osSKU", this.osSku == null ? null : this.osSku.toString());
+        jsonWriter.writeMapField("nodeLabels", this.nodeLabels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeTaints", this.nodeTaints, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxCount", this.maxCount);
+        jsonWriter.writeNumberField("minCount", this.minCount);
+        jsonWriter.writeBooleanField("enableAutoScaling", this.enableAutoScaling);
+        jsonWriter.writeNumberField("maxPods", this.maxPods);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolProfile.
+     */
+    public static AgentPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolProfile deserializedAgentPoolProfile = new AgentPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedAgentPoolProfile.osType = OsType.fromString(reader.getString());
+                } else if ("osSKU".equals(fieldName)) {
+                    deserializedAgentPoolProfile.osSku = Ossku.fromString(reader.getString());
+                } else if ("nodeLabels".equals(fieldName)) {
+                    Map<String, String> nodeLabels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAgentPoolProfile.nodeLabels = nodeLabels;
+                } else if ("nodeTaints".equals(fieldName)) {
+                    List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAgentPoolProfile.nodeTaints = nodeTaints;
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedAgentPoolProfile.maxCount = reader.getNullable(JsonReader::getInt);
+                } else if ("minCount".equals(fieldName)) {
+                    deserializedAgentPoolProfile.minCount = reader.getNullable(JsonReader::getInt);
+                } else if ("enableAutoScaling".equals(fieldName)) {
+                    deserializedAgentPoolProfile.enableAutoScaling = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxPods".equals(fieldName)) {
+                    deserializedAgentPoolProfile.maxPods = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolProfile;
+        });
     }
 }
