@@ -52,20 +52,19 @@ public class CosmosExceptionUtils {
                 case Constants.CosmosExceptionStatusCodes.FORBIDDEN:
                     cosmosAccessException = new CosmosForbiddenException(message, cosmosException);
                     break;
-                case Constants.CosmosExceptionStatusCodes.GONE: {
-                    if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE) {
-                        cosmosAccessException = new CosmosInvalidPartitionException(message, cosmosException);
-                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION) {
-                        cosmosAccessException = new CosmosPartitionIsMigratingException(message, cosmosException);
-                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE) {
-                        cosmosAccessException = new CosmosPartitionKeyRangeGoneException(message, cosmosException);
-                    } else if (cosmosException.getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
-                        cosmosAccessException = new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
-                    } else {
-                        cosmosAccessException = new CosmosGoneException(message, cosmosException);
-                    }
+                case Constants.CosmosExceptionStatusCodes.GONE:
+                    cosmosAccessException = switch (cosmosException.getSubStatusCode()) {
+                        case Constants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE ->
+                            new CosmosInvalidPartitionException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION ->
+                            new CosmosPartitionIsMigratingException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE ->
+                            new CosmosPartitionKeyRangeGoneException(message, cosmosException);
+                        case Constants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE ->
+                            new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
+                        default -> new CosmosGoneException(message, cosmosException);
+                    };
                     break;
-                }
                 case Constants.CosmosExceptionStatusCodes.INTERNAL_SERVER_ERROR:
                     cosmosAccessException = new CosmosInternalServerErrorException(message, cosmosException);
                     break;
@@ -75,14 +74,13 @@ public class CosmosExceptionUtils {
                 case Constants.CosmosExceptionStatusCodes.NOTFOUND:
                     cosmosAccessException = new CosmosNotFoundException(message, cosmosException);
                     break;
-                case Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT: {
+                case Constants.CosmosExceptionStatusCodes.REQUEST_TIMEOUT:
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == Constants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                         cosmosAccessException = new CosmosOperationCancelledException(message, cosmosException);
                     } else {
                         cosmosAccessException = new CosmosRequestTimeoutException(message, cosmosException);
                     }
                     break;
-                }
                 case Constants.CosmosExceptionStatusCodes.PRECONDITION_FAILED:
                     cosmosAccessException = new CosmosPreconditionFailedException(message, cosmosException);
                     break;
