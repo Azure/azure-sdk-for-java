@@ -276,7 +276,7 @@ public final class GeolocationClientBuilder
      */
     @Override
     public GeolocationClientBuilder credential(AzureSasCredential sasCredential) {
-        this.sasCredential = Objects.requireNonNull(sasCredential, "'keyCredential' cannot be null.");
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
         return this;
     }
 
