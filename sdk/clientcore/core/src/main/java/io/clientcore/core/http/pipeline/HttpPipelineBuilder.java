@@ -4,6 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.Set;
  * @see HttpPipeline
  */
 public class HttpPipelineBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineBuilder.class);
     private static final Set<String> RESERVED = new HashSet<>(Arrays.asList(HttpRedirectPolicy.NAME,
         HttpRetryPolicy.NAME, HttpCredentialPolicy.NAME, HttpLoggingPolicy.NAME, HttpTelemetryPolicy.NAME));
 
@@ -260,12 +262,13 @@ public class HttpPipelineBuilder {
 
         String lowerCaseName = policy.getName().toLowerCase();
         if (RESERVED.contains(lowerCaseName)) {
-            throw new IllegalStateException("The policy name is reserved: " + policy.getName());
+            throw LOGGER
+                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
         }
 
         if (!policyNames.add(lowerCaseName)) {
-            throw new IllegalStateException(
-                "A policy with the same name already exists in the pipeline: " + policy.getName());
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "A policy with the same name already exists in the pipeline: " + policy.getName()));
         }
 
         switch (position) {
@@ -310,7 +313,7 @@ public class HttpPipelineBuilder {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown position: " + position);
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown position: " + position));
         }
 
         policyNames.add(lowerCaseName);
@@ -367,16 +370,18 @@ public class HttpPipelineBuilder {
 
         String lowerCaseName = policy.getName().toLowerCase();
         if (RESERVED.contains(lowerCaseName)) {
-            throw new IllegalStateException("The policy name is reserved: " + policy.getName());
+            throw LOGGER
+                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
         }
 
         if (!policyNames.add(lowerCaseName)) {
-            throw new IllegalStateException(
-                "A policy with the same name already exists in the pipeline: " + policy.getName());
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "A policy with the same name already exists in the pipeline: " + policy.getName()));
         }
 
         if (!policyNames.contains(policyName.toLowerCase())) {
-            throw new NoSuchElementException("A policy with the name '" + policyName + "' was not found.");
+            throw LOGGER.logThrowableAsError(
+                new NoSuchElementException("A policy with the name '" + policyName + "' was not found."));
         }
 
         if (attemptToAdd(policy, policyName, before, beforeRedirect, redirectPolicy, afterCredential)) {
@@ -399,7 +404,7 @@ public class HttpPipelineBuilder {
             return this;
         }
 
-        throw new IllegalStateException("Should not reach here.");
+        throw LOGGER.logThrowableAsError(new IllegalStateException("Should not reach here."));
     }
 
     private boolean attemptToAdd(HttpPipelinePolicy policy, String policyName, boolean before,
@@ -472,11 +477,13 @@ public class HttpPipelineBuilder {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
         String lowerCaseName = policy.getName().toLowerCase();
         if (!policyNames.contains(lowerCaseName)) {
-            throw new NoSuchElementException("A policy with the name '" + policy.getName() + "' was not found.");
+            throw LOGGER.logThrowableAsError(
+                new NoSuchElementException("A policy with the name '" + policy.getName() + "' was not found."));
         }
 
         if (RESERVED.contains(lowerCaseName)) {
-            throw new IllegalStateException("The policy name is reserved: " + policy.getName());
+            throw LOGGER
+                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
         }
 
         return setOrRemove(policy, policy.getName());
@@ -504,7 +511,7 @@ public class HttpPipelineBuilder {
         }
 
         if (RESERVED.contains(lowerCaseName)) {
-            throw new IllegalStateException("The policy name is reserved: " + policyName);
+            throw LOGGER.logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policyName));
         }
 
         return setOrRemove(null, policyName);
@@ -531,7 +538,7 @@ public class HttpPipelineBuilder {
             return this;
         }
 
-        throw new IllegalStateException("Should not reach here.");
+        throw LOGGER.logThrowableAsError(new IllegalStateException("Should not reach here."));
     }
 
     private boolean attemptToSetOrRemove(HttpPipelinePolicy policy, String policyName,

@@ -9,6 +9,12 @@ package io.clientcore.core.http.pipeline;
 public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
     static final String NAME = "credential";
 
+    /**
+     * Creates an instance of {@link HttpCredentialPolicy}.
+     */
+    public HttpCredentialPolicy() {
+    }
+
     @Override
     public final String getName() {
         return NAME;

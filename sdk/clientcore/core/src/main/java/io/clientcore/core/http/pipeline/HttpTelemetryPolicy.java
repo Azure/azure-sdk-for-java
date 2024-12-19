@@ -11,6 +11,12 @@ import io.clientcore.core.http.models.Response;
 public final class HttpTelemetryPolicy implements HttpPipelinePolicy {
     static final String NAME = "telemetry";
 
+    /**
+     * Creates an instance of {@link HttpTelemetryPolicy}.
+     */
+    public HttpTelemetryPolicy() {
+    }
+
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return next.process();

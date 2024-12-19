@@ -17,6 +17,7 @@
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.models.RequestOptions" />
       <Class name="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
@@ -31,9 +32,11 @@
       <Class name="io.clientcore.core.implementation.http.serializer.CompositeSerializer" />
       <Class name="io.clientcore.core.implementation.util.DateTimeRfc1123" />
       <Class name="io.clientcore.core.implementation.util.InternalContext" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.util.Providers" />
       <Class name="io.clientcore.core.implementation.util.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.util.StreamUtil" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.util.SharedExecutorService" />
@@ -41,8 +44,6 @@
       <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
       <Class name="io.clientcore.core.util.configuration.Configuration" />
-      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
-      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
     </Or>
   </Match>
   <Match>
@@ -93,13 +94,17 @@
   </Match>
   <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
-    <Class name="io.clientcore.core.util.TestUtils" />
+    <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
+      <Class name="io.clientcore.core.util.TestUtils" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
       <Class name="io.clientcore.core.http.exception.HttpExceptionType" />
       <Class name="io.clientcore.core.http.models.HttpHeaderName" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.util.ServerSentEventUtils" />
       <Class name="io.clientcore.core.util.auth.AuthUtils" />
     </Or>
@@ -110,6 +115,7 @@
       <Class name="io.clientcore.core.http.RestProxyTests" />
       <Class name="io.clientcore.core.http.client.DefaultHttpClientTest" />
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
@@ -259,11 +265,11 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
       <Class name="io.clientcore.core.implementation.util.Base64Uri" />
+      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
       <Class name="io.clientcore.core.util.TestUtils" />
-      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
       <Class name="io.clientcore.core.util.serializer.MockSerializer" />
-      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
     </Or>
   </Match>
   <Match>
@@ -324,6 +330,7 @@
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineTests" />
       <Class name="io.clientcore.core.http.pipeline.RedirectPolicyTest" />
       <Class name="io.clientcore.core.http.pipeline.RetryPolicyTests" />
