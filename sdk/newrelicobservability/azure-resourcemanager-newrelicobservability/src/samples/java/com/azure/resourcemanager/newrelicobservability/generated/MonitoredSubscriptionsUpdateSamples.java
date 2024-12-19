@@ -22,8 +22,10 @@ public final class MonitoredSubscriptionsUpdateSamples {
      */
     public static void monitorsUpdateMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions().getWithResponse("myResourceGroup",
-            "myMonitor", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
+        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

@@ -135,8 +135,8 @@ public final class ConnectedPartnerResourcesListSamples {
      */
     public static void connectedPartnerResourcesList(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.connectedPartnerResources().list("myResourceGroup", "myMonitor", null,
-            com.azure.core.util.Context.NONE);
+        manager.connectedPartnerResources()
+            .list("myResourceGroup", "myMonitor", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -161,8 +161,10 @@ public final class MonitoredSubscriptionsCreateorUpdateSamples {
      */
     public static void monitorsAddMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().define(ConfigurationName.DEFAULT)
-            .withExistingMonitor("myResourceGroup", "myMonitor").create();
+        manager.monitoredSubscriptions()
+            .define(ConfigurationName.DEFAULT)
+            .withExistingMonitor("myResourceGroup", "myMonitor")
+            .create();
     }
 }
 ```
@@ -187,8 +189,8 @@ public final class MonitoredSubscriptionsDeleteSamples {
      */
     public static void monitorsDeleteMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().delete("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
-            com.azure.core.util.Context.NONE);
+        manager.monitoredSubscriptions()
+            .delete("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -213,8 +215,9 @@ public final class MonitoredSubscriptionsGetSamples {
      */
     public static void monitorsGetMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitoredSubscriptions().getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
-            com.azure.core.util.Context.NONE);
+        manager.monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -263,8 +266,10 @@ public final class MonitoredSubscriptionsUpdateSamples {
      */
     public static void monitorsUpdateMonitoredSubscriptions(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions().getWithResponse("myResourceGroup",
-            "myMonitor", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
+        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions()
+            .getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -307,24 +312,37 @@ public final class MonitorsCreateOrUpdateSamples {
      */
     public static void monitorsCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().define("cdlymktqw").withRegion("k").withExistingResourceGroup("rgNewRelic")
+        manager.monitors()
+            .define("cdlymktqw")
+            .withRegion("k")
+            .withExistingResourceGroup("rgNewRelic")
             .withTags(mapOf("key6976", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
             .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("vcscxlncofcuduadesd")
-                .withAccountInfo(new AccountInfo()
-                    .withAccountId("xhqmg").withIngestionKey("fakeTokenPlaceholder").withRegion("ljcf"))
+                .withAccountInfo(new AccountInfo().withAccountId("xhqmg")
+                    .withIngestionKey("fakeTokenPlaceholder")
+                    .withRegion("ljcf"))
                 .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
-                .withSingleSignOnProperties(new NewRelicSingleSignOnProperties()
-                    .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("kwiwfz")
-                    .withSingleSignOnUrl("kvseueuljsxmfwpqctz").withProvisioningState(ProvisioningState.ACCEPTED)))
+                .withSingleSignOnProperties(
+                    new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                        .withEnterpriseAppId("kwiwfz")
+                        .withSingleSignOnUrl("kvseueuljsxmfwpqctz")
+                        .withProvisioningState(ProvisioningState.ACCEPTED)))
             .withUserInfo(new UserInfo().withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
-                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc").withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
-                .withPhoneNumber("krf").withCountry("hslqnwdanrconqyekwbnttaetv"))
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
-                .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-            .withOrgCreationSource(OrgCreationSource.LIFTR).withAccountCreationSource(AccountCreationSource.LIFTR)
-            .withSubscriptionState("Suspended").withSaaSAzureSubscriptionStatus("Subscribed").create();
+                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc")
+                .withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
+                .withPhoneNumber("krf")
+                .withCountry("hslqnwdanrconqyekwbnttaetv"))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.YEARLY)
+                .withPlanDetails("tbbiaga")
+                .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR)
+            .withAccountCreationSource(AccountCreationSource.LIFTR)
+            .withSubscriptionState("Suspended")
+            .withSaaSAzureSubscriptionStatus("Subscribed")
+            .create();
     }
 
     // Use "Map.of" if available
@@ -359,8 +377,9 @@ public final class MonitorsDeleteSamples {
      */
     public static void monitorsDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -374,8 +393,9 @@ public final class MonitorsDeleteSamples {
      */
     public static void monitorsDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -423,8 +443,9 @@ public final class MonitorsGetMetricRulesSamples {
      */
     public static void monitorsGetMetricRulesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -438,8 +459,9 @@ public final class MonitorsGetMetricRulesSamples {
      */
     public static void monitorsGetMetricRulesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -465,11 +487,12 @@ public final class MonitorsGetMetricStatusSamples {
      */
     public static void monitorsGetMetricStatusMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -483,11 +506,12 @@ public final class MonitorsGetMetricStatusSamples {
      */
     public static void monitorsGetMetricStatusMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -536,11 +560,12 @@ public final class MonitorsListAppServicesSamples {
      */
     public static void monitorsListAppServicesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -554,11 +579,12 @@ public final class MonitorsListAppServicesSamples {
      */
     public static void monitorsListAppServicesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -607,10 +633,11 @@ public final class MonitorsListHostsSamples {
      */
     public static void monitorsListHostsMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listHosts(
-            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
-                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listHosts("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                new HostsGetRequest().withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -624,10 +651,11 @@ public final class MonitorsListHostsSamples {
      */
     public static void monitorsListHostsMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listHosts(
-            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
-                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listHosts("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                new HostsGetRequest().withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -674,8 +702,8 @@ public final class MonitorsListMonitoredResourcesSamples {
      */
     public static void monitorsListMonitoredResourcesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -689,8 +717,8 @@ public final class MonitorsListMonitoredResourcesSamples {
      */
     public static void monitorsListMonitoredResourcesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -719,8 +747,9 @@ public final class MonitorsSwitchBillingSamples {
      */
     public static void monitorsSwitchBillingMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new SwitchBillingRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new SwitchBillingRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -734,14 +763,17 @@ public final class MonitorsSwitchBillingSamples {
      */
     public static void monitorsSwitchBillingMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
-            new SwitchBillingRequest().withAzureResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")
-                .withOrganizationId("k")
-                .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
-                    .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+                new SwitchBillingRequest().withAzureResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")
+                    .withOrganizationId("k")
+                    .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                        .withBillingCycle(BillingCycle.YEARLY)
+                        .withPlanDetails("tbbiaga")
+                        .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -785,23 +817,33 @@ public final class MonitorsUpdateSamples {
     public static void monitorsUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         NewRelicMonitorResource resource = manager.monitors()
-            .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("key164", "fakeTokenPlaceholder"))
+            .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key164", "fakeTokenPlaceholder"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
             .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("vcscxlncofcuduadesd")
-                .withAccountInfo(new AccountInfo()
-                    .withAccountId("xhqmg").withIngestionKey("fakeTokenPlaceholder").withRegion("ljcf"))
+                .withAccountInfo(new AccountInfo().withAccountId("xhqmg")
+                    .withIngestionKey("fakeTokenPlaceholder")
+                    .withRegion("ljcf"))
                 .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
-                .withSingleSignOnProperties(new NewRelicSingleSignOnProperties()
-                    .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("kwiwfz")
-                    .withSingleSignOnUrl("kvseueuljsxmfwpqctz").withProvisioningState(ProvisioningState.ACCEPTED)))
+                .withSingleSignOnProperties(
+                    new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                        .withEnterpriseAppId("kwiwfz")
+                        .withSingleSignOnUrl("kvseueuljsxmfwpqctz")
+                        .withProvisioningState(ProvisioningState.ACCEPTED)))
             .withUserInfo(new UserInfo().withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
-                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc").withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
-                .withPhoneNumber("krf").withCountry("hslqnwdanrconqyekwbnttaetv"))
-            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
-                .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-            .withOrgCreationSource(OrgCreationSource.LIFTR).withAccountCreationSource(AccountCreationSource.LIFTR)
+                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc")
+                .withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
+                .withPhoneNumber("krf")
+                .withCountry("hslqnwdanrconqyekwbnttaetv"))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                .withBillingCycle(BillingCycle.YEARLY)
+                .withPlanDetails("tbbiaga")
+                .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR)
+            .withAccountCreationSource(AccountCreationSource.LIFTR)
             .apply();
     }
 
@@ -837,8 +879,8 @@ public final class MonitorsVmHostPayloadSamples {
      */
     public static void monitorsVmHostPayloadMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -852,8 +894,8 @@ public final class MonitorsVmHostPayloadSamples {
      */
     public static void monitorsVmHostPayloadMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -996,16 +1038,19 @@ public final class TagRulesCreateOrUpdateSamples {
      */
     public static void tagRulesCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
+        manager.tagRules()
+            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
             .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
             .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
                 .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
                 .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE))))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE))))
             .withMetricRules(new MetricRulesInner()
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE)))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE)))
                 .withUserEmail("test@testing.com"))
             .create();
     }
@@ -1021,8 +1066,10 @@ public final class TagRulesCreateOrUpdateSamples {
      */
     public static void tagRulesCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
-            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron").create();
+        manager.tagRules()
+            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
+            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
+            .create();
     }
 }
 ```
@@ -1045,8 +1092,9 @@ public final class TagRulesDeleteSamples {
      */
     public static void tagRulesDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1060,8 +1108,9 @@ public final class TagRulesDeleteSamples {
      */
     public static void tagRulesDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1084,8 +1133,9 @@ public final class TagRulesGetSamples {
      */
     public static void
         tagRulesGetMinimumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1099,8 +1149,9 @@ public final class TagRulesGetSamples {
      */
     public static void
         tagRulesGetMaximumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1123,8 +1174,9 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
      */
     public static void tagRulesListByNewRelicMonitorResourceMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1138,8 +1190,9 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
      */
     public static void tagRulesListByNewRelicMonitorResourceMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.tagRules()
+            .listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1172,17 +1225,21 @@ public final class TagRulesUpdateSamples {
      */
     public static void tagRulesUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        TagRule resource = manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            "bxcantgzggsepbhqmedjqyrqeezmfb", com.azure.core.util.Context.NONE).getValue();
+        TagRule resource = manager.tagRules()
+            .getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
                 .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
                 .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE))))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE))))
             .withMetricRules(new MetricRulesInner()
                 .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
-                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE)))
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
+                    .withAction(TagAction.INCLUDE)))
                 .withUserEmail("test@testing.com"))
             .apply();
     }
@@ -1198,8 +1255,10 @@ public final class TagRulesUpdateSamples {
      */
     public static void tagRulesUpdateMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        TagRule resource = manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            "bxcantgzggsepbhqmedjqyrqeezmfb", com.azure.core.util.Context.NONE).getValue();
+        TagRule resource = manager.tagRules()
+            .getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
