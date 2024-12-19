@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * AutonomousDatabaseCharacterSet resource model.
  */
-@Immutable
+@Fluent
 public final class AutonomousDatabaseCharacterSetProperties
     implements JsonSerializable<AutonomousDatabaseCharacterSetProperties> {
     /*
@@ -38,12 +39,30 @@ public final class AutonomousDatabaseCharacterSetProperties
     }
 
     /**
+     * Set the characterSet property: The Oracle Autonomous Database supported character sets.
+     * 
+     * @param characterSet the characterSet value to set.
+     * @return the AutonomousDatabaseCharacterSetProperties object itself.
+     */
+    public AutonomousDatabaseCharacterSetProperties withCharacterSet(String characterSet) {
+        this.characterSet = characterSet;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (characterSet() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property characterSet in model AutonomousDatabaseCharacterSetProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabaseCharacterSetProperties.class);
 
     /**
      * {@inheritDoc}
@@ -51,6 +70,7 @@ public final class AutonomousDatabaseCharacterSetProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("characterSet", this.characterSet);
         return jsonWriter.writeEndObject();
     }
 
@@ -60,6 +80,7 @@ public final class AutonomousDatabaseCharacterSetProperties
      * @param jsonReader The JsonReader being read.
      * @return An instance of AutonomousDatabaseCharacterSetProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutonomousDatabaseCharacterSetProperties.
      */
     public static AutonomousDatabaseCharacterSetProperties fromJson(JsonReader jsonReader) throws IOException {

@@ -10,8 +10,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
-import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressesFilter;
 import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressProperties;
+import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressesFilter;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
     @Test
     public void testListPrivateIpAddressesWithResponse() throws Exception {
         String responseStr
-            = "[{\"displayName\":\"cgegydcwbo\",\"hostnameLabel\":\"jumvqqolihrraio\",\"ocid\":\"aubrjtloq\",\"ipAddress\":\"fuojrngif\",\"subnetId\":\"rzpasccbiuimzdly\"},{\"displayName\":\"dfqwmkyoq\",\"hostnameLabel\":\"fdvruz\",\"ocid\":\"lzo\",\"ipAddress\":\"hpc\",\"subnetId\":\"fnmdxotn\"},{\"displayName\":\"fdgugeyzi\",\"hostnameLabel\":\"grkyuizabsnmfpph\",\"ocid\":\"jee\",\"ipAddress\":\"yhyhsgzfczb\",\"subnetId\":\"omfgbeglqgleohib\"},{\"displayName\":\"tnluankrr\",\"hostnameLabel\":\"xeeebtijvacvbmqz\",\"ocid\":\"qqxlajr\",\"ipAddress\":\"wxacevehj\",\"subnetId\":\"uyxoaf\"}]";
+            = "[{\"displayName\":\"sqzhzbezkg\",\"hostnameLabel\":\"msidxasicddyvv\",\"ocid\":\"skgfmocwahpq\",\"ipAddress\":\"atjeaahh\",\"subnetId\":\"jhhn\"},{\"displayName\":\"kzyb\",\"hostnameLabel\":\"jjidjk\",\"ocid\":\"yxkyxvx\",\"ipAddress\":\"vblbjednljlageua\",\"subnetId\":\"lxunsmjbnkppxy\"},{\"displayName\":\"enlsvxeizzgwkln\",\"hostnameLabel\":\"rmffeyc\",\"ocid\":\"ckt\",\"ipAddress\":\"iymerteeammxqi\",\"subnetId\":\"kk\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class CloudVmClustersListPrivateIpAddressesWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         List<PrivateIpAddressProperties> response = manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("kcdqzhlct", "dunqnd",
-                new PrivateIpAddressesFilter().withSubnetId("fpch").withVnicId("qbnj"),
+            .listPrivateIpAddressesWithResponse("moy", "hlwigdivbkbxg",
+                new PrivateIpAddressesFilter().withSubnetId("mf").withVnicId("juwasqvdaeyyguxa"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cgegydcwbo", response.get(0).displayName());
-        Assertions.assertEquals("jumvqqolihrraio", response.get(0).hostnameLabel());
-        Assertions.assertEquals("aubrjtloq", response.get(0).ocid());
-        Assertions.assertEquals("fuojrngif", response.get(0).ipAddress());
-        Assertions.assertEquals("rzpasccbiuimzdly", response.get(0).subnetId());
+        Assertions.assertEquals("sqzhzbezkg", response.get(0).displayName());
+        Assertions.assertEquals("msidxasicddyvv", response.get(0).hostnameLabel());
+        Assertions.assertEquals("skgfmocwahpq", response.get(0).ocid());
+        Assertions.assertEquals("atjeaahh", response.get(0).ipAddress());
+        Assertions.assertEquals("jhhn", response.get(0).subnetId());
     }
 }

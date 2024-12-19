@@ -68,8 +68,8 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     private Boolean isAutoScalingForStorageEnabled;
 
     /*
-     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current
-     * peer database.
+     * The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the
+     * current peer database.
      */
     private String peerDbId;
 
@@ -353,7 +353,7 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Get the peerDbId property: The database OCID of the Disaster Recovery peer database, which is located in a
+     * Get the peerDbId property: The Azure resource ID of the Disaster Recovery peer database, which is located in a
      * different region from the current peer database.
      * 
      * @return the peerDbId value.
@@ -363,7 +363,7 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Set the peerDbId property: The database OCID of the Disaster Recovery peer database, which is located in a
+     * Set the peerDbId property: The Azure resource ID of the Disaster Recovery peer database, which is located in a
      * different region from the current peer database.
      * 
      * @param peerDbId the peerDbId value to set.

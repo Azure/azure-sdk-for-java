@@ -7,18 +7,42 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.DnsPrivateViewInner;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewProperties;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewsLifecycleState;
+import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateViewInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"n\",\"displayName\":\"ewgdrjervn\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"hin\",\"timeCreated\":\"2021-07-07T21:20Z\",\"timeUpdated\":\"2021-07-26T04:46:18Z\",\"provisioningState\":\"Failed\"},\"id\":\"hnzdndslgnayqi\",\"name\":\"ynduha\",\"type\":\"hqlkthumaqo\"}")
+            "{\"properties\":{\"ocid\":\"ylgqgitxmedjvcsl\",\"displayName\":\"n\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"ncw\",\"timeCreated\":\"2021-06-21T03:07:03Z\",\"timeUpdated\":\"2021-09-15T03:16:23Z\",\"provisioningState\":\"Failed\"},\"id\":\"trmgucnapkte\",\"name\":\"ellwptfdy\",\"type\":\"pfqbuaceopzf\"}")
             .toObject(DnsPrivateViewInner.class);
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.properties().ocid());
+        Assertions.assertEquals("n", model.properties().displayName());
+        Assertions.assertEquals(true, model.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.UPDATING, model.properties().lifecycleState());
+        Assertions.assertEquals("ncw", model.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T03:07:03Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T03:16:23Z"), model.properties().timeUpdated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsPrivateViewInner model = new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties());
+        DnsPrivateViewInner model
+            = new DnsPrivateViewInner().withProperties(new DnsPrivateViewProperties().withOcid("ylgqgitxmedjvcsl")
+                .withDisplayName("n")
+                .withIsProtected(true)
+                .withLifecycleState(DnsPrivateViewsLifecycleState.UPDATING)
+                .withSelf("ncw")
+                .withTimeCreated(OffsetDateTime.parse("2021-06-21T03:07:03Z"))
+                .withTimeUpdated(OffsetDateTime.parse("2021-09-15T03:16:23Z")));
         model = BinaryData.fromObject(model).toObject(DnsPrivateViewInner.class);
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.properties().ocid());
+        Assertions.assertEquals("n", model.properties().displayName());
+        Assertions.assertEquals(true, model.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.UPDATING, model.properties().lifecycleState());
+        Assertions.assertEquals("ncw", model.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T03:07:03Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T03:16:23Z"), model.properties().timeUpdated());
     }
 }

@@ -21,7 +21,7 @@ public final class VirtualNetworkAddressesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"zxlioh\",\"vmOcid\":\"dd\",\"ocid\":\"gxqbawpcb\",\"domain\":\"zqcyknap\",\"lifecycleDetails\":\"fyuicdh\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-12-02T18:24:12Z\"},\"id\":\"bdvibidmhmwffpl\",\"name\":\"muvapc\",\"type\":\"ccrrvweyoxoyyu\"}";
+            = "{\"properties\":{\"ipAddress\":\"ugswvx\",\"vmOcid\":\"mzqwmvtxnjmxmcu\",\"ocid\":\"dtcvcl\",\"domain\":\"npdkv\",\"lifecycleDetails\":\"abuiy\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-07-04T05:28:17Z\"},\"id\":\"ugneikn\",\"name\":\"gox\",\"type\":\"jiuqhibtozi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class VirtualNetworkAddressesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .getWithResponse("lobdxna", "pmkmlmvevfx", "op", com.azure.core.util.Context.NONE)
+            .getWithResponse("mmkjsvthnwpztek", "vmribiat", "gplucfotangcfhny", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zxlioh", response.properties().ipAddress());
-        Assertions.assertEquals("dd", response.properties().vmOcid());
+        Assertions.assertEquals("ugswvx", response.properties().ipAddress());
+        Assertions.assertEquals("mzqwmvtxnjmxmcu", response.properties().vmOcid());
     }
 }

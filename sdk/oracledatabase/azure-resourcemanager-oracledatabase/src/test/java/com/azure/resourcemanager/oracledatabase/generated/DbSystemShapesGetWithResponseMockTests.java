@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DbSystemShape;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public final class DbSystemShapesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"shapeFamily\":\"puamwabzxr\",\"availableCoreCount\":833077123,\"minimumCoreCount\":38828648,\"runtimeMinimumCoreCount\":1690394983,\"coreCountIncrement\":1307782506,\"minStorageCount\":35510152,\"maxStorageCount\":1111352078,\"availableDataStoragePerServerInTbs\":70.60563316529131,\"availableMemoryPerNodeInGbs\":666736445,\"availableDbNodePerNodeInGbs\":1805110370,\"minCoreCountPerNode\":1652128908,\"availableMemoryInGbs\":1789512101,\"minMemoryPerNodeInGbs\":2030396621,\"availableDbNodeStorageInGbs\":836787788,\"minDbNodeStoragePerNodeInGbs\":298842617,\"availableDataStorageInTbs\":2041222733,\"minDataStorageInTbs\":1347441076,\"minimumNodeCount\":639113448,\"maximumNodeCount\":1453718102,\"availableCoreCountPerNode\":696339926},\"id\":\"jhlnymzotqyryu\",\"name\":\"cbm\",\"type\":\"qvx\"}";
+            = "{\"properties\":{\"shapeFamily\":\"ypuuwwltvuqjctze\",\"availableCoreCount\":1164952050,\"minimumCoreCount\":366850232,\"runtimeMinimumCoreCount\":1387051703,\"coreCountIncrement\":179339083,\"minStorageCount\":2067869753,\"maxStorageCount\":454202274,\"availableDataStoragePerServerInTbs\":53.47197534521894,\"availableMemoryPerNodeInGbs\":921297518,\"availableDbNodePerNodeInGbs\":1940706470,\"minCoreCountPerNode\":432756215,\"availableMemoryInGbs\":1487873625,\"minMemoryPerNodeInGbs\":995133757,\"availableDbNodeStorageInGbs\":1186991439,\"minDbNodeStoragePerNodeInGbs\":504553852,\"availableDataStorageInTbs\":77592298,\"minDataStorageInTbs\":96639942,\"minimumNodeCount\":477372699,\"maximumNodeCount\":82251270,\"availableCoreCountPerNode\":866872583},\"id\":\"lvizb\",\"name\":\"hfovvacqpbtu\",\"type\":\"dxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,28 @@ public final class DbSystemShapesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DbSystemShape response = manager.dbSystemShapes()
-            .getWithResponse("mlfmkqs", "azuawx", com.azure.core.util.Context.NONE)
+            .getWithResponse("lvidizozs", "bccxjmonfdgn", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("ypuuwwltvuqjctze", response.properties().shapeFamily());
+        Assertions.assertEquals(1164952050, response.properties().availableCoreCount());
+        Assertions.assertEquals(366850232, response.properties().minimumCoreCount());
+        Assertions.assertEquals(1387051703, response.properties().runtimeMinimumCoreCount());
+        Assertions.assertEquals(179339083, response.properties().coreCountIncrement());
+        Assertions.assertEquals(2067869753, response.properties().minStorageCount());
+        Assertions.assertEquals(454202274, response.properties().maxStorageCount());
+        Assertions.assertEquals(53.47197534521894D, response.properties().availableDataStoragePerServerInTbs());
+        Assertions.assertEquals(921297518, response.properties().availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(1940706470, response.properties().availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(432756215, response.properties().minCoreCountPerNode());
+        Assertions.assertEquals(1487873625, response.properties().availableMemoryInGbs());
+        Assertions.assertEquals(995133757, response.properties().minMemoryPerNodeInGbs());
+        Assertions.assertEquals(1186991439, response.properties().availableDbNodeStorageInGbs());
+        Assertions.assertEquals(504553852, response.properties().minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(77592298, response.properties().availableDataStorageInTbs());
+        Assertions.assertEquals(96639942, response.properties().minDataStorageInTbs());
+        Assertions.assertEquals(477372699, response.properties().minimumNodeCount());
+        Assertions.assertEquals(82251270, response.properties().maximumNodeCount());
+        Assertions.assertEquals(866872583, response.properties().availableCoreCountPerNode());
     }
 }

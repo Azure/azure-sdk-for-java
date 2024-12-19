@@ -14,6 +14,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class SystemVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"systemVersion\":\"ucrwnami\"},\"id\":\"ebrqbsmswziqgfuh\",\"name\":\"kzruswh\",\"type\":\"hczznvf\"}]}";
+            = "{\"value\":[{\"properties\":{\"systemVersion\":\"uxtyasiibmi\"},\"id\":\"nnust\",\"name\":\"nlj\",\"type\":\"nmgixh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +32,8 @@ public final class SystemVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SystemVersion> response
-            = manager.systemVersions().listByLocation("uxlxqzvners", com.azure.core.util.Context.NONE);
+            = manager.systemVersions().listByLocation("nuciqdsmexiit", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("uxtyasiibmi", response.iterator().next().properties().systemVersion());
     }
 }

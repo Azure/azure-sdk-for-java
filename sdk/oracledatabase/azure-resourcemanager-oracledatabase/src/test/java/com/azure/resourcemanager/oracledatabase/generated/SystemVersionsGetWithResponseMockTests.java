@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public final class SystemVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"systemVersion\":\"hndvnoamldsehao\"},\"id\":\"jhhflzokxcoxpel\",\"name\":\"jetagltsxoatft\",\"type\":\"zpnpbswv\"}";
+            = "{\"properties\":{\"systemVersion\":\"twypundmbxh\"},\"id\":\"cmjkavlgorbmftpm\",\"name\":\"tzfjltf\",\"type\":\"nzcyjtotp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,9 @@ public final class SystemVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SystemVersion response = manager.systemVersions()
-            .getWithResponse("ycjsx", "wwixzvumw", com.azure.core.util.Context.NONE)
+            .getWithResponse("mavmq", "oudorhcgyyp", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("twypundmbxh", response.properties().systemVersion());
     }
 }

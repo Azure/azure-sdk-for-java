@@ -15,8 +15,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.PrivateIpAddressPr
 import com.azure.resourcemanager.oracledatabase.models.AddRemoveDbNode;
 import com.azure.resourcemanager.oracledatabase.models.CloudVmCluster;
 import com.azure.resourcemanager.oracledatabase.models.CloudVmClusters;
-import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressesFilter;
 import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressProperties;
+import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressesFilter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

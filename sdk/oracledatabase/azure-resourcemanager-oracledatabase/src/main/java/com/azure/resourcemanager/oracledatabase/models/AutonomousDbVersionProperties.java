@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * AutonomousDbVersion resource model.
  */
-@Immutable
+@Fluent
 public final class AutonomousDbVersionProperties implements JsonSerializable<AutonomousDbVersionProperties> {
     /*
      * Supported Autonomous Db versions.
@@ -62,12 +63,34 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
     }
 
     /**
+     * Set the version property: Supported Autonomous Db versions.
+     * 
+     * @param version the version value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the dbWorkload property: The Autonomous Database workload type.
      * 
      * @return the dbWorkload value.
      */
     public WorkloadType dbWorkload() {
         return this.dbWorkload;
+    }
+
+    /**
+     * Set the dbWorkload property: The Autonomous Database workload type.
+     * 
+     * @param dbWorkload the dbWorkload value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withDbWorkload(WorkloadType dbWorkload) {
+        this.dbWorkload = dbWorkload;
+        return this;
     }
 
     /**
@@ -80,12 +103,34 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
     }
 
     /**
+     * Set the isDefaultForFree property: True if this version of the Oracle Database software's default is free.
+     * 
+     * @param isDefaultForFree the isDefaultForFree value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withIsDefaultForFree(Boolean isDefaultForFree) {
+        this.isDefaultForFree = isDefaultForFree;
+        return this;
+    }
+
+    /**
      * Get the isDefaultForPaid property: True if this version of the Oracle Database software's default is paid.
      * 
      * @return the isDefaultForPaid value.
      */
     public Boolean isDefaultForPaid() {
         return this.isDefaultForPaid;
+    }
+
+    /**
+     * Set the isDefaultForPaid property: True if this version of the Oracle Database software's default is paid.
+     * 
+     * @param isDefaultForPaid the isDefaultForPaid value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withIsDefaultForPaid(Boolean isDefaultForPaid) {
+        this.isDefaultForPaid = isDefaultForPaid;
+        return this;
     }
 
     /**
@@ -99,6 +144,18 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
     }
 
     /**
+     * Set the isFreeTierEnabled property: True if this version of the Oracle Database software can be used for
+     * Always-Free Autonomous Databases.
+     * 
+     * @param isFreeTierEnabled the isFreeTierEnabled value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withIsFreeTierEnabled(Boolean isFreeTierEnabled) {
+        this.isFreeTierEnabled = isFreeTierEnabled;
+        return this;
+    }
+
+    /**
      * Get the isPaidEnabled property: True if this version of the Oracle Database software has payments enabled.
      * 
      * @return the isPaidEnabled value.
@@ -108,12 +165,30 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
     }
 
     /**
+     * Set the isPaidEnabled property: True if this version of the Oracle Database software has payments enabled.
+     * 
+     * @param isPaidEnabled the isPaidEnabled value to set.
+     * @return the AutonomousDbVersionProperties object itself.
+     */
+    public AutonomousDbVersionProperties withIsPaidEnabled(Boolean isPaidEnabled) {
+        this.isPaidEnabled = isPaidEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (version() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property version in model AutonomousDbVersionProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutonomousDbVersionProperties.class);
 
     /**
      * {@inheritDoc}
@@ -121,6 +196,12 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("dbWorkload", this.dbWorkload == null ? null : this.dbWorkload.toString());
+        jsonWriter.writeBooleanField("isDefaultForFree", this.isDefaultForFree);
+        jsonWriter.writeBooleanField("isDefaultForPaid", this.isDefaultForPaid);
+        jsonWriter.writeBooleanField("isFreeTierEnabled", this.isFreeTierEnabled);
+        jsonWriter.writeBooleanField("isPaidEnabled", this.isPaidEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,6 +211,7 @@ public final class AutonomousDbVersionProperties implements JsonSerializable<Aut
      * @param jsonReader The JsonReader being read.
      * @return An instance of AutonomousDbVersionProperties if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutonomousDbVersionProperties.
      */
     public static AutonomousDbVersionProperties fromJson(JsonReader jsonReader) throws IOException {

@@ -7,18 +7,49 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.DnsPrivateZoneInner;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZoneProperties;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZonesLifecycleState;
+import com.azure.resourcemanager.oracledatabase.models.ZoneType;
+import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateZoneInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"u\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"ttdumorppxebmnzb\",\"serial\":1717455223,\"version\":\"pglkf\",\"viewId\":\"hdneuelfph\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-11-22T01:42:51Z\",\"provisioningState\":\"Failed\"},\"id\":\"ikdowwquuvx\",\"name\":\"xclvit\",\"type\":\"hqzonosggbhcoh\"}")
+            "{\"properties\":{\"ocid\":\"fqqnvwpmqtaruo\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"kcjhwqytjrybnwj\",\"serial\":1463995661,\"version\":\"gdrjervnaenqpe\",\"viewId\":\"ndoygmifthnzdnd\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-07-04T07:51:31Z\",\"provisioningState\":\"Canceled\"},\"id\":\"qig\",\"name\":\"nduhavhqlkthum\",\"type\":\"qolbgyc\"}")
             .toObject(DnsPrivateZoneInner.class);
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.properties().ocid());
+        Assertions.assertEquals(true, model.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETING, model.properties().lifecycleState());
+        Assertions.assertEquals("kcjhwqytjrybnwj", model.properties().self());
+        Assertions.assertEquals(1463995661, model.properties().serial());
+        Assertions.assertEquals("gdrjervnaenqpe", model.properties().version());
+        Assertions.assertEquals("ndoygmifthnzdnd", model.properties().viewId());
+        Assertions.assertEquals(ZoneType.PRIMARY, model.properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T07:51:31Z"), model.properties().timeCreated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsPrivateZoneInner model = new DnsPrivateZoneInner().withProperties(new DnsPrivateZoneProperties());
+        DnsPrivateZoneInner model
+            = new DnsPrivateZoneInner().withProperties(new DnsPrivateZoneProperties().withOcid("fqqnvwpmqtaruo")
+                .withIsProtected(true)
+                .withLifecycleState(DnsPrivateZonesLifecycleState.DELETING)
+                .withSelf("kcjhwqytjrybnwj")
+                .withSerial(1463995661)
+                .withVersion("gdrjervnaenqpe")
+                .withViewId("ndoygmifthnzdnd")
+                .withZoneType(ZoneType.PRIMARY)
+                .withTimeCreated(OffsetDateTime.parse("2021-07-04T07:51:31Z")));
         model = BinaryData.fromObject(model).toObject(DnsPrivateZoneInner.class);
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.properties().ocid());
+        Assertions.assertEquals(true, model.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETING, model.properties().lifecycleState());
+        Assertions.assertEquals("kcjhwqytjrybnwj", model.properties().self());
+        Assertions.assertEquals(1463995661, model.properties().serial());
+        Assertions.assertEquals("gdrjervnaenqpe", model.properties().version());
+        Assertions.assertEquals("ndoygmifthnzdnd", model.properties().viewId());
+        Assertions.assertEquals(ZoneType.PRIMARY, model.properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T07:51:31Z"), model.properties().timeCreated());
     }
 }

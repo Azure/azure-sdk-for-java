@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * System Version Resource model.
  */
-@Immutable
+@Fluent
 public final class SystemVersionProperties implements JsonSerializable<SystemVersionProperties> {
     /*
      * A valid Oracle System Version
@@ -37,12 +38,30 @@ public final class SystemVersionProperties implements JsonSerializable<SystemVer
     }
 
     /**
+     * Set the systemVersion property: A valid Oracle System Version.
+     * 
+     * @param systemVersion the systemVersion value to set.
+     * @return the SystemVersionProperties object itself.
+     */
+    public SystemVersionProperties withSystemVersion(String systemVersion) {
+        this.systemVersion = systemVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemVersion() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property systemVersion in model SystemVersionProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SystemVersionProperties.class);
 
     /**
      * {@inheritDoc}
@@ -50,6 +69,7 @@ public final class SystemVersionProperties implements JsonSerializable<SystemVer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("systemVersion", this.systemVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -59,6 +79,7 @@ public final class SystemVersionProperties implements JsonSerializable<SystemVer
      * @param jsonReader The JsonReader being read.
      * @return An instance of SystemVersionProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SystemVersionProperties.
      */
     public static SystemVersionProperties fromJson(JsonReader jsonReader) throws IOException {

@@ -13,8 +13,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.AutonomousDatabasesClient
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseInner;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseWalletFileInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabases;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabases;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
 import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;

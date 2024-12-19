@@ -22,7 +22,7 @@ public final class OracleSubscriptionUpdate implements JsonSerializable<OracleSu
     private PlanUpdate plan;
 
     /*
-     * The updatable properties of the OracleSubscription.
+     * The resource-specific properties for this resource.
      */
     private OracleSubscriptionUpdateProperties properties;
 
@@ -53,7 +53,7 @@ public final class OracleSubscriptionUpdate implements JsonSerializable<OracleSu
     }
 
     /**
-     * Get the properties property: The updatable properties of the OracleSubscription.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -62,7 +62,7 @@ public final class OracleSubscriptionUpdate implements JsonSerializable<OracleSu
     }
 
     /**
-     * Set the properties property: The updatable properties of the OracleSubscription.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the OracleSubscriptionUpdate object itself.

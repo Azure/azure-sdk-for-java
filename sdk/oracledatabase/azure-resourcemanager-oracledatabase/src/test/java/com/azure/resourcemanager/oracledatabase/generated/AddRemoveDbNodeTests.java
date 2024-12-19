@@ -12,14 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AddRemoveDbNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddRemoveDbNode model = BinaryData.fromString("{\"dbServers\":[\"t\"]}").toObject(AddRemoveDbNode.class);
-        Assertions.assertEquals("t", model.dbServers().get(0));
+        AddRemoveDbNode model
+            = BinaryData.fromString("{\"dbServers\":[\"efajpj\",\"rwkq\",\"yhgbijtjivfx\",\"sjabibs\"]}")
+                .toObject(AddRemoveDbNode.class);
+        Assertions.assertEquals("efajpj", model.dbServers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddRemoveDbNode model = new AddRemoveDbNode().withDbServers(Arrays.asList("t"));
+        AddRemoveDbNode model
+            = new AddRemoveDbNode().withDbServers(Arrays.asList("efajpj", "rwkq", "yhgbijtjivfx", "sjabibs"));
         model = BinaryData.fromObject(model).toObject(AddRemoveDbNode.class);
-        Assertions.assertEquals("t", model.dbServers().get(0));
+        Assertions.assertEquals("efajpj", model.dbServers().get(0));
     }
 }

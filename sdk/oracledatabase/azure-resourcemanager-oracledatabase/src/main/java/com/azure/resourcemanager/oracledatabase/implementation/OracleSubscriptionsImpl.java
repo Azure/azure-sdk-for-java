@@ -17,8 +17,8 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.SaasSubscriptionDe
 import com.azure.resourcemanager.oracledatabase.models.ActivationLinks;
 import com.azure.resourcemanager.oracledatabase.models.CloudAccountDetails;
 import com.azure.resourcemanager.oracledatabase.models.OracleSubscription;
-import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptions;
 import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptionUpdate;
+import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptions;
 import com.azure.resourcemanager.oracledatabase.models.SaasSubscriptionDetails;
 
 public final class OracleSubscriptionsImpl implements OracleSubscriptions {

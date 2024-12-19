@@ -14,6 +14,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharacterSet;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class AutonomousDatabaseCharacterSetsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"characterSet\":\"cwwyyur\"},\"id\":\"chpp\",\"name\":\"prsnmokayzejn\",\"type\":\"lbkpb\"}]}";
+            = "{\"value\":[{\"properties\":{\"characterSet\":\"gcxtxj\"},\"id\":\"heafidlt\",\"name\":\"gsresmkssj\",\"type\":\"oiftxfkfwegprh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,9 @@ public final class AutonomousDatabaseCharacterSetsListByLocationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AutonomousDatabaseCharacterSet> response
-            = manager.autonomousDatabaseCharacterSets().listByLocation("pn", com.azure.core.util.Context.NONE);
+        PagedIterable<AutonomousDatabaseCharacterSet> response = manager.autonomousDatabaseCharacterSets()
+            .listByLocation("ppipifhpfeoa", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("gcxtxj", response.iterator().next().properties().characterSet());
     }
 }

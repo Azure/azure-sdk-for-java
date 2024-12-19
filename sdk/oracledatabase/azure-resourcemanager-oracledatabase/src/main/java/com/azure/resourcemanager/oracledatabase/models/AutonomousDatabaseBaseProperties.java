@@ -95,16 +95,15 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     private Boolean isAutoScalingForStorageEnabled;
 
     /*
-     * The list of [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases
-     * located in Autonomous Data Guard remote regions that are associated with the source database. Note that for
-     * Autonomous Database Serverless instances, standby databases located in the same region as the source primary
-     * database do not have OCIDs.
+     * The list of Azure resource IDs of standby databases located in Autonomous Data Guard remote regions that are
+     * associated with the source database. Note that for Autonomous Database Serverless instances, standby databases
+     * located in the same region as the source primary database do not have Azure IDs.
      */
     private List<String> peerDbIds;
 
     /*
-     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current
-     * peer database.
+     * The Azure resource ID of the Disaster Recovery peer database, which is located in a different region from the
+     * current peer database.
      */
     private String peerDbId;
 
@@ -712,11 +711,9 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Get the peerDbIds property: The list of
-     * [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases located in
-     * Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous
-     * Database Serverless instances, standby databases located in the same region as the source primary database do not
-     * have OCIDs.
+     * Get the peerDbIds property: The list of Azure resource IDs of standby databases located in Autonomous Data Guard
+     * remote regions that are associated with the source database. Note that for Autonomous Database Serverless
+     * instances, standby databases located in the same region as the source primary database do not have Azure IDs.
      * 
      * @return the peerDbIds value.
      */
@@ -725,11 +722,9 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Set the peerDbIds property: The list of
-     * [OCIDs](https://docs.oracle.com/iaas/Content/General/Concepts/identifiers.htm) of standby databases located in
-     * Autonomous Data Guard remote regions that are associated with the source database. Note that for Autonomous
-     * Database Serverless instances, standby databases located in the same region as the source primary database do not
-     * have OCIDs.
+     * Set the peerDbIds property: The list of Azure resource IDs of standby databases located in Autonomous Data Guard
+     * remote regions that are associated with the source database. Note that for Autonomous Database Serverless
+     * instances, standby databases located in the same region as the source primary database do not have Azure IDs.
      * 
      * @param peerDbIds the peerDbIds value to set.
      * @return the AutonomousDatabaseBaseProperties object itself.
@@ -740,7 +735,7 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Get the peerDbId property: The database OCID of the Disaster Recovery peer database, which is located in a
+     * Get the peerDbId property: The Azure resource ID of the Disaster Recovery peer database, which is located in a
      * different region from the current peer database.
      * 
      * @return the peerDbId value.
@@ -750,7 +745,7 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
-     * Set the peerDbId property: The database OCID of the Disaster Recovery peer database, which is located in a
+     * Set the peerDbId property: The Azure resource ID of the Disaster Recovery peer database, which is located in a
      * different region from the current peer database.
      * 
      * @param peerDbId the peerDbId value to set.

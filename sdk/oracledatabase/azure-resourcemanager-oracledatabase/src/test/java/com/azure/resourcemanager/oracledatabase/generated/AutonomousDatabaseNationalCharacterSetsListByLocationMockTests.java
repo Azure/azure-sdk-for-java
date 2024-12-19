@@ -14,6 +14,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSet;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class AutonomousDatabaseNationalCharacterSetsListByLocationMockTest
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"characterSet\":\"wogqqnobpudcdab\"},\"id\":\"wpwyawbz\",\"name\":\"sqbuc\",\"type\":\"jg\"}]}";
+            = "{\"value\":[{\"properties\":{\"characterSet\":\"oylhjlmuoyxprimr\"},\"id\":\"pteecjme\",\"name\":\"slstvasy\",\"type\":\"wxdzaumweoohgu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +33,8 @@ public final class AutonomousDatabaseNationalCharacterSetsListByLocationMockTest
 
         PagedIterable<AutonomousDatabaseNationalCharacterSet> response
             = manager.autonomousDatabaseNationalCharacterSets()
-                .listByLocation("kmfx", com.azure.core.util.Context.NONE);
+                .listByLocation("ankjpdnjzh", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("oylhjlmuoyxprimr", response.iterator().next().properties().characterSet());
     }
 }

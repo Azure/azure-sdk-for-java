@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The properties of DbNodeResource.
  */
-@Immutable
+@Fluent
 public final class DbNodeProperties implements JsonSerializable<DbNodeProperties> {
     /*
      * DbNode OCID
@@ -150,12 +152,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the ocid property: DbNode OCID.
+     * 
+     * @param ocid the ocid value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withOcid(String ocid) {
+        this.ocid = ocid;
+        return this;
+    }
+
+    /**
      * Get the additionalDetails property: Additional information about the planned maintenance.
      * 
      * @return the additionalDetails value.
      */
     public String additionalDetails() {
         return this.additionalDetails;
+    }
+
+    /**
+     * Set the additionalDetails property: Additional information about the planned maintenance.
+     * 
+     * @param additionalDetails the additionalDetails value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withAdditionalDetails(String additionalDetails) {
+        this.additionalDetails = additionalDetails;
+        return this;
     }
 
     /**
@@ -168,12 +192,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the backupIpId property: The OCID of the backup IP address associated with the database node.
+     * 
+     * @param backupIpId the backupIpId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withBackupIpId(String backupIpId) {
+        this.backupIpId = backupIpId;
+        return this;
+    }
+
+    /**
      * Get the backupVnic2Id property: The OCID of the second backup VNIC.
      * 
      * @return the backupVnic2Id value.
      */
     public String backupVnic2Id() {
         return this.backupVnic2Id;
+    }
+
+    /**
+     * Set the backupVnic2Id property: The OCID of the second backup VNIC.
+     * 
+     * @param backupVnic2Id the backupVnic2Id value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withBackupVnic2Id(String backupVnic2Id) {
+        this.backupVnic2Id = backupVnic2Id;
+        return this;
     }
 
     /**
@@ -186,12 +232,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the backupVnicId property: The OCID of the backup VNIC.
+     * 
+     * @param backupVnicId the backupVnicId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withBackupVnicId(String backupVnicId) {
+        this.backupVnicId = backupVnicId;
+        return this;
+    }
+
+    /**
      * Get the cpuCoreCount property: The number of CPU cores enabled on the Db node.
      * 
      * @return the cpuCoreCount value.
      */
     public Integer cpuCoreCount() {
         return this.cpuCoreCount;
+    }
+
+    /**
+     * Set the cpuCoreCount property: The number of CPU cores enabled on the Db node.
+     * 
+     * @param cpuCoreCount the cpuCoreCount value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withCpuCoreCount(Integer cpuCoreCount) {
+        this.cpuCoreCount = cpuCoreCount;
+        return this;
     }
 
     /**
@@ -204,12 +272,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the dbNodeStorageSizeInGbs property: The allocated local node storage in GBs on the Db node.
+     * 
+     * @param dbNodeStorageSizeInGbs the dbNodeStorageSizeInGbs value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withDbNodeStorageSizeInGbs(Integer dbNodeStorageSizeInGbs) {
+        this.dbNodeStorageSizeInGbs = dbNodeStorageSizeInGbs;
+        return this;
+    }
+
+    /**
      * Get the dbServerId property: The OCID of the Exacc Db server associated with the database node.
      * 
      * @return the dbServerId value.
      */
     public String dbServerId() {
         return this.dbServerId;
+    }
+
+    /**
+     * Set the dbServerId property: The OCID of the Exacc Db server associated with the database node.
+     * 
+     * @param dbServerId the dbServerId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withDbServerId(String dbServerId) {
+        this.dbServerId = dbServerId;
+        return this;
     }
 
     /**
@@ -222,12 +312,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the dbSystemId property: The OCID of the DB system.
+     * 
+     * @param dbSystemId the dbSystemId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withDbSystemId(String dbSystemId) {
+        this.dbSystemId = dbSystemId;
+        return this;
+    }
+
+    /**
      * Get the faultDomain property: The name of the Fault Domain the instance is contained in.
      * 
      * @return the faultDomain value.
      */
     public String faultDomain() {
         return this.faultDomain;
+    }
+
+    /**
+     * Set the faultDomain property: The name of the Fault Domain the instance is contained in.
+     * 
+     * @param faultDomain the faultDomain value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withFaultDomain(String faultDomain) {
+        this.faultDomain = faultDomain;
+        return this;
     }
 
     /**
@@ -240,12 +352,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the hostIpId property: The OCID of the host IP address associated with the database node.
+     * 
+     * @param hostIpId the hostIpId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withHostIpId(String hostIpId) {
+        this.hostIpId = hostIpId;
+        return this;
+    }
+
+    /**
      * Get the hostname property: The host name for the database node.
      * 
      * @return the hostname value.
      */
     public String hostname() {
         return this.hostname;
+    }
+
+    /**
+     * Set the hostname property: The host name for the database node.
+     * 
+     * @param hostname the hostname value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withHostname(String hostname) {
+        this.hostname = hostname;
+        return this;
     }
 
     /**
@@ -258,12 +392,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the lifecycleState property: The current state of the database node.
+     * 
+     * @param lifecycleState the lifecycleState value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withLifecycleState(DbNodeProvisioningState lifecycleState) {
+        this.lifecycleState = lifecycleState;
+        return this;
+    }
+
+    /**
      * Get the lifecycleDetails property: Lifecycle details of Db Node.
      * 
      * @return the lifecycleDetails value.
      */
     public String lifecycleDetails() {
         return this.lifecycleDetails;
+    }
+
+    /**
+     * Set the lifecycleDetails property: Lifecycle details of Db Node.
+     * 
+     * @param lifecycleDetails the lifecycleDetails value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withLifecycleDetails(String lifecycleDetails) {
+        this.lifecycleDetails = lifecycleDetails;
+        return this;
     }
 
     /**
@@ -276,12 +432,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the maintenanceType property: The type of database node maintenance.
+     * 
+     * @param maintenanceType the maintenanceType value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withMaintenanceType(DbNodeMaintenanceType maintenanceType) {
+        this.maintenanceType = maintenanceType;
+        return this;
+    }
+
+    /**
      * Get the memorySizeInGbs property: The allocated memory in GBs on the Db node.
      * 
      * @return the memorySizeInGbs value.
      */
     public Integer memorySizeInGbs() {
         return this.memorySizeInGbs;
+    }
+
+    /**
+     * Set the memorySizeInGbs property: The allocated memory in GBs on the Db node.
+     * 
+     * @param memorySizeInGbs the memorySizeInGbs value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withMemorySizeInGbs(Integer memorySizeInGbs) {
+        this.memorySizeInGbs = memorySizeInGbs;
+        return this;
     }
 
     /**
@@ -295,12 +473,35 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the softwareStorageSizeInGb property: The size (in GB) of the block storage volume allocation for the DB
+     * system. This attribute applies only for virtual machine DB systems.
+     * 
+     * @param softwareStorageSizeInGb the softwareStorageSizeInGb value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withSoftwareStorageSizeInGb(Integer softwareStorageSizeInGb) {
+        this.softwareStorageSizeInGb = softwareStorageSizeInGb;
+        return this;
+    }
+
+    /**
      * Get the timeCreated property: The date and time that the database node was created.
      * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
+    }
+
+    /**
+     * Set the timeCreated property: The date and time that the database node was created.
+     * 
+     * @param timeCreated the timeCreated value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
     }
 
     /**
@@ -313,12 +514,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the timeMaintenanceWindowEnd property: End date and time of maintenance window.
+     * 
+     * @param timeMaintenanceWindowEnd the timeMaintenanceWindowEnd value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withTimeMaintenanceWindowEnd(OffsetDateTime timeMaintenanceWindowEnd) {
+        this.timeMaintenanceWindowEnd = timeMaintenanceWindowEnd;
+        return this;
+    }
+
+    /**
      * Get the timeMaintenanceWindowStart property: Start date and time of maintenance window.
      * 
      * @return the timeMaintenanceWindowStart value.
      */
     public OffsetDateTime timeMaintenanceWindowStart() {
         return this.timeMaintenanceWindowStart;
+    }
+
+    /**
+     * Set the timeMaintenanceWindowStart property: Start date and time of maintenance window.
+     * 
+     * @param timeMaintenanceWindowStart the timeMaintenanceWindowStart value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withTimeMaintenanceWindowStart(OffsetDateTime timeMaintenanceWindowStart) {
+        this.timeMaintenanceWindowStart = timeMaintenanceWindowStart;
+        return this;
     }
 
     /**
@@ -331,12 +554,34 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     }
 
     /**
+     * Set the vnic2Id property: The OCID of the second VNIC.
+     * 
+     * @param vnic2Id the vnic2Id value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withVnic2Id(String vnic2Id) {
+        this.vnic2Id = vnic2Id;
+        return this;
+    }
+
+    /**
      * Get the vnicId property: The OCID of the VNIC.
      * 
      * @return the vnicId value.
      */
     public String vnicId() {
         return this.vnicId;
+    }
+
+    /**
+     * Set the vnicId property: The OCID of the VNIC.
+     * 
+     * @param vnicId the vnicId value to set.
+     * @return the DbNodeProperties object itself.
+     */
+    public DbNodeProperties withVnicId(String vnicId) {
+        this.vnicId = vnicId;
+        return this;
     }
 
     /**
@@ -354,7 +599,30 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ocid() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ocid in model DbNodeProperties"));
+        }
+        if (dbSystemId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dbSystemId in model DbNodeProperties"));
+        }
+        if (lifecycleState() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property lifecycleState in model DbNodeProperties"));
+        }
+        if (timeCreated() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeCreated in model DbNodeProperties"));
+        }
+        if (vnicId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vnicId in model DbNodeProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DbNodeProperties.class);
 
     /**
      * {@inheritDoc}
@@ -362,6 +630,37 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ocid", this.ocid);
+        jsonWriter.writeStringField("dbSystemId", this.dbSystemId);
+        jsonWriter.writeStringField("lifecycleState",
+            this.lifecycleState == null ? null : this.lifecycleState.toString());
+        jsonWriter.writeStringField("timeCreated",
+            this.timeCreated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeCreated));
+        jsonWriter.writeStringField("vnicId", this.vnicId);
+        jsonWriter.writeStringField("additionalDetails", this.additionalDetails);
+        jsonWriter.writeStringField("backupIpId", this.backupIpId);
+        jsonWriter.writeStringField("backupVnic2Id", this.backupVnic2Id);
+        jsonWriter.writeStringField("backupVnicId", this.backupVnicId);
+        jsonWriter.writeNumberField("cpuCoreCount", this.cpuCoreCount);
+        jsonWriter.writeNumberField("dbNodeStorageSizeInGbs", this.dbNodeStorageSizeInGbs);
+        jsonWriter.writeStringField("dbServerId", this.dbServerId);
+        jsonWriter.writeStringField("faultDomain", this.faultDomain);
+        jsonWriter.writeStringField("hostIpId", this.hostIpId);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("lifecycleDetails", this.lifecycleDetails);
+        jsonWriter.writeStringField("maintenanceType",
+            this.maintenanceType == null ? null : this.maintenanceType.toString());
+        jsonWriter.writeNumberField("memorySizeInGbs", this.memorySizeInGbs);
+        jsonWriter.writeNumberField("softwareStorageSizeInGb", this.softwareStorageSizeInGb);
+        jsonWriter.writeStringField("timeMaintenanceWindowEnd",
+            this.timeMaintenanceWindowEnd == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeMaintenanceWindowEnd));
+        jsonWriter.writeStringField("timeMaintenanceWindowStart",
+            this.timeMaintenanceWindowStart == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeMaintenanceWindowStart));
+        jsonWriter.writeStringField("vnic2Id", this.vnic2Id);
         return jsonWriter.writeEndObject();
     }
 
@@ -371,6 +670,7 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
      * @param jsonReader The JsonReader being read.
      * @return An instance of DbNodeProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DbNodeProperties.
      */
     public static DbNodeProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -382,6 +682,16 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
 
                 if ("ocid".equals(fieldName)) {
                     deserializedDbNodeProperties.ocid = reader.getString();
+                } else if ("dbSystemId".equals(fieldName)) {
+                    deserializedDbNodeProperties.dbSystemId = reader.getString();
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDbNodeProperties.lifecycleState
+                        = DbNodeProvisioningState.fromString(reader.getString());
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDbNodeProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vnicId".equals(fieldName)) {
+                    deserializedDbNodeProperties.vnicId = reader.getString();
                 } else if ("additionalDetails".equals(fieldName)) {
                     deserializedDbNodeProperties.additionalDetails = reader.getString();
                 } else if ("backupIpId".equals(fieldName)) {
@@ -396,17 +706,12 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
                     deserializedDbNodeProperties.dbNodeStorageSizeInGbs = reader.getNullable(JsonReader::getInt);
                 } else if ("dbServerId".equals(fieldName)) {
                     deserializedDbNodeProperties.dbServerId = reader.getString();
-                } else if ("dbSystemId".equals(fieldName)) {
-                    deserializedDbNodeProperties.dbSystemId = reader.getString();
                 } else if ("faultDomain".equals(fieldName)) {
                     deserializedDbNodeProperties.faultDomain = reader.getString();
                 } else if ("hostIpId".equals(fieldName)) {
                     deserializedDbNodeProperties.hostIpId = reader.getString();
                 } else if ("hostname".equals(fieldName)) {
                     deserializedDbNodeProperties.hostname = reader.getString();
-                } else if ("lifecycleState".equals(fieldName)) {
-                    deserializedDbNodeProperties.lifecycleState
-                        = DbNodeProvisioningState.fromString(reader.getString());
                 } else if ("lifecycleDetails".equals(fieldName)) {
                     deserializedDbNodeProperties.lifecycleDetails = reader.getString();
                 } else if ("maintenanceType".equals(fieldName)) {
@@ -415,9 +720,6 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
                     deserializedDbNodeProperties.memorySizeInGbs = reader.getNullable(JsonReader::getInt);
                 } else if ("softwareStorageSizeInGb".equals(fieldName)) {
                     deserializedDbNodeProperties.softwareStorageSizeInGb = reader.getNullable(JsonReader::getInt);
-                } else if ("timeCreated".equals(fieldName)) {
-                    deserializedDbNodeProperties.timeCreated = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeMaintenanceWindowEnd".equals(fieldName)) {
                     deserializedDbNodeProperties.timeMaintenanceWindowEnd = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -426,8 +728,6 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("vnic2Id".equals(fieldName)) {
                     deserializedDbNodeProperties.vnic2Id = reader.getString();
-                } else if ("vnicId".equals(fieldName)) {
-                    deserializedDbNodeProperties.vnicId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDbNodeProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());

@@ -7,19 +7,38 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDbVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionProperties;
+import com.azure.resourcemanager.oracledatabase.models.WorkloadType;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDbVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"uwprzql\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"xobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}")
+            "{\"properties\":{\"version\":\"crgvxpvgom\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false},\"id\":\"e\",\"name\":\"dawkzbali\",\"type\":\"urqhaka\"}")
             .toObject(AutonomousDbVersionInner.class);
+        Assertions.assertEquals("crgvxpvgom", model.properties().version());
+        Assertions.assertEquals(WorkloadType.DW, model.properties().dbWorkload());
+        Assertions.assertEquals(true, model.properties().isDefaultForFree());
+        Assertions.assertEquals(false, model.properties().isDefaultForPaid());
+        Assertions.assertEquals(true, model.properties().isFreeTierEnabled());
+        Assertions.assertEquals(false, model.properties().isPaidEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDbVersionInner model
-            = new AutonomousDbVersionInner().withProperties(new AutonomousDbVersionProperties());
+        AutonomousDbVersionInner model = new AutonomousDbVersionInner()
+            .withProperties(new AutonomousDbVersionProperties().withVersion("crgvxpvgom")
+                .withDbWorkload(WorkloadType.DW)
+                .withIsDefaultForFree(true)
+                .withIsDefaultForPaid(false)
+                .withIsFreeTierEnabled(true)
+                .withIsPaidEnabled(false));
         model = BinaryData.fromObject(model).toObject(AutonomousDbVersionInner.class);
+        Assertions.assertEquals("crgvxpvgom", model.properties().version());
+        Assertions.assertEquals(WorkloadType.DW, model.properties().dbWorkload());
+        Assertions.assertEquals(true, model.properties().isDefaultForFree());
+        Assertions.assertEquals(false, model.properties().isDefaultForPaid());
+        Assertions.assertEquals(true, model.properties().isFreeTierEnabled());
+        Assertions.assertEquals(false, model.properties().isPaidEnabled());
     }
 }

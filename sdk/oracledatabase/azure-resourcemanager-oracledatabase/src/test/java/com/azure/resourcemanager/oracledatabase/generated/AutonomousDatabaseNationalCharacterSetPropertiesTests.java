@@ -6,18 +6,21 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseNationalCharacterSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetProperties model
-            = BinaryData.fromString("{\"characterSet\":\"otwmcdyt\"}")
-                .toObject(AutonomousDatabaseNationalCharacterSetProperties.class);
+        AutonomousDatabaseNationalCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"hhseyv\"}")
+            .toObject(AutonomousDatabaseNationalCharacterSetProperties.class);
+        Assertions.assertEquals("hhseyv", model.characterSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetProperties model = new AutonomousDatabaseNationalCharacterSetProperties();
+        AutonomousDatabaseNationalCharacterSetProperties model
+            = new AutonomousDatabaseNationalCharacterSetProperties().withCharacterSet("hhseyv");
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseNationalCharacterSetProperties.class);
+        Assertions.assertEquals("hhseyv", model.characterSet());
     }
 }

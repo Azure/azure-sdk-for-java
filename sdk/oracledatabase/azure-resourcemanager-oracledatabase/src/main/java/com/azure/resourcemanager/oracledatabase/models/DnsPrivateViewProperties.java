@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Views resource model.
  */
-@Immutable
+@Fluent
 public final class DnsPrivateViewProperties implements JsonSerializable<DnsPrivateViewProperties> {
     /*
      * The OCID of the view
@@ -31,7 +33,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    private Boolean isProtected;
+    private boolean isProtected;
 
     /*
      * Views lifecycleState
@@ -49,7 +51,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     private OffsetDateTime timeCreated;
 
     /*
-     * views timeCreated
+     * views timeUpdated
      */
     private OffsetDateTime timeUpdated;
 
@@ -74,6 +76,17 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the ocid property: The OCID of the view.
+     * 
+     * @param ocid the ocid value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withOcid(String ocid) {
+        this.ocid = ocid;
+        return this;
+    }
+
+    /**
      * Get the displayName property: The display name of the view resource.
      * 
      * @return the displayName value.
@@ -83,13 +96,36 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the displayName property: The display name of the view resource.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the isProtected property: A Boolean flag indicating whether or not parts of the resource are unable to be
      * explicitly managed.
      * 
      * @return the isProtected value.
      */
-    public Boolean isProtected() {
+    public boolean isProtected() {
         return this.isProtected;
+    }
+
+    /**
+     * Set the isProtected property: A Boolean flag indicating whether or not parts of the resource are unable to be
+     * explicitly managed.
+     * 
+     * @param isProtected the isProtected value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withIsProtected(boolean isProtected) {
+        this.isProtected = isProtected;
+        return this;
     }
 
     /**
@@ -102,12 +138,34 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the lifecycleState property: Views lifecycleState.
+     * 
+     * @param lifecycleState the lifecycleState value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withLifecycleState(DnsPrivateViewsLifecycleState lifecycleState) {
+        this.lifecycleState = lifecycleState;
+        return this;
+    }
+
+    /**
      * Get the self property: The canonical absolute URL of the resource.
      * 
      * @return the self value.
      */
     public String self() {
         return this.self;
+    }
+
+    /**
+     * Set the self property: The canonical absolute URL of the resource.
+     * 
+     * @param self the self value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withSelf(String self) {
+        this.self = self;
+        return this;
     }
 
     /**
@@ -120,12 +178,34 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     }
 
     /**
-     * Get the timeUpdated property: views timeCreated.
+     * Set the timeCreated property: views timeCreated.
+     * 
+     * @param timeCreated the timeCreated value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
+    }
+
+    /**
+     * Get the timeUpdated property: views timeUpdated.
      * 
      * @return the timeUpdated value.
      */
     public OffsetDateTime timeUpdated() {
         return this.timeUpdated;
+    }
+
+    /**
+     * Set the timeUpdated property: views timeUpdated.
+     * 
+     * @param timeUpdated the timeUpdated value to set.
+     * @return the DnsPrivateViewProperties object itself.
+     */
+    public DnsPrivateViewProperties withTimeUpdated(OffsetDateTime timeUpdated) {
+        this.timeUpdated = timeUpdated;
+        return this;
     }
 
     /**
@@ -143,7 +223,37 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ocid() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ocid in model DnsPrivateViewProperties"));
+        }
+        if (displayName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model DnsPrivateViewProperties"));
+        }
+        if (lifecycleState() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lifecycleState in model DnsPrivateViewProperties"));
+        }
+        if (self() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property self in model DnsPrivateViewProperties"));
+        }
+        if (timeCreated() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeCreated in model DnsPrivateViewProperties"));
+        }
+        if (timeUpdated() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeUpdated in model DnsPrivateViewProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsPrivateViewProperties.class);
 
     /**
      * {@inheritDoc}
@@ -151,6 +261,16 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ocid", this.ocid);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isProtected", this.isProtected);
+        jsonWriter.writeStringField("lifecycleState",
+            this.lifecycleState == null ? null : this.lifecycleState.toString());
+        jsonWriter.writeStringField("self", this.self);
+        jsonWriter.writeStringField("timeCreated",
+            this.timeCreated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeCreated));
+        jsonWriter.writeStringField("timeUpdated",
+            this.timeUpdated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeUpdated));
         return jsonWriter.writeEndObject();
     }
 
@@ -160,6 +280,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
      * @param jsonReader The JsonReader being read.
      * @return An instance of DnsPrivateViewProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DnsPrivateViewProperties.
      */
     public static DnsPrivateViewProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -174,7 +295,7 @@ public final class DnsPrivateViewProperties implements JsonSerializable<DnsPriva
                 } else if ("displayName".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.displayName = reader.getString();
                 } else if ("isProtected".equals(fieldName)) {
-                    deserializedDnsPrivateViewProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                    deserializedDnsPrivateViewProperties.isProtected = reader.getBoolean();
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedDnsPrivateViewProperties.lifecycleState
                         = DnsPrivateViewsLifecycleState.fromString(reader.getString());

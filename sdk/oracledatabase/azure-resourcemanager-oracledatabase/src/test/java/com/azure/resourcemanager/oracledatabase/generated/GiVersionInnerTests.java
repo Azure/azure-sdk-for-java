@@ -7,18 +7,22 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.GiVersionProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class GiVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"dfvue\"},\"id\":\"wsbpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}")
+            "{\"properties\":{\"version\":\"ndlkzgxhurip\"},\"id\":\"podxunkb\",\"name\":\"bxmubyynt\",\"type\":\"lrb\"}")
             .toObject(GiVersionInner.class);
+        Assertions.assertEquals("ndlkzgxhurip", model.properties().version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GiVersionInner model = new GiVersionInner().withProperties(new GiVersionProperties());
+        GiVersionInner model
+            = new GiVersionInner().withProperties(new GiVersionProperties().withVersion("ndlkzgxhurip"));
         model = BinaryData.fromObject(model).toObject(GiVersionInner.class);
+        Assertions.assertEquals("ndlkzgxhurip", model.properties().version());
     }
 }

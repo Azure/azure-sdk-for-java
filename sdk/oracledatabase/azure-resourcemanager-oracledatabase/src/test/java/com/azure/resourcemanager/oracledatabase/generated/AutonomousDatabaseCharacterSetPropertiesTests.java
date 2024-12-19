@@ -6,17 +6,21 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharacterSetProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseCharacterSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"jbhckfrlhr\"}")
+        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"tcc\"}")
             .toObject(AutonomousDatabaseCharacterSetProperties.class);
+        Assertions.assertEquals("tcc", model.characterSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDatabaseCharacterSetProperties model = new AutonomousDatabaseCharacterSetProperties();
+        AutonomousDatabaseCharacterSetProperties model
+            = new AutonomousDatabaseCharacterSetProperties().withCharacterSet("tcc");
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseCharacterSetProperties.class);
+        Assertions.assertEquals("tcc", model.characterSet());
     }
 }

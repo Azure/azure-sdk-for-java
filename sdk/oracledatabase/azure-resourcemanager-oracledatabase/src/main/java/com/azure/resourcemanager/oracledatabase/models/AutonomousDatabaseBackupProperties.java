@@ -64,7 +64,7 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
     private AutonomousDatabaseBackupLifecycleState lifecycleState;
 
     /*
-     * Retention period, in days, for long-term backups.
+     * Retention period, in days
      */
     private Integer retentionPeriodInDays;
 
@@ -198,7 +198,7 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
     }
 
     /**
-     * Get the retentionPeriodInDays property: Retention period, in days, for long-term backups.
+     * Get the retentionPeriodInDays property: Retention period, in days.
      * 
      * @return the retentionPeriodInDays value.
      */
@@ -207,7 +207,7 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
     }
 
     /**
-     * Set the retentionPeriodInDays property: Retention period, in days, for long-term backups.
+     * Set the retentionPeriodInDays property: Retention period, in days.
      * 
      * @param retentionPeriodInDays the retentionPeriodInDays value to set.
      * @return the AutonomousDatabaseBackupProperties object itself.

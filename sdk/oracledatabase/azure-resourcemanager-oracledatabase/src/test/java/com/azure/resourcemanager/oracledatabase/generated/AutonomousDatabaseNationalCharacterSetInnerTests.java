@@ -7,19 +7,23 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseNationalCharacterSetInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseNationalCharacterSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetInner model = BinaryData.fromString(
-            "{\"properties\":{\"characterSet\":\"vo\"},\"id\":\"vmeueci\",\"name\":\"yhz\",\"type\":\"euojgjrwju\"}")
+        AutonomousDatabaseNationalCharacterSetInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"characterSet\":\"ca\"},\"id\":\"z\",\"name\":\"p\",\"type\":\"kafkuwbcrnwbm\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetInner.class);
+        Assertions.assertEquals("ca", model.properties().characterSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutonomousDatabaseNationalCharacterSetInner model = new AutonomousDatabaseNationalCharacterSetInner()
-            .withProperties(new AutonomousDatabaseNationalCharacterSetProperties());
+            .withProperties(new AutonomousDatabaseNationalCharacterSetProperties().withCharacterSet("ca"));
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseNationalCharacterSetInner.class);
+        Assertions.assertEquals("ca", model.properties().characterSet());
     }
 }

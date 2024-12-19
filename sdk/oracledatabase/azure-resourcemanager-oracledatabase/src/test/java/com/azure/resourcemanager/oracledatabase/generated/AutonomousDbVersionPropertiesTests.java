@@ -6,18 +6,37 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionProperties;
+import com.azure.resourcemanager.oracledatabase.models.WorkloadType;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDbVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"gw\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true}")
+            "{\"version\":\"hashsfwxosow\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false}")
             .toObject(AutonomousDbVersionProperties.class);
+        Assertions.assertEquals("hashsfwxosow", model.version());
+        Assertions.assertEquals(WorkloadType.AJD, model.dbWorkload());
+        Assertions.assertEquals(true, model.isDefaultForFree());
+        Assertions.assertEquals(true, model.isDefaultForPaid());
+        Assertions.assertEquals(true, model.isFreeTierEnabled());
+        Assertions.assertEquals(false, model.isPaidEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDbVersionProperties model = new AutonomousDbVersionProperties();
+        AutonomousDbVersionProperties model = new AutonomousDbVersionProperties().withVersion("hashsfwxosow")
+            .withDbWorkload(WorkloadType.AJD)
+            .withIsDefaultForFree(true)
+            .withIsDefaultForPaid(true)
+            .withIsFreeTierEnabled(true)
+            .withIsPaidEnabled(false);
         model = BinaryData.fromObject(model).toObject(AutonomousDbVersionProperties.class);
+        Assertions.assertEquals("hashsfwxosow", model.version());
+        Assertions.assertEquals(WorkloadType.AJD, model.dbWorkload());
+        Assertions.assertEquals(true, model.isDefaultForFree());
+        Assertions.assertEquals(true, model.isDefaultForPaid());
+        Assertions.assertEquals(true, model.isFreeTierEnabled());
+        Assertions.assertEquals(false, model.isPaidEnabled());
     }
 }

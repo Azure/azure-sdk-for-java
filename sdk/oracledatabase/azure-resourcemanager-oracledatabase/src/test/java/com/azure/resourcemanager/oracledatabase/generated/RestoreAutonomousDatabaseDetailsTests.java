@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreAutonomousDatabaseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreAutonomousDatabaseDetails model = BinaryData.fromString("{\"timestamp\":\"2021-07-15T02:51:17Z\"}")
+        RestoreAutonomousDatabaseDetails model = BinaryData.fromString("{\"timestamp\":\"2021-05-24T02:05:43Z\"}")
             .toObject(RestoreAutonomousDatabaseDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T02:51:17Z"), model.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T02:05:43Z"), model.timestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestoreAutonomousDatabaseDetails model
-            = new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2021-07-15T02:51:17Z"));
+            = new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2021-05-24T02:05:43Z"));
         model = BinaryData.fromObject(model).toObject(RestoreAutonomousDatabaseDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-15T02:51:17Z"), model.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T02:05:43Z"), model.timestamp());
     }
 }

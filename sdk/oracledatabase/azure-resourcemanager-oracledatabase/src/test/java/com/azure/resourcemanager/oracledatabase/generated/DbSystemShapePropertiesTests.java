@@ -6,18 +6,78 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.DbSystemShapeProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class DbSystemShapePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbSystemShapeProperties model = BinaryData.fromString(
-            "{\"shapeFamily\":\"lnjixisxya\",\"availableCoreCount\":1486510526,\"minimumCoreCount\":347364157,\"runtimeMinimumCoreCount\":1772436776,\"coreCountIncrement\":1260853084,\"minStorageCount\":2113030944,\"maxStorageCount\":2033382031,\"availableDataStoragePerServerInTbs\":91.76297293138525,\"availableMemoryPerNodeInGbs\":983085062,\"availableDbNodePerNodeInGbs\":1211885049,\"minCoreCountPerNode\":1066317539,\"availableMemoryInGbs\":643892740,\"minMemoryPerNodeInGbs\":712721872,\"availableDbNodeStorageInGbs\":462425094,\"minDbNodeStoragePerNodeInGbs\":417791826,\"availableDataStorageInTbs\":644635434,\"minDataStorageInTbs\":1975568377,\"minimumNodeCount\":1201064167,\"maximumNodeCount\":681203122,\"availableCoreCountPerNode\":245214837}")
+            "{\"shapeFamily\":\"xiebwwaloayqcg\",\"availableCoreCount\":1214313613,\"minimumCoreCount\":1999029226,\"runtimeMinimumCoreCount\":350152394,\"coreCountIncrement\":1115460475,\"minStorageCount\":580617744,\"maxStorageCount\":1773507503,\"availableDataStoragePerServerInTbs\":22.30388664702183,\"availableMemoryPerNodeInGbs\":391776168,\"availableDbNodePerNodeInGbs\":1242740761,\"minCoreCountPerNode\":831729875,\"availableMemoryInGbs\":1391077197,\"minMemoryPerNodeInGbs\":1151721891,\"availableDbNodeStorageInGbs\":1264115895,\"minDbNodeStoragePerNodeInGbs\":978651097,\"availableDataStorageInTbs\":92762624,\"minDataStorageInTbs\":2036529105,\"minimumNodeCount\":899256068,\"maximumNodeCount\":168456950,\"availableCoreCountPerNode\":487735132}")
             .toObject(DbSystemShapeProperties.class);
+        Assertions.assertEquals("xiebwwaloayqcg", model.shapeFamily());
+        Assertions.assertEquals(1214313613, model.availableCoreCount());
+        Assertions.assertEquals(1999029226, model.minimumCoreCount());
+        Assertions.assertEquals(350152394, model.runtimeMinimumCoreCount());
+        Assertions.assertEquals(1115460475, model.coreCountIncrement());
+        Assertions.assertEquals(580617744, model.minStorageCount());
+        Assertions.assertEquals(1773507503, model.maxStorageCount());
+        Assertions.assertEquals(22.30388664702183D, model.availableDataStoragePerServerInTbs());
+        Assertions.assertEquals(391776168, model.availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(1242740761, model.availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(831729875, model.minCoreCountPerNode());
+        Assertions.assertEquals(1391077197, model.availableMemoryInGbs());
+        Assertions.assertEquals(1151721891, model.minMemoryPerNodeInGbs());
+        Assertions.assertEquals(1264115895, model.availableDbNodeStorageInGbs());
+        Assertions.assertEquals(978651097, model.minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(92762624, model.availableDataStorageInTbs());
+        Assertions.assertEquals(2036529105, model.minDataStorageInTbs());
+        Assertions.assertEquals(899256068, model.minimumNodeCount());
+        Assertions.assertEquals(168456950, model.maximumNodeCount());
+        Assertions.assertEquals(487735132, model.availableCoreCountPerNode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbSystemShapeProperties model = new DbSystemShapeProperties();
+        DbSystemShapeProperties model = new DbSystemShapeProperties().withShapeFamily("xiebwwaloayqcg")
+            .withAvailableCoreCount(1214313613)
+            .withMinimumCoreCount(1999029226)
+            .withRuntimeMinimumCoreCount(350152394)
+            .withCoreCountIncrement(1115460475)
+            .withMinStorageCount(580617744)
+            .withMaxStorageCount(1773507503)
+            .withAvailableDataStoragePerServerInTbs(22.30388664702183D)
+            .withAvailableMemoryPerNodeInGbs(391776168)
+            .withAvailableDbNodePerNodeInGbs(1242740761)
+            .withMinCoreCountPerNode(831729875)
+            .withAvailableMemoryInGbs(1391077197)
+            .withMinMemoryPerNodeInGbs(1151721891)
+            .withAvailableDbNodeStorageInGbs(1264115895)
+            .withMinDbNodeStoragePerNodeInGbs(978651097)
+            .withAvailableDataStorageInTbs(92762624)
+            .withMinDataStorageInTbs(2036529105)
+            .withMinimumNodeCount(899256068)
+            .withMaximumNodeCount(168456950)
+            .withAvailableCoreCountPerNode(487735132);
         model = BinaryData.fromObject(model).toObject(DbSystemShapeProperties.class);
+        Assertions.assertEquals("xiebwwaloayqcg", model.shapeFamily());
+        Assertions.assertEquals(1214313613, model.availableCoreCount());
+        Assertions.assertEquals(1999029226, model.minimumCoreCount());
+        Assertions.assertEquals(350152394, model.runtimeMinimumCoreCount());
+        Assertions.assertEquals(1115460475, model.coreCountIncrement());
+        Assertions.assertEquals(580617744, model.minStorageCount());
+        Assertions.assertEquals(1773507503, model.maxStorageCount());
+        Assertions.assertEquals(22.30388664702183D, model.availableDataStoragePerServerInTbs());
+        Assertions.assertEquals(391776168, model.availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(1242740761, model.availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(831729875, model.minCoreCountPerNode());
+        Assertions.assertEquals(1391077197, model.availableMemoryInGbs());
+        Assertions.assertEquals(1151721891, model.minMemoryPerNodeInGbs());
+        Assertions.assertEquals(1264115895, model.availableDbNodeStorageInGbs());
+        Assertions.assertEquals(978651097, model.minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(92762624, model.availableDataStorageInTbs());
+        Assertions.assertEquals(2036529105, model.minDataStorageInTbs());
+        Assertions.assertEquals(899256068, model.minimumNodeCount());
+        Assertions.assertEquals(168456950, model.maximumNodeCount());
+        Assertions.assertEquals(487735132, model.availableCoreCountPerNode());
     }
 }

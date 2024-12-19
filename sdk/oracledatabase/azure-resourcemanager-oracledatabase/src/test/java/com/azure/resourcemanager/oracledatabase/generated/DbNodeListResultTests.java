@@ -6,14 +6,44 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.DbNodeListResult;
+import com.azure.resourcemanager.oracledatabase.models.DbNodeMaintenanceType;
+import com.azure.resourcemanager.oracledatabase.models.DbNodeProvisioningState;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 
 public final class DbNodeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbNodeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"pyostronzmyhgfi\",\"additionalDetails\":\"sxkm\",\"backupIpId\":\"a\",\"backupVnic2Id\":\"rrjreafxtsgu\",\"backupVnicId\":\"jglikkxwslolb\",\"cpuCoreCount\":1224144822,\"dbNodeStorageSizeInGbs\":845097361,\"dbServerId\":\"m\",\"dbSystemId\":\"elfk\",\"faultDomain\":\"plcrpwjxeznoig\",\"hostIpId\":\"njwmwkpnbsazejj\",\"hostname\":\"kagfhsxtt\",\"lifecycleState\":\"Stopping\",\"lifecycleDetails\":\"xnfaazpxdtnk\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":190576653,\"softwareStorageSizeInGb\":135595246,\"timeCreated\":\"2020-12-21T21:02:08Z\",\"timeMaintenanceWindowEnd\":\"2021-06-14T14:36:08Z\",\"timeMaintenanceWindowStart\":\"2021-07-12T10:16:15Z\",\"vnic2Id\":\"pyouaibrebqaays\",\"vnicId\":\"ixqtn\",\"provisioningState\":\"Failed\"},\"id\":\"zlwfffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"ocid\":\"uyqncygupkvipmd\",\"additionalDetails\":\"wx\",\"backupIpId\":\"pevzhfst\",\"backupVnic2Id\":\"xhojuj\",\"backupVnicId\":\"pelmcuvhixbjxyf\",\"cpuCoreCount\":519110670,\"dbNodeStorageSizeInGbs\":156258046,\"dbServerId\":\"ool\",\"dbSystemId\":\"tpkiwkkbnujry\",\"faultDomain\":\"tylbfpncurdoiw\",\"hostIpId\":\"thtywub\",\"hostname\":\"bihwqknfdnt\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"rdgoihxumw\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1097443126,\"softwareStorageSizeInGb\":498677295,\"timeCreated\":\"2021-05-20T02:25:29Z\",\"timeMaintenanceWindowEnd\":\"2021-02-01T20:04:58Z\",\"timeMaintenanceWindowStart\":\"2021-06-25T00:10:43Z\",\"vnic2Id\":\"wggytsbwtovvt\",\"vnicId\":\"einqf\",\"provisioningState\":\"Canceled\"},\"id\":\"qknp\",\"name\":\"rgnepttwqmsniffc\",\"type\":\"mqnrojlpijnkr\"},{\"properties\":{\"ocid\":\"ddhcratizzr\",\"additionalDetails\":\"asxifto\",\"backupIpId\":\"yzhftwesgogczh\",\"backupVnic2Id\":\"nxkrlgnyhmossxkk\",\"backupVnicId\":\"h\",\"cpuCoreCount\":325722678,\"dbNodeStorageSizeInGbs\":712320662,\"dbServerId\":\"bdhqxvcxgf\",\"dbSystemId\":\"dsofbshrns\",\"faultDomain\":\"uswdv\",\"hostIpId\":\"ybycnunvj\",\"hostname\":\"tkfa\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"qg\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":828801062,\"softwareStorageSizeInGb\":1775941190,\"timeCreated\":\"2021-02-05T08:12:45Z\",\"timeMaintenanceWindowEnd\":\"2021-09-11T06:06:10Z\",\"timeMaintenanceWindowStart\":\"2021-06-22T14:25:15Z\",\"vnic2Id\":\"jntpsewgioilqu\",\"vnicId\":\"ydxtqm\",\"provisioningState\":\"Canceled\"},\"id\":\"orgguf\",\"name\":\"yaomtb\",\"type\":\"hhavgrvkffovjz\"},{\"properties\":{\"ocid\":\"bibgjmfxumv\",\"additionalDetails\":\"luyovwxnbkfezzx\",\"backupIpId\":\"yhwzdgiruj\",\"backupVnic2Id\":\"bomvzzbtdcqv\",\"backupVnicId\":\"iyujviylwdshfs\",\"cpuCoreCount\":2141139443,\"dbNodeStorageSizeInGbs\":482373530,\"dbServerId\":\"efr\",\"dbSystemId\":\"sgaojfmwncot\",\"faultDomain\":\"fhir\",\"hostIpId\":\"ymoxoftpipiwyczu\",\"hostname\":\"a\",\"lifecycleState\":\"Provisioning\",\"lifecycleDetails\":\"lihhyuspskasdvlm\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1752218041,\"softwareStorageSizeInGb\":1265801831,\"timeCreated\":\"2021-04-20T13:27:45Z\",\"timeMaintenanceWindowEnd\":\"2021-05-28T22:35:34Z\",\"timeMaintenanceWindowStart\":\"2021-04-02T21:01:47Z\",\"vnic2Id\":\"rsre\",\"vnicId\":\"vxurisjnhnytxifq\",\"provisioningState\":\"Failed\"},\"id\":\"mrhublwpc\",\"name\":\"sutrgjup\",\"type\":\"uutpwoqhih\"}],\"nextLink\":\"qg\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"awfsdjpvkvpbjxbk\",\"additionalDetails\":\"zkdvncja\",\"backupIpId\":\"durgkakmokz\",\"backupVnic2Id\":\"jk\",\"backupVnicId\":\"fhmouwq\",\"cpuCoreCount\":1175300996,\"dbNodeStorageSizeInGbs\":803774514,\"dbServerId\":\"eeyebi\",\"dbSystemId\":\"ikayuhqlbjbsybb\",\"faultDomain\":\"r\",\"hostIpId\":\"ldgmfpgvmpip\",\"hostname\":\"ltha\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"ss\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1174161651,\"softwareStorageSizeInGb\":1781178234,\"timeCreated\":\"2021-11-08T23:17:29Z\",\"timeMaintenanceWindowEnd\":\"2021-05-03T05:48:17Z\",\"timeMaintenanceWindowStart\":\"2021-08-26T22:24:43Z\",\"vnic2Id\":\"rhneuyowq\",\"vnicId\":\"d\",\"provisioningState\":\"Canceled\"},\"id\":\"sibircgpi\",\"name\":\"pzimejzanlfzxi\",\"type\":\"vrmbzono\"},{\"properties\":{\"ocid\":\"xrjqcirgzpfrlazs\",\"additionalDetails\":\"nwoiind\",\"backupIpId\":\"wp\",\"backupVnic2Id\":\"lwbtlhf\",\"backupVnicId\":\"jcdh\",\"cpuCoreCount\":1522734487,\"dbNodeStorageSizeInGbs\":2030266414,\"dbServerId\":\"bgofeljag\",\"dbSystemId\":\"qmqhldvriii\",\"faultDomain\":\"nalghfkvtvsexso\",\"hostIpId\":\"el\",\"hostname\":\"hhahhxvrhmzkwpjg\",\"lifecycleState\":\"Stopping\",\"lifecycleDetails\":\"pughftqsxh\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":318834407,\"softwareStorageSizeInGb\":649615996,\"timeCreated\":\"2021-05-23T18:59:06Z\",\"timeMaintenanceWindowEnd\":\"2021-03-24T06:22:09Z\",\"timeMaintenanceWindowStart\":\"2021-08-13T21:40:07Z\",\"vnic2Id\":\"rjguufzdmsyqtf\",\"vnicId\":\"hwhbotzingamv\",\"provisioningState\":\"Succeeded\"},\"id\":\"szqzudphqamv\",\"name\":\"kfwynw\",\"type\":\"vtbvkayh\"},{\"properties\":{\"ocid\":\"nvyq\",\"additionalDetails\":\"tkzwpcnpwzc\",\"backupIpId\":\"esgvvsccyaj\",\"backupVnic2Id\":\"qfhwyg\",\"backupVnicId\":\"vdnkfxusem\",\"cpuCoreCount\":1095077901,\"dbNodeStorageSizeInGbs\":1621003238,\"dbServerId\":\"hapfcqdpsqx\",\"dbSystemId\":\"vpsvuoymgcce\",\"faultDomain\":\"ezrypql\",\"hostIpId\":\"eokerqwkyhkobopg\",\"hostname\":\"dkow\",\"lifecycleState\":\"Stopped\",\"lifecycleDetails\":\"qpcrf\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":2104767633,\"softwareStorageSizeInGb\":561719480,\"timeCreated\":\"2021-03-10T23:40:05Z\",\"timeMaintenanceWindowEnd\":\"2021-11-03T02:22:23Z\",\"timeMaintenanceWindowStart\":\"2020-12-20T11:43:27Z\",\"vnic2Id\":\"lpqekf\",\"vnicId\":\"nkhtjsyingw\",\"provisioningState\":\"Succeeded\"},\"id\":\"mtdh\",\"name\":\"mdvy\",\"type\":\"gikdgsz\"}],\"nextLink\":\"kbir\"}")
             .toObject(DbNodeListResult.class);
-        Assertions.assertEquals("qg", model.nextLink());
+        Assertions.assertEquals("awfsdjpvkvpbjxbk", model.value().get(0).properties().ocid());
+        Assertions.assertEquals("zkdvncja", model.value().get(0).properties().additionalDetails());
+        Assertions.assertEquals("durgkakmokz", model.value().get(0).properties().backupIpId());
+        Assertions.assertEquals("jk", model.value().get(0).properties().backupVnic2Id());
+        Assertions.assertEquals("fhmouwq", model.value().get(0).properties().backupVnicId());
+        Assertions.assertEquals(1175300996, model.value().get(0).properties().cpuCoreCount());
+        Assertions.assertEquals(803774514, model.value().get(0).properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("eeyebi", model.value().get(0).properties().dbServerId());
+        Assertions.assertEquals("ikayuhqlbjbsybb", model.value().get(0).properties().dbSystemId());
+        Assertions.assertEquals("r", model.value().get(0).properties().faultDomain());
+        Assertions.assertEquals("ldgmfpgvmpip", model.value().get(0).properties().hostIpId());
+        Assertions.assertEquals("ltha", model.value().get(0).properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.TERMINATING,
+            model.value().get(0).properties().lifecycleState());
+        Assertions.assertEquals("ss", model.value().get(0).properties().lifecycleDetails());
+        Assertions.assertEquals(DbNodeMaintenanceType.VMDB_REBOOT_MIGRATION,
+            model.value().get(0).properties().maintenanceType());
+        Assertions.assertEquals(1174161651, model.value().get(0).properties().memorySizeInGbs());
+        Assertions.assertEquals(1781178234, model.value().get(0).properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T23:17:29Z"),
+            model.value().get(0).properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T05:48:17Z"),
+            model.value().get(0).properties().timeMaintenanceWindowEnd());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T22:24:43Z"),
+            model.value().get(0).properties().timeMaintenanceWindowStart());
+        Assertions.assertEquals("rhneuyowq", model.value().get(0).properties().vnic2Id());
+        Assertions.assertEquals("d", model.value().get(0).properties().vnicId());
+        Assertions.assertEquals("kbir", model.nextLink());
     }
 }

@@ -7,18 +7,22 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.SystemVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersionProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class SystemVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"systemVersion\":\"mkcxozapvh\"},\"id\":\"xprglyatddc\",\"name\":\"cbcuejrjxgciqi\",\"type\":\"rhos\"}")
+            "{\"properties\":{\"systemVersion\":\"glkfg\"},\"id\":\"dneu\",\"name\":\"lfphsdyhtozfikd\",\"type\":\"wwquuvxzxclvithh\"}")
             .toObject(SystemVersionInner.class);
+        Assertions.assertEquals("glkfg", model.properties().systemVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemVersionInner model = new SystemVersionInner().withProperties(new SystemVersionProperties());
+        SystemVersionInner model
+            = new SystemVersionInner().withProperties(new SystemVersionProperties().withSystemVersion("glkfg"));
         model = BinaryData.fromObject(model).toObject(SystemVersionInner.class);
+        Assertions.assertEquals("glkfg", model.properties().systemVersion());
     }
 }

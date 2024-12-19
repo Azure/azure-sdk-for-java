@@ -23,7 +23,7 @@ public final class AutonomousDatabaseUpdate implements JsonSerializable<Autonomo
     private Map<String, String> tags;
 
     /*
-     * The updatable properties of the AutonomousDatabase.
+     * The resource-specific properties for this resource.
      */
     private AutonomousDatabaseUpdateProperties properties;
 
@@ -54,7 +54,7 @@ public final class AutonomousDatabaseUpdate implements JsonSerializable<Autonomo
     }
 
     /**
-     * Get the properties property: The updatable properties of the AutonomousDatabase.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -63,7 +63,7 @@ public final class AutonomousDatabaseUpdate implements JsonSerializable<Autonomo
     }
 
     /**
-     * Set the properties property: The updatable properties of the AutonomousDatabase.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the AutonomousDatabaseUpdate object itself.

@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"beolh\",\"vmOcid\":\"lvbmxuqibsxtkcu\",\"ocid\":\"b\",\"domain\":\"arfsi\",\"lifecycleDetails\":\"lkjxnqpvwgf\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-06-25T15:03:20Z\"},\"id\":\"zmdk\",\"name\":\"aoaf\",\"type\":\"luqvoxmycjimryv\"}";
+            = "{\"properties\":{\"ipAddress\":\"qirwrweoox\",\"vmOcid\":\"i\",\"ocid\":\"xwrsnew\",\"domain\":\"zqvbubqm\",\"lifecycleDetails\":\"hsycxhxzgaz\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-05-05T18:26:36Z\"},\"id\":\"mfqhppubowse\",\"name\":\"dfgkmtdh\",\"type\":\"rngbtcjuahokqtob\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .define("fsv")
-            .withExistingCloudVmCluster("phaimmoi", "oqboshbragapyyr")
-            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("vbopfppdbwnu").withVmOcid("ahxku"))
+            .define("pkt")
+            .withExistingCloudVmCluster("qw", "edmurrxxge")
+            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("lkm").withVmOcid("zoyhlfbcgwg"))
             .create();
 
-        Assertions.assertEquals("beolh", response.properties().ipAddress());
-        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().vmOcid());
+        Assertions.assertEquals("qirwrweoox", response.properties().ipAddress());
+        Assertions.assertEquals("i", response.properties().vmOcid());
     }
 }

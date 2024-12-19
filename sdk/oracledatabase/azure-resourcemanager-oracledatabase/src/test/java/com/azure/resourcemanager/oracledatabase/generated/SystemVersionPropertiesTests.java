@@ -6,17 +6,20 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersionProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class SystemVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionProperties model
-            = BinaryData.fromString("{\"systemVersion\":\"dqrhzoymib\"}").toObject(SystemVersionProperties.class);
+            = BinaryData.fromString("{\"systemVersion\":\"zonosgg\"}").toObject(SystemVersionProperties.class);
+        Assertions.assertEquals("zonosgg", model.systemVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemVersionProperties model = new SystemVersionProperties();
+        SystemVersionProperties model = new SystemVersionProperties().withSystemVersion("zonosgg");
         model = BinaryData.fromObject(model).toObject(SystemVersionProperties.class);
+        Assertions.assertEquals("zonosgg", model.systemVersion());
     }
 }

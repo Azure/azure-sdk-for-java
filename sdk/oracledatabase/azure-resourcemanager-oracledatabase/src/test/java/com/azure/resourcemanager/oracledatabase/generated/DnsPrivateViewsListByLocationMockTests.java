@@ -12,8 +12,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateView;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewsLifecycleState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +23,7 @@ public final class DnsPrivateViewsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"yxonsupe\",\"displayName\":\"lzqnhcvs\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"ibg\",\"timeCreated\":\"2021-02-11T13:30:21Z\",\"timeUpdated\":\"2021-03-11T11:00:33Z\",\"provisioningState\":\"Canceled\"},\"id\":\"onmpqoxwdof\",\"name\":\"bxiqxeiiqbimht\",\"type\":\"wwinhehf\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"l\",\"displayName\":\"wumuaslzk\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"woycqucwyha\",\"timeCreated\":\"2021-12-05T11:23:21Z\",\"timeUpdated\":\"2021-04-19T13:38:03Z\",\"provisioningState\":\"Failed\"},\"id\":\"kywuhpsvfuu\",\"name\":\"utlwexxwla\",\"type\":\"niexzsrzpgepq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +33,17 @@ public final class DnsPrivateViewsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsPrivateView> response
-            = manager.dnsPrivateViews().listByLocation("vwf", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateViews().listByLocation("zab", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("l", response.iterator().next().properties().ocid());
+        Assertions.assertEquals("wumuaslzk", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(true, response.iterator().next().properties().isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING,
+            response.iterator().next().properties().lifecycleState());
+        Assertions.assertEquals("woycqucwyha", response.iterator().next().properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T11:23:21Z"),
+            response.iterator().next().properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T13:38:03Z"),
+            response.iterator().next().properties().timeUpdated());
     }
 }

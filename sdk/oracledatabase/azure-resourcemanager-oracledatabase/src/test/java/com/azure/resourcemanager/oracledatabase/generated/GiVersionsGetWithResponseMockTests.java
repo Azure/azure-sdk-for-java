@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.GiVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public final class GiVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"wcobie\"},\"id\":\"tmninw\",\"name\":\"izcil\",\"type\":\"ghgshejjtbxqmu\"}";
+            = "{\"properties\":{\"version\":\"oqltfae\"},\"id\":\"inmfgvxirp\",\"name\":\"hriypoqeyhlqhy\",\"type\":\"prlpy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +30,9 @@ public final class GiVersionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GiVersion response = manager.giVersions()
-            .getWithResponse("i", "xgvelfclduccbird", com.azure.core.util.Context.NONE)
-            .getValue();
+        GiVersion response
+            = manager.giVersions().getWithResponse("wxacevehj", "uyxoaf", com.azure.core.util.Context.NONE).getValue();
 
+        Assertions.assertEquals("oqltfae", response.properties().version());
     }
 }

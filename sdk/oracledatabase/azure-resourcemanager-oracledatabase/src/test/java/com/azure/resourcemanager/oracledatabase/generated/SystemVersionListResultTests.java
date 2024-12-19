@@ -12,8 +12,9 @@ public final class SystemVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"systemVersion\":\"smond\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"}],\"nextLink\":\"smocmbq\"}")
+            "{\"value\":[{\"properties\":{\"systemVersion\":\"tmuwlauwzi\"},\"id\":\"bm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"}],\"nextLink\":\"morppxebmnzbtbh\"}")
             .toObject(SystemVersionListResult.class);
-        Assertions.assertEquals("smocmbq", model.nextLink());
+        Assertions.assertEquals("tmuwlauwzi", model.value().get(0).properties().systemVersion());
+        Assertions.assertEquals("morppxebmnzbtbh", model.nextLink());
     }
 }

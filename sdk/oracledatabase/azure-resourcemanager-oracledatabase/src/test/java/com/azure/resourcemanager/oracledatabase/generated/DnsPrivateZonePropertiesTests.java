@@ -6,18 +6,48 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZoneProperties;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZonesLifecycleState;
+import com.azure.resourcemanager.oracledatabase.models.ZoneType;
+import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateZonePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneProperties model = BinaryData.fromString(
-            "{\"ocid\":\"dsjnka\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"swacffgdkzz\",\"serial\":1258640156,\"version\":\"vhqcrail\",\"viewId\":\"n\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-20T12:14:16Z\",\"provisioningState\":\"Canceled\"}")
+            "{\"ocid\":\"uie\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"ccymvaolpsslql\",\"serial\":718226275,\"version\":\"mdnbbglzpswiy\",\"viewId\":\"cwyhzdxssa\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-07-26T10:10:37Z\",\"provisioningState\":\"Failed\"}")
             .toObject(DnsPrivateZoneProperties.class);
+        Assertions.assertEquals("uie", model.ocid());
+        Assertions.assertEquals(true, model.isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING, model.lifecycleState());
+        Assertions.assertEquals("ccymvaolpsslql", model.self());
+        Assertions.assertEquals(718226275, model.serial());
+        Assertions.assertEquals("mdnbbglzpswiy", model.version());
+        Assertions.assertEquals("cwyhzdxssa", model.viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T10:10:37Z"), model.timeCreated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsPrivateZoneProperties model = new DnsPrivateZoneProperties();
+        DnsPrivateZoneProperties model = new DnsPrivateZoneProperties().withOcid("uie")
+            .withIsProtected(true)
+            .withLifecycleState(DnsPrivateZonesLifecycleState.UPDATING)
+            .withSelf("ccymvaolpsslql")
+            .withSerial(718226275)
+            .withVersion("mdnbbglzpswiy")
+            .withViewId("cwyhzdxssa")
+            .withZoneType(ZoneType.SECONDARY)
+            .withTimeCreated(OffsetDateTime.parse("2021-07-26T10:10:37Z"));
         model = BinaryData.fromObject(model).toObject(DnsPrivateZoneProperties.class);
+        Assertions.assertEquals("uie", model.ocid());
+        Assertions.assertEquals(true, model.isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING, model.lifecycleState());
+        Assertions.assertEquals("ccymvaolpsslql", model.self());
+        Assertions.assertEquals(718226275, model.serial());
+        Assertions.assertEquals("mdnbbglzpswiy", model.version());
+        Assertions.assertEquals("cwyhzdxssa", model.viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T10:10:37Z"), model.timeCreated());
     }
 }

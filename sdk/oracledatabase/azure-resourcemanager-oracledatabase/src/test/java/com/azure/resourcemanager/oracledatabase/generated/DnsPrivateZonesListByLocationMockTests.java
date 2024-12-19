@@ -12,8 +12,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZone;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZonesLifecycleState;
+import com.azure.resourcemanager.oracledatabase.models.ZoneType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +24,7 @@ public final class DnsPrivateZonesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"ylnio\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"jed\",\"serial\":1946171356,\"version\":\"vnlvxbcuiiznktwf\",\"viewId\":\"snvpdibmi\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-01-17T12:38:03Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"iwbuqny\",\"name\":\"phzfylsgcrp\",\"type\":\"bcunezzceze\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"pchrqbn\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"cgegydcwbo\",\"serial\":1832381587,\"version\":\"umvq\",\"viewId\":\"lihrraiouaubr\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-09-02T09:26:55Z\",\"provisioningState\":\"Canceled\"},\"id\":\"fuojrngif\",\"name\":\"rzpasccbiuimzdly\",\"type\":\"dfqwmkyoq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +34,18 @@ public final class DnsPrivateZonesListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DnsPrivateZone> response
-            = manager.dnsPrivateZones().listByLocation("pv", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateZones().listByLocation("dunqnd", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("pchrqbn", response.iterator().next().properties().ocid());
+        Assertions.assertEquals(false, response.iterator().next().properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING,
+            response.iterator().next().properties().lifecycleState());
+        Assertions.assertEquals("cgegydcwbo", response.iterator().next().properties().self());
+        Assertions.assertEquals(1832381587, response.iterator().next().properties().serial());
+        Assertions.assertEquals("umvq", response.iterator().next().properties().version());
+        Assertions.assertEquals("lihrraiouaubr", response.iterator().next().properties().viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, response.iterator().next().properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T09:26:55Z"),
+            response.iterator().next().properties().timeCreated());
     }
 }

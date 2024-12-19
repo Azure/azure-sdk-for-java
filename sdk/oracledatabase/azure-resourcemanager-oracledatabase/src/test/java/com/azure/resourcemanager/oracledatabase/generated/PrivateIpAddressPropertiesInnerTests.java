@@ -12,12 +12,12 @@ public final class PrivateIpAddressPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateIpAddressPropertiesInner model = BinaryData.fromString(
-            "{\"displayName\":\"cbhernntiewdj\",\"hostnameLabel\":\"vbquwr\",\"ocid\":\"ehwagoh\",\"ipAddress\":\"uffkmrqemvvh\",\"subnetId\":\"xtdr\"}")
+            "{\"displayName\":\"ibreb\",\"hostnameLabel\":\"aays\",\"ocid\":\"kixqtnqtt\",\"ipAddress\":\"zlwfffiakp\",\"subnetId\":\"pqqmted\"}")
             .toObject(PrivateIpAddressPropertiesInner.class);
-        Assertions.assertEquals("cbhernntiewdj", model.displayName());
-        Assertions.assertEquals("vbquwr", model.hostnameLabel());
-        Assertions.assertEquals("ehwagoh", model.ocid());
-        Assertions.assertEquals("uffkmrqemvvh", model.ipAddress());
-        Assertions.assertEquals("xtdr", model.subnetId());
+        Assertions.assertEquals("ibreb", model.displayName());
+        Assertions.assertEquals("aays", model.hostnameLabel());
+        Assertions.assertEquals("kixqtnqtt", model.ocid());
+        Assertions.assertEquals("zlwfffiakp", model.ipAddress());
+        Assertions.assertEquals("pqqmted", model.subnetId());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.GiVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class GiVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"hkfkimrtixokf\"},\"id\":\"yinljqe\",\"name\":\"qwhix\",\"type\":\"onsts\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"gleohi\"},\"id\":\"tnluankrr\",\"name\":\"xeeebtijvacvbmqz\",\"type\":\"qqxlajr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +32,8 @@ public final class GiVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GiVersion> response
-            = manager.giVersions().listByLocation("wemxswvruunzz", com.azure.core.util.Context.NONE);
+            = manager.giVersions().listByLocation("czbgomfgbeg", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("gleohi", response.iterator().next().properties().version());
     }
 }

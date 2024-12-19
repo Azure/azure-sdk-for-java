@@ -163,9 +163,9 @@ public interface AutonomousDatabaseBackup {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The updatable properties of the AutonomousDatabaseBackup..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The updatable properties of the AutonomousDatabaseBackup.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(AutonomousDatabaseBackupUpdateProperties properties);

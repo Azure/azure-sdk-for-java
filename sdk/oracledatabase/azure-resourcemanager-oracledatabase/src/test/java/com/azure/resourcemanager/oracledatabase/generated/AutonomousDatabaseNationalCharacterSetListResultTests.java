@@ -12,8 +12,9 @@ public final class AutonomousDatabaseNationalCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseNationalCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"yvpycanuzbpzk\"},\"id\":\"kuwbcrnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"},{\"properties\":{\"characterSet\":\"ag\"},\"id\":\"t\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"},{\"properties\":{\"characterSet\":\"dhmdua\"},\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"},{\"properties\":{\"characterSet\":\"misgwbnb\"},\"id\":\"ldawkzbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}],\"nextLink\":\"ooxdjebwpuc\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"udxytlmoyrx\"},\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"}],\"nextLink\":\"kyv\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
-        Assertions.assertEquals("ooxdjebwpuc", model.nextLink());
+        Assertions.assertEquals("udxytlmoyrx", model.value().get(0).properties().characterSet());
+        Assertions.assertEquals("kyv", model.nextLink());
     }
 }

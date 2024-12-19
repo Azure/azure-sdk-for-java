@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +15,7 @@ import java.io.IOException;
 /**
  * GiVersion resource model.
  */
-@Immutable
+@Fluent
 public final class GiVersionProperties implements JsonSerializable<GiVersionProperties> {
     /*
      * A valid Oracle Grid Infrastructure (GI) software version.
@@ -37,12 +38,29 @@ public final class GiVersionProperties implements JsonSerializable<GiVersionProp
     }
 
     /**
+     * Set the version property: A valid Oracle Grid Infrastructure (GI) software version.
+     * 
+     * @param version the version value to set.
+     * @return the GiVersionProperties object itself.
+     */
+    public GiVersionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (version() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property version in model GiVersionProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GiVersionProperties.class);
 
     /**
      * {@inheritDoc}
@@ -50,6 +68,7 @@ public final class GiVersionProperties implements JsonSerializable<GiVersionProp
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
@@ -59,6 +78,7 @@ public final class GiVersionProperties implements JsonSerializable<GiVersionProp
      * @param jsonReader The JsonReader being read.
      * @return An instance of GiVersionProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GiVersionProperties.
      */
     public static GiVersionProperties fromJson(JsonReader jsonReader) throws IOException {

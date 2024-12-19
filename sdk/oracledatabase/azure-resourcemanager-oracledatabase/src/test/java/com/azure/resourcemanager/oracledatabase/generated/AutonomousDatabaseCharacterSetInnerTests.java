@@ -7,19 +7,22 @@ package com.azure.resourcemanager.oracledatabase.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseCharacterSetInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharacterSetProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseCharacterSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetInner model = BinaryData.fromString(
-            "{\"properties\":{\"characterSet\":\"ujidsuyono\"},\"id\":\"laocqxtccmg\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}")
+            "{\"properties\":{\"characterSet\":\"tazqugxywpmueefj\"},\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"}")
             .toObject(AutonomousDatabaseCharacterSetInner.class);
+        Assertions.assertEquals("tazqugxywpmueefj", model.properties().characterSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDatabaseCharacterSetInner model
-            = new AutonomousDatabaseCharacterSetInner().withProperties(new AutonomousDatabaseCharacterSetProperties());
+        AutonomousDatabaseCharacterSetInner model = new AutonomousDatabaseCharacterSetInner()
+            .withProperties(new AutonomousDatabaseCharacterSetProperties().withCharacterSet("tazqugxywpmueefj"));
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseCharacterSetInner.class);
+        Assertions.assertEquals("tazqugxywpmueefj", model.properties().characterSet());
     }
 }

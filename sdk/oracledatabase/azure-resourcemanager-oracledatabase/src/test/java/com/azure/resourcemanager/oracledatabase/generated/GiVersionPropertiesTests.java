@@ -6,16 +6,20 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.GiVersionProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class GiVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GiVersionProperties model = BinaryData.fromString("{\"version\":\"ubex\"}").toObject(GiVersionProperties.class);
+        GiVersionProperties model
+            = BinaryData.fromString("{\"version\":\"tkoievseotgq\"}").toObject(GiVersionProperties.class);
+        Assertions.assertEquals("tkoievseotgq", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GiVersionProperties model = new GiVersionProperties();
+        GiVersionProperties model = new GiVersionProperties().withVersion("tkoievseotgq");
         model = BinaryData.fromObject(model).toObject(GiVersionProperties.class);
+        Assertions.assertEquals("tkoievseotgq", model.version());
     }
 }

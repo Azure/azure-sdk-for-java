@@ -6,14 +6,28 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZoneListResult;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZonesLifecycleState;
+import com.azure.resourcemanager.oracledatabase.models.ZoneType;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateZoneListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"swiydmcwyhzdx\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"mnvdfzn\",\"serial\":451636387,\"version\":\"dvxzbncblylpst\",\"viewId\":\"hh\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-04-01T15:36:07Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"},{\"properties\":{\"ocid\":\"wab\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"szhedplvw\",\"serial\":523277944,\"version\":\"mwmbes\",\"viewId\":\"nkww\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-05-13T14:02:05Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"ogaok\",\"name\":\"nzmnsikvm\",\"type\":\"qzeqqkdltfzxm\"},{\"properties\":{\"ocid\":\"hgure\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"dagxtibqd\",\"serial\":1020209011,\"version\":\"akbogqxndlkzgxh\",\"viewId\":\"iplbpodxunkbebxm\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-12-05T13:10:34Z\",\"provisioningState\":\"Canceled\"},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}],\"nextLink\":\"auwzizxbmpgc\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"bpvjymjhx\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"n\",\"serial\":8533369,\"version\":\"divkrt\",\"viewId\":\"bxqz\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-26T13:42:02Z\",\"provisioningState\":\"Failed\"},\"id\":\"uvjfdxxive\",\"name\":\"vtcqaqtdo\",\"type\":\"mcbxvwvxysl\"},{\"properties\":{\"ocid\":\"hsfxoblytkb\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"ewwwfbkrvrnsv\",\"serial\":1344598384,\"version\":\"q\",\"viewId\":\"hxcr\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2020-12-28T12:25:09Z\",\"provisioningState\":\"Canceled\"},\"id\":\"srruvwbhsqfsubcg\",\"name\":\"birx\",\"type\":\"pybsrfbjfdtw\"}],\"nextLink\":\"otftpvjzbexilz\"}")
             .toObject(DnsPrivateZoneListResult.class);
-        Assertions.assertEquals("auwzizxbmpgc", model.nextLink());
+        Assertions.assertEquals("bpvjymjhx", model.value().get(0).properties().ocid());
+        Assertions.assertEquals(false, model.value().get(0).properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETED,
+            model.value().get(0).properties().lifecycleState());
+        Assertions.assertEquals("n", model.value().get(0).properties().self());
+        Assertions.assertEquals(8533369, model.value().get(0).properties().serial());
+        Assertions.assertEquals("divkrt", model.value().get(0).properties().version());
+        Assertions.assertEquals("bxqz", model.value().get(0).properties().viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.value().get(0).properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T13:42:02Z"),
+            model.value().get(0).properties().timeCreated());
+        Assertions.assertEquals("otftpvjzbexilz", model.nextLink());
     }
 }

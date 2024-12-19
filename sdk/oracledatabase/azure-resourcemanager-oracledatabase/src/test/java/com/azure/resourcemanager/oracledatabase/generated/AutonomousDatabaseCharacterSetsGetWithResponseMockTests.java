@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharacterSet;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +21,7 @@ public final class AutonomousDatabaseCharacterSetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"characterSet\":\"lewjwiuubwef\"},\"id\":\"fapaqtfer\",\"name\":\"q\",\"type\":\"ex\"}";
+            = "{\"properties\":{\"characterSet\":\"mcwsldrizetpwb\"},\"id\":\"lllibph\",\"name\":\"qzmiza\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,9 @@ public final class AutonomousDatabaseCharacterSetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDatabaseCharacterSet response = manager.autonomousDatabaseCharacterSets()
-            .getWithResponse("pcpil", "hahzvechndbnwi", com.azure.core.util.Context.NONE)
+            .getWithResponse("tillucbiqtg", "q", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("mcwsldrizetpwb", response.properties().characterSet());
     }
 }

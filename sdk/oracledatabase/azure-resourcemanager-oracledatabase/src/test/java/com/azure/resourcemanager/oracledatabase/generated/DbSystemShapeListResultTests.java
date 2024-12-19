@@ -12,8 +12,29 @@ public final class DbSystemShapeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbSystemShapeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"shapeFamily\":\"t\",\"availableCoreCount\":1491290789,\"minimumCoreCount\":777481009,\"runtimeMinimumCoreCount\":1258750458,\"coreCountIncrement\":1397437100,\"minStorageCount\":1232796575,\"maxStorageCount\":1519275761,\"availableDataStoragePerServerInTbs\":54.5079147632145,\"availableMemoryPerNodeInGbs\":1214313613,\"availableDbNodePerNodeInGbs\":1999029226,\"minCoreCountPerNode\":350152394,\"availableMemoryInGbs\":1115460475,\"minMemoryPerNodeInGbs\":580617744,\"availableDbNodeStorageInGbs\":1773507503,\"minDbNodeStoragePerNodeInGbs\":957944639,\"availableDataStorageInTbs\":1672254683,\"minDataStorageInTbs\":2086388671,\"minimumNodeCount\":351214213,\"maximumNodeCount\":2051758056,\"availableCoreCountPerNode\":1378087535},\"id\":\"bp\",\"name\":\"xqpsrknftguv\",\"type\":\"iuhprwmdyvxqta\"},{\"properties\":{\"shapeFamily\":\"ww\",\"availableCoreCount\":1692678524,\"minimumCoreCount\":1731999756,\"runtimeMinimumCoreCount\":1603221085,\"coreCountIncrement\":591654502,\"minStorageCount\":1070859381,\"maxStorageCount\":75631080,\"availableDataStoragePerServerInTbs\":81.21344104639293,\"availableMemoryPerNodeInGbs\":934632065,\"availableDbNodePerNodeInGbs\":988905675,\"minCoreCountPerNode\":2121055666,\"availableMemoryInGbs\":841332893,\"minMemoryPerNodeInGbs\":1391032405,\"availableDbNodeStorageInGbs\":1995543121,\"minDbNodeStoragePerNodeInGbs\":488274582,\"availableDataStorageInTbs\":673503494,\"minDataStorageInTbs\":2048055130,\"minimumNodeCount\":1125430045,\"maximumNodeCount\":1715507551,\"availableCoreCountPerNode\":1436102139},\"id\":\"zcjrvxdjzlmwlx\",\"name\":\"vu\",\"type\":\"fhzovawjvzunluth\"}],\"nextLink\":\"prnxipeil\"}")
+            "{\"value\":[{\"properties\":{\"shapeFamily\":\"bwpucwwfvovbv\",\"availableCoreCount\":1386132644,\"minimumCoreCount\":1504901100,\"runtimeMinimumCoreCount\":1911093580,\"coreCountIncrement\":783632971,\"minStorageCount\":297335263,\"maxStorageCount\":360614729,\"availableDataStoragePerServerInTbs\":87.90821256009058,\"availableMemoryPerNodeInGbs\":745513484,\"availableDbNodePerNodeInGbs\":1026391011,\"minCoreCountPerNode\":737115334,\"availableMemoryInGbs\":1607896352,\"minMemoryPerNodeInGbs\":798957461,\"availableDbNodeStorageInGbs\":1580797213,\"minDbNodeStoragePerNodeInGbs\":54920560,\"availableDataStorageInTbs\":643148633,\"minDataStorageInTbs\":17080551,\"minimumNodeCount\":384724385,\"maximumNodeCount\":838785311,\"availableCoreCountPerNode\":1070997174},\"id\":\"awgqwgxhni\",\"name\":\"kxfbkpycgklwndn\",\"type\":\"jdauwhvy\"}],\"nextLink\":\"zbtd\"}")
             .toObject(DbSystemShapeListResult.class);
-        Assertions.assertEquals("prnxipeil", model.nextLink());
+        Assertions.assertEquals("bwpucwwfvovbv", model.value().get(0).properties().shapeFamily());
+        Assertions.assertEquals(1386132644, model.value().get(0).properties().availableCoreCount());
+        Assertions.assertEquals(1504901100, model.value().get(0).properties().minimumCoreCount());
+        Assertions.assertEquals(1911093580, model.value().get(0).properties().runtimeMinimumCoreCount());
+        Assertions.assertEquals(783632971, model.value().get(0).properties().coreCountIncrement());
+        Assertions.assertEquals(297335263, model.value().get(0).properties().minStorageCount());
+        Assertions.assertEquals(360614729, model.value().get(0).properties().maxStorageCount());
+        Assertions.assertEquals(87.90821256009058D,
+            model.value().get(0).properties().availableDataStoragePerServerInTbs());
+        Assertions.assertEquals(745513484, model.value().get(0).properties().availableMemoryPerNodeInGbs());
+        Assertions.assertEquals(1026391011, model.value().get(0).properties().availableDbNodePerNodeInGbs());
+        Assertions.assertEquals(737115334, model.value().get(0).properties().minCoreCountPerNode());
+        Assertions.assertEquals(1607896352, model.value().get(0).properties().availableMemoryInGbs());
+        Assertions.assertEquals(798957461, model.value().get(0).properties().minMemoryPerNodeInGbs());
+        Assertions.assertEquals(1580797213, model.value().get(0).properties().availableDbNodeStorageInGbs());
+        Assertions.assertEquals(54920560, model.value().get(0).properties().minDbNodeStoragePerNodeInGbs());
+        Assertions.assertEquals(643148633, model.value().get(0).properties().availableDataStorageInTbs());
+        Assertions.assertEquals(17080551, model.value().get(0).properties().minDataStorageInTbs());
+        Assertions.assertEquals(384724385, model.value().get(0).properties().minimumNodeCount());
+        Assertions.assertEquals(838785311, model.value().get(0).properties().maximumNodeCount());
+        Assertions.assertEquals(1070997174, model.value().get(0).properties().availableCoreCountPerNode());
+        Assertions.assertEquals("zbtd", model.nextLink());
     }
 }

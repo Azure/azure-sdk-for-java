@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Zones resource model.
  */
-@Immutable
+@Fluent
 public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPrivateZoneProperties> {
     /*
      * The OCID of the Zone
@@ -26,7 +28,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     /*
      * A Boolean flag indicating whether or not parts of the resource are unable to be explicitly managed.
      */
-    private Boolean isProtected;
+    private boolean isProtected;
 
     /*
      * Zones lifecycleState
@@ -41,7 +43,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     /*
      * The current serial of the zone. As seen in the zone's SOA record.
      */
-    private Integer serial;
+    private int serial;
 
     /*
      * Version is the never-repeating, totally-orderable, version of the zone, from which the serial field of the zone's
@@ -86,13 +88,36 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the ocid property: The OCID of the Zone.
+     * 
+     * @param ocid the ocid value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withOcid(String ocid) {
+        this.ocid = ocid;
+        return this;
+    }
+
+    /**
      * Get the isProtected property: A Boolean flag indicating whether or not parts of the resource are unable to be
      * explicitly managed.
      * 
      * @return the isProtected value.
      */
-    public Boolean isProtected() {
+    public boolean isProtected() {
         return this.isProtected;
+    }
+
+    /**
+     * Set the isProtected property: A Boolean flag indicating whether or not parts of the resource are unable to be
+     * explicitly managed.
+     * 
+     * @param isProtected the isProtected value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withIsProtected(boolean isProtected) {
+        this.isProtected = isProtected;
+        return this;
     }
 
     /**
@@ -105,6 +130,17 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the lifecycleState property: Zones lifecycleState.
+     * 
+     * @param lifecycleState the lifecycleState value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withLifecycleState(DnsPrivateZonesLifecycleState lifecycleState) {
+        this.lifecycleState = lifecycleState;
+        return this;
+    }
+
+    /**
      * Get the self property: The canonical absolute URL of the resource.
      * 
      * @return the self value.
@@ -114,12 +150,34 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the self property: The canonical absolute URL of the resource.
+     * 
+     * @param self the self value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withSelf(String self) {
+        this.self = self;
+        return this;
+    }
+
+    /**
      * Get the serial property: The current serial of the zone. As seen in the zone's SOA record.
      * 
      * @return the serial value.
      */
-    public Integer serial() {
+    public int serial() {
         return this.serial;
+    }
+
+    /**
+     * Set the serial property: The current serial of the zone. As seen in the zone's SOA record.
+     * 
+     * @param serial the serial value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withSerial(int serial) {
+        this.serial = serial;
+        return this;
     }
 
     /**
@@ -133,6 +191,18 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the version property: Version is the never-repeating, totally-orderable, version of the zone, from which the
+     * serial field of the zone's SOA record is derived.
+     * 
+     * @param version the version value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the viewId property: The OCID of the private view containing the zone. This value will be null for zones in
      * the global DNS, which are publicly resolvable and not part of a private view.
      * 
@@ -140,6 +210,18 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      */
     public String viewId() {
         return this.viewId;
+    }
+
+    /**
+     * Set the viewId property: The OCID of the private view containing the zone. This value will be null for zones in
+     * the global DNS, which are publicly resolvable and not part of a private view.
+     * 
+     * @param viewId the viewId value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withViewId(String viewId) {
+        this.viewId = viewId;
+        return this;
     }
 
     /**
@@ -153,12 +235,35 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     }
 
     /**
+     * Set the zoneType property: The type of the zone. Must be either PRIMARY or SECONDARY. SECONDARY is only supported
+     * for GLOBAL zones.
+     * 
+     * @param zoneType the zoneType value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withZoneType(ZoneType zoneType) {
+        this.zoneType = zoneType;
+        return this;
+    }
+
+    /**
      * Get the timeCreated property: Zones timeCreated.
      * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
+    }
+
+    /**
+     * Set the timeCreated property: Zones timeCreated.
+     * 
+     * @param timeCreated the timeCreated value to set.
+     * @return the DnsPrivateZoneProperties object itself.
+     */
+    public DnsPrivateZoneProperties withTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
     }
 
     /**
@@ -176,7 +281,37 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ocid() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ocid in model DnsPrivateZoneProperties"));
+        }
+        if (lifecycleState() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lifecycleState in model DnsPrivateZoneProperties"));
+        }
+        if (self() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property self in model DnsPrivateZoneProperties"));
+        }
+        if (version() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property version in model DnsPrivateZoneProperties"));
+        }
+        if (zoneType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property zoneType in model DnsPrivateZoneProperties"));
+        }
+        if (timeCreated() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeCreated in model DnsPrivateZoneProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsPrivateZoneProperties.class);
 
     /**
      * {@inheritDoc}
@@ -184,6 +319,17 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ocid", this.ocid);
+        jsonWriter.writeBooleanField("isProtected", this.isProtected);
+        jsonWriter.writeStringField("lifecycleState",
+            this.lifecycleState == null ? null : this.lifecycleState.toString());
+        jsonWriter.writeStringField("self", this.self);
+        jsonWriter.writeIntField("serial", this.serial);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("zoneType", this.zoneType == null ? null : this.zoneType.toString());
+        jsonWriter.writeStringField("timeCreated",
+            this.timeCreated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeCreated));
+        jsonWriter.writeStringField("viewId", this.viewId);
         return jsonWriter.writeEndObject();
     }
 
@@ -193,6 +339,7 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
      * @param jsonReader The JsonReader being read.
      * @return An instance of DnsPrivateZoneProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DnsPrivateZoneProperties.
      */
     public static DnsPrivateZoneProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -205,23 +352,23 @@ public final class DnsPrivateZoneProperties implements JsonSerializable<DnsPriva
                 if ("ocid".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.ocid = reader.getString();
                 } else if ("isProtected".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.isProtected = reader.getNullable(JsonReader::getBoolean);
+                    deserializedDnsPrivateZoneProperties.isProtected = reader.getBoolean();
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.lifecycleState
                         = DnsPrivateZonesLifecycleState.fromString(reader.getString());
                 } else if ("self".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.self = reader.getString();
                 } else if ("serial".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.serial = reader.getNullable(JsonReader::getInt);
+                    deserializedDnsPrivateZoneProperties.serial = reader.getInt();
                 } else if ("version".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.version = reader.getString();
-                } else if ("viewId".equals(fieldName)) {
-                    deserializedDnsPrivateZoneProperties.viewId = reader.getString();
                 } else if ("zoneType".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.zoneType = ZoneType.fromString(reader.getString());
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("viewId".equals(fieldName)) {
+                    deserializedDnsPrivateZoneProperties.viewId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDnsPrivateZoneProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());

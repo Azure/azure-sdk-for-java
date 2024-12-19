@@ -11,8 +11,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZone;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZonesLifecycleState;
+import com.azure.resourcemanager.oracledatabase.models.ZoneType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +23,7 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"aylp\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"ztcmwq\",\"serial\":1039431205,\"version\":\"xwaxfewzjkj\",\"viewId\":\"fdeqvhpsyl\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-03-18T21:28:39Z\",\"provisioningState\":\"Failed\"},\"id\":\"mbmxzjrgywwpgj\",\"name\":\"snptfujgicgaao\",\"type\":\"pttaqutd\"}";
+            = "{\"properties\":{\"ocid\":\"pctf\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"xotngfdguge\",\"serial\":2136201648,\"version\":\"i\",\"viewId\":\"rkyui\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-02-21T09:37:08Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"fpphoj\",\"name\":\"evy\",\"type\":\"yhsgz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +32,17 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DnsPrivateZone response = manager.dnsPrivateZones()
-            .getWithResponse("fwyfwlwxjwet", "psihcla", com.azure.core.util.Context.NONE)
-            .getValue();
+        DnsPrivateZone response
+            = manager.dnsPrivateZones().getWithResponse("fdvruz", "lzo", com.azure.core.util.Context.NONE).getValue();
 
+        Assertions.assertEquals("pctf", response.properties().ocid());
+        Assertions.assertEquals(true, response.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETING, response.properties().lifecycleState());
+        Assertions.assertEquals("xotngfdguge", response.properties().self());
+        Assertions.assertEquals(2136201648, response.properties().serial());
+        Assertions.assertEquals("i", response.properties().version());
+        Assertions.assertEquals("rkyui", response.properties().viewId());
+        Assertions.assertEquals(ZoneType.PRIMARY, response.properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T09:37:08Z"), response.properties().timeCreated());
     }
 }

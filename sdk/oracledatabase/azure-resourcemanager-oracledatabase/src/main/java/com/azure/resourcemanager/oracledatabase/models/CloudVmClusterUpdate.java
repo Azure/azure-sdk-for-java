@@ -23,7 +23,7 @@ public final class CloudVmClusterUpdate implements JsonSerializable<CloudVmClust
     private Map<String, String> tags;
 
     /*
-     * The updatable properties of the CloudVmCluster.
+     * The resource-specific properties for this resource.
      */
     private CloudVmClusterUpdateProperties properties;
 
@@ -54,7 +54,7 @@ public final class CloudVmClusterUpdate implements JsonSerializable<CloudVmClust
     }
 
     /**
-     * Get the properties property: The updatable properties of the CloudVmCluster.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -63,7 +63,7 @@ public final class CloudVmClusterUpdate implements JsonSerializable<CloudVmClust
     }
 
     /**
-     * Set the properties property: The updatable properties of the CloudVmCluster.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the CloudVmClusterUpdate object itself.

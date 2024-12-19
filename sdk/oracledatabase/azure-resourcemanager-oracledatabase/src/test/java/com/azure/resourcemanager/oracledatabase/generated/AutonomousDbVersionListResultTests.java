@@ -6,14 +6,21 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionListResult;
+import com.azure.resourcemanager.oracledatabase.models.WorkloadType;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"txnrjaw\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"bkpyc\",\"name\":\"klwndnhjdauwhv\",\"type\":\"l\"}],\"nextLink\":\"btdhxujznbm\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"rts\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"mx\",\"name\":\"gkvtmelmqkrhah\",\"type\":\"ljuahaquhcdh\"}],\"nextLink\":\"ualaexqpvfadmw\"}")
             .toObject(AutonomousDbVersionListResult.class);
-        Assertions.assertEquals("btdhxujznbm", model.nextLink());
+        Assertions.assertEquals("rts", model.value().get(0).properties().version());
+        Assertions.assertEquals(WorkloadType.DW, model.value().get(0).properties().dbWorkload());
+        Assertions.assertEquals(true, model.value().get(0).properties().isDefaultForFree());
+        Assertions.assertEquals(true, model.value().get(0).properties().isDefaultForPaid());
+        Assertions.assertEquals(true, model.value().get(0).properties().isFreeTierEnabled());
+        Assertions.assertEquals(true, model.value().get(0).properties().isPaidEnabled());
+        Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
     }
 }

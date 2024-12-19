@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class OracleSubscriptionsListCloudAccountDetailsMockTests {
     @Test
     public void testListCloudAccountDetails() throws Exception {
-        String responseStr = "{\"cloudAccountName\":\"ytunlbfjkwr\",\"cloudAccountHomeRegion\":\"nkqbhsyrq\"}";
+        String responseStr = "{\"cloudAccountName\":\"ostzelndlatu\",\"cloudAccountHomeRegion\":\"zlbiojlvfhrbbpn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

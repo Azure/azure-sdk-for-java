@@ -11,8 +11,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DbNode;
+import com.azure.resourcemanager.oracledatabase.models.DbNodeMaintenanceType;
+import com.azure.resourcemanager.oracledatabase.models.DbNodeProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +23,7 @@ public final class DbNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"tkbu\",\"additionalDetails\":\"ogsf\",\"backupIpId\":\"ayiansharujtji\",\"backupVnic2Id\":\"fzyjqt\",\"backupVnicId\":\"wkpqhjpenuygbq\",\"cpuCoreCount\":800808953,\"dbNodeStorageSizeInGbs\":1833474976,\"dbServerId\":\"wv\",\"dbSystemId\":\"vcdlg\",\"faultDomain\":\"ucmfdj\",\"hostIpId\":\"laxpunj\",\"hostname\":\"kczvvita\",\"lifecycleState\":\"Stopped\",\"lifecycleDetails\":\"fcsserxhtvsox\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1944109467,\"softwareStorageSizeInGb\":166425776,\"timeCreated\":\"2021-02-27T10:59:18Z\",\"timeMaintenanceWindowEnd\":\"2021-04-26T17:18:37Z\",\"timeMaintenanceWindowStart\":\"2021-09-18T03:06:41Z\",\"vnic2Id\":\"ruuuybnch\",\"vnicId\":\"zizoyuely\",\"provisioningState\":\"Succeeded\"},\"id\":\"nb\",\"name\":\"qyggagfl\",\"type\":\"lgmtrwahzjmucf\"}";
+            = "{\"properties\":{\"ocid\":\"ruwnpqxpx\",\"additionalDetails\":\"fcngjsa\",\"backupIpId\":\"iixtmkzj\",\"backupVnic2Id\":\"viirhgfgrws\",\"backupVnicId\":\"gratzvzbglbyvict\",\"cpuCoreCount\":2047549854,\"dbNodeStorageSizeInGbs\":547924946,\"dbServerId\":\"j\",\"dbSystemId\":\"wrgxffmshkwfbkgo\",\"faultDomain\":\"wopdbydpiz\",\"hostIpId\":\"clnapxbiygnugjkn\",\"hostname\":\"mfcttux\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"i\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1857095612,\"softwareStorageSizeInGb\":1113337384,\"timeCreated\":\"2021-04-20T21:21:34Z\",\"timeMaintenanceWindowEnd\":\"2021-06-20T10:05:15Z\",\"timeMaintenanceWindowStart\":\"2021-07-25T01:02Z\",\"vnic2Id\":\"rnjhvsujztczytqj\",\"vnicId\":\"w\",\"provisioningState\":\"Succeeded\"},\"id\":\"nfprnjletlxs\",\"name\":\"rpddouifamo\",\"type\":\"aziynknlqwzdv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +33,32 @@ public final class DbNodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DbNode response = manager.dbNodes()
-            .getWithResponse("gtuwkff", "jk", "sysidfvclglxnf", com.azure.core.util.Context.NONE)
+            .getWithResponse("gqoweyirdhlisn", "wfl", "qmp", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("ruwnpqxpx", response.properties().ocid());
+        Assertions.assertEquals("fcngjsa", response.properties().additionalDetails());
+        Assertions.assertEquals("iixtmkzj", response.properties().backupIpId());
+        Assertions.assertEquals("viirhgfgrws", response.properties().backupVnic2Id());
+        Assertions.assertEquals("gratzvzbglbyvict", response.properties().backupVnicId());
+        Assertions.assertEquals(2047549854, response.properties().cpuCoreCount());
+        Assertions.assertEquals(547924946, response.properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("j", response.properties().dbServerId());
+        Assertions.assertEquals("wrgxffmshkwfbkgo", response.properties().dbSystemId());
+        Assertions.assertEquals("wopdbydpiz", response.properties().faultDomain());
+        Assertions.assertEquals("clnapxbiygnugjkn", response.properties().hostIpId());
+        Assertions.assertEquals("mfcttux", response.properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.TERMINATING, response.properties().lifecycleState());
+        Assertions.assertEquals("i", response.properties().lifecycleDetails());
+        Assertions.assertEquals(DbNodeMaintenanceType.VMDB_REBOOT_MIGRATION, response.properties().maintenanceType());
+        Assertions.assertEquals(1857095612, response.properties().memorySizeInGbs());
+        Assertions.assertEquals(1113337384, response.properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-20T21:21:34Z"), response.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T10:05:15Z"),
+            response.properties().timeMaintenanceWindowEnd());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T01:02Z"),
+            response.properties().timeMaintenanceWindowStart());
+        Assertions.assertEquals("rnjhvsujztczytqj", response.properties().vnic2Id());
+        Assertions.assertEquals("w", response.properties().vnicId());
     }
 }

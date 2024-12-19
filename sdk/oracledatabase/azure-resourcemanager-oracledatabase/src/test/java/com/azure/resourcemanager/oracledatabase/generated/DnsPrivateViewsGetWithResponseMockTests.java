@@ -11,8 +11,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateView;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewsLifecycleState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +22,7 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"ihebwtsw\",\"displayName\":\"uwfmduragegizvc\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"djub\",\"timeCreated\":\"2021-08-20T01:19:46Z\",\"timeUpdated\":\"2021-06-04T17:20:40Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"kbsazgak\",\"name\":\"acy\",\"type\":\"cmjdmspof\"}";
+            = "{\"properties\":{\"ocid\":\"kcxk\",\"displayName\":\"ibn\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"suxswqrntvlwijp\",\"timeCreated\":\"2021-01-02T01:16:14Z\",\"timeUpdated\":\"2021-08-15T15:59:55Z\",\"provisioningState\":\"Failed\"},\"id\":\"qqpwcyyuf\",\"name\":\"hruncuwmq\",\"type\":\"pkcdqzhlct\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +32,15 @@ public final class DnsPrivateViewsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsPrivateView response = manager.dnsPrivateViews()
-            .getWithResponse("pofvwb", "blembnkbwvqvxkd", com.azure.core.util.Context.NONE)
+            .getWithResponse("yb", "wwpgdakchzyvlixq", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("kcxk", response.properties().ocid());
+        Assertions.assertEquals("ibn", response.properties().displayName());
+        Assertions.assertEquals(false, response.properties().isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.ACTIVE, response.properties().lifecycleState());
+        Assertions.assertEquals("suxswqrntvlwijp", response.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T01:16:14Z"), response.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T15:59:55Z"), response.properties().timeUpdated());
     }
 }

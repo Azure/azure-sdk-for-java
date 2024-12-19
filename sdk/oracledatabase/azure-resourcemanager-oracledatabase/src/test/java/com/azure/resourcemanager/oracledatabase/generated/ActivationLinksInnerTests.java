@@ -11,7 +11,7 @@ public final class ActivationLinksInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivationLinksInner model = BinaryData.fromString(
-            "{\"newCloudAccountActivationLink\":\"ynkedyatrwyhqmib\",\"existingCloudAccountActivationLink\":\"hwit\"}")
+            "{\"newCloudAccountActivationLink\":\"vhelxprglyatdd\",\"existingCloudAccountActivationLink\":\"cbcuejrjxgciqi\"}")
             .toObject(ActivationLinksInner.class);
     }
 }

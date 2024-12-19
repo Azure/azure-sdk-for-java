@@ -11,8 +11,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersion;
+import com.azure.resourcemanager.oracledatabase.models.WorkloadType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -20,7 +22,7 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"zid\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"gznmmaxrizkzob\",\"name\":\"opxlhslnelxieixy\",\"type\":\"llxecwc\"}";
+            = "{\"properties\":{\"version\":\"v\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"cgq\",\"name\":\"sismjqfrddga\",\"type\":\"quhiosrsjuivf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +32,14 @@ public final class AutonomousDatabaseVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDbVersion response = manager.autonomousDatabaseVersions()
-            .getWithResponse("abpfhvfs", "kvntjlrigjkskyri", com.azure.core.util.Context.NONE)
+            .getWithResponse("ybpmzznrtffyaq", "tmhheioqa", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("v", response.properties().version());
+        Assertions.assertEquals(WorkloadType.DW, response.properties().dbWorkload());
+        Assertions.assertEquals(false, response.properties().isDefaultForFree());
+        Assertions.assertEquals(true, response.properties().isDefaultForPaid());
+        Assertions.assertEquals(true, response.properties().isFreeTierEnabled());
+        Assertions.assertEquals(true, response.properties().isPaidEnabled());
     }
 }

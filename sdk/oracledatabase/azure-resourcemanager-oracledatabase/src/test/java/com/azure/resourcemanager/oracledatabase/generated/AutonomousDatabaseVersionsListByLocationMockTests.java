@@ -12,8 +12,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersion;
+import com.azure.resourcemanager.oracledatabase.models.WorkloadType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +23,7 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"fusfzsvtuikzhajq\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"y\",\"name\":\"qnzrd\",\"type\":\"sovwxznptgoeiyb\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"aeukm\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false},\"id\":\"pmudqmeqwig\",\"name\":\"ibudqwy\",\"type\":\"eb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +33,13 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AutonomousDbVersion> response
-            = manager.autonomousDatabaseVersions().listByLocation("jw", com.azure.core.util.Context.NONE);
+            = manager.autonomousDatabaseVersions().listByLocation("tad", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("aeukm", response.iterator().next().properties().version());
+        Assertions.assertEquals(WorkloadType.AJD, response.iterator().next().properties().dbWorkload());
+        Assertions.assertEquals(true, response.iterator().next().properties().isDefaultForFree());
+        Assertions.assertEquals(true, response.iterator().next().properties().isDefaultForPaid());
+        Assertions.assertEquals(true, response.iterator().next().properties().isFreeTierEnabled());
+        Assertions.assertEquals(false, response.iterator().next().properties().isPaidEnabled());
     }
 }

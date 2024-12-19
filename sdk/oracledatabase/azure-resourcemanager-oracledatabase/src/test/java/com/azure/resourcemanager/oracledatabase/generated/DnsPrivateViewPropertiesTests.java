@@ -6,18 +6,41 @@ package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewProperties;
+import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViewsLifecycleState;
+import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 
 public final class DnsPrivateViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewProperties model = BinaryData.fromString(
-            "{\"ocid\":\"gycdu\",\"displayName\":\"r\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"vaolpsslqlf\",\"timeCreated\":\"2021-06-04T22:42Z\",\"timeUpdated\":\"2021-07-12T23:59:17Z\",\"provisioningState\":\"Canceled\"}")
+            "{\"ocid\":\"rhhuaopppcqeqx\",\"displayName\":\"lzdahzxctobgbkdm\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"postmgrcfbunrm\",\"timeCreated\":\"2021-07-20T04:26:41Z\",\"timeUpdated\":\"2021-10-01T13:01:52Z\",\"provisioningState\":\"Canceled\"}")
             .toObject(DnsPrivateViewProperties.class);
+        Assertions.assertEquals("rhhuaopppcqeqx", model.ocid());
+        Assertions.assertEquals("lzdahzxctobgbkdm", model.displayName());
+        Assertions.assertEquals(false, model.isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, model.lifecycleState());
+        Assertions.assertEquals("postmgrcfbunrm", model.self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T04:26:41Z"), model.timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T13:01:52Z"), model.timeUpdated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DnsPrivateViewProperties model = new DnsPrivateViewProperties();
+        DnsPrivateViewProperties model = new DnsPrivateViewProperties().withOcid("rhhuaopppcqeqx")
+            .withDisplayName("lzdahzxctobgbkdm")
+            .withIsProtected(false)
+            .withLifecycleState(DnsPrivateViewsLifecycleState.DELETING)
+            .withSelf("postmgrcfbunrm")
+            .withTimeCreated(OffsetDateTime.parse("2021-07-20T04:26:41Z"))
+            .withTimeUpdated(OffsetDateTime.parse("2021-10-01T13:01:52Z"));
         model = BinaryData.fromObject(model).toObject(DnsPrivateViewProperties.class);
+        Assertions.assertEquals("rhhuaopppcqeqx", model.ocid());
+        Assertions.assertEquals("lzdahzxctobgbkdm", model.displayName());
+        Assertions.assertEquals(false, model.isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, model.lifecycleState());
+        Assertions.assertEquals("postmgrcfbunrm", model.self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T04:26:41Z"), model.timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T13:01:52Z"), model.timeUpdated());
     }
 }
