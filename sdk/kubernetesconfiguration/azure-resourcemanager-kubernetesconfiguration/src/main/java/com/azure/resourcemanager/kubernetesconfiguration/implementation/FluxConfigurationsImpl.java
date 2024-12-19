@@ -118,14 +118,14 @@ public final class FluxConfigurationsImpl implements FluxConfigurations {
         String clusterName) {
         PagedIterable<FluxConfigurationInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new FluxConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluxConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FluxConfiguration> list(String resourceGroupName, String clusterRp, String clusterResourceName,
         String clusterName, Context context) {
         PagedIterable<FluxConfigurationInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new FluxConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FluxConfigurationImpl(inner1, this.manager()));
     }
 
     private FluxConfigurationsClient serviceClient() {

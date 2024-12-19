@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Supported connector properties. */
+/**
+ * Supported connector properties.
+ */
 @Fluent
-public final class SupportedConnectorProperties {
+public final class SupportedConnectorProperties implements JsonSerializable<SupportedConnectorProperties> {
     /*
      * Type of connector used. Example: Optical.
      */
-    @JsonProperty(value = "connectorType")
     private String connectorType;
 
     /*
      * Maximum speed of the connector in Mbps.
      */
-    @JsonProperty(value = "maxSpeedInMbps")
     private Integer maxSpeedInMbps;
 
-    /** Creates an instance of SupportedConnectorProperties class. */
+    /**
+     * Creates an instance of SupportedConnectorProperties class.
+     */
     public SupportedConnectorProperties() {
     }
 
     /**
      * Get the connectorType property: Type of connector used. Example: Optical.
-     *
+     * 
      * @return the connectorType value.
      */
     public String connectorType() {
@@ -37,7 +43,7 @@ public final class SupportedConnectorProperties {
 
     /**
      * Set the connectorType property: Type of connector used. Example: Optical.
-     *
+     * 
      * @param connectorType the connectorType value to set.
      * @return the SupportedConnectorProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class SupportedConnectorProperties {
 
     /**
      * Get the maxSpeedInMbps property: Maximum speed of the connector in Mbps.
-     *
+     * 
      * @return the maxSpeedInMbps value.
      */
     public Integer maxSpeedInMbps() {
@@ -57,7 +63,7 @@ public final class SupportedConnectorProperties {
 
     /**
      * Set the maxSpeedInMbps property: Maximum speed of the connector in Mbps.
-     *
+     * 
      * @param maxSpeedInMbps the maxSpeedInMbps value to set.
      * @return the SupportedConnectorProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class SupportedConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectorType", this.connectorType);
+        jsonWriter.writeNumberField("maxSpeedInMbps", this.maxSpeedInMbps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedConnectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedConnectorProperties.
+     */
+    public static SupportedConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedConnectorProperties deserializedSupportedConnectorProperties = new SupportedConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectorType".equals(fieldName)) {
+                    deserializedSupportedConnectorProperties.connectorType = reader.getString();
+                } else if ("maxSpeedInMbps".equals(fieldName)) {
+                    deserializedSupportedConnectorProperties.maxSpeedInMbps = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedConnectorProperties;
+        });
     }
 }

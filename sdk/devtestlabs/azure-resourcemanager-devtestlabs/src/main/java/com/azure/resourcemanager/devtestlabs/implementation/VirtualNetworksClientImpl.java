@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
 public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of VirtualNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworksClientImpl(DevTestLabsClientImpl client) {
@@ -129,7 +135,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -139,8 +145,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -171,7 +177,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -182,8 +188,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -214,7 +220,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -235,7 +241,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +261,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -278,7 +284,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +303,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -318,7 +324,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -358,7 +364,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -398,7 +404,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -416,7 +422,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -435,7 +441,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -452,7 +458,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -497,7 +503,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -542,7 +548,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -563,7 +569,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -586,7 +592,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -604,7 +610,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -623,7 +629,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -642,7 +648,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -662,7 +668,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -680,7 +686,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -699,7 +705,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -738,7 +744,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -777,7 +783,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -795,7 +801,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -816,7 +822,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -832,7 +838,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -850,7 +856,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -866,7 +872,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -884,7 +890,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -899,7 +905,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -915,7 +921,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -960,7 +966,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -1005,7 +1011,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -1024,7 +1030,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -1043,7 +1049,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -1061,14 +1067,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listNextSinglePageAsync(String nextLink) {
@@ -1088,15 +1093,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listNextSinglePageAsync(String nextLink, Context context) {

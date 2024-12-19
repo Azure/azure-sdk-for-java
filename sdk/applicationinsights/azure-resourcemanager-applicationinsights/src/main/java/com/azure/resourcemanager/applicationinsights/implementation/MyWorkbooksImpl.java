@@ -31,25 +31,25 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
 
     public PagedIterable<MyWorkbook> listByResourceGroup(String resourceGroupName, CategoryType category) {
         PagedIterable<MyWorkbookInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, category);
-        return Utils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MyWorkbook> listByResourceGroup(String resourceGroupName, CategoryType category,
         List<String> tags, String sourceId, Boolean canFetchContent, Context context) {
         PagedIterable<MyWorkbookInner> inner = this.serviceClient()
             .listByResourceGroup(resourceGroupName, category, tags, sourceId, canFetchContent, context);
-        return Utils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MyWorkbook> list(CategoryType category) {
         PagedIterable<MyWorkbookInner> inner = this.serviceClient().list(category);
-        return Utils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MyWorkbook> list(CategoryType category, List<String> tags, Boolean canFetchContent,
         Context context) {
         PagedIterable<MyWorkbookInner> inner = this.serviceClient().list(category, tags, canFetchContent, context);
-        return Utils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MyWorkbookImpl(inner1, this.manager()));
     }
 
     public Response<MyWorkbook> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
@@ -83,12 +83,12 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
     }
 
     public MyWorkbook getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "myWorkbooks");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "myWorkbooks");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'myWorkbooks'.", id)));
@@ -97,12 +97,12 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
     }
 
     public Response<MyWorkbook> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "myWorkbooks");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "myWorkbooks");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'myWorkbooks'.", id)));
@@ -111,12 +111,12 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "myWorkbooks");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "myWorkbooks");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'myWorkbooks'.", id)));
@@ -125,12 +125,12 @@ public final class MyWorkbooksImpl implements MyWorkbooks {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "myWorkbooks");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "myWorkbooks");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'myWorkbooks'.", id)));

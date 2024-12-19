@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,20 +17,22 @@ public class TraceDataColumns implements TelemetryColumns {
     private final CustomDimensions customDims;
 
     public TraceDataColumns(MessageData traceData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
+        customDims = new CustomDimensions(traceData.getProperties(), traceData.getMeasurements());
         mapping.put(KnownTraceColumns.MESSAGE, traceData.getMessage());
     }
 
     // to be used in tests only
     public TraceDataColumns(String message, Map<String, String> dims, Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownTraceColumns.MESSAGE, message);
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDims.getCustomDimensions();
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        return customDims.matchesAnyFieldInCustomDimensions(filter);
+    }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        return customDims.matchesCustomDimFilter(filter, trimmedFieldName);
     }
 
     public <T> T getFieldValue(String fieldName, Class<T> type) {

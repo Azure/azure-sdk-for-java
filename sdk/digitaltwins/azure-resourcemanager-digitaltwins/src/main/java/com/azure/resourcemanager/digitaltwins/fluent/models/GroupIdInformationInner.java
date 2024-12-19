@@ -6,43 +6,47 @@ package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The group information for creating a private endpoint on Digital Twin. */
+/**
+ * The group information for creating a private endpoint on Digital Twin.
+ */
 @Fluent
-public final class GroupIdInformationInner {
+public final class GroupIdInformationInner implements JsonSerializable<GroupIdInformationInner> {
     /*
      * The group information properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private GroupIdInformationProperties properties;
 
     /*
      * The resource identifier.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of GroupIdInformationInner class. */
+    /**
+     * Creates an instance of GroupIdInformationInner class.
+     */
     public GroupIdInformationInner() {
     }
 
     /**
      * Get the properties property: The group information properties.
-     *
+     * 
      * @return the properties value.
      */
     public GroupIdInformationProperties properties() {
@@ -51,7 +55,7 @@ public final class GroupIdInformationInner {
 
     /**
      * Set the properties property: The group information properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GroupIdInformationInner object itself.
      */
@@ -62,7 +66,7 @@ public final class GroupIdInformationInner {
 
     /**
      * Get the id property: The resource identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +75,7 @@ public final class GroupIdInformationInner {
 
     /**
      * Set the id property: The resource identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the GroupIdInformationInner object itself.
      */
@@ -82,7 +86,7 @@ public final class GroupIdInformationInner {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -91,7 +95,7 @@ public final class GroupIdInformationInner {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -100,17 +104,62 @@ public final class GroupIdInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property properties in model GroupIdInformationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model GroupIdInformationInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupIdInformationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupIdInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupIdInformationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupIdInformationInner.
+     */
+    public static GroupIdInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupIdInformationInner deserializedGroupIdInformationInner = new GroupIdInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedGroupIdInformationInner.properties = GroupIdInformationProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedGroupIdInformationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGroupIdInformationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGroupIdInformationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupIdInformationInner;
+        });
+    }
 }

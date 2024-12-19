@@ -28,14 +28,14 @@ public final class ResourceChangesImpl implements ResourceChanges {
 
     public PagedIterable<Change> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime) {
         PagedIterable<ChangeInner> inner = this.serviceClient().list(resourceId, startTime, endTime);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Change> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime,
         String skipToken, Context context) {
         PagedIterable<ChangeInner> inner
             = this.serviceClient().list(resourceId, startTime, endTime, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
     private ResourceChangesClient serviceClient() {

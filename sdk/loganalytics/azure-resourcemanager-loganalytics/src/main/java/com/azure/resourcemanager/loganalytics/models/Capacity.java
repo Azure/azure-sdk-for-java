@@ -4,24 +4,68 @@
 
 package com.azure.resourcemanager.loganalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The capacity value. */
+/**
+ * The capacity reservation level in Gigabytes for this cluster.
+ */
 public enum Capacity {
-    /** Enum value 500. */
+    /**
+     * Enum value 100.
+     */
+    ONE_ZERO_ZERO(100L),
+
+    /**
+     * Enum value 200.
+     */
+    TWO_ZERO_ZERO(200L),
+
+    /**
+     * Enum value 300.
+     */
+    THREE_ZERO_ZERO(300L),
+
+    /**
+     * Enum value 400.
+     */
+    FOUR_ZERO_ZERO(400L),
+
+    /**
+     * Enum value 500.
+     */
     FIVE_ZERO_ZERO(500L),
 
-    /** Enum value 1000. */
+    /**
+     * Enum value 1000.
+     */
     ONE_ZERO_ZERO_ZERO(1000L),
 
-    /** Enum value 2000. */
+    /**
+     * Enum value 2000.
+     */
     TWO_ZERO_ZERO_ZERO(2000L),
 
-    /** Enum value 5000. */
-    FIVE_ZERO_ZERO_ZERO(5000L);
+    /**
+     * Enum value 5000.
+     */
+    FIVE_ZERO_ZERO_ZERO(5000L),
 
-    /** The actual serialized value for a Capacity instance. */
+    /**
+     * Enum value 10000.
+     */
+    ONE_ZERO_ZERO_ZERO_ZERO(10000L),
+
+    /**
+     * Enum value 25000.
+     */
+    TWO_FIVE_ZERO_ZERO_ZERO(25000L),
+
+    /**
+     * Enum value 50000.
+     */
+    FIVE_ZERO_ZERO_ZERO_ZERO(50000L);
+
+    /**
+     * The actual serialized value for a Capacity instance.
+     */
     private final long value;
 
     Capacity(long value) {
@@ -30,11 +74,10 @@ public enum Capacity {
 
     /**
      * Parses a serialized value to a Capacity instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Capacity object, or null if unable to parse.
      */
-    @JsonCreator
     public static Capacity fromLong(long value) {
         Capacity[] items = Capacity.values();
         for (Capacity item : items) {
@@ -47,10 +90,9 @@ public enum Capacity {
 
     /**
      * De-serializes the instance to long value.
-     *
+     * 
      * @return the long value.
      */
-    @JsonValue
     public long toLong() {
         return this.value;
     }

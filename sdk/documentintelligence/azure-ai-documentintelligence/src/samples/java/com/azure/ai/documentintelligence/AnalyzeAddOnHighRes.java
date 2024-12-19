@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentStyle;
 import com.azure.ai.documentintelligence.models.DocumentTable;
@@ -40,15 +40,9 @@ public class AnalyzeAddOnHighRes {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/highres.png");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION),
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
+            client.beginAnalyzeDocument("prebuilt-layout",
+                new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION)));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -61,9 +55,9 @@ public class AnalyzeAddOnHighRes {
         });
 
         if (isDocumentContainsHandwritten) {
-            System.out.println("Document contains handwritten content");
+            System.out.println("AnalyzedDocument contains handwritten content");
         } else {
-            System.out.println("Document does not contains handwritten content");
+            System.out.println("AnalyzedDocument does not contains handwritten content");
         }
 
         // pages

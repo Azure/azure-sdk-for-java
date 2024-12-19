@@ -70,6 +70,14 @@ public interface OperationStatusResult {
     ManagementError error();
 
     /**
+     * Gets the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
      * Gets the inner com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.OperationStatusResultInner
      * object.
      * 

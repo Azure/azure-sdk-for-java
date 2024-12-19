@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class PodStatus extends ExpandableStringEnum<PodStatus> {
      * @param name a name to look for.
      * @return the corresponding PodStatus.
      */
-    @JsonCreator
     public static PodStatus fromString(String name) {
         return fromString(name, PodStatus.class);
     }

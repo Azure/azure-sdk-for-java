@@ -6,47 +6,45 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Environment properties entity.
  */
 @Fluent
-public final class EnvironmentProperties {
+public final class EnvironmentProperties implements JsonSerializable<EnvironmentProperties> {
     /*
      * Environment title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * The environment description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Environment kind.
      */
-    @JsonProperty(value = "kind", required = true)
     private EnvironmentKind kind;
 
     /*
      * Server information of the environment.
      */
-    @JsonProperty(value = "server")
     private EnvironmentServer server;
 
     /*
      * Environment onboarding information
      */
-    @JsonProperty(value = "onboarding")
     private Onboarding onboarding;
 
     /*
      * The custom metadata defined for API catalog entities.
      */
-    @JsonProperty(value = "customProperties")
     private Object customProperties;
 
     /**
@@ -182,12 +180,12 @@ public final class EnvironmentProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property title in model EnvironmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model EnvironmentProperties"));
         }
         if (kind() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property kind in model EnvironmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model EnvironmentProperties"));
         }
         if (server() != null) {
             server().validate();
@@ -198,4 +196,56 @@ public final class EnvironmentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("server", this.server);
+        jsonWriter.writeJsonField("onboarding", this.onboarding);
+        jsonWriter.writeUntypedField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentProperties.
+     */
+    public static EnvironmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentProperties deserializedEnvironmentProperties = new EnvironmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedEnvironmentProperties.title = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEnvironmentProperties.kind = EnvironmentKind.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedEnvironmentProperties.description = reader.getString();
+                } else if ("server".equals(fieldName)) {
+                    deserializedEnvironmentProperties.server = EnvironmentServer.fromJson(reader);
+                } else if ("onboarding".equals(fieldName)) {
+                    deserializedEnvironmentProperties.onboarding = Onboarding.fromJson(reader);
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedEnvironmentProperties.customProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentProperties;
+        });
+    }
 }

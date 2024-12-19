@@ -30,17 +30,23 @@ import com.azure.resourcemanager.resourcehealth.fluent.models.AvailabilityStatus
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatusListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChildResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChildResourcesClient.
+ */
 public final class ChildResourcesClientImpl implements ChildResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ChildResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of ChildResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ChildResourcesClientImpl(MicrosoftResourceHealthImpl client) {
@@ -77,18 +83,18 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
@@ -112,19 +118,19 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
@@ -147,12 +153,12 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -168,10 +174,10 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,12 +194,12 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,10 +217,10 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,12 +236,12 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
     /**
      * Lists the all the children and its current health status for a parent resource. Use the nextLink property in the
      * response to get the next page of children current health.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API only support not nested parent resource type:
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
+     * Currently the API only support not nested parent resource type:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param expand Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,14 +257,13 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink) {
@@ -278,15 +283,14 @@ public final class ChildResourcesClientImpl implements ChildResourcesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List availabilityStatus operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityStatusInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -1,4 +1,8 @@
 spring:
+  cloud:
+    azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
   datasource:
     url: jdbc:mysql://${AZURE_MYSQL_ENDPOINT}:3306/db
     username: passwordless-mysql-test-admin@${AZURE_MYSQL_ACCOUNT_NAME}

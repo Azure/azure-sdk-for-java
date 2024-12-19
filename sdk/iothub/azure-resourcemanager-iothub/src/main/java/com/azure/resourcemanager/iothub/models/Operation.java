@@ -6,25 +6,27 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: Operation name: {provider}/{resource}/{read | write | action | delete}.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

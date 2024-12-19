@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.analytics.purview.scanning.PurviewScanningServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -30,22 +31,37 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Triggers. */
+/**
+ * An instance of this class provides access to all the operations defined in Triggers.
+ */
 public final class TriggersImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of TriggersImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TriggersImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(TriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewScanningServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -124,10 +140,10 @@ public final class TriggersImpl {
 
     /**
      * Gets trigger information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -139,7 +155,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -156,7 +172,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -173,8 +189,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -194,10 +211,10 @@ public final class TriggersImpl {
 
     /**
      * Gets trigger information.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -209,7 +226,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -226,7 +243,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -243,8 +260,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -264,10 +282,10 @@ public final class TriggersImpl {
 
     /**
      * Creates an instance of a trigger.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -279,7 +297,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -296,7 +314,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -313,11 +331,13 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -329,7 +349,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -346,7 +366,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -363,8 +383,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -385,10 +406,10 @@ public final class TriggersImpl {
 
     /**
      * Creates an instance of a trigger.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -400,7 +421,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -417,7 +438,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -434,11 +455,13 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -450,7 +473,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -467,7 +490,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -484,8 +507,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param body The body parameter.
@@ -506,10 +530,10 @@ public final class TriggersImpl {
 
     /**
      * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -521,7 +545,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -538,7 +562,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -555,8 +579,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -576,10 +601,10 @@ public final class TriggersImpl {
 
     /**
      * Deletes the trigger associated with the scan.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
@@ -591,7 +616,7 @@ public final class TriggersImpl {
      *             endTime: OffsetDateTime (Optional)
      *             schedule (Optional): {
      *                 additionalProperties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 minutes (Optional): [
      *                     int (Optional)
@@ -608,7 +633,7 @@ public final class TriggersImpl {
      *                 monthlyOccurrences (Optional): [
      *                      (Optional){
      *                         additionalProperties (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday) (Optional)
      *                         occurrence: Integer (Optional)
@@ -625,8 +650,9 @@ public final class TriggersImpl {
      *         incrementalScanStartTime: OffsetDateTime (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

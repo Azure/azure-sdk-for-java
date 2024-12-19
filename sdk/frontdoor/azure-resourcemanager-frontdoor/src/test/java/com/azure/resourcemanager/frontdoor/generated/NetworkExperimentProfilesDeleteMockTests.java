@@ -27,7 +27,7 @@ public final class NetworkExperimentProfilesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.networkExperimentProfiles().delete("qvapcohhoucq", "q", com.azure.core.util.Context.NONE);
+        manager.networkExperimentProfiles().delete("yay", "mmfz", com.azure.core.util.Context.NONE);
 
     }
 }

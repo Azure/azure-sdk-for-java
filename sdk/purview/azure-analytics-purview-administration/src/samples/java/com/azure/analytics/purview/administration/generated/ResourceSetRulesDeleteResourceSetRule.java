@@ -12,11 +12,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ResourceSetRulesDeleteResourceSetRule {
     public static void main(String[] args) {
-        ResourceSetRulesClient resourceSetRulesClient =
-                new ResourceSetRulesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{endpoint}")
-                        .buildClient();
+        ResourceSetRulesClient resourceSetRulesClient
+            = new ResourceSetRulesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.resourcesetrulesdeleteresourcesetrule.resourcesetrulesdeleteresourcesetrule
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = resourceSetRulesClient.deleteResourceSetRuleWithResponse(requestOptions);

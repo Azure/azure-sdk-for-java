@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SAP Software configuration Input when the software is installed externally outside the service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "softwareInstallationType")
-@JsonTypeName("External")
+/**
+ * The SAP Software configuration Input when the software is installed externally outside the service.
+ */
 @Fluent
 public final class ExternalInstallationSoftwareConfiguration extends SoftwareConfiguration {
     /*
+     * The SAP software installation Type.
+     */
+    private SapSoftwareInstallationType softwareInstallationType = SapSoftwareInstallationType.EXTERNAL;
+
+    /*
      * The resource ID of the virtual machine containing the central server instance.
      */
-    @JsonProperty(value = "centralServerVmId")
     private String centralServerVmId;
 
-    /** Creates an instance of ExternalInstallationSoftwareConfiguration class. */
+    /**
+     * Creates an instance of ExternalInstallationSoftwareConfiguration class.
+     */
     public ExternalInstallationSoftwareConfiguration() {
+    }
+
+    /**
+     * Get the softwareInstallationType property: The SAP software installation Type.
+     * 
+     * @return the softwareInstallationType value.
+     */
+    @Override
+    public SapSoftwareInstallationType softwareInstallationType() {
+        return this.softwareInstallationType;
     }
 
     /**
      * Get the centralServerVmId property: The resource ID of the virtual machine containing the central server
      * instance.
-     *
+     * 
      * @return the centralServerVmId value.
      */
     public String centralServerVmId() {
@@ -37,7 +54,7 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
     /**
      * Set the centralServerVmId property: The resource ID of the virtual machine containing the central server
      * instance.
-     *
+     * 
      * @param centralServerVmId the centralServerVmId value to set.
      * @return the ExternalInstallationSoftwareConfiguration object itself.
      */
@@ -48,11 +65,52 @@ public final class ExternalInstallationSoftwareConfiguration extends SoftwareCon
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("softwareInstallationType",
+            this.softwareInstallationType == null ? null : this.softwareInstallationType.toString());
+        jsonWriter.writeStringField("centralServerVmId", this.centralServerVmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalInstallationSoftwareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalInstallationSoftwareConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalInstallationSoftwareConfiguration.
+     */
+    public static ExternalInstallationSoftwareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalInstallationSoftwareConfiguration deserializedExternalInstallationSoftwareConfiguration
+                = new ExternalInstallationSoftwareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareInstallationType".equals(fieldName)) {
+                    deserializedExternalInstallationSoftwareConfiguration.softwareInstallationType
+                        = SapSoftwareInstallationType.fromString(reader.getString());
+                } else if ("centralServerVmId".equals(fieldName)) {
+                    deserializedExternalInstallationSoftwareConfiguration.centralServerVmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalInstallationSoftwareConfiguration;
+        });
     }
 }

@@ -62,6 +62,10 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
         return this.innerModel().error();
     }
 
+    public String resourceId() {
+        return this.innerModel().resourceId();
+    }
+
     public OperationStatusResultInner innerModel() {
         return this.innerObject;
     }

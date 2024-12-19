@@ -83,6 +83,7 @@ public final class DefaultLogger {
      *
      * @param level log level
      * @param message The message itself
+     * @param throwable The exception to log
      */
     public void log(LogLevel level, String message, Throwable throwable) {
         if (!isEnabled(level)) {
@@ -131,6 +132,12 @@ public final class DefaultLogger {
         }
     }
 
+    /**
+     * Append the stack trace of the throwable to the StringBuilder.
+     *
+     * @param stringBuilder The StringBuilder to append the stack trace to.
+     * @param t The Throwable to append the stack trace of.
+     */
     public static void appendThrowable(StringBuilder stringBuilder, Throwable t) {
         if (t != null) {
             StringWriter sw = new StringWriter();

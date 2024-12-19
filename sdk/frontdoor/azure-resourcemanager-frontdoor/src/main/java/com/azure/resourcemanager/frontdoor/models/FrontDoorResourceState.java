@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class FrontDoorResourceState extends ExpandableStringEnum<FrontDoor
      * @param name a name to look for.
      * @return the corresponding FrontDoorResourceState.
      */
-    @JsonCreator
     public static FrontDoorResourceState fromString(String name) {
         return fromString(name, FrontDoorResourceState.class);
     }

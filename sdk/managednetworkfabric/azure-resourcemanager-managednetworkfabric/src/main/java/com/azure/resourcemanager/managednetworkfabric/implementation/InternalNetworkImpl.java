@@ -199,9 +199,9 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3IsolationDomainName = Utils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
-        this.internalNetworkName = Utils.getValueFromIdByName(innerObject.id(), "internalNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
+        this.internalNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "internalNetworks");
     }
 
     public InternalNetwork refresh() {

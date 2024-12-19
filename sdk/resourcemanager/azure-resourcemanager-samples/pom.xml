@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resourcegraph</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

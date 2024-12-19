@@ -47,17 +47,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachinesClientImpl(DevTestLabsClientImpl client) {
@@ -270,19 +276,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LabVirtualMachineInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -313,11 +319,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
@@ -325,8 +331,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LabVirtualMachineInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -357,11 +363,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
@@ -379,7 +385,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,11 +405,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
@@ -423,7 +429,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,11 +448,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
@@ -464,12 +470,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,12 +511,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,7 +552,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -564,12 +570,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -584,7 +590,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -601,7 +607,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -647,7 +653,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -693,7 +699,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -715,7 +721,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -739,7 +745,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -757,7 +763,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -778,7 +784,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -797,7 +803,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -817,7 +823,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -835,7 +841,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -854,7 +860,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -893,7 +899,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -932,7 +938,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -950,7 +956,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -971,7 +977,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -987,7 +993,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1005,7 +1011,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1021,7 +1027,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1039,7 +1045,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1054,7 +1060,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1070,7 +1076,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1116,7 +1122,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1162,7 +1168,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1181,7 +1187,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1200,7 +1206,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1218,7 +1224,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1264,7 +1270,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1310,7 +1316,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1331,7 +1337,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1354,7 +1360,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1372,7 +1378,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1392,7 +1398,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1411,7 +1417,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1431,7 +1437,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1448,7 +1454,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1466,7 +1472,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1512,7 +1518,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1558,7 +1564,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1579,7 +1585,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1602,7 +1608,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1620,7 +1626,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1640,7 +1646,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1659,7 +1665,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1679,7 +1685,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1696,7 +1702,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1714,7 +1720,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1753,7 +1759,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1792,7 +1798,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1810,7 +1816,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1831,7 +1837,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1847,7 +1853,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1865,7 +1871,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1881,7 +1887,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1899,7 +1905,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1914,7 +1920,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1930,7 +1936,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -1977,7 +1983,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2023,7 +2029,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2044,7 +2050,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2067,7 +2073,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2086,7 +2092,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2106,7 +2112,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2125,7 +2131,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2145,7 +2151,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2162,7 +2168,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2180,7 +2186,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2188,7 +2194,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a string that represents the contents of the RDP file for the virtual machine along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RdpConnectionInner>> getRdpFileContentsWithResponseAsync(String resourceGroupName,
@@ -2221,7 +2227,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2230,7 +2236,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a string that represents the contents of the RDP file for the virtual machine along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RdpConnectionInner>> getRdpFileContentsWithResponseAsync(String resourceGroupName,
@@ -2261,7 +2267,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2269,7 +2275,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a string that represents the contents of the RDP file for the virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RdpConnectionInner> getRdpFileContentsAsync(String resourceGroupName, String labName, String name) {
@@ -2279,7 +2285,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2287,8 +2293,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a string that represents the contents of the RDP file for the virtual machine along with {@link
-     *     Response}.
+     * @return a string that represents the contents of the RDP file for the virtual machine along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RdpConnectionInner> getRdpFileContentsWithResponse(String resourceGroupName, String labName,
@@ -2298,7 +2304,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2314,15 +2320,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicableScheduleInner>> listApplicableSchedulesWithResponseAsync(String resourceGroupName,
@@ -2355,7 +2361,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2363,8 +2369,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicableScheduleInner>> listApplicableSchedulesWithResponseAsync(String resourceGroupName,
@@ -2395,7 +2401,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2413,7 +2419,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2431,7 +2437,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2447,7 +2453,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2486,7 +2492,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2525,7 +2531,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2544,7 +2550,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2565,7 +2571,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2581,7 +2587,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2599,7 +2605,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2616,7 +2622,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2634,7 +2640,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2649,7 +2655,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2665,7 +2671,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2712,7 +2718,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2758,7 +2764,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2779,7 +2785,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2802,7 +2808,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2821,7 +2827,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2841,7 +2847,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2860,7 +2866,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2880,7 +2886,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2897,7 +2903,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2915,7 +2921,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2954,7 +2960,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -2993,7 +2999,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3012,7 +3018,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3033,7 +3039,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3049,7 +3055,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3067,7 +3073,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3084,7 +3090,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3102,7 +3108,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3117,7 +3123,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3133,7 +3139,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3172,7 +3178,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3211,7 +3217,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3229,7 +3235,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3250,7 +3256,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3266,7 +3272,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3284,7 +3290,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3300,7 +3306,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3318,7 +3324,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3333,7 +3339,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3349,7 +3355,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3388,7 +3394,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3427,7 +3433,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3445,7 +3451,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3466,7 +3472,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3482,7 +3488,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3500,7 +3506,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3516,7 +3522,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3534,7 +3540,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3549,7 +3555,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3566,7 +3572,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3606,7 +3612,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3646,7 +3652,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3666,7 +3672,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3689,7 +3695,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3707,7 +3713,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3726,7 +3732,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3744,7 +3750,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3763,7 +3769,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3779,7 +3785,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3795,7 +3801,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3834,7 +3840,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3873,7 +3879,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3892,7 +3898,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3913,7 +3919,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3929,7 +3935,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3947,7 +3953,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3964,7 +3970,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3982,7 +3988,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -3997,7 +4003,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -4013,14 +4019,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LabVirtualMachineInner>> listNextSinglePageAsync(String nextLink) {
@@ -4040,15 +4045,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LabVirtualMachineInner>> listNextSinglePageAsync(String nextLink, Context context) {

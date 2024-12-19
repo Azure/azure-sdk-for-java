@@ -5,52 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure VM (Mercury) workload-specific backup policy.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "backupManagementType",
-    defaultImpl = AzureVmWorkloadProtectionPolicy.class,
-    visible = true)
-@JsonTypeName("AzureWorkload")
 @Fluent
 public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "backupManagementType", required = true)
     private String backupManagementType = "AzureWorkload";
 
     /*
      * Type of workload for the backup management
      */
-    @JsonProperty(value = "workLoadType")
     private WorkloadType workLoadType;
 
     /*
      * Common settings for the backup management
      */
-    @JsonProperty(value = "settings")
     private Settings settings;
 
     /*
      * List of sub-protection policies which includes schedule and retention
      */
-    @JsonProperty(value = "subProtectionPolicy")
     private List<SubProtectionPolicy> subProtectionPolicy;
 
     /*
      * Fix the policy inconsistency
      */
-    @JsonProperty(value = "makePolicyConsistent")
     private Boolean makePolicyConsistent;
 
     /**
@@ -176,12 +165,75 @@ public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (settings() != null) {
             settings().validate();
         }
         if (subProtectionPolicy() != null) {
             subProtectionPolicy().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("protectedItemsCount", protectedItemsCount());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeStringField("workLoadType", this.workLoadType == null ? null : this.workLoadType.toString());
+        jsonWriter.writeJsonField("settings", this.settings);
+        jsonWriter.writeArrayField("subProtectionPolicy", this.subProtectionPolicy,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("makePolicyConsistent", this.makePolicyConsistent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadProtectionPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadProtectionPolicy.
+     */
+    public static AzureVmWorkloadProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadProtectionPolicy deserializedAzureVmWorkloadProtectionPolicy
+                = new AzureVmWorkloadProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectionPolicy
+                        .withProtectedItemsCount(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureVmWorkloadProtectionPolicy
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectionPolicy.backupManagementType = reader.getString();
+                } else if ("workLoadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectionPolicy.workLoadType
+                        = WorkloadType.fromString(reader.getString());
+                } else if ("settings".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectionPolicy.settings = Settings.fromJson(reader);
+                } else if ("subProtectionPolicy".equals(fieldName)) {
+                    List<SubProtectionPolicy> subProtectionPolicy
+                        = reader.readArray(reader1 -> SubProtectionPolicy.fromJson(reader1));
+                    deserializedAzureVmWorkloadProtectionPolicy.subProtectionPolicy = subProtectionPolicy;
+                } else if ("makePolicyConsistent".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectionPolicy.makePolicyConsistent
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadProtectionPolicy;
+        });
     }
 }

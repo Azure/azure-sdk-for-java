@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a network interface. */
+/**
+ * Properties of a network interface.
+ */
 @Fluent
-public final class NetworkInterfaceProperties {
+public final class NetworkInterfaceProperties implements JsonSerializable<NetworkInterfaceProperties> {
     /*
      * The resource ID of the virtual network.
      */
-    @JsonProperty(value = "virtualNetworkId")
     private String virtualNetworkId;
 
     /*
      * The resource ID of the sub net.
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * The resource ID of the public IP address.
      */
-    @JsonProperty(value = "publicIpAddressId")
     private String publicIpAddressId;
 
     /*
      * The public IP address.
      */
-    @JsonProperty(value = "publicIpAddress")
     private String publicIpAddress;
 
     /*
      * The private IP address.
      */
-    @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
 
     /*
      * The DNS name.
      */
-    @JsonProperty(value = "dnsName")
     private String dnsName;
 
     /*
      * The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP
      * (Remote Desktop Protocol).
      */
-    @JsonProperty(value = "rdpAuthority")
     private String rdpAuthority;
 
     /*
      * The SshAuthority property is a server DNS host name or IP address followed by the service port number for SSH.
      */
-    @JsonProperty(value = "sshAuthority")
     private String sshAuthority;
 
     /*
      * The configuration for sharing a public IP address across multiple virtual machines.
      */
-    @JsonProperty(value = "sharedPublicIpAddressConfiguration")
     private SharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration;
 
-    /** Creates an instance of NetworkInterfaceProperties class. */
+    /**
+     * Creates an instance of NetworkInterfaceProperties class.
+     */
     public NetworkInterfaceProperties() {
     }
 
     /**
      * Get the virtualNetworkId property: The resource ID of the virtual network.
-     *
+     * 
      * @return the virtualNetworkId value.
      */
     public String virtualNetworkId() {
@@ -80,7 +79,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the virtualNetworkId property: The resource ID of the virtual network.
-     *
+     * 
      * @param virtualNetworkId the virtualNetworkId value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -91,7 +90,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Get the subnetId property: The resource ID of the sub net.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -100,7 +99,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the subnetId property: The resource ID of the sub net.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -111,7 +110,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Get the publicIpAddressId property: The resource ID of the public IP address.
-     *
+     * 
      * @return the publicIpAddressId value.
      */
     public String publicIpAddressId() {
@@ -120,7 +119,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the publicIpAddressId property: The resource ID of the public IP address.
-     *
+     * 
      * @param publicIpAddressId the publicIpAddressId value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -131,7 +130,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Get the publicIpAddress property: The public IP address.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -140,7 +139,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the publicIpAddress property: The public IP address.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -151,7 +150,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Get the privateIpAddress property: The private IP address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -160,7 +159,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the privateIpAddress property: The private IP address.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -171,7 +170,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Get the dnsName property: The DNS name.
-     *
+     * 
      * @return the dnsName value.
      */
     public String dnsName() {
@@ -180,7 +179,7 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Set the dnsName property: The DNS name.
-     *
+     * 
      * @param dnsName the dnsName value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -192,7 +191,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Get the rdpAuthority property: The RdpAuthority property is a server DNS host name or IP address followed by the
      * service port number for RDP (Remote Desktop Protocol).
-     *
+     * 
      * @return the rdpAuthority value.
      */
     public String rdpAuthority() {
@@ -202,7 +201,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Set the rdpAuthority property: The RdpAuthority property is a server DNS host name or IP address followed by the
      * service port number for RDP (Remote Desktop Protocol).
-     *
+     * 
      * @param rdpAuthority the rdpAuthority value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -214,7 +213,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Get the sshAuthority property: The SshAuthority property is a server DNS host name or IP address followed by the
      * service port number for SSH.
-     *
+     * 
      * @return the sshAuthority value.
      */
     public String sshAuthority() {
@@ -224,7 +223,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Set the sshAuthority property: The SshAuthority property is a server DNS host name or IP address followed by the
      * service port number for SSH.
-     *
+     * 
      * @param sshAuthority the sshAuthority value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -236,7 +235,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Get the sharedPublicIpAddressConfiguration property: The configuration for sharing a public IP address across
      * multiple virtual machines.
-     *
+     * 
      * @return the sharedPublicIpAddressConfiguration value.
      */
     public SharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration() {
@@ -246,7 +245,7 @@ public final class NetworkInterfaceProperties {
     /**
      * Set the sharedPublicIpAddressConfiguration property: The configuration for sharing a public IP address across
      * multiple virtual machines.
-     *
+     * 
      * @param sharedPublicIpAddressConfiguration the sharedPublicIpAddressConfiguration value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
@@ -258,12 +257,73 @@ public final class NetworkInterfaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sharedPublicIpAddressConfiguration() != null) {
             sharedPublicIpAddressConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualNetworkId", this.virtualNetworkId);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("publicIpAddressId", this.publicIpAddressId);
+        jsonWriter.writeStringField("publicIpAddress", this.publicIpAddress);
+        jsonWriter.writeStringField("privateIpAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("dnsName", this.dnsName);
+        jsonWriter.writeStringField("rdpAuthority", this.rdpAuthority);
+        jsonWriter.writeStringField("sshAuthority", this.sshAuthority);
+        jsonWriter.writeJsonField("sharedPublicIpAddressConfiguration", this.sharedPublicIpAddressConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceProperties.
+     */
+    public static NetworkInterfaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceProperties deserializedNetworkInterfaceProperties = new NetworkInterfaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkId".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.virtualNetworkId = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.subnetId = reader.getString();
+                } else if ("publicIpAddressId".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.publicIpAddressId = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.publicIpAddress = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.privateIpAddress = reader.getString();
+                } else if ("dnsName".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.dnsName = reader.getString();
+                } else if ("rdpAuthority".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.rdpAuthority = reader.getString();
+                } else if ("sshAuthority".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.sshAuthority = reader.getString();
+                } else if ("sharedPublicIpAddressConfiguration".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.sharedPublicIpAddressConfiguration
+                        = SharedPublicIpAddressConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceProperties;
+        });
     }
 }

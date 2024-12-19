@@ -44,17 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccessControlListsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessControlListsClient.
+ */
 public final class AccessControlListsClientImpl implements AccessControlListsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AccessControlListsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of AccessControlListsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AccessControlListsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -179,9 +185,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -189,7 +195,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -224,9 +230,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -235,7 +241,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
@@ -269,9 +275,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -291,9 +297,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -315,9 +321,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -334,9 +340,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -354,9 +360,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -374,9 +380,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -395,9 +401,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -414,9 +420,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Creates Access Control List.
-     *
-     * <p>Implements Access Control List PUT method.
-     *
+     * 
+     * Implements Access Control List PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -434,16 +440,16 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessControlListInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -474,9 +480,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -484,7 +490,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessControlListInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -513,9 +519,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,9 +538,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -551,9 +557,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,9 +574,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -578,7 +584,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -613,9 +619,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -624,7 +630,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Access Control List resource definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -658,9 +664,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -680,9 +686,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -704,9 +710,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -723,9 +729,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -743,9 +749,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -763,9 +769,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -784,9 +790,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -803,9 +809,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates the Access Control List.
-     *
-     * <p>API to update certain properties of the Access Control List resource.
-     *
+     * 
+     * API to update certain properties of the Access Control List resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Access Control List properties to update.
@@ -823,9 +829,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,9 +867,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -899,9 +905,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -919,9 +925,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -942,9 +948,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -959,9 +965,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -978,9 +984,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,9 +1002,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1015,9 +1021,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1031,9 +1037,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1048,9 +1054,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1082,9 +1088,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1118,9 +1124,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1135,9 +1141,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,9 +1159,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1169,9 +1175,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1186,9 +1192,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1214,9 +1220,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1244,9 +1250,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists as paginated response with {@link PagedFlux}.
@@ -1259,9 +1265,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1276,9 +1282,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
@@ -1290,9 +1296,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1306,17 +1312,17 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1352,9 +1358,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1362,8 +1368,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAdministrativeStateWithResponseAsync(String resourceGroupName,
@@ -1397,9 +1403,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1423,9 +1429,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1451,9 +1457,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1472,9 +1478,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1495,9 +1501,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1515,9 +1521,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1536,9 +1542,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1555,9 +1561,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -1575,16 +1581,16 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName,
@@ -1614,17 +1620,17 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName,
@@ -1653,9 +1659,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1676,9 +1682,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1702,9 +1708,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1721,9 +1727,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1741,9 +1747,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1760,9 +1766,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1780,9 +1786,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1797,9 +1803,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1816,16 +1822,16 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1856,9 +1862,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1866,7 +1872,7 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
@@ -1895,9 +1901,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1917,9 +1923,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1941,9 +1947,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1959,9 +1965,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -1978,9 +1984,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1997,9 +2003,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -2017,9 +2023,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2035,9 +2041,9 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -2054,9 +2060,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2082,9 +2087,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2110,9 +2114,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2138,9 +2141,8 @@ public final class AccessControlListsClientImpl implements AccessControlListsCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

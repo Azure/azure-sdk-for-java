@@ -96,8 +96,9 @@ public final class NotificationRegistrationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = Utils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.notificationRegistrationName = Utils.getValueFromIdByName(innerObject.id(), "notificationRegistrations");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
+        this.notificationRegistrationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "notificationRegistrations");
     }
 
     public NotificationRegistration refresh() {

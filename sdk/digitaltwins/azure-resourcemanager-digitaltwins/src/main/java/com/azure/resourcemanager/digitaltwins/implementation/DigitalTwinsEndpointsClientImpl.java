@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DigitalTwinsEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DigitalTwinsEndpointsClient.
+ */
 public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DigitalTwinsEndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDigitalTwinsManagementClientImpl client;
 
     /**
      * Initializes an instance of DigitalTwinsEndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DigitalTwinsEndpointsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
@@ -113,7 +119,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +156,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -188,7 +194,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +210,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -222,7 +228,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +243,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -254,7 +260,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -293,7 +299,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -332,7 +338,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -350,7 +356,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -368,7 +374,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -384,7 +390,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -392,8 +398,8 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -432,7 +438,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -441,8 +447,8 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -481,7 +487,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -504,7 +510,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -529,7 +535,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -549,7 +555,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -571,7 +577,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -590,7 +596,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -611,7 +617,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -629,7 +635,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -648,15 +654,15 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -688,7 +694,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -696,8 +702,8 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return digitalTwinsInstance endpoint resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -728,7 +734,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -748,7 +754,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -771,7 +777,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -788,7 +794,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -806,7 +812,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -824,7 +830,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -843,7 +849,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -860,7 +866,7 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -878,14 +884,13 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwinsInstance Endpoints with a next link along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsEndpointResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -905,15 +910,14 @@ public final class DigitalTwinsEndpointsClientImpl implements DigitalTwinsEndpoi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwinsInstance Endpoints with a next link along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsEndpointResourceInner>> listNextSinglePageAsync(String nextLink,

@@ -3,8 +3,8 @@
 
 package com.azure.ai.openai.realtime;
 
-import com.azure.ai.openai.realtime.implementation.AudioFile;
-import com.azure.ai.openai.realtime.implementation.FileUtils;
+import com.azure.ai.openai.realtime.utils.AudioFile;
+import com.azure.ai.openai.realtime.utils.FileUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimeEventHandler;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;

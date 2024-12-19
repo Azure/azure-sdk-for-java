@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation available in the Microsoft.ResourceHealth resource provider. */
+/**
+ * Operation available in the Microsoft.ResourceHealth resource provider.
+ */
 @Fluent
-public final class Operation {
+public final class Operation implements JsonSerializable<Operation> {
     /*
      * Name of the operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Properties of the operation.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class Operation {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the Operation object itself.
      */
@@ -48,7 +54,7 @@ public final class Operation {
 
     /**
      * Get the display property: Properties of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -57,7 +63,7 @@ public final class Operation {
 
     /**
      * Set the display property: Properties of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the Operation object itself.
      */
@@ -68,12 +74,51 @@ public final class Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Operation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Operation.
+     */
+    public static Operation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Operation deserializedOperation = new Operation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperation.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperation.display = OperationDisplay.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperation;
+        });
     }
 }

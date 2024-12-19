@@ -3,6 +3,8 @@
 
 package io.clientcore.core.implementation.http.rest;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
@@ -10,11 +12,15 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.ReflectionSerializable;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.util.Base64Uri;
+import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,13 +37,13 @@ public class RestProxyImpl extends RestProxyBase {
      * Create a RestProxy.
      *
      * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the interface describing REST API methods
      * to be used.
+     * @param serializers The serializers that will be used to convert response bodies to POJOs.
      */
-    public RestProxyImpl(HttpPipeline httpPipeline, ObjectSerializer serializer,
-        SwaggerInterfaceParser interfaceParser) {
-        super(httpPipeline, serializer, interfaceParser);
+    public RestProxyImpl(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser,
+        ObjectSerializer... serializers) {
+        super(httpPipeline, interfaceParser, serializers);
     }
 
     /**
@@ -211,7 +217,7 @@ public class RestProxyImpl extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter) {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, CompositeSerializer serializer) {
 
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
@@ -222,13 +228,14 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
-        if (supportsJsonSerializable(bodyContentObject.getClass())) {
+        if (ReflectionSerializable.supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(BinaryData.fromObject(bodyContentObject));
             return;
         }
 
         if (isJson) {
-            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
+            request.setBody(
+                BinaryData.fromObject(bodyContentObject, serializer.getSerializerForFormat(SerializationFormat.JSON)));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody(BinaryData.fromBytes((byte[]) bodyContentObject));
         } else if (bodyContentObject instanceof String) {
@@ -243,7 +250,97 @@ public class RestProxyImpl extends RestProxyBase {
                 request.setBody(BinaryData.fromBytes(array));
             }
         } else {
-            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
+            request.setBody(BinaryData.fromObject(bodyContentObject,
+                serializer.getSerializerForFormat(serializationFormatFromContentType(request.getHeaders()))));
         }
+    }
+
+    /**
+     * Determines the serializer encoding to use based on the Content-Type header.
+     *
+     * @param headers the headers to get the Content-Type to check the encoding for.
+     * @return the serializer encoding to use for the body. {@link SerializationFormat#JSON} if there is no Content-Type
+     * header or an unrecognized Content-Type encoding is given.
+     */
+    public static SerializationFormat serializationFormatFromContentType(HttpHeaders headers) {
+        if (headers == null) {
+            return SerializationFormat.JSON;
+        }
+
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        if (ImplUtils.isNullOrEmpty(contentType)) {
+            // When in doubt, JSON!
+            return SerializationFormat.JSON;
+        }
+
+        int contentTypeEnd = contentType.indexOf(';');
+        contentType = (contentTypeEnd == -1) ? contentType : contentType.substring(0, contentTypeEnd);
+        SerializationFormat encoding = checkForKnownEncoding(contentType);
+        if (encoding != null) {
+            return encoding;
+        }
+
+        int contentTypeTypeSplit = contentType.indexOf('/');
+        if (contentTypeTypeSplit == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Check the suffix if it does not match the full types.
+        // Suffixes are defined by the Structured Syntax Suffix Registry
+        // https://www.rfc-editor.org/rfc/rfc6839
+        final String subtype = contentType.substring(contentTypeTypeSplit + 1);
+        final int lastIndex = subtype.lastIndexOf('+');
+        if (lastIndex == -1) {
+            return SerializationFormat.JSON;
+        }
+
+        // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
+        final String mimeTypeSuffix = subtype.substring(lastIndex + 1);
+        if ("xml".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.XML;
+        } else if ("json".equalsIgnoreCase(mimeTypeSuffix)) {
+            return SerializationFormat.JSON;
+        }
+
+        return SerializationFormat.JSON;
+    }
+
+    /*
+     * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
+     * a case-insensitive comparator, use an optimized search specifically for the known encodings.
+     */
+    private static SerializationFormat checkForKnownEncoding(String contentType) {
+        int length = contentType.length();
+
+        // Check the length of the content type first as it is a quick check.
+        if (length != 8 && length != 9 && length != 10 && length != 15 && length != 16) {
+            return null;
+        }
+
+        if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
+            if (length == 8) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.XML;
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
+                    return SerializationFormat.TEXT;
+                }
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
+                return SerializationFormat.TEXT;
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
+                return SerializationFormat.TEXT;
+            }
+        } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
+                return SerializationFormat.JSON;
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
+                return SerializationFormat.XML;
+            }
+        }
+
+        return null;
     }
 }

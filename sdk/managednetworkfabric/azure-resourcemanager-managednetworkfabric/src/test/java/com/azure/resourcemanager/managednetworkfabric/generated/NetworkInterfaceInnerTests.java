@@ -12,15 +12,15 @@ public final class NetworkInterfaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"physicalIdentifier\":\"nsnaajphmp\",\"connectedTo\":\"jnglpwsad\",\"interfaceType\":\"Data\",\"ipv4Address\":\"umxpezcoi\",\"ipv6Address\":\"jrmfqzwqd\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"annotation\":\"c\"},\"id\":\"wmywxfqzkvemy\",\"name\":\"dpczaqpqifd\",\"type\":\"m\"}")
+            "{\"properties\":{\"physicalIdentifier\":\"chqohtfxcpupuk\",\"connectedTo\":\"mjzpwdlvwtiwsm\",\"interfaceType\":\"Data\",\"ipv4Address\":\"nhqnampp\",\"ipv6Address\":\"tassaekewna\",\"provisioningState\":\"Failed\",\"administrativeState\":\"MAT\",\"annotation\":\"aj\"},\"id\":\"yizyddcvxodk\",\"name\":\"vfsxx\",\"type\":\"ydesqlvgec\"}")
             .toObject(NetworkInterfaceInner.class);
-        Assertions.assertEquals("c", model.annotation());
+        Assertions.assertEquals("aj", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceInner model = new NetworkInterfaceInner().withAnnotation("c");
+        NetworkInterfaceInner model = new NetworkInterfaceInner().withAnnotation("aj");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceInner.class);
-        Assertions.assertEquals("c", model.annotation());
+        Assertions.assertEquals("aj", model.annotation());
     }
 }

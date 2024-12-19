@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -98,11 +99,25 @@ public class DataFlowSource extends Transformation {
      */
     @Override
     public void validate() {
-        super.validate();
         if (schemaLinkedService() != null) {
             schemaLinkedService().validate();
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DataFlowSource"));
+        }
+        if (dataset() != null) {
+            dataset().validate();
+        }
+        if (linkedService() != null) {
+            linkedService().validate();
+        }
+        if (flowlet() != null) {
+            flowlet().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowSource.class);
 
     /**
      * {@inheritDoc}

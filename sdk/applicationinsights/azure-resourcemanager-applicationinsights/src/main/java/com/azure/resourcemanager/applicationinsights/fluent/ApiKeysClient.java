@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentApiKeyInner;
 import com.azure.resourcemanager.applicationinsights.models.ApiKeyRequest;
 
-/** An instance of this class provides access to all the operations defined in ApiKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiKeysClient.
+ */
 public interface ApiKeysClient {
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface ApiKeysClient {
 
     /**
      * Gets a list of API keys of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -44,11 +46,11 @@ public interface ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,11 +63,11 @@ public interface ApiKeysClient {
 
     /**
      * Create an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
+     * component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -77,7 +79,7 @@ public interface ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -93,7 +95,7 @@ public interface ApiKeysClient {
 
     /**
      * Delete an API Key of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -107,7 +109,7 @@ public interface ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
@@ -123,7 +125,7 @@ public interface ApiKeysClient {
 
     /**
      * Get the API Key for this key id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.

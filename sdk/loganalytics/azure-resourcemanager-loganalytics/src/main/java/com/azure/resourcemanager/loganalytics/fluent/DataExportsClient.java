@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 
-/** An instance of this class provides access to all the operations defined in DataExportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataExportsClient.
+ */
 public interface DataExportsClient {
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -59,7 +61,7 @@ public interface DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -75,7 +77,7 @@ public interface DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -91,7 +93,7 @@ public interface DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -105,7 +107,7 @@ public interface DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -121,7 +123,7 @@ public interface DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.

@@ -212,6 +212,52 @@ public class FluxUtilTest {
     }
 
     @Test
+    public void testWriteFileWithReSubscriptionAndRetry() throws Exception {
+        String initialContent = "hello there";
+        String expectedContent = "hello again";
+
+        byte[] firstBytes = "Hello".getBytes(StandardCharsets.UTF_8);
+        byte[] secondBytes = "test".getBytes(StandardCharsets.UTF_8);
+        byte[] thirdBytes = "again".getBytes(StandardCharsets.UTF_8);
+
+        AtomicInteger attempt = new AtomicInteger(0);
+
+        Flux<ByteBuffer> body = Flux.defer(() -> {
+            int currentAttempt = attempt.incrementAndGet();
+            if (currentAttempt == 1) {
+                return Flux.just(ByteBuffer.wrap(firstBytes)).concatWith(Flux.error(new IOException()));
+            } else if (currentAttempt == 2) {
+                return Flux.just(ByteBuffer.wrap(secondBytes)).concatWith(Flux.error(new IOException()));
+            } else {
+                return Flux.just(ByteBuffer.wrap(thirdBytes));
+            }
+        });
+
+        File file = createFileIfNotExist();
+
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(initialContent.getBytes(StandardCharsets.UTF_8));
+        }
+
+        StepVerifier
+            .create(Mono.fromCallable(() -> AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE))
+                .flatMap(channel -> FluxUtil.writeFile(body, channel, 6)
+                    .retry(2) // Retry twice, third should succeed
+                    .then(Mono.fromCallable(() -> Files.readAllBytes(file.toPath())).doFinally(signalType -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    }))))
+            .expectNextMatches(outputStream -> {
+                assertArraysEqual(expectedContent.getBytes(StandardCharsets.UTF_8), outputStream);
+                return true;
+            })
+            .verifyComplete();
+    }
+
+    @Test
     public void testWriteWritableChannel() {
         String content = "test";
 

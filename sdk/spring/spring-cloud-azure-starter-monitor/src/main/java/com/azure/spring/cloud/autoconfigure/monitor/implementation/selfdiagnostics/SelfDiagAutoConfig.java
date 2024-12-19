@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 
 import java.util.Locale;
 
@@ -45,7 +46,7 @@ class SelfDiagAutoConfig {
     }
 
     @Bean
-    ExecutionEnvSelfDiag executionEnvSelfDiag(Logger selfDiagnosticsLogger) {
-        return new ExecutionEnvSelfDiag(selfDiagnosticsLogger);
+    SpringEnvSelfDiag springPropertiesSelfDiagnostic(Environment environment, Logger selfDiagnosticsLogger) {
+        return new SpringEnvSelfDiag(environment, selfDiagnosticsLogger);
     }
 }

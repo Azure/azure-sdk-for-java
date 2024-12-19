@@ -6,26 +6,33 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The OperationsPutContent model. */
+/**
+ * The OperationsPutContent model.
+ */
 @Fluent
-public final class OperationsPutContent {
+public final class OperationsPutContent implements JsonSerializable<OperationsPutContent> {
     /*
      * The contents property.
      */
-    @JsonProperty(value = "contents", required = true)
     private List<OperationsDefinitionInner> contents;
 
-    /** Creates an instance of OperationsPutContent class. */
+    /**
+     * Creates an instance of OperationsPutContent class.
+     */
     public OperationsPutContent() {
     }
 
     /**
      * Get the contents property: The contents property.
-     *
+     * 
      * @return the contents value.
      */
     public List<OperationsDefinitionInner> contents() {
@@ -34,7 +41,7 @@ public final class OperationsPutContent {
 
     /**
      * Set the contents property: The contents property.
-     *
+     * 
      * @param contents the contents value to set.
      * @return the OperationsPutContent object itself.
      */
@@ -45,17 +52,56 @@ public final class OperationsPutContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contents() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property contents in model OperationsPutContent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contents in model OperationsPutContent"));
         } else {
             contents().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationsPutContent.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("contents", this.contents, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsPutContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsPutContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationsPutContent.
+     */
+    public static OperationsPutContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsPutContent deserializedOperationsPutContent = new OperationsPutContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contents".equals(fieldName)) {
+                    List<OperationsDefinitionInner> contents
+                        = reader.readArray(reader1 -> OperationsDefinitionInner.fromJson(reader1));
+                    deserializedOperationsPutContent.contents = contents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsPutContent;
+        });
+    }
 }

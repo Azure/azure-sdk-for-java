@@ -119,9 +119,8 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedPrivateEndpoint>> getWithResponseAsync(String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-            managedVirtualNetworkName, managedPrivateEndpointName, accept, context));
+        return FluxUtil.withContext(
+            context -> getWithResponseAsync(managedVirtualNetworkName, managedPrivateEndpointName, context));
     }
 
     /**
@@ -223,9 +222,8 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedPrivateEndpoint>> createWithResponseAsync(String managedVirtualNetworkName,
         String managedPrivateEndpointName, ManagedPrivateEndpoint managedPrivateEndpoint) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
-            managedVirtualNetworkName, managedPrivateEndpointName, managedPrivateEndpoint, accept, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(managedVirtualNetworkName,
+            managedPrivateEndpointName, managedPrivateEndpoint, context));
     }
 
     /**
@@ -335,8 +333,8 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            managedVirtualNetworkName, managedPrivateEndpointName, context));
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(managedVirtualNetworkName, managedPrivateEndpointName, context));
     }
 
     /**
