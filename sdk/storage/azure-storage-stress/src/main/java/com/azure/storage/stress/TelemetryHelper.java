@@ -197,8 +197,16 @@ public class TelemetryHelper {
         Throwable unwrapped = Exceptions.unwrap(e);
 
         // Check if the message contains "NativeIoException" and the unwrapped exception is not already a NativeIoException
-        if (unwrapped.getMessage().contains("NativeIoException") && !(unwrapped instanceof io.netty.channel.unix.Errors.NativeIoException)) {
-            unwrapped = new io.netty.channel.unix.Errors.NativeIoException(unwrapped.getMessage(), Errors.ERRNO_ECONNRESET_NEGATIVE);
+
+        // Check if the unwrapped exception is a RuntimeException
+        if (unwrapped instanceof RuntimeException) {
+            String message = unwrapped.getMessage();
+            if (message.contains("NativeIoException")) {
+                unwrapped = new io.netty.channel.unix.Errors.NativeIoException("recvAddress", Errors.ERRNO_ECONNRESET_NEGATIVE);
+            } else if (message.contains("TimeoutException")) {
+                unwrapped = new TimeoutException(message);
+            }
+            // may need to add more known exceptions here
         }
 
         span.recordException(unwrapped);
