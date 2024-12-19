@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ApplicationInsightsManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the ApplicationInsightsManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { ApplicationInsightsManagementClientImpl.class })
 public final class ApplicationInsightsManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ApplicationInsightsManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class ApplicationInsightsManagementClientBuilder {
 
     /**
      * Builds an instance of ApplicationInsightsManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ApplicationInsightsManagementClientImpl.
      */
     public ApplicationInsightsManagementClientImpl buildClient() {

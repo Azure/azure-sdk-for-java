@@ -45,11 +45,12 @@ public class DerivedMetricAggregation {
         synchronized (lock) {
             if (count == 0) {
                 return 0.0;
-            } else if (aggregationType.equals(AggregationType.AVG)) {
-                return aggregation / count;
-            } else {
-                return aggregation;
+
             }
+            if (aggregationType.equals(AggregationType.AVG)) {
+                return aggregation / count;
+            }
+            return aggregation;
         }
     }
 }

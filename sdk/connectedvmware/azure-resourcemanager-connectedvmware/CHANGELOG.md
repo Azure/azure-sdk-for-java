@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-12-13)
+
+- Azure Resource Manager ConnectedVMware client library for Java. This package contains Microsoft Azure SDK for ConnectedVMware Management SDK. Connected VMware Client. Package tag package-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.DatastoreInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.VirtualMachineTemplateInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.VirtualMachineInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.HostInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.VirtualNetworkInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.InventoryItemProperties` was modified
+
+* `inventoryType()` was added
+
+#### `models.ResourcePoolInventoryItem` was modified
+
+* `inventoryType()` was added
+
+#### `models.ClusterInventoryItem` was modified
+
+* `inventoryType()` was added
 
 ## 1.0.0 (2023-10-26)
 

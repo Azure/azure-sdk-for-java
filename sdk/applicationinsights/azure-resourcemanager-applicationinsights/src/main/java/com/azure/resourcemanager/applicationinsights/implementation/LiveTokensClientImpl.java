@@ -25,17 +25,23 @@ import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LiveTokensClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LiveTokensClient.
+ */
 public final class LiveTokensClientImpl implements LiveTokensClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LiveTokensService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of LiveTokensClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LiveTokensClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -62,7 +68,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
 
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -87,7 +93,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
 
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +118,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
 
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -126,7 +132,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
 
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +147,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
 
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

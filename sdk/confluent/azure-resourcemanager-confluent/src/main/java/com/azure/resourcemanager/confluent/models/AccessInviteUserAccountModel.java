@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Invite User Account model.
  */
 @Fluent
-public final class AccessInviteUserAccountModel {
+public final class AccessInviteUserAccountModel implements JsonSerializable<AccessInviteUserAccountModel> {
     /*
      * Id of the organization
      */
-    @JsonProperty(value = "organizationId")
     private String organizationId;
 
     /*
      * Email of the logged in user
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * Upn of the logged in user
      */
-    @JsonProperty(value = "upn")
     private String upn;
 
     /*
      * Details of the user who is being invited
      */
-    @JsonProperty(value = "invitedUserDetails")
     private AccessInvitedUserDetails invitedUserDetails;
 
     /**
@@ -131,5 +131,51 @@ public final class AccessInviteUserAccountModel {
         if (invitedUserDetails() != null) {
             invitedUserDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationId", this.organizationId);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("upn", this.upn);
+        jsonWriter.writeJsonField("invitedUserDetails", this.invitedUserDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessInviteUserAccountModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessInviteUserAccountModel if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessInviteUserAccountModel.
+     */
+    public static AccessInviteUserAccountModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessInviteUserAccountModel deserializedAccessInviteUserAccountModel = new AccessInviteUserAccountModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationId".equals(fieldName)) {
+                    deserializedAccessInviteUserAccountModel.organizationId = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedAccessInviteUserAccountModel.email = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedAccessInviteUserAccountModel.upn = reader.getString();
+                } else if ("invitedUserDetails".equals(fieldName)) {
+                    deserializedAccessInviteUserAccountModel.invitedUserDetails
+                        = AccessInvitedUserDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessInviteUserAccountModel;
+        });
     }
 }

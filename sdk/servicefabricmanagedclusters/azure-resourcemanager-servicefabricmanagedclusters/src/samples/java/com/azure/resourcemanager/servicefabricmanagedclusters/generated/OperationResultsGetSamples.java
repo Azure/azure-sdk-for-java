@@ -10,7 +10,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 public final class OperationResultsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/Long_running_operation_result.json
      */
     /**

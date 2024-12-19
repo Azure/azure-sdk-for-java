@@ -22,7 +22,7 @@ public final class NetworkExperimentProfilesGetByResourceGroupWithResponseMockTe
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"qfyiaseqchkr\",\"location\":\"tzrazisgyk\",\"tags\":{\"mnrxxbsojkl\":\"mvanbwzo\"},\"id\":\"nhmdptysprqs\",\"name\":\"nzxojpslsvjgpli\",\"type\":\"fiqwoy\"}";
+            = "{\"properties\":{\"resourceState\":\"Deleting\",\"enabledState\":\"Enabled\"},\"etag\":\"g\",\"location\":\"knlejjjkxybwfd\",\"tags\":{\"nsxfwu\":\"bztensvkzykjtj\",\"bpkuwxeoio\":\"hcdpkupnqrmgj\"},\"id\":\"fiz\",\"name\":\"av\",\"type\":\"jzwfb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class NetworkExperimentProfilesGetByResourceGroupWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Profile response = manager.networkExperimentProfiles()
-            .getByResourceGroupWithResponse("beonrlkwzdq", "bxcea", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("eeksnbksdqhjvyk", "xeslkhhustcpoqm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tzrazisgyk", response.location());
-        Assertions.assertEquals("mvanbwzo", response.tags().get("mnrxxbsojkl"));
-        Assertions.assertEquals("qfyiaseqchkr", response.etag());
-        Assertions.assertEquals(State.DISABLED, response.enabledState());
+        Assertions.assertEquals("knlejjjkxybwfd", response.location());
+        Assertions.assertEquals("bztensvkzykjtj", response.tags().get("nsxfwu"));
+        Assertions.assertEquals("g", response.etag());
+        Assertions.assertEquals(State.ENABLED, response.enabledState());
     }
 }

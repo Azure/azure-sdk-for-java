@@ -126,7 +126,6 @@ public final class OracleServiceCloudSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

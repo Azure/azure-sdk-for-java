@@ -63,6 +63,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     }
 
     /**
+     * Gets the providers endpoint contained in policy.
+     *
      * @return the providers endpoint contained in policy
      */
     public Providers getProviders() {

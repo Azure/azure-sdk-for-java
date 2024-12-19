@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The KubernetesVersionProfileProperties model.
  */
 @Fluent
-public final class KubernetesVersionProfileProperties {
+public final class KubernetesVersionProfileProperties implements JsonSerializable<KubernetesVersionProfileProperties> {
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * List of supported Kubernetes versions
      */
-    @JsonProperty(value = "values")
     private List<KubernetesVersionProperties> values;
 
     /**
@@ -69,5 +71,47 @@ public final class KubernetesVersionProfileProperties {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesVersionProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesVersionProfileProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesVersionProfileProperties.
+     */
+    public static KubernetesVersionProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesVersionProfileProperties deserializedKubernetesVersionProfileProperties
+                = new KubernetesVersionProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedKubernetesVersionProfileProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("values".equals(fieldName)) {
+                    List<KubernetesVersionProperties> values
+                        = reader.readArray(reader1 -> KubernetesVersionProperties.fromJson(reader1));
+                    deserializedKubernetesVersionProfileProperties.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesVersionProfileProperties;
+        });
     }
 }

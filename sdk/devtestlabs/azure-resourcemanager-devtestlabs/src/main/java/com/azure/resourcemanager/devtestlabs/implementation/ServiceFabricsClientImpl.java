@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceFabricsClient.
+ */
 public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceFabricsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of ServiceFabricsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceFabricsClientImpl(DevTestLabsClientImpl client) {
@@ -165,7 +171,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -176,8 +182,8 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceFabricInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -212,7 +218,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -224,8 +230,8 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceFabricInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -259,7 +265,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -282,7 +288,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -304,7 +310,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -328,7 +334,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -348,7 +354,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -371,7 +377,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -415,7 +421,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -459,7 +465,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -478,7 +484,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -498,7 +504,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -516,7 +522,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -566,7 +572,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -615,7 +621,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -637,7 +643,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -662,7 +668,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -681,7 +687,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -702,7 +708,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -722,7 +728,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -743,7 +749,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -762,7 +768,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -782,7 +788,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -825,7 +831,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -868,7 +874,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -888,7 +894,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -911,7 +917,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -929,7 +935,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -948,7 +954,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -966,7 +972,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -986,7 +992,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1002,7 +1008,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1019,7 +1025,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1069,7 +1075,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1118,7 +1124,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1138,7 +1144,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1158,7 +1164,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1177,7 +1183,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1185,8 +1191,8 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicableScheduleInner>> listApplicableSchedulesWithResponseAsync(String resourceGroupName,
@@ -1222,7 +1228,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1231,8 +1237,8 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return schedules applicable to a virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicableScheduleInner>> listApplicableSchedulesWithResponseAsync(String resourceGroupName,
@@ -1266,7 +1272,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1285,7 +1291,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1304,7 +1310,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1322,7 +1328,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1365,7 +1371,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1408,7 +1414,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1428,7 +1434,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1451,7 +1457,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1469,7 +1475,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1488,7 +1494,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1506,7 +1512,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1526,7 +1532,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1542,7 +1548,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1559,7 +1565,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1602,7 +1608,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1645,7 +1651,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1665,7 +1671,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1688,7 +1694,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1706,7 +1712,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1725,7 +1731,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1743,7 +1749,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1763,7 +1769,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1779,7 +1785,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1796,14 +1802,13 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceFabricInner>> listNextSinglePageAsync(String nextLink) {
@@ -1823,15 +1828,14 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceFabricInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -6,11 +6,13 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.resourcemanager.applicationinsights.fluent.models.ComponentPurgeStatusResponseInner;
 
-/** An immutable client-side representation of ComponentPurgeStatusResponse. */
+/**
+ * An immutable client-side representation of ComponentPurgeStatusResponse.
+ */
 public interface ComponentPurgeStatusResponse {
     /**
      * Gets the status property: Status of the operation represented by the requested Id.
-     *
+     * 
      * @return the status value.
      */
     PurgeState status();
@@ -18,7 +20,7 @@ public interface ComponentPurgeStatusResponse {
     /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.ComponentPurgeStatusResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ComponentPurgeStatusResponseInner innerModel();

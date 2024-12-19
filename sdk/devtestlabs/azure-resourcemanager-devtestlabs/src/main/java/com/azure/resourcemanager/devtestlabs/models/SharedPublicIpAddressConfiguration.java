@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a virtual machine that determine how it is connected to a load balancer. */
+/**
+ * Properties of a virtual machine that determine how it is connected to a load balancer.
+ */
 @Fluent
-public final class SharedPublicIpAddressConfiguration {
+public final class SharedPublicIpAddressConfiguration implements JsonSerializable<SharedPublicIpAddressConfiguration> {
     /*
      * The incoming NAT rules
      */
-    @JsonProperty(value = "inboundNatRules")
     private List<InboundNatRule> inboundNatRules;
 
-    /** Creates an instance of SharedPublicIpAddressConfiguration class. */
+    /**
+     * Creates an instance of SharedPublicIpAddressConfiguration class.
+     */
     public SharedPublicIpAddressConfiguration() {
     }
 
     /**
      * Get the inboundNatRules property: The incoming NAT rules.
-     *
+     * 
      * @return the inboundNatRules value.
      */
     public List<InboundNatRule> inboundNatRules() {
@@ -32,7 +39,7 @@ public final class SharedPublicIpAddressConfiguration {
 
     /**
      * Set the inboundNatRules property: The incoming NAT rules.
-     *
+     * 
      * @param inboundNatRules the inboundNatRules value to set.
      * @return the SharedPublicIpAddressConfiguration object itself.
      */
@@ -43,12 +50,52 @@ public final class SharedPublicIpAddressConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (inboundNatRules() != null) {
             inboundNatRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("inboundNatRules", this.inboundNatRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedPublicIpAddressConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedPublicIpAddressConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedPublicIpAddressConfiguration.
+     */
+    public static SharedPublicIpAddressConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedPublicIpAddressConfiguration deserializedSharedPublicIpAddressConfiguration
+                = new SharedPublicIpAddressConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inboundNatRules".equals(fieldName)) {
+                    List<InboundNatRule> inboundNatRules
+                        = reader.readArray(reader1 -> InboundNatRule.fromJson(reader1));
+                    deserializedSharedPublicIpAddressConfiguration.inboundNatRules = inboundNatRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedPublicIpAddressConfiguration;
+        });
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Disks. */
+/**
+ * Resource collection API of Disks.
+ */
 public interface Disks {
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -25,7 +27,7 @@ public interface Disks {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -44,7 +46,7 @@ public interface Disks {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -61,7 +63,7 @@ public interface Disks {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -75,7 +77,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -88,7 +90,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -102,7 +104,7 @@ public interface Disks {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -117,7 +119,7 @@ public interface Disks {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -134,7 +136,7 @@ public interface Disks {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -150,7 +152,7 @@ public interface Disks {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -166,7 +168,7 @@ public interface Disks {
 
     /**
      * Get disk.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -177,7 +179,7 @@ public interface Disks {
 
     /**
      * Get disk.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
      * @param context The context to associate with this operation.
@@ -190,7 +192,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -200,7 +202,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +213,7 @@ public interface Disks {
 
     /**
      * Begins definition for a new Disk resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Disk definition.
      */

@@ -227,8 +227,8 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
     LabImpl(LabInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "labs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
     }
 
     public Lab refresh() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ArmTemplates. */
+/**
+ * Resource collection API of ArmTemplates.
+ */
 public interface ArmTemplates {
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -25,7 +27,7 @@ public interface ArmTemplates {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -44,7 +46,7 @@ public interface ArmTemplates {
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -61,7 +63,7 @@ public interface ArmTemplates {
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.

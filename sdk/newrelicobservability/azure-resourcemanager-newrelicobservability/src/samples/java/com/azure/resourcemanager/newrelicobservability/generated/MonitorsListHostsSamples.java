@@ -22,10 +22,11 @@ public final class MonitorsListHostsSamples {
      */
     public static void monitorsListHostsMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listHosts(
-            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
-                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listHosts("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                new HostsGetRequest().withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,9 +40,10 @@ public final class MonitorsListHostsSamples {
      */
     public static void monitorsListHostsMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().listHosts(
-            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
-                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .listHosts("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+                new HostsGetRequest().withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
+                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -42,12 +42,6 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
     @Generated
     private List<DocumentIntelligenceError> details;
 
-    /*
-     * An object containing more specific information than the current object about the error.
-     */
-    @Generated
-    private DocumentIntelligenceInnerError innererror;
-
     /**
      * Creates an instance of DocumentIntelligenceError class.
      *
@@ -101,17 +95,6 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
     }
 
     /**
-     * Get the innererror property: An object containing more specific information than the current object about the
-     * error.
-     *
-     * @return the innererror value.
-     */
-    @Generated
-    public DocumentIntelligenceInnerError getInnererror() {
-        return this.innererror;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -122,7 +105,7 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("target", this.target);
         jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("innererror", this.innererror);
+        jsonWriter.writeJsonField("innererror", this.innerError);
         return jsonWriter.writeEndObject();
     }
 
@@ -142,7 +125,7 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
             String message = null;
             String target = null;
             List<DocumentIntelligenceError> details = null;
-            DocumentIntelligenceInnerError innererror = null;
+            DocumentIntelligenceInnerError innerError = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,7 +138,7 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
                 } else if ("details".equals(fieldName)) {
                     details = reader.readArray(reader1 -> DocumentIntelligenceError.fromJson(reader1));
                 } else if ("innererror".equals(fieldName)) {
-                    innererror = DocumentIntelligenceInnerError.fromJson(reader);
+                    innerError = DocumentIntelligenceInnerError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -164,8 +147,25 @@ public final class DocumentIntelligenceError implements JsonSerializable<Documen
                 = new DocumentIntelligenceError(code, message);
             deserializedDocumentIntelligenceError.target = target;
             deserializedDocumentIntelligenceError.details = details;
-            deserializedDocumentIntelligenceError.innererror = innererror;
+            deserializedDocumentIntelligenceError.innerError = innerError;
             return deserializedDocumentIntelligenceError;
         });
+    }
+
+    /*
+     * An object containing more specific information than the current object about the error.
+     */
+    @Generated
+    private DocumentIntelligenceInnerError innerError;
+
+    /**
+     * Get the innerError property: An object containing more specific information than the current object about the
+     * error.
+     *
+     * @return the innerError value.
+     */
+    @Generated
+    public DocumentIntelligenceInnerError getInnerError() {
+        return this.innerError;
     }
 }

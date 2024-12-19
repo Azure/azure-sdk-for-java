@@ -9,6 +9,7 @@ It includes the following main features:
 * Custom - Build custom models to extract text, field values, selection marks, and table data from documents. Custom models are built with your own data, so they're tailored to your documents.
 * Read - Read information about textual elements, such as page words and lines in addition to text language information.
 * Classifiers - Build custom classifiers to categorize documents into predefined classes.
+- Batch analysis - Analyze multiple documents using a single request.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -113,7 +114,23 @@ DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIn
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
+You will also need to [register a new Microsoft Entra application][register_aad_app] and grant access to Document Intelligence by assigning the `"Cognitive Services Data Reader"` role to your service principal.
+It is strongly recommended to use Microsoft Entra ID as your default authentication approach. On the other hand, using an `AzureKeyCredential` can be helpful on getting-started scenarios since it can be set up fastly.
 
+##### Get the API Key
+
+The API key can be found in the [Azure Portal][azure_portal_get_endpoint] or by running the following Azure CLI command:
+
+```PowerShell
+az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
+```
+
+```java com.azure.ai.documentanalysis.readme.DocumentIntelligenceAdministrationClient
+DocumentIntelligenceAdministrationClient documentIntelligenceAsyncClient = new DocumentIntelligenceAdministrationClientBuilder()
+    .credential(new AzureKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
+```
 ## Key concepts
 ### DocumentAnalysisClient
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
@@ -165,9 +182,9 @@ File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeLayoutResultPoller =
+SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
-        new AnalyzeDocumentOptions(Files.readAllBytes(layoutDocument.toPath())));
+        new AnalyzeDocumentOptions(layoutDocumentData));
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -219,7 +236,7 @@ For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocum
 File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
     + "sample-forms/receipts/contoso-allinone.jpg");
 
-SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeReceiptPoller =
+SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeReceiptPoller =
     documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
         new AnalyzeDocumentOptions(Files.readAllBytes(sourceFile.toPath())));
 
@@ -314,7 +331,7 @@ was built on.
 ```java com.azure.ai.documentintelligence.readme.analyzeCustomModel
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
-SyncPoller<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
     new AnalyzeDocumentOptions(documentUrl).setPages(Collections.singletonList("1")).setLocale("en-US")
         .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES))
         .setOutputContentFormat(DocumentContentFormat.TEXT));
@@ -477,6 +494,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [analyze_identity_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeIdentityDocumentsFromUrlAsync.java
 [analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeInvoicesFromUrl.java
 [analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeReceiptsFromUrl.java
+[register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[azure_portal_get_endpoint]: https://learn.microsoft.com/azure/ai-services/document-intelligence/how-to-guides/create-document-intelligence-resource#get-endpoint-url-and-keys
 
 [fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows

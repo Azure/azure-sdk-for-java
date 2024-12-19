@@ -20,7 +20,8 @@ public final class SenderUsernamesListByDomainsSamples {
      */
     public static void
         getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
-            com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                com.azure.core.util.Context.NONE);
     }
 }

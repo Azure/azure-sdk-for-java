@@ -37,7 +37,7 @@ import java.util.Map;
 public final class NodeTypesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationStateless_example.json
      */
     /**
@@ -74,7 +74,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperation_example_max.json
      */
     /**
@@ -190,7 +190,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationAutoScale_example.json
      */
     /**
@@ -238,7 +238,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperation_example_min.json
      */
     /**
@@ -264,7 +264,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationDedicatedHost_example.json
      */
     /**
@@ -296,7 +296,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationVmImagePlan_example.json
      */
     /**
@@ -325,7 +325,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationCustomSharedGalleriesImage_example.json
      */
     /**
@@ -349,7 +349,7 @@ public final class NodeTypesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-06-01-preview/
+     * specification/servicefabricmanagedclusters/resource-manager/Microsoft.ServiceFabric/preview/2024-09-01-preview/
      * examples/NodeTypePutOperationCustomImage_example.json
      */
     /**

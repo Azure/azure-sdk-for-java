@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionProxiesDeleteSamples {
      */
     public static void
         privateEndpointConnectionProxyDelete(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.privateEndpointConnectionProxies().delete("test-rg", "contoso", "peexample01",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionProxies()
+            .delete("test-rg", "contoso", "peexample01", com.azure.core.util.Context.NONE);
     }
 }

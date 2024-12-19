@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,65 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-12-19)
+
+- Azure Resource Manager AzureSphere client library for Java. This package contains Microsoft Azure SDK for AzureSphere Management SDK. Azure Sphere resource management API. Package tag package-2024-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.ImageListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.PagedDeviceInsight` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.DeviceGroupListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.DeploymentListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.ProductListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.CatalogListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.DeviceListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.Image$Update` was modified
+
+* `withProperties(models.ImageProperties)` was added
+
+#### `models.CertificateListResult` was modified
+
+* `withNextLink(java.lang.String)` was added
+
+#### `models.Deployment$Update` was modified
+
+* `withProperties(models.DeploymentProperties)` was added
 
 ## 1.0.0 (2024-03-26)
 

@@ -28,7 +28,7 @@ public final class PrivateEndpointConnectionOperationsDeleteWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.privateEndpointConnectionOperations()
-            .deleteWithResponse("ebx", "dahhiid", "ogakrpmjodbdcy", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("midgoyawgpsx", "ymmsimbesg", "h", com.azure.core.util.Context.NONE);
 
     }
 }
