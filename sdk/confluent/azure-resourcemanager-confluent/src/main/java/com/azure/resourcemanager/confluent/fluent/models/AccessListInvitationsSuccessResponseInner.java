@@ -5,31 +5,33 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List invitations success response.
  */
 @Fluent
-public final class AccessListInvitationsSuccessResponseInner {
+public final class AccessListInvitationsSuccessResponseInner
+    implements JsonSerializable<AccessListInvitationsSuccessResponseInner> {
     /*
      * Type of response
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Metadata of the list
      */
-    @JsonProperty(value = "metadata")
     private ConfluentListMetadata metadata;
 
     /*
      * Data of the invitations list
      */
-    @JsonProperty(value = "data")
     private List<InvitationRecordInner> data;
 
     /**
@@ -110,5 +112,51 @@ public final class AccessListInvitationsSuccessResponseInner {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessListInvitationsSuccessResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessListInvitationsSuccessResponseInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessListInvitationsSuccessResponseInner.
+     */
+    public static AccessListInvitationsSuccessResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessListInvitationsSuccessResponseInner deserializedAccessListInvitationsSuccessResponseInner
+                = new AccessListInvitationsSuccessResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAccessListInvitationsSuccessResponseInner.kind = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAccessListInvitationsSuccessResponseInner.metadata
+                        = ConfluentListMetadata.fromJson(reader);
+                } else if ("data".equals(fieldName)) {
+                    List<InvitationRecordInner> data
+                        = reader.readArray(reader1 -> InvitationRecordInner.fromJson(reader1));
+                    deserializedAccessListInvitationsSuccessResponseInner.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessListInvitationsSuccessResponseInner;
+        });
     }
 }
