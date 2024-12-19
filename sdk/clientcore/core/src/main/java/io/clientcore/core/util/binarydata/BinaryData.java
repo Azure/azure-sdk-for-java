@@ -509,6 +509,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
+     * &#47;&#47; Or use the provided libraries for this.
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
      * Person person = binaryData.toObject&#40;Person.class&#41;;
@@ -529,7 +530,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
-     * &#47;&#47; Or use the  provided libraries for this.
+     * &#47;&#47; Or use the provided libraries for this.
      * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
      *
      * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
