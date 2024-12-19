@@ -96,8 +96,10 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isCountQuery()) {
             final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
-            final Mono<Long> mono = this.operations.count(querySpec, container);
-            return mono;
+            return this.operations.count(querySpec, container);
+        } else if (isSumQuery()) {
+            final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
+            return this.operations.sum(querySpec, container);
         } else {
             Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                                     processor.getReturnedType().getReturnedType());
@@ -121,6 +123,10 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
 
     protected boolean isCountQuery() {
         return StringBasedCosmosQuery.isCountQuery(query, getQueryMethod().getReturnedObjectType());
+    }
+
+    protected boolean isSumQuery() {
+        return StringBasedCosmosQuery.isSumQuery(query, getQueryMethod().getReturnedObjectType());
     }
 
 }
