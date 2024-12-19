@@ -1091,7 +1091,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities. */
+        /**
+         * The stage of the web app definition allowing to add User Assigned (External) Managed Service Identities.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithUserAssignedManagedServiceIdentityBasedAccessOrCreate<FluentT> extends WithCreate<FluentT> {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
@@ -1120,7 +1124,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withoutUserAssignedManagedServiceIdentity(String identityId);
         }
 
-        /** The stage of web app definition allowing to configure network access settings. */
+        /**
+         * The stage of web app definition allowing to configure network access settings.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithNetworkAccess<FluentT> {
             /**
              * Specifies that access to the web app from the specific virtual network subnet should be allowed.
@@ -1171,7 +1179,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             WithCreate<FluentT> disablePublicNetworkAccess();
         }
 
-        /** The stage of web app definition allowing to configure container size. */
+        /**
+         * The stage of web app definition allowing to configure container size.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithContainerSize<FluentT> {
             /**
              * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.
@@ -1782,7 +1794,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
-        /** The stage of the web app update allowing to add User Assigned (External) Managed Service Identities. */
+        /**
+         * The stage of the web app update allowing to add User Assigned (External) Managed Service Identities.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithUserAssignedManagedServiceIdentityBasedAccess<FluentT> {
             /**
              * Specifies the definition of a not-yet-created user assigned identity to be associated with the web app.
@@ -1801,7 +1817,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
-        /** The stage of web app update allowing to configure network access. */
+        /**
+         * The stage of web app update allowing to configure network access.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithNetworkAccess<FluentT> {
             /**
              * Specifies that access to web app should be allowed from all networks.
@@ -1900,7 +1920,11 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> disablePublicNetworkAccess();
         }
 
-        /** The stage of web app update allowing to configure container size. */
+        /**
+         * The stage of web app update allowing to configure container size.
+         *
+         * @param <FluentT> the type of the resource
+         */
         interface WithContainerSize<FluentT> {
             /**
              * Specifies the the amount of memory allocated to each instance of the function app, measured in mebibytes.

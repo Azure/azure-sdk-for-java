@@ -337,6 +337,8 @@ public interface DomainContact extends HasInnerModel<Contact>, ChildResource<App
             extends Attachable.InDefinition<ParentT>, DefinitionStages.WithOrganization<ParentT>,
             DefinitionStages.WithJobTitle<ParentT>, DefinitionStages.WithFaxNumber<ParentT> {
             /**
+             * Gets a contact instance.
+             *
              * @return the contact
              */
             Contact build();

@@ -14,6 +14,8 @@ public class DeployOptions {
     private Boolean trackDeployment;
 
     /**
+     * Gets the path for deploy.
+     *
      * @return the path for deploy
      */
     public String path() {
@@ -32,6 +34,8 @@ public class DeployOptions {
     }
 
     /**
+     * Check whether to restart site after deployment.
+     *
      * @return whether to restart site after deployment
      */
     public Boolean restartSite() {
@@ -52,6 +56,8 @@ public class DeployOptions {
     }
 
     /**
+     * Check whether to perform clean deployment.
+     *
      * @return whether to perform clean deployment
      */
     public Boolean cleanDeployment() {
@@ -75,6 +81,8 @@ public class DeployOptions {
     }
 
     /**
+     * Check whether to track deployment progress.
+     *
      * @return whether to track deployment progress
      */
     public Boolean trackDeployment() {

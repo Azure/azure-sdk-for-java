@@ -138,10 +138,18 @@ public interface AppServiceCertificateOrder
      */
     Mono<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault);
 
-    /** @return the state of the Key Vault secret */
+    /**
+     * Gets the state of the Key Vault secret.
+     *
+     * @return the state of the Key Vault secret
+     */
     AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
 
-    /** @return the state of the Key Vault secret */
+    /**
+     * Gets the state of the Key Vault secret.
+     *
+     * @return the state of the Key Vault secret
+     */
     Mono<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**
