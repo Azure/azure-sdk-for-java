@@ -23,81 +23,113 @@ import java.util.Set;
 public interface CdnEndpoint extends ExternalChildResource<CdnEndpoint, CdnProfile>, HasInnerModel<EndpointInner> {
 
     /**
+     * Gets origin host header.
+     *
      * @return origin host header
      */
     String originHostHeader();
 
     /**
+     * Gets origin path.
+     *
      * @return origin path
      */
     String originPath();
 
     /**
+     * Gets content types to be compressed.
+     *
      * @return content types to be compressed
      */
     Set<String> contentTypesToCompress();
 
     /**
+     * Check whether content compression is enabled.
+     *
      * @return true if content compression is enabled, otherwise false
      */
     boolean isCompressionEnabled();
 
     /**
+     * Check whether HTTP traffic is allowed.
+     *
      * @return true if HTTP traffic is allowed, otherwise false.
      */
     boolean isHttpAllowed();
 
     /**
+     * Check whether HTTPS traffic is allowed.
+     *
      * @return true if HTTPS traffic is allowed, otherwise false
      */
     boolean isHttpsAllowed();
 
     /**
+     * Gets query string caching behavior.
+     *
      * @return query string caching behavior
      */
     QueryStringCachingBehavior queryStringCachingBehavior();
 
     /**
+     * Gets optimization type.
+     *
      * @return optimization type
      */
     String optimizationType();
 
     /**
+     * Gets list of Geo filters.
+     *
      * @return list of Geo filters
      */
     Collection<GeoFilter> geoFilters();
 
     /**
+     * Gets endpoint host name.
+     *
      * @return endpoint host name
      */
     String hostname();
 
     /**
+     * Gets endpoint state.
+     *
      * @return endpoint state
      */
     EndpointResourceState resourceState();
 
     /**
+     * Gets endpoint provisioning state.
+     *
      * @return endpoint provisioning state
      */
     String provisioningState();
 
     /**
+     * Gets origin host nam.
+     *
      * @return origin host name
      */
     String originHostName();
 
     /**
+     * Gets HTTP port value.
+     *
      * @return HTTP port value
      */
     int httpPort();
 
     /**
+     * Gets HTTPS port value.
+     *
      * @return HTTPS port value
      */
     int httpsPort();
 
     /**
+     * Gets custom domains associated with this endpoint.
+     *
      * @return custom domains associated with this endpoint
      */
     Set<String> customDomains();
