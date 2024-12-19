@@ -21,25 +21,52 @@ import java.util.List;
 public interface SpringService extends GroupableResource<AppPlatformManager, ServiceResourceInner>,
     Refreshable<SpringService>, Updatable<SpringService.Update> {
 
-    /** @return Sku of the service */
+    /**
+     * Gets the Sku of the service.
+     *
+     * @return Sku of the service
+     */
     Sku sku();
 
-    /** @return the entry point of the spring app */
+    /**
+     * Gets the entry point of the spring app.
+     *
+     * @return the entry point of the spring app
+     */
     SpringApps apps();
 
-    /** @return the entry point of the spring service certificate */
+    /**
+     * Gets the entry point of the spring service certificate.
+     *
+     * @return the entry point of the spring service certificate
+     */
     SpringServiceCertificates certificates();
 
-    /** @return Monitoring Setting properties of the service */
+    /**
+     * Gets the Monitoring Setting properties of the service.
+     *
+     * @return Monitoring Setting properties of the service
+     */
     MonitoringSettingProperties getMonitoringSetting();
 
-    /** @return Monitoring Setting properties of the service */
+    /**
+     * Gets the Monitoring Setting properties of the service.
+     *
+     * @return Monitoring Setting properties of the service
+     */
     Mono<MonitoringSettingProperties> getMonitoringSettingAsync();
 
-    /** @return server properties of the service */
+    /**
+     * Gets the server properties of the service.
+     *
+     * @return server properties of the service
+     */
     ConfigServerProperties getServerProperties();
 
-    /** @return server properties of the service */
+    /**
+     * Gets the server properties of the service.
+     *
+     * @return server properties of the service */
     Mono<ConfigServerProperties> getServerPropertiesAsync();
 
     /**
@@ -91,10 +118,18 @@ public interface SpringService extends GroupableResource<AppPlatformManager, Ser
      */
     Mono<TestKeys> enableTestEndpointAsync();
 
-    /** @return default Configuration Service for Enterprise Tier */
+    /**
+     * Gets default Configuration Service for Enterprise Tier.
+     *
+     * @return default Configuration Service for Enterprise Tier
+     */
     SpringConfigurationService getDefaultConfigurationService();
 
-    /** @return default Service Registry for Enterprise Tier */
+    /**
+     * Gets default Service Registry for Enterprise Tier.
+     *
+     * @return default Service Registry for Enterprise Tier
+     */
     SpringServiceRegistry getDefaultServiceRegistry();
 
     /** Container interface for all the definitions that need to be implemented. */

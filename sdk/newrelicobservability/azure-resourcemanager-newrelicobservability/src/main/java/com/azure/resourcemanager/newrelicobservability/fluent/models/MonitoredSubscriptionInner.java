@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The list of subscriptions and it's monitoring status by current NewRelic monitor.
  */
 @Fluent
-public final class MonitoredSubscriptionInner {
+public final class MonitoredSubscriptionInner implements JsonSerializable<MonitoredSubscriptionInner> {
     /*
      * The subscriptionId to be monitored.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The state of monitoring.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * The reason of not monitoring the subscription.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "tagRules")
     private MonitoringTagRulesPropertiesInner tagRules;
 
     /**
@@ -132,5 +132,51 @@ public final class MonitoredSubscriptionInner {
         if (tagRules() != null) {
             tagRules().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeJsonField("tagRules", this.tagRules);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoredSubscriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoredSubscriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoredSubscriptionInner.
+     */
+    public static MonitoredSubscriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoredSubscriptionInner deserializedMonitoredSubscriptionInner = new MonitoredSubscriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedMonitoredSubscriptionInner.subscriptionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMonitoredSubscriptionInner.status = Status.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedMonitoredSubscriptionInner.error = reader.getString();
+                } else if ("tagRules".equals(fieldName)) {
+                    deserializedMonitoredSubscriptionInner.tagRules
+                        = MonitoringTagRulesPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoredSubscriptionInner;
+        });
     }
 }

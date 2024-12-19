@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Network access settings to be used for restored disks.
  */
@@ -41,7 +38,6 @@ public enum TargetDiskNetworkAccessOption {
      * @param value the serialized value to parse.
      * @return the parsed TargetDiskNetworkAccessOption object, or null if unable to parse.
      */
-    @JsonCreator
     public static TargetDiskNetworkAccessOption fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum TargetDiskNetworkAccessOption {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

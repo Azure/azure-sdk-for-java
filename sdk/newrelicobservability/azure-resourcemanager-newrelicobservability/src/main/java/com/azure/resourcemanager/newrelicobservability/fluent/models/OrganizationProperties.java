@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.BillingSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Details of Organizations.
  */
 @Fluent
-public final class OrganizationProperties {
+public final class OrganizationProperties implements JsonSerializable<OrganizationProperties> {
     /*
      * organization id
      */
-    @JsonProperty(value = "organizationId")
     private String organizationId;
 
     /*
      * organization name
      */
-    @JsonProperty(value = "organizationName")
     private String organizationName;
 
     /*
      * Billing source
      */
-    @JsonProperty(value = "billingSource")
     private BillingSource billingSource;
 
     /**
@@ -103,5 +104,47 @@ public final class OrganizationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationId", this.organizationId);
+        jsonWriter.writeStringField("organizationName", this.organizationName);
+        jsonWriter.writeStringField("billingSource", this.billingSource == null ? null : this.billingSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrganizationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrganizationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrganizationProperties.
+     */
+    public static OrganizationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrganizationProperties deserializedOrganizationProperties = new OrganizationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationId".equals(fieldName)) {
+                    deserializedOrganizationProperties.organizationId = reader.getString();
+                } else if ("organizationName".equals(fieldName)) {
+                    deserializedOrganizationProperties.organizationName = reader.getString();
+                } else if ("billingSource".equals(fieldName)) {
+                    deserializedOrganizationProperties.billingSource = BillingSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrganizationProperties;
+        });
     }
 }

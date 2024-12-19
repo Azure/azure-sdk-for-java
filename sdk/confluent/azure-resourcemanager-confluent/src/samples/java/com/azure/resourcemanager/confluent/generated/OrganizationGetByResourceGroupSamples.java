@@ -18,7 +18,7 @@ public final class OrganizationGetByResourceGroupSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationGet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getByResourceGroupWithResponse("myResourceGroup", "myOrganization",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getByResourceGroupWithResponse("myResourceGroup", "myOrganization", com.azure.core.util.Context.NONE);
     }
 }

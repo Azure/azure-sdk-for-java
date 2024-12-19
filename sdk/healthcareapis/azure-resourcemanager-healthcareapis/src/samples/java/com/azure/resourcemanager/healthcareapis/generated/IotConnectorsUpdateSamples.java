@@ -15,7 +15,9 @@ import java.util.Map;
  */
 public final class IotConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/iotconnector_Patch.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
+     * iotconnector_Patch.json
      */
     /**
      * Sample code: Patch an IoT Connector.

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Support engineer information.
  */
 @Immutable
-public final class SupportEngineer {
+public final class SupportEngineer implements JsonSerializable<SupportEngineer> {
     /*
      * Email address of the Azure Support engineer assigned to the support ticket.
      */
-    @JsonProperty(value = "emailAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String emailAddress;
 
     /**
@@ -39,5 +42,40 @@ public final class SupportEngineer {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportEngineer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportEngineer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportEngineer.
+     */
+    public static SupportEngineer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportEngineer deserializedSupportEngineer = new SupportEngineer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailAddress".equals(fieldName)) {
+                    deserializedSupportEngineer.emailAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportEngineer;
+        });
     }
 }
