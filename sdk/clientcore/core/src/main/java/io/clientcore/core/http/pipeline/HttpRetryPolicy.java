@@ -32,7 +32,7 @@ import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUE
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
-public class HttpRetryPolicy implements HttpPipelinePolicy {
+public final class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
     private final int maxRetries;
@@ -45,6 +45,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
     private static final double JITTER_FACTOR = 0.05;
+
+    static final String NAME = "retry";
 
     static {
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_REQUEST_RETRY_COUNT);
@@ -118,6 +120,11 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     /*

@@ -34,7 +34,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
-public class HttpLoggingPolicy implements HttpPipelinePolicy {
+public final class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
@@ -46,6 +46,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
+
+    static final String NAME = "logging";
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
@@ -109,6 +111,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             throw LOGGER.logThrowableAsError(e);
         }
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     private ClientLogger.LoggingEventBuilder createBasicLoggingContext(ClientLogger logger, ClientLogger.LogLevel level,
