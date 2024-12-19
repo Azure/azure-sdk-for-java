@@ -30,10 +30,8 @@ public final class ServersRestartMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.servers()
-            .restart("a", "fedxihchrphkm",
-                new ServerRestartParameter().withRestartWithFailover(EnableStatusEnum.DISABLED)
-                    .withMaxFailoverSeconds(1151973506),
-                com.azure.core.util.Context.NONE);
+            .restart("n", "ntfpmvmemfnc", new ServerRestartParameter().withRestartWithFailover(EnableStatusEnum.ENABLED)
+                .withMaxFailoverSeconds(97692731), com.azure.core.util.Context.NONE);
 
     }
 }

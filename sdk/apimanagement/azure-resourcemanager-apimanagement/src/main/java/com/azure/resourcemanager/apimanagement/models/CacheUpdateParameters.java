@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.CacheUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cache update details. */
+/**
+ * Cache update details.
+ */
 @Fluent
-public final class CacheUpdateParameters {
+public final class CacheUpdateParameters implements JsonSerializable<CacheUpdateParameters> {
     /*
      * Cache update properties details.
      */
-    @JsonProperty(value = "properties")
     private CacheUpdateProperties innerProperties;
 
-    /** Creates an instance of CacheUpdateParameters class. */
+    /**
+     * Creates an instance of CacheUpdateParameters class.
+     */
     public CacheUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Cache update properties details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CacheUpdateProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Get the description property: Cache description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +48,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Set the description property: Cache description.
-     *
+     * 
      * @param description the description value to set.
      * @return the CacheUpdateParameters object itself.
      */
@@ -55,7 +62,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Get the connectionString property: Runtime connection string to cache.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -64,7 +71,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Set the connectionString property: Runtime connection string to cache.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CacheUpdateParameters object itself.
      */
@@ -79,7 +86,7 @@ public final class CacheUpdateParameters {
     /**
      * Get the useFromLocation property: Location identifier to use cache from (should be either 'default' or valid
      * Azure region identifier).
-     *
+     * 
      * @return the useFromLocation value.
      */
     public String useFromLocation() {
@@ -89,7 +96,7 @@ public final class CacheUpdateParameters {
     /**
      * Set the useFromLocation property: Location identifier to use cache from (should be either 'default' or valid
      * Azure region identifier).
-     *
+     * 
      * @param useFromLocation the useFromLocation value to set.
      * @return the CacheUpdateParameters object itself.
      */
@@ -103,7 +110,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Get the resourceId property: Original uri of entity in external system cache points to.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -112,7 +119,7 @@ public final class CacheUpdateParameters {
 
     /**
      * Set the resourceId property: Original uri of entity in external system cache points to.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the CacheUpdateParameters object itself.
      */
@@ -126,12 +133,48 @@ public final class CacheUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheUpdateParameters.
+     */
+    public static CacheUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheUpdateParameters deserializedCacheUpdateParameters = new CacheUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCacheUpdateParameters.innerProperties = CacheUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheUpdateParameters;
+        });
     }
 }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInfoInner;
 
-/** An immutable client-side representation of ArmTemplateInfo. */
+/**
+ * An immutable client-side representation of ArmTemplateInfo.
+ */
 public interface ArmTemplateInfo {
     /**
      * Gets the template property: The template's contents.
-     *
+     * 
      * @return the template value.
      */
     Object template();
 
     /**
      * Gets the parameters property: The parameters of the ARM template.
-     *
+     * 
      * @return the parameters value.
      */
     Object parameters();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     ArmTemplateInfoInner innerModel();

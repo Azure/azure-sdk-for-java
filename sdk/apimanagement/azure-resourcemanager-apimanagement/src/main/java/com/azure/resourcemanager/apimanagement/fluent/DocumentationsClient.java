@@ -16,11 +16,13 @@ import com.azure.resourcemanager.apimanagement.models.DocumentationsGetEntityTag
 import com.azure.resourcemanager.apimanagement.models.DocumentationsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.DocumentationsUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in DocumentationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DocumentationsClient.
+ */
 public interface DocumentationsClient {
     /**
      * Lists all Documentations of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,12 +35,12 @@ public interface DocumentationsClient {
 
     /**
      * Lists all Documentations of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq |
-     *     contains |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq | contains
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -53,7 +55,7 @@ public interface DocumentationsClient {
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -69,7 +71,7 @@ public interface DocumentationsClient {
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -82,7 +84,7 @@ public interface DocumentationsClient {
 
     /**
      * Gets the details of the Documentation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -98,7 +100,7 @@ public interface DocumentationsClient {
 
     /**
      * Gets the details of the Documentation specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -112,7 +114,7 @@ public interface DocumentationsClient {
 
     /**
      * Creates a new Documentation or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -130,7 +132,7 @@ public interface DocumentationsClient {
 
     /**
      * Creates a new Documentation or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
@@ -146,12 +148,12 @@ public interface DocumentationsClient {
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Documentation Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,12 +167,12 @@ public interface DocumentationsClient {
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Documentation Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -183,12 +185,12 @@ public interface DocumentationsClient {
 
     /**
      * Deletes the specified Documentation from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,12 +203,12 @@ public interface DocumentationsClient {
 
     /**
      * Deletes the specified Documentation from an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param documentationId Documentation identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -25,17 +25,23 @@ import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListR
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProviderCommonsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProviderCommonsClient.
+ */
 public final class ResourceProviderCommonsClientImpl implements ResourceProviderCommonsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProviderCommonsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final IotHubClientImpl client;
 
     /**
      * Initializes an instance of ResourceProviderCommonsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProviderCommonsClientImpl(IotHubClientImpl client) {
@@ -62,13 +68,13 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
+     * 
+     * Get the number of free and paid iot hubs in the subscription.
+     * 
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync() {
@@ -89,15 +95,15 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
+     * 
+     * Get the number of free and paid iot hubs in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>>
@@ -118,9 +124,9 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
+     * 
+     * Get the number of free and paid iot hubs in the subscription.
+     * 
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription on successful completion of {@link Mono}.
@@ -132,9 +138,9 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
+     * 
+     * Get the number of free and paid iot hubs in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -148,9 +154,9 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
+     * 
+     * Get the number of free and paid iot hubs in the subscription.
+     * 
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.

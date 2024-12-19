@@ -149,6 +149,7 @@
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
+    <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>

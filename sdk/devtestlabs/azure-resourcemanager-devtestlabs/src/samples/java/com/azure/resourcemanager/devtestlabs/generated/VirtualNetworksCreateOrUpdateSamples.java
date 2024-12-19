@@ -7,19 +7,21 @@ package com.azure.resourcemanager.devtestlabs.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworks CreateOrUpdate.
+ */
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualNetworks_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualNetworks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .define("{virtualNetworkName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")

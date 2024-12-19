@@ -11,7 +11,15 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Monit
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownRequestColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownDependencyColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DependencyDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ExceptionDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownTraceColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownExceptionColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
@@ -194,6 +202,7 @@ class FilterTest {
             "HTTP", "https://test.com/hiThere?x=y", null, null);
         DependencyDataColumns dependencyFalse = new DependencyDataColumns("test.com", 200, false, "GET /hiThere", 0,
             "HTTP", "https://test.com/hiThere?x=y", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request Success filter matches
@@ -246,6 +255,7 @@ class FilterTest {
             "GET /hiThere", 0, "HTTP", "https://test.com/hiThere?x=y", null, null);
         DependencyDataColumns dependencyShortDuration = new DependencyDataColumns("test.com", 400, true, "GET /hiThere",
             200, "HTTP", "https://test.com/hiThere?x=y", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request ResponseCode filter matches
@@ -334,6 +344,7 @@ class FilterTest {
         TraceDataColumns traceBye = new TraceDataColumns("bye", null, null);
         ExceptionDataColumns exceptionHi = new ExceptionDataColumns("Exception Message hi", "Stack Trace", null, null);
         ExceptionDataColumns exception = new ExceptionDataColumns("Exception Message", "Stack Trace", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request Url filter matches
@@ -480,6 +491,20 @@ class FilterTest {
         assertEquals(exceptionData.getFieldValue(KnownExceptionColumns.STACK, String.class), "A stack trace");
 
         assertEquals(traceDataColumns.getFieldValue(KnownTraceColumns.MESSAGE, String.class), "A message");
+
+    }
+
+    @Test
+    @Description("Testing if Filter util method is able to parse valid duration strings to microseconds from filtering config")
+    void testDurationParsingFromConfig() {
+        assertEquals(5000000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:5"));
+        assertEquals(1234567890000L, Filter.getMicroSecondsFromFilterTimestampString("14.6:56:7.89"));
+        assertEquals(200000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.2"));
+        assertEquals(999000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.999"));
+        assertEquals(5000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0.005"));
+        assertEquals(0L, Filter.getMicroSecondsFromFilterTimestampString("0.0:0:0"));
+        assertEquals(61000000L, Filter.getMicroSecondsFromFilterTimestampString("0.0:1:1"));
+        assertEquals(3600001000L, Filter.getMicroSecondsFromFilterTimestampString("0.1:0:0.001"));
     }
 
 }

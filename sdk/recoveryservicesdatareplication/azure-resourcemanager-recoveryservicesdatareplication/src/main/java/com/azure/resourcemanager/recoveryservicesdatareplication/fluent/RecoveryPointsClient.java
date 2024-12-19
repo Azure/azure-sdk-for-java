@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.RecoveryPointModelInner;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public interface RecoveryPointsClient {
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -34,9 +36,9 @@ public interface RecoveryPointsClient {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -52,9 +54,9 @@ public interface RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -68,9 +70,9 @@ public interface RecoveryPointsClient {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.

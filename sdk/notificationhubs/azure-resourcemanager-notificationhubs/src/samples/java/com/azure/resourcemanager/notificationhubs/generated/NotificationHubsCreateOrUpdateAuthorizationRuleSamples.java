@@ -23,8 +23,10 @@ public final class NotificationHubsCreateOrUpdateAuthorizationRuleSamples {
      */
     public static void notificationHubsCreateOrUpdateAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().defineAuthorizationRule("MyManageSharedAccessKey")
+        manager.notificationHubs()
+            .defineAuthorizationRule("MyManageSharedAccessKey")
             .withExistingNotificationHub("5ktrial", "nh-sdk-ns", "nh-sdk-hub")
-            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)).create();
+            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND))
+            .create();
     }
 }

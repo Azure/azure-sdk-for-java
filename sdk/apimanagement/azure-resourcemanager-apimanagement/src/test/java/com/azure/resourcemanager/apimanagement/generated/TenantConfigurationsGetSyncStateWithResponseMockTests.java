@@ -6,61 +6,43 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
 import com.azure.resourcemanager.apimanagement.models.TenantConfigurationSyncStateContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TenantConfigurationsGetSyncStateWithResponseMockTests {
     @Test
     public void testGetSyncStateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"branch\":\"izdoysmzgbogdjw\",\"commitId\":\"bcppdvuotkvk\",\"isExport\":true,\"isSynced\":false,\"isGitEnabled\":false,\"syncDate\":\"2021-10-12T10:38:35Z\",\"configurationChangeDate\":\"2021-02-21T16:33:46Z\",\"lastOperationId\":\"uylkbdskr\"},\"id\":\"yfrtluka\",\"name\":\"qzylempahyuxxe\",\"type\":\"keonp\"}";
+            = "{\"properties\":{\"branch\":\"jpc\",\"commitId\":\"bkkgqfjwgphhp\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":true,\"syncDate\":\"2021-09-29T02:03:46Z\",\"configurationChangeDate\":\"2021-07-08T14:51:46Z\",\"lastOperationId\":\"msqqmdajsq\"},\"id\":\"pxftyifadsliif\",\"name\":\"rbsrpjspbi\",\"type\":\"snxmfooin\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TenantConfigurationSyncStateContract response = manager.tenantConfigurations()
-            .getSyncStateWithResponse("dk", "zn", ConfigurationIdName.CONFIGURATION, com.azure.core.util.Context.NONE)
+            .getSyncStateWithResponse("mqhedbqrlbyhzy", "uupqk", ConfigurationIdName.CONFIGURATION,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("izdoysmzgbogdjw", response.branch());
-        Assertions.assertEquals("bcppdvuotkvk", response.commitId());
-        Assertions.assertEquals(true, response.isExport());
-        Assertions.assertEquals(false, response.isSynced());
-        Assertions.assertEquals(false, response.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T10:38:35Z"), response.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T16:33:46Z"), response.configurationChangeDate());
-        Assertions.assertEquals("uylkbdskr", response.lastOperationId());
+        Assertions.assertEquals("jpc", response.branch());
+        Assertions.assertEquals("bkkgqfjwgphhp", response.commitId());
+        Assertions.assertEquals(false, response.isExport());
+        Assertions.assertEquals(true, response.isSynced());
+        Assertions.assertEquals(true, response.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T02:03:46Z"), response.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-08T14:51:46Z"), response.configurationChangeDate());
+        Assertions.assertEquals("msqqmdajsq", response.lastOperationId());
     }
 }

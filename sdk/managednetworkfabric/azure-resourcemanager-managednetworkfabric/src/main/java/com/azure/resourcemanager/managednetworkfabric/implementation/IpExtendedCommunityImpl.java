@@ -153,8 +153,9 @@ public final class IpExtendedCommunityImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ipExtendedCommunityName = Utils.getValueFromIdByName(innerObject.id(), "ipExtendedCommunities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.ipExtendedCommunityName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ipExtendedCommunities");
     }
 
     public IpExtendedCommunity refresh() {

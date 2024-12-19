@@ -6,91 +6,87 @@ package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SkuSetting model. */
+/**
+ * The SkuSetting model.
+ */
 @Fluent
-public final class SkuSetting {
+public final class SkuSetting implements JsonSerializable<SkuSetting> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The tier property.
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The size property.
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The family property.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The kind property.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * The locations property.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The locationInfo property.
      */
-    @JsonProperty(value = "locationInfo")
     private List<SkuLocationInfo> locationInfo;
 
     /*
      * The requiredQuotaIds property.
      */
-    @JsonProperty(value = "requiredQuotaIds")
     private List<String> requiredQuotaIds;
 
     /*
      * The requiredFeatures property.
      */
-    @JsonProperty(value = "requiredFeatures")
     private List<String> requiredFeatures;
 
     /*
      * The capacity property.
      */
-    @JsonProperty(value = "capacity")
     private SkuSettingCapacity capacity;
 
     /*
      * The costs property.
      */
-    @JsonProperty(value = "costs")
     private List<SkuCost> costs;
 
     /*
      * The capabilities property.
      */
-    @JsonProperty(value = "capabilities")
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of SkuSetting class. */
+    /**
+     * Creates an instance of SkuSetting class.
+     */
     public SkuSetting() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -99,7 +95,7 @@ public final class SkuSetting {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuSetting object itself.
      */
@@ -110,7 +106,7 @@ public final class SkuSetting {
 
     /**
      * Get the tier property: The tier property.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -119,7 +115,7 @@ public final class SkuSetting {
 
     /**
      * Set the tier property: The tier property.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the SkuSetting object itself.
      */
@@ -130,7 +126,7 @@ public final class SkuSetting {
 
     /**
      * Get the size property: The size property.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -139,7 +135,7 @@ public final class SkuSetting {
 
     /**
      * Set the size property: The size property.
-     *
+     * 
      * @param size the size value to set.
      * @return the SkuSetting object itself.
      */
@@ -150,7 +146,7 @@ public final class SkuSetting {
 
     /**
      * Get the family property: The family property.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -159,7 +155,7 @@ public final class SkuSetting {
 
     /**
      * Set the family property: The family property.
-     *
+     * 
      * @param family the family value to set.
      * @return the SkuSetting object itself.
      */
@@ -170,7 +166,7 @@ public final class SkuSetting {
 
     /**
      * Get the kind property: The kind property.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -179,7 +175,7 @@ public final class SkuSetting {
 
     /**
      * Set the kind property: The kind property.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the SkuSetting object itself.
      */
@@ -190,7 +186,7 @@ public final class SkuSetting {
 
     /**
      * Get the locations property: The locations property.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -199,7 +195,7 @@ public final class SkuSetting {
 
     /**
      * Set the locations property: The locations property.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the SkuSetting object itself.
      */
@@ -210,7 +206,7 @@ public final class SkuSetting {
 
     /**
      * Get the locationInfo property: The locationInfo property.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<SkuLocationInfo> locationInfo() {
@@ -219,7 +215,7 @@ public final class SkuSetting {
 
     /**
      * Set the locationInfo property: The locationInfo property.
-     *
+     * 
      * @param locationInfo the locationInfo value to set.
      * @return the SkuSetting object itself.
      */
@@ -230,7 +226,7 @@ public final class SkuSetting {
 
     /**
      * Get the requiredQuotaIds property: The requiredQuotaIds property.
-     *
+     * 
      * @return the requiredQuotaIds value.
      */
     public List<String> requiredQuotaIds() {
@@ -239,7 +235,7 @@ public final class SkuSetting {
 
     /**
      * Set the requiredQuotaIds property: The requiredQuotaIds property.
-     *
+     * 
      * @param requiredQuotaIds the requiredQuotaIds value to set.
      * @return the SkuSetting object itself.
      */
@@ -250,7 +246,7 @@ public final class SkuSetting {
 
     /**
      * Get the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @return the requiredFeatures value.
      */
     public List<String> requiredFeatures() {
@@ -259,7 +255,7 @@ public final class SkuSetting {
 
     /**
      * Set the requiredFeatures property: The requiredFeatures property.
-     *
+     * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the SkuSetting object itself.
      */
@@ -270,7 +266,7 @@ public final class SkuSetting {
 
     /**
      * Get the capacity property: The capacity property.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuSettingCapacity capacity() {
@@ -279,7 +275,7 @@ public final class SkuSetting {
 
     /**
      * Set the capacity property: The capacity property.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the SkuSetting object itself.
      */
@@ -290,7 +286,7 @@ public final class SkuSetting {
 
     /**
      * Get the costs property: The costs property.
-     *
+     * 
      * @return the costs value.
      */
     public List<SkuCost> costs() {
@@ -299,7 +295,7 @@ public final class SkuSetting {
 
     /**
      * Set the costs property: The costs property.
-     *
+     * 
      * @param costs the costs value to set.
      * @return the SkuSetting object itself.
      */
@@ -310,7 +306,7 @@ public final class SkuSetting {
 
     /**
      * Get the capabilities property: The capabilities property.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -319,7 +315,7 @@ public final class SkuSetting {
 
     /**
      * Set the capabilities property: The capabilities property.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the SkuSetting object itself.
      */
@@ -330,13 +326,13 @@ public final class SkuSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SkuSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkuSetting"));
         }
         if (locationInfo() != null) {
             locationInfo().forEach(e -> e.validate());
@@ -353,4 +349,82 @@ public final class SkuSetting {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locationInfo", this.locationInfo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("requiredQuotaIds", this.requiredQuotaIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        jsonWriter.writeArrayField("costs", this.costs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuSetting if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuSetting.
+     */
+    public static SkuSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuSetting deserializedSkuSetting = new SkuSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSkuSetting.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSkuSetting.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSkuSetting.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSkuSetting.family = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSkuSetting.kind = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuSetting.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<SkuLocationInfo> locationInfo = reader.readArray(reader1 -> SkuLocationInfo.fromJson(reader1));
+                    deserializedSkuSetting.locationInfo = locationInfo;
+                } else if ("requiredQuotaIds".equals(fieldName)) {
+                    List<String> requiredQuotaIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuSetting.requiredQuotaIds = requiredQuotaIds;
+                } else if ("requiredFeatures".equals(fieldName)) {
+                    List<String> requiredFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuSetting.requiredFeatures = requiredFeatures;
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSkuSetting.capacity = SkuSettingCapacity.fromJson(reader);
+                } else if ("costs".equals(fieldName)) {
+                    List<SkuCost> costs = reader.readArray(reader1 -> SkuCost.fromJson(reader1));
+                    deserializedSkuSetting.costs = costs;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<SkuCapability> capabilities = reader.readArray(reader1 -> SkuCapability.fromJson(reader1));
+                    deserializedSkuSetting.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuSetting;
+        });
+    }
 }

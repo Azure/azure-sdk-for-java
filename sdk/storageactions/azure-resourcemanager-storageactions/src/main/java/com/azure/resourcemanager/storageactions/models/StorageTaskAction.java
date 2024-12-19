@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage task action represents conditional statements and operations to be performed on target objects.
  */
 @Fluent
-public final class StorageTaskAction {
+public final class StorageTaskAction implements JsonSerializable<StorageTaskAction> {
     /*
      * The if block of storage task operation
      */
-    @JsonProperty(value = "if", required = true)
     private IfCondition ifProperty;
 
     /*
      * The else block of storage task operation
      */
-    @JsonProperty(value = "else")
     private ElseCondition elseProperty;
 
     /**
@@ -78,8 +80,8 @@ public final class StorageTaskAction {
      */
     public void validate() {
         if (ifProperty() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ifProperty in model StorageTaskAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ifProperty in model StorageTaskAction"));
         } else {
             ifProperty().validate();
         }
@@ -89,4 +91,44 @@ public final class StorageTaskAction {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("if", this.ifProperty);
+        jsonWriter.writeJsonField("else", this.elseProperty);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskAction.
+     */
+    public static StorageTaskAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAction deserializedStorageTaskAction = new StorageTaskAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("if".equals(fieldName)) {
+                    deserializedStorageTaskAction.ifProperty = IfCondition.fromJson(reader);
+                } else if ("else".equals(fieldName)) {
+                    deserializedStorageTaskAction.elseProperty = ElseCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAction;
+        });
+    }
 }

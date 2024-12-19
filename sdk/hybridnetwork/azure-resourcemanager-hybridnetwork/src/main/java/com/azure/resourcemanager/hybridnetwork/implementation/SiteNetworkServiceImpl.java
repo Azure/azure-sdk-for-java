@@ -139,8 +139,9 @@ public final class SiteNetworkServiceImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.siteNetworkServiceName = Utils.getValueFromIdByName(innerObject.id(), "siteNetworkServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.siteNetworkServiceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "siteNetworkServices");
     }
 
     public SiteNetworkService refresh() {

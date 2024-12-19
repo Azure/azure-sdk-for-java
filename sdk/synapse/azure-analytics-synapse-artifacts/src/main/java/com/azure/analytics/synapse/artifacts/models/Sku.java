@@ -29,7 +29,8 @@ public final class Sku implements JsonSerializable<Sku> {
     private String name;
 
     /*
-     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
+     * for the resource this may be omitted.
      */
     private Integer capacity;
 

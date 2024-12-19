@@ -14,9 +14,7 @@ public final class EndpointHealthDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointHealthDataInner model = BinaryData.fromString(
-            "{\"endpointId\":\"xknalaulppg\",\"healthStatus\":\"dead\",\"lastKnownError\":\"napnyiropuhpigv\",\"lastKnownErrorTime\":\"Tue,"
-                + " 18 May 2021 16:57:02 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sun, 13 Jun 2021 20:05:29"
-                + " GMT\",\"lastSendAttemptTime\":\"Wed, 08 Sep 2021 14:57:52 GMT\"}")
+            "{\"endpointId\":\"xknalaulppg\",\"healthStatus\":\"dead\",\"lastKnownError\":\"napnyiropuhpigv\",\"lastKnownErrorTime\":\"Tue, 18 May 2021 16:57:02 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sun, 13 Jun 2021 20:05:29 GMT\",\"lastSendAttemptTime\":\"Wed, 08 Sep 2021 14:57:52 GMT\"}")
             .toObject(EndpointHealthDataInner.class);
         Assertions.assertEquals("xknalaulppg", model.endpointId());
         Assertions.assertEquals(EndpointHealthStatus.DEAD, model.healthStatus());

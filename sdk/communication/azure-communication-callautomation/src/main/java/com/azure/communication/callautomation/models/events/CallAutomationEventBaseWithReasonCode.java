@@ -7,24 +7,8 @@ package com.azure.communication.callautomation.models.events;
  * The base event interface with ReasonCode added.
  */
 public abstract class CallAutomationEventBaseWithReasonCode extends CallAutomationEventBase {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @SuppressWarnings("FieldMayBeFinal")
-    ResultInformation resultInformation;
 
     CallAutomationEventBaseWithReasonCode() {
-
-        this.resultInformation = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

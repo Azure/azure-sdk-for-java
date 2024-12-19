@@ -5,92 +5,91 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.DatabaseShareOrigin;
 import com.azure.resourcemanager.kusto.models.DatabaseStatistics;
 import com.azure.resourcemanager.kusto.models.PrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.SuspensionDetails;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Class representing the Kusto database properties. */
+/**
+ * Class representing the Kusto database properties.
+ */
 @Fluent
-public final class ReadOnlyFollowingDatabaseProperties {
+public final class ReadOnlyFollowingDatabaseProperties
+    implements JsonSerializable<ReadOnlyFollowingDatabaseProperties> {
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The time the data should be kept before it stops being accessible to queries in TimeSpan.
      */
-    @JsonProperty(value = "softDeletePeriod", access = JsonProperty.Access.WRITE_ONLY)
     private Duration softDeletePeriod;
 
     /*
      * The time the data should be kept in cache for fast queries in TimeSpan.
      */
-    @JsonProperty(value = "hotCachePeriod")
     private Duration hotCachePeriod;
 
     /*
      * The statistics of the database.
      */
-    @JsonProperty(value = "statistics", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatistics statistics;
 
     /*
      * The name of the leader cluster
      */
-    @JsonProperty(value = "leaderClusterResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String leaderClusterResourceId;
 
     /*
      * The name of the attached database configuration cluster
      */
-    @JsonProperty(value = "attachedDatabaseConfigurationName", access = JsonProperty.Access.WRITE_ONLY)
     private String attachedDatabaseConfigurationName;
 
     /*
      * The principals modification kind of the database
      */
-    @JsonProperty(value = "principalsModificationKind", access = JsonProperty.Access.WRITE_ONLY)
     private PrincipalsModificationKind principalsModificationKind;
 
     /*
      * Table level sharing specifications
      */
-    @JsonProperty(value = "tableLevelSharingProperties", access = JsonProperty.Access.WRITE_ONLY)
     private TableLevelSharingProperties tableLevelSharingProperties;
 
     /*
      * The original database name, before databaseNameOverride or databaseNamePrefix where applied.
      */
-    @JsonProperty(value = "originalDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String originalDatabaseName;
 
     /*
      * The origin of the following setup.
      */
-    @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseShareOrigin databaseShareOrigin;
 
     /*
      * The database suspension details. If the database is suspended, this object contains information related to the
      * database's suspension state.
      */
-    @JsonProperty(value = "suspensionDetails", access = JsonProperty.Access.WRITE_ONLY)
     private SuspensionDetails suspensionDetails;
 
-    /** Creates an instance of ReadOnlyFollowingDatabaseProperties class. */
+    /**
+     * Creates an instance of ReadOnlyFollowingDatabaseProperties class.
+     */
     public ReadOnlyFollowingDatabaseProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -100,7 +99,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
     /**
      * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
      * in TimeSpan.
-     *
+     * 
      * @return the softDeletePeriod value.
      */
     public Duration softDeletePeriod() {
@@ -109,7 +108,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
+     * 
      * @return the hotCachePeriod value.
      */
     public Duration hotCachePeriod() {
@@ -118,7 +117,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
+     * 
      * @param hotCachePeriod the hotCachePeriod value to set.
      * @return the ReadOnlyFollowingDatabaseProperties object itself.
      */
@@ -129,7 +128,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the statistics property: The statistics of the database.
-     *
+     * 
      * @return the statistics value.
      */
     public DatabaseStatistics statistics() {
@@ -138,7 +137,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the leaderClusterResourceId property: The name of the leader cluster.
-     *
+     * 
      * @return the leaderClusterResourceId value.
      */
     public String leaderClusterResourceId() {
@@ -147,7 +146,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the attachedDatabaseConfigurationName property: The name of the attached database configuration cluster.
-     *
+     * 
      * @return the attachedDatabaseConfigurationName value.
      */
     public String attachedDatabaseConfigurationName() {
@@ -156,7 +155,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the principalsModificationKind property: The principals modification kind of the database.
-     *
+     * 
      * @return the principalsModificationKind value.
      */
     public PrincipalsModificationKind principalsModificationKind() {
@@ -165,7 +164,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @return the tableLevelSharingProperties value.
      */
     public TableLevelSharingProperties tableLevelSharingProperties() {
@@ -175,7 +174,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
     /**
      * Get the originalDatabaseName property: The original database name, before databaseNameOverride or
      * databaseNamePrefix where applied.
-     *
+     * 
      * @return the originalDatabaseName value.
      */
     public String originalDatabaseName() {
@@ -184,7 +183,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Get the databaseShareOrigin property: The origin of the following setup.
-     *
+     * 
      * @return the databaseShareOrigin value.
      */
     public DatabaseShareOrigin databaseShareOrigin() {
@@ -194,7 +193,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
     /**
      * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
      * contains information related to the database's suspension state.
-     *
+     * 
      * @return the suspensionDetails value.
      */
     public SuspensionDetails suspensionDetails() {
@@ -203,7 +202,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -216,5 +215,70 @@ public final class ReadOnlyFollowingDatabaseProperties {
         if (suspensionDetails() != null) {
             suspensionDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hotCachePeriod", CoreUtils.durationToStringWithDays(this.hotCachePeriod));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReadOnlyFollowingDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReadOnlyFollowingDatabaseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReadOnlyFollowingDatabaseProperties.
+     */
+    public static ReadOnlyFollowingDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReadOnlyFollowingDatabaseProperties deserializedReadOnlyFollowingDatabaseProperties
+                = new ReadOnlyFollowingDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("softDeletePeriod".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.softDeletePeriod
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("hotCachePeriod".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.hotCachePeriod
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.statistics = DatabaseStatistics.fromJson(reader);
+                } else if ("leaderClusterResourceId".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.leaderClusterResourceId = reader.getString();
+                } else if ("attachedDatabaseConfigurationName".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.attachedDatabaseConfigurationName
+                        = reader.getString();
+                } else if ("principalsModificationKind".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.principalsModificationKind
+                        = PrincipalsModificationKind.fromString(reader.getString());
+                } else if ("tableLevelSharingProperties".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.tableLevelSharingProperties
+                        = TableLevelSharingProperties.fromJson(reader);
+                } else if ("originalDatabaseName".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.originalDatabaseName = reader.getString();
+                } else if ("databaseShareOrigin".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.databaseShareOrigin
+                        = DatabaseShareOrigin.fromString(reader.getString());
+                } else if ("suspensionDetails".equals(fieldName)) {
+                    deserializedReadOnlyFollowingDatabaseProperties.suspensionDetails
+                        = SuspensionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReadOnlyFollowingDatabaseProperties;
+        });
     }
 }

@@ -10,10 +10,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Schedule;
-import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
-import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
+import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
+import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import java.util.Collections;
 import java.util.Map;
 

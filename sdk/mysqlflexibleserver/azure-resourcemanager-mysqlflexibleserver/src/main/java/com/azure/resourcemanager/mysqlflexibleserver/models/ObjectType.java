@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
      * @param name a name to look for.
      * @return the corresponding ObjectType.
      */
-    @JsonCreator
     public static ObjectType fromString(String name) {
         return fromString(name, ObjectType.class);
     }

@@ -13,19 +13,21 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of private endpoint connections for an IotHub along with {@link Response}.
      */
@@ -35,14 +37,14 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * List private endpoint connections
-     *
-     * <p>List private endpoint connection properties.
-     *
+     * 
+     * List private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of private endpoint connections for an IotHub.
      */
@@ -51,16 +53,16 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection properties along with {@link Response}.
      */
@@ -70,15 +72,15 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection
-     *
-     * <p>Get private endpoint connection properties.
-     *
+     * 
+     * Get private endpoint connection properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection properties.
      */
@@ -88,16 +90,16 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection The private endpoint connection with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
      */
@@ -108,9 +110,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -118,7 +120,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
      */
@@ -129,16 +131,16 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection The private endpoint connection with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
@@ -148,9 +150,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update private endpoint connection
-     *
-     * <p>Update the status of a private endpoint connection with the specified name.
-     *
+     * 
+     * Update the status of a private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -158,7 +160,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
@@ -169,15 +171,15 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
      */
@@ -187,16 +189,16 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the private endpoint connection of an IotHub.
      */
@@ -206,15 +208,15 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
@@ -224,16 +226,16 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete private endpoint connection
-     *
-     * <p>Delete private endpoint connection with the specified name.
-     *
+     * 
+     * Delete private endpoint connection with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */

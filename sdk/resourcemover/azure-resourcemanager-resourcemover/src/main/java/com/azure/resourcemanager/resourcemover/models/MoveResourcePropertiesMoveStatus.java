@@ -5,22 +5,49 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the move resource status. */
+/**
+ * Defines the move resource status.
+ */
 @Fluent
 public final class MoveResourcePropertiesMoveStatus extends MoveResourceStatus {
-    /** Creates an instance of MoveResourcePropertiesMoveStatus class. */
+    /*
+     * Defines the MoveResource states.
+     */
+    private MoveState moveState;
+
+    /**
+     * Creates an instance of MoveResourcePropertiesMoveStatus class.
+     */
     public MoveResourcePropertiesMoveStatus() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the moveState property: Defines the MoveResource states.
+     * 
+     * @return the moveState value.
+     */
+    @Override
+    public MoveState moveState() {
+        return this.moveState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MoveResourcePropertiesMoveStatus withJobStatus(JobStatus jobStatus) {
         super.withJobStatus(jobStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MoveResourcePropertiesMoveStatus withErrors(MoveResourceError errors) {
         super.withErrors(errors);
@@ -29,11 +56,58 @@ public final class MoveResourcePropertiesMoveStatus extends MoveResourceStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (jobStatus() != null) {
+            jobStatus().validate();
+        }
+        if (errors() != null) {
+            errors().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobStatus", jobStatus());
+        jsonWriter.writeJsonField("errors", errors());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveResourcePropertiesMoveStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveResourcePropertiesMoveStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MoveResourcePropertiesMoveStatus.
+     */
+    public static MoveResourcePropertiesMoveStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveResourcePropertiesMoveStatus deserializedMoveResourcePropertiesMoveStatus
+                = new MoveResourcePropertiesMoveStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("moveState".equals(fieldName)) {
+                    deserializedMoveResourcePropertiesMoveStatus.moveState = MoveState.fromString(reader.getString());
+                } else if ("jobStatus".equals(fieldName)) {
+                    deserializedMoveResourcePropertiesMoveStatus.withJobStatus(JobStatus.fromJson(reader));
+                } else if ("errors".equals(fieldName)) {
+                    deserializedMoveResourcePropertiesMoveStatus.withErrors(MoveResourceError.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveResourcePropertiesMoveStatus;
+        });
     }
 }

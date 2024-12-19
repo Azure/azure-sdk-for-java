@@ -18,7 +18,7 @@ public final class PrivateEndpointConnectionsGetSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void privateEndpointConnectionsGet(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.privateEndpointConnections().getWithResponse("myResourceGroup", "myWorkspace", "myConnection",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("myResourceGroup", "myWorkspace", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,8 +20,9 @@ public final class ResourceProviderDeleteKubernetesVersionsSamples {
      */
     public static void deleteKubernetesVersions(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.resourceProviders().deleteKubernetesVersions(
-            "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation",
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .deleteKubernetesVersions(
+                "subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation",
+                com.azure.core.util.Context.NONE);
     }
 }

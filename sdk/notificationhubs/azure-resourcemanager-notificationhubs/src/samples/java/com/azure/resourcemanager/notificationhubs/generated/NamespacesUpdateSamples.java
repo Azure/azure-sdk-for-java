@@ -29,11 +29,14 @@ public final class NamespacesUpdateSamples {
      */
     public static void namespacesUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         NamespaceResource resource = manager.namespaces()
-            .getByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value3")).withSku(new Sku().withName(SkuName.FREE))
-            .withProperties(
-                new NamespaceProperties().withPnsCredentials(new PnsCredentials().withGcmCredential(new GcmCredential()
-                    .withGcmEndpoint("https://fcm.googleapis.com/fcm/send").withGoogleApiKey("fakeTokenPlaceholder"))))
+            .getByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value3"))
+            .withSku(new Sku().withName(SkuName.FREE))
+            .withProperties(new NamespaceProperties().withPnsCredentials(new PnsCredentials()
+                .withGcmCredential(new GcmCredential().withGcmEndpoint("https://fcm.googleapis.com/fcm/send")
+                    .withGoogleApiKey("fakeTokenPlaceholder"))))
             .apply();
     }
 

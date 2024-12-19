@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the compute and storage placement settings for the virtual machine. */
+/**
+ * Specifies the compute and storage placement settings for the virtual machine.
+ */
 @Fluent
-public final class PlacementProfile {
+public final class PlacementProfile implements JsonSerializable<PlacementProfile> {
     /*
      * Gets or sets the ARM Id of the resourcePool resource on which this virtual machine will deploy.
      */
-    @JsonProperty(value = "resourcePoolId")
     private String resourcePoolId;
 
     /*
      * Gets or sets the ARM Id of the cluster resource on which this virtual machine will deploy.
      */
-    @JsonProperty(value = "clusterId")
     private String clusterId;
 
     /*
      * Gets or sets the ARM Id of the host resource on which this virtual machine will deploy.
      */
-    @JsonProperty(value = "hostId")
     private String hostId;
 
     /*
      * Gets or sets the ARM Id of the datastore resource on which the data for the virtual machine will be kept.
      */
-    @JsonProperty(value = "datastoreId")
     private String datastoreId;
 
-    /** Creates an instance of PlacementProfile class. */
+    /**
+     * Creates an instance of PlacementProfile class.
+     */
     public PlacementProfile() {
     }
 
     /**
      * Get the resourcePoolId property: Gets or sets the ARM Id of the resourcePool resource on which this virtual
      * machine will deploy.
-     *
+     * 
      * @return the resourcePoolId value.
      */
     public String resourcePoolId() {
@@ -51,7 +55,7 @@ public final class PlacementProfile {
     /**
      * Set the resourcePoolId property: Gets or sets the ARM Id of the resourcePool resource on which this virtual
      * machine will deploy.
-     *
+     * 
      * @param resourcePoolId the resourcePoolId value to set.
      * @return the PlacementProfile object itself.
      */
@@ -63,7 +67,7 @@ public final class PlacementProfile {
     /**
      * Get the clusterId property: Gets or sets the ARM Id of the cluster resource on which this virtual machine will
      * deploy.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -73,7 +77,7 @@ public final class PlacementProfile {
     /**
      * Set the clusterId property: Gets or sets the ARM Id of the cluster resource on which this virtual machine will
      * deploy.
-     *
+     * 
      * @param clusterId the clusterId value to set.
      * @return the PlacementProfile object itself.
      */
@@ -84,7 +88,7 @@ public final class PlacementProfile {
 
     /**
      * Get the hostId property: Gets or sets the ARM Id of the host resource on which this virtual machine will deploy.
-     *
+     * 
      * @return the hostId value.
      */
     public String hostId() {
@@ -93,7 +97,7 @@ public final class PlacementProfile {
 
     /**
      * Set the hostId property: Gets or sets the ARM Id of the host resource on which this virtual machine will deploy.
-     *
+     * 
      * @param hostId the hostId value to set.
      * @return the PlacementProfile object itself.
      */
@@ -105,7 +109,7 @@ public final class PlacementProfile {
     /**
      * Get the datastoreId property: Gets or sets the ARM Id of the datastore resource on which the data for the virtual
      * machine will be kept.
-     *
+     * 
      * @return the datastoreId value.
      */
     public String datastoreId() {
@@ -115,7 +119,7 @@ public final class PlacementProfile {
     /**
      * Set the datastoreId property: Gets or sets the ARM Id of the datastore resource on which the data for the virtual
      * machine will be kept.
-     *
+     * 
      * @param datastoreId the datastoreId value to set.
      * @return the PlacementProfile object itself.
      */
@@ -126,9 +130,54 @@ public final class PlacementProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourcePoolId", this.resourcePoolId);
+        jsonWriter.writeStringField("clusterId", this.clusterId);
+        jsonWriter.writeStringField("hostId", this.hostId);
+        jsonWriter.writeStringField("datastoreId", this.datastoreId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlacementProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlacementProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlacementProfile.
+     */
+    public static PlacementProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlacementProfile deserializedPlacementProfile = new PlacementProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourcePoolId".equals(fieldName)) {
+                    deserializedPlacementProfile.resourcePoolId = reader.getString();
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedPlacementProfile.clusterId = reader.getString();
+                } else if ("hostId".equals(fieldName)) {
+                    deserializedPlacementProfile.hostId = reader.getString();
+                } else if ("datastoreId".equals(fieldName)) {
+                    deserializedPlacementProfile.datastoreId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlacementProfile;
+        });
     }
 }

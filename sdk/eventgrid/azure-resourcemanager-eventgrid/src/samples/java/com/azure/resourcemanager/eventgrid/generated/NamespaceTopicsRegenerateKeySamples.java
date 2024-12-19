@@ -11,7 +11,9 @@ import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
  */
 public final class NamespaceTopicsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopics_RegenerateKey.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * NamespaceTopics_RegenerateKey.json
      */
     /**
      * Sample code: NamespaceTopics_RegenerateKey.

@@ -14,16 +14,16 @@ public final class AdvancedThreatProtectionPropertiesTests {
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionProperties model = BinaryData
             .fromString(
-                "{\"creationTime\":\"2021-03-12T21:42:40Z\",\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"}")
+                "{\"creationTime\":\"2021-10-20T22:00:18Z\",\"state\":\"Enabled\",\"provisioningState\":\"Canceled\"}")
             .toObject(AdvancedThreatProtectionProperties.class);
-        Assertions.assertEquals(AdvancedThreatProtectionState.DISABLED, model.state());
+        Assertions.assertEquals(AdvancedThreatProtectionState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdvancedThreatProtectionProperties model
-            = new AdvancedThreatProtectionProperties().withState(AdvancedThreatProtectionState.DISABLED);
+            = new AdvancedThreatProtectionProperties().withState(AdvancedThreatProtectionState.ENABLED);
         model = BinaryData.fromObject(model).toObject(AdvancedThreatProtectionProperties.class);
-        Assertions.assertEquals(AdvancedThreatProtectionState.DISABLED, model.state());
+        Assertions.assertEquals(AdvancedThreatProtectionState.ENABLED, model.state());
     }
 }

@@ -16,19 +16,7 @@ public final class EndpointHealthDataListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointHealthDataListResult model = BinaryData.fromString(
-            "{\"value\":[{\"endpointId\":\"ovawjvzunlu\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"prnxipeil\",\"lastKnownErrorTime\":\"Mon,"
-                + " 12 Jul 2021 01:35:59 GMT\",\"lastSuccessfulSendAttemptTime\":\"Fri, 04 Jun 2021 13:01:56"
-                + " GMT\",\"lastSendAttemptTime\":\"Tue, 12 Oct 2021 12:24:32"
-                + " GMT\"},{\"endpointId\":\"dultskz\",\"healthStatus\":\"unhealthy\",\"lastKnownError\":\"zumveekgpwo\",\"lastKnownErrorTime\":\"Sat,"
-                + " 16 Jan 2021 14:31:18 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sun, 10 Oct 2021 22:25:32"
-                + " GMT\",\"lastSendAttemptTime\":\"Sat, 16 Oct 2021 05:20:45"
-                + " GMT\"},{\"endpointId\":\"jyofdxluusdtto\",\"healthStatus\":\"unknown\",\"lastKnownError\":\"oekqvk\",\"lastKnownErrorTime\":\"Fri,"
-                + " 20 Aug 2021 19:20:25 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 11 Oct 2021 10:00:24"
-                + " GMT\",\"lastSendAttemptTime\":\"Tue, 29 Jun 2021 22:28:15"
-                + " GMT\"},{\"endpointId\":\"wyjsflhhcaalnjix\",\"healthStatus\":\"unknown\",\"lastKnownError\":\"awjoyaqcslyjp\",\"lastKnownErrorTime\":\"Tue,"
-                + " 12 Jan 2021 19:26:56 GMT\",\"lastSuccessfulSendAttemptTime\":\"Wed, 28 Jul 2021 19:21:39"
-                + " GMT\",\"lastSendAttemptTime\":\"Tue, 31 Aug 2021 19:18:26"
-                + " GMT\"}],\"nextLink\":\"znelixhnrztfolh\"}")
+            "{\"value\":[{\"endpointId\":\"ovawjvzunlu\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"prnxipeil\",\"lastKnownErrorTime\":\"Mon, 12 Jul 2021 01:35:59 GMT\",\"lastSuccessfulSendAttemptTime\":\"Fri, 04 Jun 2021 13:01:56 GMT\",\"lastSendAttemptTime\":\"Tue, 12 Oct 2021 12:24:32 GMT\"},{\"endpointId\":\"dultskz\",\"healthStatus\":\"unhealthy\",\"lastKnownError\":\"zumveekgpwo\",\"lastKnownErrorTime\":\"Sat, 16 Jan 2021 14:31:18 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sun, 10 Oct 2021 22:25:32 GMT\",\"lastSendAttemptTime\":\"Sat, 16 Oct 2021 05:20:45 GMT\"},{\"endpointId\":\"jyofdxluusdtto\",\"healthStatus\":\"unknown\",\"lastKnownError\":\"oekqvk\",\"lastKnownErrorTime\":\"Fri, 20 Aug 2021 19:20:25 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 11 Oct 2021 10:00:24 GMT\",\"lastSendAttemptTime\":\"Tue, 29 Jun 2021 22:28:15 GMT\"},{\"endpointId\":\"wyjsflhhcaalnjix\",\"healthStatus\":\"unknown\",\"lastKnownError\":\"awjoyaqcslyjp\",\"lastKnownErrorTime\":\"Tue, 12 Jan 2021 19:26:56 GMT\",\"lastSuccessfulSendAttemptTime\":\"Wed, 28 Jul 2021 19:21:39 GMT\",\"lastSendAttemptTime\":\"Tue, 31 Aug 2021 19:18:26 GMT\"}],\"nextLink\":\"znelixhnrztfolh\"}")
             .toObject(EndpointHealthDataListResult.class);
         Assertions.assertEquals("ovawjvzunlu", model.value().get(0).endpointId());
         Assertions.assertEquals(EndpointHealthStatus.DEGRADED, model.value().get(0).healthStatus());

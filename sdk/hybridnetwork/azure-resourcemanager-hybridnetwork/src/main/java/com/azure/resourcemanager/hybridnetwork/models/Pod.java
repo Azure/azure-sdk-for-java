@@ -5,55 +5,54 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Helm Pod status properties.
  */
 @Fluent
-public final class Pod {
+public final class Pod implements JsonSerializable<Pod> {
     /*
      * The name of the Pod.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The namespace of the Pod.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Desired number of containers
      */
-    @JsonProperty(value = "desired")
     private Integer desired;
 
     /*
      * Number of ready containers.
      */
-    @JsonProperty(value = "ready")
     private Integer ready;
 
     /*
      * The status of a pod.
      */
-    @JsonProperty(value = "status")
     private PodStatus status;
 
     /*
      * Creation Time of Pod.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Last 5 Pod events.
      */
-    @JsonProperty(value = "events")
     private List<PodEvent> events;
 
     /**
@@ -211,5 +210,62 @@ public final class Pod {
         if (events() != null) {
             events().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeNumberField("desired", this.desired);
+        jsonWriter.writeNumberField("ready", this.ready);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Pod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Pod if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Pod.
+     */
+    public static Pod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Pod deserializedPod = new Pod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPod.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedPod.namespace = reader.getString();
+                } else if ("desired".equals(fieldName)) {
+                    deserializedPod.desired = reader.getNullable(JsonReader::getInt);
+                } else if ("ready".equals(fieldName)) {
+                    deserializedPod.ready = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedPod.status = PodStatus.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedPod.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("events".equals(fieldName)) {
+                    List<PodEvent> events = reader.readArray(reader1 -> PodEvent.fromJson(reader1));
+                    deserializedPod.events = events;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPod;
+        });
     }
 }

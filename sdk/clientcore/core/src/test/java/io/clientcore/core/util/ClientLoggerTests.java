@@ -5,9 +5,9 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.json.JsonOptions;
-import io.clientcore.core.json.JsonProviders;
-import io.clientcore.core.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonOptions;
+import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.util.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

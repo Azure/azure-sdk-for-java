@@ -32,14 +32,14 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     public PagedIterable<ConfigurationGroupSchema> listByPublisher(String resourceGroupName, String publisherName) {
         PagedIterable<ConfigurationGroupSchemaInner> inner
             = this.serviceClient().listByPublisher(resourceGroupName, publisherName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupSchemaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupSchemaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigurationGroupSchema> listByPublisher(String resourceGroupName, String publisherName,
         Context context) {
         PagedIterable<ConfigurationGroupSchemaInner> inner
             = this.serviceClient().listByPublisher(resourceGroupName, publisherName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationGroupSchemaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationGroupSchemaImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String publisherName, String configurationGroupSchemaName) {
@@ -98,17 +98,18 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     }
 
     public ConfigurationGroupSchema getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String configurationGroupSchemaName = Utils.getValueFromIdByName(id, "configurationGroupSchemas");
+        String configurationGroupSchemaName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupSchemas");
         if (configurationGroupSchemaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupSchemas'.", id)));
@@ -118,17 +119,18 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     }
 
     public Response<ConfigurationGroupSchema> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String configurationGroupSchemaName = Utils.getValueFromIdByName(id, "configurationGroupSchemas");
+        String configurationGroupSchemaName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupSchemas");
         if (configurationGroupSchemaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupSchemas'.", id)));
@@ -137,17 +139,18 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String configurationGroupSchemaName = Utils.getValueFromIdByName(id, "configurationGroupSchemas");
+        String configurationGroupSchemaName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupSchemas");
         if (configurationGroupSchemaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupSchemas'.", id)));
@@ -156,17 +159,18 @@ public final class ConfigurationGroupSchemasImpl implements ConfigurationGroupSc
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String configurationGroupSchemaName = Utils.getValueFromIdByName(id, "configurationGroupSchemas");
+        String configurationGroupSchemaName
+            = ResourceManagerUtils.getValueFromIdByName(id, "configurationGroupSchemas");
         if (configurationGroupSchemaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'configurationGroupSchemas'.", id)));

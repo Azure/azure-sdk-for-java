@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of an administrator.
  */
 @Fluent
-public final class AdministratorProperties {
+public final class AdministratorProperties implements JsonSerializable<AdministratorProperties> {
     /*
      * Type of the sever administrator.
      */
-    @JsonProperty(value = "administratorType")
     private AdministratorType administratorType;
 
     /*
      * Login name of the server administrator.
      */
-    @JsonProperty(value = "login")
     private String login;
 
     /*
      * SID (object ID) of the server administrator.
      */
-    @JsonProperty(value = "sid")
     private String sid;
 
     /*
      * Tenant ID of the administrator.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The resource id of the identity used for AAD Authentication.
      */
-    @JsonProperty(value = "identityResourceId")
     private String identityResourceId;
 
     /**
@@ -155,5 +154,55 @@ public final class AdministratorProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorType",
+            this.administratorType == null ? null : this.administratorType.toString());
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("sid", this.sid);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("identityResourceId", this.identityResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdministratorProperties.
+     */
+    public static AdministratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorProperties deserializedAdministratorProperties = new AdministratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorType".equals(fieldName)) {
+                    deserializedAdministratorProperties.administratorType
+                        = AdministratorType.fromString(reader.getString());
+                } else if ("login".equals(fieldName)) {
+                    deserializedAdministratorProperties.login = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedAdministratorProperties.sid = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAdministratorProperties.tenantId = reader.getString();
+                } else if ("identityResourceId".equals(fieldName)) {
+                    deserializedAdministratorProperties.identityResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorProperties;
+        });
     }
 }

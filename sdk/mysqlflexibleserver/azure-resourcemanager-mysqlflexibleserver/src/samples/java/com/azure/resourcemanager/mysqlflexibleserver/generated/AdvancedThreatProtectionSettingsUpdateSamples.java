@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.AdvancedThreatProtec
  */
 public final class AdvancedThreatProtectionSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/AdvancedThreatProtectionSettingsPatchDisabled.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * AdvancedThreatProtectionSettingsPatchDisabled.json
      */
     /**
      * Sample code: Disable a server's Advanced Threat Protection settings with all parameters.
@@ -29,7 +31,9 @@ public final class AdvancedThreatProtectionSettingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/AdvancedThreatProtectionSettingsPatchEnabled.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * AdvancedThreatProtectionSettingsPatchEnabled.json
      */
     /**
      * Sample code: Enable a server's Advanced Threat Protection settings.

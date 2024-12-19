@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identity attributes of a lab user. */
+/**
+ * Identity attributes of a lab user.
+ */
 @Fluent
-public final class UserIdentity {
+public final class UserIdentity implements JsonSerializable<UserIdentity> {
     /*
      * Set to the principal name / UPN of the client JWT making the request.
      */
-    @JsonProperty(value = "principalName")
     private String principalName;
 
     /*
      * Set to the principal Id of the client JWT making the request. Service principal will not have the principal Id.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * Set to the tenant ID of the client JWT making the request.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Set to the object Id of the client JWT making the request. Not all users have object Id. For CSP (reseller)
      * scenarios for example, object Id is not available.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
     /*
      * Set to the app Id of the client JWT making the request.
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     public UserIdentity() {
     }
 
     /**
      * Get the principalName property: Set to the principal name / UPN of the client JWT making the request.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -56,7 +59,7 @@ public final class UserIdentity {
 
     /**
      * Set the principalName property: Set to the principal name / UPN of the client JWT making the request.
-     *
+     * 
      * @param principalName the principalName value to set.
      * @return the UserIdentity object itself.
      */
@@ -68,7 +71,7 @@ public final class UserIdentity {
     /**
      * Get the principalId property: Set to the principal Id of the client JWT making the request. Service principal
      * will not have the principal Id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -78,7 +81,7 @@ public final class UserIdentity {
     /**
      * Set the principalId property: Set to the principal Id of the client JWT making the request. Service principal
      * will not have the principal Id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the UserIdentity object itself.
      */
@@ -89,7 +92,7 @@ public final class UserIdentity {
 
     /**
      * Get the tenantId property: Set to the tenant ID of the client JWT making the request.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -98,7 +101,7 @@ public final class UserIdentity {
 
     /**
      * Set the tenantId property: Set to the tenant ID of the client JWT making the request.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the UserIdentity object itself.
      */
@@ -110,7 +113,7 @@ public final class UserIdentity {
     /**
      * Get the objectId property: Set to the object Id of the client JWT making the request. Not all users have object
      * Id. For CSP (reseller) scenarios for example, object Id is not available.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -120,7 +123,7 @@ public final class UserIdentity {
     /**
      * Set the objectId property: Set to the object Id of the client JWT making the request. Not all users have object
      * Id. For CSP (reseller) scenarios for example, object Id is not available.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UserIdentity object itself.
      */
@@ -131,7 +134,7 @@ public final class UserIdentity {
 
     /**
      * Get the appId property: Set to the app Id of the client JWT making the request.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -140,7 +143,7 @@ public final class UserIdentity {
 
     /**
      * Set the appId property: Set to the app Id of the client JWT making the request.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the UserIdentity object itself.
      */
@@ -151,9 +154,57 @@ public final class UserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalName", this.principalName);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("appId", this.appId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserIdentity.
+     */
+    public static UserIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserIdentity deserializedUserIdentity = new UserIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalName".equals(fieldName)) {
+                    deserializedUserIdentity.principalName = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedUserIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedUserIdentity.tenantId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedUserIdentity.objectId = reader.getString();
+                } else if ("appId".equals(fieldName)) {
+                    deserializedUserIdentity.appId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserIdentity;
+        });
     }
 }

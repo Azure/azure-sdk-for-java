@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.19.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.0 and Spring Cloud dependencies version to 2024.0.0
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -13,6 +14,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
 - Fix error: Service Bus connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
 - Fix warn logs: Mark the bean post processor related beans as internal to avoid the log 'Bean xxx of type xxx is not eligible for getting processed by all BeanPostProcessors'. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+- Fix missing bean `springTokenCredentialProviderContextProvider`: Azure Identity Extensions and Spring Cloud Stream Binder cannot work together. [#43147](https://github.com/Azure/azure-sdk-for-java/issues/43147).
 
 ### Spring Integration Azure Core
 This section includes changes in the `spring-integration-azure-core` module.
@@ -85,7 +87,7 @@ Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
-- Improve the jdbc properties bean post processor priority. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+- Improve the JDBC properties bean post processor priority. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
 - Allow users to update SSL\TLS parameters in the default JDBC URL. [#39064](https://github.com/Azure/azure-sdk-for-java/issues/39064).
 
 #### Other Changes

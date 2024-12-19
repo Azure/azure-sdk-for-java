@@ -6,39 +6,41 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner;
 
-/** An immutable client-side representation of PortalSigninSettings. */
+/**
+ * An immutable client-side representation of PortalSigninSettings.
+ */
 public interface PortalSigninSettings {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the enabled property: Redirect Anonymous users to the Sign-In page.
-     *
+     * 
      * @return the enabled value.
      */
     Boolean enabled();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner object.
-     *
+     * 
      * @return the inner object.
      */
     PortalSigninSettingsInner innerModel();

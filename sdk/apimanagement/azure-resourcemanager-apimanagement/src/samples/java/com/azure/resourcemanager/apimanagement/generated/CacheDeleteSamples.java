@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Cache Delete. */
+/**
+ * Samples for Cache Delete.
+ */
 public final class CacheDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteCache.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementDeleteCache.json
      */
     /**
      * Sample code: ApiManagementDeleteCache.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteCache(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

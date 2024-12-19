@@ -5,96 +5,93 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesCustom;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromPlan;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromVm;
 import com.azure.resourcemanager.devtestlabs.models.DataDiskStorageTypeInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of a custom image. */
+/**
+ * Properties of a custom image.
+ */
 @Fluent
-public final class CustomImageProperties {
+public final class CustomImageProperties implements JsonSerializable<CustomImageProperties> {
     /*
      * The virtual machine from which the image is to be created.
      */
-    @JsonProperty(value = "vm")
     private CustomImagePropertiesFromVm vm;
 
     /*
      * The VHD from which the image is to be created.
      */
-    @JsonProperty(value = "vhd")
     private CustomImagePropertiesCustom vhd;
 
     /*
      * The description of the custom image.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The author of the custom image.
      */
-    @JsonProperty(value = "author")
     private String author;
 
     /*
      * The creation date of the custom image.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The Managed Image Id backing the custom image.
      */
-    @JsonProperty(value = "managedImageId")
     private String managedImageId;
 
     /*
      * The Managed Snapshot Id backing the custom image.
      */
-    @JsonProperty(value = "managedSnapshotId")
     private String managedSnapshotId;
 
     /*
      * Storage information about the data disks present in the custom image
      */
-    @JsonProperty(value = "dataDiskStorageInfo")
     private List<DataDiskStorageTypeInfo> dataDiskStorageInfo;
 
     /*
      * Storage information about the plan related to this custom image
      */
-    @JsonProperty(value = "customImagePlan")
     private CustomImagePropertiesFromPlan customImagePlan;
 
     /*
      * Whether or not the custom images underlying offer/plan has been enabled for programmatic deployment
      */
-    @JsonProperty(value = "isPlanAuthorized")
     private Boolean isPlanAuthorized;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of CustomImageProperties class. */
+    /**
+     * Creates an instance of CustomImageProperties class.
+     */
     public CustomImageProperties() {
     }
 
     /**
      * Get the vm property: The virtual machine from which the image is to be created.
-     *
+     * 
      * @return the vm value.
      */
     public CustomImagePropertiesFromVm vm() {
@@ -103,7 +100,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the vm property: The virtual machine from which the image is to be created.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -114,7 +111,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the vhd property: The VHD from which the image is to be created.
-     *
+     * 
      * @return the vhd value.
      */
     public CustomImagePropertiesCustom vhd() {
@@ -123,7 +120,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the vhd property: The VHD from which the image is to be created.
-     *
+     * 
      * @param vhd the vhd value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -134,7 +131,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the description property: The description of the custom image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -143,7 +140,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the description property: The description of the custom image.
-     *
+     * 
      * @param description the description value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -154,7 +151,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the author property: The author of the custom image.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -163,7 +160,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the author property: The author of the custom image.
-     *
+     * 
      * @param author the author value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -174,7 +171,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the creationDate property: The creation date of the custom image.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -183,7 +180,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the managedImageId property: The Managed Image Id backing the custom image.
-     *
+     * 
      * @return the managedImageId value.
      */
     public String managedImageId() {
@@ -192,7 +189,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the managedImageId property: The Managed Image Id backing the custom image.
-     *
+     * 
      * @param managedImageId the managedImageId value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -203,7 +200,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the managedSnapshotId property: The Managed Snapshot Id backing the custom image.
-     *
+     * 
      * @return the managedSnapshotId value.
      */
     public String managedSnapshotId() {
@@ -212,7 +209,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the managedSnapshotId property: The Managed Snapshot Id backing the custom image.
-     *
+     * 
      * @param managedSnapshotId the managedSnapshotId value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -223,7 +220,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the dataDiskStorageInfo property: Storage information about the data disks present in the custom image.
-     *
+     * 
      * @return the dataDiskStorageInfo value.
      */
     public List<DataDiskStorageTypeInfo> dataDiskStorageInfo() {
@@ -232,7 +229,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the dataDiskStorageInfo property: Storage information about the data disks present in the custom image.
-     *
+     * 
      * @param dataDiskStorageInfo the dataDiskStorageInfo value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -243,7 +240,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the customImagePlan property: Storage information about the plan related to this custom image.
-     *
+     * 
      * @return the customImagePlan value.
      */
     public CustomImagePropertiesFromPlan customImagePlan() {
@@ -252,7 +249,7 @@ public final class CustomImageProperties {
 
     /**
      * Set the customImagePlan property: Storage information about the plan related to this custom image.
-     *
+     * 
      * @param customImagePlan the customImagePlan value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -264,7 +261,7 @@ public final class CustomImageProperties {
     /**
      * Get the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been enabled for
      * programmatic deployment.
-     *
+     * 
      * @return the isPlanAuthorized value.
      */
     public Boolean isPlanAuthorized() {
@@ -274,7 +271,7 @@ public final class CustomImageProperties {
     /**
      * Set the isPlanAuthorized property: Whether or not the custom images underlying offer/plan has been enabled for
      * programmatic deployment.
-     *
+     * 
      * @param isPlanAuthorized the isPlanAuthorized value to set.
      * @return the CustomImageProperties object itself.
      */
@@ -285,7 +282,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -294,7 +291,7 @@ public final class CustomImageProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -303,7 +300,7 @@ public final class CustomImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -319,5 +316,75 @@ public final class CustomImageProperties {
         if (customImagePlan() != null) {
             customImagePlan().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vm", this.vm);
+        jsonWriter.writeJsonField("vhd", this.vhd);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("author", this.author);
+        jsonWriter.writeStringField("managedImageId", this.managedImageId);
+        jsonWriter.writeStringField("managedSnapshotId", this.managedSnapshotId);
+        jsonWriter.writeArrayField("dataDiskStorageInfo", this.dataDiskStorageInfo,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("customImagePlan", this.customImagePlan);
+        jsonWriter.writeBooleanField("isPlanAuthorized", this.isPlanAuthorized);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomImageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomImageProperties.
+     */
+    public static CustomImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomImageProperties deserializedCustomImageProperties = new CustomImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vm".equals(fieldName)) {
+                    deserializedCustomImageProperties.vm = CustomImagePropertiesFromVm.fromJson(reader);
+                } else if ("vhd".equals(fieldName)) {
+                    deserializedCustomImageProperties.vhd = CustomImagePropertiesCustom.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedCustomImageProperties.description = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedCustomImageProperties.author = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedCustomImageProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("managedImageId".equals(fieldName)) {
+                    deserializedCustomImageProperties.managedImageId = reader.getString();
+                } else if ("managedSnapshotId".equals(fieldName)) {
+                    deserializedCustomImageProperties.managedSnapshotId = reader.getString();
+                } else if ("dataDiskStorageInfo".equals(fieldName)) {
+                    List<DataDiskStorageTypeInfo> dataDiskStorageInfo
+                        = reader.readArray(reader1 -> DataDiskStorageTypeInfo.fromJson(reader1));
+                    deserializedCustomImageProperties.dataDiskStorageInfo = dataDiskStorageInfo;
+                } else if ("customImagePlan".equals(fieldName)) {
+                    deserializedCustomImageProperties.customImagePlan = CustomImagePropertiesFromPlan.fromJson(reader);
+                } else if ("isPlanAuthorized".equals(fieldName)) {
+                    deserializedCustomImageProperties.isPlanAuthorized = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomImageProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedCustomImageProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomImageProperties;
+        });
     }
 }

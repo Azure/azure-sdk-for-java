@@ -380,7 +380,6 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

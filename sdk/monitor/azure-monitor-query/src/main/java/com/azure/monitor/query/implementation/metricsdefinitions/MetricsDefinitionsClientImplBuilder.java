@@ -284,6 +284,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
      */
     @Generated
     public MetricsDefinitionsClientImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
@@ -292,6 +293,12 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
         MetricsDefinitionsClientImpl client = new MetricsDefinitionsClientImpl(localPipeline, localSerializerAdapter,
             this.subscriptionId, localHost, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 
     @Generated

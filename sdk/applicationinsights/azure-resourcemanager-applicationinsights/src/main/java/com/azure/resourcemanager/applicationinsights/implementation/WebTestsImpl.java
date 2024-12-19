@@ -29,12 +29,12 @@ public final class WebTestsImpl implements WebTests {
 
     public PagedIterable<WebTest> listByResourceGroup(String resourceGroupName) {
         PagedIterable<WebTestInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebTest> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<WebTestInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public Response<WebTest> getByResourceGroupWithResponse(String resourceGroupName, String webTestName,
@@ -69,32 +69,32 @@ public final class WebTestsImpl implements WebTests {
 
     public PagedIterable<WebTest> list() {
         PagedIterable<WebTestInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebTest> list(Context context) {
         PagedIterable<WebTestInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebTest> listByComponent(String componentName, String resourceGroupName) {
         PagedIterable<WebTestInner> inner = this.serviceClient().listByComponent(componentName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WebTest> listByComponent(String componentName, String resourceGroupName, Context context) {
         PagedIterable<WebTestInner> inner
             = this.serviceClient().listByComponent(componentName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WebTestImpl(inner1, this.manager()));
     }
 
     public WebTest getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String webTestName = Utils.getValueFromIdByName(id, "webtests");
+        String webTestName = ResourceManagerUtils.getValueFromIdByName(id, "webtests");
         if (webTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
@@ -103,12 +103,12 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public Response<WebTest> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String webTestName = Utils.getValueFromIdByName(id, "webtests");
+        String webTestName = ResourceManagerUtils.getValueFromIdByName(id, "webtests");
         if (webTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
@@ -117,12 +117,12 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String webTestName = Utils.getValueFromIdByName(id, "webtests");
+        String webTestName = ResourceManagerUtils.getValueFromIdByName(id, "webtests");
         if (webTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
@@ -131,12 +131,12 @@ public final class WebTestsImpl implements WebTests {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String webTestName = Utils.getValueFromIdByName(id, "webtests");
+        String webTestName = ResourceManagerUtils.getValueFromIdByName(id, "webtests");
         if (webTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));

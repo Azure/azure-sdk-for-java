@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalRevisionContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged list of portal revisions. */
+/**
+ * Paged list of portal revisions.
+ */
 @Immutable
-public final class PortalRevisionCollection {
+public final class PortalRevisionCollection implements JsonSerializable<PortalRevisionCollection> {
     /*
      * Collection of portal revisions.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PortalRevisionContractInner> value;
 
     /*
      * Next page link, if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PortalRevisionCollection class. */
+    /**
+     * Creates an instance of PortalRevisionCollection class.
+     */
     public PortalRevisionCollection() {
     }
 
     /**
      * Get the value property: Collection of portal revisions.
-     *
+     * 
      * @return the value value.
      */
     public List<PortalRevisionContractInner> value() {
@@ -39,7 +45,7 @@ public final class PortalRevisionCollection {
 
     /**
      * Get the nextLink property: Next page link, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class PortalRevisionCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalRevisionCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalRevisionCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalRevisionCollection.
+     */
+    public static PortalRevisionCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalRevisionCollection deserializedPortalRevisionCollection = new PortalRevisionCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PortalRevisionContractInner> value
+                        = reader.readArray(reader1 -> PortalRevisionContractInner.fromJson(reader1));
+                    deserializedPortalRevisionCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPortalRevisionCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalRevisionCollection;
+        });
     }
 }

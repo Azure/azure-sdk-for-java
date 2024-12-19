@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A collection of network authorization rules.
  */
 @Fluent
-public final class NetworkAcls {
+public final class NetworkAcls implements JsonSerializable<NetworkAcls> {
     /*
      * List of IP rules.
      */
-    @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
     /*
      * A default (public Internet) network authorization rule, which contains rights if no other network rule matches.
      */
-    @JsonProperty(value = "publicNetworkRule")
     private PublicInternetAuthorizationRule publicNetworkRule;
 
     /**
@@ -52,8 +54,8 @@ public final class NetworkAcls {
     }
 
     /**
-     * Get the publicNetworkRule property: A default (public Internet) network authorization rule, which contains
-     * rights if no other network rule matches.
+     * Get the publicNetworkRule property: A default (public Internet) network authorization rule, which contains rights
+     * if no other network rule matches.
      * 
      * @return the publicNetworkRule value.
      */
@@ -62,8 +64,8 @@ public final class NetworkAcls {
     }
 
     /**
-     * Set the publicNetworkRule property: A default (public Internet) network authorization rule, which contains
-     * rights if no other network rule matches.
+     * Set the publicNetworkRule property: A default (public Internet) network authorization rule, which contains rights
+     * if no other network rule matches.
      * 
      * @param publicNetworkRule the publicNetworkRule value to set.
      * @return the NetworkAcls object itself.
@@ -85,5 +87,45 @@ public final class NetworkAcls {
         if (publicNetworkRule() != null) {
             publicNetworkRule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("publicNetworkRule", this.publicNetworkRule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkAcls from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkAcls if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkAcls.
+     */
+    public static NetworkAcls fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkAcls deserializedNetworkAcls = new NetworkAcls();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipRules".equals(fieldName)) {
+                    List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
+                    deserializedNetworkAcls.ipRules = ipRules;
+                } else if ("publicNetworkRule".equals(fieldName)) {
+                    deserializedNetworkAcls.publicNetworkRule = PublicInternetAuthorizationRule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkAcls;
+        });
     }
 }

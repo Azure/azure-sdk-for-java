@@ -22,7 +22,7 @@ public final class LongRunningBackupsOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupNameV2\":\"opidkqqfkuv\",\"backupType\":\"FULL\",\"completedTime\":\"2021-01-30T21:59:46Z\",\"source\":\"ligovibrxkpm\",\"provisioningState\":\"Succeeded\"},\"id\":\"uruocbgo\",\"name\":\"rb\",\"type\":\"eoybfhjxakvvjgs\"}";
+            = "{\"properties\":{\"backupNameV2\":\"agfhsxtta\",\"backupType\":\"FULL\",\"completedTime\":\"2021-03-18T19:41:59Z\",\"source\":\"aa\",\"provisioningState\":\"Succeeded\"},\"id\":\"tnkdmkqj\",\"name\":\"lwuenvrkp\",\"type\":\"ou\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class LongRunningBackupsOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ServerBackupV2 response = manager.longRunningBackupsOperations()
-            .getWithResponse("rxcpjuisavo", "qdzfvazivjlfrqtt", "ajlkatnw", com.azure.core.util.Context.NONE)
+            .getWithResponse("elfk", "gplcrpwjxeznoigb", "njwmwkpnbsazejj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("opidkqqfkuv", response.backupNameV2());
+        Assertions.assertEquals("agfhsxtta", response.backupNameV2());
         Assertions.assertEquals(BackupType.FULL, response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T21:59:46Z"), response.completedTime());
-        Assertions.assertEquals("ligovibrxkpm", response.source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T19:41:59Z"), response.completedTime());
+        Assertions.assertEquals("aa", response.source());
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
@@ -785,15 +783,15 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
                 } else if ("CreatedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.createdAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("UpdatedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.updatedAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("AccessedAt".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.accessedAt
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("SupportOrdering".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedTopicDescription.supportOrdering = reader.getNullableElement(Boolean::parseBoolean);

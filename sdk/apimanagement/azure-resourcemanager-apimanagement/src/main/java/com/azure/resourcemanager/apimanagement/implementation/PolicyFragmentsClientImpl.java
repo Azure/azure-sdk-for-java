@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PolicyFragmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyFragmentsClient.
+ */
 public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PolicyFragmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of PolicyFragmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PolicyFragmentsClientImpl(ApiManagementClientImpl client) {
@@ -131,14 +137,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy |
-     *     ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param orderby OData order by query option.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -175,14 +181,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy |
-     *     ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param orderby OData order by query option.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -218,7 +224,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,14 +244,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy |
-     *     ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter, orderBy | ge,
+     * le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| value | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param orderby OData order by query option.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -264,7 +270,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets all policy fragments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +290,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -323,7 +329,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -362,7 +368,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -378,7 +384,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -396,7 +402,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -411,7 +417,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -451,7 +457,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -491,7 +497,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -509,7 +515,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -528,7 +534,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Gets a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -545,7 +551,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -591,7 +597,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -637,7 +643,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -661,7 +667,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -684,7 +690,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -710,7 +716,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -729,7 +735,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -751,7 +757,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -771,7 +777,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -791,7 +797,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -812,7 +818,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -831,7 +837,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Creates or updates a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -851,12 +857,12 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,12 +901,12 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -939,12 +945,12 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -957,12 +963,12 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -977,12 +983,12 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Deletes a policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -994,7 +1000,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -1035,7 +1041,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -1076,7 +1082,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -1095,7 +1101,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.
@@ -1115,7 +1121,7 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
 
     /**
      * Lists policy resources that reference the policy fragment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param id A resource identifier.

@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the task state. */
+/**
+ * Gets or sets the task state.
+ */
 public final class TaskState extends ExpandableStringEnum<TaskState> {
-    /** Static value Pending for TaskState. */
+    /**
+     * Static value Pending for TaskState.
+     */
     public static final TaskState PENDING = fromString("Pending");
 
-    /** Static value Started for TaskState. */
+    /**
+     * Static value Started for TaskState.
+     */
     public static final TaskState STARTED = fromString("Started");
 
-    /** Static value Succeeded for TaskState. */
+    /**
+     * Static value Succeeded for TaskState.
+     */
     public static final TaskState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for TaskState. */
+    /**
+     * Static value Failed for TaskState.
+     */
     public static final TaskState FAILED = fromString("Failed");
 
-    /** Static value Cancelled for TaskState. */
+    /**
+     * Static value Cancelled for TaskState.
+     */
     public static final TaskState CANCELLED = fromString("Cancelled");
 
-    /** Static value Skipped for TaskState. */
+    /**
+     * Static value Skipped for TaskState.
+     */
     public static final TaskState SKIPPED = fromString("Skipped");
 
     /**
      * Creates a new instance of TaskState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class TaskState extends ExpandableStringEnum<TaskState> {
 
     /**
      * Creates or finds a TaskState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TaskState.
      */
-    @JsonCreator
     public static TaskState fromString(String name) {
         return fromString(name, TaskState.class);
     }
 
     /**
      * Gets known TaskState values.
-     *
+     * 
      * @return known TaskState values.
      */
     public static Collection<TaskState> values() {

@@ -7,3 +7,5 @@ com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProper
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer
 
+org.springframework.boot.SpringApplicationRunListener=\
+com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderApplicationRunListener

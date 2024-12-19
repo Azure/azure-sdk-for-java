@@ -28,7 +28,7 @@ import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
+import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -46,6 +46,7 @@ public class CallAutomationUnitTestBase {
     static final String MOCK_CONNECTION_STRING = String.format("endpoint=%s;accesskey=eyJhbG", MOCK_ENDPOINT);
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
+    static final String ROOM_ID = "roomId";
     static final String CALL_CALLER_ID = "callerId";
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
@@ -56,19 +57,15 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
-    static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
-    static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
-    static final String MICROSOFT_TEAMS_APP_ID = "28:acs:redacted";
-    static final String PHONE_NUMBER = "+18001234567";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
         = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
-            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED);
+            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, true);
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransportType.WEBSOCKET, "en-US", true);
+        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransport.WEBSOCKET, "en-US", true);
 
     public static String generateDownloadResult(String content) {
         return content;

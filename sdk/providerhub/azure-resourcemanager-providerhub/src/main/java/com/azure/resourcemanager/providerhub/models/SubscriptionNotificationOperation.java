@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionNotificationOperation. */
+/**
+ * Defines values for SubscriptionNotificationOperation.
+ */
 public final class SubscriptionNotificationOperation extends ExpandableStringEnum<SubscriptionNotificationOperation> {
-    /** Static value NotDefined for SubscriptionNotificationOperation. */
+    /**
+     * Static value NotDefined for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation NOT_DEFINED = fromString("NotDefined");
 
-    /** Static value DeleteAllResources for SubscriptionNotificationOperation. */
+    /**
+     * Static value DeleteAllResources for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation DELETE_ALL_RESOURCES = fromString("DeleteAllResources");
 
-    /** Static value SoftDeleteAllResources for SubscriptionNotificationOperation. */
+    /**
+     * Static value SoftDeleteAllResources for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation SOFT_DELETE_ALL_RESOURCES
         = fromString("SoftDeleteAllResources");
 
-    /** Static value NoOp for SubscriptionNotificationOperation. */
+    /**
+     * Static value NoOp for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation NO_OP = fromString("NoOp");
 
-    /** Static value BillingCancellation for SubscriptionNotificationOperation. */
+    /**
+     * Static value BillingCancellation for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation BILLING_CANCELLATION = fromString("BillingCancellation");
 
-    /** Static value UndoSoftDelete for SubscriptionNotificationOperation. */
+    /**
+     * Static value UndoSoftDelete for SubscriptionNotificationOperation.
+     */
     public static final SubscriptionNotificationOperation UNDO_SOFT_DELETE = fromString("UndoSoftDelete");
 
     /**
      * Creates a new instance of SubscriptionNotificationOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class SubscriptionNotificationOperation extends ExpandableStringEnu
 
     /**
      * Creates or finds a SubscriptionNotificationOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionNotificationOperation.
      */
-    @JsonCreator
     public static SubscriptionNotificationOperation fromString(String name) {
         return fromString(name, SubscriptionNotificationOperation.class);
     }
 
     /**
      * Gets known SubscriptionNotificationOperation values.
-     *
+     * 
      * @return known SubscriptionNotificationOperation values.
      */
     public static Collection<SubscriptionNotificationOperation> values() {

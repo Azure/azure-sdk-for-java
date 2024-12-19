@@ -56,14 +56,16 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<AttachedDatabaseConfigurationInner> inner
             = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<AttachedDatabaseConfigurationInner> inner
             = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
     }
 
     public Response<AttachedDatabaseConfiguration> getWithResponse(String resourceGroupName, String clusterName,
@@ -99,78 +101,82 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     }
 
     public AttachedDatabaseConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
+        String attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
+                "The resource ID '%s' is not valid. Missing path segment 'attachedDatabaseConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
             .getValue();
     }
 
     public Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
+        String attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
+                "The resource ID '%s' is not valid. Missing path segment 'attachedDatabaseConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
+        String attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
+                "The resource ID '%s' is not valid. Missing path segment 'attachedDatabaseConfigurations'.", id)));
         }
         this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
+        String attachedDatabaseConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
+                "The resource ID '%s' is not valid. Missing path segment 'attachedDatabaseConfigurations'.", id)));
         }
         this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
     }

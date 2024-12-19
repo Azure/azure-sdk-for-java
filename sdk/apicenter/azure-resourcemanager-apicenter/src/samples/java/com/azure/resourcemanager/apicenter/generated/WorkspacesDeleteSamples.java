@@ -18,7 +18,7 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().deleteWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }

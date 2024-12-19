@@ -23,36 +23,50 @@ public interface PolicyAssignment
     extends HasName, HasId, Indexable, Refreshable<PolicyAssignment>, HasInnerModel<PolicyAssignmentInner> {
 
     /**
+     * Gets display name of the policy assignment.
+     *
      * @return the policy assignment display name
      */
     String displayName();
 
     /**
+     * Gets Id of the policy definition.
+     *
      * @return the policy definition Id
      */
     String policyDefinitionId();
 
     /**
+     * Gets the scope at which the policy assignment exists.
+     *
      * @return the scope at which the policy assignment exists
      */
     String scope();
 
     /**
+     * Gets the type of the policy assignment.
+     *
      * @return the type of the policy assignment
      */
     String type();
 
     /**
+     * Gets the excluded scopes of the policy assignment.
+     *
      * @return the excluded scopes of the policy assignment
      */
     List<String> excludedScopes();
 
     /**
+     * Gets the enforcement mode of the policy assignment.
+     *
      * @return the enforcement mode of the policy assignment
      */
     EnforcementMode enforcementMode();
 
     /**
+     * Gets the parameters of the policy assignment.
+     *
      * @return the parameters of the policy assignment
      */
     Map<String, ParameterValuesValue> parameters();

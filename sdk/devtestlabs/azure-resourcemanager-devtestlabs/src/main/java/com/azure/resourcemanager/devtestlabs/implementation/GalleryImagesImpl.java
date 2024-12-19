@@ -27,14 +27,14 @@ public final class GalleryImagesImpl implements GalleryImages {
 
     public PagedIterable<GalleryImage> list(String resourceGroupName, String labName) {
         PagedIterable<GalleryImageInner> inner = this.serviceClient().list(resourceGroupName, labName);
-        return Utils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GalleryImage> list(String resourceGroupName, String labName, String expand, String filter,
         Integer top, String orderby, Context context) {
         PagedIterable<GalleryImageInner> inner
             = this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
     }
 
     private GalleryImagesClient serviceClient() {

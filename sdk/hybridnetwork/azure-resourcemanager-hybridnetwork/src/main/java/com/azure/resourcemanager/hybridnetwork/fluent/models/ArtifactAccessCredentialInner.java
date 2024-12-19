@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.models.AzureContainerRegistryScopedTokenCredential;
 import com.azure.resourcemanager.hybridnetwork.models.AzureStorageAccountCredential;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.resourcemanager.hybridnetwork.models.CredentialType;
+import java.io.IOException;
 
 /**
  * The artifact manifest credential definition.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "credentialType",
-    defaultImpl = ArtifactAccessCredentialInner.class)
-@JsonTypeName("ArtifactAccessCredential")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureContainerRegistryScopedToken",
-        value = AzureContainerRegistryScopedTokenCredential.class),
-    @JsonSubTypes.Type(name = "AzureStorageAccountToken", value = AzureStorageAccountCredential.class) })
 @Immutable
-public class ArtifactAccessCredentialInner {
+public class ArtifactAccessCredentialInner implements JsonSerializable<ArtifactAccessCredentialInner> {
+    /*
+     * The credential type.
+     */
+    private CredentialType credentialType = CredentialType.fromString("ArtifactAccessCredential");
+
     /**
      * Creates an instance of ArtifactAccessCredentialInner class.
      */
     public ArtifactAccessCredentialInner() {
+    }
+
+    /**
+     * Get the credentialType property: The credential type.
+     * 
+     * @return the credentialType value.
+     */
+    public CredentialType credentialType() {
+        return this.credentialType;
     }
 
     /**
@@ -39,5 +45,71 @@ public class ArtifactAccessCredentialInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("credentialType",
+            this.credentialType == null ? null : this.credentialType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactAccessCredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactAccessCredentialInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactAccessCredentialInner.
+     */
+    public static ArtifactAccessCredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("credentialType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureContainerRegistryScopedToken".equals(discriminatorValue)) {
+                    return AzureContainerRegistryScopedTokenCredential.fromJson(readerToUse.reset());
+                } else if ("AzureStorageAccountToken".equals(discriminatorValue)) {
+                    return AzureStorageAccountCredential.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ArtifactAccessCredentialInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactAccessCredentialInner deserializedArtifactAccessCredentialInner
+                = new ArtifactAccessCredentialInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentialType".equals(fieldName)) {
+                    deserializedArtifactAccessCredentialInner.credentialType
+                        = CredentialType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactAccessCredentialInner;
+        });
     }
 }

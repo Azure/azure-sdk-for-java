@@ -15,11 +15,11 @@ public final class PartnerRegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"partnerRegistrationImmutableId\":\"47cc3249-22ca-4c21-b918-a645ee4fd0ad\"},\"location\":\"tqwpwya\",\"tags\":{\"oguyaip\":\"asqbucljgkyex\",\"waz\":\"dsdaultxijjumf\",\"jng\":\"nqnm\",\"bjwgnyfus\":\"qdqx\"},\"id\":\"zsvtuikzhajqgl\",\"name\":\"fh\",\"type\":\"l\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"partnerRegistrationImmutableId\":\"7f5a87d9-74b1-42d8-a546-b5d305bfc544\"},\"location\":\"tqwpwya\",\"tags\":{\"oguyaip\":\"asqbucljgkyex\",\"waz\":\"dsdaultxijjumf\",\"jng\":\"nqnm\",\"bjwgnyfus\":\"qdqx\"},\"id\":\"zsvtuikzhajqgl\",\"name\":\"fh\",\"type\":\"l\"}")
             .toObject(PartnerRegistrationInner.class);
         Assertions.assertEquals("tqwpwya", model.location());
         Assertions.assertEquals("asqbucljgkyex", model.tags().get("oguyaip"));
-        Assertions.assertEquals(UUID.fromString("47cc3249-22ca-4c21-b918-a645ee4fd0ad"),
+        Assertions.assertEquals(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"),
             model.partnerRegistrationImmutableId());
     }
 
@@ -27,11 +27,11 @@ public final class PartnerRegistrationInnerTests {
     public void testSerialize() throws Exception {
         PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("tqwpwya")
             .withTags(mapOf("oguyaip", "asqbucljgkyex", "waz", "dsdaultxijjumf", "jng", "nqnm", "bjwgnyfus", "qdqx"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("47cc3249-22ca-4c21-b918-a645ee4fd0ad"));
+            .withPartnerRegistrationImmutableId(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationInner.class);
         Assertions.assertEquals("tqwpwya", model.location());
         Assertions.assertEquals("asqbucljgkyex", model.tags().get("oguyaip"));
-        Assertions.assertEquals(UUID.fromString("47cc3249-22ca-4c21-b918-a645ee4fd0ad"),
+        Assertions.assertEquals(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"),
             model.partnerRegistrationImmutableId());
     }
 

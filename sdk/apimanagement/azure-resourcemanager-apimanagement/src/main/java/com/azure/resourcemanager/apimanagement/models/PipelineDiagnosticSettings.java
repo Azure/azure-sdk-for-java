@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Diagnostic settings for incoming/outgoing HTTP messages to the Gateway. */
+/**
+ * Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
+ */
 @Fluent
-public final class PipelineDiagnosticSettings {
+public final class PipelineDiagnosticSettings implements JsonSerializable<PipelineDiagnosticSettings> {
     /*
      * Diagnostic settings for request.
      */
-    @JsonProperty(value = "request")
     private HttpMessageDiagnostic request;
 
     /*
      * Diagnostic settings for response.
      */
-    @JsonProperty(value = "response")
     private HttpMessageDiagnostic response;
 
-    /** Creates an instance of PipelineDiagnosticSettings class. */
+    /**
+     * Creates an instance of PipelineDiagnosticSettings class.
+     */
     public PipelineDiagnosticSettings() {
     }
 
     /**
      * Get the request property: Diagnostic settings for request.
-     *
+     * 
      * @return the request value.
      */
     public HttpMessageDiagnostic request() {
@@ -37,7 +43,7 @@ public final class PipelineDiagnosticSettings {
 
     /**
      * Set the request property: Diagnostic settings for request.
-     *
+     * 
      * @param request the request value to set.
      * @return the PipelineDiagnosticSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class PipelineDiagnosticSettings {
 
     /**
      * Get the response property: Diagnostic settings for response.
-     *
+     * 
      * @return the response value.
      */
     public HttpMessageDiagnostic response() {
@@ -57,7 +63,7 @@ public final class PipelineDiagnosticSettings {
 
     /**
      * Set the response property: Diagnostic settings for response.
-     *
+     * 
      * @param response the response value to set.
      * @return the PipelineDiagnosticSettings object itself.
      */
@@ -68,7 +74,7 @@ public final class PipelineDiagnosticSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class PipelineDiagnosticSettings {
         if (response() != null) {
             response().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeJsonField("response", this.response);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineDiagnosticSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineDiagnosticSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PipelineDiagnosticSettings.
+     */
+    public static PipelineDiagnosticSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineDiagnosticSettings deserializedPipelineDiagnosticSettings = new PipelineDiagnosticSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("request".equals(fieldName)) {
+                    deserializedPipelineDiagnosticSettings.request = HttpMessageDiagnostic.fromJson(reader);
+                } else if ("response".equals(fieldName)) {
+                    deserializedPipelineDiagnosticSettings.response = HttpMessageDiagnostic.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipelineDiagnosticSettings;
+        });
     }
 }

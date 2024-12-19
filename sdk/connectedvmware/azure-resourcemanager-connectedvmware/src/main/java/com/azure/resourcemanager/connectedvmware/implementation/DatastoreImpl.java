@@ -180,8 +180,8 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.datastoreName = Utils.getValueFromIdByName(innerObject.id(), "datastores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.datastoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datastores");
     }
 
     public Datastore refresh() {

@@ -11,7 +11,7 @@ public final class CapabilitiesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilitiesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"zone\":\"htxfvgxbfsmxnehm\",\"supportedHAMode\":[\"cxgod\"],\"supportedGeoBackupRegions\":[\"qkkrb\",\"pukgriwflzlfb\"],\"supportedFlexibleServerEditions\":[{\"name\":\"zycispn\",\"supportedStorageEditions\":[{},{}],\"supportedServerVersions\":[{},{},{},{}]}]},{\"zone\":\"kbrpyydhibnuq\",\"supportedHAMode\":[\"ik\",\"drgvtqagn\"],\"supportedGeoBackupRegions\":[\"nhijggmebfsi\",\"rbu\",\"rcvpnazzmhjrunmp\"],\"supportedFlexibleServerEditions\":[{\"name\":\"bh\",\"supportedStorageEditions\":[{},{},{}],\"supportedServerVersions\":[{},{},{},{}]},{\"name\":\"kx\",\"supportedStorageEditions\":[{},{},{},{}],\"supportedServerVersions\":[{}]},{\"name\":\"henbtkcxywnytn\",\"supportedStorageEditions\":[{}],\"supportedServerVersions\":[{},{}]}]}],\"nextLink\":\"idybyxczf\"}")
+            "{\"value\":[{\"zone\":\"zycispn\",\"supportedHAMode\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"supportedGeoBackupRegions\":[\"vtq\",\"gnbuy\",\"hijggme\"],\"supportedFlexibleServerEditions\":[{\"name\":\"arbu\",\"supportedStorageEditions\":[{},{},{},{}],\"supportedServerVersions\":[{},{}]},{\"name\":\"azzmhjrunmpxt\",\"supportedStorageEditions\":[{}],\"supportedServerVersions\":[{},{},{},{}]},{\"name\":\"nlankxmyskpb\",\"supportedStorageEditions\":[{},{},{},{}],\"supportedServerVersions\":[{},{},{},{}]}]}],\"nextLink\":\"cxy\"}")
             .toObject(CapabilitiesListResult.class);
     }
 

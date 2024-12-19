@@ -23,7 +23,7 @@ public final class PartnerDestinationsActivateWithResponseMockTests {
     @Test
     public void testActivateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"ba095bcc-2828-4c96-ab06-535a3c3735fa\",\"endpointServiceContext\":\"ermhzicsbfdjhyaa\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-08T00:07:25Z\",\"provisioningState\":\"Creating\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"iglh\",\"messageForActivation\":\"zwxqtejpii\"},\"location\":\"vtozya\",\"tags\":{\"klvqzrwtrdgscn\":\"nxkbylhyyxgf\",\"on\":\"q\",\"mezyo\":\"gnwxl\",\"fve\":\"xpthceopvkvt\"},\"id\":\"obpbokhmm\",\"name\":\"cdyarnggcjfwblqh\",\"type\":\"kasmcolmugpyva\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"53c0c7d1-b030-428a-a1d1-82030f7229c4\",\"endpointServiceContext\":\"ermhzicsbfdjhyaa\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-08T00:07:25Z\",\"provisioningState\":\"Creating\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"iglh\",\"messageForActivation\":\"zwxqtejpii\"},\"location\":\"vtozya\",\"tags\":{\"klvqzrwtrdgscn\":\"nxkbylhyyxgf\",\"on\":\"q\",\"mezyo\":\"gnwxl\",\"fve\":\"xpthceopvkvt\"},\"id\":\"obpbokhmm\",\"name\":\"cdyarnggcjfwblqh\",\"type\":\"kasmcolmugpyva\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,7 +38,7 @@ public final class PartnerDestinationsActivateWithResponseMockTests {
 
         Assertions.assertEquals("vtozya", response.location());
         Assertions.assertEquals("nxkbylhyyxgf", response.tags().get("klvqzrwtrdgscn"));
-        Assertions.assertEquals(UUID.fromString("ba095bcc-2828-4c96-ab06-535a3c3735fa"),
+        Assertions.assertEquals(UUID.fromString("53c0c7d1-b030-428a-a1d1-82030f7229c4"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("ermhzicsbfdjhyaa", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T00:07:25Z"),

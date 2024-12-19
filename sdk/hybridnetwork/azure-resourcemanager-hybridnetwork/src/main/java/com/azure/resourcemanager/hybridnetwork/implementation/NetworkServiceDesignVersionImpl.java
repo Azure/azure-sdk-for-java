@@ -143,11 +143,12 @@ public final class NetworkServiceDesignVersionImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
-        this.networkServiceDesignGroupName = Utils.getValueFromIdByName(innerObject.id(), "networkServiceDesignGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkServiceDesignGroups");
         this.networkServiceDesignVersionName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkServiceDesignVersions");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkServiceDesignVersions");
     }
 
     public NetworkServiceDesignVersion refresh() {

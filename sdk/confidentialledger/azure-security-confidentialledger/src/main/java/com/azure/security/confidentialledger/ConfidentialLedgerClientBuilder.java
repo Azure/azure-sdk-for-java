@@ -19,7 +19,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -32,14 +31,17 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.security.confidentialledger.implementation.ConfidentialLedgerClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-/** A builder for creating a new instance of the ConfidentialLedgerClient type. */
+/**
+ * A builder for creating a new instance of the ConfidentialLedgerClient type.
+ */
 @ServiceClientBuilder(serviceClients = { ConfidentialLedgerClient.class, ConfidentialLedgerAsyncClient.class })
 public final class ConfidentialLedgerClientBuilder implements HttpTrait<ConfidentialLedgerClientBuilder>,
     ConfigurationTrait<ConfidentialLedgerClientBuilder>, TokenCredentialTrait<ConfidentialLedgerClientBuilder> {
@@ -53,13 +55,15 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     private static final String[] DEFAULT_SCOPES = new String[] { "https://confidential-ledger.azure.com/.default" };
 
     @Generated
-    private final Map<String, String> properties
+    private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-security-confidentialledger.properties");
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the ConfidentialLedgerClientBuilder. */
+    /**
+     * Create an instance of the ConfidentialLedgerClientBuilder.
+     */
     @Generated
     public ConfidentialLedgerClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -71,10 +75,15 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -85,7 +94,9 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder httpClient(HttpClient httpClient) {
@@ -99,7 +110,9 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -108,13 +121,14 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -128,7 +142,9 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -136,22 +152,26 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder configuration(Configuration configuration) {
@@ -165,7 +185,9 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     @Generated
     private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public ConfidentialLedgerClientBuilder credential(TokenCredential tokenCredential) {
@@ -174,15 +196,14 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     }
 
     /*
-     * The Confidential Ledger URL, for example
-     * https://contoso.confidentialledger.azure.com
+     * The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com
      */
     @Generated
     private String ledgerEndpoint;
 
     /**
      * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
-     *
+     * 
      * @param ledgerEndpoint the ledgerEndpoint value.
      * @return the ConfidentialLedgerClientBuilder.
      */
@@ -200,7 +221,7 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the ConfidentialLedgerClientBuilder.
      */
@@ -211,15 +232,14 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated
     private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the ConfidentialLedgerClientBuilder.
      */
@@ -231,69 +251,68 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
 
     /**
      * Builds an instance of ConfidentialLedgerClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ConfidentialLedgerClientImpl.
      */
     @Generated
     private ConfidentialLedgerClientImpl buildInnerClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serviceVersion == null) {
-            this.serviceVersion = ConfidentialLedgerServiceVersion.getLatest();
-        }
-        ConfidentialLedgerClientImpl client = new ConfidentialLedgerClientImpl(pipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), ledgerEndpoint, serviceVersion);
+        this.validateClient();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        ConfidentialLedgerServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : ConfidentialLedgerServiceVersion.getLatest();
+        ConfidentialLedgerClientImpl client = new ConfidentialLedgerClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.ledgerEndpoint, localServiceVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(ledgerEndpoint, "'ledgerEndpoint' cannot be null.");
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(this.pipelinePolicies.stream()
+        this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .collect(Collectors.toList()));
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(this.pipelinePolicies.stream()
+        this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .collect(Collectors.toList()));
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .clientOptions(clientOptions)
+            .clientOptions(localClientOptions)
             .build();
         return httpPipeline;
     }
 
     /**
      * Builds an instance of ConfidentialLedgerAsyncClient class.
-     *
+     * 
      * @return an instance of ConfidentialLedgerAsyncClient.
      */
     @Generated
@@ -303,11 +322,13 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
 
     /**
      * Builds an instance of ConfidentialLedgerClient class.
-     *
+     * 
      * @return an instance of ConfidentialLedgerClient.
      */
     @Generated
     public ConfidentialLedgerClient buildClient() {
-        return new ConfidentialLedgerClient(new ConfidentialLedgerAsyncClient(buildInnerClient()));
+        return new ConfidentialLedgerClient(buildInnerClient());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfidentialLedgerClientBuilder.class);
 }

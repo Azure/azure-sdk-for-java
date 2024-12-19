@@ -131,9 +131,9 @@ public final class ApiVersionSetContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.versionSetId = Utils.getValueFromIdByName(innerObject.id(), "apiVersionSets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.versionSetId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apiVersionSets");
     }
 
     public ApiVersionSetContract refresh() {

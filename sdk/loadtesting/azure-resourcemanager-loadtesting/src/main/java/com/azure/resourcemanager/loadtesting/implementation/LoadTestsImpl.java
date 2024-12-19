@@ -31,23 +31,23 @@ public final class LoadTestsImpl implements LoadTests {
 
     public PagedIterable<LoadTestResource> list() {
         PagedIterable<LoadTestResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LoadTestResource> list(Context context) {
         PagedIterable<LoadTestResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LoadTestResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<LoadTestResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LoadTestResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<LoadTestResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LoadTestResourceImpl(inner1, this.manager()));
     }
 
     public Response<LoadTestResource> getByResourceGroupWithResponse(String resourceGroupName, String loadTestName,
@@ -83,23 +83,25 @@ public final class LoadTestsImpl implements LoadTests {
         String loadTestName) {
         PagedIterable<OutboundEnvironmentEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, loadTestName);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
         String loadTestName, Context context) {
         PagedIterable<OutboundEnvironmentEndpointInner> inner
             = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, loadTestName, context);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public LoadTestResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
+        String loadTestName = ResourceManagerUtils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -108,12 +110,12 @@ public final class LoadTestsImpl implements LoadTests {
     }
 
     public Response<LoadTestResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
+        String loadTestName = ResourceManagerUtils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -122,12 +124,12 @@ public final class LoadTestsImpl implements LoadTests {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
+        String loadTestName = ResourceManagerUtils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));
@@ -136,12 +138,12 @@ public final class LoadTestsImpl implements LoadTests {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String loadTestName = Utils.getValueFromIdByName(id, "loadTests");
+        String loadTestName = ResourceManagerUtils.getValueFromIdByName(id, "loadTests");
         if (loadTestName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'loadTests'.", id)));

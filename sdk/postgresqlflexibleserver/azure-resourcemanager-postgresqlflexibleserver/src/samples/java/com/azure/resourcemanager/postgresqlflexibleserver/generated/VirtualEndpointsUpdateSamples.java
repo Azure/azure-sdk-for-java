@@ -13,7 +13,9 @@ import java.util.Arrays;
  */
 public final class VirtualEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/VirtualEndpointUpdate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * VirtualEndpointUpdate.json
      */
     /**
      * Sample code: Update a virtual endpoint for a server to update the.

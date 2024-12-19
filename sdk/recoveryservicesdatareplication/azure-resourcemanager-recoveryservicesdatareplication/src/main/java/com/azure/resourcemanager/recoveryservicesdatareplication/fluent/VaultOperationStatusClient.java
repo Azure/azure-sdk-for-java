@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in VaultOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultOperationStatusClient.
+ */
 public interface VaultOperationStatusClient {
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -32,9 +34,9 @@ public interface VaultOperationStatusClient {
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.

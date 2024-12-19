@@ -31,21 +31,24 @@ public final class QueriesImpl implements Queries {
     public PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName) {
         PagedIterable<LogAnalyticsQueryPackQueryInner> inner
             = this.serviceClient().list(resourceGroupName, queryPackName);
-        return Utils.mapPage(inner, inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogAnalyticsQueryPackQuery> list(String resourceGroupName, String queryPackName, Long top,
         Boolean includeBody, String skipToken, Context context) {
         PagedIterable<LogAnalyticsQueryPackQueryInner> inner
             = this.serviceClient().list(resourceGroupName, queryPackName, top, includeBody, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties) {
         PagedIterable<LogAnalyticsQueryPackQueryInner> inner
             = this.serviceClient().search(resourceGroupName, queryPackName, querySearchProperties);
-        return Utils.mapPage(inner, inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogAnalyticsQueryPackQuery> search(String resourceGroupName, String queryPackName,
@@ -53,7 +56,8 @@ public final class QueriesImpl implements Queries {
         String skipToken, Context context) {
         PagedIterable<LogAnalyticsQueryPackQueryInner> inner = this.serviceClient()
             .search(resourceGroupName, queryPackName, querySearchProperties, top, includeBody, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new LogAnalyticsQueryPackQueryImpl(inner1, this.manager()));
     }
 
     public Response<LogAnalyticsQueryPackQuery> getWithResponse(String resourceGroupName, String queryPackName,
@@ -87,17 +91,17 @@ public final class QueriesImpl implements Queries {
     }
 
     public LogAnalyticsQueryPackQuery getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String queryPackName = Utils.getValueFromIdByName(id, "queryPacks");
+        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
         if (queryPackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
         }
-        String varId = Utils.getValueFromIdByName(id, "queries");
+        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
         if (varId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
@@ -106,17 +110,17 @@ public final class QueriesImpl implements Queries {
     }
 
     public Response<LogAnalyticsQueryPackQuery> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String queryPackName = Utils.getValueFromIdByName(id, "queryPacks");
+        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
         if (queryPackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
         }
-        String varId = Utils.getValueFromIdByName(id, "queries");
+        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
         if (varId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
@@ -125,17 +129,17 @@ public final class QueriesImpl implements Queries {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String queryPackName = Utils.getValueFromIdByName(id, "queryPacks");
+        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
         if (queryPackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
         }
-        String varId = Utils.getValueFromIdByName(id, "queries");
+        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
         if (varId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));
@@ -144,17 +148,17 @@ public final class QueriesImpl implements Queries {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String queryPackName = Utils.getValueFromIdByName(id, "queryPacks");
+        String queryPackName = ResourceManagerUtils.getValueFromIdByName(id, "queryPacks");
         if (queryPackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queryPacks'.", id)));
         }
-        String varId = Utils.getValueFromIdByName(id, "queries");
+        String varId = ResourceManagerUtils.getValueFromIdByName(id, "queries");
         if (varId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'queries'.", id)));

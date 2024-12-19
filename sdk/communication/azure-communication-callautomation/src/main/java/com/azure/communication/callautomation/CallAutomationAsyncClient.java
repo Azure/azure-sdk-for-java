@@ -14,6 +14,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.MicrosoftTeamsAppIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.AudioFormatInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
@@ -21,16 +22,20 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.AudioFormat;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
@@ -38,6 +43,13 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.GroupCallLocator;
+import com.azure.communication.callautomation.models.ServerCallLocator;
+import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -55,6 +67,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -253,17 +266,16 @@ public final class CallAutomationAsyncClient {
             customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders());
             request.setCustomCallingContext(customContext);
         }
-
-        if (createCallOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal
-                = getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        if (createCallOptions.getMediaStreamingOptions() != null) {
+            MediaStreamingOptionsInternal streamingOptionsInternal
+                = getMediaStreamingOptionsInternal(createCallOptions.getMediaStreamingOptions());
+            request.setMediaStreamingOptions(streamingOptionsInternal);
         }
 
-        if (createCallOptions.getTranscriptionConfiguration() != null) {
-            TranscriptionConfigurationInternal transcriptionConfigurationInternal
-                = getTranscriptionConfigurationInternal(createCallOptions.getTranscriptionConfiguration());
-            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        if (createCallOptions.getTranscriptionOptions() != null) {
+            TranscriptionOptionsInternal transcriptionOptionsInternal
+                = getTranscriptionOptionsInternal(createCallOptions.getTranscriptionOptions());
+            request.setTranscriptionOptions(transcriptionOptionsInternal);
         }
 
         return request;
@@ -301,40 +313,45 @@ public final class CallAutomationAsyncClient {
             customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
             request.setCustomCallingContext(customContext);
         }
-
-        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal
-                = getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        if (createCallGroupOptions.getMediaStreamingOptions() != null) {
+            MediaStreamingOptionsInternal streamingOptionsInternal
+                = getMediaStreamingOptionsInternal(createCallGroupOptions.getMediaStreamingOptions());
+            request.setMediaStreamingOptions(streamingOptionsInternal);
         }
 
-        if (createCallGroupOptions.getTranscriptionConfiguration() != null) {
-            TranscriptionConfigurationInternal transcriptionConfigurationInternal
-                = getTranscriptionConfigurationInternal(createCallGroupOptions.getTranscriptionConfiguration());
-            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        if (createCallGroupOptions.getTranscriptionOptions() != null) {
+            TranscriptionOptionsInternal transcriptionOptionsInternal
+                = getTranscriptionOptionsInternal(createCallGroupOptions.getTranscriptionOptions());
+            request.setTranscriptionOptions(transcriptionOptionsInternal);
         }
 
         return request;
     }
 
-    private MediaStreamingConfigurationInternal
-        getMediaStreamingConfigurationInternal(MediaStreamingOptions mediaStreamingOptions) {
-        return new MediaStreamingConfigurationInternal().setTransportUrl(mediaStreamingOptions.getTransportUrl())
+    private MediaStreamingOptionsInternal
+        getMediaStreamingOptionsInternal(MediaStreamingOptions mediaStreamingOptions) {
+        return new MediaStreamingOptionsInternal().setTransportUrl(mediaStreamingOptions.getTransportUrl())
             .setAudioChannelType(MediaStreamingAudioChannelTypeInternal
                 .fromString(mediaStreamingOptions.getAudioChannelType().toString()))
             .setContentType(
                 MediaStreamingContentTypeInternal.fromString(mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()));
+                MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()))
+            .setStartMediaStreaming(mediaStreamingOptions.isStartMediaStreamingEnabled())
+            .setEnableBidirectional(mediaStreamingOptions.isEnableBidirectional())
+            .setAudioFormat(mediaStreamingOptions.getAudioFormat() != null
+                ? AudioFormatInternal.fromString(mediaStreamingOptions.getAudioFormat().toString())
+                : AudioFormatInternal.fromString(AudioFormat.PCM_24K_MONO.toString()));
     }
 
-    private TranscriptionConfigurationInternal
-        getTranscriptionConfigurationInternal(TranscriptionOptions transcriptionOptions) {
-        return new TranscriptionConfigurationInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
+    private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
+        return new TranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
             .setTransportType(
                 TranscriptionTransportTypeInternal.fromString(transcriptionOptions.getTransportType().toString()))
             .setLocale(transcriptionOptions.getLocale())
-            .setStartTranscription(transcriptionOptions.getStartTranscription());
+            .setStartTranscription(transcriptionOptions.getStartTranscription())
+            .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
+            .setSpeechRecognitionModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
     }
 
     /**
@@ -384,16 +401,16 @@ public final class CallAutomationAsyncClient {
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
-            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
-                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal
-                    = getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
-                request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
+            if (answerCallOptions.getMediaStreamingOptions() != null) {
+                MediaStreamingOptionsInternal streamingOptionsInternal
+                    = getMediaStreamingOptionsInternal(answerCallOptions.getMediaStreamingOptions());
+                request.setMediaStreamingOptions(streamingOptionsInternal);
             }
 
-            if (answerCallOptions.getTranscriptionConfiguration() != null) {
-                TranscriptionConfigurationInternal transcriptionConfigurationInternal
-                    = getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
-                request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+            if (answerCallOptions.getTranscriptionOptions() != null) {
+                TranscriptionOptionsInternal transcriptionOptionsInternal
+                    = getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
+                request.setTranscriptionOptions(transcriptionOptionsInternal);
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
@@ -463,7 +480,6 @@ public final class CallAutomationAsyncClient {
                     redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
                 request.setCustomCallingContext(customContext);
             }
-
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -509,6 +525,85 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param callLocator Call locator.
+     * @param callbackUrl The call back url.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of connect request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectCallResult> connectCall(CallLocator callLocator, String callbackUrl) {
+        return connectCallWithResponse(new ConnectCallOptions(callLocator, callbackUrl)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectCallOptions Options for connect request.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectCallResult>> connectCallWithResponse(ConnectCallOptions connectCallOptions) {
+        return withContext(context -> connectCallWithResponseInternal(connectCallOptions, context));
+    }
+
+    Mono<Response<ConnectCallResult>> connectCallWithResponseInternal(ConnectCallOptions connectCallOptions,
+        Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            CallLocator callLocator = connectCallOptions.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+
+            ConnectRequestInternal request
+                = new ConnectRequestInternal().setCallbackUri(connectCallOptions.getCallbackUrl())
+                    .setCallLocator(callLocatorInternal);
+
+            if (connectCallOptions.getOperationContext() != null) {
+                request.setOperationContext(connectCallOptions.getOperationContext());
+            }
+
+            if (connectCallOptions.getCallIntelligenceOptions() != null
+                && connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+                CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
+                    connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
+            }
+
+            return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(request, context)
+                .map(response -> {
+                    try {
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        return new SimpleResponse<>(response,
+                            new ConnectCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                    } catch (URISyntaxException e) {
+                        throw logger.logExceptionAsError(new RuntimeException(e));
+                    }
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

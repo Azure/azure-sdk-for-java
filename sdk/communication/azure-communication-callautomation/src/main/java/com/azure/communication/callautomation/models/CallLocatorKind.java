@@ -15,6 +15,9 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
     /** Static value serverCallLocator for CallLocatorKind. */
     public static final CallLocatorKind SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
+    /** Static value serverCallLocator for CallLocatorKind. */
+    public static final CallLocatorKind ROOM_CALL_LOCATOR = fromString("roomCallLocator");
+
     /**
      * Creates an instance of {@link CallLocatorKind} with no string value.
      *

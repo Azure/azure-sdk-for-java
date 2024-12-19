@@ -32,7 +32,8 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
     private SsisAccessCredential accessCredential;
 
     /*
-     * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object logRefreshInterval;
 

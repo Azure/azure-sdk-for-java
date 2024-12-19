@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityRequest model = BinaryData.fromString("{\"name\":\"peqfpjkjl\",\"type\":\"fpdvhpfxxypi\"}")
+        CheckNameAvailabilityRequest model = BinaryData.fromString("{\"name\":\"qgoulznd\",\"type\":\"kwy\"}")
             .toObject(CheckNameAvailabilityRequest.class);
-        Assertions.assertEquals("peqfpjkjl", model.name());
-        Assertions.assertEquals("fpdvhpfxxypi", model.type());
+        Assertions.assertEquals("qgoulznd", model.name());
+        Assertions.assertEquals("kwy", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityRequest model
-            = new CheckNameAvailabilityRequest().withName("peqfpjkjl").withType("fpdvhpfxxypi");
+        CheckNameAvailabilityRequest model = new CheckNameAvailabilityRequest().withName("qgoulznd").withType("kwy");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityRequest.class);
-        Assertions.assertEquals("peqfpjkjl", model.name());
-        Assertions.assertEquals("fpdvhpfxxypi", model.type());
+        Assertions.assertEquals("qgoulznd", model.name());
+        Assertions.assertEquals("kwy", model.type());
     }
 }

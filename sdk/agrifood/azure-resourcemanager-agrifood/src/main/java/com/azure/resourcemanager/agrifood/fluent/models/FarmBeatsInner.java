@@ -6,31 +6,61 @@ package com.azure.resourcemanager.agrifood.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.agrifood.models.Identity;
 import com.azure.resourcemanager.agrifood.models.ProvisioningState;
 import com.azure.resourcemanager.agrifood.models.PublicNetworkAccess;
 import com.azure.resourcemanager.agrifood.models.SensorIntegration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** FarmBeats ARM Resource. */
+/**
+ * FarmBeats ARM Resource.
+ */
 @Fluent
 public final class FarmBeatsInner extends Resource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * FarmBeats ARM Resource properties.
      */
-    @JsonProperty(value = "properties")
     private FarmBeatsPropertiesInner innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FarmBeatsInner class.
+     */
+    public FarmBeatsInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -39,7 +69,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FarmBeatsInner object itself.
      */
@@ -50,21 +80,64 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Get the innerProperties property: FarmBeats ARM Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FarmBeatsPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FarmBeatsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FarmBeatsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +146,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Get the instanceUri property: Uri of the FarmBeats instance.
-     *
+     * 
      * @return the instanceUri value.
      */
     public String instanceUri() {
@@ -82,7 +155,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Get the provisioningState property: FarmBeats instance provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -91,7 +164,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Get the sensorIntegration property: Sensor integration request model.
-     *
+     * 
      * @return the sensorIntegration value.
      */
     public SensorIntegration sensorIntegration() {
@@ -100,7 +173,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Set the sensorIntegration property: Sensor integration request model.
-     *
+     * 
      * @param sensorIntegration the sensorIntegration value to set.
      * @return the FarmBeatsInner object itself.
      */
@@ -114,7 +187,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Property to allow or block public traffic for an Azure FarmBeats resource.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -123,7 +196,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Property to allow or block public traffic for an Azure FarmBeats resource.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FarmBeatsInner object itself.
      */
@@ -136,8 +209,8 @@ public final class FarmBeatsInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The Private Endpoint Connection resource.
-     *
+     * Get the privateEndpointConnections property: The private endpoint connection resource.
+     * 
      * @return the privateEndpointConnections value.
      */
     public PrivateEndpointConnectionInner privateEndpointConnections() {
@@ -146,7 +219,7 @@ public final class FarmBeatsInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -156,5 +229,60 @@ public final class FarmBeatsInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FarmBeatsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FarmBeatsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FarmBeatsInner.
+     */
+    public static FarmBeatsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FarmBeatsInner deserializedFarmBeatsInner = new FarmBeatsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFarmBeatsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFarmBeatsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFarmBeatsInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFarmBeatsInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFarmBeatsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFarmBeatsInner.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFarmBeatsInner.innerProperties = FarmBeatsPropertiesInner.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFarmBeatsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFarmBeatsInner;
+        });
     }
 }

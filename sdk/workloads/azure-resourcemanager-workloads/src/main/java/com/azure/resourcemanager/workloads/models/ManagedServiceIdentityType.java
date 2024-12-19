@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of managed service identity (only None, UserAssigned types are allowed). */
+/**
+ * Type of managed service identity (only None, UserAssigned types are allowed).
+ */
 public final class ManagedServiceIdentityType extends ExpandableStringEnum<ManagedServiceIdentityType> {
-    /** Static value None for ManagedServiceIdentityType. */
+    /**
+     * Static value None for ManagedServiceIdentityType.
+     */
     public static final ManagedServiceIdentityType NONE = fromString("None");
 
-    /** Static value UserAssigned for ManagedServiceIdentityType. */
+    /**
+     * Static value UserAssigned for ManagedServiceIdentityType.
+     */
     public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
      * Creates a new instance of ManagedServiceIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ManagedServiceIdentityType extends ExpandableStringEnum<Manag
 
     /**
      * Creates or finds a ManagedServiceIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedServiceIdentityType.
      */
-    @JsonCreator
     public static ManagedServiceIdentityType fromString(String name) {
         return fromString(name, ManagedServiceIdentityType.class);
     }
 
     /**
      * Gets known ManagedServiceIdentityType values.
-     *
+     * 
      * @return known ManagedServiceIdentityType values.
      */
     public static Collection<ManagedServiceIdentityType> values() {
