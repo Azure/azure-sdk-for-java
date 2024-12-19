@@ -21,8 +21,8 @@ import com.azure.resourcemanager.appcomplianceautomation.models.CheckNameAvailab
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportFixResult;
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportResource;
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportResourcePatch;
-import com.azure.resourcemanager.appcomplianceautomation.models.Reports;
 import com.azure.resourcemanager.appcomplianceautomation.models.ReportVerificationResult;
+import com.azure.resourcemanager.appcomplianceautomation.models.Reports;
 import com.azure.resourcemanager.appcomplianceautomation.models.ScopingQuestions;
 import com.azure.resourcemanager.appcomplianceautomation.models.SyncCertRecordRequest;
 import com.azure.resourcemanager.appcomplianceautomation.models.SyncCertRecordResponse;
