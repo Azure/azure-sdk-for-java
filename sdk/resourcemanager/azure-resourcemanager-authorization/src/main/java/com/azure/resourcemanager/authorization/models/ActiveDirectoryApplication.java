@@ -29,6 +29,8 @@ public interface ActiveDirectoryApplication extends ActiveDirectoryObject,
     boolean availableToOtherTenants();
 
     /**
+     * Gets the application account type.
+     *
      * @return the application account type
      */
     ApplicationAccountType accountType();
