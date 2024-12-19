@@ -112,7 +112,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile);
     }
 
-    /** @return the authorization manager instance. */
+    /**
+     * Gets the authorization manager instance.
+     *
+     * @return the authorization manager instance.
+     */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }
