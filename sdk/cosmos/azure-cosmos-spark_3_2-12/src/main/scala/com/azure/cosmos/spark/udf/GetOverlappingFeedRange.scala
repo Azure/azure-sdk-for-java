@@ -13,11 +13,11 @@ class GetOverlappingFeedRange extends UDF3[String, Object, Array[String], String
   (
     partitionKeyDefinitionJson: String,
     partitionKeyValue: Object,
-    feedRangesForBuckets: Array[String]
+    targetFeedRanges: Array[String]
   ): String = {
     requireNotNullOrEmpty(partitionKeyDefinitionJson, "partitionKeyDefinitionJson")
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    SparkBridgeImplementationInternal.getOverlappingRange(feedRangesForBuckets, partitionKeyValue, pkDefinition)
+    SparkBridgeImplementationInternal.getOverlappingRange(targetFeedRanges, partitionKeyValue, pkDefinition)
   }
 }
