@@ -694,7 +694,7 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
         objectNode.get(MetadataJsonBodyAttributeName) match {
             case metadataNode: JsonNode =>
-                metadataNode.get(TimeToLiveExpiredPropertyName) match {
+                return metadataNode.get(TimeToLiveExpiredPropertyName) match {
                     case valueNode: JsonNode =>
                         Option(valueNode).fold(false)(v => v.asBoolean(false))
                     case _ => false
@@ -706,7 +706,7 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseId(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            currentNode.get(IdAttributeName) match {
+            return currentNode.get(IdAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(null: String)(v => v.asText(null))
                 case _ => null
@@ -718,7 +718,7 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseTimestamp(objectNode: ObjectNode): Long = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            currentNode.get(TimestampAttributeName) match {
+            return currentNode.get(TimestampAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(-1L)(v => v.asLong(-1))
                 case _ => -1L
@@ -730,7 +730,7 @@ private[cosmos] class CosmosRowConverterBase(
     private def parseETag(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         if (currentNode != null) {
-            currentNode.get(ETagAttributeName) match {
+            return currentNode.get(ETagAttributeName) match {
                 case valueNode: JsonNode =>
                     Option(valueNode).fold(null: String)(v => v.asText(null))
                 case _ => null
