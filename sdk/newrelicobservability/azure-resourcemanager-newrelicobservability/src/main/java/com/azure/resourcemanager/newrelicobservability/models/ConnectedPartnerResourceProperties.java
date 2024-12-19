@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Connected Partner Resource Properties.
  */
 @Fluent
-public final class ConnectedPartnerResourceProperties {
+public final class ConnectedPartnerResourceProperties implements JsonSerializable<ConnectedPartnerResourceProperties> {
     /*
      * NewRelic account name
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * NewRelic Account Id
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * The azure resource Id of the deployment.
      */
-    @JsonProperty(value = "azureResourceId")
     private String azureResourceId;
 
     /*
      * The location of the deployment.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
@@ -128,5 +128,51 @@ public final class ConnectedPartnerResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedPartnerResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedPartnerResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectedPartnerResourceProperties.
+     */
+    public static ConnectedPartnerResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedPartnerResourceProperties deserializedConnectedPartnerResourceProperties
+                = new ConnectedPartnerResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedConnectedPartnerResourceProperties.accountName = reader.getString();
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedConnectedPartnerResourceProperties.accountId = reader.getString();
+                } else if ("azureResourceId".equals(fieldName)) {
+                    deserializedConnectedPartnerResourceProperties.azureResourceId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedConnectedPartnerResourceProperties.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedPartnerResourceProperties;
+        });
     }
 }
