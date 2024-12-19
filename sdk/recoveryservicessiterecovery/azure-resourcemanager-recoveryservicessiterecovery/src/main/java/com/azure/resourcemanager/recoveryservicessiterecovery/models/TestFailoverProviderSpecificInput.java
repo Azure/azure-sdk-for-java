@@ -5,31 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Provider specific test failover input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = TestFailoverProviderSpecificInput.class)
-@JsonTypeName("TestFailoverProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2ATestFailoverInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureTestFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2TestFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmTestFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageTestFailoverInput.class) })
 @Immutable
-public class TestFailoverProviderSpecificInput {
+public class TestFailoverProviderSpecificInput implements JsonSerializable<TestFailoverProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "TestFailoverProviderSpecificInput";
+
     /**
      * Creates an instance of TestFailoverProviderSpecificInput class.
      */
     public TestFailoverProviderSpecificInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -38,5 +42,75 @@ public class TestFailoverProviderSpecificInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestFailoverProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestFailoverProviderSpecificInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestFailoverProviderSpecificInput.
+     */
+    public static TestFailoverProviderSpecificInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2ATestFailoverInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureTestFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2TestFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmTestFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMage".equals(discriminatorValue)) {
+                    return InMageTestFailoverInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TestFailoverProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestFailoverProviderSpecificInput deserializedTestFailoverProviderSpecificInput
+                = new TestFailoverProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedTestFailoverProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestFailoverProviderSpecificInput;
+        });
     }
 }
