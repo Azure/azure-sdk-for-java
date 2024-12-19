@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class UserConsent extends ExpandableStringEnum<UserConsent> {
      * @param name a name to look for.
      * @return the corresponding UserConsent.
      */
-    @JsonCreator
     public static UserConsent fromString(String name) {
         return fromString(name, UserConsent.class);
     }
