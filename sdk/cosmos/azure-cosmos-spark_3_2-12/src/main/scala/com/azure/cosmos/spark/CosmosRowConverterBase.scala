@@ -724,7 +724,7 @@ private[cosmos] class CosmosRowConverterBase(
                 case _ => -1L
             }
         }
-        null
+       -1L
     }
 
     private def parseETag(objectNode: ObjectNode): String = {
