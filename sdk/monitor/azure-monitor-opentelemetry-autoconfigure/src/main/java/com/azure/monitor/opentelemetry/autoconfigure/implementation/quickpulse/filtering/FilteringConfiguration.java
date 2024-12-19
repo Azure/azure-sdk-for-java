@@ -7,6 +7,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
 
 import java.util.Set;
@@ -27,16 +28,21 @@ public class FilteringConfiguration {
 
     private final String etag;
 
+    // key is the derived metric id
+    private final Map<String, AggregationType> validProjectionInfo;
+
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
         validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = "";
+        validProjectionInfo = new HashMap<>();
     }
 
     public FilteringConfiguration(CollectionConfigurationInfo configuration) {
         validDerivedMetricInfos = parseMetricFilterConfiguration(configuration);
         validDocumentFilterConjunctionGroupInfos = parseDocumentFilterConfiguration(configuration);
         etag = configuration.getETag();
+        validProjectionInfo = initValidProjectionInfo();
     }
 
     public List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(TelemetryType telemetryType) {
@@ -59,6 +65,10 @@ public class FilteringConfiguration {
 
     public String getETag() {
         return etag;
+    }
+
+    public Map<String, AggregationType> getValidProjectionInitInfo() {
+        return new HashMap<>(validProjectionInfo);
     }
 
     private Map<TelemetryType, Map<String, List<FilterConjunctionGroupInfo>>>
@@ -109,6 +119,16 @@ public class FilteringConfiguration {
                     infos.add(derivedMetricInfo);
                     result.put(telemetryType, infos);
                 }
+            }
+        }
+        return result;
+    }
+
+    private Map<String, AggregationType> initValidProjectionInfo() {
+        Map<String, AggregationType> result = new HashMap<>();
+        for (List<DerivedMetricInfo> derivedMetricInfoList : validDerivedMetricInfos.values()) {
+            for (DerivedMetricInfo derivedMetricInfo : derivedMetricInfoList) {
+                result.put(derivedMetricInfo.getId(), derivedMetricInfo.getAggregation());
             }
         }
         return result;
