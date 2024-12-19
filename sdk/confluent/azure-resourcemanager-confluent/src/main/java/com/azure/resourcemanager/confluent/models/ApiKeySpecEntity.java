@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Spec of the API Key record.
  */
 @Fluent
-public final class ApiKeySpecEntity {
+public final class ApiKeySpecEntity implements JsonSerializable<ApiKeySpecEntity> {
     /*
      * The description of the API Key
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The name of the API Key
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * API Key Secret
      */
-    @JsonProperty(value = "secret")
     private String secret;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "resource")
     private ApiKeyResourceEntity resource;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "owner")
     private ApiKeyOwnerEntity owner;
 
     /**
@@ -160,5 +159,53 @@ public final class ApiKeySpecEntity {
         if (owner() != null) {
             owner().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("secret", this.secret);
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("owner", this.owner);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKeySpecEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKeySpecEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiKeySpecEntity.
+     */
+    public static ApiKeySpecEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKeySpecEntity deserializedApiKeySpecEntity = new ApiKeySpecEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedApiKeySpecEntity.description = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiKeySpecEntity.name = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedApiKeySpecEntity.secret = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedApiKeySpecEntity.resource = ApiKeyResourceEntity.fromJson(reader);
+                } else if ("owner".equals(fieldName)) {
+                    deserializedApiKeySpecEntity.owner = ApiKeyOwnerEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKeySpecEntity;
+        });
     }
 }
