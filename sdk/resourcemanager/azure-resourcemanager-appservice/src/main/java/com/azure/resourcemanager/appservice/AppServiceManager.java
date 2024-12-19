@@ -121,22 +121,38 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return authorizationManager;
     }
 
-    /** @return the key vault manager instance. */
+    /**
+     * Gets the key vault manager instance.
+     *
+     * @return the key vault manager instance.
+     */
     public KeyVaultManager keyVaultManager() {
         return keyVaultManager;
     }
 
-    /** @return the storage manager instance. */
+    /**
+     * Gets the storage manager instance.
+     *
+     * @return the storage manager instance.
+     */
     public StorageManager storageManager() {
         return storageManager;
     }
 
-    /** @return the DNS zone manager instance. */
+    /**
+     * Gets the DNS zone manager instance.
+     *
+     * @return the DNS zone manager instance.
+     */
     public DnsZoneManager dnsZoneManager() {
         return dnsZoneManager;
     }
 
-    /** @return the web app management API entry point */
+    /**
+     * Gets the web app management API entry point.
+     *
+     * @return the web app management API entry point
+     */
     public WebApps webApps() {
         if (webApps == null) {
             webApps = new WebAppsImpl(this);
@@ -144,7 +160,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return webApps;
     }
 
-    /** @return the app service plan management API entry point */
+    /**
+     * Gets the app service plan management API entry point.
+     *
+     * @return the app service plan management API entry point
+     */
     public AppServicePlans appServicePlans() {
         if (appServicePlans == null) {
             appServicePlans = new AppServicePlansImpl(this);
@@ -152,7 +172,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return appServicePlans;
     }
 
-    /** @return the certificate order management API entry point */
+    /**
+     * Gets the certificate order management API entry point.
+     *
+     * @return the certificate order management API entry point
+     */
     public AppServiceCertificateOrders certificateOrders() {
         if (appServiceCertificateOrders == null) {
             appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(this);
@@ -160,7 +184,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return appServiceCertificateOrders;
     }
 
-    /** @return the certificate management API entry point */
+    /**
+     * Gets the certificate management API entry point.
+     *
+     * @return the certificate management API entry point
+     */
     public AppServiceCertificates certificates() {
         if (appServiceCertificates == null) {
             appServiceCertificates = new AppServiceCertificatesImpl(this);
@@ -168,7 +196,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return appServiceCertificates;
     }
 
-    /** @return the app service plan management API entry point */
+    /**
+     * Gets the app service plan management API entry point.
+     *
+     * @return the app service plan management API entry point
+     */
     public AppServiceDomains domains() {
         if (appServiceDomains == null) {
             appServiceDomains = new AppServiceDomainsImpl(this);
@@ -176,7 +208,11 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         return appServiceDomains;
     }
 
-    /** @return the web app management API entry point */
+    /**
+     * Gets the web app management API entry point.
+     *
+     * @return the web app management API entry point
+     */
     public FunctionApps functionApps() {
         if (functionApps == null) {
             functionApps = new FunctionAppsImpl(this);
