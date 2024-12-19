@@ -1743,7 +1743,7 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
     public void canRecognizeServerSentEvent() throws IOException {

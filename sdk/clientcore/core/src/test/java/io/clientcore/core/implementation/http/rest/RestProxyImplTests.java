@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyImplTests {
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
