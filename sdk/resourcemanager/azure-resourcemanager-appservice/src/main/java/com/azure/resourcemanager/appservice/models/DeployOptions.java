@@ -14,6 +14,12 @@ public class DeployOptions {
     private Boolean trackDeployment;
 
     /**
+     * Creates a new instance of ETagState.
+     */
+    public DeployOptions() {
+    }
+
+    /**
      * Gets the path for deploy.
      *
      * @return the path for deploy
