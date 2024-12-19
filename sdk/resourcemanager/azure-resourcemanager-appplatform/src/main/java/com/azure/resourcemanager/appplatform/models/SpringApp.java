@@ -24,16 +24,16 @@ public interface SpringApp extends ExternalChildResource<SpringApp, SpringServic
     boolean isPublic();
 
     /**
-     * Check whether only https is allowed for the app.
+     * Check whether only HTTPS is allowed for the app.
      *
-     * @return whether only https is allowed for the app
+     * @return whether only HTTPS is allowed for the app
      */
     boolean isHttpsOnly();
 
     /**
-     * Gets the url of the app.
+     * Gets the URL of the app.
      *
-     * @return the url of the app
+     * @return the URL of the app
      */
     String url();
 

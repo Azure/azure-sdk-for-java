@@ -104,9 +104,9 @@ public interface SpringAppDeployment extends ExternalChildResource<SpringAppDepl
     List<String> configFilePatterns();
 
     /**
-     * Gets cpu count.
+     * Gets CPU count.
      *
-     * @return cpu count, can be 0.5, 1, 2, etc
+     * @return CPU count, can be 0.5, 1, 2, etc
      */
     Double cpu();
 

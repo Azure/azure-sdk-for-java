@@ -43,15 +43,15 @@ public interface SpringServices
     Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region);
 
     /**
-     * Gets all available sku.
+     * Gets all available SKU.
      *
-     * @return all available sku.
+     * @return all available SKU.
      */
     PagedIterable<ResourceSku> listSkus();
 
     /**
-     * Gets all available sku.
+     * Gets all available SKU.
      *
-     * @return all available sku. */
+     * @return all available SKU. */
     PagedFlux<ResourceSku> listSkusAsync();
 }

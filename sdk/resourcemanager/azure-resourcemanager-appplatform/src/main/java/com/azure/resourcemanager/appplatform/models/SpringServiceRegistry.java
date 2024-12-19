@@ -16,9 +16,9 @@ public interface SpringServiceRegistry
     extends ExternalChildResource<SpringServiceRegistry, SpringService>, HasInnerModel<ServiceRegistryResourceInner> {
 
     /**
-     * Gets cpu for the Service Registry.
+     * Gets CPU for the Service Registry.
      *
-     * @return cpu for the Service Registry
+     * @return CPU for the Service Registry
      */
     Double cpu();
 

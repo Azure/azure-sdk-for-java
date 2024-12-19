@@ -18,9 +18,10 @@ import java.util.List;
 public interface SpringConfigurationService extends ExternalChildResource<SpringConfigurationService, SpringService>,
     HasInnerModel<ConfigurationServiceResourceInner> {
     /**
-     * Gets the cpu for the Configuration Service.
+     * Gets the CPU for the Configuration Service.
      *
-     * @return cpu for the Configuration Service */
+     * @return CPU for the Configuration Service
+     */
     Double cpu();
 
     /**
