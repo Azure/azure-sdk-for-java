@@ -22,8 +22,11 @@ public final class DomainsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().define("mydomain.com").withRegion("Global")
+        manager.domains()
+            .define("mydomain.com")
+            .withRegion("Global")
             .withExistingEmailService("MyResourceGroup", "MyEmailServiceResource")
-            .withDomainManagement(DomainManagement.CUSTOMER_MANAGED).create();
+            .withDomainManagement(DomainManagement.CUSTOMER_MANAGED)
+            .create();
     }
 }

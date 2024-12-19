@@ -13,24 +13,24 @@ public final class PreconfiguredEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreconfiguredEndpointProperties model = BinaryData.fromString(
-            "{\"description\":\"cluqovekqvgqo\",\"endpoint\":\"ifzmpjwyivqi\",\"endpointType\":\"AzureRegion\",\"backend\":\"vhrfsphuagrt\"}")
+            "{\"description\":\"nfnw\",\"endpoint\":\"tmvpdvjdhtt\",\"endpointType\":\"ATM\",\"backend\":\"edxihchrphkmcrj\"}")
             .toObject(PreconfiguredEndpointProperties.class);
-        Assertions.assertEquals("cluqovekqvgqo", model.description());
-        Assertions.assertEquals("ifzmpjwyivqi", model.endpoint());
-        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
-        Assertions.assertEquals("vhrfsphuagrt", model.backend());
+        Assertions.assertEquals("nfnw", model.description());
+        Assertions.assertEquals("tmvpdvjdhtt", model.endpoint());
+        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
+        Assertions.assertEquals("edxihchrphkmcrj", model.backend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointProperties model = new PreconfiguredEndpointProperties().withDescription("cluqovekqvgqo")
-            .withEndpoint("ifzmpjwyivqi")
-            .withEndpointType(EndpointType.AZURE_REGION)
-            .withBackend("vhrfsphuagrt");
+        PreconfiguredEndpointProperties model = new PreconfiguredEndpointProperties().withDescription("nfnw")
+            .withEndpoint("tmvpdvjdhtt")
+            .withEndpointType(EndpointType.ATM)
+            .withBackend("edxihchrphkmcrj");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointProperties.class);
-        Assertions.assertEquals("cluqovekqvgqo", model.description());
-        Assertions.assertEquals("ifzmpjwyivqi", model.endpoint());
-        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
-        Assertions.assertEquals("vhrfsphuagrt", model.backend());
+        Assertions.assertEquals("nfnw", model.description());
+        Assertions.assertEquals("tmvpdvjdhtt", model.endpoint());
+        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
+        Assertions.assertEquals("edxihchrphkmcrj", model.backend());
     }
 }

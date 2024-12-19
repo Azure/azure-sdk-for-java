@@ -6,47 +6,28 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.models.AccessListClusterSuccessResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessListClustersWithResponseMockTests {
     @Test
     public void testListClustersWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"kind\":\"iqg\",\"metadata\":{\"first\":\"okzrus\",\"last\":\"vhczznvfby\",\"prev\":\"sxjwwixz\",\"next\":\"mwmxqhndvnoamld\",\"total_size\":1759834581},\"data\":[{\"kind\":\"djh\",\"id\":\"lzok\",\"metadata\":{\"self\":\"xpelnjetagltsx\",\"resource_name\":\"tft\",\"created_at\":\"pnpbswveflocc\",\"updated_at\":\"mozi\",\"deleted_at\":\"ipgawtxx\"},\"display_name\":\"y\",\"spec\":{\"display_name\":\"cjxgrytf\",\"availability\":\"cy\",\"cloud\":\"lrmcaykg\",\"zone\":\"oxuztrksx\",\"region\":\"ndfcpfn\",\"kafka_bootstrap_endpoint\":\"thjtwk\",\"http_endpoint\":\"osrxuzvoa\",\"api_endpoint\":\"tcqiosmg\",\"config\":{\"kind\":\"hgxqdlyrt\"},\"environment\":{\"id\":\"ap\",\"environment\":\"tz\",\"related\":\"tbhjmznnbsoqe\",\"resource_name\":\"larvlagunbtg\"},\"network\":{\"id\":\"wlnbm\",\"environment\":\"reeudzqavb\",\"related\":\"qmjxlyyzglgouwtl\",\"resource_name\":\"jyuojqtobaxkjeyt\"},\"byok\":{\"id\":\"bfjkw\",\"related\":\"snkq\",\"resource_name\":\"syrq\"}},\"status\":{\"phase\":\"qhd\",\"cku\":2136418443}},{\"kind\":\"ulkpakd\",\"id\":\"fmjnnawtqa\",\"metadata\":{\"self\":\"uckpggqoweyir\",\"resource_name\":\"lisn\",\"created_at\":\"fl\",\"updated_at\":\"mpizru\",\"deleted_at\":\"pqxpx\"},\"display_name\":\"fcngjsa\",\"spec\":{\"display_name\":\"ixtmkzjvkviirhgf\",\"availability\":\"wsdpgratzvzb\",\"cloud\":\"byvi\",\"zone\":\"ctbrxkjzwrgxffm\",\"region\":\"kwfbkgo\",\"kafka_bootstrap_endpoint\":\"wopdbydpiz\",\"http_endpoint\":\"clnapxbiygnugjkn\",\"api_endpoint\":\"mfcttux\",\"config\":{\"kind\":\"i\"},\"environment\":{\"id\":\"qoiquvrehmrnjhv\",\"environment\":\"jztczytqj\",\"related\":\"h\",\"resource_name\":\"unfprnjletlxs\"},\"network\":{\"id\":\"ddoui\",\"environment\":\"mowaziynknlqwzdv\",\"related\":\"w\",\"resource_name\":\"qszdtmaajquhuxyl\"},\"byok\":{\"id\":\"m\",\"related\":\"g\",\"resource_name\":\"mzyospspshck\"}},\"status\":{\"phase\":\"jpmspbpssdfppy\",\"cku\":1546979917}},{\"kind\":\"eyujtvczkcnyxrx\",\"id\":\"njdxvglnkvxl\",\"metadata\":{\"self\":\"glqivbgkcv\",\"resource_name\":\"pzvuqdflvo\",\"created_at\":\"yp\",\"updated_at\":\"ubcpzgpxti\",\"deleted_at\":\"j\"},\"display_name\":\"idibgqjxgpn\",\"spec\":{\"display_name\":\"ov\",\"availability\":\"pikqmh\",\"cloud\":\"owjrmzvuporqz\",\"zone\":\"uydzvk\",\"region\":\"xcnqmxqpswokmvkh\",\"kafka_bootstrap_endpoint\":\"gdhbe\",\"http_endpoint\":\"qkzszuwiwtglxxh\",\"api_endpoint\":\"fpgpicrmnzhrgm\",\"config\":{\"kind\":\"sxvpqcbfrmbodths\"},\"environment\":{\"id\":\"vriibakclacjfr\",\"environment\":\"ousxauzlwvsgmw\",\"related\":\"qf\",\"resource_name\":\"zvuxm\"},\"network\":{\"id\":\"svth\",\"environment\":\"pz\",\"related\":\"kovmribiatt\",\"resource_name\":\"lu\"},\"byok\":{\"id\":\"tangcfhnykzcu\",\"related\":\"wvxwlmzqwmvt\",\"resource_name\":\"jmxmcuqud\"}},\"status\":{\"phase\":\"clxyn\",\"cku\":267466114}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfluentManager manager = ConfluentManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

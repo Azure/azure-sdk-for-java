@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * File content associated with the file under a workspace.
  */
 @Fluent
-public final class UploadFile {
+public final class UploadFile implements JsonSerializable<UploadFile> {
     /*
      * File Content in base64 encoded format
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Index of the uploaded chunk (Index starts at 0)
      */
-    @JsonProperty(value = "chunkIndex")
     private Integer chunkIndex;
 
     /**
@@ -76,5 +78,44 @@ public final class UploadFile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeNumberField("chunkIndex", this.chunkIndex);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UploadFile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UploadFile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UploadFile.
+     */
+    public static UploadFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UploadFile deserializedUploadFile = new UploadFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedUploadFile.content = reader.getString();
+                } else if ("chunkIndex".equals(fieldName)) {
+                    deserializedUploadFile.chunkIndex = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUploadFile;
+        });
     }
 }
