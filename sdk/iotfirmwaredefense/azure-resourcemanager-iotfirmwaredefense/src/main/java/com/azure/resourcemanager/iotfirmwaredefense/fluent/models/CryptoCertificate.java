@@ -5,135 +5,121 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoCertificateEntity;
 import com.azure.resourcemanager.iotfirmwaredefense.models.PairedKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Crypto certificate properties.
  */
 @Fluent
-public final class CryptoCertificate {
+public final class CryptoCertificate implements JsonSerializable<CryptoCertificate> {
     /*
      * ID for the certificate result.
      */
-    @JsonProperty(value = "cryptoCertId")
     private String cryptoCertId;
 
     /*
      * Name of the certificate.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Subject information of the certificate.
      */
-    @JsonProperty(value = "subject")
     private CryptoCertificateEntity subject;
 
     /*
      * Issuer information of the certificate.
      */
-    @JsonProperty(value = "issuer")
     private CryptoCertificateEntity issuer;
 
     /*
      * Issue date for the certificate.
      */
-    @JsonProperty(value = "issuedDate")
     private OffsetDateTime issuedDate;
 
     /*
      * Expiration date for the certificate.
      */
-    @JsonProperty(value = "expirationDate")
     private OffsetDateTime expirationDate;
 
     /*
      * Role of the certificate (Root CA, etc)
      */
-    @JsonProperty(value = "role")
     private String role;
 
     /*
      * The signature algorithm used in the certificate.
      */
-    @JsonProperty(value = "signatureAlgorithm")
     private String signatureAlgorithm;
 
     /*
      * Size of the certificate's key in bits
      */
-    @JsonProperty(value = "keySize")
     private Long keySize;
 
     /*
      * Key algorithm used in the certificate.
      */
-    @JsonProperty(value = "keyAlgorithm")
     private String keyAlgorithm;
 
     /*
      * Encoding used for the certificate.
      */
-    @JsonProperty(value = "encoding")
     private String encoding;
 
     /*
      * Serial number of the certificate.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * Fingerprint of the certificate.
      */
-    @JsonProperty(value = "fingerprint")
     private String fingerprint;
 
     /*
      * List of functions the certificate can fulfill.
      */
-    @JsonProperty(value = "usage")
     private List<String> usage;
 
     /*
      * List of files where this certificate was found.
      */
-    @JsonProperty(value = "filePaths", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> filePaths;
 
     /*
      * A matching paired private key.
      */
-    @JsonProperty(value = "pairedKey")
     private PairedKey pairedKey;
 
     /*
      * Indicates if the certificate is expired.
      */
-    @JsonProperty(value = "isExpired")
     private Boolean isExpired;
 
     /*
      * Indicates if the certificate is self-signed.
      */
-    @JsonProperty(value = "isSelfSigned")
     private Boolean isSelfSigned;
 
     /*
      * Indicates the signature algorithm used is insecure.
      */
-    @JsonProperty(value = "isWeakSignature")
     private Boolean isWeakSignature;
 
     /*
      * Indicates the certificate's key size is considered too small to be secure for the key algorithm.
      */
-    @JsonProperty(value = "isShortKeySize")
     private Boolean isShortKeySize;
 
     /**
@@ -548,5 +534,103 @@ public final class CryptoCertificate {
         if (pairedKey() != null) {
             pairedKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cryptoCertId", this.cryptoCertId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("subject", this.subject);
+        jsonWriter.writeJsonField("issuer", this.issuer);
+        jsonWriter.writeStringField("issuedDate",
+            this.issuedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.issuedDate));
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        jsonWriter.writeStringField("role", this.role);
+        jsonWriter.writeStringField("signatureAlgorithm", this.signatureAlgorithm);
+        jsonWriter.writeNumberField("keySize", this.keySize);
+        jsonWriter.writeStringField("keyAlgorithm", this.keyAlgorithm);
+        jsonWriter.writeStringField("encoding", this.encoding);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("fingerprint", this.fingerprint);
+        jsonWriter.writeArrayField("usage", this.usage, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("pairedKey", this.pairedKey);
+        jsonWriter.writeBooleanField("isExpired", this.isExpired);
+        jsonWriter.writeBooleanField("isSelfSigned", this.isSelfSigned);
+        jsonWriter.writeBooleanField("isWeakSignature", this.isWeakSignature);
+        jsonWriter.writeBooleanField("isShortKeySize", this.isShortKeySize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CryptoCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CryptoCertificate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CryptoCertificate.
+     */
+    public static CryptoCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CryptoCertificate deserializedCryptoCertificate = new CryptoCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cryptoCertId".equals(fieldName)) {
+                    deserializedCryptoCertificate.cryptoCertId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCryptoCertificate.name = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCryptoCertificate.subject = CryptoCertificateEntity.fromJson(reader);
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCryptoCertificate.issuer = CryptoCertificateEntity.fromJson(reader);
+                } else if ("issuedDate".equals(fieldName)) {
+                    deserializedCryptoCertificate.issuedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCryptoCertificate.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("role".equals(fieldName)) {
+                    deserializedCryptoCertificate.role = reader.getString();
+                } else if ("signatureAlgorithm".equals(fieldName)) {
+                    deserializedCryptoCertificate.signatureAlgorithm = reader.getString();
+                } else if ("keySize".equals(fieldName)) {
+                    deserializedCryptoCertificate.keySize = reader.getNullable(JsonReader::getLong);
+                } else if ("keyAlgorithm".equals(fieldName)) {
+                    deserializedCryptoCertificate.keyAlgorithm = reader.getString();
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedCryptoCertificate.encoding = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedCryptoCertificate.serialNumber = reader.getString();
+                } else if ("fingerprint".equals(fieldName)) {
+                    deserializedCryptoCertificate.fingerprint = reader.getString();
+                } else if ("usage".equals(fieldName)) {
+                    List<String> usage = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCryptoCertificate.usage = usage;
+                } else if ("filePaths".equals(fieldName)) {
+                    List<String> filePaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCryptoCertificate.filePaths = filePaths;
+                } else if ("pairedKey".equals(fieldName)) {
+                    deserializedCryptoCertificate.pairedKey = PairedKey.fromJson(reader);
+                } else if ("isExpired".equals(fieldName)) {
+                    deserializedCryptoCertificate.isExpired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSelfSigned".equals(fieldName)) {
+                    deserializedCryptoCertificate.isSelfSigned = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isWeakSignature".equals(fieldName)) {
+                    deserializedCryptoCertificate.isWeakSignature = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isShortKeySize".equals(fieldName)) {
+                    deserializedCryptoCertificate.isShortKeySize = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCryptoCertificate;
+        });
     }
 }
