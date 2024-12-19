@@ -291,12 +291,11 @@ public interface VirtualMachineInstances {
      * The operation to power off (stop) a virtual machine instance.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop(String resourceUri, StopVirtualMachineOptions body);
+    void stop(String resourceUri);
 
     /**
      * Implements the operation to stop a virtual machine.

@@ -2178,9 +2178,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
+        if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
@@ -2213,9 +2211,7 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
+        if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
@@ -2237,6 +2233,25 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceUri, StopVirtualMachineOptions body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceUri, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Implements the operation to stop a virtual machine.
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceUri) {
+        final StopVirtualMachineOptions body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceUri, body);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
@@ -2270,14 +2285,14 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      * The operation to power off (stop) a virtual machine instance.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceUri, StopVirtualMachineOptions body) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceUri) {
+        final StopVirtualMachineOptions body = null;
         return this.beginStopAsync(resourceUri, body).getSyncPoller();
     }
 
@@ -2323,6 +2338,23 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      * The operation to power off (stop) a virtual machine instance.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> stopAsync(String resourceUri) {
+        final StopVirtualMachineOptions body = null;
+        return beginStopAsync(resourceUri, body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Implements the operation to stop a virtual machine.
+     * 
+     * The operation to power off (stop) a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2341,13 +2373,13 @@ public final class VirtualMachineInstancesClientImpl implements VirtualMachineIn
      * The operation to power off (stop) a virtual machine instance.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String resourceUri, StopVirtualMachineOptions body) {
+    public void stop(String resourceUri) {
+        final StopVirtualMachineOptions body = null;
         stopAsync(resourceUri, body).block();
     }
 

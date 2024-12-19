@@ -17,8 +17,8 @@ import com.azure.resourcemanager.scvmm.models.StopVirtualMachineOptions;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineCreateCheckpoint;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineDeleteCheckpoint;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineInstance;
-import com.azure.resourcemanager.scvmm.models.VirtualMachineInstances;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineInstanceUpdate;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineInstances;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineRestoreCheckpoint;
 
 public final class VirtualMachineInstancesImpl implements VirtualMachineInstances {
@@ -148,8 +148,8 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
         this.serviceClient().start(resourceUri, context);
     }
 
-    public void stop(String resourceUri, StopVirtualMachineOptions body) {
-        this.serviceClient().stop(resourceUri, body);
+    public void stop(String resourceUri) {
+        this.serviceClient().stop(resourceUri);
     }
 
     public void stop(String resourceUri, StopVirtualMachineOptions body, Context context) {

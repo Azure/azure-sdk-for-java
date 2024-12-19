@@ -1,14 +1,48 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-12-19)
 
-### Features Added
+- Azure Resource Manager Scvmm client library for Java. This package contains Microsoft Azure SDK for Scvmm Management SDK. SCVMM Client. Package tag package-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.VirtualNetworkInventoryItem` was modified
 
-### Other Changes
+* `provisioningState()` was removed
+* `managedResourceId()` was removed
+* `inventoryItemName()` was removed
+* `uuid()` was removed
+
+#### `models.VirtualMachineTemplateInventoryItem` was modified
+
+* `uuid()` was removed
+* `inventoryItemName()` was removed
+* `provisioningState()` was removed
+* `managedResourceId()` was removed
+
+#### `models.CloudInventoryItem` was modified
+
+* `managedResourceId()` was removed
+* `uuid()` was removed
+* `provisioningState()` was removed
+* `inventoryItemName()` was removed
+
+#### `models.VirtualMachineInstances` was modified
+
+* `stop(java.lang.String,models.StopVirtualMachineOptions)` was removed
+
+#### `models.VirtualMachineInventoryItem` was modified
+
+* `provisioningState()` was removed
+* `uuid()` was removed
+* `managedResourceId()` was removed
+* `inventoryItemName()` was removed
+
+### Features Added
+
+#### `models.VirtualMachineInstances` was modified
+
+* `stop(java.lang.String)` was added
 
 ## 1.0.0 (2024-06-26)
 

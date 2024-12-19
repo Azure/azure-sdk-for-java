@@ -61,26 +61,6 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
      */
     private String managedMachineResourceId;
 
-    /*
-     * Gets the tracked resource id corresponding to the inventory resource.
-     */
-    private String managedResourceId;
-
-    /*
-     * Gets the UUID (which is assigned by Vmm) for the inventory item.
-     */
-    private String uuid;
-
-    /*
-     * Gets the Managed Object name in Vmm for the inventory item.
-     */
-    private String inventoryItemName;
-
-    /*
-     * Provisioning state of the resource.
-     */
-    private ProvisioningState provisioningState;
-
     /**
      * Creates an instance of VirtualMachineInventoryItem class.
      */
@@ -192,53 +172,12 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
     }
 
     /**
-     * Get the managedResourceId property: Gets the tracked resource id corresponding to the inventory resource.
-     * 
-     * @return the managedResourceId value.
-     */
-    @Override
-    public String managedResourceId() {
-        return this.managedResourceId;
-    }
-
-    /**
-     * Get the uuid property: Gets the UUID (which is assigned by Vmm) for the inventory item.
-     * 
-     * @return the uuid value.
-     */
-    @Override
-    public String uuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Get the inventoryItemName property: Gets the Managed Object name in Vmm for the inventory item.
-     * 
-     * @return the inventoryItemName value.
-     */
-    @Override
-    public String inventoryItemName() {
-        return this.inventoryItemName;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (cloud() != null) {
             cloud().validate();
         }
@@ -272,14 +211,14 @@ public final class VirtualMachineInventoryItem extends InventoryItemProperties {
                 reader.nextToken();
 
                 if ("managedResourceId".equals(fieldName)) {
-                    deserializedVirtualMachineInventoryItem.managedResourceId = reader.getString();
+                    deserializedVirtualMachineInventoryItem.withManagedResourceId(reader.getString());
                 } else if ("uuid".equals(fieldName)) {
-                    deserializedVirtualMachineInventoryItem.uuid = reader.getString();
+                    deserializedVirtualMachineInventoryItem.withUuid(reader.getString());
                 } else if ("inventoryItemName".equals(fieldName)) {
-                    deserializedVirtualMachineInventoryItem.inventoryItemName = reader.getString();
+                    deserializedVirtualMachineInventoryItem.withInventoryItemName(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVirtualMachineInventoryItem.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                    deserializedVirtualMachineInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
                 } else if ("inventoryType".equals(fieldName)) {
                     deserializedVirtualMachineInventoryItem.inventoryType
                         = InventoryType.fromString(reader.getString());

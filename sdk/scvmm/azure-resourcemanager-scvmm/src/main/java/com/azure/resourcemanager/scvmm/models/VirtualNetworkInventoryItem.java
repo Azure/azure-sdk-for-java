@@ -20,26 +20,6 @@ public final class VirtualNetworkInventoryItem extends InventoryItemProperties {
      */
     private InventoryType inventoryType = InventoryType.VIRTUAL_NETWORK;
 
-    /*
-     * Gets the tracked resource id corresponding to the inventory resource.
-     */
-    private String managedResourceId;
-
-    /*
-     * Gets the UUID (which is assigned by Vmm) for the inventory item.
-     */
-    private String uuid;
-
-    /*
-     * Gets the Managed Object name in Vmm for the inventory item.
-     */
-    private String inventoryItemName;
-
-    /*
-     * Provisioning state of the resource.
-     */
-    private ProvisioningState provisioningState;
-
     /**
      * Creates an instance of VirtualNetworkInventoryItem class.
      */
@@ -57,53 +37,12 @@ public final class VirtualNetworkInventoryItem extends InventoryItemProperties {
     }
 
     /**
-     * Get the managedResourceId property: Gets the tracked resource id corresponding to the inventory resource.
-     * 
-     * @return the managedResourceId value.
-     */
-    @Override
-    public String managedResourceId() {
-        return this.managedResourceId;
-    }
-
-    /**
-     * Get the uuid property: Gets the UUID (which is assigned by Vmm) for the inventory item.
-     * 
-     * @return the uuid value.
-     */
-    @Override
-    public String uuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Get the inventoryItemName property: Gets the Managed Object name in Vmm for the inventory item.
-     * 
-     * @return the inventoryItemName value.
-     */
-    @Override
-    public String inventoryItemName() {
-        return this.inventoryItemName;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
@@ -132,14 +71,14 @@ public final class VirtualNetworkInventoryItem extends InventoryItemProperties {
                 reader.nextToken();
 
                 if ("managedResourceId".equals(fieldName)) {
-                    deserializedVirtualNetworkInventoryItem.managedResourceId = reader.getString();
+                    deserializedVirtualNetworkInventoryItem.withManagedResourceId(reader.getString());
                 } else if ("uuid".equals(fieldName)) {
-                    deserializedVirtualNetworkInventoryItem.uuid = reader.getString();
+                    deserializedVirtualNetworkInventoryItem.withUuid(reader.getString());
                 } else if ("inventoryItemName".equals(fieldName)) {
-                    deserializedVirtualNetworkInventoryItem.inventoryItemName = reader.getString();
+                    deserializedVirtualNetworkInventoryItem.withInventoryItemName(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVirtualNetworkInventoryItem.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                    deserializedVirtualNetworkInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
                 } else if ("inventoryType".equals(fieldName)) {
                     deserializedVirtualNetworkInventoryItem.inventoryType
                         = InventoryType.fromString(reader.getString());
