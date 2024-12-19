@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServicePatch.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
+     * ServicePatch.json
      */
     /**
      * Sample code: Patch service.

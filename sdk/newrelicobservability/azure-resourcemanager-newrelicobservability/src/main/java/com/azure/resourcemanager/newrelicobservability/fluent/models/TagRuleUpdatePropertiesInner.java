@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.LogRules;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The updatable properties of the TagRule.
  */
 @Fluent
-public final class TagRuleUpdatePropertiesInner {
+public final class TagRuleUpdatePropertiesInner implements JsonSerializable<TagRuleUpdatePropertiesInner> {
     /*
      * Set of rules for sending logs for the Monitor resource.
      */
-    @JsonProperty(value = "logRules")
     private LogRules logRules;
 
     /*
      * Set of rules for sending metrics for the Monitor resource.
      */
-    @JsonProperty(value = "metricRules")
     private MetricRulesInner metricRules;
 
     /**
@@ -83,5 +85,44 @@ public final class TagRuleUpdatePropertiesInner {
         if (metricRules() != null) {
             metricRules().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logRules", this.logRules);
+        jsonWriter.writeJsonField("metricRules", this.metricRules);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagRuleUpdatePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagRuleUpdatePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagRuleUpdatePropertiesInner.
+     */
+    public static TagRuleUpdatePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagRuleUpdatePropertiesInner deserializedTagRuleUpdatePropertiesInner = new TagRuleUpdatePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logRules".equals(fieldName)) {
+                    deserializedTagRuleUpdatePropertiesInner.logRules = LogRules.fromJson(reader);
+                } else if ("metricRules".equals(fieldName)) {
+                    deserializedTagRuleUpdatePropertiesInner.metricRules = MetricRulesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagRuleUpdatePropertiesInner;
+        });
     }
 }

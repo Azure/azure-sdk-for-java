@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono;
 public final class FrontDoorsValidateCustomDomainWithResponseMockTests {
     @Test
     public void testValidateCustomDomainWithResponse() throws Exception {
-        String responseStr
-            = "{\"customDomainValidated\":false,\"reason\":\"uslvyjtcvuwkasi\",\"message\":\"esfuught\"}";
+        String responseStr = "{\"customDomainValidated\":true,\"reason\":\"b\",\"message\":\"iqge\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +30,8 @@ public final class FrontDoorsValidateCustomDomainWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ValidateCustomDomainOutput response = manager.frontDoors()
-            .validateCustomDomainWithResponse("nrd", "jxtxrdc", new ValidateCustomDomainInput().withHostname("tjvidt"),
-                com.azure.core.util.Context.NONE)
+            .validateCustomDomainWithResponse("iwdcxsmlzzhzd", "xetlgydlhqv",
+                new ValidateCustomDomainInput().withHostname("n"), com.azure.core.util.Context.NONE)
             .getValue();
 
     }

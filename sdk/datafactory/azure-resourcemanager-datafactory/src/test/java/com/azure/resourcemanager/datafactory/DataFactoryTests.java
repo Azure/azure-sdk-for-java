@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.datafactory;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -26,6 +27,8 @@ import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.PipelineResource;
 import com.azure.resourcemanager.datafactory.models.PipelineRun;
 import com.azure.resourcemanager.datafactory.models.TextFormat;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -50,19 +53,29 @@ public class DataFactoryTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void dataFactoryTest() {
-        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
-            new AzureProfile(AzureEnvironment.AZURE));
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
+        StorageManager storageManager = StorageManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         DataFactoryManager manager = DataFactoryManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
@@ -169,7 +182,7 @@ public class DataFactoryTests extends TestProxyTestBase {
             storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
             if (!testEnv) {
-                storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+                resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
             }
         }
     }

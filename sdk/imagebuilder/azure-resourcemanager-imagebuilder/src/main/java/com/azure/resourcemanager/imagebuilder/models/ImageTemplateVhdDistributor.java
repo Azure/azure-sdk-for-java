@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -90,8 +91,14 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
      */
     @Override
     public void validate() {
-        super.validate();
+        if (runOutputName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runOutputName in model ImageTemplateVhdDistributor"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateVhdDistributor.class);
 
     /**
      * {@inheritDoc}

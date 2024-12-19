@@ -5,94 +5,65 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure VM workload-specific protectable item.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectableItemType",
-    defaultImpl = AzureVmWorkloadProtectableItem.class,
-    visible = true)
-@JsonTypeName("AzureVmWorkloadProtectableItem")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SAPAseSystem", value = AzureVmWorkloadSapAseSystemProtectableItem.class),
-    @JsonSubTypes.Type(name = "SAPHanaDatabase", value = AzureVmWorkloadSapHanaDatabaseProtectableItem.class),
-    @JsonSubTypes.Type(name = "SAPHanaSystem", value = AzureVmWorkloadSapHanaSystemProtectableItem.class),
-    @JsonSubTypes.Type(name = "SAPHanaDBInstance", value = AzureVmWorkloadSapHanaDBInstance.class),
-    @JsonSubTypes.Type(name = "HanaHSRContainer", value = AzureVmWorkloadSapHanaHsr.class),
-    @JsonSubTypes.Type(
-        name = "SQLAvailabilityGroupContainer",
-        value = AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class),
-    @JsonSubTypes.Type(name = "SQLDataBase", value = AzureVmWorkloadSqlDatabaseProtectableItem.class),
-    @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceProtectableItem.class) })
 @Fluent
 public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
     /*
      * Type of the backup item.
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectableItemType", required = true)
     private String protectableItemType = "AzureVmWorkloadProtectableItem";
 
     /*
      * Name for instance or AG
      */
-    @JsonProperty(value = "parentName")
     private String parentName;
 
     /*
      * Parent Unique Name is added to provide the service formatted URI Name of the Parent
      * Only Applicable for data bases where the parent would be either Instance or a SQL AG.
      */
-    @JsonProperty(value = "parentUniqueName")
     private String parentUniqueName;
 
     /*
      * Host/Cluster Name for instance or AG
      */
-    @JsonProperty(value = "serverName")
     private String serverName;
 
     /*
      * Indicates if protectable item is auto-protectable
      */
-    @JsonProperty(value = "isAutoProtectable")
     private Boolean isAutoProtectable;
 
     /*
      * Indicates if protectable item is auto-protected
      */
-    @JsonProperty(value = "isAutoProtected")
     private Boolean isAutoProtected;
 
     /*
      * For instance or AG, indicates number of DB's present
      */
-    @JsonProperty(value = "subinquireditemcount")
     private Integer subinquireditemcount;
 
     /*
      * For instance or AG, indicates number of DB's to be protected
      */
-    @JsonProperty(value = "subprotectableitemcount")
     private Integer subprotectableitemcount;
 
     /*
      * Pre-backup validation for protectable objects
      */
-    @JsonProperty(value = "prebackupvalidation")
     private PreBackupValidation prebackupvalidation;
 
     /*
      * Indicates if item is protectable
      */
-    @JsonProperty(value = "isProtectable")
     private Boolean isProtectable;
 
     /**
@@ -338,9 +309,130 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      */
     @Override
     public void validate() {
-        super.validate();
         if (prebackupvalidation() != null) {
             prebackupvalidation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectableItemType", this.protectableItemType);
+        jsonWriter.writeStringField("parentName", this.parentName);
+        jsonWriter.writeStringField("parentUniqueName", this.parentUniqueName);
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeBooleanField("isAutoProtectable", this.isAutoProtectable);
+        jsonWriter.writeBooleanField("isAutoProtected", this.isAutoProtected);
+        jsonWriter.writeNumberField("subinquireditemcount", this.subinquireditemcount);
+        jsonWriter.writeNumberField("subprotectableitemcount", this.subprotectableitemcount);
+        jsonWriter.writeJsonField("prebackupvalidation", this.prebackupvalidation);
+        jsonWriter.writeBooleanField("isProtectable", this.isProtectable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadProtectableItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadProtectableItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadProtectableItem.
+     */
+    public static AzureVmWorkloadProtectableItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectableItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SAPAseSystem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseSystemProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SAPHanaDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaDatabaseProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SAPHanaSystem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaSystemProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SAPHanaDBInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaDBInstance.fromJson(readerToUse.reset());
+                } else if ("HanaHSRContainer".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaHsr.fromJson(readerToUse.reset());
+                } else if ("SQLAvailabilityGroupContainer".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlAvailabilityGroupProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SQLDataBase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlDatabaseProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SQLInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlInstanceProtectableItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureVmWorkloadProtectableItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadProtectableItem deserializedAzureVmWorkloadProtectableItem
+                = new AzureVmWorkloadProtectableItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectableItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.protectableItemType = reader.getString();
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.parentName = reader.getString();
+                } else if ("parentUniqueName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.parentUniqueName = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.serverName = reader.getString();
+                } else if ("isAutoProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.isAutoProtectable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isAutoProtected".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.isAutoProtected
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subinquireditemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.subinquireditemcount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("subprotectableitemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.subprotectableitemcount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("prebackupvalidation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.prebackupvalidation
+                        = PreBackupValidation.fromJson(reader);
+                } else if ("isProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadProtectableItem.isProtectable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadProtectableItem;
+        });
     }
 }
