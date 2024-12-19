@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Extended Properties for Azure IaasVM Backup.
  */
 @Fluent
-public final class ExtendedProperties {
+public final class ExtendedProperties implements JsonSerializable<ExtendedProperties> {
     /*
      * Extended Properties for Disk Exclusion.
      */
-    @JsonProperty(value = "diskExclusionProperties")
     private DiskExclusionProperties diskExclusionProperties;
 
     /*
      * Linux VM name
      */
-    @JsonProperty(value = "linuxVmApplicationName")
     private String linuxVmApplicationName;
 
     /**
@@ -79,5 +81,44 @@ public final class ExtendedProperties {
         if (diskExclusionProperties() != null) {
             diskExclusionProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskExclusionProperties", this.diskExclusionProperties);
+        jsonWriter.writeStringField("linuxVmApplicationName", this.linuxVmApplicationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtendedProperties.
+     */
+    public static ExtendedProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedProperties deserializedExtendedProperties = new ExtendedProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskExclusionProperties".equals(fieldName)) {
+                    deserializedExtendedProperties.diskExclusionProperties = DiskExclusionProperties.fromJson(reader);
+                } else if ("linuxVmApplicationName".equals(fieldName)) {
+                    deserializedExtendedProperties.linuxVmApplicationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedProperties;
+        });
     }
 }
