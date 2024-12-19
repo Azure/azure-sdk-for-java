@@ -2,13 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
 
 import java.util.Set;
 import java.util.List;
@@ -19,7 +13,6 @@ import java.util.HashMap;
 
 
 public class FilteringConfiguration {
-    private final Set<String> seenMetricIds = new HashSet<>();
 
     // key is the telemetry type
     private final Map<TelemetryType, List<DerivedMetricInfo>> validDerivedMetricInfos;
@@ -31,6 +24,8 @@ public class FilteringConfiguration {
 
     // key is the derived metric id
     private final Map<String, AggregationType> validProjectionInfo;
+
+    private final Validator validator = new Validator();
 
     public FilteringConfiguration() {
         validDerivedMetricInfos = new HashMap<>();
@@ -81,11 +76,7 @@ public class FilteringConfiguration {
                 .getDocumentFilterGroups()) {
                 TelemetryType telemetryType = documentFilterGroupInfo.getTelemetryType();
                 FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
-
-                try {
-                    Validator.validateTelemetryType(telemetryType);
-                    Validator.validateDocumentFilters(documentFilterGroupInfo);
-
+                if (validator.isValidDocConjunctionGroupInfo(documentFilterGroupInfo)) {
                     if (!result.containsKey(telemetryType)) {
                         result.put(telemetryType, new HashMap<>());
                     }
@@ -98,8 +89,6 @@ public class FilteringConfiguration {
                         filterGroups.add(filterGroup);
                         innerMap.put(documentStreamId, filterGroups);
                     }
-                }  catch (TelemetryTypeException | UnexpectedFilterCreateException e) {
-                    // TODO (harskaur): For ErrorTracker PR: If any validator methods throw an exception, catch the exception and track the error for post request body
                 }
             }
         }
@@ -108,16 +97,15 @@ public class FilteringConfiguration {
 
     private Map<TelemetryType, List<DerivedMetricInfo>>
         parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
+        Set<String> seenMetricIds = new HashSet<>();
         Map<TelemetryType, List<DerivedMetricInfo>> result = new HashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
             TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
             String id = derivedMetricInfo.getId();
-            try {
-                if (!seenMetricIds.contains(id)) {
-                    seenMetricIds.add(id);
-                    Validator.validateTelemetryType(telemetryType);
-                    Validator.checkCustomMetricProjection(derivedMetricInfo);
 
+            if (!seenMetricIds.contains(id)) {
+                seenMetricIds.add(id);
+                if (validator.isValidDerivedMetricInfo(derivedMetricInfo)) {
                     if (result.containsKey(telemetryType)) {
                         result.get(telemetryType).add(derivedMetricInfo);
                     } else {
@@ -125,12 +113,13 @@ public class FilteringConfiguration {
                         infos.add(derivedMetricInfo);
                         result.put(telemetryType, infos);
                     }
-                } else {
-                    throw new DuplicateMetricIdException("Duplicate Metric Id: " + id);
                 }
-            } catch (TelemetryTypeException | UnexpectedFilterCreateException | DuplicateMetricIdException e) {
-                // TODO (harskaur): For ErrorTracker PR: If any validator methods throw an exception, catch the exception and track the error for post request body
+            } else {
+                validator.constructAndTrackCollectionConfigurationError(CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS,
+                    "A duplicate metric id was found in this configuration",
+                    configuration.getETag(), id, true);
             }
+
         }
         return result;
     }
