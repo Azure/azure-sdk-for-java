@@ -42,16 +42,15 @@ public class CustomDimensions {
     }
 
     public double getCustomDimValueForProjection(String key) {
-        double result = Double.NaN;
         if (customDimensions.containsKey(key)) {
             String value = customDimensions.get(key);
             try {
-                result = Double.parseDouble(value);
+                return Double.parseDouble(value);
             } catch (NumberFormatException e) {
-                return result;
+
             }
         }
-        return result;
+        return Double.NaN;
     }
 
 }
