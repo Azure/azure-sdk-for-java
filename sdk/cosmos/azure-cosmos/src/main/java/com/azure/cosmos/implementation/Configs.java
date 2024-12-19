@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -366,11 +367,7 @@ public class Configs {
     // Temporary. Thinclient endpoint discovery to be done through GetDatabaseAccount API
     public URI getThinclientEndpoint() {
         String uriString = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
-        try {
-            return URI.create(uriString);
-        } catch (Exception e) {
-            throw new RuntimeException("Error parsing URI from thin client endpoint environment variable " + e.getMessage());
-        }
+        return URI.create(Objects.requireNonNullElse(uriString, "testThinClientEndpoint"));
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
