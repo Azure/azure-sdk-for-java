@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class FrontDoorRedirectType extends ExpandableStringEnum<FrontDoorR
      * @param name a name to look for.
      * @return the corresponding FrontDoorRedirectType.
      */
-    @JsonCreator
     public static FrontDoorRedirectType fromString(String name) {
         return fromString(name, FrontDoorRedirectType.class);
     }

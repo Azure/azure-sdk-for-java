@@ -20,6 +20,7 @@ import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -39,14 +40,15 @@ public class AvsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        avsManager = AvsManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        avsManager = AvsManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");

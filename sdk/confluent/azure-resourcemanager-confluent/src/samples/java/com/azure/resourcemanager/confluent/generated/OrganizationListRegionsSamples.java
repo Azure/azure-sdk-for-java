@@ -23,10 +23,11 @@ public final class OrganizationListRegionsSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationListRegions(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().listRegionsWithResponse("myResourceGroup", "myOrganization",
-            new ListAccessRequestModel()
-                .withSearchFilters(mapOf("cloud", "azure", "packages", "ADVANCED,ESSENTIALS", "region", "eastus")),
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .listRegionsWithResponse("myResourceGroup", "myOrganization",
+                new ListAccessRequestModel()
+                    .withSearchFilters(mapOf("cloud", "azure", "packages", "ADVANCED,ESSENTIALS", "region", "eastus")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

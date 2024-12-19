@@ -405,7 +405,6 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -415,6 +414,17 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
         }
         if (policy() != null) {
             policy().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ExecuteWranglingDataflowActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 

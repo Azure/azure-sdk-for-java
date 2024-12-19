@@ -349,7 +349,6 @@ public final class SapTableSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

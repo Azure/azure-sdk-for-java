@@ -23,7 +23,7 @@ public final class NetworkExperimentProfilesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceState\":\"Enabling\",\"enabledState\":\"Disabled\"},\"etag\":\"hwmgnmbscbbxig\",\"location\":\"hxiidlopedb\",\"tags\":{\"cbq\":\"yqyybxubmdna\"},\"id\":\"remj\",\"name\":\"laqacigele\",\"type\":\"hdbvqvwzkjop\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"enabledState\":\"Disabled\"},\"etag\":\"dorvvmqfloy\",\"location\":\"bdgwumgxdgd\",\"tags\":{\"xjd\":\"bgd\",\"wllcolsr\":\"vjsaqwotm\"},\"id\":\"xaptefhexcgjok\",\"name\":\"ljnhvlqj\",\"type\":\"ek\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class NetworkExperimentProfilesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Profile> response = manager.networkExperimentProfiles()
-            .listByResourceGroup("ueayfbpcmsplb", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("gkkileplkcsmkn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hxiidlopedb", response.iterator().next().location());
-        Assertions.assertEquals("yqyybxubmdna", response.iterator().next().tags().get("cbq"));
-        Assertions.assertEquals("hwmgnmbscbbxig", response.iterator().next().etag());
+        Assertions.assertEquals("bdgwumgxdgd", response.iterator().next().location());
+        Assertions.assertEquals("bgd", response.iterator().next().tags().get("xjd"));
+        Assertions.assertEquals("dorvvmqfloy", response.iterator().next().etag());
         Assertions.assertEquals(State.DISABLED, response.iterator().next().enabledState());
     }
 }

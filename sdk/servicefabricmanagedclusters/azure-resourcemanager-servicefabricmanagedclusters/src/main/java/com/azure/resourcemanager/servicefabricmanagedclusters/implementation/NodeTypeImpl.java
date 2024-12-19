@@ -381,16 +381,14 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
     public NodeType apply() {
         this.innerObject = serviceManager.serviceClient()
             .getNodeTypes()
-            .updateWithResponse(resourceGroupName, clusterName, nodeTypeName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, clusterName, nodeTypeName, updateParameters, Context.NONE);
         return this;
     }
 
     public NodeType apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getNodeTypes()
-            .updateWithResponse(resourceGroupName, clusterName, nodeTypeName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, clusterName, nodeTypeName, updateParameters, context);
         return this;
     }
 

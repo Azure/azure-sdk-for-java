@@ -153,7 +153,6 @@ public final class AvroWriteSettings extends FormatWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

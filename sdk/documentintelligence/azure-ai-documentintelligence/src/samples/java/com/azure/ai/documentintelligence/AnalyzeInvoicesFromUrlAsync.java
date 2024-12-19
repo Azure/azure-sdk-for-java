@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
@@ -41,7 +41,7 @@ public class AnalyzeInvoicesFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeInvoicePoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
                 new AnalyzeDocumentOptions(invoiceUrl));
 
@@ -129,10 +129,10 @@ public class AnalyzeInvoicesFromUrlAsync {
                 if (invoiceItemsField != null) {
                     System.out.printf("Invoice Items: %n");
                     if (DocumentFieldType.ARRAY == invoiceItemsField.getType()) {
-                        List<DocumentField> invoiceItems = invoiceItemsField.getValueArray();
+                        List<DocumentField> invoiceItems = invoiceItemsField.getValueList();
                         invoiceItems.stream()
                             .filter(invoiceItem -> DocumentFieldType.OBJECT == invoiceItem.getType())
-                            .map(documentField -> documentField.getValueObject())
+                            .map(documentField -> documentField.getValueMap())
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 // See a full list of fields found on an invoice here:
                                 // https://aka.ms/formrecognizer/invoicefields
