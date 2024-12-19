@@ -1,14 +1,24 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2024-12-19)
 
-### Features Added
+- Azure Resource Manager StorageMover client library for Java. This package contains Microsoft Azure SDK for StorageMover Management SDK. The Azure Storage Mover REST API. Package tag package-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Minute` was modified
 
-### Other Changes
+* `fromInt(int)` was removed
+
+### Features Added
+
+#### `models.Minute` was modified
+
+* `hashCode()` was added
+* `equals(java.lang.Object)` was added
+* `getValue()` was added
+* `toString()` was added
+* `fromValue(java.lang.Integer)` was added
 
 ## 1.2.0 (2024-06-24)
 
