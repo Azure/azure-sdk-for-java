@@ -25,6 +25,7 @@ public final class PagedDeviceInsightTests {
         Assertions.assertEquals("vxieduugidyj", model.value().get(0).eventClass());
         Assertions.assertEquals("rfbyaosvexcso", model.value().get(0).eventType());
         Assertions.assertEquals(771742090, model.value().get(0).eventCount());
+        Assertions.assertEquals("gukgjnpiucgygevq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -53,7 +54,8 @@ public final class PagedDeviceInsightTests {
                 .withEventCategory("nkoukn")
                 .withEventClass("udwtiukbl")
                 .withEventType("ngkpocipazy")
-                .withEventCount(212177726)));
+                .withEventCount(212177726)))
+            .withNextLink("gukgjnpiucgygevq");
         model = BinaryData.fromObject(model).toObject(PagedDeviceInsight.class);
         Assertions.assertEquals("rsa", model.value().get(0).deviceId());
         Assertions.assertEquals("iwkuofos", model.value().get(0).description());
@@ -63,5 +65,6 @@ public final class PagedDeviceInsightTests {
         Assertions.assertEquals("vxieduugidyj", model.value().get(0).eventClass());
         Assertions.assertEquals("rfbyaosvexcso", model.value().get(0).eventType());
         Assertions.assertEquals(771742090, model.value().get(0).eventCount());
+        Assertions.assertEquals("gukgjnpiucgygevq", model.nextLink());
     }
 }
