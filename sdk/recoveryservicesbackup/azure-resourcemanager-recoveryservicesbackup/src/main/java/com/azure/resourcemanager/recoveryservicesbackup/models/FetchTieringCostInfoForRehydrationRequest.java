@@ -6,51 +6,40 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request parameters for fetching cost info of rehydration.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = FetchTieringCostInfoForRehydrationRequest.class,
-    visible = true)
-@JsonTypeName("FetchTieringCostInfoForRehydrationRequest")
 @Fluent
 public final class FetchTieringCostInfoForRehydrationRequest extends FetchTieringCostInfoRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "FetchTieringCostInfoForRehydrationRequest";
 
     /*
      * Name of the protected item container
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * Name of the protectedItemName
      */
-    @JsonProperty(value = "protectedItemName", required = true)
     private String protectedItemName;
 
     /*
      * ID of the backup copy for rehydration cost info needs to be fetched.
      */
-    @JsonProperty(value = "recoveryPointId", required = true)
     private String recoveryPointId;
 
     /*
      * Rehydration Priority
      */
-    @JsonProperty(value = "rehydrationPriority", required = true)
     private RehydrationPriority rehydrationPriority;
 
     /**
@@ -175,7 +164,6 @@ public final class FetchTieringCostInfoForRehydrationRequest extends FetchTierin
      */
     @Override
     public void validate() {
-        super.validate();
         if (containerName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -196,7 +184,77 @@ public final class FetchTieringCostInfoForRehydrationRequest extends FetchTierin
                 .log(new IllegalArgumentException(
                     "Missing required property rehydrationPriority in model FetchTieringCostInfoForRehydrationRequest"));
         }
+        if (sourceTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceTierType in model FetchTieringCostInfoForRehydrationRequest"));
+        }
+        if (targetTierType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetTierType in model FetchTieringCostInfoForRehydrationRequest"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FetchTieringCostInfoForRehydrationRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceTierType", sourceTierType() == null ? null : sourceTierType().toString());
+        jsonWriter.writeStringField("targetTierType", targetTierType() == null ? null : targetTierType().toString());
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("protectedItemName", this.protectedItemName);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("rehydrationPriority",
+            this.rehydrationPriority == null ? null : this.rehydrationPriority.toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FetchTieringCostInfoForRehydrationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FetchTieringCostInfoForRehydrationRequest if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FetchTieringCostInfoForRehydrationRequest.
+     */
+    public static FetchTieringCostInfoForRehydrationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FetchTieringCostInfoForRehydrationRequest deserializedFetchTieringCostInfoForRehydrationRequest
+                = new FetchTieringCostInfoForRehydrationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest
+                        .withSourceTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("targetTierType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest
+                        .withTargetTierType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest.containerName = reader.getString();
+                } else if ("protectedItemName".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest.protectedItemName = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest.recoveryPointId = reader.getString();
+                } else if ("rehydrationPriority".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest.rehydrationPriority
+                        = RehydrationPriority.fromString(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedFetchTieringCostInfoForRehydrationRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFetchTieringCostInfoForRehydrationRequest;
+        });
+    }
 }

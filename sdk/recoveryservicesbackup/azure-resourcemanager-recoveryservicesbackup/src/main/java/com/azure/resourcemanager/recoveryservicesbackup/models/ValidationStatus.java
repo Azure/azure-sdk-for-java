@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
      * @param name a name to look for.
      * @return the corresponding ValidationStatus.
      */
-    @JsonCreator
     public static ValidationStatus fromString(String name) {
         return fromString(name, ValidationStatus.class);
     }
