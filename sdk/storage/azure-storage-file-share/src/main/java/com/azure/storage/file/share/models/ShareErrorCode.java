@@ -52,18 +52,6 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode EMPTY_METADATA_KEY = fromString("EmptyMetadataKey");
 
     /**
-     * Static value FileShareProvisionedBandwidthDowngradeNotAllowed for ShareErrorCode.
-     */
-    public static final ShareErrorCode FILE_SHARE_PROVISIONED_BANDWIDTH_DOWNGRADE_NOT_ALLOWED
-        = fromString("FileShareProvisionedBandwidthDowngradeNotAllowed");
-
-    /**
-     * Static value FileShareProvisionedIopsDowngradeNotAllowed for ShareErrorCode.
-     */
-    public static final ShareErrorCode FILE_SHARE_PROVISIONED_IOPS_DOWNGRADE_NOT_ALLOWED
-        = fromString("FileShareProvisionedIopsDowngradeNotAllowed");
-
-    /**
      * Static value InsufficientAccountPermissions for ShareErrorCode.
      */
     public static final ShareErrorCode INSUFFICIENT_ACCOUNT_PERMISSIONS = fromString("InsufficientAccountPermissions");

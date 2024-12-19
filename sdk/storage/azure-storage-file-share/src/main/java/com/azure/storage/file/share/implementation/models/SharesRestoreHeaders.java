@@ -16,29 +16,9 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SharesRestoreHeaders {
     /*
-     * The x-ms-share-provisioned-bandwidth-mibps property.
-     */
-    private Long xMsShareProvisionedBandwidthMibps;
-
-    /*
-     * The x-ms-share-provisioned-iops property.
-     */
-    private Long xMsShareProvisionedIops;
-
-    /*
-     * The x-ms-share-included-burst-iops property.
-     */
-    private Long xMsShareIncludedBurstIops;
-
-    /*
      * The x-ms-version property.
      */
     private String xMsVersion;
-
-    /*
-     * The x-ms-share-quota property.
-     */
-    private Long xMsShareQuota;
 
     /*
      * The ETag property.
@@ -49,11 +29,6 @@ public final class SharesRestoreHeaders {
      * The Last-Modified property.
      */
     private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-share-max-burst-credits-for-iops property.
-     */
-    private Long xMsShareMaxBurstCreditsForIops;
 
     /*
      * The x-ms-request-id property.
@@ -70,21 +45,7 @@ public final class SharesRestoreHeaders {
      */
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
-
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
-
-    private static final HttpHeaderName X_MS_SHARE_INCLUDED_BURST_IOPS
-        = HttpHeaderName.fromString("x-ms-share-included-burst-iops");
-
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
-
-    private static final HttpHeaderName X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS
-        = HttpHeaderName.fromString("x-ms-share-max-burst-credits-for-iops");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -93,31 +54,11 @@ public final class SharesRestoreHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesRestoreHeaders(HttpHeaders rawHeaders) {
-        String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
-        if (xMsShareProvisionedBandwidthMibps != null) {
-            this.xMsShareProvisionedBandwidthMibps = Long.parseLong(xMsShareProvisionedBandwidthMibps);
-        }
-        String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
-        if (xMsShareProvisionedIops != null) {
-            this.xMsShareProvisionedIops = Long.parseLong(xMsShareProvisionedIops);
-        }
-        String xMsShareIncludedBurstIops = rawHeaders.getValue(X_MS_SHARE_INCLUDED_BURST_IOPS);
-        if (xMsShareIncludedBurstIops != null) {
-            this.xMsShareIncludedBurstIops = Long.parseLong(xMsShareIncludedBurstIops);
-        }
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
-        if (xMsShareQuota != null) {
-            this.xMsShareQuota = Long.parseLong(xMsShareQuota);
-        }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        String xMsShareMaxBurstCreditsForIops = rawHeaders.getValue(X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS);
-        if (xMsShareMaxBurstCreditsForIops != null) {
-            this.xMsShareMaxBurstCreditsForIops = Long.parseLong(xMsShareMaxBurstCreditsForIops);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
@@ -125,66 +66,6 @@ public final class SharesRestoreHeaders {
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-    }
-
-    /**
-     * Get the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
-     * 
-     * @return the xMsShareProvisionedBandwidthMibps value.
-     */
-    public Long getXMsShareProvisionedBandwidthMibps() {
-        return this.xMsShareProvisionedBandwidthMibps;
-    }
-
-    /**
-     * Set the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
-     * 
-     * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
-     * @return the SharesRestoreHeaders object itself.
-     */
-    public SharesRestoreHeaders setXMsShareProvisionedBandwidthMibps(Long xMsShareProvisionedBandwidthMibps) {
-        this.xMsShareProvisionedBandwidthMibps = xMsShareProvisionedBandwidthMibps;
-        return this;
-    }
-
-    /**
-     * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
-     * 
-     * @return the xMsShareProvisionedIops value.
-     */
-    public Long getXMsShareProvisionedIops() {
-        return this.xMsShareProvisionedIops;
-    }
-
-    /**
-     * Set the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
-     * 
-     * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
-     * @return the SharesRestoreHeaders object itself.
-     */
-    public SharesRestoreHeaders setXMsShareProvisionedIops(Long xMsShareProvisionedIops) {
-        this.xMsShareProvisionedIops = xMsShareProvisionedIops;
-        return this;
-    }
-
-    /**
-     * Get the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
-     * 
-     * @return the xMsShareIncludedBurstIops value.
-     */
-    public Long getXMsShareIncludedBurstIops() {
-        return this.xMsShareIncludedBurstIops;
-    }
-
-    /**
-     * Set the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
-     * 
-     * @param xMsShareIncludedBurstIops the xMsShareIncludedBurstIops value to set.
-     * @return the SharesRestoreHeaders object itself.
-     */
-    public SharesRestoreHeaders setXMsShareIncludedBurstIops(Long xMsShareIncludedBurstIops) {
-        this.xMsShareIncludedBurstIops = xMsShareIncludedBurstIops;
-        return this;
     }
 
     /**
@@ -204,26 +85,6 @@ public final class SharesRestoreHeaders {
      */
     public SharesRestoreHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsShareQuota property: The x-ms-share-quota property.
-     * 
-     * @return the xMsShareQuota value.
-     */
-    public Long getXMsShareQuota() {
-        return this.xMsShareQuota;
-    }
-
-    /**
-     * Set the xMsShareQuota property: The x-ms-share-quota property.
-     * 
-     * @param xMsShareQuota the xMsShareQuota value to set.
-     * @return the SharesRestoreHeaders object itself.
-     */
-    public SharesRestoreHeaders setXMsShareQuota(Long xMsShareQuota) {
-        this.xMsShareQuota = xMsShareQuota;
         return this;
     }
 
@@ -271,26 +132,6 @@ public final class SharesRestoreHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
-     * 
-     * @return the xMsShareMaxBurstCreditsForIops value.
-     */
-    public Long getXMsShareMaxBurstCreditsForIops() {
-        return this.xMsShareMaxBurstCreditsForIops;
-    }
-
-    /**
-     * Set the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
-     * 
-     * @param xMsShareMaxBurstCreditsForIops the xMsShareMaxBurstCreditsForIops value to set.
-     * @return the SharesRestoreHeaders object itself.
-     */
-    public SharesRestoreHeaders setXMsShareMaxBurstCreditsForIops(Long xMsShareMaxBurstCreditsForIops) {
-        this.xMsShareMaxBurstCreditsForIops = xMsShareMaxBurstCreditsForIops;
         return this;
     }
 

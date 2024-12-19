@@ -43,6 +43,11 @@ public final class PathsAppendDataHeaders {
     private Boolean xMsLeaseRenewed;
 
     /*
+     * The x-ms-structured-body property.
+     */
+    private String xMsStructuredBody;
+
+    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
@@ -76,6 +81,8 @@ public final class PathsAppendDataHeaders {
 
     private static final HttpHeaderName X_MS_LEASE_RENEWED = HttpHeaderName.fromString("x-ms-lease-renewed");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
@@ -97,6 +104,7 @@ public final class PathsAppendDataHeaders {
         if (xMsLeaseRenewed != null) {
             this.xMsLeaseRenewed = Boolean.parseBoolean(xMsLeaseRenewed);
         }
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
@@ -210,6 +218,26 @@ public final class PathsAppendDataHeaders {
      */
     public PathsAppendDataHeaders setXMsLeaseRenewed(Boolean xMsLeaseRenewed) {
         this.xMsLeaseRenewed = xMsLeaseRenewed;
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @return the xMsStructuredBody value.
+     */
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
+    }
+
+    /**
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @return the PathsAppendDataHeaders object itself.
+     */
+    public PathsAppendDataHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 
