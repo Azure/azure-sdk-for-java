@@ -217,6 +217,8 @@ public interface CdnEndpoint extends ExternalChildResource<CdnEndpoint, CdnProfi
     PagedIterable<ResourceUsage> listResourceUsage();
 
     /**
+     * Gets the map of the Standard rules engine rules.
+     *
      * @return the map of the Standard rules engine rules, indexed by rule name
      *         (note: this is only available for Standard Microsoft CDN Sku endpoints)
      */
