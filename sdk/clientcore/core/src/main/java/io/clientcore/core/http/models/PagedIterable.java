@@ -90,7 +90,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     private Iterable<T> iterableByItemInternal() {
         return () -> new PagedByIterator<>(pageRetriever) {
 
-            private volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
+            private final Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
             private volatile Iterator<T> currentPage;
 
             @Override
@@ -199,7 +199,7 @@ public final class PagedIterable<T> implements Iterable<T> {
             receivedPages.set(true);
             addPage(page);
 
-            continuationToken = page.getContinuationToken();
+            continuationToken = page.getNextLink();
             this.done = continuationToken == null || continuationToken.isEmpty();
         }
     }

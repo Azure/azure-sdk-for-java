@@ -16,11 +16,12 @@ import java.util.List;
  * @param <T> The type of items in the page.
  */
 public final class PagedResponse<T> implements Response<List<T>> {
+
     private final HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
     private final List<T> items;
-    private final String continuationToken;
+    private final String nextLink;
     private final BinaryData body;
 
     /**
@@ -31,17 +32,17 @@ public final class PagedResponse<T> implements Response<List<T>> {
      * @param headers The headers from the response.
      * @param body The body from the response.
      * @param items The items returned from the service within the response.
-     * @param continuationToken The continuation token returned from the service, to enable future requests to pick up
+     * @param nextLink The next page reference returned from the service, to enable future requests to pick up
      *      from the same place in the paged iteration.
      */
     public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body, List<T> items,
-        String continuationToken) {
+        String nextLink) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
         this.body = body;
         this.items = items;
-        this.continuationToken = continuationToken;
+        this.nextLink = nextLink;
     }
 
     /**
@@ -49,25 +50,15 @@ public final class PagedResponse<T> implements Response<List<T>> {
      *
      * @return The next page reference or null if there isn't a next page.
      */
-    public String getContinuationToken() {
-        return continuationToken;
+    public String getNextLink() {
+        return nextLink;
     }
 
-    //    public String getNextLink() {
-    //        return null;
-    //    }
-    //
-    //    public String getPreviousLink() {
-    //        return null;
-    //    }
-    //
-    //    public String getFirstLink() {
-    //        return null;
-    //    }
-    //
-    //    public String getLastLink() {
-    //        return null;
-    //    }
+    // TODO
+    // public String getContinuationToken() {}
+    // public String getPreviousLink() {}
+    // public String getFirstLink() {}
+    // public String getLastLink() {}
 
     /**
      * {@inheritDoc}
