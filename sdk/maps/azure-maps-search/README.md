@@ -39,6 +39,8 @@ Azure Maps Libraries require a `TokenCredential` implementation for authenticati
 
 ### Authentication
 
+There are 3 ways to authenticate the client: Shared key authentication, Microsoft Entra ID authentication, and shared access signature (SAS) authentication.
+
 By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
@@ -65,6 +67,10 @@ MapsSearchClient client = builder.buildClient();
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+
+For SAS-based authentication, please refer to AccountsListSasSamples.java for how to get the SAS token
+
+For SAS-based authentication, please refer to [AccountsListSasSamples.java][https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-resourcemanager-maps/src/samples/java/com/azure/resourcemanager/maps/generated/AccountsListSasSamples.java].
 
 See [Authentication][authenticate] for more options.
 
