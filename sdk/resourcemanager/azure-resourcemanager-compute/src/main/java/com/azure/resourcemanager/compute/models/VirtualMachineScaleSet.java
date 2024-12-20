@@ -301,6 +301,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException;
 
     /**
+     * Gets the list of IDs of the public IP addresses associated with the primary Internet-facing load balancer of
+     *     the scale set
+     *
      * @return the list of IDs of the public IP addresses associated with the primary Internet-facing load balancer of
      *     the scale set
      * @throws IOException the IO exception

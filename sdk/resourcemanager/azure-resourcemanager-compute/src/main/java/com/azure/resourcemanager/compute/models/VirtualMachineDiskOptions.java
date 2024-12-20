@@ -15,6 +15,11 @@ public final class VirtualMachineDiskOptions {
     private DeleteOptions deleteOptions;
     private Boolean writeAcceleratorEnabled;
 
+    /**
+     * Creates a new instance of VirtualMachineDiskOptions.
+     */
+    public VirtualMachineDiskOptions() {}
+
     // DiskEncryptionSetParameters instance without ID means do not configure.
     // If disk is already encrypted with CMK, it remains so when attached.
     private DiskEncryptionSetParameters diskEncryptionSetOptions;
