@@ -116,7 +116,7 @@ public interface WebSiteBase extends Resource, HasResourceGroup, HasInnerModel<S
     boolean clientCertEnabled();
 
     /**
-     * Check whether the public hostnames for the web app.
+     * Check whether the public hostnames are disabled for the web app.
      *
      * @return if the public hostnames are disabled the web app. If set to true the app is only accessible via API
      *     Management process.
