@@ -123,7 +123,7 @@ public interface KubernetesClusterAgentPool
     int maximumPodsPerNode();
 
     /**
-     * Whether auto-scaling is enabled.
+     * Checks whether auto-scaling is enabled.
      *
      * @return whether auto-scaling is enabled
      */

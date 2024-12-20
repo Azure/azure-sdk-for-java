@@ -156,7 +156,7 @@ public interface KubernetesCluster
     String nodeResourceGroup();
 
     /**
-     * Whether Kubernetes Role-Based Access Control is enabled.
+     * Checks whether Kubernetes Role-Based Access Control is enabled.
      *
      * @return true if Kubernetes Role-Based Access Control is enabled
      */
@@ -193,14 +193,14 @@ public interface KubernetesCluster
     List<String> azureActiveDirectoryGroupIds();
 
     /**
-     * Whether local accounts is enabled.
+     * Checks whether local accounts is enabled.
      *
      * @return whether local accounts is enabled.
      */
     boolean isLocalAccountsEnabled();
 
     /**
-     * Whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
+     * Checks whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
      *
      * @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
      */
@@ -221,7 +221,7 @@ public interface KubernetesCluster
     String agentPoolResourceGroup();
 
     /**
-     * Whether the kubernetes cluster can be accessed from public network.
+     * Checks whether the kubernetes cluster can be accessed from public network.
      *
      * @return whether the kubernetes cluster can be accessed from public network.
      */
