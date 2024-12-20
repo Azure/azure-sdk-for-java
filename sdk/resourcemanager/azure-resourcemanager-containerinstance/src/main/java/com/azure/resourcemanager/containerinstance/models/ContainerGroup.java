@@ -104,14 +104,14 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
     String ipAddress();
 
     /**
-     * Whether IP address is public.
+     * Checks whether IP address is public.
      *
      * @return true if IP address is public
      */
     boolean isIPAddressPublic();
 
     /**
-     * Whether IP address is private.
+     * Checks whether IP address is private.
      *
      * @return true if IP address is private
      */
@@ -167,7 +167,7 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
     List<ContainerGroupSubnetId> subnetIds();
 
     /**
-     * Whether managed service identity is enabled for the container group.
+     * Checks whether managed service identity is enabled for the container group.
      *
      * @return whether managed service identity is enabled for the container group
      */
@@ -190,7 +190,7 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
     String systemAssignedManagedServiceIdentityPrincipalId();
 
     /**
-     * Whether managed service identity is system assigned, user assigned, both, or neither.
+     * Checks whether managed service identity is system assigned, user assigned, both, or neither.
      *
      * @return whether managed service identity is system assigned, user assigned, both, or neither
      */
