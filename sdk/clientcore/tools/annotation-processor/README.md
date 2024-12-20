@@ -1,6 +1,7 @@
 # Client Core Compile-Time Annotation Processor
 
 The client-core annotation processor for introducing compile-time code generation for libraries based on client core
+>Note: This project is for experimentation and exploring new ideas that may or may not make it into a supported GA release.
 
 ## Usage
 
