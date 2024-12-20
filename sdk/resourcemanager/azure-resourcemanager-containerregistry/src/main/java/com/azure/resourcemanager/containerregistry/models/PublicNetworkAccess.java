@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Checks whether or not public network access is allowed for the container registry.
+ * Whether or not public network access is allowed for the container registry.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**

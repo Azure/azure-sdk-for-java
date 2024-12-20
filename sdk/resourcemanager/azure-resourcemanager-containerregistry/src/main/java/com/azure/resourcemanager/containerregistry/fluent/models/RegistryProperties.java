@@ -83,17 +83,17 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Checks whether or not public network access is allowed for the container registry.
+     * Whether or not public network access is allowed for the container registry.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Checks whether to allow trusted Azure services to access a network restricted registry.
+     * Whether to allow trusted Azure services to access a network restricted registry.
      */
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
     /*
-     * Checks whether or not zone redundancy is enabled for this container registry
+     * Whether or not zone redundancy is enabled for this container registry
      */
     private ZoneRedundancy zoneRedundancy;
 

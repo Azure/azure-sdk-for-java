@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Checks whether or not zone redundancy is enabled for this container registry.
+ * Whether or not zone redundancy is enabled for this container registry.
  */
 public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
     /**

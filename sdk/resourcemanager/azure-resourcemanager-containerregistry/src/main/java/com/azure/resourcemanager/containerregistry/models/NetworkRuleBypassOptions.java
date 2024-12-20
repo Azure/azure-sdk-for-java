@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Checks whether to allow trusted Azure services to access a network restricted registry.
+ * Whether to allow trusted Azure services to access a network restricted registry.
  */
 public final class NetworkRuleBypassOptions extends ExpandableStringEnum<NetworkRuleBypassOptions> {
     /**

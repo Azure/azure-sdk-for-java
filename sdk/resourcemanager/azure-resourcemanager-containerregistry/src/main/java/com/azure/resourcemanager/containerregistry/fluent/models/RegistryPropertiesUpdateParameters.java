@@ -47,12 +47,12 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     private Boolean dataEndpointEnabled;
 
     /*
-     * Checks whether or not public network access is allowed for the container registry.
+     * Whether or not public network access is allowed for the container registry.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Checks whether to allow trusted Azure services to access a network restricted registry.
+     * Whether to allow trusted Azure services to access a network restricted registry.
      */
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 

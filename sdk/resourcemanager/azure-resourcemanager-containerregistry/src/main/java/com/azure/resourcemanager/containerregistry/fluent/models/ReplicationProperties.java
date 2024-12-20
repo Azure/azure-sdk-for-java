@@ -36,7 +36,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     private Boolean regionEndpointEnabled;
 
     /*
-     * Checks whether or not zone redundancy is enabled for this container registry replication
+     * Whether or not zone redundancy is enabled for this container registry replication
      */
     private ZoneRedundancy zoneRedundancy;
 
