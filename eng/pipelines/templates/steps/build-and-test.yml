@@ -256,7 +256,7 @@ steps:
   # Update it to include the breadcrumb namespace and the type.
   - pwsh: |
       echo "Current directory: $(get-location)"
-      Get-ChildItem "TEST-*.xml" | ForEach-Object {
+      Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
       echo "Updating $($_.Name)"
       [xml]$xml = Get-Content $_.FullName
       $xml.SelectNodes("//testcase") | ForEach-Object {
@@ -276,7 +276,6 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      publishRunAttachments: true # just for debugging
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}_attempt_$(System.JobAttempt)'
       ${{ else }}:
