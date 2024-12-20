@@ -97,7 +97,7 @@ public final class KeyVaultAccessControlClientBuilder
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
+    private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
