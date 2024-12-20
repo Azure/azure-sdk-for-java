@@ -551,7 +551,11 @@ public interface KubernetesClusterAgentPool
         }
     }
 
-    /** The template for an update operation, containing all the settings that can be modified. */
+    /**
+     * The template for an update operation, containing all the settings that can be modified.
+     *
+     * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+     */
     interface Update<ParentT> extends Settable<ParentT>, UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
         UpdateStages.WithAutoScaling<ParentT>, UpdateStages.WithAgentPoolMode<ParentT>,
         UpdateStages.WithDiskType<ParentT>, UpdateStages.WithTags<ParentT> {
