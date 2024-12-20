@@ -124,6 +124,10 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         return StringBasedCosmosQuery.isCountQuery(query, getQueryMethod().getReturnedObjectType());
     }
 
+    /**
+     * This method is used to determine if the query is a sum query.
+     * @return boolean if the query is a sum query
+     */
     protected boolean isSumQuery() {
         return StringBasedCosmosQuery.isSumQuery(query, getQueryMethod().getReturnedObjectType());
     }

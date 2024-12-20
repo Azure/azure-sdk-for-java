@@ -145,6 +145,12 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         }
     }
 
+    /**
+     * This method is used to determine if the query is a sum query.
+     * @param query the query string
+     * @param returnedType the return type of the query
+     * @return boolean if the query is a sum query
+     */
     static boolean isSumQuery(String query, Class<?> returnedType) {
         if (isNumericQueryReturnType(returnedType)) {
             return SUM_QUERY_PATTERN.matcher(query).matches();
