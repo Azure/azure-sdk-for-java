@@ -271,6 +271,12 @@ directive:
 - remove-model: CreateCallFailed
 - remove-model: AnswerFailed
 - remove-model: HoldFailed
+- remove-model: HoldAudioStarted
+- remove-model: HoldAudioComplteted
+- remove-model: HoldAudioResumed
+- remove-model: HoldAudioPaused
+- remove-model: PlayPaused
+- remove-model: PlayResumed
 
 ```
 
