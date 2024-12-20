@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static com.azure.cosmos.implementation.directconnectivity.ReflectionUtils.getClassBySimpleName;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
@@ -931,16 +932,5 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    private static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
-        for (Class<?> clazz : classes) {
-            if (clazz.getSimpleName().equals(classSimpleName)) {
-                return clazz;
-            }
-        }
-
-        logger.warn("Class with simple name {} does not exist!", classSimpleName);
-        return null;
     }
 }
