@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.HashMap;
 
-
 public class FilteringConfiguration {
 
     // key is the telemetry type
@@ -122,9 +121,9 @@ public class FilteringConfiguration {
                     }
                 }
             } else {
-                validator.constructAndTrackCollectionConfigurationError(CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS,
-                    "A duplicate metric id was found in this configuration",
-                    configuration.getETag(), id, true);
+                validator.constructAndTrackCollectionConfigurationError(
+                    CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS,
+                    "A duplicate metric id was found in this configuration", configuration.getETag(), id, true);
             }
 
         }

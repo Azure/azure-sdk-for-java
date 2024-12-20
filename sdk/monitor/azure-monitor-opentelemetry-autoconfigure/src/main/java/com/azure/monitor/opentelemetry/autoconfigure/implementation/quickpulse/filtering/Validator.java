@@ -20,14 +20,14 @@ import static java.util.Arrays.asList;
 public class Validator {
     private final Set<String> knownStringColumns
         = new HashSet<String>(asList(KnownRequestColumns.URL, KnownRequestColumns.NAME, KnownDependencyColumns.DATA,
-        KnownDependencyColumns.TARGET, KnownDependencyColumns.TYPE, KnownTraceColumns.MESSAGE,
-        KnownExceptionColumns.MESSAGE, KnownExceptionColumns.STACK));
+            KnownDependencyColumns.TARGET, KnownDependencyColumns.TYPE, KnownTraceColumns.MESSAGE,
+            KnownExceptionColumns.MESSAGE, KnownExceptionColumns.STACK));
 
-    private final Set<String> knownNumericColumns = new HashSet<>(asList(KnownRequestColumns.RESPONSE_CODE,
-        KnownRequestColumns.DURATION, KnownDependencyColumns.RESULT_CODE));
+    private final Set<String> knownNumericColumns = new HashSet<>(
+        asList(KnownRequestColumns.RESPONSE_CODE, KnownRequestColumns.DURATION, KnownDependencyColumns.RESULT_CODE));
 
-    private final Set<PredicateType> validStringPredicates = new HashSet<>(asList(PredicateType.CONTAINS,
-        PredicateType.DOES_NOT_CONTAIN, PredicateType.EQUAL, PredicateType.NOT_EQUAL));
+    private final Set<PredicateType> validStringPredicates = new HashSet<>(
+        asList(PredicateType.CONTAINS, PredicateType.DOES_NOT_CONTAIN, PredicateType.EQUAL, PredicateType.NOT_EQUAL));
 
     // TODO (harskaur): In ErrorTracker PR, track a list of configuration validation errors here
 
@@ -55,7 +55,7 @@ public class Validator {
     }
 
     public boolean
-    isValidDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
+        isValidDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
         TelemetryType telemetryType = documentFilterConjunctionGroupInfo.getTelemetryType();
         if (!isValidTelemetryType(telemetryType)) {
             return false;
@@ -73,7 +73,8 @@ public class Validator {
         return true;
     }
 
-    public void constructAndTrackCollectionConfigurationError(CollectionConfigurationErrorType errorType, String message, String eTag, String id, boolean isDerivedMetricId) {
+    public void constructAndTrackCollectionConfigurationError(CollectionConfigurationErrorType errorType,
+        String message, String eTag, String id, boolean isDerivedMetricId) {
         CollectionConfigurationError error = new CollectionConfigurationError();
         error.setMessage(message);
         error.setCollectionConfigurationErrorType(errorType);
@@ -134,7 +135,7 @@ public class Validator {
             return false;
         } else if (Filter.ANY_FIELD.equals(filter.getFieldName())
             && !(filter.getPredicate().equals(PredicateType.CONTAINS)
-            || filter.getPredicate().equals(PredicateType.DOES_NOT_CONTAIN))) {
+                || filter.getPredicate().equals(PredicateType.DOES_NOT_CONTAIN))) {
             // While the UI allows != and == for the ANY_FIELD fieldName, .net classic code only allows contains/not contains & the spec follows
             // .net classic behavior for this particular condition.
             return false;
@@ -157,7 +158,7 @@ public class Validator {
             // While the UI allows a user to select any predicate for a custom dimension filter, .net classic treats all custom dimensions like
             // String values. therefore we validate for predicates applicable to String. This is called out in the spec as well.
             if (!validStringPredicates.contains(filter.getPredicate())) {
-               return false;
+                return false;
             }
         }
         return true;

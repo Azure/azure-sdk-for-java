@@ -19,7 +19,8 @@ public class ValidatorTests {
 
     @Test
     void rejectInvalidTelemetryTypes() {
-        List<TelemetryType> telemetryTypes = asList(TelemetryType.EVENT, TelemetryType.PERFORMANCE_COUNTER, TelemetryType.METRIC);
+        List<TelemetryType> telemetryTypes
+            = asList(TelemetryType.EVENT, TelemetryType.PERFORMANCE_COUNTER, TelemetryType.METRIC);
         Validator validator = new Validator();
         for (TelemetryType telemetryType : telemetryTypes) {
             List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndNoFilters();
@@ -33,7 +34,8 @@ public class ValidatorTests {
 
     @Test
     void acceptValidTelemetryType() {
-        List<TelemetryType> telemetryTypes = asList(TelemetryType.TRACE, TelemetryType.REQUEST, TelemetryType.DEPENDENCY, TelemetryType.EXCEPTION);
+        List<TelemetryType> telemetryTypes
+            = asList(TelemetryType.TRACE, TelemetryType.REQUEST, TelemetryType.DEPENDENCY, TelemetryType.EXCEPTION);
         Validator validator = new Validator();
         for (TelemetryType telemetryType : telemetryTypes) {
             List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndNoFilters();
@@ -49,8 +51,8 @@ public class ValidatorTests {
     void rejectCustomMetricProjection() {
         List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndNoFilters();
         Validator validator = new Validator();
-        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(), AggregationType.SUM,
-            AggregationType.SUM, "CustomMetrics.property", filterGroups);
+        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
+            AggregationType.SUM, AggregationType.SUM, "CustomMetrics.property", filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi));
 
     }
@@ -60,15 +62,14 @@ public class ValidatorTests {
         FilterInfo filter = createFilterInfoWithParams("CustomMetrics.property", PredicateType.EQUAL, "5");
         List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(filter);
         Validator validator = new Validator();
-        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(), AggregationType.SUM,
-            AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
+        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi));
     }
 
     @Test
     void rejectInvalidFilters() {
-        List<FilterInfo> filtersToTest = Arrays.asList(
-            createFilterInfoWithParams("", PredicateType.EQUAL, "blah"),
+        List<FilterInfo> filtersToTest = Arrays.asList(createFilterInfoWithParams("", PredicateType.EQUAL, "blah"),
             createFilterInfoWithParams(KnownRequestColumns.URL, PredicateType.EQUAL, ""),
             createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.EQUAL, "5"),
             createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.NOT_EQUAL, "5"),
@@ -82,12 +83,12 @@ public class ValidatorTests {
             createFilterInfoWithParams("CustomDimensions.property", PredicateType.GREATER_THAN_OR_EQUAL, "blah"),
             createFilterInfoWithParams(KnownRequestColumns.DURATION, PredicateType.LESS_THAN, "invalid timestamp"),
             createFilterInfoWithParams(KnownRequestColumns.DURATION, PredicateType.LESS_THAN, "150"),
-            createFilterInfoWithParams(KnownRequestColumns.DURATION, PredicateType.LESS_THAN, "0.0:0:0.")
-        );
+            createFilterInfoWithParams(KnownRequestColumns.DURATION, PredicateType.LESS_THAN, "0.0:0:"));
 
-        for (FilterInfo filter: filtersToTest) {
+        for (FilterInfo filter : filtersToTest) {
             List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(filter);
-            DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(), AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
+            DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
+                AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
             Validator validator = new Validator();
             assertFalse(validator.isValidDerivedMetricInfo(dmi));
 
@@ -100,8 +101,7 @@ public class ValidatorTests {
     void rejectInvalidGroupWithMultipleFilters() {
         List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
         FilterConjunctionGroupInfo filterGroup = new FilterConjunctionGroupInfo();
-        List<FilterInfo> filters = Arrays.asList(
-            createFilterInfoWithParams("", PredicateType.EQUAL, "blah"), // invalid
+        List<FilterInfo> filters = Arrays.asList(createFilterInfoWithParams("", PredicateType.EQUAL, "blah"), // invalid
             createFilterInfoWithParams(KnownRequestColumns.SUCCESS, PredicateType.EQUAL, "true") // valid
         );
         filterGroup.setFilters(filters);
@@ -109,7 +109,8 @@ public class ValidatorTests {
 
         Validator validator = new Validator();
 
-        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(), AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
+        DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
+            AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         assertFalse(validator.isValidDerivedMetricInfo(dmi));
 
         DocumentFilterConjunctionGroupInfo docGroup = new DocumentFilterConjunctionGroupInfo();
@@ -117,6 +118,42 @@ public class ValidatorTests {
         docGroup.setTelemetryType(TelemetryType.REQUEST);
         assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
     }
+
+    @Test
+    void acceptValidFilters() {
+        List<FilterInfo> filtersToTest
+            = Arrays.asList(createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.CONTAINS, "hi"),
+                createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.DOES_NOT_CONTAIN, "hi"),
+                createFilterInfoWithParams(KnownRequestColumns.URL, PredicateType.NOT_EQUAL, "hi"),
+                createFilterInfoWithParams(KnownRequestColumns.URL, PredicateType.EQUAL, "hi"),
+                createFilterInfoWithParams(KnownRequestColumns.URL, PredicateType.CONTAINS, "hi"),
+                createFilterInfoWithParams(KnownRequestColumns.URL, PredicateType.DOES_NOT_CONTAIN, "hi"),
+                createFilterInfoWithParams("CustomDimensions.property", PredicateType.NOT_EQUAL, "hi"),
+                createFilterInfoWithParams("CustomDimensions.property", PredicateType.EQUAL, "hi"),
+                createFilterInfoWithParams("CustomDimensions.property", PredicateType.CONTAINS, "hi"),
+                createFilterInfoWithParams("CustomDimensions.property", PredicateType.DOES_NOT_CONTAIN, "hi"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.LESS_THAN, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.LESS_THAN_OR_EQUAL, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.GREATER_THAN, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.GREATER_THAN_OR_EQUAL, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.EQUAL, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.RESPONSE_CODE, PredicateType.NOT_EQUAL, "5"),
+                createFilterInfoWithParams(KnownRequestColumns.DURATION, PredicateType.EQUAL, "0.0:0:0.2"),
+                createFilterInfoWithParams(KnownRequestColumns.SUCCESS, PredicateType.EQUAL, "true"),
+                createFilterInfoWithParams(KnownRequestColumns.SUCCESS, PredicateType.NOT_EQUAL, "false"));
+
+        for (FilterInfo filter : filtersToTest) {
+            List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndOneFilter(filter);
+            DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
+                AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
+            Validator validator = new Validator();
+            assertTrue(validator.isValidDerivedMetricInfo(dmi));
+
+            DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
+            assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup));
+        }
+    }
+
     private FilterInfo createFilterInfoWithParams(String fieldName, PredicateType predicate, String comparand) {
         FilterInfo result = new FilterInfo();
         result.setFieldName(fieldName);
@@ -125,9 +162,8 @@ public class ValidatorTests {
         return result;
     }
 
-
     private DerivedMetricInfo createDerivedMetricInfo(String id, String telemetryType, AggregationType agg,
-                                                      AggregationType backendAgg, String projection, List<FilterConjunctionGroupInfo> filterGroups) {
+        AggregationType backendAgg, String projection, List<FilterConjunctionGroupInfo> filterGroups) {
         DerivedMetricInfo result = new DerivedMetricInfo();
         result.setId(id);
         result.setTelemetryType(telemetryType);
@@ -167,7 +203,8 @@ public class ValidatorTests {
         return docGroup;
     }
 
-    private DocumentFilterConjunctionGroupInfo createDocGroupWithOneFilter(TelemetryType telemetryType, FilterInfo filter) {
+    private DocumentFilterConjunctionGroupInfo createDocGroupWithOneFilter(TelemetryType telemetryType,
+        FilterInfo filter) {
         DocumentFilterConjunctionGroupInfo docGroup = new DocumentFilterConjunctionGroupInfo();
         FilterConjunctionGroupInfo group = new FilterConjunctionGroupInfo();
         List<FilterInfo> filters = new ArrayList<>();
