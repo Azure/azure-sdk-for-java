@@ -255,7 +255,9 @@ steps:
   # The name of a test case in the results file isn't helpful in the web view.
   # Update it to include the breadcrumb namespace and the type.
   - pwsh: |
+      echo "Current directory: $(get-location)"
       Get-ChildItem "TEST-*.xml" | ForEach-Object {
+      echo "Updating $($_.Name)"
       [xml]$xml = Get-Content $_.FullName
       $xml.SelectNodes("//testcase") | ForEach-Object {
           $parts = $_.classname -split '\.'
@@ -274,6 +276,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
+      publishRunAttachments: true # just for debugging
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}_attempt_$(System.JobAttempt)'
       ${{ else }}:
