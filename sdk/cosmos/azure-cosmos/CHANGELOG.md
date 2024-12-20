@@ -12,8 +12,8 @@
 * Added support to enable http2 for gateway mode with system property `COSMOS.HTTP2_ENABLED` and system variable `COSMOS_HTTP2_ENABLED`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
 * Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE` and system variable `COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
-* Added support to allow changing http2 max connection pool size with system property `COSMOS.HTTP2_MAX_CONCURRENT_STREAMS` and system variable `COSMOS_HTTP2_MAX_CONCURRENT_STREAMS`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
-
+* Added options to fine-tune settings for bulk operations. - [PR 43509](https://github.com/Azure/azure-sdk-for-java/pull/43509)
+ 
 ### 4.65.0 (2024-11-19)
 
 #### Features Added
