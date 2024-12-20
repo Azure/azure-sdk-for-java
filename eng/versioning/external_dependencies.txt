@@ -371,6 +371,7 @@ springboot3_org.springframework.boot:spring-boot-actuator;3.4.0
 springboot3_org.springframework.boot:spring-boot-autoconfigure;3.4.0
 springboot3_org.springframework.boot:spring-boot-configuration-metadata;3.4.0
 springboot3_org.springframework.boot:spring-boot-configuration-processor;3.4.0
+springboot3_org.springframework.boot:spring-boot-dependencies;3.4.0
 springboot3_org.springframework.boot:spring-boot-docker-compose;3.4.0
 springboot3_org.springframework.boot:spring-boot-starter-actuator;3.4.0
 springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;3.4.0
@@ -383,6 +384,7 @@ springboot3_org.springframework.boot:spring-boot-test;3.4.0
 springboot3_org.springframework.boot:spring-boot-testcontainers;3.4.0
 springboot3_org.springframework.cloud:spring-cloud-bus;4.2.0
 springboot3_org.springframework.cloud:spring-cloud-context;4.2.0
+springboot3_org.springframework.cloud:spring-cloud-dependencies;2024.0.0
 springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;4.2.0
 springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;4.2.0
 springboot3_org.springframework.cloud:spring-cloud-stream-test-binder;4.2.0
