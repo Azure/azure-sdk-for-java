@@ -11,7 +11,7 @@ public final class AssociatedWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociatedWorkspace model = BinaryData.fromString(
-            "{\"workspaceId\":\"rvexztvb\",\"workspaceName\":\"gsfraoyzkoow\",\"resourceId\":\"mnguxawqaldsyu\",\"associateDate\":\"imerqfobwyznk\"}")
+            "{\"workspaceId\":\"pagao\",\"workspaceName\":\"ulpqblylsyxkqjn\",\"resourceId\":\"ervtiagxs\",\"associateDate\":\"zuempsbzkf\"}")
             .toObject(AssociatedWorkspace.class);
     }
 

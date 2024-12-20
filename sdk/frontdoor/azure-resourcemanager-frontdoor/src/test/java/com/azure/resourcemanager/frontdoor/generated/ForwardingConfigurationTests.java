@@ -18,33 +18,33 @@ public final class ForwardingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForwardingConfiguration model = BinaryData.fromString(
-            "{\"@odata.type\":\"pmjerbdkelvidiz\",\"customForwardingPath\":\"cof\",\"forwardingProtocol\":\"HttpOnly\",\"cacheConfiguration\":{\"queryParameterStripDirective\":\"StripOnly\",\"queryParameters\":\"gbjkvreljeamur\",\"dynamicCompression\":\"Disabled\",\"cacheDuration\":\"PT185H12M57S\"},\"backendPool\":{\"id\":\"anashc\"}}")
+            "{\"@odata.type\":\"#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration\",\"customForwardingPath\":\"fhvfsl\",\"forwardingProtocol\":\"HttpsOnly\",\"cacheConfiguration\":{\"queryParameterStripDirective\":\"StripOnly\",\"queryParameters\":\"igjkskyrio\",\"dynamicCompression\":\"Enabled\",\"cacheDuration\":\"PT115H46M34S\"},\"backendPool\":{\"id\":\"waabzmifrygzn\"}}")
             .toObject(ForwardingConfiguration.class);
-        Assertions.assertEquals("cof", model.customForwardingPath());
-        Assertions.assertEquals(FrontDoorForwardingProtocol.HTTP_ONLY, model.forwardingProtocol());
+        Assertions.assertEquals("fhvfsl", model.customForwardingPath());
+        Assertions.assertEquals(FrontDoorForwardingProtocol.HTTPS_ONLY, model.forwardingProtocol());
         Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.cacheConfiguration().queryParameterStripDirective());
-        Assertions.assertEquals("gbjkvreljeamur", model.cacheConfiguration().queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.cacheConfiguration().dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT185H12M57S"), model.cacheConfiguration().cacheDuration());
-        Assertions.assertEquals("anashc", model.backendPool().id());
+        Assertions.assertEquals("igjkskyrio", model.cacheConfiguration().queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.cacheConfiguration().dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT115H46M34S"), model.cacheConfiguration().cacheDuration());
+        Assertions.assertEquals("waabzmifrygzn", model.backendPool().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForwardingConfiguration model = new ForwardingConfiguration().withCustomForwardingPath("cof")
-            .withForwardingProtocol(FrontDoorForwardingProtocol.HTTP_ONLY)
+        ForwardingConfiguration model = new ForwardingConfiguration().withCustomForwardingPath("fhvfsl")
+            .withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
             .withCacheConfiguration(new CacheConfiguration().withQueryParameterStripDirective(FrontDoorQuery.STRIP_ONLY)
-                .withQueryParameters("gbjkvreljeamur")
-                .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
-                .withCacheDuration(Duration.parse("PT185H12M57S")))
-            .withBackendPool(new SubResource().withId("anashc"));
+                .withQueryParameters("igjkskyrio")
+                .withDynamicCompression(DynamicCompressionEnabled.ENABLED)
+                .withCacheDuration(Duration.parse("PT115H46M34S")))
+            .withBackendPool(new SubResource().withId("waabzmifrygzn"));
         model = BinaryData.fromObject(model).toObject(ForwardingConfiguration.class);
-        Assertions.assertEquals("cof", model.customForwardingPath());
-        Assertions.assertEquals(FrontDoorForwardingProtocol.HTTP_ONLY, model.forwardingProtocol());
+        Assertions.assertEquals("fhvfsl", model.customForwardingPath());
+        Assertions.assertEquals(FrontDoorForwardingProtocol.HTTPS_ONLY, model.forwardingProtocol());
         Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.cacheConfiguration().queryParameterStripDirective());
-        Assertions.assertEquals("gbjkvreljeamur", model.cacheConfiguration().queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.cacheConfiguration().dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT185H12M57S"), model.cacheConfiguration().cacheDuration());
-        Assertions.assertEquals("anashc", model.backendPool().id());
+        Assertions.assertEquals("igjkskyrio", model.cacheConfiguration().queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.cacheConfiguration().dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT115H46M34S"), model.cacheConfiguration().cacheDuration());
+        Assertions.assertEquals("waabzmifrygzn", model.backendPool().id());
     }
 }

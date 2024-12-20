@@ -32,28 +32,30 @@ public final class ProxyArtifactsImpl implements ProxyArtifacts {
         String artifactStoreName) {
         PagedIterable<ProxyArtifactListOverviewInner> inner
             = this.serviceClient().list(resourceGroupName, publisherName, artifactStoreName);
-        return Utils.mapPage(inner, inner1 -> new ProxyArtifactListOverviewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProxyArtifactListOverviewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProxyArtifactListOverview> list(String resourceGroupName, String publisherName,
         String artifactStoreName, Context context) {
         PagedIterable<ProxyArtifactListOverviewInner> inner
             = this.serviceClient().list(resourceGroupName, publisherName, artifactStoreName, context);
-        return Utils.mapPage(inner, inner1 -> new ProxyArtifactListOverviewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProxyArtifactListOverviewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProxyArtifactVersionsListOverview> get(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactName) {
         PagedIterable<ProxyArtifactVersionsListOverviewInner> inner
             = this.serviceClient().get(resourceGroupName, publisherName, artifactStoreName, artifactName);
-        return Utils.mapPage(inner, inner1 -> new ProxyArtifactVersionsListOverviewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProxyArtifactVersionsListOverviewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProxyArtifactVersionsListOverview> get(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactName, Context context) {
         PagedIterable<ProxyArtifactVersionsListOverviewInner> inner
             = this.serviceClient().get(resourceGroupName, publisherName, artifactStoreName, artifactName, context);
-        return Utils.mapPage(inner, inner1 -> new ProxyArtifactVersionsListOverviewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProxyArtifactVersionsListOverviewImpl(inner1, this.manager()));
     }
 
     public ProxyArtifactVersionsListOverview updateState(String resourceGroupName, String publisherName,

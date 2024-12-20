@@ -234,7 +234,6 @@ public final class BlobSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
         }

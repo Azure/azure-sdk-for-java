@@ -625,36 +625,6 @@
         </executions>
       </plugin>
 
-      <!-- Allows the sample sources to be built during test-compile phase. -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>${basedir}/README.md</file>
-                  <type>md</type>
-                  <classifier>readme</classifier>
-                </artifact>
-                <artifact>
-                  <file>${basedir}/CHANGELOG.md</file>
-                  <type>md</type>
-                  <classifier>changelog</classifier>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Checks public surface area for breaking changes. -->
       <plugin>
         <groupId>org.revapi</groupId>
@@ -1516,6 +1486,48 @@
       <properties>
         <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
       </properties>
+    </profile>
+
+    <profile>
+      <id>add-changelog-and-readme</id>
+      <activation>
+        <file>
+          <exists>src</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Allows the sample sources to be built during test-compile phase. -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>attach-artifacts</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>attach-artifact</goal>
+                </goals>
+                <configuration>
+                  <artifacts>
+                    <artifact>
+                      <file>${basedir}/README.md</file>
+                      <type>md</type>
+                      <classifier>readme</classifier>
+                    </artifact>
+                    <artifact>
+                      <file>${basedir}/CHANGELOG.md</file>
+                      <type>md</type>
+                      <classifier>changelog</classifier>
+                    </artifact>
+                  </artifacts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

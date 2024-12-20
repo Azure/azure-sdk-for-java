@@ -20,11 +20,13 @@ import com.azure.resourcemanager.devtestlabs.models.DetachDataDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineFragment;
 import com.azure.resourcemanager.devtestlabs.models.ResizeLabVirtualMachineProperties;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public interface VirtualMachinesClient {
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,11 +39,11 @@ public interface VirtualMachinesClient {
 
     /**
      * List virtual machines in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
@@ -57,12 +59,12 @@ public interface VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
      * @param expand Specify the $expand query. Example:
-     *     'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
+     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,7 +77,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Get virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -89,7 +91,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -105,7 +107,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -122,7 +124,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -138,7 +140,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Create or replace an existing virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -155,7 +157,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -169,7 +171,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -185,7 +187,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -198,7 +200,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Delete virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -212,7 +214,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -229,7 +231,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Allows modifying tags of virtual machines. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -245,7 +247,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -261,7 +263,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -278,7 +280,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -292,7 +294,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -308,7 +310,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -324,7 +326,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -341,7 +343,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -356,7 +358,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Apply artifacts to virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -372,7 +374,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -386,7 +388,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -402,7 +404,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -415,7 +417,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Take ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -429,7 +431,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -445,7 +447,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -462,7 +464,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -477,7 +479,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -493,7 +495,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -501,8 +503,8 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a string that represents the contents of the RDP file for the virtual machine along with {@link
-     *     Response}.
+     * @return a string that represents the contents of the RDP file for the virtual machine along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RdpConnectionInner> getRdpFileContentsWithResponse(String resourceGroupName, String labName, String name,
@@ -510,7 +512,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Gets a string that represents the contents of the RDP file for the virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -524,7 +526,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -540,7 +542,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -554,7 +556,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -568,7 +570,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -584,7 +586,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -597,7 +599,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Redeploy a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -611,7 +613,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -627,7 +629,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -644,7 +646,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -659,7 +661,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Resize Virtual Machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -675,7 +677,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -689,7 +691,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -705,7 +707,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -718,7 +720,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Restart a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -732,7 +734,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -746,7 +748,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -762,7 +764,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -775,7 +777,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Start a virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -789,7 +791,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -803,7 +805,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -819,7 +821,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -832,7 +834,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Stop a virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -847,7 +849,7 @@ public interface VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -862,7 +864,7 @@ public interface VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -879,7 +881,7 @@ public interface VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -893,7 +895,7 @@ public interface VirtualMachinesClient {
     /**
      * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
      * a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -907,7 +909,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -921,7 +923,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -937,7 +939,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.
@@ -950,7 +952,7 @@ public interface VirtualMachinesClient {
 
     /**
      * Release ownership of an existing virtual machine This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual machine.

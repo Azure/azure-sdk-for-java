@@ -28,10 +28,11 @@ enum ResourceProvider {
             return ResourceProvider.RP_FUNCTIONS;
         } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
             return ResourceProvider.RP_APPSVC;
+        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
+            // Spring Cloud needs to be checked before AKS since it runs on AKS
+            return ResourceProvider.RP_SPRING_CLOUD;
         } else if (!Strings.isNullOrEmpty(System.getenv("KUBERNETES_SERVICE_HOST"))) {
             return ResourceProvider.RP_AKS;
-        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
-            return ResourceProvider.RP_SPRING_CLOUD;
         } else {
             return ResourceProvider.UNKNOWN;
         }

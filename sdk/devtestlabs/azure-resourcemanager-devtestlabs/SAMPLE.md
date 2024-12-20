@@ -210,25 +210,22 @@
 ### ArmTemplates_Get
 
 ```java
-/** Samples for ArmTemplates Get. */
+/**
+ * Samples for ArmTemplates Get.
+ */
 public final class ArmTemplatesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArmTemplates_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArmTemplates_Get.json
      */
     /**
      * Sample code: ArmTemplates_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void armTemplatesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .armTemplates()
-            .getWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{artifactSourceName}",
-                "{armTemplateName}",
-                null,
+        manager.armTemplates()
+            .getWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}", "{armTemplateName}", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -237,27 +234,22 @@ public final class ArmTemplatesGetSamples {
 ### ArmTemplates_List
 
 ```java
-/** Samples for ArmTemplates List. */
+/**
+ * Samples for ArmTemplates List.
+ */
 public final class ArmTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArmTemplates_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArmTemplates_List.json
      */
     /**
      * Sample code: ArmTemplates_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void armTemplatesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .armTemplates()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "{artifactSourceName}",
-                null,
-                null,
-                null,
-                null,
+        manager.armTemplates()
+            .list("resourceGroupName", "{labName}", "{artifactSourceName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -271,19 +263,21 @@ import com.azure.resourcemanager.devtestlabs.models.SourceControlType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ArtifactSources CreateOrUpdate. */
+/**
+ * Samples for ArtifactSources CreateOrUpdate.
+ */
 public final class ArtifactSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ArtifactSources_CreateOrUpdate.json
      */
     /**
      * Sample code: ArtifactSources_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifactSources()
+        manager.artifactSources()
             .define("{artifactSourceName}")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")
@@ -316,21 +310,24 @@ public final class ArtifactSourcesCreateOrUpdateSamples {
 ### ArtifactSources_Delete
 
 ```java
-/** Samples for ArtifactSources Delete. */
+/**
+ * Samples for ArtifactSources Delete.
+ */
 public final class ArtifactSourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Delete
+     * .json
      */
     /**
      * Sample code: ArtifactSources_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifactSources()
-            .deleteWithResponse(
-                "resourceGroupName", "{labName}", "{artifactSourceName}", com.azure.core.util.Context.NONE);
+        manager.artifactSources()
+            .deleteWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -338,21 +335,24 @@ public final class ArtifactSourcesDeleteSamples {
 ### ArtifactSources_Get
 
 ```java
-/** Samples for ArtifactSources Get. */
+/**
+ * Samples for ArtifactSources Get.
+ */
 public final class ArtifactSourcesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Get.
+     * json
      */
     /**
      * Sample code: ArtifactSources_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifactSources()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{artifactSourceName}", null, com.azure.core.util.Context.NONE);
+        manager.artifactSources()
+            .getWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -360,19 +360,22 @@ public final class ArtifactSourcesGetSamples {
 ### ArtifactSources_List
 
 ```java
-/** Samples for ArtifactSources List. */
+/**
+ * Samples for ArtifactSources List.
+ */
 public final class ArtifactSourcesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_List.
+     * json
      */
     /**
      * Sample code: ArtifactSources_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifactSources()
+        manager.artifactSources()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -385,23 +388,25 @@ import com.azure.resourcemanager.devtestlabs.models.ArtifactSource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ArtifactSources Update. */
+/**
+ * Samples for ArtifactSources Update.
+ */
 public final class ArtifactSourcesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ArtifactSources_Update
+     * .json
      */
     /**
      * Sample code: ArtifactSources_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactSourcesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        ArtifactSource resource =
-            manager
-                .artifactSources()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{artifactSourceName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        ArtifactSource resource = manager.artifactSources()
+            .getWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -425,26 +430,23 @@ public final class ArtifactSourcesUpdateSamples {
 import com.azure.resourcemanager.devtestlabs.models.FileUploadOptions;
 import com.azure.resourcemanager.devtestlabs.models.GenerateArmTemplateRequest;
 
-/** Samples for Artifacts GenerateArmTemplate. */
+/**
+ * Samples for Artifacts GenerateArmTemplate.
+ */
 public final class ArtifactsGenerateArmTemplateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Artifacts_GenerateArmTemplate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Artifacts_GenerateArmTemplate.json
      */
     /**
      * Sample code: Artifacts_GenerateArmTemplate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactsGenerateArmTemplate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifacts()
-            .generateArmTemplateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{artifactSourceName}",
-                "{artifactName}",
-                new GenerateArmTemplateRequest()
-                    .withVirtualMachineName("{vmName}")
+        manager.artifacts()
+            .generateArmTemplateWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}", "{artifactName}",
+                new GenerateArmTemplateRequest().withVirtualMachineName("{vmName}")
                     .withLocation("{location}")
                     .withFileUploadOptions(FileUploadOptions.NONE),
                 com.azure.core.util.Context.NONE);
@@ -455,25 +457,22 @@ public final class ArtifactsGenerateArmTemplateSamples {
 ### Artifacts_Get
 
 ```java
-/** Samples for Artifacts Get. */
+/**
+ * Samples for Artifacts Get.
+ */
 public final class ArtifactsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Artifacts_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Artifacts_Get.json
      */
     /**
      * Sample code: Artifacts_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifacts()
-            .getWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{artifactSourceName}",
-                "{artifactName}",
-                null,
+        manager.artifacts()
+            .getWithResponse("resourceGroupName", "{labName}", "{artifactSourceName}", "{artifactName}", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -482,27 +481,22 @@ public final class ArtifactsGetSamples {
 ### Artifacts_List
 
 ```java
-/** Samples for Artifacts List. */
+/**
+ * Samples for Artifacts List.
+ */
 public final class ArtifactsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Artifacts_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Artifacts_List.json
      */
     /**
      * Sample code: Artifacts_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void artifactsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .artifacts()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "{artifactSourceName}",
-                null,
-                null,
-                null,
-                null,
+        manager.artifacts()
+            .list("resourceGroupName", "{labName}", "{artifactSourceName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -520,62 +514,51 @@ import com.azure.resourcemanager.devtestlabs.models.TargetCostStatus;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-/** Samples for Costs CreateOrUpdate. */
+/**
+ * Samples for Costs CreateOrUpdate.
+ */
 public final class CostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Costs_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void costsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .costs()
+        manager.costs()
             .define("targetCost")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")
-            .withTargetCost(
-                new TargetCostProperties()
-                    .withStatus(TargetCostStatus.ENABLED)
-                    .withTarget(100)
-                    .withCostThresholds(
-                        Arrays
-                            .asList(
-                                new CostThresholdProperties()
-                                    .withThresholdId("00000000-0000-0000-0000-000000000001")
-                                    .withPercentageThreshold(
-                                        new PercentageCostThresholdProperties().withThresholdValue(25.0D))
-                                    .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
-                                new CostThresholdProperties()
-                                    .withThresholdId("00000000-0000-0000-0000-000000000002")
-                                    .withPercentageThreshold(
-                                        new PercentageCostThresholdProperties().withThresholdValue(50.0D))
-                                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
-                                    .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED),
-                                new CostThresholdProperties()
-                                    .withThresholdId("00000000-0000-0000-0000-000000000003")
-                                    .withPercentageThreshold(
-                                        new PercentageCostThresholdProperties().withThresholdValue(75.0D))
-                                    .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
-                                new CostThresholdProperties()
-                                    .withThresholdId("00000000-0000-0000-0000-000000000004")
-                                    .withPercentageThreshold(
-                                        new PercentageCostThresholdProperties().withThresholdValue(100.0D))
-                                    .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
-                                new CostThresholdProperties()
-                                    .withThresholdId("00000000-0000-0000-0000-000000000005")
-                                    .withPercentageThreshold(
-                                        new PercentageCostThresholdProperties().withThresholdValue(125.0D))
-                                    .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)))
-                    .withCycleStartDateTime(OffsetDateTime.parse("2020-12-01T00:00:00.000Z"))
-                    .withCycleEndDateTime(OffsetDateTime.parse("2020-12-31T00:00:00.000Z"))
-                    .withCycleType(ReportingCycleType.CALENDAR_MONTH))
+            .withTargetCost(new TargetCostProperties().withStatus(TargetCostStatus.ENABLED)
+                .withTarget(100)
+                .withCostThresholds(Arrays.asList(
+                    new CostThresholdProperties().withThresholdId("00000000-0000-0000-0000-000000000001")
+                        .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(25.0D))
+                        .withDisplayOnChart(CostThresholdStatus.DISABLED)
+                        .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
+                    new CostThresholdProperties().withThresholdId("00000000-0000-0000-0000-000000000002")
+                        .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(50.0D))
+                        .withDisplayOnChart(CostThresholdStatus.ENABLED)
+                        .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED),
+                    new CostThresholdProperties().withThresholdId("00000000-0000-0000-0000-000000000003")
+                        .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(75.0D))
+                        .withDisplayOnChart(CostThresholdStatus.DISABLED)
+                        .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
+                    new CostThresholdProperties().withThresholdId("00000000-0000-0000-0000-000000000004")
+                        .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(100.0D))
+                        .withDisplayOnChart(CostThresholdStatus.DISABLED)
+                        .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED),
+                    new CostThresholdProperties().withThresholdId("00000000-0000-0000-0000-000000000005")
+                        .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(125.0D))
+                        .withDisplayOnChart(CostThresholdStatus.DISABLED)
+                        .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)))
+                .withCycleStartDateTime(OffsetDateTime.parse("2020-12-01T00:00:00.000Z"))
+                .withCycleEndDateTime(OffsetDateTime.parse("2020-12-31T00:00:00.000Z"))
+                .withCycleType(ReportingCycleType.CALENDAR_MONTH))
             .withCurrencyCode("USD")
             .withStartDateTime(OffsetDateTime.parse("2020-12-01T00:00:00Z"))
             .withEndDateTime(OffsetDateTime.parse("2020-12-31T23:59:59Z"))
@@ -587,19 +570,21 @@ public final class CostsCreateOrUpdateSamples {
 ### Costs_Get
 
 ```java
-/** Samples for Costs Get. */
+/**
+ * Samples for Costs Get.
+ */
 public final class CostsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Costs_Get.json
      */
     /**
      * Sample code: Costs_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void costsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .costs()
+        manager.costs()
             .getWithResponse("resourceGroupName", "{labName}", "targetCost", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -614,28 +599,28 @@ import com.azure.resourcemanager.devtestlabs.models.LinuxOsState;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CustomImages CreateOrUpdate. */
+/**
+ * Samples for CustomImages CreateOrUpdate.
+ */
 public final class CustomImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * CustomImages_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomImages_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void customImagesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .customImages()
+        manager.customImages()
             .define("{customImageName}")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")
             .withTags(mapOf("tagName1", "tagValue1"))
-            .withVm(
-                new CustomImagePropertiesFromVm()
-                    .withSourceVmId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}")
-                    .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.NON_DEPROVISIONED)))
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId(
+                "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}")
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.NON_DEPROVISIONED)))
             .withDescription("My Custom Image")
             .create();
     }
@@ -657,19 +642,22 @@ public final class CustomImagesCreateOrUpdateSamples {
 ### CustomImages_Delete
 
 ```java
-/** Samples for CustomImages Delete. */
+/**
+ * Samples for CustomImages Delete.
+ */
 public final class CustomImagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Delete.
+     * json
      */
     /**
      * Sample code: CustomImages_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void customImagesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .customImages()
+        manager.customImages()
             .delete("resourceGroupName", "{labName}", "{customImageName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -678,21 +666,23 @@ public final class CustomImagesDeleteSamples {
 ### CustomImages_Get
 
 ```java
-/** Samples for CustomImages Get. */
+/**
+ * Samples for CustomImages Get.
+ */
 public final class CustomImagesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Get.json
      */
     /**
      * Sample code: CustomImages_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void customImagesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .customImages()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{customImageName}", null, com.azure.core.util.Context.NONE);
+        manager.customImages()
+            .getWithResponse("resourceGroupName", "{labName}", "{customImageName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -700,19 +690,21 @@ public final class CustomImagesGetSamples {
 ### CustomImages_List
 
 ```java
-/** Samples for CustomImages List. */
+/**
+ * Samples for CustomImages List.
+ */
 public final class CustomImagesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_List.json
      */
     /**
      * Sample code: CustomImages_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void customImagesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .customImages()
+        manager.customImages()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -725,23 +717,25 @@ import com.azure.resourcemanager.devtestlabs.models.CustomImage;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CustomImages Update. */
+/**
+ * Samples for CustomImages Update.
+ */
 public final class CustomImagesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/CustomImages_Update.
+     * json
      */
     /**
      * Sample code: CustomImages_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void customImagesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        CustomImage resource =
-            manager
-                .customImages()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{customImageName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        CustomImage resource = manager.customImages()
+            .getWithResponse("resourceGroupName", "{labName}", "{customImageName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue2")).apply();
     }
 
@@ -764,27 +758,24 @@ public final class CustomImagesUpdateSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.AttachDiskProperties;
 
-/** Samples for Disks Attach. */
+/**
+ * Samples for Disks Attach.
+ */
 public final class DisksAttachSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Attach.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Attach.json
      */
     /**
      * Sample code: Disks_Attach.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksAttach(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
-            .attach(
-                "resourceGroupName",
-                "{labName}",
-                "{userId}",
-                "{diskName}",
-                new AttachDiskProperties()
-                    .withLeasedByLabVmId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
+        manager.disks()
+            .attach("resourceGroupName", "{labName}", "{userId}", "{diskName}",
+                new AttachDiskProperties().withLeasedByLabVmId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -795,19 +786,22 @@ public final class DisksAttachSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
 
-/** Samples for Disks CreateOrUpdate. */
+/**
+ * Samples for Disks CreateOrUpdate.
+ */
 public final class DisksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Disks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
+        manager.disks()
             .define("{diskName}")
             .withRegion((String) null)
             .withExistingUser("resourceGroupName", "{labName}", "{userId}")
@@ -823,19 +817,21 @@ public final class DisksCreateOrUpdateSamples {
 ### Disks_Delete
 
 ```java
-/** Samples for Disks Delete. */
+/**
+ * Samples for Disks Delete.
+ */
 public final class DisksDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Delete.json
      */
     /**
      * Sample code: Disks_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
+        manager.disks()
             .delete("resourceGroupName", "{labName}", "{userId}", "{diskName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -846,27 +842,24 @@ public final class DisksDeleteSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.DetachDiskProperties;
 
-/** Samples for Disks Detach. */
+/**
+ * Samples for Disks Detach.
+ */
 public final class DisksDetachSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Detach.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Detach.json
      */
     /**
      * Sample code: Disks_Detach.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksDetach(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
-            .detach(
-                "resourceGroupName",
-                "{labName}",
-                "{userId}",
-                "{diskName}",
-                new DetachDiskProperties()
-                    .withLeasedByLabVmId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
+        manager.disks()
+            .detach("resourceGroupName", "{labName}", "{userId}", "{diskName}",
+                new DetachDiskProperties().withLeasedByLabVmId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/myResourceGroup/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{vmName}"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -875,21 +868,23 @@ public final class DisksDetachSamples {
 ### Disks_Get
 
 ```java
-/** Samples for Disks Get. */
+/**
+ * Samples for Disks Get.
+ */
 public final class DisksGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Get.json
      */
     /**
      * Sample code: Disks_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "@me", "{diskName}", null, com.azure.core.util.Context.NONE);
+        manager.disks()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "{diskName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -897,19 +892,21 @@ public final class DisksGetSamples {
 ### Disks_List
 
 ```java
-/** Samples for Disks List. */
+/**
+ * Samples for Disks List.
+ */
 public final class DisksListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_List.json
      */
     /**
      * Sample code: Disks_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .disks()
+        manager.disks()
             .list("resourceGroupName", "{labName}", "@me", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -922,23 +919,24 @@ import com.azure.resourcemanager.devtestlabs.models.Disk;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Disks Update. */
+/**
+ * Samples for Disks Update.
+ */
 public final class DisksUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Disks_Update.json
      */
     /**
      * Sample code: Disks_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void disksUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Disk resource =
-            manager
-                .disks()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "@me", "diskName", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Disk resource = manager.disks()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "diskName", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -962,27 +960,27 @@ public final class DisksUpdateSamples {
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentDeploymentProperties;
 import java.util.Arrays;
 
-/** Samples for Environments CreateOrUpdate. */
+/**
+ * Samples for Environments CreateOrUpdate.
+ */
 public final class EnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Environments_CreateOrUpdate.json
      */
     /**
      * Sample code: Environments_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .environments()
+        manager.environments()
             .define("{environmentName}")
             .withRegion((String) null)
             .withExistingUser("resourceGroupName", "{labName}", "@me")
-            .withDeploymentProperties(
-                new EnvironmentDeploymentProperties()
-                    .withArmTemplateId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/artifactSources/{artifactSourceName}/armTemplates/{armTemplateName}")
-                    .withParameters(Arrays.asList()))
+            .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId(
+                "/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/artifactSources/{artifactSourceName}/armTemplates/{armTemplateName}")
+                .withParameters(Arrays.asList()))
             .create();
     }
 }
@@ -991,19 +989,22 @@ public final class EnvironmentsCreateOrUpdateSamples {
 ### Environments_Delete
 
 ```java
-/** Samples for Environments Delete. */
+/**
+ * Samples for Environments Delete.
+ */
 public final class EnvironmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Delete.
+     * json
      */
     /**
      * Sample code: Environments_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .environments()
+        manager.environments()
             .delete("resourceGroupName", "{labName}", "@me", "{environmentName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -1012,21 +1013,23 @@ public final class EnvironmentsDeleteSamples {
 ### Environments_Get
 
 ```java
-/** Samples for Environments Get. */
+/**
+ * Samples for Environments Get.
+ */
 public final class EnvironmentsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Get.json
      */
     /**
      * Sample code: Environments_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .environments()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "@me", "{environmentName}", null, com.azure.core.util.Context.NONE);
+        manager.environments()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "{environmentName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1034,19 +1037,21 @@ public final class EnvironmentsGetSamples {
 ### Environments_List
 
 ```java
-/** Samples for Environments List. */
+/**
+ * Samples for Environments List.
+ */
 public final class EnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_List.json
      */
     /**
      * Sample code: Environments_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .environments()
+        manager.environments()
             .list("resourceGroupName", "{labName}", "@me", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1059,28 +1064,25 @@ import com.azure.resourcemanager.devtestlabs.models.DtlEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Environments Update. */
+/**
+ * Samples for Environments Update.
+ */
 public final class EnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Environments_Update.
+     * json
      */
     /**
      * Sample code: Environments_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void environmentsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        DtlEnvironment resource =
-            manager
-                .environments()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "@me",
-                    "{environmentName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        DtlEnvironment resource = manager.environments()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "{environmentName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -1110,59 +1112,46 @@ import com.azure.resourcemanager.devtestlabs.models.SharedPublicIpAddressConfigu
 import com.azure.resourcemanager.devtestlabs.models.TransportProtocol;
 import java.util.Arrays;
 
-/** Samples for Formulas CreateOrUpdate. */
+/**
+ * Samples for Formulas CreateOrUpdate.
+ */
 public final class FormulasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Formulas_CreateOrUpdate.json
      */
     /**
      * Sample code: Formulas_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .formulas()
+        manager.formulas()
             .define("{formulaName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")
             .withDescription("Formula using a Linux base")
-            .withFormulaContent(
-                new LabVirtualMachineCreationParameter()
-                    .withLocation("{location}")
-                    .withNotes("Ubuntu Server 20.10")
-                    .withSize("Standard_B1ms")
-                    .withUsername("user")
-                    .withIsAuthenticationWithSshKey(false)
-                    .withLabSubnetName("Dtl{labName}Subnet")
-                    .withLabVirtualNetworkId("/virtualnetworks/dtl{labName}")
-                    .withDisallowPublicIpAddress(true)
-                    .withArtifacts(
-                        Arrays
-                            .asList(
-                                new ArtifactInstallProperties()
-                                    .withArtifactId(
-                                        "/artifactsources/{artifactSourceName}/artifacts/linux-install-nodejs")
-                                    .withParameters(Arrays.asList())))
-                    .withGalleryImageReference(
-                        new GalleryImageReference()
-                            .withOffer("0001-com-ubuntu-server-groovy")
-                            .withPublisher("canonical")
-                            .withSku("20_10")
-                            .withOsType("Linux")
-                            .withVersion("latest"))
-                    .withNetworkInterface(
-                        new NetworkInterfaceProperties()
-                            .withSharedPublicIpAddressConfiguration(
-                                new SharedPublicIpAddressConfiguration()
-                                    .withInboundNatRules(
-                                        Arrays
-                                            .asList(
-                                                new InboundNatRule()
-                                                    .withTransportProtocol(TransportProtocol.TCP)
-                                                    .withBackendPort(22)))))
-                    .withAllowClaim(false)
-                    .withStorageType("Standard"))
+            .withFormulaContent(new LabVirtualMachineCreationParameter().withLocation("{location}")
+                .withNotes("Ubuntu Server 20.10")
+                .withSize("Standard_B1ms")
+                .withUsername("user")
+                .withIsAuthenticationWithSshKey(false)
+                .withLabSubnetName("Dtl{labName}Subnet")
+                .withLabVirtualNetworkId("/virtualnetworks/dtl{labName}")
+                .withDisallowPublicIpAddress(true)
+                .withArtifacts(Arrays.asList(new ArtifactInstallProperties()
+                    .withArtifactId("/artifactsources/{artifactSourceName}/artifacts/linux-install-nodejs")
+                    .withParameters(Arrays.asList())))
+                .withGalleryImageReference(new GalleryImageReference().withOffer("0001-com-ubuntu-server-groovy")
+                    .withPublisher("canonical")
+                    .withSku("20_10")
+                    .withOsType("Linux")
+                    .withVersion("latest"))
+                .withNetworkInterface(new NetworkInterfaceProperties().withSharedPublicIpAddressConfiguration(
+                    new SharedPublicIpAddressConfiguration().withInboundNatRules(Arrays.asList(
+                        new InboundNatRule().withTransportProtocol(TransportProtocol.TCP).withBackendPort(22)))))
+                .withAllowClaim(false)
+                .withStorageType("Standard"))
             .create();
     }
 }
@@ -1171,19 +1160,21 @@ public final class FormulasCreateOrUpdateSamples {
 ### Formulas_Delete
 
 ```java
-/** Samples for Formulas Delete. */
+/**
+ * Samples for Formulas Delete.
+ */
 public final class FormulasDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Delete.json
      */
     /**
      * Sample code: Formulas_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .formulas()
+        manager.formulas()
             .deleteWithResponse("resourceGroupName", "{labName}", "{formulaName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -1192,19 +1183,21 @@ public final class FormulasDeleteSamples {
 ### Formulas_Get
 
 ```java
-/** Samples for Formulas Get. */
+/**
+ * Samples for Formulas Get.
+ */
 public final class FormulasGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Get.json
      */
     /**
      * Sample code: Formulas_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .formulas()
+        manager.formulas()
             .getWithResponse("resourceGroupName", "{labName}", "{formulaName}", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1213,19 +1206,21 @@ public final class FormulasGetSamples {
 ### Formulas_List
 
 ```java
-/** Samples for Formulas List. */
+/**
+ * Samples for Formulas List.
+ */
 public final class FormulasListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_List.json
      */
     /**
      * Sample code: Formulas_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .formulas()
+        manager.formulas()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1238,23 +1233,23 @@ import com.azure.resourcemanager.devtestlabs.models.Formula;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Formulas Update. */
+/**
+ * Samples for Formulas Update.
+ */
 public final class FormulasUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Update.json
      */
     /**
      * Sample code: Formulas_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Formula resource =
-            manager
-                .formulas()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{formulaName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Formula resource = manager.formulas()
+            .getWithResponse("resourceGroupName", "{labName}", "{formulaName}", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -1275,19 +1270,22 @@ public final class FormulasUpdateSamples {
 ### GalleryImages_List
 
 ```java
-/** Samples for GalleryImages List. */
+/**
+ * Samples for GalleryImages List.
+ */
 public final class GalleryImagesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GalleryImages_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GalleryImages_List.
+     * json
      */
     /**
      * Sample code: GalleryImages_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void galleryImagesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .galleryImages()
+        manager.galleryImages()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1300,28 +1298,29 @@ import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.WeekDetails;
 import java.util.Arrays;
 
-/** Samples for GlobalSchedules CreateOrUpdate. */
+/**
+ * Samples for GlobalSchedules CreateOrUpdate.
+ */
 public final class GlobalSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_CreateOrUpdate.json
      */
     /**
      * Sample code: GlobalSchedules_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .globalSchedules()
+        manager.globalSchedules()
             .define("labvmautostart")
             .withRegion((String) null)
             .withExistingResourceGroup("resourceGroupName")
             .withStatus(EnableStatus.ENABLED)
             .withTaskType("LabVmsStartupTask")
-            .withWeeklyRecurrence(
-                new WeekDetails()
-                    .withWeekdays(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
-                    .withTime("0700"))
+            .withWeeklyRecurrence(new WeekDetails()
+                .withWeekdays(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+                .withTime("0700"))
             .withTimeZoneId("Hawaiian Standard Time")
             .create();
     }
@@ -1331,19 +1330,22 @@ public final class GlobalSchedulesCreateOrUpdateSamples {
 ### GlobalSchedules_Delete
 
 ```java
-/** Samples for GlobalSchedules Delete. */
+/**
+ * Samples for GlobalSchedules Delete.
+ */
 public final class GlobalSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Delete
+     * .json
      */
     /**
      * Sample code: GlobalSchedules_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .globalSchedules()
+        manager.globalSchedules()
             .deleteByResourceGroupWithResponse("resourceGroupName", "labvmautostart", com.azure.core.util.Context.NONE);
     }
 }
@@ -1352,14 +1354,17 @@ public final class GlobalSchedulesDeleteSamples {
 ### GlobalSchedules_Execute
 
 ```java
-/** Samples for GlobalSchedules Execute. */
+/**
+ * Samples for GlobalSchedules Execute.
+ */
 public final class GlobalSchedulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Execute.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_Execute.json
      */
     /**
      * Sample code: GlobalSchedules_Execute.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesExecute(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -1371,21 +1376,24 @@ public final class GlobalSchedulesExecuteSamples {
 ### GlobalSchedules_GetByResourceGroup
 
 ```java
-/** Samples for GlobalSchedules GetByResourceGroup. */
+/**
+ * Samples for GlobalSchedules GetByResourceGroup.
+ */
 public final class GlobalSchedulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Get.
+     * json
      */
     /**
      * Sample code: GlobalSchedules_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .globalSchedules()
-            .getByResourceGroupWithResponse(
-                "resourceGroupName", "labvmautostart", null, com.azure.core.util.Context.NONE);
+        manager.globalSchedules()
+            .getByResourceGroupWithResponse("resourceGroupName", "labvmautostart", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1393,18 +1401,21 @@ public final class GlobalSchedulesGetByResourceGroupSamples {
 ### GlobalSchedules_List
 
 ```java
-/** Samples for GlobalSchedules List. */
+/**
+ * Samples for GlobalSchedules List.
+ */
 public final class GlobalSchedulesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_ListBySubscription.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_ListBySubscription.json
      */
     /**
      * Sample code: GlobalSchedules_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void globalSchedulesListBySubscription(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+    public static void
+        globalSchedulesListBySubscription(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
         manager.globalSchedules().list(null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1413,20 +1424,22 @@ public final class GlobalSchedulesListSamples {
 ### GlobalSchedules_ListByResourceGroup
 
 ```java
-/** Samples for GlobalSchedules ListByResourceGroup. */
+/**
+ * Samples for GlobalSchedules ListByResourceGroup.
+ */
 public final class GlobalSchedulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_ListByResourceGroup.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_ListByResourceGroup.json
      */
     /**
      * Sample code: GlobalSchedules_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void globalSchedulesListByResourceGroup(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .globalSchedules()
+    public static void
+        globalSchedulesListByResourceGroup(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.globalSchedules()
             .listByResourceGroup("resourceGroupName", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1437,27 +1450,25 @@ public final class GlobalSchedulesListByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.RetargetScheduleProperties;
 
-/** Samples for GlobalSchedules Retarget. */
+/**
+ * Samples for GlobalSchedules Retarget.
+ */
 public final class GlobalSchedulesRetargetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Retarget.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * GlobalSchedules_Retarget.json
      */
     /**
      * Sample code: GlobalSchedules_Retarget.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesRetarget(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .globalSchedules()
-            .retarget(
-                "resourceGroupName",
-                "{scheduleName}",
-                new RetargetScheduleProperties()
-                    .withCurrentResourceId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{targetLab}")
-                    .withTargetResourceId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{currentLab}"),
+        manager.globalSchedules()
+            .retarget("resourceGroupName", "{scheduleName}", new RetargetScheduleProperties().withCurrentResourceId(
+                "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{targetLab}")
+                .withTargetResourceId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{currentLab}"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1470,23 +1481,25 @@ import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for GlobalSchedules Update. */
+/**
+ * Samples for GlobalSchedules Update.
+ */
 public final class GlobalSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/GlobalSchedules_Update
+     * .json
      */
     /**
      * Sample code: GlobalSchedules_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void globalSchedulesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Schedule resource =
-            manager
-                .globalSchedules()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "labvmautostart", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Schedule resource = manager.globalSchedules()
+            .getByResourceGroupWithResponse("resourceGroupName", "labvmautostart", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -1507,14 +1520,17 @@ public final class GlobalSchedulesUpdateSamples {
 ### Labs_ClaimAnyVm
 
 ```java
-/** Samples for Labs ClaimAnyVm. */
+/**
+ * Samples for Labs ClaimAnyVm.
+ */
 public final class LabsClaimAnyVmSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ClaimAnyVm.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ClaimAnyVm.json
      */
     /**
      * Sample code: Labs_ClaimAnyVm.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsClaimAnyVm(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -1531,43 +1547,40 @@ import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationPar
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Labs CreateEnvironment. */
+/**
+ * Samples for Labs CreateEnvironment.
+ */
 public final class LabsCreateEnvironmentSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateEnvironment.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateEnvironment
+     * .json
      */
     /**
      * Sample code: Labs_CreateEnvironment.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsCreateEnvironment(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
-            .createEnvironment(
-                "resourceGroupName",
-                "{labName}",
-                new LabVirtualMachineCreationParameter()
-                    .withName("{vmName}")
-                    .withLocation("{location}")
-                    .withTags(mapOf("tagName1", "tagValue1"))
-                    .withSize("Standard_A2_v2")
-                    .withUsername("{userName}")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withLabSubnetName("{virtualnetwork-subnet-name}")
-                    .withLabVirtualNetworkId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
-                    .withDisallowPublicIpAddress(true)
-                    .withGalleryImageReference(
-                        new GalleryImageReference()
-                            .withOffer("UbuntuServer")
-                            .withPublisher("Canonical")
-                            .withSku("16.04-LTS")
-                            .withOsType("Linux")
-                            .withVersion("Latest"))
-                    .withAllowClaim(true)
-                    .withStorageType("Standard"),
-                com.azure.core.util.Context.NONE);
+        manager.labs()
+            .createEnvironment("resourceGroupName", "{labName}", new LabVirtualMachineCreationParameter()
+                .withName("{vmName}")
+                .withLocation("{location}")
+                .withTags(mapOf("tagName1", "tagValue1"))
+                .withSize("Standard_A2_v2")
+                .withUsername("{userName}")
+                .withPassword("fakeTokenPlaceholder")
+                .withLabSubnetName("{virtualnetwork-subnet-name}")
+                .withLabVirtualNetworkId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
+                .withDisallowPublicIpAddress(true)
+                .withGalleryImageReference(new GalleryImageReference().withOffer("UbuntuServer")
+                    .withPublisher("Canonical")
+                    .withSku("16.04-LTS")
+                    .withOsType("Linux")
+                    .withVersion("Latest"))
+                .withAllowClaim(true)
+                .withStorageType("Standard"), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -1591,19 +1604,22 @@ import com.azure.resourcemanager.devtestlabs.models.StorageType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Labs CreateOrUpdate. */
+/**
+ * Samples for Labs CreateOrUpdate.
+ */
 public final class LabsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Labs_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
+        manager.labs()
             .define("{labName}")
             .withRegion("{location}")
             .withExistingResourceGroup("resourceGroupName")
@@ -1629,14 +1645,17 @@ public final class LabsCreateOrUpdateSamples {
 ### Labs_Delete
 
 ```java
-/** Samples for Labs Delete. */
+/**
+ * Samples for Labs Delete.
+ */
 public final class LabsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Delete.json
      */
     /**
      * Sample code: Labs_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -1651,22 +1670,22 @@ public final class LabsDeleteSamples {
 import com.azure.resourcemanager.devtestlabs.models.ExportResourceUsageParameters;
 import java.time.OffsetDateTime;
 
-/** Samples for Labs ExportResourceUsage. */
+/**
+ * Samples for Labs ExportResourceUsage.
+ */
 public final class LabsExportResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ExportResourceUsage.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Labs_ExportResourceUsage.json
      */
     /**
      * Sample code: Labs_ExportResourceUsage.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsExportResourceUsage(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
-            .exportResourceUsage(
-                "resourceGroupName",
-                "{labName}",
+        manager.labs()
+            .exportResourceUsage("resourceGroupName", "{labName}",
                 new ExportResourceUsageParameters()
                     .withBlobStorageAbsoluteSasUri(
                         "https://invalid.blob.core.windows.net/export.blob?sv=2015-07-08&sig={sas}&sp=rcw")
@@ -1681,24 +1700,24 @@ public final class LabsExportResourceUsageSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.GenerateUploadUriParameter;
 
-/** Samples for Labs GenerateUploadUri. */
+/**
+ * Samples for Labs GenerateUploadUri.
+ */
 public final class LabsGenerateUploadUriSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_GenerateUploadUri.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_GenerateUploadUri
+     * .json
      */
     /**
      * Sample code: Labs_GenerateUploadUri.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsGenerateUploadUri(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
-            .generateUploadUriWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                new GenerateUploadUriParameter().withBlobName("{blob-name}"),
-                com.azure.core.util.Context.NONE);
+        manager.labs()
+            .generateUploadUriWithResponse("resourceGroupName", "{labName}",
+                new GenerateUploadUriParameter().withBlobName("{blob-name}"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1706,19 +1725,21 @@ public final class LabsGenerateUploadUriSamples {
 ### Labs_GetByResourceGroup
 
 ```java
-/** Samples for Labs GetByResourceGroup. */
+/**
+ * Samples for Labs GetByResourceGroup.
+ */
 public final class LabsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Get.json
      */
     /**
      * Sample code: Labs_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
+        manager.labs()
             .getByResourceGroupWithResponse("resourceGroupName", "{labName}", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1729,25 +1750,24 @@ public final class LabsGetByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.ImportLabVirtualMachineRequest;
 
-/** Samples for Labs ImportVirtualMachine. */
+/**
+ * Samples for Labs ImportVirtualMachine.
+ */
 public final class LabsImportVirtualMachineSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ImportVirtualMachine.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Labs_ImportVirtualMachine.json
      */
     /**
      * Sample code: Labs_ImportVirtualMachine.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsImportVirtualMachine(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
-            .importVirtualMachine(
-                "resourceGroupName",
-                "{labName}",
-                new ImportLabVirtualMachineRequest()
-                    .withSourceVirtualMachineResourceId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{otherResourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+        manager.labs()
+            .importVirtualMachine("resourceGroupName", "{labName}",
+                new ImportLabVirtualMachineRequest().withSourceVirtualMachineResourceId(
+                    "/subscriptions/{subscriptionId}/resourceGroups/{otherResourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
                     .withDestinationVirtualMachineName("{vmName}"),
                 com.azure.core.util.Context.NONE);
     }
@@ -1757,14 +1777,17 @@ public final class LabsImportVirtualMachineSamples {
 ### Labs_List
 
 ```java
-/** Samples for Labs List. */
+/**
+ * Samples for Labs List.
+ */
 public final class LabsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListBySubscription.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Labs_ListBySubscription.json
      */
     /**
      * Sample code: Labs_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsListBySubscription(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -1776,19 +1799,21 @@ public final class LabsListSamples {
 ### Labs_ListByResourceGroup
 
 ```java
-/** Samples for Labs ListByResourceGroup. */
+/**
+ * Samples for Labs ListByResourceGroup.
+ */
 public final class LabsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListByResourceGroup.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Labs_ListByResourceGroup.json
      */
     /**
      * Sample code: Labs_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsListByResourceGroup(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .labs()
+        manager.labs()
             .listByResourceGroup("resourceGroupName", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1797,14 +1822,17 @@ public final class LabsListByResourceGroupSamples {
 ### Labs_ListVhds
 
 ```java
-/** Samples for Labs ListVhds. */
+/**
+ * Samples for Labs ListVhds.
+ */
 public final class LabsListVhdsSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListVhds.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_ListVhds.json
      */
     /**
      * Sample code: Labs_ListVhds.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsListVhds(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -1818,23 +1846,23 @@ public final class LabsListVhdsSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.Lab;
 
-/** Samples for Labs Update. */
+/**
+ * Samples for Labs Update.
+ */
 public final class LabsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Labs_Update.json
      */
     /**
      * Sample code: Labs_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void labsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Lab resource =
-            manager
-                .labs()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "{labName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Lab resource = manager.labs()
+            .getByResourceGroupWithResponse("resourceGroupName", "{labName}", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -1847,20 +1875,22 @@ import com.azure.resourcemanager.devtestlabs.models.Event;
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import java.util.Arrays;
 
-/** Samples for NotificationChannels CreateOrUpdate. */
+/**
+ * Samples for NotificationChannels CreateOrUpdate.
+ */
 public final class NotificationChannelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_CreateOrUpdate.json
      */
     /**
      * Sample code: NotificationChannels_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void notificationChannelsCreateOrUpdate(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
+    public static void
+        notificationChannelsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.notificationChannels()
             .define("{notificationChannelName}")
             .withRegion((String) null)
             .withExistingLab("resourceGroupName", "{labName}")
@@ -1877,21 +1907,23 @@ public final class NotificationChannelsCreateOrUpdateSamples {
 ### NotificationChannels_Delete
 
 ```java
-/** Samples for NotificationChannels Delete. */
+/**
+ * Samples for NotificationChannels Delete.
+ */
 public final class NotificationChannelsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_Delete.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_Delete.json
      */
     /**
      * Sample code: NotificationChannels_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void notificationChannelsDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
-            .deleteWithResponse(
-                "resourceGroupName", "{labName}", "{notificationChannelName}", com.azure.core.util.Context.NONE);
+        manager.notificationChannels()
+            .deleteWithResponse("resourceGroupName", "{labName}", "{notificationChannelName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1899,21 +1931,23 @@ public final class NotificationChannelsDeleteSamples {
 ### NotificationChannels_Get
 
 ```java
-/** Samples for NotificationChannels Get. */
+/**
+ * Samples for NotificationChannels Get.
+ */
 public final class NotificationChannelsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_Get.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_Get.json
      */
     /**
      * Sample code: NotificationChannels_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void notificationChannelsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{notificationChannelName}", null, com.azure.core.util.Context.NONE);
+        manager.notificationChannels()
+            .getWithResponse("resourceGroupName", "{labName}", "{notificationChannelName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1921,19 +1955,21 @@ public final class NotificationChannelsGetSamples {
 ### NotificationChannels_List
 
 ```java
-/** Samples for NotificationChannels List. */
+/**
+ * Samples for NotificationChannels List.
+ */
 public final class NotificationChannelsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_List.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_List.json
      */
     /**
      * Sample code: NotificationChannels_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void notificationChannelsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
+        manager.notificationChannels()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -1945,27 +1981,25 @@ public final class NotificationChannelsListSamples {
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannelEventType;
 import com.azure.resourcemanager.devtestlabs.models.NotifyParameters;
 
-/** Samples for NotificationChannels Notify. */
+/**
+ * Samples for NotificationChannels Notify.
+ */
 public final class NotificationChannelsNotifySamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_Notify.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_Notify.json
      */
     /**
      * Sample code: NotificationChannels_Notify.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void notificationChannelsNotify(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .notificationChannels()
-            .notifyWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{notificationChannelName}",
-                new NotifyParameters()
-                    .withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)
-                    .withJsonPayload(
-                        "{\"eventType\":\"AutoShutdown\",\"subscriptionId\":\"{subscriptionId}\",\"resourceGroupName\":\"resourceGroupName\",\"labName\":\"{labName}\"}"),
+        manager.notificationChannels()
+            .notifyWithResponse("resourceGroupName", "{labName}", "{notificationChannelName}", new NotifyParameters()
+                .withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)
+                .withJsonPayload(
+                    "{\"eventType\":\"AutoShutdown\",\"subscriptionId\":\"{subscriptionId}\",\"resourceGroupName\":\"resourceGroupName\",\"labName\":\"{labName}\"}"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1976,27 +2010,24 @@ public final class NotificationChannelsNotifySamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.NotificationChannel;
 
-/** Samples for NotificationChannels Update. */
+/**
+ * Samples for NotificationChannels Update.
+ */
 public final class NotificationChannelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/NotificationChannels_Update.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * NotificationChannels_Update.json
      */
     /**
      * Sample code: NotificationChannels_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void notificationChannelsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        NotificationChannel resource =
-            manager
-                .notificationChannels()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{notificationChannelName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        NotificationChannel resource = manager.notificationChannels()
+            .getWithResponse("resourceGroupName", "{labName}", "{notificationChannelName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -2005,14 +2036,17 @@ public final class NotificationChannelsUpdateSamples {
 ### Operations_Get
 
 ```java
-/** Samples for Operations Get. */
+/**
+ * Samples for Operations Get.
+ */
 public final class OperationsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Operations_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Operations_Get.json
      */
     /**
      * Sample code: Operations_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void operationsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -2030,19 +2064,21 @@ import com.azure.resourcemanager.devtestlabs.models.PolicyStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies CreateOrUpdate. */
+/**
+ * Samples for Policies CreateOrUpdate.
+ */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Policies_CreateOrUpdate.json
      */
     /**
      * Sample code: Policies_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .define("{policyName}")
             .withRegion("{location}")
             .withExistingPolicyset("resourceGroupName", "{labName}", "{policySetName}")
@@ -2073,21 +2109,23 @@ public final class PoliciesCreateOrUpdateSamples {
 ### Policies_Delete
 
 ```java
-/** Samples for Policies Delete. */
+/**
+ * Samples for Policies Delete.
+ */
 public final class PoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Delete.json
      */
     /**
      * Sample code: Policies_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policies()
-            .deleteWithResponse(
-                "resourceGroupName", "{labName}", "{policySetName}", "{policyName}", com.azure.core.util.Context.NONE);
+        manager.policies()
+            .deleteWithResponse("resourceGroupName", "{labName}", "{policySetName}", "{policyName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2095,25 +2133,22 @@ public final class PoliciesDeleteSamples {
 ### Policies_Get
 
 ```java
-/** Samples for Policies Get. */
+/**
+ * Samples for Policies Get.
+ */
 public final class PoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Get.json
      */
     /**
      * Sample code: Policies_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policies()
-            .getWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{policySetName}",
-                "{policyName}",
-                null,
+        manager.policies()
+            .getWithResponse("resourceGroupName", "{labName}", "{policySetName}", "{policyName}", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2122,27 +2157,22 @@ public final class PoliciesGetSamples {
 ### Policies_List
 
 ```java
-/** Samples for Policies List. */
+/**
+ * Samples for Policies List.
+ */
 public final class PoliciesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_List.json
      */
     /**
      * Sample code: Policies_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policies()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "{policySetName}",
-                null,
-                null,
-                null,
-                null,
+        manager.policies()
+            .list("resourceGroupName", "{labName}", "{policySetName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2155,28 +2185,24 @@ import com.azure.resourcemanager.devtestlabs.models.Policy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies Update. */
+/**
+ * Samples for Policies Update.
+ */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_Update.json
      */
     /**
      * Sample code: Policies_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Policy resource =
-            manager
-                .policies()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{policySetName}",
-                    "{policyName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Policy resource = manager.policies()
+            .getWithResponse("resourceGroupName", "{labName}", "{policySetName}", "{policyName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -2201,27 +2227,24 @@ import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesProperties;
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesRequest;
 import java.util.Arrays;
 
-/** Samples for PolicySets EvaluatePolicies. */
+/**
+ * Samples for PolicySets EvaluatePolicies.
+ */
 public final class PolicySetsEvaluatePoliciesSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/PolicySets_EvaluatePolicies.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * PolicySets_EvaluatePolicies.json
      */
     /**
      * Sample code: PolicySets_EvaluatePolicies.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policySetsEvaluatePolicies(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policySets()
-            .evaluatePoliciesWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{policySetName}",
-                new EvaluatePoliciesRequest()
-                    .withPolicies(
-                        Arrays
-                            .asList(new EvaluatePoliciesProperties().withFactName("LabVmCount").withValueOffset("1"))),
+        manager.policySets()
+            .evaluatePoliciesWithResponse("resourceGroupName", "{labName}", "{policySetName}",
+                new EvaluatePoliciesRequest().withPolicies(
+                    Arrays.asList(new EvaluatePoliciesProperties().withFactName("LabVmCount").withValueOffset("1"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2230,14 +2253,17 @@ public final class PolicySetsEvaluatePoliciesSamples {
 ### ProviderOperations_List
 
 ```java
-/** Samples for ProviderOperations List. */
+/**
+ * Samples for ProviderOperations List.
+ */
 public final class ProviderOperationsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ProviderOperations_List.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ProviderOperations_List.json
      */
     /**
      * Sample code: ProviderOperations_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void providerOperationsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -2259,42 +2285,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Schedules CreateOrUpdate. */
+/**
+ * Samples for Schedules CreateOrUpdate.
+ */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Schedules_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedules_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{scheduleName}",
-                new ScheduleInner()
-                    .withLocation("{location}")
+        manager.schedules()
+            .createOrUpdateWithResponse("resourceGroupName", "{labName}", "{scheduleName}",
+                new ScheduleInner().withLocation("{location}")
                     .withTags(mapOf("tagName1", "tagValue1"))
                     .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
                     .withTaskType("{myLabVmTaskType}")
-                    .withWeeklyRecurrence(
-                        new WeekDetails()
-                            .withWeekdays(Arrays.asList("Monday", "Wednesday", "Friday"))
-                            .withTime("{timeOfTheDayTheScheduleWillOccurOnThoseDays}"))
+                    .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("Monday", "Wednesday", "Friday"))
+                        .withTime("{timeOfTheDayTheScheduleWillOccurOnThoseDays}"))
                     .withDailyRecurrence(new DayDetails().withTime("{timeOfTheDayTheScheduleWillOccurEveryDay}"))
                     .withHourlyRecurrence(new HourDetails().withMinute(30))
                     .withTimeZoneId("Pacific Standard Time")
-                    .withNotificationSettings(
-                        new NotificationSettings()
-                            .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
-                            .withTimeInMinutes(15)
-                            .withWebhookUrl("{webhookUrl}")
-                            .withEmailRecipient("{email}")
-                            .withNotificationLocale("EN"))
+                    .withNotificationSettings(new NotificationSettings()
+                        .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
+                        .withTimeInMinutes(15)
+                        .withWebhookUrl("{webhookUrl}")
+                        .withEmailRecipient("{email}")
+                        .withNotificationLocale("EN"))
                     .withTargetResourceId(
                         "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}"),
                 com.azure.core.util.Context.NONE);
@@ -2317,19 +2338,21 @@ public final class SchedulesCreateOrUpdateSamples {
 ### Schedules_Delete
 
 ```java
-/** Samples for Schedules Delete. */
+/**
+ * Samples for Schedules Delete.
+ */
 public final class SchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Delete.json
      */
     /**
      * Sample code: Schedules_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .deleteWithResponse("resourceGroupName", "{labName}", "{scheduleName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -2338,19 +2361,21 @@ public final class SchedulesDeleteSamples {
 ### Schedules_Execute
 
 ```java
-/** Samples for Schedules Execute. */
+/**
+ * Samples for Schedules Execute.
+ */
 public final class SchedulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Execute.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Execute.json
      */
     /**
      * Sample code: Schedules_Execute.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesExecute(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .execute("resourceGroupName", "{labName}", "{scheduleName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -2359,21 +2384,23 @@ public final class SchedulesExecuteSamples {
 ### Schedules_Get
 
 ```java
-/** Samples for Schedules Get. */
+/**
+ * Samples for Schedules Get.
+ */
 public final class SchedulesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Get.json
      */
     /**
      * Sample code: Schedules_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{scheduleName}", null, com.azure.core.util.Context.NONE);
+        manager.schedules()
+            .getWithResponse("resourceGroupName", "{labName}", "{scheduleName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2381,19 +2408,21 @@ public final class SchedulesGetSamples {
 ### Schedules_List
 
 ```java
-/** Samples for Schedules List. */
+/**
+ * Samples for Schedules List.
+ */
 public final class SchedulesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_List.json
      */
     /**
      * Sample code: Schedules_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -2402,19 +2431,21 @@ public final class SchedulesListSamples {
 ### Schedules_ListApplicable
 
 ```java
-/** Samples for Schedules ListApplicable. */
+/**
+ * Samples for Schedules ListApplicable.
+ */
 public final class SchedulesListApplicableSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_ListApplicable.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Schedules_ListApplicable.json
      */
     /**
      * Sample code: Schedules_ListApplicable.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesListApplicable(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
+        manager.schedules()
             .listApplicable("resourceGroupName", "{labName}", "{scheduleName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -2427,25 +2458,23 @@ import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Schedules Update. */
+/**
+ * Samples for Schedules Update.
+ */
 public final class SchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Schedules_Update.json
      */
     /**
      * Sample code: Schedules_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void schedulesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .schedules()
-            .updateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{scheduleName}",
-                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")),
-                com.azure.core.util.Context.NONE);
+        manager.schedules()
+            .updateWithResponse("resourceGroupName", "{labName}", "{scheduleName}",
+                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -2465,19 +2494,22 @@ public final class SchedulesUpdateSamples {
 ### Secrets_CreateOrUpdate
 
 ```java
-/** Samples for Secrets CreateOrUpdate. */
+/**
+ * Samples for Secrets CreateOrUpdate.
+ */
 public final class SecretsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_CreateOrUpdate
+     * .json
      */
     /**
      * Sample code: Secrets_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .secrets()
+        manager.secrets()
             .define("{secretName}")
             .withRegion((String) null)
             .withExistingUser("resourceGroupName", "{labName}", "{userName}")
@@ -2490,21 +2522,23 @@ public final class SecretsCreateOrUpdateSamples {
 ### Secrets_Delete
 
 ```java
-/** Samples for Secrets Delete. */
+/**
+ * Samples for Secrets Delete.
+ */
 public final class SecretsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Delete.json
      */
     /**
      * Sample code: Secrets_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .secrets()
-            .deleteWithResponse(
-                "resourceGroupName", "{labName}", "{userName}", "{secretName}", com.azure.core.util.Context.NONE);
+        manager.secrets()
+            .deleteWithResponse("resourceGroupName", "{labName}", "{userName}", "{secretName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2512,21 +2546,23 @@ public final class SecretsDeleteSamples {
 ### Secrets_Get
 
 ```java
-/** Samples for Secrets Get. */
+/**
+ * Samples for Secrets Get.
+ */
 public final class SecretsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Get.json
      */
     /**
      * Sample code: Secrets_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .secrets()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{userName}", "{secretName}", null, com.azure.core.util.Context.NONE);
+        manager.secrets()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{secretName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2534,27 +2570,22 @@ public final class SecretsGetSamples {
 ### Secrets_List
 
 ```java
-/** Samples for Secrets List. */
+/**
+ * Samples for Secrets List.
+ */
 public final class SecretsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_List.json
      */
     /**
      * Sample code: Secrets_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .secrets()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                null,
-                null,
-                null,
-                null,
+        manager.secrets()
+            .list("resourceGroupName", "{labName}", "{userName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2567,28 +2598,24 @@ import com.azure.resourcemanager.devtestlabs.models.Secret;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Secrets Update. */
+/**
+ * Samples for Secrets Update.
+ */
 public final class SecretsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Update.json
      */
     /**
      * Sample code: Secrets_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Secret resource =
-            manager
-                .secrets()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{userName}",
-                    "{secretName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Secret resource = manager.secrets()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{secretName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -2619,45 +2646,38 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabricSchedules CreateOrUpdate. */
+/**
+ * Samples for ServiceFabricSchedules CreateOrUpdate.
+ */
 public final class ServiceFabricSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceFabricSchedules_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void serviceFabricSchedulesCreateOrUpdate(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
+    public static void
+        serviceFabricSchedulesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.serviceFabricSchedules()
+            .createOrUpdateWithResponse("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}",
                 "{scheduleName}",
-                new ScheduleInner()
-                    .withLocation("{location}")
+                new ScheduleInner().withLocation("{location}")
                     .withTags(mapOf("tagName1", "tagValue1"))
                     .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
                     .withTaskType(
                         "{Unknown|LabVmsShutdownTask|LabVmsStartupTask|LabVmReclamationTask|ComputeVmShutdownTask}")
-                    .withWeeklyRecurrence(
-                        new WeekDetails()
-                            .withWeekdays(
-                                Arrays
-                                    .asList(
-                                        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-                            .withTime("19:00"))
+                    .withWeeklyRecurrence(new WeekDetails()
+                        .withWeekdays(
+                            Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+                        .withTime("19:00"))
                     .withDailyRecurrence(new DayDetails().withTime("19:00"))
                     .withHourlyRecurrence(new HourDetails().withMinute(0))
                     .withTimeZoneId("Pacific Standard Time")
                     .withNotificationSettings(
-                        new NotificationSettings()
-                            .withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
+                        new NotificationSettings().withStatus(EnableStatus.fromString("{Enabled|Disabled}"))
                             .withTimeInMinutes(15)
                             .withWebhookUrl("{webhoolUrl}")
                             .withEmailRecipient("{email}")
@@ -2684,25 +2704,22 @@ public final class ServiceFabricSchedulesCreateOrUpdateSamples {
 ### ServiceFabricSchedules_Delete
 
 ```java
-/** Samples for ServiceFabricSchedules Delete. */
+/**
+ * Samples for ServiceFabricSchedules Delete.
+ */
 public final class ServiceFabricSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_Delete.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_Delete.json
      */
     /**
      * Sample code: ServiceFabricSchedules_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricSchedulesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .deleteWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
-                "{scheduleName}",
+        manager.serviceFabricSchedules()
+            .deleteWithResponse("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}", "{scheduleName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2711,25 +2728,22 @@ public final class ServiceFabricSchedulesDeleteSamples {
 ### ServiceFabricSchedules_Execute
 
 ```java
-/** Samples for ServiceFabricSchedules Execute. */
+/**
+ * Samples for ServiceFabricSchedules Execute.
+ */
 public final class ServiceFabricSchedulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_Execute.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_Execute.json
      */
     /**
      * Sample code: ServiceFabricSchedules_Execute.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricSchedulesExecute(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .execute(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
-                "{scheduleName}",
+        manager.serviceFabricSchedules()
+            .execute("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}", "{scheduleName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2738,26 +2752,22 @@ public final class ServiceFabricSchedulesExecuteSamples {
 ### ServiceFabricSchedules_Get
 
 ```java
-/** Samples for ServiceFabricSchedules Get. */
+/**
+ * Samples for ServiceFabricSchedules Get.
+ */
 public final class ServiceFabricSchedulesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_Get.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_Get.json
      */
     /**
      * Sample code: ServiceFabricSchedules_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricSchedulesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .getWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
-                "{scheduleName}",
-                null,
+        manager.serviceFabricSchedules()
+            .getWithResponse("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}", "{scheduleName}", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2766,28 +2776,22 @@ public final class ServiceFabricSchedulesGetSamples {
 ### ServiceFabricSchedules_List
 
 ```java
-/** Samples for ServiceFabricSchedules List. */
+/**
+ * Samples for ServiceFabricSchedules List.
+ */
 public final class ServiceFabricSchedulesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_List.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_List.json
      */
     /**
      * Sample code: ServiceFabricSchedules_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricSchedulesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
-                null,
-                null,
-                null,
-                null,
+        manager.serviceFabricSchedules()
+            .list("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2800,27 +2804,23 @@ import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabricSchedules Update. */
+/**
+ * Samples for ServiceFabricSchedules Update.
+ */
 public final class ServiceFabricSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabricSchedules_Update.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabricSchedules_Update.json
      */
     /**
      * Sample code: ServiceFabricSchedules_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricSchedulesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabricSchedules()
-            .updateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "@me",
-                "{serviceFrabicName}",
-                "{scheduleName}",
-                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")),
-                com.azure.core.util.Context.NONE);
+        manager.serviceFabricSchedules()
+            .updateWithResponse("resourceGroupName", "{labName}", "@me", "{serviceFrabicName}", "{scheduleName}",
+                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -2843,19 +2843,21 @@ public final class ServiceFabricSchedulesUpdateSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabrics CreateOrUpdate. */
+/**
+ * Samples for ServiceFabrics CreateOrUpdate.
+ */
 public final class ServiceFabricsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabrics_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceFabrics_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
+        manager.serviceFabrics()
             .define("{serviceFabricName}")
             .withRegion("{location}")
             .withExistingUser("resourceGroupName", "{labName}", "{userName}")
@@ -2882,24 +2884,23 @@ public final class ServiceFabricsCreateOrUpdateSamples {
 ### ServiceFabrics_Delete
 
 ```java
-/** Samples for ServiceFabrics Delete. */
+/**
+ * Samples for ServiceFabrics Delete.
+ */
 public final class ServiceFabricsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Delete.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .delete(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                "{serviceFabricName}",
+        manager.serviceFabrics()
+            .delete("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2908,25 +2909,23 @@ public final class ServiceFabricsDeleteSamples {
 ### ServiceFabrics_Get
 
 ```java
-/** Samples for ServiceFabrics Get. */
+/**
+ * Samples for ServiceFabrics Get.
+ */
 public final class ServiceFabricsGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Get.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .getWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                "{serviceFabricName}",
-                null,
+        manager.serviceFabrics()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2935,27 +2934,23 @@ public final class ServiceFabricsGetSamples {
 ### ServiceFabrics_List
 
 ```java
-/** Samples for ServiceFabrics List. */
+/**
+ * Samples for ServiceFabrics List.
+ */
 public final class ServiceFabricsListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_List.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .list(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                null,
-                null,
-                null,
-                null,
+        manager.serviceFabrics()
+            .list("resourceGroupName", "{labName}", "{userName}", null, null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2964,25 +2959,23 @@ public final class ServiceFabricsListSamples {
 ### ServiceFabrics_ListApplicableSchedules
 
 ```java
-/** Samples for ServiceFabrics ListApplicableSchedules. */
+/**
+ * Samples for ServiceFabrics ListApplicableSchedules.
+ */
 public final class ServiceFabricsListApplicableSchedulesSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_ListApplicableSchedules.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceFabrics_ListApplicableSchedules.json
      */
     /**
      * Sample code: ServiceFabrics_ListApplicableSchedules.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void serviceFabricsListApplicableSchedules(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .listApplicableSchedulesWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                "{serviceFabricName}",
+    public static void
+        serviceFabricsListApplicableSchedules(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.serviceFabrics()
+            .listApplicableSchedulesWithResponse("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -2991,24 +2984,23 @@ public final class ServiceFabricsListApplicableSchedulesSamples {
 ### ServiceFabrics_Start
 
 ```java
-/** Samples for ServiceFabrics Start. */
+/**
+ * Samples for ServiceFabrics Start.
+ */
 public final class ServiceFabricsStartSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Start.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Start.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Start.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsStart(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .start(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                "{serviceFabricName}",
+        manager.serviceFabrics()
+            .start("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3017,24 +3009,23 @@ public final class ServiceFabricsStartSamples {
 ### ServiceFabrics_Stop
 
 ```java
-/** Samples for ServiceFabrics Stop. */
+/**
+ * Samples for ServiceFabrics Stop.
+ */
 public final class ServiceFabricsStopSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Stop.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Stop.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Stop.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsStop(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceFabrics()
-            .stop(
-                "resourceGroupName",
-                "{labName}",
-                "{userName}",
-                "{serviceFabricName}",
+        manager.serviceFabrics()
+            .stop("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3047,28 +3038,25 @@ import com.azure.resourcemanager.devtestlabs.models.ServiceFabric;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceFabrics Update. */
+/**
+ * Samples for ServiceFabrics Update.
+ */
 public final class ServiceFabricsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceFabrics_Update.
+     * json
      */
     /**
      * Sample code: ServiceFabrics_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceFabricsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        ServiceFabric resource =
-            manager
-                .serviceFabrics()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{userName}",
-                    "{serviceFabricName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ServiceFabric resource = manager.serviceFabrics()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{serviceFabricName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -3094,29 +3082,29 @@ import com.azure.resourcemanager.devtestlabs.models.ManagedIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ServiceRunners CreateOrUpdate. */
+/**
+ * Samples for ServiceRunners CreateOrUpdate.
+ */
 public final class ServiceRunnersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * ServiceRunners_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceRunners_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceRunnersCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceRunners()
+        manager.serviceRunners()
             .define("{servicerunnerName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{devtestlabName}")
             .withTags(mapOf("tagName1", "tagValue1"))
-            .withIdentity(
-                new IdentityProperties()
-                    .withType(ManagedIdentityType.fromString("{identityType}"))
-                    .withPrincipalId("{identityPrincipalId}")
-                    .withTenantId("{identityTenantId}")
-                    .withClientSecretUrl("fakeTokenPlaceholder"))
+            .withIdentity(new IdentityProperties().withType(ManagedIdentityType.fromString("{identityType}"))
+                .withPrincipalId("{identityPrincipalId}")
+                .withTenantId("{identityTenantId}")
+                .withClientSecretUrl("fakeTokenPlaceholder"))
             .create();
     }
 
@@ -3137,21 +3125,24 @@ public final class ServiceRunnersCreateOrUpdateSamples {
 ### ServiceRunners_Delete
 
 ```java
-/** Samples for ServiceRunners Delete. */
+/**
+ * Samples for ServiceRunners Delete.
+ */
 public final class ServiceRunnersDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_Delete.
+     * json
      */
     /**
      * Sample code: ServiceRunners_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceRunnersDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceRunners()
-            .deleteWithResponse(
-                "resourceGroupName", "{devtestlabName}", "{servicerunnerName}", com.azure.core.util.Context.NONE);
+        manager.serviceRunners()
+            .deleteWithResponse("resourceGroupName", "{devtestlabName}", "{servicerunnerName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3159,21 +3150,24 @@ public final class ServiceRunnersDeleteSamples {
 ### ServiceRunners_Get
 
 ```java
-/** Samples for ServiceRunners Get. */
+/**
+ * Samples for ServiceRunners Get.
+ */
 public final class ServiceRunnersGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/ServiceRunners_Get.
+     * json
      */
     /**
      * Sample code: ServiceRunners_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void serviceRunnersGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .serviceRunners()
-            .getWithResponse(
-                "resourceGroupName", "{devtestlabName}", "{servicerunnerName}", com.azure.core.util.Context.NONE);
+        manager.serviceRunners()
+            .getWithResponse("resourceGroupName", "{devtestlabName}", "{servicerunnerName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3186,30 +3180,31 @@ import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Users CreateOrUpdate. */
+/**
+ * Samples for Users CreateOrUpdate.
+ */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Users_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .users()
+        manager.users()
             .define("{userName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{devtestlabName}")
             .withTags(mapOf("tagName1", "tagValue1"))
-            .withIdentity(
-                new UserIdentity()
-                    .withPrincipalName("{principalName}")
-                    .withPrincipalId("{principalId}")
-                    .withTenantId("{tenantId}")
-                    .withObjectId("{objectId}")
-                    .withAppId("{appId}"))
+            .withIdentity(new UserIdentity().withPrincipalName("{principalName}")
+                .withPrincipalId("{principalId}")
+                .withTenantId("{tenantId}")
+                .withObjectId("{objectId}")
+                .withAppId("{appId}"))
             .withSecretStore(
                 new UserSecretStore().withKeyVaultUri("fakeTokenPlaceholder").withKeyVaultId("fakeTokenPlaceholder"))
             .create();
@@ -3232,14 +3227,17 @@ public final class UsersCreateOrUpdateSamples {
 ### Users_Delete
 
 ```java
-/** Samples for Users Delete. */
+/**
+ * Samples for Users Delete.
+ */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Delete.json
      */
     /**
      * Sample code: Users_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -3251,21 +3249,23 @@ public final class UsersDeleteSamples {
 ### Users_Get
 
 ```java
-/** Samples for Users Get. */
+/**
+ * Samples for Users Get.
+ */
 public final class UsersGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Get.json
      */
     /**
      * Sample code: Users_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .users()
-            .getWithResponse(
-                "resourceGroupName", "{devtestlabName}", "{userName}", null, com.azure.core.util.Context.NONE);
+        manager.users()
+            .getWithResponse("resourceGroupName", "{devtestlabName}", "{userName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3273,19 +3273,21 @@ public final class UsersGetSamples {
 ### Users_List
 
 ```java
-/** Samples for Users List. */
+/**
+ * Samples for Users List.
+ */
 public final class UsersListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_List.json
      */
     /**
      * Sample code: Users_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .users()
+        manager.users()
             .list("resourceGroupName", "{devtestlabName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -3298,23 +3300,24 @@ import com.azure.resourcemanager.devtestlabs.models.User;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Users Update. */
+/**
+ * Samples for Users Update.
+ */
 public final class UsersUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Users_Update.json
      */
     /**
      * Sample code: Users_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void usersUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        User resource =
-            manager
-                .users()
-                .getWithResponse(
-                    "resourceGroupName", "{devtestlabName}", "{userName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        User resource = manager.users()
+            .getWithResponse("resourceGroupName", "{devtestlabName}", "{userName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 
@@ -3345,27 +3348,24 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachineSchedules CreateOrUpdate. */
+/**
+ * Samples for VirtualMachineSchedules CreateOrUpdate.
+ */
 public final class VirtualMachineSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualMachineSchedules_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void virtualMachineSchedulesCreateOrUpdate(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{vmName}",
-                "LabVmsShutdown",
-                new ScheduleInner()
-                    .withLocation("{location}")
+    public static void
+        virtualMachineSchedulesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.virtualMachineSchedules()
+            .createOrUpdateWithResponse("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown",
+                new ScheduleInner().withLocation("{location}")
                     .withTags(mapOf("tagName1", "tagValue1"))
                     .withStatus(EnableStatus.ENABLED)
                     .withTaskType("LabVmsShutdownTask")
@@ -3374,13 +3374,11 @@ public final class VirtualMachineSchedulesCreateOrUpdateSamples {
                     .withDailyRecurrence(new DayDetails().withTime("1900"))
                     .withHourlyRecurrence(new HourDetails().withMinute(30))
                     .withTimeZoneId("Pacific Standard Time")
-                    .withNotificationSettings(
-                        new NotificationSettings()
-                            .withStatus(EnableStatus.ENABLED)
-                            .withTimeInMinutes(30)
-                            .withWebhookUrl("{webhookUrl}")
-                            .withEmailRecipient("{email}")
-                            .withNotificationLocale("EN"))
+                    .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                        .withTimeInMinutes(30)
+                        .withWebhookUrl("{webhookUrl}")
+                        .withEmailRecipient("{email}")
+                        .withNotificationLocale("EN"))
                     .withTargetResourceId(
                         "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualMachines/{vmName}"),
                 com.azure.core.util.Context.NONE);
@@ -3403,21 +3401,23 @@ public final class VirtualMachineSchedulesCreateOrUpdateSamples {
 ### VirtualMachineSchedules_Delete
 
 ```java
-/** Samples for VirtualMachineSchedules Delete. */
+/**
+ * Samples for VirtualMachineSchedules Delete.
+ */
 public final class VirtualMachineSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Delete.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_Delete.json
      */
     /**
      * Sample code: VirtualMachineSchedules_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .deleteWithResponse(
-                "resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown", com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .deleteWithResponse("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3425,20 +3425,22 @@ public final class VirtualMachineSchedulesDeleteSamples {
 ### VirtualMachineSchedules_Execute
 
 ```java
-/** Samples for VirtualMachineSchedules Execute. */
+/**
+ * Samples for VirtualMachineSchedules Execute.
+ */
 public final class VirtualMachineSchedulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Execute.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_Execute.json
      */
     /**
      * Sample code: VirtualMachineSchedules_Execute.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void virtualMachineSchedulesExecute(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
+    public static void
+        virtualMachineSchedulesExecute(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.virtualMachineSchedules()
             .execute("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown", com.azure.core.util.Context.NONE);
     }
 }
@@ -3447,21 +3449,23 @@ public final class VirtualMachineSchedulesExecuteSamples {
 ### VirtualMachineSchedules_Get
 
 ```java
-/** Samples for VirtualMachineSchedules Get. */
+/**
+ * Samples for VirtualMachineSchedules Get.
+ */
 public final class VirtualMachineSchedulesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Get.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_Get.json
      */
     /**
      * Sample code: VirtualMachineSchedules_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown", null, com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .getWithResponse("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3469,21 +3473,23 @@ public final class VirtualMachineSchedulesGetSamples {
 ### VirtualMachineSchedules_List
 
 ```java
-/** Samples for VirtualMachineSchedules List. */
+/**
+ * Samples for VirtualMachineSchedules List.
+ */
 public final class VirtualMachineSchedulesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_List.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_List.json
      */
     /**
      * Sample code: VirtualMachineSchedules_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .list(
-                "resourceGroupName", "{labName}", "{vmName}", null, null, null, null, com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .list("resourceGroupName", "{labName}", "{vmName}", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3495,26 +3501,23 @@ import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachineSchedules Update. */
+/**
+ * Samples for VirtualMachineSchedules Update.
+ */
 public final class VirtualMachineSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Update.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_Update.json
      */
     /**
      * Sample code: VirtualMachineSchedules_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .updateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{vmName}",
-                "LabVmsShutdown",
-                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")),
-                com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .updateWithResponse("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown",
+                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -3538,29 +3541,26 @@ import com.azure.resourcemanager.devtestlabs.models.AttachNewDataDiskOptions;
 import com.azure.resourcemanager.devtestlabs.models.DataDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
 
-/** Samples for VirtualMachines AddDataDisk. */
+/**
+ * Samples for VirtualMachines AddDataDisk.
+ */
 public final class VirtualMachinesAddDataDiskSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_AddDataDisk.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_AddDataDisk.json
      */
     /**
      * Sample code: VirtualMachines_AddDataDisk.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesAddDataDisk(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .addDataDisk(
-                "resourceGroupName",
-                "{labName}",
-                "{virtualMachineName}",
+        manager.virtualMachines()
+            .addDataDisk("resourceGroupName", "{labName}", "{virtualMachineName}",
                 new DataDiskProperties()
-                    .withAttachNewDataDiskOptions(
-                        new AttachNewDataDiskOptions()
-                            .withDiskSizeGiB(127)
-                            .withDiskName("{diskName}")
-                            .withDiskType(StorageType.fromString("{diskType}"))),
+                    .withAttachNewDataDiskOptions(new AttachNewDataDiskOptions().withDiskSizeGiB(127)
+                        .withDiskName("{diskName}")
+                        .withDiskType(StorageType.fromString("{diskType}"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3573,31 +3573,24 @@ import com.azure.resourcemanager.devtestlabs.models.ApplyArtifactsRequest;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactInstallProperties;
 import java.util.Arrays;
 
-/** Samples for VirtualMachines ApplyArtifacts. */
+/**
+ * Samples for VirtualMachines ApplyArtifacts.
+ */
 public final class VirtualMachinesApplyArtifactsSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_ApplyArtifacts.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_ApplyArtifacts.json
      */
     /**
      * Sample code: VirtualMachines_ApplyArtifacts.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesApplyArtifacts(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .applyArtifacts(
-                "resourceGroupName",
-                "{labName}",
-                "{vmName}",
-                new ApplyArtifactsRequest()
-                    .withArtifacts(
-                        Arrays
-                            .asList(
-                                new ArtifactInstallProperties()
-                                    .withArtifactId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/artifactSources/public"
-                                            + " repo/artifacts/windows-restart"))),
+        manager.virtualMachines()
+            .applyArtifacts("resourceGroupName", "{labName}", "{vmName}",
+                new ApplyArtifactsRequest().withArtifacts(Arrays.asList(new ArtifactInstallProperties().withArtifactId(
+                    "/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/artifactSources/public repo/artifacts/windows-restart"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3606,14 +3599,18 @@ public final class VirtualMachinesApplyArtifactsSamples {
 ### VirtualMachines_Claim
 
 ```java
-/** Samples for VirtualMachines Claim. */
+/**
+ * Samples for VirtualMachines Claim.
+ */
 public final class VirtualMachinesClaimSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Claim.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Claim.
+     * json
      */
     /**
      * Sample code: VirtualMachines_Claim.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesClaim(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -3629,19 +3626,21 @@ import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachines CreateOrUpdate. */
+/**
+ * Samples for VirtualMachines CreateOrUpdate.
+ */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualMachines_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .define("{vmName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")
@@ -3653,13 +3652,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .withLabVirtualNetworkId(
                 "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}")
             .withDisallowPublicIpAddress(true)
-            .withGalleryImageReference(
-                new GalleryImageReference()
-                    .withOffer("UbuntuServer")
-                    .withPublisher("Canonical")
-                    .withSku("16.04-LTS")
-                    .withOsType("Linux")
-                    .withVersion("Latest"))
+            .withGalleryImageReference(new GalleryImageReference().withOffer("UbuntuServer")
+                .withPublisher("Canonical")
+                .withSku("16.04-LTS")
+                .withOsType("Linux")
+                .withVersion("Latest"))
             .withAllowClaim(true)
             .withStorageType("Standard")
             .create();
@@ -3682,19 +3679,22 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 ### VirtualMachines_Delete
 
 ```java
-/** Samples for VirtualMachines Delete. */
+/**
+ * Samples for VirtualMachines Delete.
+ */
 public final class VirtualMachinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Delete
+     * .json
      */
     /**
      * Sample code: VirtualMachines_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .delete("resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -3705,26 +3705,24 @@ public final class VirtualMachinesDeleteSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.DetachDataDiskProperties;
 
-/** Samples for VirtualMachines DetachDataDisk. */
+/**
+ * Samples for VirtualMachines DetachDataDisk.
+ */
 public final class VirtualMachinesDetachDataDiskSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_DetachDataDisk.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_DetachDataDisk.json
      */
     /**
      * Sample code: VirtualMachines_DetachDataDisk.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesDetachDataDisk(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .detachDataDisk(
-                "resourceGroupName",
-                "{labName}",
-                "{virtualMachineName}",
-                new DetachDataDiskProperties()
-                    .withExistingLabDiskId(
-                        "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{virtualMachineName}"),
+        manager.virtualMachines()
+            .detachDataDisk("resourceGroupName", "{labName}", "{virtualMachineName}",
+                new DetachDataDiskProperties().withExistingLabDiskId(
+                    "/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualmachines/{virtualMachineName}"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3733,19 +3731,22 @@ public final class VirtualMachinesDetachDataDiskSamples {
 ### VirtualMachines_Get
 
 ```java
-/** Samples for VirtualMachines Get. */
+/**
+ * Samples for VirtualMachines Get.
+ */
 public final class VirtualMachinesGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Get.
+     * json
      */
     /**
      * Sample code: VirtualMachines_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .getWithResponse("resourceGroupName", "{labName}", "{vmName}", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -3754,22 +3755,24 @@ public final class VirtualMachinesGetSamples {
 ### VirtualMachines_GetRdpFileContents
 
 ```java
-/** Samples for VirtualMachines GetRdpFileContents. */
+/**
+ * Samples for VirtualMachines GetRdpFileContents.
+ */
 public final class VirtualMachinesGetRdpFileContentsSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_GetRdpFileContents.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_GetRdpFileContents.json
      */
     /**
      * Sample code: VirtualMachines_GetRdpFileContents.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void virtualMachinesGetRdpFileContents(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .getRdpFileContentsWithResponse(
-                "resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
+    public static void
+        virtualMachinesGetRdpFileContents(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.virtualMachines()
+            .getRdpFileContentsWithResponse("resourceGroupName", "{labName}", "{vmName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3777,19 +3780,22 @@ public final class VirtualMachinesGetRdpFileContentsSamples {
 ### VirtualMachines_List
 
 ```java
-/** Samples for VirtualMachines List. */
+/**
+ * Samples for VirtualMachines List.
+ */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_List.
+     * json
      */
     /**
      * Sample code: VirtualMachines_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -3798,22 +3804,24 @@ public final class VirtualMachinesListSamples {
 ### VirtualMachines_ListApplicableSchedules
 
 ```java
-/** Samples for VirtualMachines ListApplicableSchedules. */
+/**
+ * Samples for VirtualMachines ListApplicableSchedules.
+ */
 public final class VirtualMachinesListApplicableSchedulesSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_ListApplicableSchedules.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_ListApplicableSchedules.json
      */
     /**
      * Sample code: VirtualMachines_ListApplicableSchedules.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
-    public static void virtualMachinesListApplicableSchedules(
-        com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .listApplicableSchedulesWithResponse(
-                "resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
+    public static void
+        virtualMachinesListApplicableSchedules(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
+        manager.virtualMachines()
+            .listApplicableSchedulesWithResponse("resourceGroupName", "{labName}", "{vmName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3821,19 +3829,21 @@ public final class VirtualMachinesListApplicableSchedulesSamples {
 ### VirtualMachines_Redeploy
 
 ```java
-/** Samples for VirtualMachines Redeploy. */
+/**
+ * Samples for VirtualMachines Redeploy.
+ */
 public final class VirtualMachinesRedeploySamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Redeploy.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_Redeploy.json
      */
     /**
      * Sample code: VirtualMachines_Redeploy.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesRedeploy(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .redeploy("resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -3844,25 +3854,24 @@ public final class VirtualMachinesRedeploySamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.ResizeLabVirtualMachineProperties;
 
-/** Samples for VirtualMachines Resize. */
+/**
+ * Samples for VirtualMachines Resize.
+ */
 public final class VirtualMachinesResizeSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Resize.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Resize
+     * .json
      */
     /**
      * Sample code: VirtualMachines_Resize.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesResize(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
-            .resize(
-                "resourceGroupName",
-                "{labName}",
-                "{vmName}",
-                new ResizeLabVirtualMachineProperties().withSize("Standard_A4_v2"),
-                com.azure.core.util.Context.NONE);
+        manager.virtualMachines()
+            .resize("resourceGroupName", "{labName}", "{vmName}",
+                new ResizeLabVirtualMachineProperties().withSize("Standard_A4_v2"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3870,19 +3879,21 @@ public final class VirtualMachinesResizeSamples {
 ### VirtualMachines_Restart
 
 ```java
-/** Samples for VirtualMachines Restart. */
+/**
+ * Samples for VirtualMachines Restart.
+ */
 public final class VirtualMachinesRestartSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Restart.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_Restart.json
      */
     /**
      * Sample code: VirtualMachines_Restart.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesRestart(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .restart("resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -3891,14 +3902,18 @@ public final class VirtualMachinesRestartSamples {
 ### VirtualMachines_Start
 
 ```java
-/** Samples for VirtualMachines Start. */
+/**
+ * Samples for VirtualMachines Start.
+ */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Start.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Start.
+     * json
      */
     /**
      * Sample code: VirtualMachines_Start.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesStart(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -3910,14 +3925,18 @@ public final class VirtualMachinesStartSamples {
 ### VirtualMachines_Stop
 
 ```java
-/** Samples for VirtualMachines Stop. */
+/**
+ * Samples for VirtualMachines Stop.
+ */
 public final class VirtualMachinesStopSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Stop.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Stop.
+     * json
      */
     /**
      * Sample code: VirtualMachines_Stop.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesStop(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
@@ -3929,19 +3948,21 @@ public final class VirtualMachinesStopSamples {
 ### VirtualMachines_TransferDisks
 
 ```java
-/** Samples for VirtualMachines TransferDisks. */
+/**
+ * Samples for VirtualMachines TransferDisks.
+ */
 public final class VirtualMachinesTransferDisksSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_TransferDisks.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_TransferDisks.json
      */
     /**
      * Sample code: VirtualMachines_TransferDisks.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesTransferDisks(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .transferDisks("resourceGroupName", "{labName}", "{virtualmachineName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -3950,19 +3971,21 @@ public final class VirtualMachinesTransferDisksSamples {
 ### VirtualMachines_UnClaim
 
 ```java
-/** Samples for VirtualMachines UnClaim. */
+/**
+ * Samples for VirtualMachines UnClaim.
+ */
 public final class VirtualMachinesUnClaimSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_UnClaim.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachines_UnClaim.json
      */
     /**
      * Sample code: VirtualMachines_UnClaim.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesUnClaim(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachines()
+        manager.virtualMachines()
             .unClaim("resourceGroupName", "{labName}", "{vmName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -3973,22 +3996,24 @@ public final class VirtualMachinesUnClaimSamples {
 ```java
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachine;
 
-/** Samples for VirtualMachines Update. */
+/**
+ * Samples for VirtualMachines Update.
+ */
 public final class VirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachines_Update
+     * .json
      */
     /**
      * Sample code: VirtualMachines_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachinesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        LabVirtualMachine resource =
-            manager
-                .virtualMachines()
-                .getWithResponse("resourceGroupName", "{labName}", "{vmName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        LabVirtualMachine resource = manager.virtualMachines()
+            .getWithResponse("resourceGroupName", "{labName}", "{vmName}", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -4000,19 +4025,21 @@ public final class VirtualMachinesUpdateSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworks CreateOrUpdate.
+ */
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualNetworks_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualNetworks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .define("{virtualNetworkName}")
             .withRegion("{location}")
             .withExistingLab("resourceGroupName", "{labName}")
@@ -4037,19 +4064,22 @@ public final class VirtualNetworksCreateOrUpdateSamples {
 ### VirtualNetworks_Delete
 
 ```java
-/** Samples for VirtualNetworks Delete. */
+/**
+ * Samples for VirtualNetworks Delete.
+ */
 public final class VirtualNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Delete.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Delete
+     * .json
      */
     /**
      * Sample code: VirtualNetworks_Delete.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksDelete(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .delete("resourceGroupName", "{labName}", "{virtualNetworkName}", com.azure.core.util.Context.NONE);
     }
 }
@@ -4058,21 +4088,24 @@ public final class VirtualNetworksDeleteSamples {
 ### VirtualNetworks_Get
 
 ```java
-/** Samples for VirtualNetworks Get. */
+/**
+ * Samples for VirtualNetworks Get.
+ */
 public final class VirtualNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Get.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Get.
+     * json
      */
     /**
      * Sample code: VirtualNetworks_Get.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksGet(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
-            .getWithResponse(
-                "resourceGroupName", "{labName}", "{virtualNetworkName}", null, com.azure.core.util.Context.NONE);
+        manager.virtualNetworks()
+            .getWithResponse("resourceGroupName", "{labName}", "{virtualNetworkName}", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4080,19 +4113,22 @@ public final class VirtualNetworksGetSamples {
 ### VirtualNetworks_List
 
 ```java
-/** Samples for VirtualNetworks List. */
+/**
+ * Samples for VirtualNetworks List.
+ */
 public final class VirtualNetworksListSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_List.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_List.
+     * json
      */
     /**
      * Sample code: VirtualNetworks_List.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksList(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualNetworks()
+        manager.virtualNetworks()
             .list("resourceGroupName", "{labName}", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -4105,23 +4141,25 @@ import com.azure.resourcemanager.devtestlabs.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks Update. */
+/**
+ * Samples for VirtualNetworks Update.
+ */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualNetworks_Update
+     * .json
      */
     /**
      * Sample code: VirtualNetworks_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualNetworksUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        VirtualNetwork resource =
-            manager
-                .virtualNetworks()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{virtualNetworkName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getWithResponse("resourceGroupName", "{labName}", "{virtualNetworkName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

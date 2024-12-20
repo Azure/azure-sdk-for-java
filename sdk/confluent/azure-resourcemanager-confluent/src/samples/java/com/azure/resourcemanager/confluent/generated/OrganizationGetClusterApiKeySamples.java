@@ -18,7 +18,8 @@ public final class OrganizationGetClusterApiKeySamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationGetClusterAPIKey(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getClusterApiKeyWithResponse("myResourceGroup", "myOrganization", "apiKeyId-123",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getClusterApiKeyWithResponse("myResourceGroup", "myOrganization", "apiKeyId-123",
+                com.azure.core.util.Context.NONE);
     }
 }

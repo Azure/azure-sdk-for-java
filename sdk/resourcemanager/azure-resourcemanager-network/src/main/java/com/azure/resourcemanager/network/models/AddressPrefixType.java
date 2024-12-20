@@ -22,6 +22,11 @@ public final class AddressPrefixType extends ExpandableStringEnum<AddressPrefixT
     public static final AddressPrefixType SERVICE_TAG = fromString("ServiceTag");
 
     /**
+     * Static value NetworkGroup for AddressPrefixType.
+     */
+    public static final AddressPrefixType NETWORK_GROUP = fromString("NetworkGroup");
+
+    /**
      * Creates a new instance of AddressPrefixType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -6,64 +6,45 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
 import com.azure.resourcemanager.loganalytics.models.DataSourceKind;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataSourcesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":\"datartixokff\",\"etag\":\"inljqepqwhixmo\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"birdsvuwcobiegs\":\"hiyxgvelfclduc\"},\"id\":\"mninwjizcilng\",\"name\":\"gshejjtbxqmulux\",\"type\":\"xqzv\"}";
+            = "{\"properties\":\"dataejjtbxqmul\",\"etag\":\"lxqzvn\",\"kind\":\"ChangeTrackingDataTypeConfiguration\",\"tags\":{\"qbsms\":\"ycucrwnamikzeb\",\"kzruswh\":\"ziqgfuh\",\"ycjsx\":\"hczznvf\",\"xqhndvnoamlds\":\"wwixzvumw\"},\"id\":\"haohdjhhflzokxc\",\"name\":\"xpelnjetagltsx\",\"type\":\"atftgzpnpbsw\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataSource response = manager.dataSources()
-            .define("rsqqwztcm")
-            .withExistingWorkspace("lfwyfwlwxjwetn", "sihclafzvaylp")
-            .withProperties("dataqkc")
-            .withKind(DataSourceKind.WINDOWS_EVENT)
-            .withTags(mapOf("hkbffmbm", "eqvhpsylkk", "gjxsnptfu", "zjrgyww"))
-            .withEtag("xwaxfewzjkj")
+            .define("jx")
+            .withExistingWorkspace("bffmbmxz", "rgywwp")
+            .withProperties("datanptfujgi")
+            .withKind(DataSourceKind.LINUX_SYSLOG)
+            .withTags(mapOf("gehkfkimrtixokff", "mxswvruunzz", "qwhix", "yinljqe", "i", "onsts"))
+            .withEtag("aaoepttaqut")
             .create();
 
-        Assertions.assertEquals("inljqepqwhixmo", response.etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, response.kind());
-        Assertions.assertEquals("hiyxgvelfclduc", response.tags().get("birdsvuwcobiegs"));
+        Assertions.assertEquals("lxqzvn", response.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_DATA_TYPE_CONFIGURATION, response.kind());
+        Assertions.assertEquals("ycucrwnamikzeb", response.tags().get("qbsms"));
     }
 
     // Use "Map.of" if available

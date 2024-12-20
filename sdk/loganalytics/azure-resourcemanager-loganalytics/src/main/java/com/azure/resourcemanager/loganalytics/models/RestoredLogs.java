@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Restore parameters. */
+/**
+ * Restore parameters.
+ */
 @Fluent
-public final class RestoredLogs {
+public final class RestoredLogs implements JsonSerializable<RestoredLogs> {
     /*
      * The timestamp to start the restore from (UTC).
      */
-    @JsonProperty(value = "startRestoreTime")
     private OffsetDateTime startRestoreTime;
 
     /*
      * The timestamp to end the restore by (UTC).
      */
-    @JsonProperty(value = "endRestoreTime")
     private OffsetDateTime endRestoreTime;
 
     /*
      * The table to restore data from.
      */
-    @JsonProperty(value = "sourceTable")
     private String sourceTable;
 
     /*
      * Search results table async operation id.
      */
-    @JsonProperty(value = "azureAsyncOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureAsyncOperationId;
 
-    /** Creates an instance of RestoredLogs class. */
+    /**
+     * Creates an instance of RestoredLogs class.
+     */
     public RestoredLogs() {
     }
 
     /**
      * Get the startRestoreTime property: The timestamp to start the restore from (UTC).
-     *
+     * 
      * @return the startRestoreTime value.
      */
     public OffsetDateTime startRestoreTime() {
@@ -50,7 +56,7 @@ public final class RestoredLogs {
 
     /**
      * Set the startRestoreTime property: The timestamp to start the restore from (UTC).
-     *
+     * 
      * @param startRestoreTime the startRestoreTime value to set.
      * @return the RestoredLogs object itself.
      */
@@ -61,7 +67,7 @@ public final class RestoredLogs {
 
     /**
      * Get the endRestoreTime property: The timestamp to end the restore by (UTC).
-     *
+     * 
      * @return the endRestoreTime value.
      */
     public OffsetDateTime endRestoreTime() {
@@ -70,7 +76,7 @@ public final class RestoredLogs {
 
     /**
      * Set the endRestoreTime property: The timestamp to end the restore by (UTC).
-     *
+     * 
      * @param endRestoreTime the endRestoreTime value to set.
      * @return the RestoredLogs object itself.
      */
@@ -81,7 +87,7 @@ public final class RestoredLogs {
 
     /**
      * Get the sourceTable property: The table to restore data from.
-     *
+     * 
      * @return the sourceTable value.
      */
     public String sourceTable() {
@@ -90,7 +96,7 @@ public final class RestoredLogs {
 
     /**
      * Set the sourceTable property: The table to restore data from.
-     *
+     * 
      * @param sourceTable the sourceTable value to set.
      * @return the RestoredLogs object itself.
      */
@@ -101,7 +107,7 @@ public final class RestoredLogs {
 
     /**
      * Get the azureAsyncOperationId property: Search results table async operation id.
-     *
+     * 
      * @return the azureAsyncOperationId value.
      */
     public String azureAsyncOperationId() {
@@ -110,9 +116,59 @@ public final class RestoredLogs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startRestoreTime",
+            this.startRestoreTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startRestoreTime));
+        jsonWriter.writeStringField("endRestoreTime",
+            this.endRestoreTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endRestoreTime));
+        jsonWriter.writeStringField("sourceTable", this.sourceTable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoredLogs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoredLogs if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoredLogs.
+     */
+    public static RestoredLogs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoredLogs deserializedRestoredLogs = new RestoredLogs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startRestoreTime".equals(fieldName)) {
+                    deserializedRestoredLogs.startRestoreTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endRestoreTime".equals(fieldName)) {
+                    deserializedRestoredLogs.endRestoreTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sourceTable".equals(fieldName)) {
+                    deserializedRestoredLogs.sourceTable = reader.getString();
+                } else if ("azureAsyncOperationId".equals(fieldName)) {
+                    deserializedRestoredLogs.azureAsyncOperationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoredLogs;
+        });
     }
 }

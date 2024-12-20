@@ -5,7 +5,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,7 +42,7 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<AnalyzeOperation, AnalyzeResult> analyzeDocumentPoller
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller
             = client.beginAnalyzeDocument(modelId,
                 new AnalyzeDocumentOptions(fileContent));
 

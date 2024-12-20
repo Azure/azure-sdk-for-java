@@ -19,7 +19,8 @@ public final class CapabilitiesDeleteSamples {
      */
     public static void deleteACapabilityThatExtendsAVirtualMachineTargetResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,23 +8,23 @@ import com.azure.resourcemanager.devtestlabs.models.Formula;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Formulas Update. */
+/**
+ * Samples for Formulas Update.
+ */
 public final class FormulasUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Formulas_Update.json
      */
     /**
      * Sample code: Formulas_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void formulasUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Formula resource =
-            manager
-                .formulas()
-                .getWithResponse(
-                    "resourceGroupName", "{labName}", "{formulaName}", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Formula resource = manager.formulas()
+            .getWithResponse("resourceGroupName", "{labName}", "{formulaName}", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

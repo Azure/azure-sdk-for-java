@@ -9,8 +9,7 @@ import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
@@ -18,6 +17,7 @@ import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetai
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -303,7 +303,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             DocumentModelDetails composedModel
                 = client
                     .beginComposeModel(
-                        new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap)
+                        new ComposeDocumentModelOptions(composedModelId, classifierId, documentTypeDetailsMap)
                             .setDescription("test desc"))
                     .setPollInterval(durationTestMode)
                     .getFinalResult();

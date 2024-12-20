@@ -19,7 +19,8 @@ public final class EmailServicesGetByResourceGroupSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
-            com.azure.core.util.Context.NONE);
+        manager.emailServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
+                com.azure.core.util.Context.NONE);
     }
 }

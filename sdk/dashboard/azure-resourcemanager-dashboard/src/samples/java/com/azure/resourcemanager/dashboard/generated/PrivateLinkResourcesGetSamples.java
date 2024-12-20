@@ -19,7 +19,7 @@ public final class PrivateLinkResourcesGetSamples {
      * @param manager Entry point to DashboardManager.
      */
     public static void privateLinkResourcesGet(com.azure.resourcemanager.dashboard.DashboardManager manager) {
-        manager.privateLinkResources().getWithResponse("myResourceGroup", "myWorkspace", "grafana",
-            com.azure.core.util.Context.NONE);
+        manager.privateLinkResources()
+            .getWithResponse("myResourceGroup", "myWorkspace", "grafana", com.azure.core.util.Context.NONE);
     }
 }

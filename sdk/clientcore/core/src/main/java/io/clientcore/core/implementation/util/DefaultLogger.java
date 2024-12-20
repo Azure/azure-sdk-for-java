@@ -19,10 +19,9 @@ import static io.clientcore.core.util.ClientLogger.LogLevel;
  * This class is an internal implementation of slf4j logger.
  */
 public final class DefaultLogger {
-
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
+    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] io.clientcore.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";

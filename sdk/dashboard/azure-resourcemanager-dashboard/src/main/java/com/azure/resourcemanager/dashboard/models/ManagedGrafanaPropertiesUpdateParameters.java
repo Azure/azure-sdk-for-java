@@ -5,70 +5,64 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The properties parameters for a PATCH request to a grafana resource.
  */
 @Fluent
-public final class ManagedGrafanaPropertiesUpdateParameters {
+public final class ManagedGrafanaPropertiesUpdateParameters
+    implements JsonSerializable<ManagedGrafanaPropertiesUpdateParameters> {
     /*
      * The zone redundancy setting of the Grafana instance.
      */
-    @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
 
     /*
      * The api key setting of the Grafana instance.
      */
-    @JsonProperty(value = "apiKey")
     private ApiKey apiKey;
 
     /*
      * Whether a Grafana instance uses deterministic outbound IPs.
      */
-    @JsonProperty(value = "deterministicOutboundIP")
     private DeterministicOutboundIp deterministicOutboundIp;
 
     /*
      * Indicate the state for enable or disable traffic over the public interface.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * GrafanaIntegrations is a bundled observability experience (e.g. pre-configured data source, tailored Grafana
      * dashboards, alerting defaults) for common monitoring scenarios.
      */
-    @JsonProperty(value = "grafanaIntegrations")
     private GrafanaIntegrations grafanaIntegrations;
 
     /*
      * Enterprise settings of a Grafana instance
      */
-    @JsonProperty(value = "enterpriseConfigurations")
     private EnterpriseConfigurations enterpriseConfigurations;
 
     /*
      * Server configurations of a Grafana instance
      */
-    @JsonProperty(value = "grafanaConfigurations")
     private GrafanaConfigurations grafanaConfigurations;
 
     /*
-     * Update of Grafana plugin. Key is plugin id, value is plugin definition. If plugin definition is null, plugin
-     * with given plugin id will be removed. Otherwise, given plugin will be installed.
+     * Update of Grafana plugin. Key is plugin id, value is plugin definition. If plugin definition is null, plugin with
+     * given plugin id will be removed. Otherwise, given plugin will be installed.
      */
-    @JsonProperty(value = "grafanaPlugins")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, GrafanaPlugin> grafanaPlugins;
 
     /*
      * The major Grafana software version to target.
      */
-    @JsonProperty(value = "grafanaMajorVersion")
     private String grafanaMajorVersion;
 
     /**
@@ -139,8 +133,7 @@ public final class ManagedGrafanaPropertiesUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public
-     * interface.
+     * Get the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public interface.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -149,8 +142,7 @@ public final class ManagedGrafanaPropertiesUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public
-     * interface.
+     * Set the publicNetworkAccess property: Indicate the state for enable or disable traffic over the public interface.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedGrafanaPropertiesUpdateParameters object itself.
@@ -290,5 +282,77 @@ public final class ManagedGrafanaPropertiesUpdateParameters {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("zoneRedundancy",
+            this.zoneRedundancy == null ? null : this.zoneRedundancy.toString());
+        jsonWriter.writeStringField("apiKey", this.apiKey == null ? null : this.apiKey.toString());
+        jsonWriter.writeStringField("deterministicOutboundIP",
+            this.deterministicOutboundIp == null ? null : this.deterministicOutboundIp.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("grafanaIntegrations", this.grafanaIntegrations);
+        jsonWriter.writeJsonField("enterpriseConfigurations", this.enterpriseConfigurations);
+        jsonWriter.writeJsonField("grafanaConfigurations", this.grafanaConfigurations);
+        jsonWriter.writeMapField("grafanaPlugins", this.grafanaPlugins, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("grafanaMajorVersion", this.grafanaMajorVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedGrafanaPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedGrafanaPropertiesUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedGrafanaPropertiesUpdateParameters.
+     */
+    public static ManagedGrafanaPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedGrafanaPropertiesUpdateParameters deserializedManagedGrafanaPropertiesUpdateParameters
+                = new ManagedGrafanaPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("zoneRedundancy".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.zoneRedundancy
+                        = ZoneRedundancy.fromString(reader.getString());
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.apiKey = ApiKey.fromString(reader.getString());
+                } else if ("deterministicOutboundIP".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.deterministicOutboundIp
+                        = DeterministicOutboundIp.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("grafanaIntegrations".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.grafanaIntegrations
+                        = GrafanaIntegrations.fromJson(reader);
+                } else if ("enterpriseConfigurations".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.enterpriseConfigurations
+                        = EnterpriseConfigurations.fromJson(reader);
+                } else if ("grafanaConfigurations".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.grafanaConfigurations
+                        = GrafanaConfigurations.fromJson(reader);
+                } else if ("grafanaPlugins".equals(fieldName)) {
+                    Map<String, GrafanaPlugin> grafanaPlugins
+                        = reader.readMap(reader1 -> GrafanaPlugin.fromJson(reader1));
+                    deserializedManagedGrafanaPropertiesUpdateParameters.grafanaPlugins = grafanaPlugins;
+                } else if ("grafanaMajorVersion".equals(fieldName)) {
+                    deserializedManagedGrafanaPropertiesUpdateParameters.grafanaMajorVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedGrafanaPropertiesUpdateParameters;
+        });
     }
 }

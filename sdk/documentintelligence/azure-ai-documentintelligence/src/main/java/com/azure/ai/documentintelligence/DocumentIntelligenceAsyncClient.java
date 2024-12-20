@@ -5,10 +5,10 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchDocumentsOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeBatchOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeBatchOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeBatchResult;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
-import com.azure.ai.documentintelligence.models.AnalyzeOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.AnalyzeOutputFormat;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentOptions;
@@ -62,7 +62,7 @@ public final class DocumentIntelligenceAsyncClient {
     /**
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -89,7 +89,7 @@ public final class DocumentIntelligenceAsyncClient {
     /**
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -136,7 +136,7 @@ public final class DocumentIntelligenceAsyncClient {
     /**
      * List batch document analysis results.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -211,7 +211,7 @@ public final class DocumentIntelligenceAsyncClient {
     /**
      * Gets the result of batch document analysis.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -281,7 +281,7 @@ public final class DocumentIntelligenceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -324,7 +324,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocument(String modelId,
         AnalyzeDocumentOptions analyzeDocumentOptions) {
         Objects.requireNonNull(analyzeDocumentOptions, "'analyzeDocumentOptions' cannot be null.");
         return this.beginAnalyzeDocument(modelId, analyzeDocumentOptions,
@@ -419,7 +419,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+    public PollerFlux<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
         AnalyzeBatchDocumentsOptions analyzeBatchDocumentOptions) {
         Objects.requireNonNull(analyzeBatchDocumentOptions, "'analyzeBatchDocumentOptions' cannot be null.");
         return this.beginAnalyzeBatchDocuments(modelId, analyzeBatchDocumentOptions,
@@ -445,7 +445,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnalyzeBatchOperation> listAnalyzeBatchResults(String modelId) {
+    public PagedFlux<AnalyzeBatchOperationDetails> listAnalyzeBatchResults(String modelId) {
         // Generated convenience method for listAnalyzeBatchResults
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAnalyzeBatchResults(modelId, requestOptions);
@@ -453,14 +453,13 @@ public final class DocumentIntelligenceAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchOperation>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperation.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, AnalyzeBatchOperationDetails>(
+                pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperationDetails.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -500,11 +499,11 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeBatchOperation> getAnalyzeBatchResult(String modelId, String resultId) {
+    public Mono<AnalyzeBatchOperationDetails> getAnalyzeBatchResult(String modelId, String resultId) {
         // Generated convenience method for getAnalyzeBatchResultWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAnalyzeBatchResultWithResponse(modelId, resultId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperation.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeBatchOperationDetails.class));
     }
 
     /**
@@ -524,7 +523,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentOptions classifyDocumentOptions) {
         Objects.requireNonNull(classifyDocumentOptions, "'classifyDocumentOptions' cannot be null.");
         return this.beginClassifyDocument(classifierId, classifyDocumentOptions,
@@ -557,7 +556,7 @@ public final class DocumentIntelligenceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -606,7 +605,7 @@ public final class DocumentIntelligenceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -664,7 +663,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<AnalyzeOperation, AnalyzeResult> beginAnalyzeDocument(String modelId,
+    PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocument(String modelId,
         AnalyzeDocumentOptions analyzeRequest, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
         List<AnalyzeOutputFormat> output) {
@@ -730,7 +729,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<AnalyzeBatchOperation, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
+    PollerFlux<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocuments(String modelId,
         AnalyzeBatchDocumentsOptions analyzeBatchRequest, String pages, String locale, StringIndexType stringIndexType,
         List<DocumentAnalysisFeature> features, List<String> queryFields, DocumentContentFormat outputContentFormat,
         List<AnalyzeOutputFormat> output) {
@@ -791,7 +790,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<AnalyzeOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
+    PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentOptions classifyRequest, StringIndexType stringIndexType, SplitMode split, String pages) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();

@@ -14,28 +14,28 @@ public final class ExperimentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentProperties model = BinaryData.fromString(
-            "{\"description\":\"yyefrpmpdnqqs\",\"endpointA\":{\"name\":\"ao\",\"endpoint\":\"mmbnpqfrtql\"},\"endpointB\":{\"name\":\"egnitg\",\"endpoint\":\"xlzyqd\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabled\",\"status\":\"alzxwhcan\",\"scriptFileUri\":\"moy\"}")
+            "{\"description\":\"jpsttexoq\",\"endpointA\":{\"name\":\"cyyufmh\",\"endpoint\":\"nc\"},\"endpointB\":{\"name\":\"qspkcdqzhlctd\",\"endpoint\":\"nqndyfpchrqbn\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Creating\",\"status\":\"gydcw\",\"scriptFileUri\":\"xjumvq\"}")
             .toObject(ExperimentProperties.class);
-        Assertions.assertEquals("yyefrpmpdnqqs", model.description());
-        Assertions.assertEquals("ao", model.endpointA().name());
-        Assertions.assertEquals("mmbnpqfrtql", model.endpointA().endpoint());
-        Assertions.assertEquals("egnitg", model.endpointB().name());
-        Assertions.assertEquals("xlzyqd", model.endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("jpsttexoq", model.description());
+        Assertions.assertEquals("cyyufmh", model.endpointA().name());
+        Assertions.assertEquals("nc", model.endpointA().endpoint());
+        Assertions.assertEquals("qspkcdqzhlctd", model.endpointB().name());
+        Assertions.assertEquals("nqndyfpchrqbn", model.endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentProperties model = new ExperimentProperties().withDescription("yyefrpmpdnqqs")
-            .withEndpointA(new Endpoint().withName("ao").withEndpoint("mmbnpqfrtql"))
-            .withEndpointB(new Endpoint().withName("egnitg").withEndpoint("xlzyqd"))
-            .withEnabledState(State.ENABLED);
+        ExperimentProperties model = new ExperimentProperties().withDescription("jpsttexoq")
+            .withEndpointA(new Endpoint().withName("cyyufmh").withEndpoint("nc"))
+            .withEndpointB(new Endpoint().withName("qspkcdqzhlctd").withEndpoint("nqndyfpchrqbn"))
+            .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentProperties.class);
-        Assertions.assertEquals("yyefrpmpdnqqs", model.description());
-        Assertions.assertEquals("ao", model.endpointA().name());
-        Assertions.assertEquals("mmbnpqfrtql", model.endpointA().endpoint());
-        Assertions.assertEquals("egnitg", model.endpointB().name());
-        Assertions.assertEquals("xlzyqd", model.endpointB().endpoint());
-        Assertions.assertEquals(State.ENABLED, model.enabledState());
+        Assertions.assertEquals("jpsttexoq", model.description());
+        Assertions.assertEquals("cyyufmh", model.endpointA().name());
+        Assertions.assertEquals("nc", model.endpointA().endpoint());
+        Assertions.assertEquals("qspkcdqzhlctd", model.endpointB().name());
+        Assertions.assertEquals("nqndyfpchrqbn", model.endpointB().endpoint());
+        Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 }

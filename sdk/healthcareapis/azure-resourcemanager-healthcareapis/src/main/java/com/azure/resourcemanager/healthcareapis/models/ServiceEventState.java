@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ServiceEventState extends ExpandableStringEnum<ServiceEventSt
      * @param name a name to look for.
      * @return the corresponding ServiceEventState.
      */
-    @JsonCreator
     public static ServiceEventState fromString(String name) {
         return fromString(name, ServiceEventState.class);
     }

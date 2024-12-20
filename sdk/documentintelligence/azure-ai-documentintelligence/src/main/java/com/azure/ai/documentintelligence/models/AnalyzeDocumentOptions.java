@@ -5,6 +5,7 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -57,19 +58,30 @@ public final class AnalyzeDocumentOptions implements JsonSerializable<AnalyzeDoc
     /**
      * Creates an instance of AnalyzeDocumentOptions with the specified URL source.
      *
-     * @param urlSource the URL of the document to classify.
+     * @param urlSource the URL of the document to analyze.
      */
     public AnalyzeDocumentOptions(String urlSource) {
         this.urlSource = urlSource;
     }
 
     /**
-     * Creates an instance of AnalyzeDocumentOptions with the specified Base64 encoded source.
+     * Creates an instance of AnalyzeDocumentOptions with the specified bytes of the document.
      *
-     * @param bytesSource the Base64 encoded bytes of the document to classify.
+     * @param bytesSource the bytes of the document to analyze.
      */
     public AnalyzeDocumentOptions(byte[] bytesSource) {
         this.bytesSource = bytesSource;
+    }
+
+    /**
+     * Creates an instance of AnalyzeDocumentOptions with the specified BinaryData source.
+     *
+     * @param binaryData the document to analyze.
+     */
+    public AnalyzeDocumentOptions(BinaryData binaryData) {
+        if (binaryData != null) {
+            this.bytesSource = binaryData.toBytes();
+        }
     }
 
     /**

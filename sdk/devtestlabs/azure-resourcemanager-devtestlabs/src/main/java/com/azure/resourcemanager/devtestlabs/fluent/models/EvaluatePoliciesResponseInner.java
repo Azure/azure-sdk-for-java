@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.PolicySetResult;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response body for evaluating a policy set. */
+/**
+ * Response body for evaluating a policy set.
+ */
 @Fluent
-public final class EvaluatePoliciesResponseInner {
+public final class EvaluatePoliciesResponseInner implements JsonSerializable<EvaluatePoliciesResponseInner> {
     /*
      * Results of evaluating a policy set.
      */
-    @JsonProperty(value = "results")
     private List<PolicySetResult> results;
 
-    /** Creates an instance of EvaluatePoliciesResponseInner class. */
+    /**
+     * Creates an instance of EvaluatePoliciesResponseInner class.
+     */
     public EvaluatePoliciesResponseInner() {
     }
 
     /**
      * Get the results property: Results of evaluating a policy set.
-     *
+     * 
      * @return the results value.
      */
     public List<PolicySetResult> results() {
@@ -33,7 +40,7 @@ public final class EvaluatePoliciesResponseInner {
 
     /**
      * Set the results property: Results of evaluating a policy set.
-     *
+     * 
      * @param results the results value to set.
      * @return the EvaluatePoliciesResponseInner object itself.
      */
@@ -44,12 +51,50 @@ public final class EvaluatePoliciesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (results() != null) {
             results().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EvaluatePoliciesResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EvaluatePoliciesResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EvaluatePoliciesResponseInner.
+     */
+    public static EvaluatePoliciesResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EvaluatePoliciesResponseInner deserializedEvaluatePoliciesResponseInner
+                = new EvaluatePoliciesResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("results".equals(fieldName)) {
+                    List<PolicySetResult> results = reader.readArray(reader1 -> PolicySetResult.fromJson(reader1));
+                    deserializedEvaluatePoliciesResponseInner.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEvaluatePoliciesResponseInner;
+        });
     }
 }

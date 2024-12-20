@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Error details for the operation in case of a failure. */
+/**
+ * Error details for the operation in case of a failure.
+ */
 @Fluent
-public final class OperationError {
+public final class OperationError implements JsonSerializable<OperationError> {
     /*
      * The error code of the operation error.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The error message of the operation error.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of OperationError class. */
+    /**
+     * Creates an instance of OperationError class.
+     */
     public OperationError() {
     }
 
     /**
      * Get the code property: The error code of the operation error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +43,7 @@ public final class OperationError {
 
     /**
      * Set the code property: The error code of the operation error.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationError object itself.
      */
@@ -48,7 +54,7 @@ public final class OperationError {
 
     /**
      * Get the message property: The error message of the operation error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +63,7 @@ public final class OperationError {
 
     /**
      * Set the message property: The error message of the operation error.
-     *
+     * 
      * @param message the message value to set.
      * @return the OperationError object itself.
      */
@@ -68,9 +74,48 @@ public final class OperationError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationError.
+     */
+    public static OperationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationError deserializedOperationError = new OperationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedOperationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedOperationError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationError;
+        });
     }
 }

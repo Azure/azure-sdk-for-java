@@ -16,9 +16,9 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyImplTests {
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
@@ -46,7 +46,7 @@ public class RestProxyImplTests {
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         testInterface.testVoidMethod(Context.none());
 
@@ -57,7 +57,7 @@ public class RestProxyImplTests {
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),

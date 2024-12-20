@@ -13,17 +13,18 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datapkdsldy\",\"maxConcurrentConnections\":\"datawvswlhjlbkq\",\"disableMetricsCollection\":\"dataszhpnatltjek\",\"copyBehavior\":\"datafwlkyrnmgsbubzfa\",\"metadata\":[{\"name\":\"dataec\",\"value\":\"datatrederz\"}],\"\":{\"smvvfpkymqnvvwfa\":\"datagmohhcgh\",\"armtuprqtcxqkoh\":\"datarulboawzplwghfgq\",\"kdejparjvsbo\":\"datapya\"}}")
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"dataikedmou\",\"maxConcurrentConnections\":\"datauqo\",\"disableMetricsCollection\":\"dataic\",\"copyBehavior\":\"datayjszmleuqxhmrilw\",\"metadata\":[{\"name\":\"datasvpv\",\"value\":\"dataulxxznfxdqqzi\"},{\"name\":\"datagwqi\",\"value\":\"datadhas\"}],\"\":{\"tdmhr\":\"dataaexrzxvffqc\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datawvswlhjlbkq")
-            .withDisableMetricsCollection("dataszhpnatltjek")
-            .withCopyBehavior("datafwlkyrnmgsbubzfa")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("dataec").withValue("datatrederz")))
-            .withBlockSizeInMB("datapkdsldy");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datauqo")
+            .withDisableMetricsCollection("dataic")
+            .withCopyBehavior("datayjszmleuqxhmrilw")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datasvpv").withValue("dataulxxznfxdqqzi"),
+                new MetadataItem().withName("datagwqi").withValue("datadhas")))
+            .withBlockSizeInMB("dataikedmou");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

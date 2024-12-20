@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * network service design group properties.
  */
 @Fluent
-public final class NetworkServiceDesignGroupPropertiesFormat {
+public final class NetworkServiceDesignGroupPropertiesFormat
+    implements JsonSerializable<NetworkServiceDesignGroupPropertiesFormat> {
     /*
      * The provisioning state of the network service design groups resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The network service design group description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -65,5 +68,45 @@ public final class NetworkServiceDesignGroupPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkServiceDesignGroupPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkServiceDesignGroupPropertiesFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkServiceDesignGroupPropertiesFormat.
+     */
+    public static NetworkServiceDesignGroupPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkServiceDesignGroupPropertiesFormat deserializedNetworkServiceDesignGroupPropertiesFormat
+                = new NetworkServiceDesignGroupPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkServiceDesignGroupPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedNetworkServiceDesignGroupPropertiesFormat.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkServiceDesignGroupPropertiesFormat;
+        });
     }
 }

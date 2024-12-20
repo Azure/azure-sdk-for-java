@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.devtestlabs.models.VirtualNetworkFragment;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
 public interface VirtualNetworksClient {
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface VirtualNetworksClient {
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -50,7 +52,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -67,7 +69,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -81,7 +83,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -97,7 +99,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -114,7 +116,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -130,7 +132,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -147,7 +149,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -161,7 +163,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -177,7 +179,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -190,7 +192,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -204,7 +206,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -221,7 +223,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
