@@ -87,7 +87,11 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
                 .buildClient());
     }
 
-    /** @return the Azure Kubernetes cluster resource management API entry point */
+    /**
+     * Gets he Azure Kubernetes cluster resource management API entry point.
+     *
+     * @return the Azure Kubernetes cluster resource management API entry point
+     */
     public KubernetesClusters kubernetesClusters() {
         if (this.kubernetesClusters == null) {
             this.kubernetesClusters = new KubernetesClustersImpl(this);
