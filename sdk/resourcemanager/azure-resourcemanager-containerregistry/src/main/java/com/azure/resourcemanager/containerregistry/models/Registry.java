@@ -107,7 +107,7 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
     SourceUploadDefinition getBuildSourceUploadUrl();
 
     /**
-     * Gets the upload location.
+     * Gets the upload location for the user to be able to upload the source asynchronously.
      *
      * @return a representation of the future computation of this call
      */
