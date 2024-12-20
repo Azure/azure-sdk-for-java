@@ -19,23 +19,35 @@ public final class VirtualMachineDiskOptions {
     // If disk is already encrypted with CMK, it remains so when attached.
     private DiskEncryptionSetParameters diskEncryptionSetOptions;
 
-    /** @return the disk storage account type */
+    /**
+     * Gets the disk storage account type.
+     *
+     * @return the disk storage account type
+     */
     public StorageAccountTypes storageAccountType() {
         return storageAccountType;
     }
 
-    /** @return the disk caching type */
+    /**
+     * Gets the disk caching type.
+     *
+     * @return the disk caching type
+     */
     public CachingTypes cachingTypes() {
         return cachingTypes;
     }
 
-    /** @return the disk delete options */
+    /**
+     * Gets the disk delete options.
+     *
+     * @return the disk delete options
+     */
     public DeleteOptions deleteOptions() {
         return deleteOptions;
     }
 
     /**
-     * Gets whether the write accelerator is enabled. {@literal null} if no change.
+     * Whether the write accelerator is enabled. {@literal null} if no change.
      *
      * @return whether the write accelerator is enabled
      */
@@ -43,13 +55,21 @@ public final class VirtualMachineDiskOptions {
         return writeAcceleratorEnabled;
     }
 
-    /** @return whether disk encryption set is configured,
-     * either as the ID of disk encryption set, or as {@code null} to override default configuration. */
+    /**
+     * Whether disk encryption set is configured.
+     *
+     * @return whether disk encryption set is configured,
+     * either as the ID of disk encryption set, or as {@code null} to override default configuration.
+     */
     public boolean isDiskEncryptionSetConfigured() {
         return diskEncryptionSetOptions != null;
     }
 
-    /** @return the ID of disk encryption set */
+    /**
+     * Gets the ID of disk encryption set.
+     *
+     * @return the ID of disk encryption set
+     */
     public String diskEncryptionSetId() {
         if (diskEncryptionSetOptions == null) {
             return null;

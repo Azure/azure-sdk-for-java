@@ -324,7 +324,11 @@ public class VirtualMachineScaleSetSkuTypes {
         return fromSku(new Sku().withName(skuName).withTier(skuTier));
     }
 
-    /** @return the SKU */
+    /**
+     * Gets the SKU.
+     *
+     * @return the SKU
+     */
     public Sku sku() {
         // Return copy of sku to guard VirtualMachineScaleSetSkuTypes from ending up with invalid
         // sku in case consumer changes the returned Sku instance.

@@ -21,40 +21,82 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure managed disk. */
 @Fluent
 public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refreshable<Disk>, Updatable<Disk.Update> {
-    /** @return the disk SKU */
+    /**
+     * Gets the disk SKU.
+     *
+     * @return the disk SKU
+     */
     DiskSkuTypes sku();
 
-    /** @return the disk creation method */
+    /**
+     * Gets the disk creation method.
+     *
+     * @return the disk creation method
+     */
     DiskCreateOption creationMethod();
 
-    /** @return true if the disk is attached to a virtual machine, otherwise false */
+    /**
+     * Whether the disk is attached to a virtual machine.
+     *
+     * @return true if the disk is attached to a virtual machine, otherwise false
+     */
     boolean isAttachedToVirtualMachine();
 
     /**
+     * Gets the resource ID of the virtual machine this disk is attached to.
+     *
      * @return the resource ID of the virtual machine this disk is attached to, or null if the disk is in a detached
      *     state
      */
     String virtualMachineId();
 
-    /** @return disk size in GB */
+    /**
+     * Gets disk size in GB.
+     *
+     * @return disk size in GB
+     */
     int sizeInGB();
 
-    /** @return disk size in byte */
+    /**
+     * Gets disk size in byte.
+     *
+     * @return disk size in byte
+     */
     long sizeInByte();
 
-    /** @return the type of the operating system on the disk */
+    /**
+     * Gets the type of the operating system on the disk.
+     *
+     * @return the type of the operating system on the disk
+     */
     OperatingSystemTypes osType();
 
-    /** @return the details of the source from which the disk is created */
+    /**
+     * Gets the details of the source from which the disk is created.
+     *
+     * @return the details of the source from which the disk is created
+     */
     CreationSource source();
 
-    /** @return the availability zones assigned to the disk */
+    /**
+     * Gets the availability zones assigned to the disk.
+     *
+     * @return the availability zones assigned to the disk
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /** @return the disk encryption settings */
+    /**
+     * Gets the disk encryption settings.
+     *
+     * @return the disk encryption settings
+     */
     EncryptionSettingsCollection encryptionSettings();
 
-    /** @return the disk encryption */
+    /**
+     * Gets the disk encryption.
+     *
+     * @return the disk encryption
+     */
     Encryption encryption();
 
     /**
@@ -83,13 +125,25 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      */
     Mono<Void> revokeAccessAsync();
 
-    /** @return whether the OS on a disk supports hibernation. */
+    /**
+     * Whether the OS on a disk supports hibernation.
+     *
+     * @return whether the OS on a disk supports hibernation.
+     */
     boolean isHibernationSupported();
 
-    /** @return logical sector size in bytes for Premium SSD v2 and Ultra disks. */
+    /**
+     * Gets logical sector size in bytes for Premium SSD v2 and Ultra disks.
+     *
+     * @return logical sector size in bytes for Premium SSD v2 and Ultra disks.
+     */
     Integer logicalSectorSizeInBytes();
 
-    /** @return the hypervisor generation. */
+    /**
+     * Gets the hypervisor generation.
+     *
+     * @return the hypervisor generation.
+     */
     HyperVGeneration hyperVGeneration();
 
     /**

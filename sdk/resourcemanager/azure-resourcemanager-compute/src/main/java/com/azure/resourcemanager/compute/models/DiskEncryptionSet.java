@@ -18,13 +18,25 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 @Fluent
 public interface DiskEncryptionSet extends GroupableResource<ComputeManager, DiskEncryptionSetInner>,
     Updatable<DiskEncryptionSet.Update>, Refreshable<DiskEncryptionSet> {
-    /** @return resource id of the Azure key vault containing the key or secret */
+    /**
+     * Gets resource id of the Azure key vault containing the key or secret.
+     *
+     * @return resource id of the Azure key vault containing the key or secret
+     */
     String keyVaultId();
 
-    /** @return id representing the encryption key in KeyVault */
+    /**
+     * Gets id representing the encryption key in KeyVault.
+     *
+     * @return id representing the encryption key in KeyVault
+     */
     String encryptionKeyId();
 
-    /** @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+    /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *          assigned to the disk encryption set.
+     *
+     * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *          assigned to the disk encryption set.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
@@ -32,11 +44,16 @@ public interface DiskEncryptionSet extends GroupableResource<ComputeManager, Dis
     /**
      * If automatic key rotation is enabled, the system will automatically update all managed disks, snapshots,
      * and images referencing the disk encryption set to use the new version of the key within one hour.
+     *
      * @return whether automatic key rotation is enabled
      */
     Boolean isAutomaticKeyRotationEnabled();
 
-    /** @return the type of key used to encrypt the data of the disk */
+    /**
+     * Gets the type of key used to encrypt the data of the disk.
+     *
+     * @return the type of key used to encrypt the data of the disk
+     */
     DiskEncryptionSetType encryptionType();
 
     /** The entirety of the disk encryption set definition. */

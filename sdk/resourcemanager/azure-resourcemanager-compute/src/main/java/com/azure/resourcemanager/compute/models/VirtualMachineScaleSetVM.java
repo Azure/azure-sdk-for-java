@@ -25,124 +25,254 @@ import reactor.core.publisher.Mono;
 public interface VirtualMachineScaleSetVM
     extends Resource, ChildResource<VirtualMachineScaleSet>, Refreshable<VirtualMachineScaleSetVM>,
     Updatable<VirtualMachineScaleSetVM.Update>, HasInnerModel<VirtualMachineScaleSetVMInner> {
-    /** @return the instance ID assigned to this virtual machine instance */
+    /**
+     * Gets the instance ID assigned to this virtual machine instance.
+     *
+     * @return the instance ID assigned to this virtual machine instance
+     */
     String instanceId();
 
     /**
+     * Gets the SKU of the virtual machine instance.
+     *
      * @return the SKU of the virtual machine instance, this will be SKU used while creating the parent virtual machine
      *     scale set
      */
     Sku sku();
 
-    /** @return virtual machine instance size */
+    /**
+     * Gets virtual machine instance size.
+     *
+     * @return virtual machine instance size
+     */
     VirtualMachineSizeTypes size();
 
-    /** @return true if the latest scale set model changes are applied to the virtual machine instance */
+    /**
+     * Whether the latest scale set model changes are applied to the virtual machine instance.
+     *
+     * @return true if the latest scale set model changes are applied to the virtual machine instance
+     */
     boolean isLatestScaleSetUpdateApplied();
 
-    /** @return true if the operating system of the virtual machine instance is based on platform image */
+    /**
+     * Whether the operating system of the virtual machine instance is based on platform image.
+     *
+     * @return true if the operating system of the virtual machine instance is based on platform image
+     */
     boolean isOSBasedOnPlatformImage();
 
-    /** @return true if the operating system of the virtual machine instance is based on custom image */
+    /**
+     * Whether the operating system of the virtual machine instance is based on custom image.
+     *
+     * @return true if the operating system of the virtual machine instance is based on custom image
+     */
     boolean isOSBasedOnCustomImage();
 
-    /** @return true if the operating system of the virtual machine instance is based on stored image */
+    /**
+     * Whether the operating system of the virtual machine instance is based on stored image.
+     *
+     * @return true if the operating system of the virtual machine instance is based on stored image
+     */
     boolean isOSBasedOnStoredImage();
 
     /**
+     * Gets reference to the platform image.
+     *
      * @return reference to the platform image that the virtual machine instance operating system is based on, null will
      *     be returned if the operating system is based on custom image
      */
     ImageReference platformImageReference();
 
     /**
+     * Gets the platform image.
+     *
      * @return the platform image that the virtual machine instance operating system is based on, null be returned
      *     otherwise
      */
     VirtualMachineImage getOSPlatformImage();
 
     /**
+     * Gets the custom image.
+     *
      * @return the custom image that the virtual machine instance operating system is based on, null be returned
      *     otherwise
      */
     VirtualMachineCustomImage getOSCustomImage();
 
     /**
+     * Gets VHD URI of the custom image.
+     *
      * @return VHD URI of the custom image that the virtual machine instance operating system is based on, null will be
      *     returned if the operating system is based on platform image
      */
     String storedImageUnmanagedVhdUri();
 
-    /** @return the name of the operating system disk */
+    /**
+     * Gets the name of the operating system disk.
+     *
+     * @return the name of the operating system disk
+     */
     String osDiskName();
 
-    /** @return VHD URI to the operating system disk */
+    /**
+     * Gets VHD URI to the operating system disk.
+     *
+     * @return VHD URI to the operating system disk
+     */
     String osUnmanagedDiskVhdUri();
 
-    /** @return resource ID of the managed disk backing OS disk */
+    /**
+     * Gets resource ID of the managed disk backing OS disk.
+     *
+     * @return resource ID of the managed disk backing OS disk
+     */
     String osDiskId();
 
-    /** @return the unmanaged data disks associated with this virtual machine instance, indexed by LUN */
+    /**
+     * Gets the unmanaged data disks associated with this virtual machine instance.
+     *
+     * @return the unmanaged data disks associated with this virtual machine instance, indexed by LUN
+     */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
-    /** @return the managed data disks associated with this virtual machine instance, indexed by LUN */
+    /**
+     * Gets the managed data disks associated with this virtual machine instance.
+     *
+     * @return the managed data disks associated with this virtual machine instance, indexed by LUN
+     */
     Map<Integer, VirtualMachineDataDisk> dataDisks();
 
-    /** @return the caching type of the operating system disk */
+    /**
+     * Gets the caching type of the operating system disk.
+     *
+     * @return the caching type of the operating system disk
+     */
     CachingTypes osDiskCachingType();
 
-    /** @return the size of the operating system disk */
+    /**
+     * Gets the size of the operating system disk.
+     *
+     * @return the size of the operating system disk
+     */
     int osDiskSizeInGB();
 
-    /** @return the virtual machine instance computer name with the VM scale set prefix. */
+    /**
+     * Gets the virtual machine instance computer name with the VM scale set prefix.
+     *
+     * @return the virtual machine instance computer name with the VM scale set prefix.
+     */
     String computerName();
 
-    /** @return the name of the admin user */
+    /**
+     * Gets the name of the admin user.
+     *
+     * @return the name of the admin user
+     */
     String administratorUserName();
 
-    /** @return the operating system type */
+    /**
+     * Gets the operating system type.
+     *
+     * @return the operating system type
+     */
     OperatingSystemTypes osType();
 
-    /** @return true if this is a Linux virtual machine and password based login is enabled, false otherwise */
+    /**
+     * Whether this is a Linux virtual machine and password based login is enabled.
+     *
+     * @return true if this is a Linux virtual machine and password based login is enabled, false otherwise
+     */
     boolean isLinuxPasswordAuthenticationEnabled();
 
-    /** @return true if this is a Windows virtual machine and VM agent is provisioned, false otherwise */
+    /**
+     * Whether this is a Windows virtual machine and VM agent is provisioned.
+     *
+     * @return true if this is a Windows virtual machine and VM agent is provisioned, false otherwise
+     */
     boolean isWindowsVMAgentProvisioned();
 
-    /** @return true if this is a Windows virtual machine and automatic update is turned on, false otherwise */
+    /**
+     * Whether this is a Windows virtual machine and automatic update is turned on.
+     *
+     * @return true if this is a Windows virtual machine and automatic update is turned on, false otherwise
+     */
     boolean isWindowsAutoUpdateEnabled();
 
-    /** @return the time zone of the Windows virtual machine */
+    /**
+     * Gets the time zone of the Windows virtual machine.
+     *
+     * @return the time zone of the Windows virtual machine
+     */
     String windowsTimeZone();
 
-    /** @return true if the boot diagnostic is enabled, false otherwise */
+    /**
+     * Whether the boot diagnostic is enabled.
+     *
+     * @return true if the boot diagnostic is enabled, false otherwise
+     */
     boolean bootDiagnosticEnabled();
 
-    /** @return the URI to the storage account storing boot diagnostics log */
+    /**
+     * Gets the URI to the storage account storing boot diagnostics log.
+     *
+     * @return the URI to the storage account storing boot diagnostics log
+     */
     String bootDiagnosticStorageAccountUri();
 
-    /** @return the resource ID of the availability set that this virtual machine instance belongs to */
+    /**
+     * Gets the resource ID of the availability set that this virtual machine instance belongs to.
+     *
+     * @return the resource ID of the availability set that this virtual machine instance belongs to
+     */
     String availabilitySetId();
 
-    /** @return the list of resource ID of network interface associated with the virtual machine instance */
+    /**
+     * Gets the list of resource ID of network interface associated with the virtual machine instance.
+     *
+     * @return the list of resource ID of network interface associated with the virtual machine instance
+     */
     List<String> networkInterfaceIds();
 
-    /** @return resource ID of primary network interface associated with virtual machine instance */
+    /**
+     * Gets resource ID of primary network interface associated with virtual machine instance.
+     *
+     * @return resource ID of primary network interface associated with virtual machine instance
+     */
     String primaryNetworkInterfaceId();
 
-    /** @return the extensions associated with the virtual machine instance, indexed by name */
+    /**
+     * Gets the extensions associated with the virtual machine instance, indexed by name.
+     *
+     * @return the extensions associated with the virtual machine instance, indexed by name
+     */
     Map<String, VirtualMachineScaleSetVMInstanceExtension> extensions();
 
-    /** @return the storage profile of the virtual machine instance */
+    /**
+     * Gets the storage profile of the virtual machine instance.
+     *
+     * @return the storage profile of the virtual machine instance
+     */
     StorageProfile storageProfile();
 
-    /** @return the operating system profile of an virtual machine instance */
+    /**
+     * Gets the operating system profile of an virtual machine instance.
+     *
+     * @return the operating system profile of an virtual machine instance
+     */
     OSProfile osProfile();
 
-    /** @return the diagnostics profile of the virtual machine instance */
+    /**
+     * Gets the diagnostics profile of the virtual machine instance.
+     *
+     * @return the diagnostics profile of the virtual machine instance
+     */
     DiagnosticsProfile diagnosticsProfile();
 
-    /** @return true if managed disk is used for the virtual machine's disks (os, data) */
+    /**
+     * Whether managed disk is used for the virtual machine's disks (os, data).
+     *
+     * @return true if managed disk is used for the virtual machine's disks (os, data)
+     */
     boolean isManagedDiskEnabled();
 
     /** Shuts down the virtual machine instance, move them to new node, and powers them back on. */
@@ -253,7 +383,11 @@ public interface VirtualMachineScaleSetVM
      */
     Mono<VirtualMachineInstanceView> refreshInstanceViewAsync();
 
-    /** @return the power state of the virtual machine instance */
+    /**
+     * Gets the power state of the virtual machine instance.
+     *
+     * @return the power state of the virtual machine instance
+     */
     PowerState powerState();
 
     /**
@@ -272,25 +406,47 @@ public interface VirtualMachineScaleSetVM
      */
     Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceAsync(String name);
 
-    /** @return the network interfaces associated with this virtual machine instance. */
+    /**
+     * Gets the network interfaces associated with this virtual machine instance.
+     *
+     * @return the network interfaces associated with this virtual machine instance.
+     */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
-    /** @return the network interfaces associated with this virtual machine instance. */
+    /**
+     * Gets the network interfaces associated with this virtual machine instance.
+     *
+     * @return the network interfaces associated with this virtual machine instance.
+     */
     PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync();
 
     /**
+     * Gets applied model from the virtual machine.
+     *
      * @return Get specifies whether the model applied to the virtual machine is the model of the virtual machine scale
      *     set or the customized model for the virtual machine.
      */
     String modelDefinitionApplied();
 
-    /** @return The specific protection policy for the vm. */
+    /**
+     * Gets the specific protection policy for the vm.
+     *
+     * @return The specific protection policy for the vm.
+     */
     VirtualMachineScaleSetVMProtectionPolicy protectionPolicy();
 
-    /** @return The network profile config for the vm. */
+    /**
+     * Gets the network profile config for the vm.
+     *
+     * @return The network profile config for the vm.
+     */
     VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration();
 
-    /** @return the time at which the Virtual Machine resource was created */
+    /**
+     * Gets the time at which the Virtual Machine resource was created.
+     *
+     * @return the time at which the Virtual Machine resource was created
+     */
     OffsetDateTime timeCreated();
 
     /** The template for an update operation, containing all the settings that can be modified. */

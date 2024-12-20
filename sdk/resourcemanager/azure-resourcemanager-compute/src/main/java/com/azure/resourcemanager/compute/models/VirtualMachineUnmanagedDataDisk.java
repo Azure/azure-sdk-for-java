@@ -12,13 +12,25 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 /** A native data disk of a virtual machine. */
 @Fluent
 public interface VirtualMachineUnmanagedDataDisk extends HasInnerModel<DataDisk>, ChildResource<VirtualMachine> {
-    /** @return the size of this data disk in GB */
+    /**
+     * Gets the size of this data disk in GB.
+     *
+     * @return the size of this data disk in GB
+     */
     int size();
 
-    /** @return the logical unit number assigned to this data disk */
+    /**
+     * Gets the logical unit number assigned to this data disk.
+     *
+     * @return the logical unit number assigned to this data disk
+     */
     int lun();
 
-    /** @return URI to the virtual hard disk backing this data disk */
+    /**
+     * Gets URI to the virtual hard disk backing this data disk.
+     *
+     * @return URI to the virtual hard disk backing this data disk
+     */
     String vhdUri();
 
     /**
@@ -39,7 +51,11 @@ public interface VirtualMachineUnmanagedDataDisk extends HasInnerModel<DataDisk>
      */
     String sourceImageUri();
 
-    /** @return the creation method used while creating this disk */
+    /**
+     * Gets the creation method used while creating this disk.
+     *
+     * @return the creation method used while creating this disk
+     */
     DiskCreateOptionTypes creationMethod();
 
     /** Grouping of data disk definition stages applicable as part of a virtual machine creation. */

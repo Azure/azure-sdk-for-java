@@ -28,64 +28,144 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface GalleryImage extends HasInnerModel<GalleryImageInner>, Indexable, Refreshable<GalleryImage>,
     Updatable<GalleryImage.Update>, HasManager<ComputeManager> {
-    /** @return the description of the image. */
+    /**
+     * Gets the description of the image.
+     *
+     * @return the description of the image.
+     */
     String description();
 
-    /** @return the disk types not supported by the image. */
+    /**
+     * Gets the disk types not supported by the image.
+     *
+     * @return the disk types not supported by the image.
+     */
     List<DiskSkuTypes> unsupportedDiskTypes();
 
-    /** @return a description of features not supported by the image. */
+    /**
+     * Gets a description of features not supported by the image.
+     *
+     * @return a description of features not supported by the image.
+     */
     Disallowed disallowed();
 
-    /** @return the date indicating image's end of life. */
+    /**
+     * Gets the date indicating image's end of life.
+     *
+     * @return the date indicating image's end of life.
+     */
     OffsetDateTime endOfLifeDate();
 
-    /** @return the image eula. */
+    /**
+     * Gets the image eula.
+     *
+     * @return the image eula.
+     */
     String eula();
 
-    /** @return the ARM id of the image. */
+    /**
+     * Gets the ARM id of the image.
+     *
+     * @return the ARM id of the image.
+     */
     String id();
 
-    /** @return an identifier describing publisher, offer and sku of the image. */
+    /**
+     * Gets an identifier describing publisher, offer and sku of the image.
+     *
+     * @return an identifier describing publisher, offer and sku of the image.
+     */
     GalleryImageIdentifier identifier();
 
-    /** @return the location of the image. */
+    /**
+     * Gets the location of the image.
+     *
+     * @return the location of the image.
+     */
     String location();
 
-    /** @return the image name. */
+    /**
+     * Gets the image name.
+     *
+     * @return the image name.
+     */
     String name();
 
-    /** @return the OS state of the image. */
+    /**
+     * Gets the OS state of the image.
+     *
+     * @return the OS state of the image.
+     */
     OperatingSystemStateTypes osState();
 
-    /** @return the image OS type. */
+    /**
+     * Gets the image OS type.
+     *
+     * @return the image OS type.
+     */
     OperatingSystemTypes osType();
 
-    /** @return the uri to image privacy statement. */
+    /**
+     * Gets the URI to image privacy statement.
+     *
+     * @return the URI to image privacy statement.
+     */
     String privacyStatementUri();
 
-    /** @return the provisioningState of image resource. */
+    /**
+     * Gets the provisioningState of image resource.
+     *
+     * @return the provisioningState of image resource.
+     */
     String provisioningState();
 
-    /** @return the purchasePlan of the image. */
+    /**
+     * Gets the purchasePlan of the image.
+     *
+     * @return the purchasePlan of the image.
+     */
     ImagePurchasePlan purchasePlan();
 
-    /** @return the value describing recommended configuration for a virtual machine based on this image. */
+    /**
+     * Gets the value describing recommended configuration for a virtual machine based on this image.
+     *
+     * @return the value describing recommended configuration for a virtual machine based on this image.
+     */
     RecommendedMachineConfiguration recommendedVirtualMachineConfiguration();
 
-    /** @return the uri to the image release note. */
+    /**
+     * Gets the URI to the image release note.
+     *
+     * @return the URI to the image release note.
+     */
     String releaseNoteUri();
 
-    /** @return the hypervisor generation. */
+    /**
+     * Gets the hypervisor generation.
+     *
+     * @return the hypervisor generation.
+     */
     HyperVGeneration hyperVGeneration();
 
-    /** @return the security type, whether trusted launch or confidential VM. */
+    /**
+     * Gets the security type, whether trusted launch or confidential VM.
+     *
+     * @return the security type, whether trusted launch or confidential VM.
+     */
     SecurityTypes securityType();
 
-    /** @return the tags associated with the image. */
+    /**
+     * Gets the tags associated with the image.
+     *
+     * @return the tags associated with the image.
+     */
     Map<String, String> tags();
 
-    /** @return the type value. */
+    /**
+     * Gets the type value.
+     *
+     * @return the type value.
+     */
     String type();
 
     /**

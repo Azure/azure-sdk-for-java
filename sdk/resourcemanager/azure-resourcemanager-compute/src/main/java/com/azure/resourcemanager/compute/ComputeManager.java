@@ -70,17 +70,29 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private GalleryImageVersions galleryImageVersions;
     private DiskEncryptionSets diskEncryptionSets;
 
-    /** @return the storage manager */
+    /**
+     * Gets the storage manager.
+     *
+     * @return the storage manager
+     */
     public StorageManager storageManager() {
         return storageManager;
     }
 
-    /** @return the network manager */
+    /**
+     * Gets the network manager.
+     *
+     * @return the network manager
+     */
     public NetworkManager networkManager() {
         return networkManager;
     }
 
-    /** @return the authorization manager */
+    /**
+     * Gets the authorization manager.
+     *
+     * @return the authorization manager
+     */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
     }
