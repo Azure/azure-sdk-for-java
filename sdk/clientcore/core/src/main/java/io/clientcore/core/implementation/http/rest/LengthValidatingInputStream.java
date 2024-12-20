@@ -8,13 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-import static io.clientcore.core.implementation.http.rest.RestProxyUtils.bodyTooLarge;
-import static io.clientcore.core.implementation.http.rest.RestProxyUtils.bodyTooSmall;
-
 /**
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
  * an exception if the number of bytes read doesn't match what was expected.
- *
+ * <p>
  * This implementation assumes that reader is going to read until EOF.
  */
 final class LengthValidatingInputStream extends InputStream {
@@ -112,9 +109,9 @@ final class LengthValidatingInputStream extends InputStream {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
             if (position > expectedReadSize) {
-                throw new IllegalStateException(bodyTooLarge(position, expectedReadSize));
+                throw new IllegalStateException(RestProxyImpl.bodyTooLarge(position, expectedReadSize));
             } else if (position < expectedReadSize) {
-                throw new IllegalStateException(bodyTooSmall(position, expectedReadSize));
+                throw new IllegalStateException(RestProxyImpl.bodyTooSmall(position, expectedReadSize));
             }
         } else {
             position += readSize;
