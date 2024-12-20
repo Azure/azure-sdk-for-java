@@ -73,6 +73,15 @@ public final class WebContainer extends ExpandableStringEnum<WebContainer> {
     public static final WebContainer JAVA_8 = WebContainer.fromString("java 8");
 
     /**
+     * Creates a new instance of WebContainer value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebContainer() {
+    }
+
+    /**
      * Finds or creates a Web container based on the specified name.
      *
      * @param name a name
@@ -82,7 +91,11 @@ public final class WebContainer extends ExpandableStringEnum<WebContainer> {
         return fromString(name, WebContainer.class);
     }
 
-    /** @return known Web container types */
+    /**
+     * Gets known Web container types.
+     *
+     * @return known Web container types
+     */
     public static Collection<WebContainer> values() {
         return values(WebContainer.class);
     }
