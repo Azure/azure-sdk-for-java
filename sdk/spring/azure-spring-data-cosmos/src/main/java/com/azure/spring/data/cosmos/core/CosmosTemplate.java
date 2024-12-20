@@ -1191,7 +1191,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return executeQuery(querySpec, containerName, options)
             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable,
+                CosmosExceptionUtils.exceptionHandler("Failed to get numeric value", throwable,
                     this.responseDiagnosticsProcessor))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                 response.getCosmosDiagnostics(), response))
