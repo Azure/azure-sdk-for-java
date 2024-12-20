@@ -16,4 +16,6 @@ public interface TelemetryColumns {
 
     boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName);
 
+    double getCustomDimValueForProjection(String key);
+
 }

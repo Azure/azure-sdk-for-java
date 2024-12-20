@@ -49,18 +49,6 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
-     * 'Disabled' when server has VNet integration.
-     * 
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the Network object itself.
-     */
-    public Network withPublicNetworkAccess(EnableStatusEnum publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
      * Get the delegatedSubnetResourceId property: Delegated subnet resource id used to setup vnet for a server.
      * 
      * @return the delegatedSubnetResourceId value.
@@ -114,8 +102,6 @@ public final class Network implements JsonSerializable<Network> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("publicNetworkAccess",
-            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("delegatedSubnetResourceId", this.delegatedSubnetResourceId);
         jsonWriter.writeStringField("privateDnsZoneResourceId", this.privateDnsZoneResourceId);
         return jsonWriter.writeEndObject();

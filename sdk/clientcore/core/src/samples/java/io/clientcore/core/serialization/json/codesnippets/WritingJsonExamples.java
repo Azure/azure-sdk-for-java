@@ -18,7 +18,7 @@ public class WritingJsonExamples {
     public void writeJsonOutputStream() throws IOException {
         // BEGIN: io.clientcore.core.serialization.json.JsonWriter.writeJsonOutputStream
         Map<String, Object> additionalVmProperties = new LinkedHashMap<>();
-        additionalVmProperties.put("CloudProvider", "Azure");
+        additionalVmProperties.put("CloudProvider", "SomeCloud");
         additionalVmProperties.put("Available", true);
 
         VmStatistics vmStatistics = new VmStatistics("large",
@@ -40,7 +40,7 @@ public class WritingJsonExamples {
         // {"VMSize":"large","Processor":{"cores":8,"threads":16,"manufacturer":"Processor Corp",
         //   "clockSpeedInHertz":4000000000.0,"releaseDate":"2023-01-01"},"Memory":{"memoryInBytes":10000000000,
         //   "clockSpeedInHertz":4800000000.0,"manufacturer":"Memory Corp","errorCorrecting":true},
-        //   "AcceleratedNetwork":true,"CloudProvider":"Azure","Available":true}
+        //   "AcceleratedNetwork":true,"CloudProvider":"SomeCloud","Available":true}
         System.out.println(json);
         // END: io.clientcore.core.serialization.json.JsonWriter.writeJsonOutputStream
     }
@@ -48,7 +48,7 @@ public class WritingJsonExamples {
     public void writeJsonWriter() throws IOException {
         // BEGIN: io.clientcore.core.serialization.json.JsonWriter.writeJsonWriter
         Map<String, Object> additionalVmProperties = new LinkedHashMap<>();
-        additionalVmProperties.put("CloudProvider", "Azure");
+        additionalVmProperties.put("CloudProvider", "SomeCloud");
         additionalVmProperties.put("Available", true);
 
         VmStatistics vmStatistics = new VmStatistics("large",
@@ -70,7 +70,7 @@ public class WritingJsonExamples {
         // {"VMSize":"large","Processor":{"cores":8,"threads":16,"manufacturer":"Processor Corp",
         //   "clockSpeedInHertz":4000000000.0,"releaseDate":"2023-01-01"},"Memory":{"memoryInBytes":10000000000,
         //   "clockSpeedInHertz":4800000000.0,"manufacturer":"Memory Corp","errorCorrecting":true},
-        //   "AcceleratedNetwork":true,"CloudProvider":"Azure","Available":true}
+        //   "AcceleratedNetwork":true,"CloudProvider":"SomeCloud","Available":true}
         System.out.println(json);
         // END: io.clientcore.core.serialization.json.JsonWriter.writeJsonWriter
     }

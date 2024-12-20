@@ -14,19 +14,16 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ImportSourceProperties;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerSku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
-import com.azure.resourcemanager.mysqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,12 +34,12 @@ public final class ServerInner extends Resource {
     /*
      * The cmk identity for the server.
      */
-    private MySqlServerIdentity identity;
+    private Identity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    private MySqlServerSku sku;
+    private Sku sku;
 
     /*
      * Properties of the server.
@@ -50,7 +47,7 @@ public final class ServerInner extends Resource {
     private ServerProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The system metadata relating to this resource.
      */
     private SystemData systemData;
 
@@ -80,7 +77,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the identity value.
      */
-    public MySqlServerIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -90,7 +87,7 @@ public final class ServerInner extends Resource {
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withIdentity(MySqlServerIdentity identity) {
+    public ServerInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -100,7 +97,7 @@ public final class ServerInner extends Resource {
      * 
      * @return the sku value.
      */
-    public MySqlServerSku sku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -110,7 +107,7 @@ public final class ServerInner extends Resource {
      * @param sku the sku value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withSku(MySqlServerSku sku) {
+    public ServerInner withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -125,7 +122,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: The system metadata relating to this resource.
      * 
      * @return the systemData value.
      */
@@ -514,15 +511,6 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: PrivateEndpointConnections related properties of a server.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
-    }
-
-    /**
      * Get the maintenanceWindow property: Maintenance window of a server.
      * 
      * @return the maintenanceWindow value.
@@ -542,29 +530,6 @@ public final class ServerInner extends Resource {
             this.innerProperties = new ServerProperties();
         }
         this.innerProperties().withMaintenanceWindow(maintenanceWindow);
-        return this;
-    }
-
-    /**
-     * Get the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @return the importSourceProperties value.
-     */
-    public ImportSourceProperties importSourceProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().importSourceProperties();
-    }
-
-    /**
-     * Set the importSourceProperties property: Source properties for import from storage.
-     * 
-     * @param importSourceProperties the importSourceProperties value to set.
-     * @return the ServerInner object itself.
-     */
-    public ServerInner withImportSourceProperties(ImportSourceProperties importSourceProperties) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServerProperties();
-        }
-        this.innerProperties().withImportSourceProperties(importSourceProperties);
         return this;
     }
 
@@ -627,9 +592,9 @@ public final class ServerInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedServerInner.withTags(tags);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedServerInner.identity = MySqlServerIdentity.fromJson(reader);
+                    deserializedServerInner.identity = Identity.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedServerInner.sku = MySqlServerSku.fromJson(reader);
+                    deserializedServerInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedServerInner.innerProperties = ServerProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

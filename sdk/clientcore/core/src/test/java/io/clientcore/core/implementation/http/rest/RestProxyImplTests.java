@@ -47,7 +47,7 @@ public class RestProxyImplTests {
     private static final String SAMPLE = "sample";
     private static final byte[] EXPECTED = SAMPLE.getBytes(StandardCharsets.UTF_8);
 
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,

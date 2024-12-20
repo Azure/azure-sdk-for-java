@@ -73,4 +73,8 @@ public class DependencyDataColumns implements TelemetryColumns {
     public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
         return customDims.matchesCustomDimFilter(filter, trimmedFieldName);
     }
+
+    public double getCustomDimValueForProjection(String key) {
+        return customDims.getCustomDimValueForProjection(key);
+    }
 }
