@@ -53,7 +53,7 @@ public final class VirtualMachineDiskOptions {
     }
 
     /**
-     * Checks whether the write accelerator is enabled. {@literal null} if no change.
+     * Gets whether the write accelerator is enabled. {@literal null} if no change.
      *
      * @return whether the write accelerator is enabled
      */

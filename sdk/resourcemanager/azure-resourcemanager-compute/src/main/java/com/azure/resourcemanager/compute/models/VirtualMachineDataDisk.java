@@ -61,7 +61,7 @@ public interface VirtualMachineDataDisk extends HasInnerModel<DataDisk>, HasName
     String diskEncryptionSetId();
 
     /**
-     * Checks whether the write accelerator is enabled.
+     * Gets whether the write accelerator is enabled.
      *
      * @return whether the write accelerator is enabled
      */

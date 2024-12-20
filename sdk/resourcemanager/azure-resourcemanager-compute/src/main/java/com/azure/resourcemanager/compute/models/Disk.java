@@ -147,7 +147,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     HyperVGeneration hyperVGeneration();
 
     /**
-     * Checks whether the disk can be accessed from public network.
+     * Whether the disk can be accessed from public network.
      *
      * @return whether the disk can be accessed from public network.
      */
