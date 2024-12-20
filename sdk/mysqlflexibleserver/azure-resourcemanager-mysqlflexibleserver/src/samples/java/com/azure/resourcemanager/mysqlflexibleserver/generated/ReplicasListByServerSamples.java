@@ -10,8 +10,8 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 public final class ReplicasListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
-     * ReplicasListByServer.json
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ReplicasListByServer.
+     * json
      */
     /**
      * Sample code: List replicas for a server.
