@@ -188,7 +188,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     }
 
     /**
-     * Gest the virtual machine image resource management API entry point.
+     * Gets the virtual machine image resource management API entry point.
      *
      * @return the virtual machine image resource management API entry point
      */
