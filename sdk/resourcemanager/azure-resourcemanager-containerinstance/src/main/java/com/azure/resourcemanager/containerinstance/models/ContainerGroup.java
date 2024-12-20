@@ -597,7 +597,11 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
             interface WithVolumeAttach<ParentT> extends Attachable.InDefinition<ParentT> {
             }
 
-            /** Grouping of the container group's volume definition stages. */
+            /**
+             * Grouping of the container group's volume definition stages.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface VolumeDefinition<ParentT>
                 extends VolumeDefinitionBlank<ParentT>, WithAzureFileShare<ParentT>, WithStorageAccountName<ParentT>,
                 WithStorageAccountKey<ParentT>, WithSecretsMap<ParentT>, WithGitUrl<ParentT>,
@@ -1167,7 +1171,11 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
                 WithLivenessProbe<ParentT>, WithReadinessProbe<ParentT>, Attachable.InDefinition<ParentT> {
             }
 
-            /** Grouping of the container group's volume definition stages. */
+            /**
+             * Grouping of the container group's volume definition stages.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface ContainerInstanceDefinition<ParentT>
                 extends ContainerInstanceDefinitionBlank<ParentT>, WithImage<ParentT>, WithOrWithoutPorts<ParentT>,
                 WithPortsOrContainerInstanceAttach<ParentT>, WithContainerInstanceAttach<ParentT> {
