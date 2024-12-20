@@ -10,12 +10,18 @@ import os
 from utils import load_version_map_from_file
 from utils import version_update_marker
 
+IGNORED_DEPENDENCIES = {'springboot3_org.springframework.boot:spring-boot-dependencies',
+                        'springboot3_org.springframework.cloud:spring-cloud-dependencies'}
+
 def fixup_version_map(version_file, version_map):
     # uses the util function to load the version map from the file, then adds a bool to each entry to track if it is visisted
     load_version_map_from_file(version_file, version_map)
     for key in version_map:
         val = version_map[key]
-        version_map[key] = (False, val)
+        if key in IGNORED_DEPENDENCIES:
+            version_map[key] = (True, val)
+        else:
+            version_map[key] = (False, val)
 
 def find_unused_dependencies(dep_map, message):
     unused_deps = [key for key in dep_map if not dep_map[key][0]]
