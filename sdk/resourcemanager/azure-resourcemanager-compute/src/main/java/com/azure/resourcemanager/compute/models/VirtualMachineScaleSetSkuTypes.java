@@ -252,7 +252,11 @@ public class VirtualMachineScaleSetSkuTypes {
     /** The string value of the SKU. */
     private final String value;
 
-    /** @return predefined virtual machine scale set SKU types */
+    /**
+     * Gets predefined virtual machine scale set SKU types.
+     *
+     * @return predefined virtual machine scale set SKU types
+     */
     public static VirtualMachineScaleSetSkuTypes[] values() {
         Collection<VirtualMachineScaleSetSkuTypes> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new VirtualMachineScaleSetSkuTypes[valuesCollection.size()]);

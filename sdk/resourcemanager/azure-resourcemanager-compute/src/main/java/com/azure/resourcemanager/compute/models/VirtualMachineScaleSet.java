@@ -230,6 +230,8 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     int capacity();
 
     /**
+     * Gets the virtual network associated with the primary network interfaces of the virtual machines in the scale set.
+     *
      * @return the virtual network associated with the primary network interfaces of the virtual machines in the scale
      *     set.
      *     <p>A primary internal load balancer associated with the primary network interfaces of the scale set virtual
@@ -239,6 +241,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Network getPrimaryNetwork() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer associated with the primary network interface of the virtual machines
+     *     in the scale set.
+     *
      * @return the Internet-facing load balancer associated with the primary network interface of the virtual machines
      *     in the scale set.
      * @throws IOException the IO exception
@@ -246,6 +251,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer's backends associated with the primary network interface of the virtual
+     *     machines in the scale set.
+     *
      * @return the Internet-facing load balancer's backends associated with the primary network interface of the virtual
      *     machines in the scale set
      * @throws IOException the IO exception
@@ -253,6 +261,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
+     * Gets the Internet-facing load balancer's inbound NAT pool associated with the primary network interface of the
+     *     virtual machines in the scale set.
+     *
      * @return the Internet-facing load balancer's inbound NAT pool associated with the primary network interface of the
      *     virtual machines in the scale set
      * @throws IOException the IO exception
@@ -260,6 +271,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
 
     /**
+     * Gets the internal load balancer associated with the primary network interface of the virtual machines in the
+     *     scale set.
+     *
      * @return the internal load balancer associated with the primary network interface of the virtual machines in the
      *     scale set
      * @throws IOException the IO exception
@@ -267,6 +281,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     LoadBalancer getPrimaryInternalLoadBalancer() throws IOException;
 
     /**
+     * Gets the internal load balancer's backends associated with the primary network interface of the virtual
+     *     machines in the scale set.
+     *
      * @return the internal load balancer's backends associated with the primary network interface of the virtual
      *     machines in the scale set
      * @throws IOException the IO exception
@@ -274,6 +291,9 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Map<String, LoadBalancerBackend> listPrimaryInternalLoadBalancerBackends() throws IOException;
 
     /**
+     * Gets the inbound NAT pools of the internal load balancer associated with the primary network interface of the
+     *     virtual machines in the scale set.
+     *
      * @return the inbound NAT pools of the internal load balancer associated with the primary network interface of the
      *     virtual machines in the scale set, if any.
      * @throws IOException the IO exception
@@ -1138,7 +1158,11 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
 
-            /** @return the next stage of a unmanaged disk based virtual machine scale set definition */
+            /**
+             *  Specifies an unmanaged disk to be attached to the virtual machine.
+             *
+             * @return the next stage of an unmanaged disk based virtual machine scale set definition
+             */
             WithUnmanagedCreate withUnmanagedDisks();
         }
 
