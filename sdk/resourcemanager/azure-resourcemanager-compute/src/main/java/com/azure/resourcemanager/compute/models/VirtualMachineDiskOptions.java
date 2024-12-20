@@ -53,7 +53,7 @@ public final class VirtualMachineDiskOptions {
     }
 
     /**
-     * Whether the write accelerator is enabled. {@literal null} if no change.
+     * Checks whether the write accelerator is enabled. {@literal null} if no change.
      *
      * @return whether the write accelerator is enabled
      */
@@ -62,7 +62,7 @@ public final class VirtualMachineDiskOptions {
     }
 
     /**
-     * Whether disk encryption set is configured.
+     * Checks whether disk encryption set is configured.
      *
      * @return whether disk encryption set is configured,
      * either as the ID of disk encryption set, or as {@code null} to override default configuration.

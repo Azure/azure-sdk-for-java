@@ -48,28 +48,28 @@ public interface VirtualMachineScaleSetVM
     VirtualMachineSizeTypes size();
 
     /**
-     * Whether the latest scale set model changes are applied to the virtual machine instance.
+     * Checks whether the latest scale set model changes are applied to the virtual machine instance.
      *
      * @return true if the latest scale set model changes are applied to the virtual machine instance
      */
     boolean isLatestScaleSetUpdateApplied();
 
     /**
-     * Whether the operating system of the virtual machine instance is based on platform image.
+     * Checks whether the operating system of the virtual machine instance is based on platform image.
      *
      * @return true if the operating system of the virtual machine instance is based on platform image
      */
     boolean isOSBasedOnPlatformImage();
 
     /**
-     * Whether the operating system of the virtual machine instance is based on custom image.
+     * Checks whether the operating system of the virtual machine instance is based on custom image.
      *
      * @return true if the operating system of the virtual machine instance is based on custom image
      */
     boolean isOSBasedOnCustomImage();
 
     /**
-     * Whether the operating system of the virtual machine instance is based on stored image.
+     * Checks whether the operating system of the virtual machine instance is based on stored image.
      *
      * @return true if the operating system of the virtual machine instance is based on stored image
      */
@@ -178,21 +178,21 @@ public interface VirtualMachineScaleSetVM
     OperatingSystemTypes osType();
 
     /**
-     * Whether this is a Linux virtual machine and password based login is enabled.
+     * Checks whether this is a Linux virtual machine and password based login is enabled.
      *
      * @return true if this is a Linux virtual machine and password based login is enabled, false otherwise
      */
     boolean isLinuxPasswordAuthenticationEnabled();
 
     /**
-     * Whether this is a Windows virtual machine and VM agent is provisioned.
+     * Checks whether this is a Windows virtual machine and VM agent is provisioned.
      *
      * @return true if this is a Windows virtual machine and VM agent is provisioned, false otherwise
      */
     boolean isWindowsVMAgentProvisioned();
 
     /**
-     * Whether this is a Windows virtual machine and automatic update is turned on.
+     * Checks whether this is a Windows virtual machine and automatic update is turned on.
      *
      * @return true if this is a Windows virtual machine and automatic update is turned on, false otherwise
      */
@@ -206,7 +206,7 @@ public interface VirtualMachineScaleSetVM
     String windowsTimeZone();
 
     /**
-     * Whether the boot diagnostic is enabled.
+     * Checks whether the boot diagnostic is enabled.
      *
      * @return true if the boot diagnostic is enabled, false otherwise
      */
@@ -269,7 +269,7 @@ public interface VirtualMachineScaleSetVM
     DiagnosticsProfile diagnosticsProfile();
 
     /**
-     * Whether managed disk is used for the virtual machine's disks (os, data).
+     * Checks whether managed disk is used for the virtual machine's disks (os, data).
      *
      * @return true if managed disk is used for the virtual machine's disks (os, data)
      */

@@ -44,7 +44,6 @@ public interface DiskEncryptionSet extends GroupableResource<ComputeManager, Dis
     /**
      * If automatic key rotation is enabled, the system will automatically update all managed disks, snapshots,
      * and images referencing the disk encryption set to use the new version of the key within one hour.
-     *
      * @return whether automatic key rotation is enabled
      */
     Boolean isAutomaticKeyRotationEnabled();

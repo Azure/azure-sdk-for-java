@@ -195,7 +195,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     String osDiskName();
 
     /**
-     * Whether the instance OS disk is ephemeral.
+     * Checks whether the instance OS disk is ephemeral.
      *
      * @return whether the instance OS disk is ephemeral
      */
@@ -209,7 +209,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     UpgradeMode upgradeModel();
 
     /**
-     * Whether over provision is enabled for the virtual machines.
+     * Checks whether over provision is enabled for the virtual machines.
      *
      * @return true if over provision is enabled for the virtual machines, false otherwise
      */
@@ -403,14 +403,14 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
         listNetworkInterfacesByInstanceIdAsync(String virtualMachineInstanceId);
 
     /**
-     * Whether managed disk is used for the virtual machine scale set's disks (os, data).
+     * Checks whether managed disk is used for the virtual machine scale set's disks (os, data).
      *
      * @return true if managed disk is used for the virtual machine scale set's disks (os, data)
      */
     boolean isManagedDiskEnabled();
 
     /**
-     * Whether Managed Service Identity is enabled for the virtual machine scale set.
+     * Checks whether Managed Service Identity is enabled for the virtual machine scale set.
      *
      * @return true if Managed Service Identity is enabled for the virtual machine scale set
      */
@@ -458,7 +458,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     Set<AvailabilityZoneId> availabilityZones();
 
     /**
-     * Whether boot diagnostics is enabled for the virtual machine scale set.
+     * Checks whether boot diagnostics is enabled for the virtual machine scale set.
      *
      * @return true if boot diagnostics is enabled for the virtual machine scale set.
      */
@@ -487,14 +487,14 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig();
 
     /**
-     * Whether ip forwarding is enabled for the virtual machine scale set.
+     * Checks whether ip forwarding is enabled for the virtual machine scale set.
      *
      * @return true if ip forwarding is enabled for the virtual machine scale set.
      */
     boolean isIpForwardingEnabled();
 
     /**
-     * Whether accelerated networking is enabled for the virtual machine scale set.
+     * Checks whether accelerated networking is enabled for the virtual machine scale set.
      *
      * @return true if accelerated networking is enabled for the virtual machine scale set.
      */
@@ -508,7 +508,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     String networkSecurityGroupId();
 
     /**
-     * Whether single placement group is enabled for the virtual machine scale set.
+     * Checks whether single placement group is enabled for the virtual machine scale set.
      *
      * @return true if single placement group is enabled for the virtual machine scale set.
      */
@@ -529,7 +529,7 @@ public interface VirtualMachineScaleSet extends GroupableResource<ComputeManager
     List<String> applicationSecurityGroupIds();
 
     /**
-     * Whether Overprovision is enabled.
+     * Checks whether Overprovision is enabled.
      *
      * @return When Overprovision is enabled, extensions are launched only on the requested number of VMs which are
      *     finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned

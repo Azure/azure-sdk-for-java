@@ -28,7 +28,7 @@ public interface Snapshot
     SnapshotSkuType skuType();
 
     /**
-     * Whether a snapshot id incremental.
+     * Checks whether a snapshot id incremental.
      *
      * @return whether a snapshot is incremental
      */
@@ -120,7 +120,7 @@ public interface Snapshot
     Boolean awaitCopyStartCompletion(Duration maxWaitTime);
 
     /**
-     * Whether the snapshot can be accessed from public network.
+     * Checks whether the snapshot can be accessed from public network.
      *
      * @return whether the snapshot can be accessed from public network.
      */

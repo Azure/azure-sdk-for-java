@@ -33,7 +33,7 @@ public interface VirtualMachineExtensionBase extends HasInnerModel<VirtualMachin
     String versionName();
 
     /**
-     * Whether this extension is configured to upgrade automatically when a new minor version of the extension
+     * Checks whether this extension is configured to upgrade automatically when a new minor version of the extension
      *     image that this extension based on is published.
      *
      * @return true if this extension is configured to upgrade automatically when a new minor version of the extension

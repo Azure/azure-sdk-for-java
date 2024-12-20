@@ -71,14 +71,14 @@ public interface VirtualMachineExtensionImage extends HasInnerModel<VirtualMachi
     String handlerSchema();
 
     /**
-     * Whether the extension can be used with virtual machine scale sets.
+     * Checks whether the extension can be used with virtual machine scale sets.
      *
      * @return true if the extension can be used with virtual machine scale sets, false otherwise
      */
     boolean supportsVirtualMachineScaleSets();
 
     /**
-     * Whether the handler can support multiple extensions.
+     * Checks whether the handler can support multiple extensions.
      *
      * @return true if the handler can support multiple extensions
      */

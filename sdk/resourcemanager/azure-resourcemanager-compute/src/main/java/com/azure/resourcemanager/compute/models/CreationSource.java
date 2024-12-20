@@ -57,7 +57,7 @@ public class CreationSource {
     }
 
     /**
-     * Gets ID of the resource.
+     * Gets ID of the source.
      *
      * @return ID of the source
      */

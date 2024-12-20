@@ -255,7 +255,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     //
 
     /**
-     * Whether managed disks are used for the virtual machine's disks (OS, data).
+     * Checks whether managed disks are used for the virtual machine's disks (OS, data).
      *
      * @return true if managed disks are used for the virtual machine's disks (OS, data)
      */
@@ -311,7 +311,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     StorageAccountTypes osDiskStorageAccountType();
 
     /**
-     * GEts resource ID of the managed disk backing the OS disk.
+     * Gets resource ID of the managed disk backing the OS disk.
      *
      * @return resource ID of the managed disk backing the OS disk
      */
@@ -339,14 +339,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     boolean isOsDiskWriteAcceleratorEnabled();
 
     /**
-     * Whether the os disk is ephemeral.
+     * Checks whether the os disk is ephemeral.
      *
      * @return whether the os disk is ephemeral
      */
     boolean isOSDiskEphemeral();
 
     /**
-     * Whether encryption at host.
+     * Checks whether encryption at host.
      *
      * @return whether encryption at host
      */
@@ -492,7 +492,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     Set<AvailabilityZoneId> availabilityZones();
 
     /**
-     * Whether boot diagnostics is enabled for the virtual machine.
+     * Checks whether boot diagnostics is enabled for the virtual machine.
      *
      * @return true if boot diagnostics is enabled for the virtual machine
      */
@@ -506,7 +506,7 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     String bootDiagnosticsStorageUri();
 
     /**
-     * Whether Managed Service Identity is enabled for the virtual machine.
+     * Checks whether Managed Service Identity is enabled for the virtual machine.
      *
      * @return true if Managed Service Identity is enabled for the virtual machine
      */
@@ -566,14 +566,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     BillingProfile billingProfile();
 
     /**
-     * Whether hibernation feature is enabled on the virtual machine.
+     * Checks whether hibernation feature is enabled on the virtual machine.
      *
      * @return true if hibernation feature is enabled on the virtual machine.
      */
     boolean isHibernationEnabled();
 
     /**
-     * Whether ultra SSD feature is enabled.
+     * Checks whether ultra SSD feature is enabled.
      *
      * @return true if ultra SSD feature is enabled on the virtual machine.
      */
@@ -587,14 +587,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     SecurityTypes securityType();
 
     /**
-     * Whether secure boot is enabled on the virtual machine
+     * Checks whether secure boot is enabled on the virtual machine
      *
      * @return whether secure boot is enabled on the virtual machine
      */
     boolean isSecureBootEnabled();
 
     /**
-     * Whether vTPM is enabled on the virtual machine.
+     * Checks whether vTPM is enabled on the virtual machine.
      *
      * @return whether vTPM is enabled on the virtual machine
      */

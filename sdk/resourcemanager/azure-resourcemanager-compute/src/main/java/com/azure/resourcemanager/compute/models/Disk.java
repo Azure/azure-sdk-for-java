@@ -36,7 +36,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     DiskCreateOption creationMethod();
 
     /**
-     * Whether the disk is attached to a virtual machine.
+     * Checks whether the disk is attached to a virtual machine.
      *
      * @return true if the disk is attached to a virtual machine, otherwise false
      */
@@ -126,7 +126,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     Mono<Void> revokeAccessAsync();
 
     /**
-     * Whether the OS on a disk supports hibernation.
+     * Checks whether the OS on a disk supports hibernation.
      *
      * @return whether the OS on a disk supports hibernation.
      */
@@ -147,7 +147,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     HyperVGeneration hyperVGeneration();
 
     /**
-     * Whether the disk can be accessed from public network.
+     * Checks whether the disk can be accessed from public network.
      *
      * @return whether the disk can be accessed from public network.
      */

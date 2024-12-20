@@ -57,9 +57,9 @@ public interface GalleryImage extends HasInnerModel<GalleryImageInner>, Indexabl
     OffsetDateTime endOfLifeDate();
 
     /**
-     * Gets the image eula.
+     * Gets the image EULA.
      *
-     * @return the image eula.
+     * @return the image EULA.
      */
     String eula();
 
@@ -120,9 +120,9 @@ public interface GalleryImage extends HasInnerModel<GalleryImageInner>, Indexabl
     String provisioningState();
 
     /**
-     * Gets the purchasePlan of the image.
+     * Gets the purchase plan of the image.
      *
-     * @return the purchasePlan of the image.
+     * @return the purchase plan of the image.
      */
     ImagePurchasePlan purchasePlan();
 

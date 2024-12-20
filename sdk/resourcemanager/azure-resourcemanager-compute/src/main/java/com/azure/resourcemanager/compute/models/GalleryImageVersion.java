@@ -44,7 +44,7 @@ public interface GalleryImageVersion extends HasInnerModel<GalleryImageVersionIn
     String name();
 
     /**
-     * Gets the provisioningState if image version resource.
+     * Gets the provisioningState of image version resource.
      *
      * @return the provisioningState of image version resource.
      */
@@ -72,7 +72,7 @@ public interface GalleryImageVersion extends HasInnerModel<GalleryImageVersionIn
     OffsetDateTime endOfLifeDate();
 
     /**
-     * Whether the image version is excluded from considering as a candidate when VM is created with 'latest'
+     * Checks whether the image version is excluded from considering as a candidate when VM is created with 'latest'
      *     image version.
      *
      * @return true if the image version is excluded from considering as a candidate when VM is created with 'latest'

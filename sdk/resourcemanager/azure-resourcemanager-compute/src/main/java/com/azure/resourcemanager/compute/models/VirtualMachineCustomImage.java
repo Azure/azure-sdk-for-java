@@ -20,7 +20,7 @@ import java.util.Map;
 public interface VirtualMachineCustomImage
     extends GroupableResource<ComputeManager, ImageInner>, Refreshable<VirtualMachineCustomImage> {
     /**
-     * Whether this image was created by capturing a virtual machine.
+     * Checks whether this image was created by capturing a virtual machine.
      *
      * @return true if this image was created by capturing a virtual machine
      */
@@ -34,7 +34,7 @@ public interface VirtualMachineCustomImage
     HyperVGenerationTypes hyperVGeneration();
 
     /**
-     * Gets ID of the virtual machine.
+     * Gets ID of the virtual machine if this image was created by capturing that virtual machine.
      *
      * @return ID of the virtual machine if this image was created by capturing that virtual machine
      */
