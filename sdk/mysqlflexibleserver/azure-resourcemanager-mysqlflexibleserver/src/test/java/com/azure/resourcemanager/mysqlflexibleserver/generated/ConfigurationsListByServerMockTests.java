@@ -23,7 +23,7 @@ public final class ConfigurationsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"cy\",\"currentValue\":\"zdgiruj\",\"description\":\"bomvzzbtdcqv\",\"documentationLink\":\"iyujviylwdshfs\",\"defaultValue\":\"rbgyefry\",\"dataType\":\"gaojf\",\"allowedValues\":\"nc\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"ymoxoftpipiwyczu\",\"name\":\"xacpqjli\",\"type\":\"hyus\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"wj\",\"description\":\"gdrjervnaenqpe\",\"defaultValue\":\"ndoygmifthnzdnd\",\"dataType\":\"gnayqigynduh\",\"allowedValues\":\"hqlkthumaqo\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"tgccymvaolpss\",\"name\":\"qlfmmdnbb\",\"type\":\"lzpswiydm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,10 @@ public final class ConfigurationsListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Configuration> response = manager.configurations()
-            .listByServer("fo", "jzhpjbibgjmfx", "mv", "cluyovwxnbkf", 1806347124, 1794198042,
-                com.azure.core.util.Context.NONE);
+        PagedIterable<Configuration> response
+            = manager.configurations().listByServer("aruoujmkcjhwqyt", "r", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cy", response.iterator().next().value());
-        Assertions.assertEquals("zdgiruj", response.iterator().next().currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.iterator().next().source());
+        Assertions.assertEquals("wj", response.iterator().next().value());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.iterator().next().source());
     }
 }

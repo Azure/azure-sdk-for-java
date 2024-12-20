@@ -6,23 +6,24 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Database;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class DatabasesListByServerMockTests {
+public final class ConfigurationsUpdateMockTests {
     @Test
-    public void testListByServer() throws Exception {
+    public void testUpdate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"charset\":\"fkuwbcrnwbmehhse\",\"collation\":\"jusrtslhspk\"},\"id\":\"emaofmxagkvt\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"}]}";
+            = "{\"properties\":{\"value\":\"jkbegibtnmxiebww\",\"description\":\"oayqc\",\"defaultValue\":\"rtzju\",\"dataType\":\"wyzmhtxon\",\"allowedValues\":\"ts\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"},\"id\":\"srknftguv\",\"name\":\"iuhprwmdyvxqta\",\"type\":\"riwwroy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +32,12 @@ public final class DatabasesListByServerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Database> response = manager.databases().listByServer("z", "p", com.azure.core.util.Context.NONE);
+        Configuration response = manager.configurations()
+            .update("euecivyhzceuoj", "jrwjueiotwm", "dytdxwitx",
+                new ConfigurationInner().withValue("awgqwgxhni").withSource(ConfigurationSource.USER_OVERRIDE),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fkuwbcrnwbmehhse", response.iterator().next().charset());
-        Assertions.assertEquals("jusrtslhspk", response.iterator().next().collation());
+        Assertions.assertEquals("jkbegibtnmxiebww", response.value());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.source());
     }
 }
