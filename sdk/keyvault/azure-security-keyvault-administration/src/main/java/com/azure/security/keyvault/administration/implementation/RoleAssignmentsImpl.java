@@ -32,7 +32,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.security.keyvault.administration.KeyVaultServiceVersion;
+import com.azure.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,14 +50,14 @@ public final class RoleAssignmentsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final KeyVaultClientImpl client;
+    private final KeyVaultAdministrationClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RoleAssignmentsImpl(KeyVaultClientImpl client) {
+    RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
         this.service
             = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -68,16 +68,16 @@ public final class RoleAssignmentsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
     /**
-     * The interface defining all the services for KeyVaultClientRoleAssignments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for KeyVaultAdministrationClientRoleAssignments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "KeyVaultClientRoleAs")
+    @ServiceInterface(name = "KeyVaultAdministrationClientRoleAs")
     public interface RoleAssignmentsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({ 200 })

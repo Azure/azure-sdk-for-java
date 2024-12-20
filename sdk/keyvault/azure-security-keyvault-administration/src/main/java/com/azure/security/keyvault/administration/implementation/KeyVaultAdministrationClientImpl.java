@@ -42,20 +42,20 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.security.keyvault.administration.KeyVaultServiceVersion;
+import com.azure.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the KeyVaultClient type.
+ * Initializes a new instance of the KeyVaultAdministrationClient type.
  */
-public final class KeyVaultClientImpl {
+public final class KeyVaultAdministrationClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final KeyVaultClientService service;
+    private final KeyVaultAdministrationClientService service;
 
     /**
      */
@@ -73,14 +73,14 @@ public final class KeyVaultClientImpl {
     /**
      * Service version.
      */
-    private final KeyVaultServiceVersion serviceVersion;
+    private final KeyVaultAdministrationServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -141,52 +141,55 @@ public final class KeyVaultClientImpl {
     }
 
     /**
-     * Initializes an instance of KeyVaultClient client.
+     * Initializes an instance of KeyVaultAdministrationClient client.
      * 
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
-    public KeyVaultClientImpl(String vaultBaseUrl, KeyVaultServiceVersion serviceVersion) {
+    public KeyVaultAdministrationClientImpl(String vaultBaseUrl, KeyVaultAdministrationServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), vaultBaseUrl, serviceVersion);
     }
 
     /**
-     * Initializes an instance of KeyVaultClient client.
+     * Initializes an instance of KeyVaultAdministrationClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
-    public KeyVaultClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, KeyVaultServiceVersion serviceVersion) {
+    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
+        KeyVaultAdministrationServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), vaultBaseUrl, serviceVersion);
     }
 
     /**
-     * Initializes an instance of KeyVaultClient client.
+     * Initializes an instance of KeyVaultAdministrationClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
-    public KeyVaultClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String vaultBaseUrl,
-        KeyVaultServiceVersion serviceVersion) {
+    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String vaultBaseUrl, KeyVaultAdministrationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
         this.roleAssignments = new RoleAssignmentsImpl(this);
         this.roleDefinitions = new RoleDefinitionsImpl(this);
-        this.service = RestProxy.create(KeyVaultClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service = RestProxy.create(KeyVaultAdministrationClientService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for KeyVaultClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for KeyVaultAdministrationClient to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "KeyVaultClient")
-    public interface KeyVaultClientService {
+    @ServiceInterface(name = "KeyVaultAdministrationClient")
+    public interface KeyVaultAdministrationClientService {
         @Get("/backup/{jobId}/pending")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
