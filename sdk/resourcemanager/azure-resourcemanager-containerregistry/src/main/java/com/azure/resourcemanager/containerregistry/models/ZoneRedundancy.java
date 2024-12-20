@@ -23,7 +23,7 @@ public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
 
     /**
      * Creates a new instance of ZoneRedundancy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +32,7 @@ public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
 
     /**
      * Creates or finds a ZoneRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ZoneRedundancy.
      */
@@ -42,7 +42,7 @@ public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
 
     /**
      * Gets known ZoneRedundancy values.
-     *
+     * 
      * @return known ZoneRedundancy values.
      */
     public static Collection<ZoneRedundancy> values() {

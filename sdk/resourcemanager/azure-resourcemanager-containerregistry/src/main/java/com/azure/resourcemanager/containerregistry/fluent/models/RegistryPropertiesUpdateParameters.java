@@ -64,7 +64,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -73,7 +73,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -84,7 +84,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -93,7 +93,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -104,7 +104,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -113,7 +113,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -124,7 +124,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -133,7 +133,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -144,7 +144,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -153,7 +153,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -164,7 +164,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -173,7 +173,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -185,7 +185,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     /**
      * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -195,7 +195,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     /**
      * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryPropertiesUpdateParameters object itself.
      */
@@ -207,7 +207,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -242,7 +242,7 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
 
     /**
      * Reads an instance of RegistryPropertiesUpdateParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RegistryPropertiesUpdateParameters if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.

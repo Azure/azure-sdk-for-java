@@ -23,7 +23,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Creates a new instance of NetworkRuleBypassOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +32,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Creates or finds a NetworkRuleBypassOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkRuleBypassOptions.
      */
@@ -42,7 +42,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Gets known NetworkRuleBypassOptions values.
-     *
+     * 
      * @return known NetworkRuleBypassOptions values.
      */
     public static Collection<NetworkRuleBypassOptions> values() {
