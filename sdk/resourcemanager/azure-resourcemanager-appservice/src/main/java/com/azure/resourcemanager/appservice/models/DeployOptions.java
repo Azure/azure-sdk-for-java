@@ -14,7 +14,7 @@ public class DeployOptions {
     private Boolean trackDeployment;
 
     /**
-     * Creates a new instance of ETagState.
+     * Creates a new instance of DeployOptions.
      */
     public DeployOptions() {
     }

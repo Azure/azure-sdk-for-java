@@ -138,9 +138,9 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     List<VirtualApplication> virtualApplications();
 
     /**
-     * Check whether to allow clients to connect over http2.0.
+     * Check whether to allow clients to connect over HTTP/2.
      *
-     * @return whether to allow clients to connect over http2.0
+     * @return whether to allow clients to connect over HTTP/2
      */
     boolean http20Enabled();
 

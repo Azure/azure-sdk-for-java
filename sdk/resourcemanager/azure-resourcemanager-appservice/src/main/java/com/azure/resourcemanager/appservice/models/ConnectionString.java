@@ -11,7 +11,8 @@ public interface ConnectionString {
     /**
      * Gets the key of the setting.
      *
-     * @return the key of the setting */
+     * @return the key of the setting
+     */
     String name();
 
     /**
