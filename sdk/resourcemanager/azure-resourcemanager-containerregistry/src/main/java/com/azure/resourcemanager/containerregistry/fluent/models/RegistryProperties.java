@@ -83,17 +83,17 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Whether or not public network access is allowed for the container registry.
+     * Checks whether or not public network access is allowed for the container registry.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Whether to allow trusted Azure services to access a network restricted registry.
+     * Checks whether to allow trusted Azure services to access a network restricted registry.
      */
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
     /*
-     * Whether or not zone redundancy is enabled for this container registry
+     * Checks whether or not zone redundancy is enabled for this container registry
      */
     private ZoneRedundancy zoneRedundancy;
 
@@ -105,7 +105,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
-     * 
+     *
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -114,7 +114,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the creationDate property: The creation date of the container registry in ISO8601 format.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -124,7 +124,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     /**
      * Get the provisioningState property: The provisioning state of the container registry at the time the operation
      * was called.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -133,7 +133,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the status property: The status of the container registry at the time the operation was called.
-     * 
+     *
      * @return the status value.
      */
     public Status status() {
@@ -142,7 +142,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     * 
+     *
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -151,7 +151,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     * 
+     *
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -162,7 +162,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     * 
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -171,7 +171,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     * 
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryProperties object itself.
      */
@@ -182,7 +182,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the policies property: The policies for a container registry.
-     * 
+     *
      * @return the policies value.
      */
     public Policies policies() {
@@ -191,7 +191,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the policies property: The policies for a container registry.
-     * 
+     *
      * @param policies the policies value to set.
      * @return the RegistryProperties object itself.
      */
@@ -202,7 +202,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     * 
+     *
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -211,7 +211,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     * 
+     *
      * @param encryption the encryption value to set.
      * @return the RegistryProperties object itself.
      */
@@ -222,7 +222,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     * 
+     *
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -231,7 +231,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     * 
+     *
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -242,7 +242,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
-     * 
+     *
      * @return the dataEndpointHostNames value.
      */
     public List<String> dataEndpointHostNames() {
@@ -251,7 +251,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections for a container registry.
-     * 
+     *
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -260,7 +260,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     * 
+     *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -269,7 +269,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     * 
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryProperties object itself.
      */
@@ -281,7 +281,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     /**
      * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     * 
+     *
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -291,7 +291,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
     /**
      * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     * 
+     *
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryProperties object itself.
      */
@@ -302,7 +302,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     * 
+     *
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -311,7 +311,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     * 
+     *
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the RegistryProperties object itself.
      */
@@ -322,7 +322,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -365,7 +365,7 @@ public final class RegistryProperties implements JsonSerializable<RegistryProper
 
     /**
      * Reads an instance of RegistryProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RegistryProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

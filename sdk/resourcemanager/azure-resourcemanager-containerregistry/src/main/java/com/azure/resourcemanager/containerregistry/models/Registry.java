@@ -27,22 +27,46 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
     Updatable<Registry.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection,
     SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return the SKU of the container registry. */
+    /**
+     * Gets the SKU of the container registry..
+     *
+     * @return the SKU of the container registry.
+     */
     Sku sku();
 
-    /** @return the URL that can be used to log into the container registry */
+    /**
+     * Gets the URL that can be used to log into the container registry.
+     *
+     * @return the URL that can be used to log into the container registry
+     */
     String loginServerUrl();
 
-    /** @return the creation date of the container registry in ISO8601 format */
+    /**
+     * Gets the creation date of the container registry.
+     *
+     * @return the creation date of the container registry in ISO8601 format
+     */
     OffsetDateTime creationDate();
 
-    /** @return the value that indicates whether the admin user is enabled */
+    /**
+     * Checks whether the value that indicates whether the admin user is enabled.
+     *
+     * @return the value that indicates whether the admin user is enabled
+     */
     boolean adminUserEnabled();
 
-    /** @return the login credentials for the specified container registry */
+    /**
+     * Gets the login credentials for the specified container registry.
+     *
+     * @return the login credentials for the specified container registry
+     */
     RegistryCredentials getCredentials();
 
-    /** @return a representation of the future computation of this call */
+    /**
+     * Gets a representation of the future computation of this call.
+     *
+     * @return a representation of the future computation of this call
+     */
     Mono<RegistryCredentials> getCredentialsAsync();
 
     /**
@@ -75,37 +99,67 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
      */
     PagedFlux<RegistryUsage> listQuotaUsagesAsync();
 
-    /** @return returns the upload location for the user to be able to upload the source. */
+    /**
+     * Gets the upload location for the user to be able to upload the source.
+     *
+     * @return returns the upload location for the user to be able to upload the source.
+     */
     SourceUploadDefinition getBuildSourceUploadUrl();
 
     /**
-     * Gets the upload location for the user to be able to upload the source asynchronously.
+     * Gets the upload location.
      *
      * @return a representation of the future computation of this call
      */
     Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync();
 
-    /** @return returns entry point to manage container registry webhooks. */
+    /**
+     * Gets entry point to manage container registry webhooks.
+     *
+     * @return returns entry point to manage container registry webhooks.
+     */
     WebhookOperations webhooks();
 
     /**
+     * Gets the state of public network access for the container registry.
+     *
      * @return the state of public network access for the container registry.
      */
     PublicNetworkAccess publicNetworkAccess();
 
-    /** @return whether the container registry can be access from trusted services */
+    /**
+     * Checks whether the container registry can be access from trusted services
+     *
+     * @return whether the container registry can be access from trusted services
+     */
     boolean canAccessFromTrustedServices();
 
-    /** @return the network rule set for the container registry */
+    /**
+     * Gets the network rule set for the container registry.
+     *
+     * @return the network rule set for the container registry
+     */
     NetworkRuleSet networkRuleSet();
 
-    /** @return whether the container registries dedicated data endpoints can be accessed from public network */
+    /**
+     * Checks whether the container registries dedicated data endpoints can be accessed from public network.
+     *
+     * @return whether the container registries dedicated data endpoints can be accessed from public network
+     */
     boolean isDedicatedDataEndpointsEnabled();
 
-    /** @return Whether or not zone redundancy is enabled for this container registry */
+    /**
+     * Checks whether zone redundancy is enabled for this container registry.
+     *
+     * @return Whether zone redundancy is enabled for this container registry
+     */
     boolean isZoneRedundancyEnabled();
 
-    /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
+    /**
+     * Gets list of host names that will serve data.
+     *
+     * @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true
+     */
     List<String> dedicatedDataEndpointsHostNames();
 
     /**

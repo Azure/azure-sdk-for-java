@@ -36,7 +36,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     private Boolean regionEndpointEnabled;
 
     /*
-     * Whether or not zone redundancy is enabled for this container registry replication
+     * Checks whether or not zone redundancy is enabled for this container registry replication
      */
     private ZoneRedundancy zoneRedundancy;
 
@@ -49,7 +49,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was
      * called.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +58,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
 
     /**
      * Get the status property: The status of the replication at the time the operation was called.
-     * 
+     *
      * @return the status value.
      */
     public Status status() {
@@ -69,7 +69,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     * 
+     *
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -80,7 +80,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     * 
+     *
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationProperties object itself.
      */
@@ -92,7 +92,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     * 
+     *
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -102,7 +102,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry
      * replication.
-     * 
+     *
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the ReplicationProperties object itself.
      */
@@ -113,7 +113,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -136,7 +136,7 @@ public final class ReplicationProperties implements JsonSerializable<Replication
 
     /**
      * Reads an instance of ReplicationProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ReplicationProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

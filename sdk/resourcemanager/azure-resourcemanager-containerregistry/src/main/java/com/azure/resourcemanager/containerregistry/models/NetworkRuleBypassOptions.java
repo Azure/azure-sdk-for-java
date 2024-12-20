@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Whether to allow trusted Azure services to access a network restricted registry.
+ * Checks whether to allow trusted Azure services to access a network restricted registry.
  */
 public final class NetworkRuleBypassOptions extends ExpandableStringEnum<NetworkRuleBypassOptions> {
     /**
@@ -23,7 +23,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Creates a new instance of NetworkRuleBypassOptions value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +32,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Creates or finds a NetworkRuleBypassOptions from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding NetworkRuleBypassOptions.
      */
@@ -42,7 +42,7 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
 
     /**
      * Gets known NetworkRuleBypassOptions values.
-     * 
+     *
      * @return known NetworkRuleBypassOptions values.
      */
     public static Collection<NetworkRuleBypassOptions> values() {
