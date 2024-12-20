@@ -252,6 +252,21 @@ steps:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml
     - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
+  # The name of a test case in the results file isn't helpful in the web view.
+  # Update it to include the breadcrumb namespace and the type.
+  - pwsh: |
+      Get-ChildItem "TEST-*.xml" -Path | ForEach-Object {
+      [xml]$xml = Get-Content $_.FullName
+      $xml.SelectNodes("//testcase") | ForEach-Object {
+          $parts = $_.classname -split '\.'
+          $shortClassname = (($parts[0..($parts.Length -2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
+          $_.name = "$shortClassname.$($_.name)"
+          }
+          $xml.Save($_.FullName)
+      }
+    displayName: 'Update test case names for reporting'
+    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
+
   - task: PublishTestResults@2
     condition: always()
     inputs:
