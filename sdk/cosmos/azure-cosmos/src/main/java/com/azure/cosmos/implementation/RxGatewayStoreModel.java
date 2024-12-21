@@ -275,9 +275,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         try {
 
+            // todo: neharao1 - see if the below three statements can be removed since these are part of wrapInHttpRequest
             HttpMethod method = getHttpMethod(request);
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
-
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = request
@@ -652,6 +652,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         //no-op
+    }
+
+    public Map<String, String> getDefaultHeaders() {
+        return this.defaultHeaders;
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
