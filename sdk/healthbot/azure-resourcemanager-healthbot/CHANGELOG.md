@@ -6,7 +6,7 @@
 
 ### Other Changes
 
-- Release for Azure Resource Manager ApiManagement client library for Java.
+- Release for Azure Resource Manager Healthbot client library for Java.
 
 ## 1.0.0-beta.3 (2024-10-10)
 
