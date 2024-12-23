@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.util.Arrays;
 
 /**
@@ -14,8 +13,7 @@ import java.util.Arrays;
  */
 public final class ConfigurationsBatchUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
      * ConfigurationsBatchUpdate.json
      */
     /**
@@ -25,9 +23,10 @@ public final class ConfigurationsBatchUpdateSamples {
      */
     public static void configurationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.configurations()
-            .batchUpdate("testrg", "mysqltestserver", new ConfigurationListForBatchUpdate()
-                .withValue(Arrays.asList(new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
-                    new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8")))
-                .withResetAllToDefault(ResetAllToDefault.FALSE), com.azure.core.util.Context.NONE);
+            .batchUpdate("testrg", "mysqltestserver",
+                new ConfigurationListForBatchUpdate().withValue(
+                    Arrays.asList(new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
+                        new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8"))),
+                com.azure.core.util.Context.NONE);
     }
 }

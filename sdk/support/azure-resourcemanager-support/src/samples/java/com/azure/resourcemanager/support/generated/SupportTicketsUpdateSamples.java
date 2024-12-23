@@ -17,7 +17,8 @@ import java.util.Arrays;
  */
 public final class SupportTicketsUpdateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update advanced diagnostic consent of a subscription support ticket.
@@ -32,7 +33,8 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateSeverityOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * UpdateSeverityOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update severity of a subscription support ticket.
@@ -47,7 +49,8 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * UpdateStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update status of a subscription support ticket.
@@ -62,7 +65,8 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * UpdateContactDetailsOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update contact details of a subscription support ticket.

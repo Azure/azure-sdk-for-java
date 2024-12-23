@@ -7,6 +7,9 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,6 +17,12 @@ import java.io.UncheckedIOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StorageFileInputOutputStreamTests extends FileShareTestBase {
     private ShareFileClient fileClient;
@@ -76,5 +85,22 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
         }
         byte[] randomBytes2 = outputStream.toByteArray();
         assertArrayEquals(randomBytes2, Arrays.copyOfRange(randomBytes, 2 * Constants.MB, 9 * Constants.MB));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testPartialResponseHandling() {
+        ShareFileAsyncClient mockClient = mock(ShareFileAsyncClient.class);
+        StorageFileOutputStream outputStream = new StorageFileOutputStream(mockClient, 0);
+
+        byte[] data = "test data".getBytes();
+        int writeLength = data.length;
+
+        when(mockClient.uploadWithResponse(any(Flux.class), eq((long) writeLength), eq(0L)))
+            .thenReturn(Mono.error(new IOException()));
+
+        StepVerifier.create(outputStream.dispatchWrite(data, writeLength, 0)).expectError(IOException.class).verify();
+
+        verify(mockClient, times(1)).uploadWithResponse(any(Flux.class), eq((long) writeLength), eq(0L));
     }
 }

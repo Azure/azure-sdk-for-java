@@ -23,9 +23,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.AdvancedThreatProtectionSettingsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.AzureADAdministratorsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.BackupAndExportsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.BackupsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckNameAvailabilityWithoutLocationsClient;
@@ -35,18 +32,10 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedCapabilitySetsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.LogFilesClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.LongRunningBackupsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.LongRunningBackupsOperationsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.MaintenancesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.MySqlManagementClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.OperationProgressClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.OperationResultsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServersClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServersMigrationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -62,12 +51,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = MySqlManagementClientBuilder.class)
 public final class MySqlManagementClientImpl implements MySqlManagementClient {
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * The ID of the target subscription.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -87,6 +76,20 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Api Version.
+     */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -132,118 +135,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
     }
 
     /**
-     * The AzureADAdministratorsClient object to access its operations.
-     */
-    private final AzureADAdministratorsClient azureADAdministrators;
-
-    /**
-     * Gets the AzureADAdministratorsClient object to access its operations.
-     * 
-     * @return the AzureADAdministratorsClient object.
-     */
-    public AzureADAdministratorsClient getAzureADAdministrators() {
-        return this.azureADAdministrators;
-    }
-
-    /**
-     * The BackupsClient object to access its operations.
-     */
-    private final BackupsClient backups;
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     * 
-     * @return the BackupsClient object.
-     */
-    public BackupsClient getBackups() {
-        return this.backups;
-    }
-
-    /**
-     * The BackupAndExportsClient object to access its operations.
-     */
-    private final BackupAndExportsClient backupAndExports;
-
-    /**
-     * Gets the BackupAndExportsClient object to access its operations.
-     * 
-     * @return the BackupAndExportsClient object.
-     */
-    public BackupAndExportsClient getBackupAndExports() {
-        return this.backupAndExports;
-    }
-
-    /**
-     * The LongRunningBackupsClient object to access its operations.
-     */
-    private final LongRunningBackupsClient longRunningBackups;
-
-    /**
-     * Gets the LongRunningBackupsClient object to access its operations.
-     * 
-     * @return the LongRunningBackupsClient object.
-     */
-    public LongRunningBackupsClient getLongRunningBackups() {
-        return this.longRunningBackups;
-    }
-
-    /**
-     * The LongRunningBackupsOperationsClient object to access its operations.
-     */
-    private final LongRunningBackupsOperationsClient longRunningBackupsOperations;
-
-    /**
-     * Gets the LongRunningBackupsOperationsClient object to access its operations.
-     * 
-     * @return the LongRunningBackupsOperationsClient object.
-     */
-    public LongRunningBackupsOperationsClient getLongRunningBackupsOperations() {
-        return this.longRunningBackupsOperations;
-    }
-
-    /**
-     * The ConfigurationsClient object to access its operations.
-     */
-    private final ConfigurationsClient configurations;
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     * 
-     * @return the ConfigurationsClient object.
-     */
-    public ConfigurationsClient getConfigurations() {
-        return this.configurations;
-    }
-
-    /**
-     * The DatabasesClient object to access its operations.
-     */
-    private final DatabasesClient databases;
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     * 
-     * @return the DatabasesClient object.
-     */
-    public DatabasesClient getDatabases() {
-        return this.databases;
-    }
-
-    /**
-     * The FirewallRulesClient object to access its operations.
-     */
-    private final FirewallRulesClient firewallRules;
-
-    /**
-     * Gets the FirewallRulesClient object to access its operations.
-     * 
-     * @return the FirewallRulesClient object.
-     */
-    public FirewallRulesClient getFirewallRules() {
-        return this.firewallRules;
-    }
-
-    /**
      * The ServersClient object to access its operations.
      */
     private final ServersClient servers;
@@ -272,45 +163,59 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
     }
 
     /**
-     * The ServersMigrationsClient object to access its operations.
+     * The BackupsClient object to access its operations.
      */
-    private final ServersMigrationsClient serversMigrations;
+    private final BackupsClient backups;
 
     /**
-     * Gets the ServersMigrationsClient object to access its operations.
+     * Gets the BackupsClient object to access its operations.
      * 
-     * @return the ServersMigrationsClient object.
+     * @return the BackupsClient object.
      */
-    public ServersMigrationsClient getServersMigrations() {
-        return this.serversMigrations;
+    public BackupsClient getBackups() {
+        return this.backups;
     }
 
     /**
-     * The AdvancedThreatProtectionSettingsClient object to access its operations.
+     * The FirewallRulesClient object to access its operations.
      */
-    private final AdvancedThreatProtectionSettingsClient advancedThreatProtectionSettings;
+    private final FirewallRulesClient firewallRules;
 
     /**
-     * Gets the AdvancedThreatProtectionSettingsClient object to access its operations.
+     * Gets the FirewallRulesClient object to access its operations.
      * 
-     * @return the AdvancedThreatProtectionSettingsClient object.
+     * @return the FirewallRulesClient object.
      */
-    public AdvancedThreatProtectionSettingsClient getAdvancedThreatProtectionSettings() {
-        return this.advancedThreatProtectionSettings;
+    public FirewallRulesClient getFirewallRules() {
+        return this.firewallRules;
     }
 
     /**
-     * The LogFilesClient object to access its operations.
+     * The DatabasesClient object to access its operations.
      */
-    private final LogFilesClient logFiles;
+    private final DatabasesClient databases;
 
     /**
-     * Gets the LogFilesClient object to access its operations.
+     * Gets the DatabasesClient object to access its operations.
      * 
-     * @return the LogFilesClient object.
+     * @return the DatabasesClient object.
      */
-    public LogFilesClient getLogFiles() {
-        return this.logFiles;
+    public DatabasesClient getDatabases() {
+        return this.databases;
+    }
+
+    /**
+     * The ConfigurationsClient object to access its operations.
+     */
+    private final ConfigurationsClient configurations;
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     * 
+     * @return the ConfigurationsClient object.
+     */
+    public ConfigurationsClient getConfigurations() {
+        return this.configurations;
     }
 
     /**
@@ -325,20 +230,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public LocationBasedCapabilitiesClient getLocationBasedCapabilities() {
         return this.locationBasedCapabilities;
-    }
-
-    /**
-     * The LocationBasedCapabilitySetsClient object to access its operations.
-     */
-    private final LocationBasedCapabilitySetsClient locationBasedCapabilitySets;
-
-    /**
-     * Gets the LocationBasedCapabilitySetsClient object to access its operations.
-     * 
-     * @return the LocationBasedCapabilitySetsClient object.
-     */
-    public LocationBasedCapabilitySetsClient getLocationBasedCapabilitySets() {
-        return this.locationBasedCapabilitySets;
     }
 
     /**
@@ -384,34 +275,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
     }
 
     /**
-     * The OperationResultsClient object to access its operations.
-     */
-    private final OperationResultsClient operationResults;
-
-    /**
-     * Gets the OperationResultsClient object to access its operations.
-     * 
-     * @return the OperationResultsClient object.
-     */
-    public OperationResultsClient getOperationResults() {
-        return this.operationResults;
-    }
-
-    /**
-     * The OperationProgressClient object to access its operations.
-     */
-    private final OperationProgressClient operationProgress;
-
-    /**
-     * Gets the OperationProgressClient object to access its operations.
-     * 
-     * @return the OperationProgressClient object.
-     */
-    public OperationProgressClient getOperationProgress() {
-        return this.operationProgress;
-    }
-
-    /**
      * The GetPrivateDnsZoneSuffixesClient object to access its operations.
      */
     private final GetPrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes;
@@ -440,27 +303,13 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
     }
 
     /**
-     * The MaintenancesClient object to access its operations.
-     */
-    private final MaintenancesClient maintenances;
-
-    /**
-     * Gets the MaintenancesClient object to access its operations.
-     * 
-     * @return the MaintenancesClient object.
-     */
-    public MaintenancesClient getMaintenances() {
-        return this.maintenances;
-    }
-
-    /**
      * Initializes an instance of MySqlManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     MySqlManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -470,29 +319,19 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.azureADAdministrators = new AzureADAdministratorsClientImpl(this);
-        this.backups = new BackupsClientImpl(this);
-        this.backupAndExports = new BackupAndExportsClientImpl(this);
-        this.longRunningBackups = new LongRunningBackupsClientImpl(this);
-        this.longRunningBackupsOperations = new LongRunningBackupsOperationsClientImpl(this);
-        this.configurations = new ConfigurationsClientImpl(this);
-        this.databases = new DatabasesClientImpl(this);
-        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.apiVersion = "2021-05-01";
         this.servers = new ServersClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
-        this.serversMigrations = new ServersMigrationsClientImpl(this);
-        this.advancedThreatProtectionSettings = new AdvancedThreatProtectionSettingsClientImpl(this);
-        this.logFiles = new LogFilesClientImpl(this);
+        this.backups = new BackupsClientImpl(this);
+        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.databases = new DatabasesClientImpl(this);
+        this.configurations = new ConfigurationsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
-        this.locationBasedCapabilitySets = new LocationBasedCapabilitySetsClientImpl(this);
         this.checkVirtualNetworkSubnetUsages = new CheckVirtualNetworkSubnetUsagesClientImpl(this);
         this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
         this.checkNameAvailabilityWithoutLocations = new CheckNameAvailabilityWithoutLocationsClientImpl(this);
-        this.operationResults = new OperationResultsClientImpl(this);
-        this.operationProgress = new OperationProgressClientImpl(this);
         this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.maintenances = new MaintenancesClientImpl(this);
     }
 
     /**

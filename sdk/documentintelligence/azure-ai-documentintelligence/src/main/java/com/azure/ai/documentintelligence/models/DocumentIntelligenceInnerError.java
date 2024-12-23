@@ -29,12 +29,6 @@ public final class DocumentIntelligenceInnerError implements JsonSerializable<Do
     @Generated
     private String message;
 
-    /*
-     * Inner error.
-     */
-    @Generated
-    private DocumentIntelligenceInnerError innererror;
-
     /**
      * Creates an instance of DocumentIntelligenceInnerError class.
      */
@@ -63,16 +57,6 @@ public final class DocumentIntelligenceInnerError implements JsonSerializable<Do
     }
 
     /**
-     * Get the innererror property: Inner error.
-     *
-     * @return the innererror value.
-     */
-    @Generated
-    public DocumentIntelligenceInnerError getInnererror() {
-        return this.innererror;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -81,7 +65,7 @@ public final class DocumentIntelligenceInnerError implements JsonSerializable<Do
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeJsonField("innererror", this.innererror);
+        jsonWriter.writeJsonField("innererror", this.innerError);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,7 +90,7 @@ public final class DocumentIntelligenceInnerError implements JsonSerializable<Do
                 } else if ("message".equals(fieldName)) {
                     deserializedDocumentIntelligenceInnerError.message = reader.getString();
                 } else if ("innererror".equals(fieldName)) {
-                    deserializedDocumentIntelligenceInnerError.innererror
+                    deserializedDocumentIntelligenceInnerError.innerError
                         = DocumentIntelligenceInnerError.fromJson(reader);
                 } else {
                     reader.skipChildren();
@@ -114,5 +98,21 @@ public final class DocumentIntelligenceInnerError implements JsonSerializable<Do
             }
             return deserializedDocumentIntelligenceInnerError;
         });
+    }
+
+    /*
+     * Inner error.
+     */
+    @Generated
+    private DocumentIntelligenceInnerError innerError;
+
+    /**
+     * Get the innerError property: Inner error.
+     *
+     * @return the innerError value.
+     */
+    @Generated
+    public DocumentIntelligenceInnerError getInnerError() {
+        return this.innerError;
     }
 }

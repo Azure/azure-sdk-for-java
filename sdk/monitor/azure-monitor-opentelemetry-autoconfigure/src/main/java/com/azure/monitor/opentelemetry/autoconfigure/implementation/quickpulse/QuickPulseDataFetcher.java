@@ -120,6 +120,8 @@ class QuickPulseDataFetcher {
         metrics.put("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage); // TODO: remove old cpu counter name when service side makes the UI change
         metrics.put("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage);
 
+        metrics.putAll(counters.projections);
+
         for (Map.Entry<String, Double> entry : metrics.entrySet()) {
             MetricPoint point = new MetricPoint();
             point.setName(entry.getKey());

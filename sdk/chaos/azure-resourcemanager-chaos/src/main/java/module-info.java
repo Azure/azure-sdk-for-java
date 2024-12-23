@@ -10,6 +10,6 @@ module com.azure.resourcemanager.chaos {
     exports com.azure.resourcemanager.chaos.fluent.models;
     exports com.azure.resourcemanager.chaos.models;
 
-    opens com.azure.resourcemanager.chaos.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.chaos.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.chaos.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.chaos.models to com.azure.core;
 }

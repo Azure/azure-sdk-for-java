@@ -41,14 +41,12 @@ class ServiceBusJmsAutoConfigurationTests {
 
     static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
         + "SharedAccessKey=sasKey";
-    private final AzureServiceBusJmsPropertiesEnvironmentPostProcessor processor =
-        new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(
             JmsAutoConfiguration.class,
-            ServiceBusJmsAutoConfiguration.class))
-        .withInitializer(context -> processor.postProcessEnvironment(context.getEnvironment(), null));
+            ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory =

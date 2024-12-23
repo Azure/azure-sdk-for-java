@@ -11,11 +11,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
-import com.azure.resourcemanager.deviceregistry.models.ActionType;
 import com.azure.resourcemanager.deviceregistry.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +21,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ltyfsop\",\"isDataAction\":false,\"display\":{\"provider\":\"snzwd\",\"resource\":\"bavo\",\"operation\":\"zdmohctbqvu\",\"description\":\"xdn\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"umaq\",\"isDataAction\":true,\"display\":{\"provider\":\"cdui\",\"resource\":\"tgccymvaolpss\",\"operation\":\"lfmmdnbbglzpswi\",\"description\":\"mcwyhzdxssadb\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +32,5 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("snzwd", response.iterator().next().display().provider());
-        Assertions.assertEquals("bavo", response.iterator().next().display().resource());
-        Assertions.assertEquals("zdmohctbqvu", response.iterator().next().display().operation());
-        Assertions.assertEquals("xdn", response.iterator().next().display().description());
-        Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

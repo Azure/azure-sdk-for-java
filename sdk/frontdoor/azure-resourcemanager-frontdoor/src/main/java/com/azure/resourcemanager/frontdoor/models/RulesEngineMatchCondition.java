@@ -6,48 +6,47 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Define a match condition.
  */
 @Fluent
-public final class RulesEngineMatchCondition {
+public final class RulesEngineMatchCondition implements JsonSerializable<RulesEngineMatchCondition> {
     /*
      * Match Variable
      */
-    @JsonProperty(value = "rulesEngineMatchVariable", required = true)
     private RulesEngineMatchVariable rulesEngineMatchVariable;
 
     /*
      * Name of selector in RequestHeader or RequestBody to be matched
      */
-    @JsonProperty(value = "selector")
     private String selector;
 
     /*
      * Describes operator to apply to the match condition.
      */
-    @JsonProperty(value = "rulesEngineOperator", required = true)
     private RulesEngineOperator rulesEngineOperator;
 
     /*
      * Describes if this is negate condition or not
      */
-    @JsonProperty(value = "negateCondition")
     private Boolean negateCondition;
 
     /*
-     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match.
+     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them
+     * match the variable with the given operator this match condition is considered a match.
      */
-    @JsonProperty(value = "rulesEngineMatchValue", required = true)
     private List<String> rulesEngineMatchValue;
 
     /*
      * List of transforms
      */
-    @JsonProperty(value = "transforms")
     private List<Transform> transforms;
 
     /**
@@ -204,4 +203,64 @@ public final class RulesEngineMatchCondition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RulesEngineMatchCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rulesEngineMatchVariable",
+            this.rulesEngineMatchVariable == null ? null : this.rulesEngineMatchVariable.toString());
+        jsonWriter.writeStringField("rulesEngineOperator",
+            this.rulesEngineOperator == null ? null : this.rulesEngineOperator.toString());
+        jsonWriter.writeArrayField("rulesEngineMatchValue", this.rulesEngineMatchValue,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("selector", this.selector);
+        jsonWriter.writeBooleanField("negateCondition", this.negateCondition);
+        jsonWriter.writeArrayField("transforms", this.transforms,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesEngineMatchCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesEngineMatchCondition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RulesEngineMatchCondition.
+     */
+    public static RulesEngineMatchCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesEngineMatchCondition deserializedRulesEngineMatchCondition = new RulesEngineMatchCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rulesEngineMatchVariable".equals(fieldName)) {
+                    deserializedRulesEngineMatchCondition.rulesEngineMatchVariable
+                        = RulesEngineMatchVariable.fromString(reader.getString());
+                } else if ("rulesEngineOperator".equals(fieldName)) {
+                    deserializedRulesEngineMatchCondition.rulesEngineOperator
+                        = RulesEngineOperator.fromString(reader.getString());
+                } else if ("rulesEngineMatchValue".equals(fieldName)) {
+                    List<String> rulesEngineMatchValue = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRulesEngineMatchCondition.rulesEngineMatchValue = rulesEngineMatchValue;
+                } else if ("selector".equals(fieldName)) {
+                    deserializedRulesEngineMatchCondition.selector = reader.getString();
+                } else if ("negateCondition".equals(fieldName)) {
+                    deserializedRulesEngineMatchCondition.negateCondition = reader.getNullable(JsonReader::getBoolean);
+                } else if ("transforms".equals(fieldName)) {
+                    List<Transform> transforms = reader.readArray(reader1 -> Transform.fromString(reader1.getString()));
+                    deserializedRulesEngineMatchCondition.transforms = transforms;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesEngineMatchCondition;
+        });
+    }
 }

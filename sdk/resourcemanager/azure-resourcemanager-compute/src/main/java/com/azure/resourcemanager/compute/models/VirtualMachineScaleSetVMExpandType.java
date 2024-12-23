@@ -16,6 +16,15 @@ public class VirtualMachineScaleSetVMExpandType extends ExpandableStringEnum<Vir
     public static final VirtualMachineScaleSetVMExpandType INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of VirtualMachineScaleSetVMExpandType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineScaleSetVMExpandType() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineScaleSetVMExpandType from its string representation.
      * @param name a name to look for
      * @return the corresponding VirtualMachineScaleSetVMExpandType
@@ -25,6 +34,8 @@ public class VirtualMachineScaleSetVMExpandType extends ExpandableStringEnum<Vir
     }
 
     /**
+     * Gets known VirtualMachineScaleSetVMExpandType values.
+     *
      * @return known VirtualMachineScaleSetVMExpandType values
      */
     public static Collection<VirtualMachineScaleSetVMExpandType> values() {

@@ -29,10 +29,10 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /*
      * Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
-     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}
+     * /providers/Microsoft.KeyVault/vaults/{vaultName}
+     * /secrets/{secretName}
+     *
      */
     private ResourceReference secretSource;
 
@@ -49,7 +49,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Get the type property: The type of the secret resource.
-     * 
+     *
      * @return the type value.
      */
     @Override
@@ -60,7 +60,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     /**
      * Get the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     * 
+     *
      * @return the keyId value.
      */
     public String keyId() {
@@ -70,7 +70,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     /**
      * Set the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     * 
+     *
      * @param keyId the keyId value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -81,8 +81,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -91,8 +91,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     * 
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/secrets/{secretName}.
+     *
      * @param secretSource the secretSource value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -103,7 +103,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Get the secretVersion property: Version of the secret to be used.
-     * 
+     *
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -112,7 +112,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Set the secretVersion property: Version of the secret to be used.
-     * 
+     *
      * @param secretVersion the secretVersion value to set.
      * @return the UrlSigningKeyParameters object itself.
      */
@@ -123,7 +123,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -159,7 +159,7 @@ public final class UrlSigningKeyParameters extends SecretParameters {
 
     /**
      * Reads an instance of UrlSigningKeyParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of UrlSigningKeyParameters if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

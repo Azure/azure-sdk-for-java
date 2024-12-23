@@ -6,43 +6,42 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorCertificateSourceParameters;
 import com.azure.resourcemanager.frontdoor.fluent.models.KeyVaultCertificateSourceParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Https settings for a domain.
  */
 @Fluent
-public final class CustomHttpsConfiguration {
+public final class CustomHttpsConfiguration implements JsonSerializable<CustomHttpsConfiguration> {
     /*
      * Defines the source of the SSL certificate
      */
-    @JsonProperty(value = "certificateSource", required = true)
     private FrontDoorCertificateSource certificateSource;
 
     /*
      * Defines the TLS extension protocol that is used for secure delivery
      */
-    @JsonProperty(value = "protocolType", required = true)
     private FrontDoorTlsProtocolType protocolType;
 
     /*
      * The minimum TLS version required from the clients to establish an SSL handshake with Front Door.
      */
-    @JsonProperty(value = "minimumTlsVersion", required = true)
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
      * KeyVault certificate source parameters (if certificateSource=AzureKeyVault)
      */
-    @JsonProperty(value = "keyVaultCertificateSourceParameters")
     private KeyVaultCertificateSourceParameters innerKeyVaultCertificateSourceParameters;
 
     /*
      * Parameters required for enabling SSL with Front Door-managed certificates (if certificateSource=FrontDoor)
      */
-    @JsonProperty(value = "frontDoorCertificateSourceParameters")
     private FrontDoorCertificateSourceParameters innerFrontDoorCertificateSourceParameters;
 
     /**
@@ -265,4 +264,61 @@ public final class CustomHttpsConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomHttpsConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateSource",
+            this.certificateSource == null ? null : this.certificateSource.toString());
+        jsonWriter.writeStringField("protocolType", this.protocolType == null ? null : this.protocolType.toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeJsonField("keyVaultCertificateSourceParameters", this.innerKeyVaultCertificateSourceParameters);
+        jsonWriter.writeJsonField("frontDoorCertificateSourceParameters",
+            this.innerFrontDoorCertificateSourceParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomHttpsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomHttpsConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomHttpsConfiguration.
+     */
+    public static CustomHttpsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomHttpsConfiguration deserializedCustomHttpsConfiguration = new CustomHttpsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateSource".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.certificateSource
+                        = FrontDoorCertificateSource.fromString(reader.getString());
+                } else if ("protocolType".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.protocolType
+                        = FrontDoorTlsProtocolType.fromString(reader.getString());
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.minimumTlsVersion
+                        = MinimumTlsVersion.fromString(reader.getString());
+                } else if ("keyVaultCertificateSourceParameters".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.innerKeyVaultCertificateSourceParameters
+                        = KeyVaultCertificateSourceParameters.fromJson(reader);
+                } else if ("frontDoorCertificateSourceParameters".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.innerFrontDoorCertificateSourceParameters
+                        = FrontDoorCertificateSourceParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomHttpsConfiguration;
+        });
+    }
 }

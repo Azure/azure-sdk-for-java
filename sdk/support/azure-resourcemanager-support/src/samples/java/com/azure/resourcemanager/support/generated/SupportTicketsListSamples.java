@@ -9,7 +9,8 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class SupportTicketsListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsServiceIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain service id for a subscription.
@@ -22,7 +23,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state for a subscription.
@@ -36,7 +38,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInUpdatingStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in updating state for a subscription.
@@ -49,7 +52,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state for a subscription.
@@ -64,7 +68,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id for a subscription.
@@ -79,7 +84,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsBySubscription.json
      */
     /**
      * Sample code: List support tickets for a subscription.
@@ -91,7 +97,8 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInOpenStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/
+     * ListSupportTicketsInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in open state for a subscription.
