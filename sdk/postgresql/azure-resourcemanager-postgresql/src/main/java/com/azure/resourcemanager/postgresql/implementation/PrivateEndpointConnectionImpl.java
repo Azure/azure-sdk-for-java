@@ -42,6 +42,10 @@ public final class PrivateEndpointConnectionImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionInner innerModel() {
         return this.innerObject;
     }
@@ -108,9 +112,10 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {

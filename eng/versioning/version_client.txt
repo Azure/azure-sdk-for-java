@@ -292,7 +292,7 @@ com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.45.0;2.46.0
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.3.0;2.4.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.2;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.2;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.2;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.3;1.1.0-beta.1
