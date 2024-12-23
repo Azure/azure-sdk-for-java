@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2024-12-23)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Azure Resource Manager Automation client library for Java. This package contains Microsoft Azure SDK for Automation Management SDK. Automation Client. Package tag package-2022-02-22. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Other Changes
+
+- Release for Azure Resource Manager Automation client library for Java.
 
 ## 1.0.0-beta.3 (2024-10-10)
 

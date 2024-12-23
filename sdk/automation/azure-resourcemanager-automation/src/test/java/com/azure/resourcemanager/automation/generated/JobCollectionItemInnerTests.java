@@ -12,7 +12,7 @@ public final class JobCollectionItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobCollectionItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"runbook\":{\"name\":\"zznvfbyc\"},\"jobId\":\"59a4b387-5bd2-4608-a12d-8ba3033269fa\",\"creationTime\":\"2021-10-14T17:32:27Z\",\"status\":\"Suspending\",\"startTime\":\"2021-01-11T06:52:26Z\",\"endTime\":\"2021-06-03T06:24:37Z\",\"lastModifiedTime\":\"2021-10-30T00:47:44Z\",\"provisioningState\":\"mxqhndvnoamldse\",\"runOn\":\"ohdjhhflzok\"},\"id\":\"coxpelnjeta\",\"name\":\"ltsxoatf\",\"type\":\"g\"}")
+            "{\"properties\":{\"runbook\":{\"name\":\"zznvfbyc\"},\"jobId\":\"239d6350-06c2-4284-b228-ef0ce6ffe9c6\",\"creationTime\":\"2021-10-14T17:32:27Z\",\"status\":\"Suspending\",\"startTime\":\"2021-01-11T06:52:26Z\",\"endTime\":\"2021-06-03T06:24:37Z\",\"lastModifiedTime\":\"2021-10-30T00:47:44Z\",\"provisioningState\":\"mxqhndvnoamldse\",\"runOn\":\"ohdjhhflzok\"},\"id\":\"coxpelnjeta\",\"name\":\"ltsxoatf\",\"type\":\"g\"}")
             .toObject(JobCollectionItemInner.class);
         Assertions.assertEquals("ohdjhhflzok", model.runOn());
     }
