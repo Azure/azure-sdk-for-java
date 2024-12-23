@@ -88,7 +88,7 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
     }
 
     /**
-     * Gets he Azure Kubernetes cluster resource management API entry point.
+     * Gets the Azure Kubernetes cluster resource management API entry point.
      *
      * @return the Azure Kubernetes cluster resource management API entry point
      */

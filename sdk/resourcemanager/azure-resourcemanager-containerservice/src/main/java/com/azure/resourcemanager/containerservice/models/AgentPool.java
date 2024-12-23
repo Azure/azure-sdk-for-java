@@ -183,9 +183,9 @@ public interface AgentPool extends HasName {
     Map<String, String> tags();
 
     /**
-     * Checks whether FIPS-enabled OS is been used for agent pool's machines.
+     * Checks whether FIPS-enabled OS is being used for agent pool's machines.
      *
-     * @return whether FIPS-enabled OS is been used for agent pool's machines
+     * @return whether FIPS-enabled OS is being used for agent pool's machines
      * @see <a href="https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview">
      *     Add a FIPS-enabled node pool</a> for more details.
      */

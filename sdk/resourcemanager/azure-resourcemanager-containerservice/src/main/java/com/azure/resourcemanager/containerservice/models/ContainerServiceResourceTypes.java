@@ -33,7 +33,7 @@ public class ContainerServiceResourceTypes extends ExpandableStringEnum<Containe
     }
 
     /**
-     * Gets known ExtendedLocationTypes values..
+     * Gets known ExtendedLocationTypes values.
      *
      * @return known ExtendedLocationTypes values.
      */
