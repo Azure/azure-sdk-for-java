@@ -22,7 +22,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
     @Test
     public void testListBySecureScore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"wjsba\",\"score\":{\"max\":1797222701,\"current\":73.83149851676426,\"percentage\":25.390317222265125},\"healthyResourceCount\":1509353774,\"unhealthyResourceCount\":2053007884,\"notApplicableResourceCount\":616800165,\"weight\":1063123898853327288,\"definition\":{\"properties\":{\"displayName\":\"i\",\"description\":\"onkrni\",\"maxScore\":834064746,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{},{}]},\"id\":\"itn\",\"name\":\"paptgvnaqyjuk\",\"type\":\"ajnnewltonop\"}},\"id\":\"femiwfhhawbabhz\",\"name\":\"fcdi\",\"type\":\"qnxyd\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"qdnppfcfguamrvam\",\"score\":{\"max\":1643732189,\"current\":37.63228304709491,\"percentage\":61.2029894208796},\"healthyResourceCount\":2010198474,\"unhealthyResourceCount\":1472965569,\"notApplicableResourceCount\":1868768880,\"weight\":6940120133635182123,\"definition\":{\"properties\":{\"displayName\":\"syydjlhdukcsqvye\",\"description\":\"xhulojwumfjdy\",\"maxScore\":791669096,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{},{},{},{}]},\"id\":\"yxdjspnonxemhqp\",\"name\":\"hnatwvgcmcvdjl\",\"type\":\"wefevt\"}},\"id\":\"llqypmjcoy\",\"name\":\"fwgkzuhk\",\"type\":\"hx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecureScoreControlDetails> response = manager.secureScoreControls()
-            .listBySecureScore("so", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+            .listBySecureScore("wqjz", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,7 +11,7 @@ public final class CompliancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComplianceProperties model = BinaryData.fromString(
-            "{\"assessmentTimestampUtcDate\":\"2021-11-13T23:35:47Z\",\"resourceCount\":922056801,\"assessmentResult\":[{\"segmentType\":\"x\",\"percentage\":19.21714111001248},{\"segmentType\":\"ddtocjjxhvp\",\"percentage\":41.11226825045171},{\"segmentType\":\"hd\",\"percentage\":5.346817034336282},{\"segmentType\":\"eojnxqbzvddn\",\"percentage\":19.32644653583042}]}")
+            "{\"assessmentTimestampUtcDate\":\"2021-01-11T19:42:09Z\",\"resourceCount\":1695010462,\"assessmentResult\":[{\"segmentType\":\"tbvpysszdnru\",\"percentage\":66.73355683732994},{\"segmentType\":\"muouqfp\",\"percentage\":7.300495559132402},{\"segmentType\":\"nguitnwuizgazxu\",\"percentage\":41.565643710756206}]}")
             .toObject(ComplianceProperties.class);
     }
 

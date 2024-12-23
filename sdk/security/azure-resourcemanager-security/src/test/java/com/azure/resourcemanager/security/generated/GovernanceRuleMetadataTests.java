@@ -11,7 +11,7 @@ public final class GovernanceRuleMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernanceRuleMetadata model = BinaryData.fromString(
-            "{\"createdBy\":\"paztzpofncck\",\"createdOn\":\"2021-05-31T21:39:48Z\",\"updatedBy\":\"qwhxxbuyqaxzfeqz\",\"updatedOn\":\"2021-04-08T14:37:49Z\"}")
+            "{\"createdBy\":\"xleptramx\",\"createdOn\":\"2021-10-05T17:12:56Z\",\"updatedBy\":\"lwnwxuqlcvydyp\",\"updatedOn\":\"2021-03-01T02:46:01Z\"}")
             .toObject(GovernanceRuleMetadata.class);
     }
 

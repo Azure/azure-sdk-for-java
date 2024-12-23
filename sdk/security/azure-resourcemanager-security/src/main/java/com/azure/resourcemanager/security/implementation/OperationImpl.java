@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.security.implementation;
 
 import com.azure.resourcemanager.security.fluent.models.OperationInner;
+import com.azure.resourcemanager.security.models.ActionType;
 import com.azure.resourcemanager.security.models.Operation;
 import com.azure.resourcemanager.security.models.OperationDisplay;
+import com.azure.resourcemanager.security.models.Origin;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -22,12 +24,20 @@ public final class OperationImpl implements Operation {
         return this.innerModel().name();
     }
 
-    public String origin() {
-        return this.innerModel().origin();
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
     }
 
     public OperationDisplay display() {
         return this.innerModel().display();
+    }
+
+    public Origin origin() {
+        return this.innerModel().origin();
+    }
+
+    public ActionType actionType() {
+        return this.innerModel().actionType();
     }
 
     public OperationInner innerModel() {

@@ -11,7 +11,7 @@ public final class LogAnalyticsIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsIdentifier model = BinaryData.fromString(
-            "{\"type\":\"LogAnalytics\",\"workspaceId\":\"nycwz\",\"workspaceSubscriptionId\":\"vvw\",\"workspaceResourceGroup\":\"mrkkyjtr\",\"agentId\":\"wpwfkcaux\"}")
+            "{\"type\":\"LogAnalytics\",\"workspaceId\":\"ulxfaryrvjl\",\"workspaceSubscriptionId\":\"ezvjq\",\"workspaceResourceGroup\":\"hoyiyaxqvjweiw\",\"agentId\":\"zkddnvovb\"}")
             .toObject(LogAnalyticsIdentifier.class);
     }
 

@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * configuration for the servers offering subPlan.
  */
 @Fluent
-public final class DefenderForServersGcpOfferingSubPlan {
+public final class DefenderForServersGcpOfferingSubPlan
+    implements JsonSerializable<DefenderForServersGcpOfferingSubPlan> {
     /*
      * The available sub plans
      */
-    @JsonProperty(value = "type")
     private SubPlan type;
 
     /**
@@ -50,5 +54,42 @@ public final class DefenderForServersGcpOfferingSubPlan {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForServersGcpOfferingSubPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForServersGcpOfferingSubPlan if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForServersGcpOfferingSubPlan.
+     */
+    public static DefenderForServersGcpOfferingSubPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForServersGcpOfferingSubPlan deserializedDefenderForServersGcpOfferingSubPlan
+                = new DefenderForServersGcpOfferingSubPlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOfferingSubPlan.type = SubPlan.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForServersGcpOfferingSubPlan;
+        });
     }
 }

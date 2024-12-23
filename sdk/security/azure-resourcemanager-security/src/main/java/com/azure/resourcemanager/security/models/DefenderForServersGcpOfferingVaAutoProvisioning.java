@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Vulnerability Assessment autoprovisioning configuration.
  */
 @Fluent
-public final class DefenderForServersGcpOfferingVaAutoProvisioning {
+public final class DefenderForServersGcpOfferingVaAutoProvisioning
+    implements JsonSerializable<DefenderForServersGcpOfferingVaAutoProvisioning> {
     /*
      * Is Vulnerability Assessment auto provisioning enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * configuration for Vulnerability Assessment autoprovisioning
      */
-    @JsonProperty(value = "configuration")
     private DefenderForServersGcpOfferingVaAutoProvisioningConfiguration configuration;
 
     /**
@@ -80,5 +83,47 @@ public final class DefenderForServersGcpOfferingVaAutoProvisioning {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForServersGcpOfferingVaAutoProvisioning from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForServersGcpOfferingVaAutoProvisioning if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForServersGcpOfferingVaAutoProvisioning.
+     */
+    public static DefenderForServersGcpOfferingVaAutoProvisioning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForServersGcpOfferingVaAutoProvisioning deserializedDefenderForServersGcpOfferingVaAutoProvisioning
+                = new DefenderForServersGcpOfferingVaAutoProvisioning();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOfferingVaAutoProvisioning.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOfferingVaAutoProvisioning.configuration
+                        = DefenderForServersGcpOfferingVaAutoProvisioningConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForServersGcpOfferingVaAutoProvisioning;
+        });
     }
 }

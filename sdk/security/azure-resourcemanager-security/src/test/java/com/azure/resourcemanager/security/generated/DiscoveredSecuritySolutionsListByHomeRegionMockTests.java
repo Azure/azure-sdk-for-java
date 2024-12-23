@@ -23,7 +23,7 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"nnp\",\"publisher\":\"sebcxno\",\"sku\":\"spdyzssj\"},\"location\":\"ykdygjvgs\",\"id\":\"jlf\",\"name\":\"h\",\"type\":\"ngwqxcrbcrgyoim\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"offer\":\"spkdnx\",\"publisher\":\"xzxtertn\",\"sku\":\"rrwsci\"},\"location\":\"hdwi\",\"id\":\"nvtolzj\",\"name\":\"fkryxs\",\"type\":\"haknklthqwppv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DiscoveredSecuritySolution> response
-            = manager.discoveredSecuritySolutions().listByHomeRegion("nxebycympohx", com.azure.core.util.Context.NONE);
+            = manager.discoveredSecuritySolutions().listByHomeRegion("igaahm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SecurityFamily.VA, response.iterator().next().securityFamily());
-        Assertions.assertEquals("nnp", response.iterator().next().offer());
-        Assertions.assertEquals("sebcxno", response.iterator().next().publisher());
-        Assertions.assertEquals("spdyzssj", response.iterator().next().sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, response.iterator().next().securityFamily());
+        Assertions.assertEquals("spkdnx", response.iterator().next().offer());
+        Assertions.assertEquals("xzxtertn", response.iterator().next().publisher());
+        Assertions.assertEquals("rrwsci", response.iterator().next().sku());
     }
 }

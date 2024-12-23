@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The classification of the health report.
  */
 @Fluent
-public final class HealthDataClassification {
+public final class HealthDataClassification implements JsonSerializable<HealthDataClassification> {
     /*
      * The component describes the name of the agent/service that scans the issue
      */
-    @JsonProperty(value = "component")
     private String component;
 
     /*
      * The scenario describes the health scenario issue of the component
      */
-    @JsonProperty(value = "scenario")
     private String scenario;
 
     /*
      * The resource scope of the health report
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /**
@@ -102,5 +103,47 @@ public final class HealthDataClassification {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("component", this.component);
+        jsonWriter.writeStringField("scenario", this.scenario);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthDataClassification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthDataClassification if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthDataClassification.
+     */
+    public static HealthDataClassification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthDataClassification deserializedHealthDataClassification = new HealthDataClassification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("component".equals(fieldName)) {
+                    deserializedHealthDataClassification.component = reader.getString();
+                } else if ("scenario".equals(fieldName)) {
+                    deserializedHealthDataClassification.scenario = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedHealthDataClassification.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthDataClassification;
+        });
     }
 }

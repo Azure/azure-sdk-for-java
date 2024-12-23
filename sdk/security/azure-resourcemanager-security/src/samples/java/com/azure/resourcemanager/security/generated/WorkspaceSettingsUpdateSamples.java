@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.WorkspaceSetting;
  */
 public final class WorkspaceSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/UpdateWorkspaceSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * UpdateWorkspaceSetting_example.json
      */
     /**
      * Sample code: Update a workspace setting data for subscription.

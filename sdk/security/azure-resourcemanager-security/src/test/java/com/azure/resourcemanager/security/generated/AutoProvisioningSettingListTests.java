@@ -15,17 +15,18 @@ public final class AutoProvisioningSettingListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoProvisioningSettingList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"tbvpysszdnru\",\"name\":\"qguhmuo\",\"type\":\"qfprwzwbn\"},{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"tnwu\",\"name\":\"zga\",\"type\":\"x\"}],\"nextLink\":\"izuckyfihrfidfvz\"}")
+            "{\"value\":[{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"giawx\",\"name\":\"lryplwckbasyy\",\"type\":\"nddhsgcbacph\"},{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"ot\",\"name\":\"nqgoulzndli\",\"type\":\"wyqkgfgibm\"},{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"akeqs\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"}],\"nextLink\":\"nkzsmodmglou\"}")
             .toObject(AutoProvisioningSettingList.class);
-        Assertions.assertEquals(AutoProvision.ON, model.value().get(0).autoProvision());
+        Assertions.assertEquals(AutoProvision.OFF, model.value().get(0).autoProvision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoProvisioningSettingList model = new AutoProvisioningSettingList()
-            .withValue(Arrays.asList(new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON),
-                new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.OFF)));
+            .withValue(Arrays.asList(new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.OFF),
+                new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON),
+                new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON)));
         model = BinaryData.fromObject(model).toObject(AutoProvisioningSettingList.class);
-        Assertions.assertEquals(AutoProvision.ON, model.value().get(0).autoProvision());
+        Assertions.assertEquals(AutoProvision.OFF, model.value().get(0).autoProvision());
     }
 }

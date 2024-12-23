@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class TasksGetSubscriptionLevelTaskSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTaskSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTaskSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location.

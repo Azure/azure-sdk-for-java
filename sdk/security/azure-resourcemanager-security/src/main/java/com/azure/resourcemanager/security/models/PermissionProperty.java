@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class PermissionProperty extends ExpandableStringEnum<PermissionPro
      * @param name a name to look for.
      * @return the corresponding PermissionProperty.
      */
-    @JsonCreator
     public static PermissionProperty fromString(String name) {
         return fromString(name, PermissionProperty.class);
     }

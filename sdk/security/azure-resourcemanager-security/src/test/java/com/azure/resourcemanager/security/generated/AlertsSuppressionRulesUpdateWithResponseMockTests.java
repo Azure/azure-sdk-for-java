@@ -28,7 +28,7 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alertType\":\"corkfrocgbmxl\",\"lastModifiedUtc\":\"2021-11-29T06:49:01Z\",\"expirationDateUtc\":\"2021-10-01T18:03:45Z\",\"reason\":\"zbjesylslur\",\"state\":\"Disabled\",\"comment\":\"ygpnyhgdzuqsca\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"ouprs\",\"\":{\"fduiolhgyqvpb\":\"datazsslhmgwfnivrx\",\"oqzucfzluczdq\":\"dataj\"}},{\"field\":\"rbormvhvzie\",\"\":{\"gmnwsvhbn\":\"datarnqujywzcqy\",\"jtobdrrp\":\"dataqiwy\"}},{\"field\":\"ehkuns\",\"\":{\"egea\":\"datahhlwtpk\",\"qsttewuvcysjeuf\":\"datatbzkgtzqn\",\"lpditfnonpi\":\"datax\",\"qflvtlrvbst\":\"datauxlvrhprrvbwonl\"}}]}},\"id\":\"huy\",\"name\":\"uninttlnrjdszd\",\"type\":\"u\"}";
+            = "{\"properties\":{\"alertType\":\"d\",\"lastModifiedUtc\":\"2021-03-07T02:15:56Z\",\"expirationDateUtc\":\"2021-07-27T16:24:14Z\",\"reason\":\"amkuuyiuyuafix\",\"state\":\"Expired\",\"comment\":\"cwgpthdcf\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"fasfod\",\"\":{\"skwgqr\":\"dataalvngtwy\",\"cjlvkrkegtyc\":\"datataumd\"}}]}},\"id\":\"uppiyxlzm\",\"name\":\"yddeeqz\",\"type\":\"vab\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,26 +38,22 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AlertsSuppressionRule response = manager.alertsSuppressionRules()
-            .updateWithResponse("wihbnnxemv",
-                new AlertsSuppressionRuleInner().withAlertType("u")
-                    .withExpirationDateUtc(OffsetDateTime.parse("2021-11-23T15:37:38Z"))
-                    .withReason("auratni")
-                    .withState(RuleState.ENABLED)
-                    .withComment("fzs")
-                    .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(
-                        Arrays.asList(new ScopeElement().withField("yrletndqlmf").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("cwtewfhxwyrkb").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("tzqzcloy").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("vyrfbqvum").withAdditionalProperties(mapOf())))),
+            .updateWithResponse("uehvvpx", new AlertsSuppressionRuleInner().withAlertType("egcjojlleuid")
+                .withExpirationDateUtc(OffsetDateTime.parse("2021-03-04T15:46:50Z"))
+                .withReason("vhgnh")
+                .withState(RuleState.ENABLED)
+                .withComment("plhbpjbapmummmkv")
+                .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(
+                    Arrays.asList(new ScopeElement().withField("gjiuaiqpmnufzhrc").withAdditionalProperties(mapOf())))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("corkfrocgbmxl", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T18:03:45Z"), response.expirationDateUtc());
-        Assertions.assertEquals("zbjesylslur", response.reason());
-        Assertions.assertEquals(RuleState.DISABLED, response.state());
-        Assertions.assertEquals("ygpnyhgdzuqsca", response.comment());
-        Assertions.assertEquals("ouprs", response.suppressionAlertsScope().allOf().get(0).field());
+        Assertions.assertEquals("d", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T16:24:14Z"), response.expirationDateUtc());
+        Assertions.assertEquals("amkuuyiuyuafix", response.reason());
+        Assertions.assertEquals(RuleState.EXPIRED, response.state());
+        Assertions.assertEquals("cwgpthdcf", response.comment());
+        Assertions.assertEquals("fasfod", response.suppressionAlertsScope().allOf().get(0).field());
     }
 
     // Use "Map.of" if available

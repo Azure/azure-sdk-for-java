@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The governance email weekly notification configuration.
  */
 @Fluent
-public final class GovernanceRuleEmailNotification {
+public final class GovernanceRuleEmailNotification implements JsonSerializable<GovernanceRuleEmailNotification> {
     /*
      * Defines whether manager email notifications are disabled
      */
-    @JsonProperty(value = "disableManagerEmailNotification")
     private Boolean disableManagerEmailNotification;
 
     /*
      * Defines whether owner email notifications are disabled
      */
-    @JsonProperty(value = "disableOwnerEmailNotification")
     private Boolean disableOwnerEmailNotification;
 
     /**
@@ -77,5 +79,47 @@ public final class GovernanceRuleEmailNotification {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableManagerEmailNotification", this.disableManagerEmailNotification);
+        jsonWriter.writeBooleanField("disableOwnerEmailNotification", this.disableOwnerEmailNotification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GovernanceRuleEmailNotification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GovernanceRuleEmailNotification if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GovernanceRuleEmailNotification.
+     */
+    public static GovernanceRuleEmailNotification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GovernanceRuleEmailNotification deserializedGovernanceRuleEmailNotification
+                = new GovernanceRuleEmailNotification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableManagerEmailNotification".equals(fieldName)) {
+                    deserializedGovernanceRuleEmailNotification.disableManagerEmailNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableOwnerEmailNotification".equals(fieldName)) {
+                    deserializedGovernanceRuleEmailNotification.disableOwnerEmailNotification
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGovernanceRuleEmailNotification;
+        });
     }
 }

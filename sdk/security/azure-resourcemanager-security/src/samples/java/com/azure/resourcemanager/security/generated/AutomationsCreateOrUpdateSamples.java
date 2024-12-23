@@ -21,7 +21,9 @@ import java.util.Map;
  */
 public final class AutomationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutAutomationAllAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutAutomationAllAssessments_example.json
      */
     /**
      * Sample code: Create or update a security automation for all assessments (including all severities).
@@ -49,7 +51,9 @@ public final class AutomationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutDisableAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutDisableAutomation_example.json
      */
     /**
      * Sample code: Disable or enable a security automation.
@@ -81,7 +85,9 @@ public final class AutomationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutAutomationHighSeverityAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutAutomationHighSeverityAssessments_example.json
      */
     /**
      * Sample code: Create or update a security automation for all high severity assessments.

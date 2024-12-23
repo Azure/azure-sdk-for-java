@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GovernanceRulesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySubscriptionGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListBySubscriptionGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by subscription scope.
@@ -23,7 +25,9 @@ public final class GovernanceRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySecurityConnectorGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListBySecurityConnectorGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by security connector scope.
@@ -39,7 +43,9 @@ public final class GovernanceRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListByManagementGroupGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListByManagementGroupGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by management group scope.

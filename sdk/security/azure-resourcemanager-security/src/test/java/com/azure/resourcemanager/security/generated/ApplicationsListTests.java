@@ -11,7 +11,7 @@ public final class ApplicationsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"altol\",\"description\":\"cwsobqwcs\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datawdcfhucqdpfuv\",\"datalsbjjcanvxbv\"]},\"id\":\"vudutncor\",\"name\":\"r\",\"type\":\"xqtvcofu\"}],\"nextLink\":\"lvkgju\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"odko\",\"description\":\"bw\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datahemms\",\"datavdkcrodtj\"]},\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"},{\"properties\":{\"displayName\":\"lpqblylsyxk\",\"description\":\"nsj\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datatiagx\"]},\"id\":\"dszue\",\"name\":\"psbzkfzbeyvpn\",\"type\":\"icvi\"}],\"nextLink\":\"kjj\"}")
             .toObject(ApplicationsList.class);
     }
 

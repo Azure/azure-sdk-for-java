@@ -16,19 +16,19 @@ public final class SuppressionAlertsScopeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SuppressionAlertsScope model = BinaryData.fromString(
-            "{\"allOf\":[{\"field\":\"dbhrbnlankxm\",\"\":{\"nbtkcxywnytnr\":\"datapbh\"}},{\"field\":\"nlqidybyxczf\",\"\":{\"fkts\":\"dataaaxdbabphlwrq\",\"nyyazttbtwwrqpue\":\"datahsucoc\",\"xibxujwbhqwalm\":\"datackzywbiexzfeyue\"}},{\"field\":\"yoxa\",\"\":{\"bniwdj\":\"datakzjancuxrhdwbav\",\"s\":\"datawz\",\"xytxhpzxbz\":\"databpg\"}}]}")
+            "{\"allOf\":[{\"field\":\"kacspkw\",\"\":{\"hrk\":\"datadobpxjmflbvvn\",\"ajiwkuo\":\"dataciwwzjuqkhr\",\"sauuimj\":\"dataoskg\",\"rfbyaosvexcso\":\"datavxieduugidyj\"}},{\"field\":\"clhocohsl\",\"\":{\"fmvfaxkffeiit\":\"dataleggzfbu\",\"ggi\":\"datalvmezyvshxmzsbbz\",\"xxjnspydptk\":\"datarxwburv\",\"iukbldngkpoci\":\"dataenkouknvudw\"}},{\"field\":\"z\",\"\":{\"gevqznty\":\"dataegukgjnpiucg\"}}]}")
             .toObject(SuppressionAlertsScope.class);
-        Assertions.assertEquals("dbhrbnlankxm", model.allOf().get(0).field());
+        Assertions.assertEquals("kacspkw", model.allOf().get(0).field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SuppressionAlertsScope model = new SuppressionAlertsScope()
-            .withAllOf(Arrays.asList(new ScopeElement().withField("dbhrbnlankxm").withAdditionalProperties(mapOf()),
-                new ScopeElement().withField("nlqidybyxczf").withAdditionalProperties(mapOf()),
-                new ScopeElement().withField("yoxa").withAdditionalProperties(mapOf())));
+            .withAllOf(Arrays.asList(new ScopeElement().withField("kacspkw").withAdditionalProperties(mapOf()),
+                new ScopeElement().withField("clhocohsl").withAdditionalProperties(mapOf()),
+                new ScopeElement().withField("z").withAdditionalProperties(mapOf())));
         model = BinaryData.fromObject(model).toObject(SuppressionAlertsScope.class);
-        Assertions.assertEquals("dbhrbnlankxm", model.allOf().get(0).field());
+        Assertions.assertEquals("kacspkw", model.allOf().get(0).field());
     }
 
     // Use "Map.of" if available

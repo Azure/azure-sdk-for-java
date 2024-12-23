@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public final class MdeOnboardingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":{},\"id\":\"dfivsujybsr\",\"name\":\"zzmrgtxdhmfpp\",\"type\":\"nmgikesmkw\"}";
+        String responseStr = "{\"properties\":{},\"id\":\"tlrnrdet\",\"name\":\"wevxeh\",\"type\":\"e\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

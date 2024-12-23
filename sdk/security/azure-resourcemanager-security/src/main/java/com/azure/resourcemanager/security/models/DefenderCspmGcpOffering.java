@@ -5,57 +5,44 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CSPM P1 for GCP offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderCspmGcpOffering.class,
-    visible = true)
-@JsonTypeName("DefenderCspmGcp")
 @Fluent
 public final class DefenderCspmGcpOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_CSPM_GCP;
 
     /*
      * GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
      */
-    @JsonProperty(value = "ciemDiscovery")
     private DefenderCspmGcpOfferingCiemDiscovery ciemDiscovery;
 
     /*
      * The Microsoft Defender for CSPM VM scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderCspmGcpOfferingVmScanners vmScanners;
 
     /*
      * The Microsoft Defender Data Sensitivity discovery configuration
      */
-    @JsonProperty(value = "dataSensitivityDiscovery")
     private DefenderCspmGcpOfferingDataSensitivityDiscovery dataSensitivityDiscovery;
 
     /*
      * The Microsoft Defender Container image assessment configuration
      */
-    @JsonProperty(value = "mdcContainersImageAssessment")
     private DefenderCspmGcpOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
 
     /*
      * The Microsoft Defender Container agentless discovery configuration
      */
-    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
     private DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
 
     /**
@@ -188,7 +175,6 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (ciemDiscovery() != null) {
             ciemDiscovery().validate();
         }
@@ -204,5 +190,62 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
         if (mdcContainersAgentlessDiscoveryK8S() != null) {
             mdcContainersAgentlessDiscoveryK8S().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("ciemDiscovery", this.ciemDiscovery);
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        jsonWriter.writeJsonField("dataSensitivityDiscovery", this.dataSensitivityDiscovery);
+        jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
+        jsonWriter.writeJsonField("mdcContainersAgentlessDiscoveryK8s", this.mdcContainersAgentlessDiscoveryK8S);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderCspmGcpOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderCspmGcpOffering if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderCspmGcpOffering.
+     */
+    public static DefenderCspmGcpOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderCspmGcpOffering deserializedDefenderCspmGcpOffering = new DefenderCspmGcpOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.offeringType = OfferingType.fromString(reader.getString());
+                } else if ("ciemDiscovery".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.ciemDiscovery
+                        = DefenderCspmGcpOfferingCiemDiscovery.fromJson(reader);
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.vmScanners = DefenderCspmGcpOfferingVmScanners.fromJson(reader);
+                } else if ("dataSensitivityDiscovery".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.dataSensitivityDiscovery
+                        = DefenderCspmGcpOfferingDataSensitivityDiscovery.fromJson(reader);
+                } else if ("mdcContainersImageAssessment".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.mdcContainersImageAssessment
+                        = DefenderCspmGcpOfferingMdcContainersImageAssessment.fromJson(reader);
+                } else if ("mdcContainersAgentlessDiscoveryK8s".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.mdcContainersAgentlessDiscoveryK8S
+                        = DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderCspmGcpOffering;
+        });
     }
 }

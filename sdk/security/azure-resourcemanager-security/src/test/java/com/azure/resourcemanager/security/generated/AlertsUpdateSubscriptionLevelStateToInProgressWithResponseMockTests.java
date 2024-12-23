@@ -28,7 +28,8 @@ public final class AlertsUpdateSubscriptionLevelStateToInProgressWithResponseMoc
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateSubscriptionLevelStateToInProgressWithResponse("cjukfalwc", "ec", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToInProgressWithResponse("wrmhmifhfu", "jyxntmgt",
+                com.azure.core.util.Context.NONE);
 
     }
 }

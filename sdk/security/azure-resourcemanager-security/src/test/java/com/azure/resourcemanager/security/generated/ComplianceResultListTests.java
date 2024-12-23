@@ -13,7 +13,7 @@ public final class ComplianceResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComplianceResultList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"gcmjkavl\",\"name\":\"or\",\"type\":\"mftpmdtz\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"fvnz\",\"name\":\"yj\",\"type\":\"otp\"},{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"pbdbzqgqqi\",\"name\":\"edsvqwthmk\",\"type\":\"ibcysihsgqc\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"hsdtmc\",\"name\":\"zsu\",\"type\":\"cohdx\"}],\"nextLink\":\"lm\"}")
+            "{\"value\":[{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"gwwrxaomzis\",\"name\":\"lrrcz\",\"type\":\"zkhhltnjadhqo\"},{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"oyueayfbpcmsp\",\"name\":\"byrrueqth\",\"type\":\"mg\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"cbbxigdhxi\",\"name\":\"d\",\"type\":\"opedbwdpyqyybxub\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"fcbqwremjela\",\"name\":\"acigel\",\"type\":\"ohdbvqvwzkj\"}],\"nextLink\":\"wbeonrlkwzdqy\"}")
             .toObject(ComplianceResultList.class);
     }
 

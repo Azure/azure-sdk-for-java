@@ -21,7 +21,7 @@ public final class TopologiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-08-31T04:20:53Z\",\"topologyResources\":[{\"resourceId\":\"fgpbcbkc\",\"severity\":\"m\",\"recommendationsExist\":false,\"networkZones\":\"e\",\"topologyScore\":1044568912,\"location\":\"kqclnfusr\",\"parents\":[{},{},{},{}],\"children\":[{}]},{\"resourceId\":\"hbmjphlyyu\",\"severity\":\"vyeikbvqzrurgbqa\",\"recommendationsExist\":false,\"networkZones\":\"kxjnohafwmf\",\"topologyScore\":583905568,\"location\":\"yx\",\"parents\":[{},{},{}],\"children\":[{},{},{}]},{\"resourceId\":\"metsdwxfamtxcc\",\"severity\":\"gsavbgho\",\"recommendationsExist\":true,\"networkZones\":\"andhooimazkmq\",\"topologyScore\":1950590348,\"location\":\"dmfvybfmpo\",\"parents\":[{},{}],\"children\":[{},{},{},{}]}]},\"location\":\"igrx\",\"id\":\"trcodbqeogldmxxb\",\"name\":\"hspvamsxrwqlwdf\",\"type\":\"gqrpl\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-04-04T00:51:36Z\",\"topologyResources\":[{\"resourceId\":\"wxqzkkagve\",\"severity\":\"mnaphrskmpeajzzy\",\"recommendationsExist\":false,\"networkZones\":\"mzmzfntteyrftxyt\",\"topologyScore\":2016164957,\"location\":\"j\",\"parents\":[{},{}],\"children\":[{},{}]}]},\"location\":\"kkv\",\"id\":\"faehjjirvjqxavqm\",\"name\":\"mracfsffdralihh\",\"type\":\"scygyzhcvlavyr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

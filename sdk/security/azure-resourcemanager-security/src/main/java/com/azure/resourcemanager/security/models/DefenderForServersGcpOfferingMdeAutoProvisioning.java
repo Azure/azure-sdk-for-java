@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Microsoft Defender for Endpoint autoprovisioning configuration.
  */
 @Fluent
-public final class DefenderForServersGcpOfferingMdeAutoProvisioning {
+public final class DefenderForServersGcpOfferingMdeAutoProvisioning
+    implements JsonSerializable<DefenderForServersGcpOfferingMdeAutoProvisioning> {
     /*
      * Is Microsoft Defender for Endpoint auto provisioning enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * configuration for Microsoft Defender for Endpoint autoprovisioning
      */
-    @JsonProperty(value = "configuration")
     private Object configuration;
 
     /**
@@ -76,5 +79,46 @@ public final class DefenderForServersGcpOfferingMdeAutoProvisioning {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeUntypedField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForServersGcpOfferingMdeAutoProvisioning from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForServersGcpOfferingMdeAutoProvisioning if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForServersGcpOfferingMdeAutoProvisioning.
+     */
+    public static DefenderForServersGcpOfferingMdeAutoProvisioning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForServersGcpOfferingMdeAutoProvisioning deserializedDefenderForServersGcpOfferingMdeAutoProvisioning
+                = new DefenderForServersGcpOfferingMdeAutoProvisioning();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOfferingMdeAutoProvisioning.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOfferingMdeAutoProvisioning.configuration = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForServersGcpOfferingMdeAutoProvisioning;
+        });
     }
 }

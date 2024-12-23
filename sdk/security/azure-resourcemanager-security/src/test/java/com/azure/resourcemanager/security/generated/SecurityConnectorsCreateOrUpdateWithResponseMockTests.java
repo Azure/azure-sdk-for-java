@@ -27,7 +27,7 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hierarchyIdentifier\":\"cnuestbsliejdnc\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-08T15:18:26Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"iytehhxtzxqdwbym\"},{\"offeringType\":\"CloudOffering\",\"description\":\"lngncrdorc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"s\",\"tags\":{\"dbyhqtzcvim\":\"ekh\"},\"id\":\"wckozvlf\",\"name\":\"mtrtsv\",\"type\":\"upqtzckj\"}";
+            = "{\"properties\":{\"hierarchyIdentifier\":\"cnuestbsliejdnc\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-08T15:18:26Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"iytehhxtzxqdwbym\"},{\"offeringType\":\"CloudOffering\",\"description\":\"lngncrdorc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"s\",\"tags\":{\"dbyhqtzcvim\":\"ekh\"},\"id\":\"wckozvlf\",\"name\":\"mtrtsv\",\"type\":\"upqtzckj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,7 +43,7 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
             .withTags(mapOf("elpfijtezgxmpes", "mtfcqmmynbr", "f", "amadlerzi", "mirmnrijefmrt", "ivczktllxswtdap",
                 "ffmwt", "xcevdspth"))
             .withHierarchyIdentifier("dmra")
-            .withEnvironmentName(CloudName.AZURE)
+            .withEnvironmentName(CloudName.GIT_LAB)
             .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering()))
             .withEnvironmentData(new EnvironmentData())
             .create();
@@ -51,7 +51,7 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
         Assertions.assertEquals("s", response.location());
         Assertions.assertEquals("ekh", response.tags().get("dbyhqtzcvim"));
         Assertions.assertEquals("cnuestbsliejdnc", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.AZURE, response.environmentName());
+        Assertions.assertEquals(CloudName.GIT_LAB, response.environmentName());
     }
 
     // Use "Map.of" if available

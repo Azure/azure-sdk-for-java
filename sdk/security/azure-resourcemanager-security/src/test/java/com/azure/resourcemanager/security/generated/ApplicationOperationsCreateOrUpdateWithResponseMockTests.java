@@ -23,7 +23,7 @@ public final class ApplicationOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"wwd\",\"description\":\"tveqmg\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataw\",\"dataeyxr\"]},\"id\":\"ear\",\"name\":\"hpwbuklvsmfasgt\",\"type\":\"v\"}";
+            = "{\"properties\":{\"displayName\":\"gkscxjfsgmosp\",\"description\":\"bnxsqc\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datacuyf\",\"datala\",\"datafbqhsujkaf\",\"datazpnxqpwni\"]},\"id\":\"xkcajgrbrc\",\"name\":\"svgoocq\",\"type\":\"azmzlpcx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ApplicationOperationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response = manager.applicationOperations()
-            .define("jcq")
-            .withDisplayName("j")
-            .withDescription("qmmfjewfeqbavdos")
+            .define("ooauffhxfqkmwzr")
+            .withDisplayName("oybmrno")
+            .withDescription("cjnzdaiovrbh")
             .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-            .withConditionSets(Arrays.asList("datagufmwe", "datavxgwz", "datakwdtlcj", "datap"))
+            .withConditionSets(Arrays.asList("dataphkvyyz", "datadc"))
             .create();
 
-        Assertions.assertEquals("wwd", response.displayName());
-        Assertions.assertEquals("tveqmg", response.description());
+        Assertions.assertEquals("gkscxjfsgmosp", response.displayName());
+        Assertions.assertEquals("bnxsqc", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

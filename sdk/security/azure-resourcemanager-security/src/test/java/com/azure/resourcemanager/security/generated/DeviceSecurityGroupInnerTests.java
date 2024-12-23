@@ -18,60 +18,60 @@ public final class DeviceSecurityGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceSecurityGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1918015991,\"maxThreshold\":1170666109,\"displayName\":\"kfkimrtixok\",\"description\":\"qyinl\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":980930736,\"maxThreshold\":667642909,\"displayName\":\"whixmonstsh\",\"description\":\"xgvelfclduccbird\",\"isEnabled\":true}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT169H23M44S\",\"minThreshold\":73278665,\"maxThreshold\":228727125,\"displayName\":\"egstmninwjizci\",\"description\":\"ghgshejjtbxqmu\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT168H36M38S\",\"minThreshold\":1413912286,\"maxThreshold\":934679534,\"displayName\":\"zvners\",\"description\":\"cucrwnamikze\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"mswziq\",\"fuhok\",\"ruswhv\"],\"valueType\":\"IpCidr\",\"displayName\":\"n\",\"description\":\"bycjsxjwwix\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"mwmxqhndvnoamld\",\"ehaohdjhh\",\"lzok\"],\"valueType\":\"IpCidr\",\"displayName\":\"pelnjetag\",\"description\":\"sxoa\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"g\",\"pnpbswveflocc\"],\"valueType\":\"IpCidr\",\"displayName\":\"zihmipgawtxxpky\",\"description\":\"xcjxgrytfmpcy\",\"isEnabled\":true}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"caykggnoxuz\",\"rksxwpndfc\"],\"valueType\":\"IpCidr\",\"displayName\":\"nthjtwkjaosrxuzv\",\"description\":\"mktcqiosmgbza\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"qdlyrtl\",\"laprlt\",\"katbhjm\",\"nnbsoqeqa\"],\"valueType\":\"String\",\"displayName\":\"lagun\",\"description\":\"gfebwlnb\",\"isEnabled\":false}]},\"id\":\"yreeudz\",\"name\":\"av\",\"type\":\"pdqmjxlyyzglgouw\"}")
+            "{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1717815556,\"maxThreshold\":1979298796,\"displayName\":\"alvnbwgpb\",\"description\":\"eluclvdjj\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1658208052,\"maxThreshold\":1479009868,\"displayName\":\"nqodxahhxhq\",\"description\":\"qnvzoqgyipemch\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":193366421,\"maxThreshold\":2088110978,\"displayName\":\"zuejd\",\"description\":\"ptlghwzhomewjjst\",\"isEnabled\":false}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT89H6M1S\",\"minThreshold\":887233496,\"maxThreshold\":1890150004,\"displayName\":\"oaiancznvodrrs\",\"description\":\"lxydkxrxv\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT78H28M23S\",\"minThreshold\":611172975,\"maxThreshold\":925211968,\"displayName\":\"g\",\"description\":\"qljnqkhychoco\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"urqlrqffawey\",\"rkphyjdxr\"],\"valueType\":\"IpCidr\",\"displayName\":\"qdbrxmrgc\",\"description\":\"apx\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"fjjkbajb\"],\"valueType\":\"IpCidr\",\"displayName\":\"duusioycblevpmcl\",\"description\":\"yxkyxlz\",\"isEnabled\":true}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"zzlt\",\"fhbzffovwmbjlzq\",\"czpgvdwnapfdq\"],\"valueType\":\"IpCidr\",\"displayName\":\"tptnuwjtk\",\"description\":\"h\",\"isEnabled\":true}]},\"id\":\"gqy\",\"name\":\"leseyqrhvyeldo\",\"type\":\"jv\"}")
             .toObject(DeviceSecurityGroupInner.class);
         Assertions.assertEquals(true, model.thresholdRules().get(0).isEnabled());
-        Assertions.assertEquals(1918015991, model.thresholdRules().get(0).minThreshold());
-        Assertions.assertEquals(1170666109, model.thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(1717815556, model.thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(1979298796, model.thresholdRules().get(0).maxThreshold());
         Assertions.assertEquals(true, model.timeWindowRules().get(0).isEnabled());
-        Assertions.assertEquals(73278665, model.timeWindowRules().get(0).minThreshold());
-        Assertions.assertEquals(228727125, model.timeWindowRules().get(0).maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT169H23M44S"), model.timeWindowRules().get(0).timeWindowSize());
-        Assertions.assertEquals(false, model.allowlistRules().get(0).isEnabled());
-        Assertions.assertEquals("mswziq", model.allowlistRules().get(0).allowlistValues().get(0));
-        Assertions.assertEquals(false, model.denylistRules().get(0).isEnabled());
-        Assertions.assertEquals("caykggnoxuz", model.denylistRules().get(0).denylistValues().get(0));
+        Assertions.assertEquals(887233496, model.timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(1890150004, model.timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT89H6M1S"), model.timeWindowRules().get(0).timeWindowSize());
+        Assertions.assertEquals(true, model.allowlistRules().get(0).isEnabled());
+        Assertions.assertEquals("urqlrqffawey", model.allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals(true, model.denylistRules().get(0).isEnabled());
+        Assertions.assertEquals("zzlt", model.denylistRules().get(0).denylistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceSecurityGroupInner model = new DeviceSecurityGroupInner().withThresholdRules(Arrays.asList(
-            new ThresholdCustomAlertRule().withIsEnabled(true)
-                .withMinThreshold(1918015991)
-                .withMaxThreshold(1170666109),
-            new ThresholdCustomAlertRule().withIsEnabled(true).withMinThreshold(980930736).withMaxThreshold(667642909)))
+        DeviceSecurityGroupInner model = new DeviceSecurityGroupInner()
+            .withThresholdRules(Arrays.asList(
+                new ThresholdCustomAlertRule().withIsEnabled(true)
+                    .withMinThreshold(1717815556)
+                    .withMaxThreshold(1979298796),
+                new ThresholdCustomAlertRule().withIsEnabled(true)
+                    .withMinThreshold(1658208052)
+                    .withMaxThreshold(1479009868),
+                new ThresholdCustomAlertRule().withIsEnabled(false)
+                    .withMinThreshold(193366421)
+                    .withMaxThreshold(2088110978)))
             .withTimeWindowRules(Arrays.asList(
                 new TimeWindowCustomAlertRule().withIsEnabled(true)
-                    .withMinThreshold(73278665)
-                    .withMaxThreshold(228727125)
-                    .withTimeWindowSize(Duration.parse("PT169H23M44S")),
+                    .withMinThreshold(887233496)
+                    .withMaxThreshold(1890150004)
+                    .withTimeWindowSize(Duration.parse("PT89H6M1S")),
                 new TimeWindowCustomAlertRule().withIsEnabled(true)
-                    .withMinThreshold(1413912286)
-                    .withMaxThreshold(934679534)
-                    .withTimeWindowSize(Duration.parse("PT168H36M38S"))))
+                    .withMinThreshold(611172975)
+                    .withMaxThreshold(925211968)
+                    .withTimeWindowSize(Duration.parse("PT78H28M23S"))))
             .withAllowlistRules(Arrays.asList(
-                new AllowlistCustomAlertRule().withIsEnabled(false)
-                    .withAllowlistValues(Arrays.asList("mswziq", "fuhok", "ruswhv")),
-                new AllowlistCustomAlertRule().withIsEnabled(false)
-                    .withAllowlistValues(Arrays.asList("mwmxqhndvnoamld", "ehaohdjhh", "lzok")),
                 new AllowlistCustomAlertRule().withIsEnabled(true)
-                    .withAllowlistValues(Arrays.asList("g", "pnpbswveflocc"))))
-            .withDenylistRules(Arrays.asList(
-                new DenylistCustomAlertRule().withIsEnabled(false)
-                    .withDenylistValues(Arrays.asList("caykggnoxuz", "rksxwpndfc")),
-                new DenylistCustomAlertRule().withIsEnabled(false)
-                    .withDenylistValues(Arrays.asList("qdlyrtl", "laprlt", "katbhjm", "nnbsoqeqa"))));
+                    .withAllowlistValues(Arrays.asList("urqlrqffawey", "rkphyjdxr")),
+                new AllowlistCustomAlertRule().withIsEnabled(true).withAllowlistValues(Arrays.asList("fjjkbajb"))))
+            .withDenylistRules(Arrays.asList(new DenylistCustomAlertRule().withIsEnabled(true)
+                .withDenylistValues(Arrays.asList("zzlt", "fhbzffovwmbjlzq", "czpgvdwnapfdq"))));
         model = BinaryData.fromObject(model).toObject(DeviceSecurityGroupInner.class);
         Assertions.assertEquals(true, model.thresholdRules().get(0).isEnabled());
-        Assertions.assertEquals(1918015991, model.thresholdRules().get(0).minThreshold());
-        Assertions.assertEquals(1170666109, model.thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(1717815556, model.thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(1979298796, model.thresholdRules().get(0).maxThreshold());
         Assertions.assertEquals(true, model.timeWindowRules().get(0).isEnabled());
-        Assertions.assertEquals(73278665, model.timeWindowRules().get(0).minThreshold());
-        Assertions.assertEquals(228727125, model.timeWindowRules().get(0).maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT169H23M44S"), model.timeWindowRules().get(0).timeWindowSize());
-        Assertions.assertEquals(false, model.allowlistRules().get(0).isEnabled());
-        Assertions.assertEquals("mswziq", model.allowlistRules().get(0).allowlistValues().get(0));
-        Assertions.assertEquals(false, model.denylistRules().get(0).isEnabled());
-        Assertions.assertEquals("caykggnoxuz", model.denylistRules().get(0).denylistValues().get(0));
+        Assertions.assertEquals(887233496, model.timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(1890150004, model.timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT89H6M1S"), model.timeWindowRules().get(0).timeWindowSize());
+        Assertions.assertEquals(true, model.allowlistRules().get(0).isEnabled());
+        Assertions.assertEquals("urqlrqffawey", model.allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals(true, model.denylistRules().get(0).isEnabled());
+        Assertions.assertEquals("zzlt", model.denylistRules().get(0).denylistValues().get(0));
     }
 }

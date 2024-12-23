@@ -12,15 +12,15 @@ public final class DataExportSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataExportSettings model = BinaryData.fromString(
-            "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":false},\"id\":\"umyd\",\"name\":\"hweqjfyxydgtok\",\"type\":\"qbvwglgw\"}")
+            "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":true},\"id\":\"xkqllczipvwdtgc\",\"name\":\"zdqiqdlrat\",\"type\":\"kwx\"}")
             .toObject(DataExportSettings.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportSettings model = new DataExportSettings().withEnabled(false);
+        DataExportSettings model = new DataExportSettings().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(DataExportSettings.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

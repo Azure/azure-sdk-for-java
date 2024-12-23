@@ -5,38 +5,26 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A valid notification source type.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "sourceType",
-    defaultImpl = NotificationsSource.class,
-    visible = true)
-@JsonTypeName("NotificationsSource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Alert", value = NotificationsSourceAlert.class),
-    @JsonSubTypes.Type(name = "AttackPath", value = NotificationsSourceAttackPath.class) })
 @Immutable
-public class NotificationsSource {
+public class NotificationsSource implements JsonSerializable<NotificationsSource> {
     /*
      * The source type that will trigger the notification
      */
-    @JsonTypeId
-    @JsonProperty(value = "sourceType", required = true)
-    private SourceType sourceType;
+    private SourceType sourceType = SourceType.fromString("NotificationsSource");
 
     /**
      * Creates an instance of NotificationsSource class.
      */
     public NotificationsSource() {
-        this.sourceType = SourceType.fromString("NotificationsSource");
     }
 
     /**
@@ -54,5 +42,68 @@ public class NotificationsSource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationsSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationsSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationsSource.
+     */
+    public static NotificationsSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("sourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Alert".equals(discriminatorValue)) {
+                    return NotificationsSourceAlert.fromJson(readerToUse.reset());
+                } else if ("AttackPath".equals(discriminatorValue)) {
+                    return NotificationsSourceAttackPath.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static NotificationsSource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationsSource deserializedNotificationsSource = new NotificationsSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceType".equals(fieldName)) {
+                    deserializedNotificationsSource.sourceType = SourceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationsSource;
+        });
     }
 }

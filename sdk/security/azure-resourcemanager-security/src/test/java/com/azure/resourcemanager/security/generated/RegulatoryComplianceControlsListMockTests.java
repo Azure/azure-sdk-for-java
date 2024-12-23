@@ -23,7 +23,7 @@ public final class RegulatoryComplianceControlsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"rlcjiw\",\"state\":\"Unsupported\",\"passedAssessments\":1195741963,\"failedAssessments\":1293919605,\"skippedAssessments\":529821348},\"id\":\"dgujjgnfgrzxbarc\",\"name\":\"paefzqsy\",\"type\":\"jwenjcytesmf\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"scle\",\"state\":\"Skipped\",\"passedAssessments\":1694812131,\"failedAssessments\":1512788018,\"skippedAssessments\":1593073878},\"id\":\"lmfdg\",\"name\":\"n\",\"type\":\"buypwovvv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class RegulatoryComplianceControlsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RegulatoryComplianceControl> response
-            = manager.regulatoryComplianceControls().list("dizhrjqfyaytvsly", "kcgn", com.azure.core.util.Context.NONE);
+        PagedIterable<RegulatoryComplianceControl> response = manager.regulatoryComplianceControls()
+            .list("hbnnxemv", "nuqqkotauratnicp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(State.UNSUPPORTED, response.iterator().next().state());
+        Assertions.assertEquals(State.SKIPPED, response.iterator().next().state());
     }
 }

@@ -14,7 +14,6 @@ import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsProject;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -28,7 +27,7 @@ public final class AzureDevOpsProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"alphkgminhec\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-27T20:21:48Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"msngmluyrlkpismm\",\"projectId\":\"rjpjthiz\",\"onboardingState\":\"NotOnboarded\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"etumzenkrd\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"xexawxoib\",\"category\":\"Code\"},{\"minimumSeverityLevel\":\"wfeb\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"et\",\"category\":\"Dependencies\"}],\"branchConfiguration\":{\"branchNames\":[\"z\",\"rofyyraiai\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"qwamptldd\",\"name\":\"orzljhnxfkffng\",\"type\":\"pilloirm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"ulbylmgjzrycwpbg\",\"provisioningStatusUpdateTimeUtc\":\"2021-12-07T19:14:28Z\",\"provisioningState\":\"PendingDeletion\",\"parentOrgName\":\"pucknsastlp\",\"projectId\":\"gomicttrvlvvjm\",\"onboardingState\":\"NotApplicable\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"cjrzvlcivqx\",\"category\":\"Code\"},{\"minimumSeverityLevel\":\"lphxwww\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"bgnfbrzj\",\"category\":\"Secrets\"},{\"minimumSeverityLevel\":\"nhaevlahxc\",\"category\":\"Dependencies\"}],\"branchConfiguration\":{\"branchNames\":[\"ahwcorewcnn\",\"axqjf\",\"ajrfgimom\",\"gewdqbxexfyzn\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"qkslw\",\"name\":\"fxayzqbye\",\"type\":\"wpmohnrtlikffyd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,17 +36,15 @@ public final class AzureDevOpsProjectsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AzureDevOpsProject> response = manager.azureDevOpsProjects()
-            .list("fgefvwgwp", "wxiavwmixaqgfpu", "hzwrsjumlkjsvkbt", com.azure.core.util.Context.NONE);
+        PagedIterable<AzureDevOpsProject> response
+            = manager.azureDevOpsProjects().list("qs", "ibvylkv", "kcafnwqhawv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
-            response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals("msngmluyrlkpismm", response.iterator().next().properties().parentOrgName());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED,
+        Assertions.assertEquals("pucknsastlp", response.iterator().next().properties().parentOrgName());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE,
             response.iterator().next().properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.ENABLED,
             response.iterator().next().properties().actionableRemediation().state());
-        Assertions.assertEquals("etumzenkrd",
+        Assertions.assertEquals("cjrzvlcivqx",
             response.iterator()
                 .next()
                 .properties()
@@ -55,11 +52,11 @@ public final class AzureDevOpsProjectsListMockTests {
                 .categoryConfigurations()
                 .get(0)
                 .minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.DEPENDENCIES,
+        Assertions.assertEquals(RuleCategory.CODE,
             response.iterator().next().properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("z",
+        Assertions.assertEquals("ahwcorewcnn",
             response.iterator().next().properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             response.iterator()
                 .next()
                 .properties()

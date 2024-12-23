@@ -21,7 +21,7 @@ public final class ComplianceResultsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceStatus\":\"Healthy\"},\"id\":\"cqzahgtvbgdob\",\"name\":\"morzolxosg\",\"type\":\"htrxueqbmxqfgv\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"yonelivgtibtkqjq\",\"name\":\"caj\",\"type\":\"of\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ComplianceResultsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ComplianceResult> response
-            = manager.complianceResults().list("cbkgnrfrjsc", com.azure.core.util.Context.NONE);
+            = manager.complianceResults().list("ajvvq", com.azure.core.util.Context.NONE);
 
     }
 }

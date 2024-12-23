@@ -21,7 +21,7 @@ public final class SecureScoreControlDefinitionsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"ozffsobggvalcrq\",\"description\":\"lm\",\"maxScore\":618788438,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"lplgtlayyxhxj\"},{\"id\":\"ys\"}]},\"id\":\"aqqjh\",\"name\":\"fhfaobqnjcsb\",\"type\":\"zvcdqws\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"jzbjwvtuekbbypqs\",\"description\":\"sbeqieiuxhj\",\"maxScore\":1423330992,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"hrgkjj\"},{\"id\":\"pihlzyxv\"},{\"id\":\"jfja\"}]},\"id\":\"oidneku\",\"name\":\"dgcpz\",\"type\":\"naqve\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

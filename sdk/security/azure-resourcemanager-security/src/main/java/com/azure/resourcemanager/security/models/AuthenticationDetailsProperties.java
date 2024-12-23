@@ -5,52 +5,38 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Settings for cloud authentication management.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = AuthenticationDetailsProperties.class,
-    visible = true)
-@JsonTypeName("AuthenticationDetailsProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "awsCreds", value = AwsCredsAuthenticationDetailsProperties.class),
-    @JsonSubTypes.Type(name = "awsAssumeRole", value = AwAssumeRoleAuthenticationDetailsProperties.class),
-    @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class) })
 @Immutable
-public class AuthenticationDetailsProperties {
+public class AuthenticationDetailsProperties implements JsonSerializable<AuthenticationDetailsProperties> {
     /*
-     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
+     * account organization credentials.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
-    private AuthenticationType authenticationType;
+    private AuthenticationType authenticationType = AuthenticationType.fromString("AuthenticationDetailsProperties");
 
     /*
      * State of the multi-cloud connector
      */
-    @JsonProperty(value = "authenticationProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AuthenticationProvisioningState authenticationProvisioningState;
 
     /*
      * The permissions detected in the cloud account.
      */
-    @JsonProperty(value = "grantedPermissions", access = JsonProperty.Access.WRITE_ONLY)
     private List<PermissionProperty> grantedPermissions;
 
     /**
      * Creates an instance of AuthenticationDetailsProperties class.
      */
     public AuthenticationDetailsProperties() {
-        this.authenticationType = AuthenticationType.fromString("AuthenticationDetailsProperties");
     }
 
     /**
@@ -73,6 +59,18 @@ public class AuthenticationDetailsProperties {
     }
 
     /**
+     * Set the authenticationProvisioningState property: State of the multi-cloud connector.
+     * 
+     * @param authenticationProvisioningState the authenticationProvisioningState value to set.
+     * @return the AuthenticationDetailsProperties object itself.
+     */
+    AuthenticationDetailsProperties
+        withAuthenticationProvisioningState(AuthenticationProvisioningState authenticationProvisioningState) {
+        this.authenticationProvisioningState = authenticationProvisioningState;
+        return this;
+    }
+
+    /**
      * Get the grantedPermissions property: The permissions detected in the cloud account.
      * 
      * @return the grantedPermissions value.
@@ -82,10 +80,96 @@ public class AuthenticationDetailsProperties {
     }
 
     /**
+     * Set the grantedPermissions property: The permissions detected in the cloud account.
+     * 
+     * @param grantedPermissions the grantedPermissions value to set.
+     * @return the AuthenticationDetailsProperties object itself.
+     */
+    AuthenticationDetailsProperties withGrantedPermissions(List<PermissionProperty> grantedPermissions) {
+        this.grantedPermissions = grantedPermissions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthenticationDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthenticationDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthenticationDetailsProperties.
+     */
+    public static AuthenticationDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("authenticationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("awsCreds".equals(discriminatorValue)) {
+                    return AwsCredsAuthenticationDetailsProperties.fromJson(readerToUse.reset());
+                } else if ("awsAssumeRole".equals(discriminatorValue)) {
+                    return AwAssumeRoleAuthenticationDetailsProperties.fromJson(readerToUse.reset());
+                } else if ("gcpCredentials".equals(discriminatorValue)) {
+                    return GcpCredentialsDetailsProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AuthenticationDetailsProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthenticationDetailsProperties deserializedAuthenticationDetailsProperties
+                = new AuthenticationDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationType".equals(fieldName)) {
+                    deserializedAuthenticationDetailsProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("authenticationProvisioningState".equals(fieldName)) {
+                    deserializedAuthenticationDetailsProperties.authenticationProvisioningState
+                        = AuthenticationProvisioningState.fromString(reader.getString());
+                } else if ("grantedPermissions".equals(fieldName)) {
+                    List<PermissionProperty> grantedPermissions
+                        = reader.readArray(reader1 -> PermissionProperty.fromString(reader1.getString()));
+                    deserializedAuthenticationDetailsProperties.grantedPermissions = grantedPermissions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthenticationDetailsProperties;
+        });
     }
 }

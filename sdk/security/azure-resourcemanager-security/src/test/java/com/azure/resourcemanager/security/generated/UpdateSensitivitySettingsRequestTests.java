@@ -14,28 +14,27 @@ public final class UpdateSensitivitySettingsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSensitivitySettingsRequest model = BinaryData.fromString(
-            "{\"sensitiveInfoTypesIds\":[\"fde11e5e-3b14-45fd-b05d-365c5e3f5237\",\"7d753030-6c2f-4d8d-b546-706531c32365\",\"8f98e6ce-c48b-40bc-a686-d874fe17696a\"],\"sensitivityThresholdLabelOrder\":15.116018,\"sensitivityThresholdLabelId\":\"0a294373-8876-4da0-a6c3-cb6d8efb3957\"}")
+            "{\"sensitiveInfoTypesIds\":[\"38b8154e-b705-49c5-9e38-2f2c0bbc5178\",\"2f786839-2c7e-4112-a18f-1efdf0193498\"],\"sensitivityThresholdLabelOrder\":79.26031,\"sensitivityThresholdLabelId\":\"c0ed0c76-4d4c-4eaa-a5a9-aa0271613d98\"}")
             .toObject(UpdateSensitivitySettingsRequest.class);
-        Assertions.assertEquals(UUID.fromString("fde11e5e-3b14-45fd-b05d-365c5e3f5237"),
+        Assertions.assertEquals(UUID.fromString("38b8154e-b705-49c5-9e38-2f2c0bbc5178"),
             model.sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(15.116018F, model.sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("0a294373-8876-4da0-a6c3-cb6d8efb3957"),
+        Assertions.assertEquals(79.26031F, model.sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("c0ed0c76-4d4c-4eaa-a5a9-aa0271613d98"),
             model.sensitivityThresholdLabelId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSensitivitySettingsRequest model = new UpdateSensitivitySettingsRequest()
-            .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("fde11e5e-3b14-45fd-b05d-365c5e3f5237"),
-                UUID.fromString("7d753030-6c2f-4d8d-b546-706531c32365"),
-                UUID.fromString("8f98e6ce-c48b-40bc-a686-d874fe17696a")))
-            .withSensitivityThresholdLabelOrder(15.116018F)
-            .withSensitivityThresholdLabelId(UUID.fromString("0a294373-8876-4da0-a6c3-cb6d8efb3957"));
+            .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("38b8154e-b705-49c5-9e38-2f2c0bbc5178"),
+                UUID.fromString("2f786839-2c7e-4112-a18f-1efdf0193498")))
+            .withSensitivityThresholdLabelOrder(79.26031F)
+            .withSensitivityThresholdLabelId(UUID.fromString("c0ed0c76-4d4c-4eaa-a5a9-aa0271613d98"));
         model = BinaryData.fromObject(model).toObject(UpdateSensitivitySettingsRequest.class);
-        Assertions.assertEquals(UUID.fromString("fde11e5e-3b14-45fd-b05d-365c5e3f5237"),
+        Assertions.assertEquals(UUID.fromString("38b8154e-b705-49c5-9e38-2f2c0bbc5178"),
             model.sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(15.116018F, model.sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("0a294373-8876-4da0-a6c3-cb6d8efb3957"),
+        Assertions.assertEquals(79.26031F, model.sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("c0ed0c76-4d4c-4eaa-a5a9-aa0271613d98"),
             model.sensitivityThresholdLabelId());
     }
 }

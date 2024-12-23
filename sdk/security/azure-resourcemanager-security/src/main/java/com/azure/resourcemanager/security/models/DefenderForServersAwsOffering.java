@@ -5,63 +5,49 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Defender for Servers AWS offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderForServersAwsOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForServersAws")
 @Fluent
 public final class DefenderForServersAwsOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_SERVERS_AWS;
 
     /*
      * The Defender for servers connection configuration
      */
-    @JsonProperty(value = "defenderForServers")
     private DefenderForServersAwsOfferingDefenderForServers defenderForServers;
 
     /*
      * The ARC autoprovisioning configuration
      */
-    @JsonProperty(value = "arcAutoProvisioning")
     private DefenderForServersAwsOfferingArcAutoProvisioning arcAutoProvisioning;
 
     /*
      * The Vulnerability Assessment autoprovisioning configuration
      */
-    @JsonProperty(value = "vaAutoProvisioning")
     private DefenderForServersAwsOfferingVaAutoProvisioning vaAutoProvisioning;
 
     /*
      * The Microsoft Defender for Endpoint autoprovisioning configuration
      */
-    @JsonProperty(value = "mdeAutoProvisioning")
     private DefenderForServersAwsOfferingMdeAutoProvisioning mdeAutoProvisioning;
 
     /*
      * configuration for the servers offering subPlan
      */
-    @JsonProperty(value = "subPlan")
     private DefenderForServersAwsOfferingSubPlan subPlan;
 
     /*
      * The Microsoft Defender for Server VM scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderForServersAwsOfferingVmScanners vmScanners;
 
     /**
@@ -211,7 +197,6 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (defenderForServers() != null) {
             defenderForServers().validate();
         }
@@ -230,5 +215,69 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
         if (vmScanners() != null) {
             vmScanners().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("defenderForServers", this.defenderForServers);
+        jsonWriter.writeJsonField("arcAutoProvisioning", this.arcAutoProvisioning);
+        jsonWriter.writeJsonField("vaAutoProvisioning", this.vaAutoProvisioning);
+        jsonWriter.writeJsonField("mdeAutoProvisioning", this.mdeAutoProvisioning);
+        jsonWriter.writeJsonField("subPlan", this.subPlan);
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForServersAwsOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForServersAwsOffering if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForServersAwsOffering.
+     */
+    public static DefenderForServersAwsOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForServersAwsOffering deserializedDefenderForServersAwsOffering
+                = new DefenderForServersAwsOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("defenderForServers".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.defenderForServers
+                        = DefenderForServersAwsOfferingDefenderForServers.fromJson(reader);
+                } else if ("arcAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.arcAutoProvisioning
+                        = DefenderForServersAwsOfferingArcAutoProvisioning.fromJson(reader);
+                } else if ("vaAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.vaAutoProvisioning
+                        = DefenderForServersAwsOfferingVaAutoProvisioning.fromJson(reader);
+                } else if ("mdeAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.mdeAutoProvisioning
+                        = DefenderForServersAwsOfferingMdeAutoProvisioning.fromJson(reader);
+                } else if ("subPlan".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.subPlan
+                        = DefenderForServersAwsOfferingSubPlan.fromJson(reader);
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderForServersAwsOffering.vmScanners
+                        = DefenderForServersAwsOfferingVmScanners.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForServersAwsOffering;
+        });
     }
 }

@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Regulatory compliance assessment data.
  */
 @Fluent
-public final class RegulatoryComplianceAssessmentProperties {
+public final class RegulatoryComplianceAssessmentProperties
+    implements JsonSerializable<RegulatoryComplianceAssessmentProperties> {
     /*
      * The description of the regulatory compliance assessment
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The expected type of assessment contained in the AssessmentDetailsLink
      */
-    @JsonProperty(value = "assessmentType", access = JsonProperty.Access.WRITE_ONLY)
     private String assessmentType;
 
     /*
      * Link to more detailed assessment results data. The response type will be according to the assessmentType field
      */
-    @JsonProperty(value = "assessmentDetailsLink", access = JsonProperty.Access.WRITE_ONLY)
     private String assessmentDetailsLink;
 
     /*
      * Aggregative state based on the assessment's scanned resources states
      */
-    @JsonProperty(value = "state")
     private State state;
 
     /*
      * The given assessment's related resources count with passed state.
      */
-    @JsonProperty(value = "passedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer passedResources;
 
     /*
      * The given assessment's related resources count with failed state.
      */
-    @JsonProperty(value = "failedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedResources;
 
     /*
      * The given assessment's related resources count with skipped state.
      */
-    @JsonProperty(value = "skippedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer skippedResources;
 
     /*
      * The given assessment's related resources count with unsupported state.
      */
-    @JsonProperty(value = "unsupportedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedResources;
 
     /**
@@ -157,5 +154,60 @@ public final class RegulatoryComplianceAssessmentProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegulatoryComplianceAssessmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegulatoryComplianceAssessmentProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegulatoryComplianceAssessmentProperties.
+     */
+    public static RegulatoryComplianceAssessmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegulatoryComplianceAssessmentProperties deserializedRegulatoryComplianceAssessmentProperties
+                = new RegulatoryComplianceAssessmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.description = reader.getString();
+                } else if ("assessmentType".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.assessmentType = reader.getString();
+                } else if ("assessmentDetailsLink".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.assessmentDetailsLink = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.state = State.fromString(reader.getString());
+                } else if ("passedResources".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.passedResources
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedResources".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.failedResources
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("skippedResources".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.skippedResources
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("unsupportedResources".equals(fieldName)) {
+                    deserializedRegulatoryComplianceAssessmentProperties.unsupportedResources
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegulatoryComplianceAssessmentProperties;
+        });
     }
 }

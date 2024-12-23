@@ -13,21 +13,22 @@ public final class BuiltInInfoTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuiltInInfoType model = BinaryData
-            .fromString("{\"name\":\"ezwwv\",\"id\":\"6885c7f9-8a0e-4789-a08b-dd82e250235c\",\"type\":\"yuvvfonkp\"}")
+            .fromString(
+                "{\"name\":\"qovekqvgqou\",\"id\":\"cd4e7341-c203-4562-b9d7-7d72dad7a6f2\",\"type\":\"zmpjwyiv\"}")
             .toObject(BuiltInInfoType.class);
-        Assertions.assertEquals("ezwwv", model.name());
-        Assertions.assertEquals(UUID.fromString("6885c7f9-8a0e-4789-a08b-dd82e250235c"), model.id());
-        Assertions.assertEquals("yuvvfonkp", model.type());
+        Assertions.assertEquals("qovekqvgqou", model.name());
+        Assertions.assertEquals(UUID.fromString("cd4e7341-c203-4562-b9d7-7d72dad7a6f2"), model.id());
+        Assertions.assertEquals("zmpjwyiv", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuiltInInfoType model = new BuiltInInfoType().withName("ezwwv")
-            .withId(UUID.fromString("6885c7f9-8a0e-4789-a08b-dd82e250235c"))
-            .withType("yuvvfonkp");
+        BuiltInInfoType model = new BuiltInInfoType().withName("qovekqvgqou")
+            .withId(UUID.fromString("cd4e7341-c203-4562-b9d7-7d72dad7a6f2"))
+            .withType("zmpjwyiv");
         model = BinaryData.fromObject(model).toObject(BuiltInInfoType.class);
-        Assertions.assertEquals("ezwwv", model.name());
-        Assertions.assertEquals(UUID.fromString("6885c7f9-8a0e-4789-a08b-dd82e250235c"), model.id());
-        Assertions.assertEquals("yuvvfonkp", model.type());
+        Assertions.assertEquals("qovekqvgqou", model.name());
+        Assertions.assertEquals(UUID.fromString("cd4e7341-c203-4562-b9d7-7d72dad7a6f2"), model.id());
+        Assertions.assertEquals("zmpjwyiv", model.type());
     }
 }

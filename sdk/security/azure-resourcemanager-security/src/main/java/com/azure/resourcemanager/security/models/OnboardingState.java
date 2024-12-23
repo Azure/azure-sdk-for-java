@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class OnboardingState extends ExpandableStringEnum<OnboardingState>
      * @param name a name to look for.
      * @return the corresponding OnboardingState.
      */
-    @JsonCreator
     public static OnboardingState fromString(String name) {
         return fromString(name, OnboardingState.class);
     }

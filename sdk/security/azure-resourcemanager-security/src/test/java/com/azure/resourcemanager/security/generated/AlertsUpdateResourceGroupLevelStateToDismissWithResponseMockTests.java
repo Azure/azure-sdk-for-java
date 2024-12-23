@@ -28,7 +28,7 @@ public final class AlertsUpdateResourceGroupLevelStateToDismissWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateResourceGroupLevelStateToDismissWithResponse("qllbo", "sn", "ocyb",
+            .updateResourceGroupLevelStateToDismissWithResponse("vgicxt", "llqgnsydksvj", "gxgdpivjkhcos",
                 com.azure.core.util.Context.NONE);
 
     }

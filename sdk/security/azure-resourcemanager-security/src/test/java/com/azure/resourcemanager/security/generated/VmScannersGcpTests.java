@@ -16,22 +16,23 @@ public final class VmScannersGcpTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmScannersGcp model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"zvaqkifmxawost\":\"fjwajnrt\",\"rkmjqncfvdscnhe\":\"zkn\"}}}")
+            "{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"esobpbokhmm\":\"pvkvtwf\",\"kasmcolmugpyva\":\"cdyarnggcjfwblqh\",\"kluwz\":\"s\"}}}")
             .toObject(VmScannersGcp.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("fjwajnrt", model.configuration().exclusionTags().get("zvaqkifmxawost"));
+        Assertions.assertEquals("pvkvtwf", model.configuration().exclusionTags().get("esobpbokhmm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmScannersGcp model = new VmScannersGcp().withEnabled(false)
+        VmScannersGcp model = new VmScannersGcp().withEnabled(true)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("zvaqkifmxawost", "fjwajnrt", "rkmjqncfvdscnhe", "zkn")));
+                .withExclusionTags(
+                    mapOf("esobpbokhmm", "pvkvtwf", "kasmcolmugpyva", "cdyarnggcjfwblqh", "kluwz", "s")));
         model = BinaryData.fromObject(model).toObject(VmScannersGcp.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("fjwajnrt", model.configuration().exclusionTags().get("zvaqkifmxawost"));
+        Assertions.assertEquals("pvkvtwf", model.configuration().exclusionTags().get("esobpbokhmm"));
     }
 
     // Use "Map.of" if available

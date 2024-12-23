@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitLabProjectInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabProjectProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -15,19 +14,16 @@ public final class GitLabProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"kejcgwfsgqksty\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-04T11:34Z\",\"provisioningState\":\"Failed\",\"fullyQualifiedName\":\"ijpardavsjcf\",\"fullyQualifiedFriendlyName\":\"zpzdqwuzvcmcokx\",\"fullyQualifiedParentGroupName\":\"ekuvfrjwuca\",\"url\":\"zvajbvbnkrdem\",\"onboardingState\":\"NotApplicable\"},\"id\":\"ackzidgzw\",\"name\":\"ydamisvpztdivykp\",\"type\":\"kqejtpjfojiunr\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"jwuive\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-30T03:06:58Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"ewxeiqbpsm\",\"fullyQualifiedFriendlyName\":\"mguaml\",\"fullyQualifiedParentGroupName\":\"l\",\"url\":\"msplzgaufcshhvn\",\"onboardingState\":\"Onboarded\"},\"id\":\"nxkympqanxrjk\",\"name\":\"xtwbta\",\"type\":\"ypnyghshxc\"}")
             .toObject(GitLabProjectInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitLabProjectInner model = new GitLabProjectInner()
-            .withProperties(new GitLabProjectProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-                .withOnboardingState(OnboardingState.NOT_APPLICABLE));
+            .withProperties(new GitLabProjectProperties().withOnboardingState(OnboardingState.ONBOARDED));
         model = BinaryData.fromObject(model).toObject(GitLabProjectInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 }

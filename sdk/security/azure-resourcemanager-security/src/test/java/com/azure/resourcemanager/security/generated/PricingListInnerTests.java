@@ -20,12 +20,12 @@ public final class PricingListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PricingListInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"e\",\"freeTrialRemainingTime\":\"PT74H2M22S\",\"enablementTime\":\"2021-11-29T01:22:28Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"jgcq\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"kgfcfdruws\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"gbzsxebrslt\":\"datatclhuulriqbyokv\",\"uoard\":\"datafyhcdjw\",\"g\":\"dataagttpufpb\",\"lkysolsyjp\":\"datarholhujbfwxi\"},\"operationStatus\":{}},{\"name\":\"slwhdmcvhtbb\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"bx\":\"datavhuw\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"hotjec\",\"hmxvvl\",\"rskapbxwieexu\"]},\"id\":\"aderltfokyk\",\"name\":\"yimyccgrvk\",\"type\":\"xzznnui\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"ejeg\",\"freeTrialRemainingTime\":\"PT137H58M51S\",\"enablementTime\":\"2021-06-16T07:44:43Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"wvvbtuqkxximw\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"ekotjgxi\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"aqupbyynvskp\":\"datayfhiwv\"},\"operationStatus\":{}},{\"name\":\"bmgeumexmjbxcbc\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"trqrejda\":\"datamtxapeqiscrpilg\",\"lfxlmuifmuadj\":\"datahuqimlda\",\"skiioshjgczetybn\":\"datafsn\",\"j\":\"datagztlcgc\"},\"operationStatus\":{}},{\"name\":\"fjvmy\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"kxpylrwox\":\"databecuvlbefvwcl\",\"rbkerdkd\":\"datagwpsyxjijeypd\",\"wjxildfkcefeyg\":\"datagaw\"},\"operationStatus\":{}},{\"name\":\"pjois\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"ntwhymxymulwiv\":\"dataybdjnxumentq\",\"jasqubf\":\"datatowlhlsycoyb\",\"ywhjqwmchq\":\"dataj\",\"mjzpwdlvwtiwsm\":\"datahtfxcpupuki\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"qnamppultassa\"]},\"id\":\"kewnazeajbkajl\",\"name\":\"yizyddcvxodk\",\"type\":\"vfsxx\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"sqlv\",\"freeTrialRemainingTime\":\"PT71H32M52S\",\"enablementTime\":\"2021-04-18T14:58:01Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"zxnmx\",\"resourcesCoverageStatus\":\"NotCovered\",\"extensions\":[{\"name\":\"googxq\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"jfucsaodjnosdkv\":\"datavaz\"},\"operationStatus\":{}},{\"name\":\"fasgm\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"ujktzb\":\"datazpducdaak\",\"kpp\":\"dataimyfpqdo\",\"ikff\":\"datawyytfvpctf\"},\"operationStatus\":{}},{\"name\":\"g\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"jigawgaz\":\"datanwhvuldbkkejj\",\"lzaahzbhuroolk\":\"dataxjqifhujjsbc\"},\"operationStatus\":{}},{\"name\":\"irhhmo\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"xw\":\"datazgfjzcvaaxoialah\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"kuk\",\"kczynuhhoqeqsh\"]},\"id\":\"vl\",\"name\":\"q\",\"type\":\"xyrqo\"}]}")
+            "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"hraxquddrwjcl\",\"freeTrialRemainingTime\":\"PT219H48M33S\",\"enablementTime\":\"2020-12-22T20:05:05Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"dbwen\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"h\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"cwviqllukhk\":\"datarmvzti\"},\"operationStatus\":{}},{\"name\":\"qxgcbvzarmqcbpo\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"xbrdvcehqwh\":\"datainvagovjyhd\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"gnmguz\",\"uwvorbalkjn\",\"kbd\",\"lltqstqkqs\"]},\"id\":\"gxiynecovagzk\",\"name\":\"eubanlxunpqcc\",\"type\":\"qiawzl\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"slga\",\"freeTrialRemainingTime\":\"PT178H47M30S\",\"enablementTime\":\"2021-02-22T21:49:10Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"p\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"doejtighsxjpyt\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"hjnhjiot\":\"dataalahovuuwxhm\"},\"operationStatus\":{}},{\"name\":\"fbbcngkegxcypxbb\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"xql\":\"datailyrzoxp\"},\"operationStatus\":{}},{\"name\":\"olqownki\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"k\":\"datawnah\",\"cdhdyswcrpt\":\"datajjmztnlmsoodtmv\",\"izrpywlptyuqhrl\":\"dataeajczxvlgsrgkr\",\"ykpfu\":\"datacs\"},\"operationStatus\":{}},{\"name\":\"ixcnpcf\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"pcfpcfj\":\"datayycpawmpjprdpw\",\"peyamnnidmdiaw\":\"datawzlgzawkgy\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"ntmkctdhuosgwqps\",\"azihq\",\"dvqgcnbhcbmjkz\"]},\"id\":\"ibniynts\",\"name\":\"jmfmeftvhkm\",\"type\":\"ogjrhskbwgm\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"lcfog\",\"freeTrialRemainingTime\":\"PT177H14M43S\",\"enablementTime\":\"2021-10-21T06:47:03Z\",\"enforce\":\"True\",\"inherited\":\"False\",\"inheritedFrom\":\"dzxcouzfwo\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"kzkdtzxsoednlwg\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"zdrd\":\"datazomucmqgisnionet\",\"lxcznn\":\"datauenxkgtlzlmt\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"mxlxmwtygeq\",\"usi\"]},\"id\":\"oqcah\",\"name\":\"sgbjmlree\",\"type\":\"rfwss\"}]}")
             .toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("e", model.value().get(0).subPlan());
+        Assertions.assertEquals("hraxquddrwjcl", model.value().get(0).subPlan());
         Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
-        Assertions.assertEquals("kgfcfdruws", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals("h", model.value().get(0).extensions().get(0).name());
         Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
     }
 
@@ -33,59 +33,45 @@ public final class PricingListInnerTests {
     public void testSerialize() throws Exception {
         PricingListInner model = new PricingListInner().withValue(Arrays.asList(
             new PricingInner().withPricingTier(PricingTier.STANDARD)
-                .withSubPlan("e")
+                .withSubPlan("hraxquddrwjcl")
                 .withEnforce(Enforce.FALSE)
                 .withExtensions(Arrays.asList(
-                    new Extension().withName("kgfcfdruws")
+                    new Extension().withName("h")
                         .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("gbzsxebrslt", "datatclhuulriqbyokv", "uoard",
-                            "datafyhcdjw", "g", "dataagttpufpb", "lkysolsyjp", "datarholhujbfwxi")),
-                    new Extension().withName("slwhdmcvhtbb")
+                        .withAdditionalExtensionProperties(mapOf("cwviqllukhk", "datarmvzti")),
+                    new Extension().withName("qxgcbvzarmqcbpo")
                         .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("bx", "datavhuw")))),
+                        .withAdditionalExtensionProperties(mapOf("xbrdvcehqwh", "datainvagovjyhd")))),
             new PricingInner().withPricingTier(PricingTier.STANDARD)
-                .withSubPlan("ejeg")
-                .withEnforce(Enforce.FALSE)
-                .withExtensions(
-                    Arrays.asList(
-                        new Extension().withName("ekotjgxi")
-                            .withIsEnabled(IsEnabled.FALSE)
-                            .withAdditionalExtensionProperties(mapOf("aqupbyynvskp", "datayfhiwv")),
-                        new Extension().withName("bmgeumexmjbxcbc")
-                            .withIsEnabled(IsEnabled.TRUE)
-                            .withAdditionalExtensionProperties(mapOf("trqrejda", "datamtxapeqiscrpilg", "lfxlmuifmuadj",
-                                "datahuqimlda", "skiioshjgczetybn", "datafsn", "j", "datagztlcgc")),
-                        new Extension().withName("fjvmy")
-                            .withIsEnabled(IsEnabled.TRUE)
-                            .withAdditionalExtensionProperties(mapOf("kxpylrwox", "databecuvlbefvwcl", "rbkerdkd",
-                                "datagwpsyxjijeypd", "wjxildfkcefeyg", "datagaw")),
-                        new Extension().withName("pjois")
-                            .withIsEnabled(IsEnabled.FALSE)
-                            .withAdditionalExtensionProperties(mapOf("ntwhymxymulwiv", "dataybdjnxumentq", "jasqubf",
-                                "datatowlhlsycoyb", "ywhjqwmchq", "dataj", "mjzpwdlvwtiwsm", "datahtfxcpupuki")))),
-            new PricingInner().withPricingTier(PricingTier.FREE)
-                .withSubPlan("sqlv")
+                .withSubPlan("slga")
                 .withEnforce(Enforce.FALSE)
                 .withExtensions(Arrays.asList(
-                    new Extension().withName("googxq")
+                    new Extension().withName("doejtighsxjpyt")
+                        .withIsEnabled(IsEnabled.TRUE)
+                        .withAdditionalExtensionProperties(mapOf("hjnhjiot", "dataalahovuuwxhm")),
+                    new Extension().withName("fbbcngkegxcypxbb")
                         .withIsEnabled(IsEnabled.FALSE)
-                        .withAdditionalExtensionProperties(mapOf("jfucsaodjnosdkv", "datavaz")),
-                    new Extension().withName("fasgm")
+                        .withAdditionalExtensionProperties(mapOf("xql", "datailyrzoxp")),
+                    new Extension().withName("olqownki")
+                        .withIsEnabled(IsEnabled.TRUE)
+                        .withAdditionalExtensionProperties(mapOf("k", "datawnah", "cdhdyswcrpt", "datajjmztnlmsoodtmv",
+                            "izrpywlptyuqhrl", "dataeajczxvlgsrgkr", "ykpfu", "datacs")),
+                    new Extension().withName("ixcnpcf")
                         .withIsEnabled(IsEnabled.FALSE)
                         .withAdditionalExtensionProperties(
-                            mapOf("ujktzb", "datazpducdaak", "kpp", "dataimyfpqdo", "ikff", "datawyytfvpctf")),
-                    new Extension().withName("g")
-                        .withIsEnabled(IsEnabled.FALSE)
-                        .withAdditionalExtensionProperties(
-                            mapOf("jigawgaz", "datanwhvuldbkkejj", "lzaahzbhuroolk", "dataxjqifhujjsbc")),
-                    new Extension().withName("irhhmo")
-                        .withIsEnabled(IsEnabled.FALSE)
-                        .withAdditionalExtensionProperties(mapOf("xw", "datazgfjzcvaaxoialah"))))));
+                            mapOf("pcfpcfj", "datayycpawmpjprdpw", "peyamnnidmdiaw", "datawzlgzawkgy")))),
+            new PricingInner().withPricingTier(PricingTier.FREE)
+                .withSubPlan("lcfog")
+                .withEnforce(Enforce.TRUE)
+                .withExtensions(Arrays.asList(new Extension().withName("kzkdtzxsoednlwg")
+                    .withIsEnabled(IsEnabled.FALSE)
+                    .withAdditionalExtensionProperties(
+                        mapOf("zdrd", "datazomucmqgisnionet", "lxcznn", "datauenxkgtlzlmt"))))));
         model = BinaryData.fromObject(model).toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("e", model.value().get(0).subPlan());
+        Assertions.assertEquals("hraxquddrwjcl", model.value().get(0).subPlan());
         Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
-        Assertions.assertEquals("kgfcfdruws", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals("h", model.value().get(0).extensions().get(0).name());
         Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
     }
 

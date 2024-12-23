@@ -12,16 +12,16 @@ public final class CustomEntityStoreAssignmentsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomEntityStoreAssignmentsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"principal\":\"dlxyjrxs\",\"entityStoreDatabaseLink\":\"afcnih\"},\"id\":\"wqapnedgfbcvk\",\"name\":\"vq\",\"type\":\"pkeqdcvdrhvoo\"},{\"properties\":{\"principal\":\"bobzdopcjwvnhd\",\"entityStoreDatabaseLink\":\"wmgxcxrsl\"},\"id\":\"mutwuoe\",\"name\":\"rpkhjwn\",\"type\":\"yqsluic\"},{\"properties\":{\"principal\":\"kzzlvmbmpaxmodf\",\"entityStoreDatabaseLink\":\"efyw\"},\"id\":\"bpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}],\"nextLink\":\"ubex\"}")
+            "{\"value\":[{\"properties\":{\"principal\":\"rjerv\",\"entityStoreDatabaseLink\":\"enq\"},\"id\":\"eh\",\"name\":\"ndoygmifthnzdnd\",\"type\":\"l\"},{\"properties\":{\"principal\":\"qig\",\"entityStoreDatabaseLink\":\"duhavhqlkt\"},\"id\":\"umaq\",\"name\":\"lbg\",\"type\":\"cdui\"},{\"properties\":{\"principal\":\"ccymvaolpsslql\",\"entityStoreDatabaseLink\":\"mdnbbglzpswiy\"},\"id\":\"mcwyhzdxssadb\",\"name\":\"mnvdfzn\",\"type\":\"daodvxzbncblyl\"}],\"nextLink\":\"tdbhhxsrzdzu\"}")
             .toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("ubex", model.nextLink());
+        Assertions.assertEquals("tdbhhxsrzdzu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomEntityStoreAssignmentsListResult model
-            = new CustomEntityStoreAssignmentsListResult().withNextLink("ubex");
+            = new CustomEntityStoreAssignmentsListResult().withNextLink("tdbhhxsrzdzu");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("ubex", model.nextLink());
+        Assertions.assertEquals("tdbhhxsrzdzu", model.nextLink());
     }
 }

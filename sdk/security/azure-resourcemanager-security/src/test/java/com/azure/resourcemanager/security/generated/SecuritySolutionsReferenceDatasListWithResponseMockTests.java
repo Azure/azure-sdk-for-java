@@ -22,7 +22,7 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Waf\",\"alertVendorName\":\"z\",\"packageInfoUrl\":\"jdmu\",\"productName\":\"busxyugozwp\",\"publisher\":\"xzgzum\",\"publisherDisplayName\":\"otiixkkbygbgiq\",\"template\":\"wyshybbnhtt\"},\"location\":\"zonzsurqcojasfz\",\"id\":\"z\",\"name\":\"carciu\",\"type\":\"xyipdthjfvnhwsgn\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"utfelfchn\",\"packageInfoUrl\":\"fssjgbfbbachxx\",\"productName\":\"zzunfnbphceei\",\"publisher\":\"kbuxlepghcnuqhq\",\"publisherDisplayName\":\"v\",\"template\":\"wt\"},\"location\":\"sclggagygn\",\"id\":\"bfytnhdnihuzzjuz\",\"name\":\"wgbzdtorbi\",\"type\":\"nyfzdpxct\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Waf\",\"alertVendorName\":\"sprbxj\",\"packageInfoUrl\":\"ezujtoud\",\"productName\":\"de\",\"publisher\":\"wmv\",\"publisherDisplayName\":\"sr\",\"template\":\"ciexu\"},\"location\":\"mtgtgebymmc\",\"id\":\"skscbsxehax\",\"name\":\"cj\",\"type\":\"jxolknshgwa\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"tbh\",\"packageInfoUrl\":\"b\",\"productName\":\"lmnlbnatl\",\"publisher\":\"chzzcdkxort\",\"publisherDisplayName\":\"zzvhbuj\",\"template\":\"ah\"},\"location\":\"hqwojdzcc\",\"id\":\"twsrbfbsd\",\"name\":\"icdzf\",\"type\":\"vexrvnhhmfsnq\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"jtshlwvrsksdzmh\",\"packageInfoUrl\":\"tsy\",\"productName\":\"pwfbwoetxiz\",\"publisher\":\"fwxhflgdunga\",\"publisherDisplayName\":\"pxsazbxsnxykszn\",\"template\":\"stmpr\"},\"location\":\"randzktwom\",\"id\":\"pczlqbo\",\"name\":\"mzgmrolh\",\"type\":\"fddkhxvevwxmnb\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"xadxgnpyhtuhal\",\"packageInfoUrl\":\"qil\",\"productName\":\"na\",\"publisher\":\"kexznpnytkqjarl\",\"publisherDisplayName\":\"zbtgtzpcat\",\"template\":\"mz\"},\"location\":\"jfgtgxuupcz\",\"id\":\"gqnaidvss\",\"name\":\"gyo\",\"type\":\"gkztzttjnknpbq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,11 +35,11 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
             = manager.securitySolutionsReferenceDatas().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(SecurityFamily.WAF, response.value().get(0).securityFamily());
-        Assertions.assertEquals("z", response.value().get(0).alertVendorName());
-        Assertions.assertEquals("jdmu", response.value().get(0).packageInfoUrl());
-        Assertions.assertEquals("busxyugozwp", response.value().get(0).productName());
-        Assertions.assertEquals("xzgzum", response.value().get(0).publisher());
-        Assertions.assertEquals("otiixkkbygbgiq", response.value().get(0).publisherDisplayName());
-        Assertions.assertEquals("wyshybbnhtt", response.value().get(0).template());
+        Assertions.assertEquals("sprbxj", response.value().get(0).alertVendorName());
+        Assertions.assertEquals("ezujtoud", response.value().get(0).packageInfoUrl());
+        Assertions.assertEquals("de", response.value().get(0).productName());
+        Assertions.assertEquals("wmv", response.value().get(0).publisher());
+        Assertions.assertEquals("sr", response.value().get(0).publisherDisplayName());
+        Assertions.assertEquals("ciexu", response.value().get(0).template());
     }
 }

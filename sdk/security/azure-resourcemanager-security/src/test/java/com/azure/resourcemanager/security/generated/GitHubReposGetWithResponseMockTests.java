@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubRepository;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitHubReposGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"mzdf\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-28T15:04:36Z\",\"provisioningState\":\"Failed\",\"repoId\":\"idzwnkbjqpzm\",\"repoName\":\"whquxsochtux\",\"repoFullName\":\"e\",\"onboardingState\":\"NotOnboarded\",\"repoUrl\":\"lbxmynslcvynavwt\",\"parentOwnerName\":\"smczroddcaqimodn\"},\"id\":\"jmjxkhbucmz\",\"name\":\"qtkfjacktav\",\"type\":\"ebgodj\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"pfyrvhtvijvwmr\",\"provisioningStatusUpdateTimeUtc\":\"2021-12-04T06:39:54Z\",\"provisioningState\":\"PendingDeletion\",\"repoId\":\"plcxfmbzquuutqm\",\"repoName\":\"tqyzyc\",\"repoFullName\":\"mbky\",\"onboardingState\":\"NotOnboarded\",\"repoUrl\":\"dqosxzmdzly\",\"parentOwnerName\":\"fufkekzfk\"},\"id\":\"cxhsevmnkgghvsr\",\"name\":\"jokvlwvbjsa\",\"type\":\"xsv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +32,10 @@ public final class GitHubReposGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitHubRepository response = manager.gitHubRepos()
-            .getWithResponse("xzhgbspdx", "hj", "u", "k", com.azure.core.util.Context.NONE)
+            .getWithResponse("vjhxvpmq", "uquxlphngrxl", "xoweorocr", "icgym", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, response.properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.properties().onboardingState());
-        Assertions.assertEquals("smczroddcaqimodn", response.properties().parentOwnerName());
+        Assertions.assertEquals("fufkekzfk", response.properties().parentOwnerName());
     }
 }

@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Microsoft information protection built-in and custom information types, labels, and integration status.
  */
 @Fluent
-public final class GetSensitivitySettingsResponsePropertiesMipInformation {
+public final class GetSensitivitySettingsResponsePropertiesMipInformation
+    implements JsonSerializable<GetSensitivitySettingsResponsePropertiesMipInformation> {
     /*
      * Microsoft information protection integration status
      */
-    @JsonProperty(value = "mipIntegrationStatus")
     private MipIntegrationStatus mipIntegrationStatus;
 
     /*
      * List of Microsoft information protection sensitivity labels
      */
-    @JsonProperty(value = "labels")
     private List<Label> labels;
 
     /*
      * List of custom user-defined information types
      */
-    @JsonProperty(value = "customInfoTypes")
     private List<InfoType> customInfoTypes;
 
     /*
      * List of pre-configured sensitive information types
      */
-    @JsonProperty(value = "builtInInfoTypes")
     private List<BuiltInInfoType> builtInInfoTypes;
 
     /**
@@ -140,5 +141,62 @@ public final class GetSensitivitySettingsResponsePropertiesMipInformation {
         if (builtInInfoTypes() != null) {
             builtInInfoTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mipIntegrationStatus",
+            this.mipIntegrationStatus == null ? null : this.mipIntegrationStatus.toString());
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customInfoTypes", this.customInfoTypes,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("builtInInfoTypes", this.builtInInfoTypes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetSensitivitySettingsResponsePropertiesMipInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetSensitivitySettingsResponsePropertiesMipInformation if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetSensitivitySettingsResponsePropertiesMipInformation.
+     */
+    public static GetSensitivitySettingsResponsePropertiesMipInformation fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetSensitivitySettingsResponsePropertiesMipInformation deserializedGetSensitivitySettingsResponsePropertiesMipInformation
+                = new GetSensitivitySettingsResponsePropertiesMipInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mipIntegrationStatus".equals(fieldName)) {
+                    deserializedGetSensitivitySettingsResponsePropertiesMipInformation.mipIntegrationStatus
+                        = MipIntegrationStatus.fromString(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    List<Label> labels = reader.readArray(reader1 -> Label.fromJson(reader1));
+                    deserializedGetSensitivitySettingsResponsePropertiesMipInformation.labels = labels;
+                } else if ("customInfoTypes".equals(fieldName)) {
+                    List<InfoType> customInfoTypes = reader.readArray(reader1 -> InfoType.fromJson(reader1));
+                    deserializedGetSensitivitySettingsResponsePropertiesMipInformation.customInfoTypes
+                        = customInfoTypes;
+                } else if ("builtInInfoTypes".equals(fieldName)) {
+                    List<BuiltInInfoType> builtInInfoTypes
+                        = reader.readArray(reader1 -> BuiltInInfoType.fromJson(reader1));
+                    deserializedGetSensitivitySettingsResponsePropertiesMipInformation.builtInInfoTypes
+                        = builtInInfoTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetSensitivitySettingsResponsePropertiesMipInformation;
+        });
     }
 }

@@ -21,52 +21,81 @@ public final class GetSensitivitySettingsListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetSensitivitySettingsListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"sensitiveInfoTypesIds\":[\"6282c493-3fe4-46c8-99f1-1181fc446ace\",\"c378292d-c509-4e3d-b895-29cc39469223\",\"a3875a4c-0713-4424-ac9b-d3c9197f6f6c\"],\"sensitivityThresholdLabelOrder\":3.528148,\"sensitivityThresholdLabelId\":\"695a76a5-70c3-4404-8250-d9f505bfa270\",\"mipInformation\":{\"mipIntegrationStatus\":\"noAutoLabelingRules\",\"labels\":[{},{},{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{},{},{},{}]}},\"id\":\"ncstt\",\"name\":\"jfybvpoekrsgsgb\",\"type\":\"huzqgn\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"7e4d8628-f727-49f9-929b-b9c25700e80b\",\"bd5358aa-ba09-4ee5-96a9-fde597aa999c\",\"de94c061-83b4-4eef-b2d5-c0da58fb7e52\"],\"sensitivityThresholdLabelOrder\":77.69165,\"sensitivityThresholdLabelId\":\"b0185285-3d24-4c8a-9acf-8b413d759ad9\",\"mipInformation\":{\"mipIntegrationStatus\":\"Ok\",\"labels\":[{},{},{},{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{},{},{}]}},\"id\":\"nk\",\"name\":\"mtk\",\"type\":\"bo\"}]}")
+            "{\"value\":[{\"properties\":{\"sensitiveInfoTypesIds\":[\"923c0fd9-8d92-4f83-9ad4-42a33df43ac6\",\"98b644d4-befc-4682-ae48-dbe39ab0f822\"],\"sensitivityThresholdLabelOrder\":75.48122,\"sensitivityThresholdLabelId\":\"d1d2e557-df6b-49ff-ae80-8470ace9c23f\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{},{},{},{}],\"customInfoTypes\":[{},{},{},{}],\"builtInInfoTypes\":[{},{},{},{}]}},\"id\":\"tikteusqczkvykl\",\"name\":\"ubyjaffmmf\",\"type\":\"lcqcuubgqibrt\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"881be6b5-47dc-438a-bc46-403f078a6170\",\"cc9fd7c8-8416-477a-996e-4b9973fd2865\",\"d3a0a4d5-6722-4cc7-8e41-1164bbbbde56\",\"82b61206-f820-4a8e-ac9e-dad7a0c8f564\"],\"sensitivityThresholdLabelOrder\":39.349926,\"sensitivityThresholdLabelId\":\"762fba0f-76dc-41e1-a173-512027cded22\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{},{},{}],\"customInfoTypes\":[{}],\"builtInInfoTypes\":[{},{},{}]}},\"id\":\"hrmooi\",\"name\":\"qseypxiutcxa\",\"type\":\"zhyrpeto\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"562e7dd2-db0d-4859-af71-9434bf42c8fb\",\"b863be04-ec80-4eb4-982b-6bd02d4c61ff\",\"b281cb8b-59c2-4079-8ad0-a23393b158a2\"],\"sensitivityThresholdLabelOrder\":88.24136,\"sensitivityThresholdLabelId\":\"e292399a-03ac-4012-8999-b2ae40d7dd4c\",\"mipInformation\":{\"mipIntegrationStatus\":\"Ok\",\"labels\":[{},{}],\"customInfoTypes\":[{},{},{}],\"builtInInfoTypes\":[{},{},{}]}},\"id\":\"q\",\"name\":\"kkzjcjbtrga\",\"type\":\"hvv\"}]}")
             .toObject(GetSensitivitySettingsListResponseInner.class);
-        Assertions.assertEquals(UUID.fromString("6282c493-3fe4-46c8-99f1-1181fc446ace"),
+        Assertions.assertEquals(UUID.fromString("923c0fd9-8d92-4f83-9ad4-42a33df43ac6"),
             model.value().get(0).properties().sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(3.528148F, model.value().get(0).properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("695a76a5-70c3-4404-8250-d9f505bfa270"),
+        Assertions.assertEquals(75.48122F, model.value().get(0).properties().sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("d1d2e557-df6b-49ff-ae80-8470ace9c23f"),
             model.value().get(0).properties().sensitivityThresholdLabelId());
-        Assertions.assertEquals(MipIntegrationStatus.NO_AUTO_LABELING_RULES,
+        Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
             model.value().get(0).properties().mipInformation().mipIntegrationStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetSensitivitySettingsListResponseInner model
-            = new GetSensitivitySettingsListResponseInner().withValue(Arrays.asList(
-                new GetSensitivitySettingsResponseInner().withProperties(new GetSensitivitySettingsResponseProperties()
-                    .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("6282c493-3fe4-46c8-99f1-1181fc446ace"),
-                        UUID.fromString("c378292d-c509-4e3d-b895-29cc39469223"),
-                        UUID.fromString("a3875a4c-0713-4424-ac9b-d3c9197f6f6c")))
-                    .withSensitivityThresholdLabelOrder(3.528148F)
-                    .withSensitivityThresholdLabelId(UUID.fromString("695a76a5-70c3-4404-8250-d9f505bfa270"))
-                    .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
-                        .withMipIntegrationStatus(MipIntegrationStatus.NO_AUTO_LABELING_RULES)
-                        .withLabels(Arrays.asList(new Label(), new Label(), new Label()))
-                        .withCustomInfoTypes(Arrays.asList(new InfoType(), new InfoType()))
-                        .withBuiltInInfoTypes(Arrays.asList(new BuiltInInfoType(), new BuiltInInfoType(),
-                            new BuiltInInfoType(), new BuiltInInfoType())))),
-                new GetSensitivitySettingsResponseInner().withProperties(new GetSensitivitySettingsResponseProperties()
-                    .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("7e4d8628-f727-49f9-929b-b9c25700e80b"),
-                        UUID.fromString("bd5358aa-ba09-4ee5-96a9-fde597aa999c"),
-                        UUID.fromString("de94c061-83b4-4eef-b2d5-c0da58fb7e52")))
-                    .withSensitivityThresholdLabelOrder(77.69165F)
-                    .withSensitivityThresholdLabelId(UUID.fromString("b0185285-3d24-4c8a-9acf-8b413d759ad9"))
-                    .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
-                        .withMipIntegrationStatus(MipIntegrationStatus.OK)
-                        .withLabels(Arrays.asList(new Label(), new Label(), new Label(), new Label()))
-                        .withCustomInfoTypes(Arrays.asList(new InfoType(), new InfoType()))
-                        .withBuiltInInfoTypes(
-                            Arrays.asList(new BuiltInInfoType(), new BuiltInInfoType(), new BuiltInInfoType()))))));
+            = new GetSensitivitySettingsListResponseInner()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new GetSensitivitySettingsResponseInner()
+                                .withProperties(new GetSensitivitySettingsResponseProperties()
+                                    .withSensitiveInfoTypesIds(
+                                        Arrays.asList(UUID.fromString("923c0fd9-8d92-4f83-9ad4-42a33df43ac6"),
+                                            UUID.fromString("98b644d4-befc-4682-ae48-dbe39ab0f822")))
+                                    .withSensitivityThresholdLabelOrder(75.48122F)
+                                    .withSensitivityThresholdLabelId(
+                                        UUID.fromString("d1d2e557-df6b-49ff-ae80-8470ace9c23f"))
+                                    .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
+                                        .withMipIntegrationStatus(MipIntegrationStatus.NO_MIP_LABELS)
+                                        .withLabels(Arrays.asList(new Label(), new Label(), new Label(), new Label()))
+                                        .withCustomInfoTypes(Arrays
+                                            .asList(new InfoType(), new InfoType(), new InfoType(), new InfoType()))
+                                        .withBuiltInInfoTypes(
+                                            Arrays.asList(
+                                                new BuiltInInfoType(), new BuiltInInfoType(), new BuiltInInfoType(),
+                                                new BuiltInInfoType())))),
+                            new GetSensitivitySettingsResponseInner()
+                                .withProperties(new GetSensitivitySettingsResponseProperties()
+                                    .withSensitiveInfoTypesIds(
+                                        Arrays.asList(UUID.fromString("881be6b5-47dc-438a-bc46-403f078a6170"),
+                                            UUID.fromString("cc9fd7c8-8416-477a-996e-4b9973fd2865"),
+                                            UUID.fromString("d3a0a4d5-6722-4cc7-8e41-1164bbbbde56"),
+                                            UUID.fromString("82b61206-f820-4a8e-ac9e-dad7a0c8f564")))
+                                    .withSensitivityThresholdLabelOrder(39.349926F)
+                                    .withSensitivityThresholdLabelId(
+                                        UUID.fromString("762fba0f-76dc-41e1-a173-512027cded22"))
+                                    .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
+                                        .withMipIntegrationStatus(MipIntegrationStatus.NO_MIP_LABELS)
+                                        .withLabels(Arrays.asList(new Label(), new Label(), new Label()))
+                                        .withCustomInfoTypes(Arrays.asList(new InfoType()))
+                                        .withBuiltInInfoTypes(
+                                            Arrays.asList(new BuiltInInfoType(), new BuiltInInfoType(),
+                                                new BuiltInInfoType())))),
+                            new GetSensitivitySettingsResponseInner()
+                                .withProperties(new GetSensitivitySettingsResponseProperties()
+                                    .withSensitiveInfoTypesIds(
+                                        Arrays.asList(UUID.fromString("562e7dd2-db0d-4859-af71-9434bf42c8fb"),
+                                            UUID.fromString("b863be04-ec80-4eb4-982b-6bd02d4c61ff"),
+                                            UUID.fromString("b281cb8b-59c2-4079-8ad0-a23393b158a2")))
+                                    .withSensitivityThresholdLabelOrder(88.24136F)
+                                    .withSensitivityThresholdLabelId(
+                                        UUID.fromString("e292399a-03ac-4012-8999-b2ae40d7dd4c"))
+                                    .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
+                                        .withMipIntegrationStatus(MipIntegrationStatus.OK)
+                                        .withLabels(Arrays.asList(new Label(), new Label()))
+                                        .withCustomInfoTypes(
+                                            Arrays.asList(new InfoType(), new InfoType(), new InfoType()))
+                                        .withBuiltInInfoTypes(Arrays.asList(new BuiltInInfoType(),
+                                            new BuiltInInfoType(), new BuiltInInfoType()))))));
         model = BinaryData.fromObject(model).toObject(GetSensitivitySettingsListResponseInner.class);
-        Assertions.assertEquals(UUID.fromString("6282c493-3fe4-46c8-99f1-1181fc446ace"),
+        Assertions.assertEquals(UUID.fromString("923c0fd9-8d92-4f83-9ad4-42a33df43ac6"),
             model.value().get(0).properties().sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(3.528148F, model.value().get(0).properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("695a76a5-70c3-4404-8250-d9f505bfa270"),
+        Assertions.assertEquals(75.48122F, model.value().get(0).properties().sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("d1d2e557-df6b-49ff-ae80-8470ace9c23f"),
             model.value().get(0).properties().sensitivityThresholdLabelId());
-        Assertions.assertEquals(MipIntegrationStatus.NO_AUTO_LABELING_RULES,
+        Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
             model.value().get(0).properties().mipInformation().mipIntegrationStatus());
     }
 }

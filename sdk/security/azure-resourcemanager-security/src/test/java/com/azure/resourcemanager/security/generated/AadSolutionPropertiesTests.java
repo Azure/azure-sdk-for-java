@@ -14,24 +14,24 @@ public final class AadSolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AadSolutionProperties model = BinaryData.fromString(
-            "{\"connectivityState\":\"NotLicensed\",\"deviceVendor\":\"d\",\"deviceType\":\"idt\",\"workspace\":{\"id\":\"m\"},\"\":{\"rg\":\"datan\",\"gytoxuwhtt\":\"datadogcvu\",\"mebgszplu\":\"datazqsa\",\"gvo\":\"datadekpdzzmssg\"}}")
+            "{\"connectivityState\":\"NotLicensed\",\"deviceVendor\":\"vyczyayubt\",\"deviceType\":\"bxiqahragpxmibpl\",\"workspace\":{\"id\":\"o\"},\"\":{\"ovyzt\":\"dataefqm\",\"ceeg\":\"datalnomfpb\",\"ukkrehyh\":\"datayieztkutnjil\"}}")
             .toObject(AadSolutionProperties.class);
-        Assertions.assertEquals("d", model.deviceVendor());
-        Assertions.assertEquals("idt", model.deviceType());
-        Assertions.assertEquals("m", model.workspace().id());
+        Assertions.assertEquals("vyczyayubt", model.deviceVendor());
+        Assertions.assertEquals("bxiqahragpxmibpl", model.deviceType());
+        Assertions.assertEquals("o", model.workspace().id());
         Assertions.assertEquals(AadConnectivityState.NOT_LICENSED, model.connectivityState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadSolutionProperties model = new AadSolutionProperties().withDeviceVendor("d")
-            .withDeviceType("idt")
-            .withWorkspace(new ConnectedWorkspace().withId("m"))
+        AadSolutionProperties model = new AadSolutionProperties().withDeviceVendor("vyczyayubt")
+            .withDeviceType("bxiqahragpxmibpl")
+            .withWorkspace(new ConnectedWorkspace().withId("o"))
             .withConnectivityState(AadConnectivityState.NOT_LICENSED);
         model = BinaryData.fromObject(model).toObject(AadSolutionProperties.class);
-        Assertions.assertEquals("d", model.deviceVendor());
-        Assertions.assertEquals("idt", model.deviceType());
-        Assertions.assertEquals("m", model.workspace().id());
+        Assertions.assertEquals("vyczyayubt", model.deviceVendor());
+        Assertions.assertEquals("bxiqahragpxmibpl", model.deviceType());
+        Assertions.assertEquals("o", model.workspace().id());
         Assertions.assertEquals(AadConnectivityState.NOT_LICENSED, model.connectivityState());
     }
 }

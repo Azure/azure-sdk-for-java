@@ -5,14 +5,18 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AlertEntity;
 import com.azure.resourcemanager.security.models.AlertPropertiesSupportingEvidence;
 import com.azure.resourcemanager.security.models.AlertSeverity;
 import com.azure.resourcemanager.security.models.AlertStatus;
 import com.azure.resourcemanager.security.models.Intent;
 import com.azure.resourcemanager.security.models.ResourceIdentifier;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -21,168 +25,146 @@ import java.util.Map;
  * describes security alert properties.
  */
 @Fluent
-public final class AlertProperties {
+public final class AlertProperties implements JsonSerializable<AlertProperties> {
     /*
      * Schema version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
-     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same alertType).
+     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same
+     * alertType).
      */
-    @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
 
     /*
      * Unique identifier for the alert.
      */
-    @JsonProperty(value = "systemAlertId", access = JsonProperty.Access.WRITE_ONLY)
     private String systemAlertId;
 
     /*
-     * The name of Azure Security Center pricing tier which powering this alert. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
+     * The name of Azure Security Center pricing tier which powering this alert. Learn more:
+     * https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
      */
-    @JsonProperty(value = "productComponentName", access = JsonProperty.Access.WRITE_ONLY)
     private String productComponentName;
 
     /*
      * The display name of the alert.
      */
-    @JsonProperty(value = "alertDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String alertDisplayName;
 
     /*
      * Description of the suspicious activity that was detected.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
-     * The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
+     * The risk level of the threat that was detected. Learn more:
+     * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
-     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security Center's supported kill chain intents.
+     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
+     * Center's supported kill chain intents.
      */
-    @JsonProperty(value = "intent", access = JsonProperty.Access.WRITE_ONLY)
     private Intent intent;
 
     /*
      * The UTC time of the first event or activity included in the alert in ISO8601 format.
      */
-    @JsonProperty(value = "startTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTimeUtc;
 
     /*
      * The UTC time of the last event or activity included in the alert in ISO8601 format.
      */
-    @JsonProperty(value = "endTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTimeUtc;
 
     /*
-     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant, workspace, subscription etc.). There can be multiple identifiers of different type per alert.
+     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant,
+     * workspace, subscription etc.). There can be multiple identifiers of different type per alert.
      */
-    @JsonProperty(value = "resourceIdentifiers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceIdentifier> resourceIdentifiers;
 
     /*
      * Manual action items to take to remediate the alert.
      */
-    @JsonProperty(value = "remediationSteps", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> remediationSteps;
 
     /*
      * The name of the vendor that raises the alert.
      */
-    @JsonProperty(value = "vendorName", access = JsonProperty.Access.WRITE_ONLY)
     private String vendorName;
 
     /*
      * The life cycle status of the alert.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private AlertStatus status;
 
     /*
      * Links related to the alert
      */
-    @JsonProperty(value = "extendedLinks", access = JsonProperty.Access.WRITE_ONLY)
     private List<Map<String, String>> extendedLinks;
 
     /*
      * A direct link to the alert page in Azure Portal.
      */
-    @JsonProperty(value = "alertUri", access = JsonProperty.Access.WRITE_ONLY)
     private String alertUri;
 
     /*
      * The UTC time the alert was generated in ISO8601 format.
      */
-    @JsonProperty(value = "timeGeneratedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeGeneratedUtc;
 
     /*
-     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
+     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity,
+     * Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
      */
-    @JsonProperty(value = "productName", access = JsonProperty.Access.WRITE_ONLY)
     private String productName;
 
     /*
      * The UTC processing end time of the alert in ISO8601 format.
      */
-    @JsonProperty(value = "processingEndTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime processingEndTimeUtc;
 
     /*
      * A list of entities related to the alert.
      */
-    @JsonProperty(value = "entities", access = JsonProperty.Access.WRITE_ONLY)
     private List<AlertEntity> entities;
 
     /*
      * This field determines whether the alert is an incident (a compound grouping of several alerts) or a single alert.
      */
-    @JsonProperty(value = "isIncident", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isIncident;
 
     /*
      * Key for corelating related alerts. Alerts with the same correlation key considered to be related.
      */
-    @JsonProperty(value = "correlationKey", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationKey;
 
     /*
      * Custom properties for the alert.
      */
-    @JsonProperty(value = "extendedProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
     /*
      * The display name of the resource most related to this alert.
      */
-    @JsonProperty(value = "compromisedEntity", access = JsonProperty.Access.WRITE_ONLY)
     private String compromisedEntity;
 
     /*
      * kill chain related techniques behind the alert.
      */
-    @JsonProperty(value = "techniques", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> techniques;
 
     /*
      * Kill chain related sub-techniques behind the alert.
      */
-    @JsonProperty(value = "subTechniques", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subTechniques;
 
     /*
      * Changing set of properties depending on the supportingEvidence type.
      */
-    @JsonProperty(value = "supportingEvidence")
     private AlertPropertiesSupportingEvidence supportingEvidence;
 
     /**
@@ -482,5 +464,108 @@ public final class AlertProperties {
         if (supportingEvidence() != null) {
             supportingEvidence().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("supportingEvidence", this.supportingEvidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertProperties.
+     */
+    public static AlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProperties deserializedAlertProperties = new AlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAlertProperties.version = reader.getString();
+                } else if ("alertType".equals(fieldName)) {
+                    deserializedAlertProperties.alertType = reader.getString();
+                } else if ("systemAlertId".equals(fieldName)) {
+                    deserializedAlertProperties.systemAlertId = reader.getString();
+                } else if ("productComponentName".equals(fieldName)) {
+                    deserializedAlertProperties.productComponentName = reader.getString();
+                } else if ("alertDisplayName".equals(fieldName)) {
+                    deserializedAlertProperties.alertDisplayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertProperties.description = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedAlertProperties.severity = AlertSeverity.fromString(reader.getString());
+                } else if ("intent".equals(fieldName)) {
+                    deserializedAlertProperties.intent = Intent.fromString(reader.getString());
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedAlertProperties.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedAlertProperties.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceIdentifiers".equals(fieldName)) {
+                    List<ResourceIdentifier> resourceIdentifiers
+                        = reader.readArray(reader1 -> ResourceIdentifier.fromJson(reader1));
+                    deserializedAlertProperties.resourceIdentifiers = resourceIdentifiers;
+                } else if ("remediationSteps".equals(fieldName)) {
+                    List<String> remediationSteps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertProperties.remediationSteps = remediationSteps;
+                } else if ("vendorName".equals(fieldName)) {
+                    deserializedAlertProperties.vendorName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAlertProperties.status = AlertStatus.fromString(reader.getString());
+                } else if ("extendedLinks".equals(fieldName)) {
+                    List<Map<String, String>> extendedLinks
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.getString()));
+                    deserializedAlertProperties.extendedLinks = extendedLinks;
+                } else if ("alertUri".equals(fieldName)) {
+                    deserializedAlertProperties.alertUri = reader.getString();
+                } else if ("timeGeneratedUtc".equals(fieldName)) {
+                    deserializedAlertProperties.timeGeneratedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("productName".equals(fieldName)) {
+                    deserializedAlertProperties.productName = reader.getString();
+                } else if ("processingEndTimeUtc".equals(fieldName)) {
+                    deserializedAlertProperties.processingEndTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("entities".equals(fieldName)) {
+                    List<AlertEntity> entities = reader.readArray(reader1 -> AlertEntity.fromJson(reader1));
+                    deserializedAlertProperties.entities = entities;
+                } else if ("isIncident".equals(fieldName)) {
+                    deserializedAlertProperties.isIncident = reader.getNullable(JsonReader::getBoolean);
+                } else if ("correlationKey".equals(fieldName)) {
+                    deserializedAlertProperties.correlationKey = reader.getString();
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, String> extendedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAlertProperties.extendedProperties = extendedProperties;
+                } else if ("compromisedEntity".equals(fieldName)) {
+                    deserializedAlertProperties.compromisedEntity = reader.getString();
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertProperties.techniques = techniques;
+                } else if ("subTechniques".equals(fieldName)) {
+                    List<String> subTechniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertProperties.subTechniques = subTechniques;
+                } else if ("supportingEvidence".equals(fieldName)) {
+                    deserializedAlertProperties.supportingEvidence = AlertPropertiesSupportingEvidence.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProperties;
+        });
     }
 }

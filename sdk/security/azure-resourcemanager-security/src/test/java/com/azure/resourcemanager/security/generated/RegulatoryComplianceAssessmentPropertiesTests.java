@@ -13,16 +13,16 @@ public final class RegulatoryComplianceAssessmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceAssessmentProperties model = BinaryData.fromString(
-            "{\"description\":\"rzqlveu\",\"assessmentType\":\"upjm\",\"assessmentDetailsLink\":\"fxobbcsws\",\"state\":\"Unsupported\",\"passedResources\":1836763667,\"failedResources\":1482197190,\"skippedResources\":768140318,\"unsupportedResources\":2094970779}")
+            "{\"description\":\"dqmh\",\"assessmentType\":\"dhtldwkyz\",\"assessmentDetailsLink\":\"utknc\",\"state\":\"Skipped\",\"passedResources\":1152812045,\"failedResources\":827449551,\"skippedResources\":650590587,\"unsupportedResources\":1413439990}")
             .toObject(RegulatoryComplianceAssessmentProperties.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.state());
+        Assertions.assertEquals(State.SKIPPED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegulatoryComplianceAssessmentProperties model
-            = new RegulatoryComplianceAssessmentProperties().withState(State.UNSUPPORTED);
+            = new RegulatoryComplianceAssessmentProperties().withState(State.SKIPPED);
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceAssessmentProperties.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.state());
+        Assertions.assertEquals(State.SKIPPED, model.state());
     }
 }

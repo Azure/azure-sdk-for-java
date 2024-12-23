@@ -24,7 +24,7 @@ public final class GovernanceAssignmentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"owner\":\"haz\",\"remediationDueDate\":\"2021-08-02T09:52:45Z\",\"remediationEta\":{\"eta\":\"2021-11-01T14:52:31Z\",\"justification\":\"ivz\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":837382876,\"ticketLink\":\"iosiqsy\",\"ticketStatus\":\"f\"}},\"id\":\"qwdr\",\"name\":\"xtfdag\",\"type\":\"mrcokzzertkounz\"}";
+            = "{\"properties\":{\"owner\":\"yioqe\",\"remediationDueDate\":\"2021-12-08T08:32:26Z\",\"remediationEta\":{\"eta\":\"2021-10-31T06:23:16Z\",\"justification\":\"qszz\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":1046556371,\"ticketLink\":\"wdvgjqcrbkomp\",\"ticketStatus\":\"nfgyweo\"}},\"id\":\"bepgcmahiwfry\",\"name\":\"w\",\"type\":\"ch\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,29 +34,30 @@ public final class GovernanceAssignmentsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GovernanceAssignment response = manager.governanceAssignments()
-            .define("xynofxlttxoqxtd")
-            .withExistingAssessment("cnginxdvm", "oyqxfvgyxz")
-            .withOwner("jsji")
-            .withRemediationDueDate(OffsetDateTime.parse("2021-10-29T23:59:47Z"))
-            .withRemediationEta(new RemediationEta().withEta(OffsetDateTime.parse("2021-06-10T19:34:55Z"))
-                .withJustification("skcjhmmofb"))
+            .define("hfrbzakpjt")
+            .withExistingAssessment("gwn", "zuvigvl")
+            .withOwner("aqpojpsucmximc")
+            .withRemediationDueDate(OffsetDateTime.parse("2021-05-03T12:53:28Z"))
+            .withRemediationEta(new RemediationEta().withEta(OffsetDateTime.parse("2021-10-12T22:50:59Z"))
+                .withJustification("nqjgsatkyv"))
             .withIsGracePeriod(true)
-            .withGovernanceEmailNotification(new GovernanceEmailNotification().withDisableManagerEmailNotification(true)
-                .withDisableOwnerEmailNotification(true))
-            .withAdditionalData(new GovernanceAssignmentAdditionalData().withTicketNumber(934153123)
-                .withTicketLink("nlsfgnyscac")
-                .withTicketStatus("tbzetxyg"))
+            .withGovernanceEmailNotification(
+                new GovernanceEmailNotification().withDisableManagerEmailNotification(false)
+                    .withDisableOwnerEmailNotification(true))
+            .withAdditionalData(new GovernanceAssignmentAdditionalData().withTicketNumber(1194687245)
+                .withTicketLink("ircpgcvsvkk")
+                .withTicketStatus("jolpyoklkvuz"))
             .create();
 
-        Assertions.assertEquals("haz", response.owner());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T09:52:45Z"), response.remediationDueDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T14:52:31Z"), response.remediationEta().eta());
-        Assertions.assertEquals("ivz", response.remediationEta().justification());
+        Assertions.assertEquals("yioqe", response.owner());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T08:32:26Z"), response.remediationDueDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T06:23:16Z"), response.remediationEta().eta());
+        Assertions.assertEquals("qszz", response.remediationEta().justification());
         Assertions.assertEquals(true, response.isGracePeriod());
         Assertions.assertEquals(false, response.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(true, response.governanceEmailNotification().disableOwnerEmailNotification());
-        Assertions.assertEquals(837382876, response.additionalData().ticketNumber());
-        Assertions.assertEquals("iosiqsy", response.additionalData().ticketLink());
-        Assertions.assertEquals("f", response.additionalData().ticketStatus());
+        Assertions.assertEquals(1046556371, response.additionalData().ticketNumber());
+        Assertions.assertEquals("wdvgjqcrbkomp", response.additionalData().ticketLink());
+        Assertions.assertEquals("nfgyweo", response.additionalData().ticketStatus());
     }
 }

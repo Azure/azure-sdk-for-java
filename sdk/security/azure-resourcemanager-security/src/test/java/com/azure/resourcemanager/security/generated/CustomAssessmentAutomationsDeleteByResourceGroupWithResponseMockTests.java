@@ -28,7 +28,7 @@ public final class CustomAssessmentAutomationsDeleteByResourceGroupWithResponseM
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.customAssessmentAutomations()
-            .deleteByResourceGroupWithResponse("hggryelgf", "atig", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("nnpjwkosnyxi", "fou", com.azure.core.util.Context.NONE);
 
     }
 }

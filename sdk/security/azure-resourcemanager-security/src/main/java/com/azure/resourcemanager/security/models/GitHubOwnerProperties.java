@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * GitHub Owner properties.
  */
 @Fluent
-public final class GitHubOwnerProperties {
+public final class GitHubOwnerProperties implements JsonSerializable<GitHubOwnerProperties> {
     /*
-     * Gets or sets resource status message.
+     * Gets the resource status message.
      */
-    @JsonProperty(value = "provisioningStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningStatusMessage;
 
     /*
-     * Gets or sets time when resource was last checked.
+     * Gets the time when resource was last checked.
      */
-    @JsonProperty(value = "provisioningStatusUpdateTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningStatusUpdateTimeUtc;
 
     /*
@@ -36,30 +39,27 @@ public final class GitHubOwnerProperties {
      * DeletionSuccess - Deletion successful.
      * DeletionFailure - Deletion failure.
      */
-    @JsonProperty(value = "provisioningState")
     private DevOpsProvisioningState provisioningState;
 
     /*
      * Gets or sets GitHub Owner url.
      */
-    @JsonProperty(value = "ownerUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerUrl;
 
     /*
      * Gets or sets internal GitHub id.
      */
-    @JsonProperty(value = "gitHubInternalId", access = JsonProperty.Access.WRITE_ONLY)
     private String gitHubInternalId;
 
     /*
      * Details about resource onboarding status across all connectors.
      * 
-     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level resources.
+     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only
+     * applicable to top-level resources.
      * Onboarded - this resource has already been onboarded by the specified connector.
      * NotOnboarded - this resource has not been onboarded to any connector.
      * NotApplicable - the onboarding state is not applicable to the current endpoint.
      */
-    @JsonProperty(value = "onboardingState")
     private OnboardingState onboardingState;
 
     /**
@@ -69,7 +69,7 @@ public final class GitHubOwnerProperties {
     }
 
     /**
-     * Get the provisioningStatusMessage property: Gets or sets resource status message.
+     * Get the provisioningStatusMessage property: Gets the resource status message.
      * 
      * @return the provisioningStatusMessage value.
      */
@@ -78,7 +78,7 @@ public final class GitHubOwnerProperties {
     }
 
     /**
-     * Get the provisioningStatusUpdateTimeUtc property: Gets or sets time when resource was last checked.
+     * Get the provisioningStatusUpdateTimeUtc property: Gets the time when resource was last checked.
      * 
      * @return the provisioningStatusUpdateTimeUtc value.
      */
@@ -101,25 +101,6 @@ public final class GitHubOwnerProperties {
      */
     public DevOpsProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the resource.
-     * 
-     * Pending - Provisioning pending.
-     * Failed - Provisioning failed.
-     * Succeeded - Successful provisioning.
-     * Canceled - Provisioning canceled.
-     * PendingDeletion - Deletion pending.
-     * DeletionSuccess - Deletion successful.
-     * DeletionFailure - Deletion failure.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the GitHubOwnerProperties object itself.
-     */
-    public GitHubOwnerProperties withProvisioningState(DevOpsProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -178,5 +159,54 @@ public final class GitHubOwnerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("onboardingState",
+            this.onboardingState == null ? null : this.onboardingState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubOwnerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubOwnerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubOwnerProperties.
+     */
+    public static GitHubOwnerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubOwnerProperties deserializedGitHubOwnerProperties = new GitHubOwnerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningStatusMessage".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.provisioningStatusMessage = reader.getString();
+                } else if ("provisioningStatusUpdateTimeUtc".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.provisioningStatusUpdateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.provisioningState
+                        = DevOpsProvisioningState.fromString(reader.getString());
+                } else if ("ownerUrl".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.ownerUrl = reader.getString();
+                } else if ("gitHubInternalId".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.gitHubInternalId = reader.getString();
+                } else if ("onboardingState".equals(fieldName)) {
+                    deserializedGitHubOwnerProperties.onboardingState = OnboardingState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubOwnerProperties;
+        });
     }
 }

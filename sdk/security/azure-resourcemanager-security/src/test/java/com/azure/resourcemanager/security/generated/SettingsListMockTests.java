@@ -21,7 +21,7 @@ public final class SettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"Setting\",\"id\":\"rqqvcugusqlxl\",\"name\":\"edthfwlnvqacbyfi\",\"type\":\"blnlmpuyypaggpai\"}]}";
+            = "{\"value\":[{\"kind\":\"Setting\",\"id\":\"hpwmdkyfgye\",\"name\":\"vyhvv\",\"type\":\"uqyrpubbk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

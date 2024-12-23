@@ -13,7 +13,6 @@ import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrg;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -27,7 +26,7 @@ public final class AzureDevOpsOrgsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"qv\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-25T01:37:07Z\",\"provisioningState\":\"Pending\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"mjpjakjdt\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"cg\",\"category\":\"Code\"}],\"branchConfiguration\":{\"branchNames\":[\"xp\",\"qdsq\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"t\",\"name\":\"ikdipkxsq\",\"type\":\"uzabrsoihataj\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"ljdkxhmewyaolc\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-06T08:16:33Z\",\"provisioningState\":\"DeletionFailure\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"krpkhqetpoene\",\"category\":\"Containers\"},{\"minimumSeverityLevel\":\"fpc\",\"category\":\"Secrets\"}],\"branchConfiguration\":{\"branchNames\":[\"xowvhufcmuaj\",\"blx\",\"htozfrfaw\",\"nnsvrfajynihti\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"qzhluctblfehbg\",\"name\":\"gy\",\"type\":\"hrcmeq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,18 +36,17 @@ public final class AzureDevOpsOrgsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureDevOpsOrg response = manager.azureDevOpsOrgs()
-            .getWithResponse("xorrutuhve", "gxlssolqypvw", "lxo", com.azure.core.util.Context.NONE)
+            .getWithResponse("ztvn", "bfb", "t", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING, response.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, response.properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.ENABLED,
+        Assertions.assertEquals(OnboardingState.ONBOARDED, response.properties().onboardingState());
+        Assertions.assertEquals(ActionableRemediationState.DISABLED,
             response.properties().actionableRemediation().state());
-        Assertions.assertEquals("mjpjakjdt",
+        Assertions.assertEquals("krpkhqetpoene",
             response.properties().actionableRemediation().categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.DEPENDENCIES,
+        Assertions.assertEquals(RuleCategory.CONTAINERS,
             response.properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("xp",
+        Assertions.assertEquals("xowvhufcmuaj",
             response.properties().actionableRemediation().branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             response.properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());

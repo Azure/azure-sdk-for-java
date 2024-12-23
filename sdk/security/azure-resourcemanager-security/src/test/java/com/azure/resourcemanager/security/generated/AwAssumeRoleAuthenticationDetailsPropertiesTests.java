@@ -12,19 +12,19 @@ public final class AwAssumeRoleAuthenticationDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AwAssumeRoleAuthenticationDetailsProperties model = BinaryData.fromString(
-            "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"said\",\"awsAssumeRoleArn\":\"zsaaoqdsgptotxjq\",\"awsExternalId\":\"ia\",\"authenticationProvisioningState\":\"Expired\",\"grantedPermissions\":[\"AWS::SecurityAudit\"]}")
+            "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"wtxzuisam\",\"awsAssumeRoleArn\":\"natnizexroqsqjg\",\"awsExternalId\":\"rmthsplwst\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[\"AWS::AWSSecurityHubReadOnlyAccess\",\"AWS::AWSSecurityHubReadOnlyAccess\"]}")
             .toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("zsaaoqdsgptotxjq", model.awsAssumeRoleArn());
-        Assertions.assertEquals("ia", model.awsExternalId());
+        Assertions.assertEquals("natnizexroqsqjg", model.awsAssumeRoleArn());
+        Assertions.assertEquals("rmthsplwst", model.awsExternalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AwAssumeRoleAuthenticationDetailsProperties model
-            = new AwAssumeRoleAuthenticationDetailsProperties().withAwsAssumeRoleArn("zsaaoqdsgptotxjq")
-                .withAwsExternalId("ia");
+            = new AwAssumeRoleAuthenticationDetailsProperties().withAwsAssumeRoleArn("natnizexroqsqjg")
+                .withAwsExternalId("rmthsplwst");
         model = BinaryData.fromObject(model).toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("zsaaoqdsgptotxjq", model.awsAssumeRoleArn());
-        Assertions.assertEquals("ia", model.awsExternalId());
+        Assertions.assertEquals("natnizexroqsqjg", model.awsAssumeRoleArn());
+        Assertions.assertEquals("rmthsplwst", model.awsExternalId());
     }
 }

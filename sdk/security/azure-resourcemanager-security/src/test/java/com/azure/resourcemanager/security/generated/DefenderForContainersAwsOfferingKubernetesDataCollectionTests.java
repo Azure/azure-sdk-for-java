@@ -12,16 +12,16 @@ public final class DefenderForContainersAwsOfferingKubernetesDataCollectionTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersAwsOfferingKubernetesDataCollection model
-            = BinaryData.fromString("{\"cloudRoleArn\":\"tzbpyfao\"}")
+            = BinaryData.fromString("{\"cloudRoleArn\":\"we\"}")
                 .toObject(DefenderForContainersAwsOfferingKubernetesDataCollection.class);
-        Assertions.assertEquals("tzbpyfao", model.cloudRoleArn());
+        Assertions.assertEquals("we", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersAwsOfferingKubernetesDataCollection model
-            = new DefenderForContainersAwsOfferingKubernetesDataCollection().withCloudRoleArn("tzbpyfao");
+            = new DefenderForContainersAwsOfferingKubernetesDataCollection().withCloudRoleArn("we");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersAwsOfferingKubernetesDataCollection.class);
-        Assertions.assertEquals("tzbpyfao", model.cloudRoleArn());
+        Assertions.assertEquals("we", model.cloudRoleArn());
     }
 }

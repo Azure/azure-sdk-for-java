@@ -5,39 +5,29 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Defender for Databases GCP offering configurations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderForDatabasesGcpOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForDatabasesGcp")
 @Fluent
 public final class DefenderForDatabasesGcpOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_DATABASES_GCP;
 
     /*
      * The ARC autoprovisioning configuration
      */
-    @JsonProperty(value = "arcAutoProvisioning")
     private DefenderForDatabasesGcpOfferingArcAutoProvisioning arcAutoProvisioning;
 
     /*
      * The native cloud connection configuration
      */
-    @JsonProperty(value = "defenderForDatabasesArcAutoProvisioning")
     private DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning defenderForDatabasesArcAutoProvisioning;
 
     /**
@@ -106,12 +96,60 @@ public final class DefenderForDatabasesGcpOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (arcAutoProvisioning() != null) {
             arcAutoProvisioning().validate();
         }
         if (defenderForDatabasesArcAutoProvisioning() != null) {
             defenderForDatabasesArcAutoProvisioning().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("arcAutoProvisioning", this.arcAutoProvisioning);
+        jsonWriter.writeJsonField("defenderForDatabasesArcAutoProvisioning",
+            this.defenderForDatabasesArcAutoProvisioning);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForDatabasesGcpOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForDatabasesGcpOffering if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForDatabasesGcpOffering.
+     */
+    public static DefenderForDatabasesGcpOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForDatabasesGcpOffering deserializedDefenderForDatabasesGcpOffering
+                = new DefenderForDatabasesGcpOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderForDatabasesGcpOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderForDatabasesGcpOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("arcAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForDatabasesGcpOffering.arcAutoProvisioning
+                        = DefenderForDatabasesGcpOfferingArcAutoProvisioning.fromJson(reader);
+                } else if ("defenderForDatabasesArcAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForDatabasesGcpOffering.defenderForDatabasesArcAutoProvisioning
+                        = DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForDatabasesGcpOffering;
+        });
     }
 }

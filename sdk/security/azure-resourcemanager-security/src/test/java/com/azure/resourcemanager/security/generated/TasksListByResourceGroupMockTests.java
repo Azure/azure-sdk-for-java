@@ -21,7 +21,7 @@ public final class TasksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"cucrcm\",\"creationTimeUtc\":\"2021-08-15T10:16:28Z\",\"securityTaskParameters\":{\"name\":\"qjiwifhbksldttoh\",\"\":{\"tpmglxkoikmtr\":\"datanaihtgsiqikvllr\"}},\"lastStateChangeTimeUtc\":\"2021-04-01T15:07:30Z\",\"subState\":\"kzawbunmpaklwzlw\"},\"id\":\"epr\",\"name\":\"ejzltka\",\"type\":\"zfjsxscbd\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"erbgpxeb\",\"creationTimeUtc\":\"2021-08-03T16:47:03Z\",\"securityTaskParameters\":{\"name\":\"aytujraxdtpryjm\",\"\":{\"yljurkeposehqqyl\":\"datasewouxlymsv\",\"rxxxoteehkhowgom\":\"datapctwjwdsdlzmkx\"}},\"lastStateChangeTimeUtc\":\"2021-10-10T06:36:51Z\",\"subState\":\"owpcbapnpxraqawb\"},\"id\":\"pspfeylqlo\",\"name\":\"vvujex\",\"type\":\"yglxrkgjnm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TasksListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityTask> response = manager.tasks()
-            .listByResourceGroup("nqliwkmzoj", "etyalht", "mknazgbjbhrpgiq", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("ctr", "ldsxebuhsxrz", "mgsdaluyckhefrbh", com.azure.core.util.Context.NONE);
 
     }
 }

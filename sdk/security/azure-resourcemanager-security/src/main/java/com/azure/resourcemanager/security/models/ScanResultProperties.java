@@ -5,54 +5,51 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A vulnerability assessment scan result properties for a single rule.
  */
 @Fluent
-public final class ScanResultProperties {
+public final class ScanResultProperties implements JsonSerializable<ScanResultProperties> {
     /*
      * The rule Id.
      */
-    @JsonProperty(value = "ruleId")
     private String ruleId;
 
     /*
      * The rule result status.
      */
-    @JsonProperty(value = "status")
     private RuleStatus status;
 
     /*
      * Indicated whether the results specified here are trimmed.
      */
-    @JsonProperty(value = "isTrimmed")
     private Boolean isTrimmed;
 
     /*
      * The results of the query that was run.
      */
-    @JsonProperty(value = "queryResults")
     private List<List<String>> queryResults;
 
     /*
      * Remediation details.
      */
-    @JsonProperty(value = "remediation")
     private Remediation remediation;
 
     /*
      * The rule result adjusted with baseline.
      */
-    @JsonProperty(value = "baselineAdjustedResult")
     private BaselineAdjustedResult baselineAdjustedResult;
 
     /*
      * vulnerability assessment rule metadata details.
      */
-    @JsonProperty(value = "ruleMetadata")
     private VaRule ruleMetadata;
 
     /**
@@ -216,5 +213,62 @@ public final class ScanResultProperties {
         if (ruleMetadata() != null) {
             ruleMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleId", this.ruleId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeBooleanField("isTrimmed", this.isTrimmed);
+        jsonWriter.writeArrayField("queryResults", this.queryResults,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeJsonField("remediation", this.remediation);
+        jsonWriter.writeJsonField("baselineAdjustedResult", this.baselineAdjustedResult);
+        jsonWriter.writeJsonField("ruleMetadata", this.ruleMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScanResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScanResultProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScanResultProperties.
+     */
+    public static ScanResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScanResultProperties deserializedScanResultProperties = new ScanResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleId".equals(fieldName)) {
+                    deserializedScanResultProperties.ruleId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedScanResultProperties.status = RuleStatus.fromString(reader.getString());
+                } else if ("isTrimmed".equals(fieldName)) {
+                    deserializedScanResultProperties.isTrimmed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("queryResults".equals(fieldName)) {
+                    List<List<String>> queryResults
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedScanResultProperties.queryResults = queryResults;
+                } else if ("remediation".equals(fieldName)) {
+                    deserializedScanResultProperties.remediation = Remediation.fromJson(reader);
+                } else if ("baselineAdjustedResult".equals(fieldName)) {
+                    deserializedScanResultProperties.baselineAdjustedResult = BaselineAdjustedResult.fromJson(reader);
+                } else if ("ruleMetadata".equals(fieldName)) {
+                    deserializedScanResultProperties.ruleMetadata = VaRule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScanResultProperties;
+        });
     }
 }

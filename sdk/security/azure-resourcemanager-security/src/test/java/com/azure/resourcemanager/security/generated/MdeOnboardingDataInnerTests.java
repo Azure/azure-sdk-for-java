@@ -11,7 +11,7 @@ public final class MdeOnboardingDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MdeOnboardingDataInner model = BinaryData
-            .fromString("{\"properties\":{},\"id\":\"ckcb\",\"name\":\"uejrjxgc\",\"type\":\"qibrhosxsdqrhzoy\"}")
+            .fromString("{\"properties\":{},\"id\":\"abnetshh\",\"name\":\"zhedplvwiw\",\"type\":\"bmwmbesldnkw\"}")
             .toObject(MdeOnboardingDataInner.class);
     }
 

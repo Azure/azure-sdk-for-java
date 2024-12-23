@@ -13,7 +13,7 @@ public final class ExternalSecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSecuritySolutionList model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"desygrijwa\",\"id\":\"ufanray\",\"name\":\"fueqfrojs\",\"type\":\"dgrhydkygywezs\"}],\"nextLink\":\"ec\"}")
+            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ooz\",\"id\":\"vtxvcmufun\",\"name\":\"cpxxvirye\",\"type\":\"ngjgvrquvpyg\"}],\"nextLink\":\"pmcrdcuelj\"}")
             .toObject(ExternalSecuritySolutionList.class);
     }
 

@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Regulatory compliance control data.
  */
 @Fluent
-public final class RegulatoryComplianceControlProperties {
+public final class RegulatoryComplianceControlProperties
+    implements JsonSerializable<RegulatoryComplianceControlProperties> {
     /*
      * The description of the regulatory compliance control
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Aggregative state based on the control's supported assessments states
      */
-    @JsonProperty(value = "state")
     private State state;
 
     /*
      * The number of supported regulatory compliance assessments of the given control with a passed state
      */
-    @JsonProperty(value = "passedAssessments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer passedAssessments;
 
     /*
      * The number of supported regulatory compliance assessments of the given control with a failed state
      */
-    @JsonProperty(value = "failedAssessments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedAssessments;
 
     /*
      * The number of supported regulatory compliance assessments of the given control with a skipped state
      */
-    @JsonProperty(value = "skippedAssessments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer skippedAssessments;
 
     /**
@@ -114,5 +114,53 @@ public final class RegulatoryComplianceControlProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegulatoryComplianceControlProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegulatoryComplianceControlProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegulatoryComplianceControlProperties.
+     */
+    public static RegulatoryComplianceControlProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegulatoryComplianceControlProperties deserializedRegulatoryComplianceControlProperties
+                = new RegulatoryComplianceControlProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedRegulatoryComplianceControlProperties.description = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedRegulatoryComplianceControlProperties.state = State.fromString(reader.getString());
+                } else if ("passedAssessments".equals(fieldName)) {
+                    deserializedRegulatoryComplianceControlProperties.passedAssessments
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedAssessments".equals(fieldName)) {
+                    deserializedRegulatoryComplianceControlProperties.failedAssessments
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("skippedAssessments".equals(fieldName)) {
+                    deserializedRegulatoryComplianceControlProperties.skippedAssessments
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegulatoryComplianceControlProperties;
+        });
     }
 }

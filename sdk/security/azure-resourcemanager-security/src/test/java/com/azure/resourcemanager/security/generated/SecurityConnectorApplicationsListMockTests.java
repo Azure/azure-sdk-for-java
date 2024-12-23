@@ -23,7 +23,7 @@ public final class SecurityConnectorApplicationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"okjyghzt\",\"description\":\"miwtpcflcez\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datavwiftd\",\"datatvbfpfhr\",\"dataptsyqcjnqswxdo\",\"dataumxquk\"]},\"id\":\"cdio\",\"name\":\"clqddnhfknebw\",\"type\":\"ddpnyzcwyj\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"fzfvwj\",\"description\":\"hkvpyeyoa\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datampnqup\",\"datakjr\"]},\"id\":\"fwkyluobdxw\",\"name\":\"qdcclcv\",\"type\":\"srupayl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class SecurityConnectorApplicationsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Application> response
-            = manager.securityConnectorApplications().list("qpoilos", "aemcezevftmh", com.azure.core.util.Context.NONE);
+            = manager.securityConnectorApplications().list("tm", "xxr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("okjyghzt", response.iterator().next().displayName());
-        Assertions.assertEquals("miwtpcflcez", response.iterator().next().description());
+        Assertions.assertEquals("fzfvwj", response.iterator().next().displayName());
+        Assertions.assertEquals("hkvpyeyoa", response.iterator().next().description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS,
             response.iterator().next().sourceResourceType());
     }

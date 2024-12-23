@@ -5,41 +5,26 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The security connector environment data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "environmentType",
-    defaultImpl = EnvironmentData.class,
-    visible = true)
-@JsonTypeName("EnvironmentData")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AwsAccount", value = AwsEnvironmentData.class),
-    @JsonSubTypes.Type(name = "GcpProject", value = GcpProjectEnvironmentData.class),
-    @JsonSubTypes.Type(name = "GithubScope", value = GithubScopeEnvironmentData.class),
-    @JsonSubTypes.Type(name = "AzureDevOpsScope", value = AzureDevOpsScopeEnvironmentData.class),
-    @JsonSubTypes.Type(name = "GitlabScope", value = GitlabScopeEnvironmentData.class) })
 @Immutable
-public class EnvironmentData {
+public class EnvironmentData implements JsonSerializable<EnvironmentData> {
     /*
      * The type of the environment data.
      */
-    @JsonTypeId
-    @JsonProperty(value = "environmentType", required = true)
-    private EnvironmentType environmentType;
+    private EnvironmentType environmentType = EnvironmentType.fromString("EnvironmentData");
 
     /**
      * Creates an instance of EnvironmentData class.
      */
     public EnvironmentData() {
-        this.environmentType = EnvironmentType.fromString("EnvironmentData");
     }
 
     /**
@@ -57,5 +42,79 @@ public class EnvironmentData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentType",
+            this.environmentType == null ? null : this.environmentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentData.
+     */
+    public static EnvironmentData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("environmentType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AwsAccount".equals(discriminatorValue)) {
+                    return AwsEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("GcpProject".equals(discriminatorValue)) {
+                    return GcpProjectEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("GithubScope".equals(discriminatorValue)) {
+                    return GithubScopeEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("AzureDevOpsScope".equals(discriminatorValue)) {
+                    return AzureDevOpsScopeEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("GitlabScope".equals(discriminatorValue)) {
+                    return GitlabScopeEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("DockerHubOrganization".equals(discriminatorValue)) {
+                    return DockerHubEnvironmentData.fromJson(readerToUse.reset());
+                } else if ("JFrogArtifactory".equals(discriminatorValue)) {
+                    return JFrogEnvironmentData.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EnvironmentData fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentData deserializedEnvironmentData = new EnvironmentData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentType".equals(fieldName)) {
+                    deserializedEnvironmentData.environmentType = EnvironmentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentData;
+        });
     }
 }

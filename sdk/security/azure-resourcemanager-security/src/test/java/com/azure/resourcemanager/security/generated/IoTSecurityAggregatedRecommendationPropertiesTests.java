@@ -12,16 +12,16 @@ public final class IoTSecurityAggregatedRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedRecommendationProperties model = BinaryData.fromString(
-            "{\"recommendationName\":\"lpxuzzjgnrefq\",\"recommendationDisplayName\":\"qotoihiqakydiwfb\",\"description\":\"wpzdqtvhcspo\",\"recommendationTypeId\":\"qaxsipietgbebjf\",\"detectedBy\":\"bmoichd\",\"remediationSteps\":\"nfpubntnbatz\",\"reportedSeverity\":\"Informational\",\"healthyDevices\":6980825422046024724,\"unhealthyDeviceCount\":309654812541187100,\"logAnalyticsQuery\":\"lca\"}")
+            "{\"recommendationName\":\"xoe\",\"recommendationDisplayName\":\"nqlnfwmyymvqd\",\"description\":\"bhfckdvezcrcssb\",\"recommendationTypeId\":\"ddubbnqfblhkal\",\"detectedBy\":\"pavawugiqjtio\",\"remediationSteps\":\"gdmin\",\"reportedSeverity\":\"Medium\",\"healthyDevices\":8888817806095040173,\"unhealthyDeviceCount\":8536099097290932497,\"logAnalyticsQuery\":\"ygspnbonhpczykm\"}")
             .toObject(IoTSecurityAggregatedRecommendationProperties.class);
-        Assertions.assertEquals("lpxuzzjgnrefq", model.recommendationName());
+        Assertions.assertEquals("xoe", model.recommendationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IoTSecurityAggregatedRecommendationProperties model
-            = new IoTSecurityAggregatedRecommendationProperties().withRecommendationName("lpxuzzjgnrefq");
+            = new IoTSecurityAggregatedRecommendationProperties().withRecommendationName("xoe");
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedRecommendationProperties.class);
-        Assertions.assertEquals("lpxuzzjgnrefq", model.recommendationName());
+        Assertions.assertEquals("xoe", model.recommendationName());
     }
 }

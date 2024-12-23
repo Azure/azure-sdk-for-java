@@ -7,7 +7,6 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitHubOwnerInner;
 import com.azure.resourcemanager.security.fluent.models.GitHubOwnerListResponseInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwnerProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.util.Arrays;
@@ -17,31 +16,27 @@ public final class GitHubOwnerListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"arwp\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-25T20:56:22Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"oejtig\",\"gitHubInternalId\":\"xjpytnkqbalahovu\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"h\",\"name\":\"e\",\"type\":\"jnhj\"},{\"properties\":{\"provisioningStatusMessage\":\"ffbbcngkegxcypxb\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-24T06:35:29Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"lyr\",\"gitHubInternalId\":\"xpdxqlfrolqow\",\"onboardingState\":\"NotApplicable\"},\"id\":\"u\",\"name\":\"jew\",\"type\":\"ahwkxjjm\"},{\"properties\":{\"provisioningStatusMessage\":\"mso\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-20T07:59:43Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"cdhdyswcrpt\",\"gitHubInternalId\":\"ajczxvl\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"gkrfizrpywlp\",\"name\":\"yuqh\",\"type\":\"lmcskyk\"}],\"nextLink\":\"u\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"dy\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-14T11:15:51Z\",\"provisioningState\":\"DeletionSuccess\",\"ownerUrl\":\"klmtkhlowkx\",\"gitHubInternalId\":\"vbrdfjmzsyzfho\",\"onboardingState\":\"NotApplicable\"},\"id\":\"ikcyyc\",\"name\":\"unsjlpjrtwszhvvu\",\"type\":\"c\"},{\"properties\":{\"provisioningStatusMessage\":\"rrmhwrbfdp\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-28T21:52:31Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"vjglrocuyzlwhhme\",\"gitHubInternalId\":\"ooclutnp\",\"onboardingState\":\"NotApplicable\"},\"id\":\"mczjkm\",\"name\":\"ykyujxsg\",\"type\":\"hsrrryejylmbkz\"},{\"properties\":{\"provisioningStatusMessage\":\"grfihotjewlp\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-23T01:50:04Z\",\"provisioningState\":\"PendingDeletion\",\"ownerUrl\":\"nrefqyh\",\"gitHubInternalId\":\"toihiqakydi\",\"onboardingState\":\"Onboarded\"},\"id\":\"rkwpzdqtvhcspod\",\"name\":\"qaxsipietgbebjf\",\"type\":\"lbmoichd\"},{\"properties\":{\"provisioningStatusMessage\":\"pubntnbatz\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-08T04:44:08Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"saaelca\",\"gitHubInternalId\":\"cjuhplrvkm\",\"onboardingState\":\"NotApplicable\"},\"id\":\"mjvlgfgg\",\"name\":\"vkyylizrzbjpsf\",\"type\":\"sfuztlvtmv\"}],\"nextLink\":\"bwidql\"}")
             .toObject(GitHubOwnerListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("u", model.nextLink());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("bwidql", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubOwnerListResponseInner model = new GitHubOwnerListResponseInner().withValue(Arrays.asList(
-            new GitHubOwnerInner()
-                .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                    .withOnboardingState(OnboardingState.NOT_ONBOARDED)),
-            new GitHubOwnerInner().withProperties(
-                new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                    .withOnboardingState(OnboardingState.NOT_APPLICABLE)),
-            new GitHubOwnerInner()
-                .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-                    .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR))))
-            .withNextLink("u");
+        GitHubOwnerListResponseInner model = new GitHubOwnerListResponseInner()
+            .withValue(Arrays.asList(
+                new GitHubOwnerInner()
+                    .withProperties(new GitHubOwnerProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)),
+                new GitHubOwnerInner()
+                    .withProperties(new GitHubOwnerProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)),
+                new GitHubOwnerInner()
+                    .withProperties(new GitHubOwnerProperties().withOnboardingState(OnboardingState.ONBOARDED)),
+                new GitHubOwnerInner()
+                    .withProperties(new GitHubOwnerProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE))))
+            .withNextLink("bwidql");
         model = BinaryData.fromObject(model).toObject(GitHubOwnerListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("u", model.nextLink());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("bwidql", model.nextLink());
     }
 }

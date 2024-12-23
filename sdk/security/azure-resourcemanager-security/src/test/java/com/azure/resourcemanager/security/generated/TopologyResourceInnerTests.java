@@ -11,7 +11,7 @@ public final class TopologyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopologyResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"calculatedDateTime\":\"2021-09-15T11:04:17Z\",\"topologyResources\":[{\"resourceId\":\"ay\",\"severity\":\"ribqlotokh\",\"recommendationsExist\":true,\"networkZones\":\"azn\",\"topologyScore\":634667700,\"location\":\"wxwjyofgwhnkb\",\"parents\":[{\"resourceId\":\"jssmctsnldkpwo\"}],\"children\":[{\"resourceId\":\"ubxbteogfgfiijr\"},{\"resourceId\":\"wlefksxqceazfpxg\"},{\"resourceId\":\"qvzvlu\"}]}]},\"location\":\"qa\",\"id\":\"ossscyva\",\"name\":\"fppuacvfye\",\"type\":\"w\"}")
+            "{\"properties\":{\"calculatedDateTime\":\"2021-04-12T09:39:53Z\",\"topologyResources\":[{\"resourceId\":\"friyrg\",\"severity\":\"ekvz\",\"recommendationsExist\":true,\"networkZones\":\"xh\",\"topologyScore\":1599942280,\"location\":\"t\",\"parents\":[{\"resourceId\":\"olpcqydeykvski\"},{\"resourceId\":\"dfrjeizik\"},{\"resourceId\":\"aboohxbmsgyc\"}],\"children\":[{\"resourceId\":\"mdvewuyqaeohpjh\"},{\"resourceId\":\"jkbvhhdaurgho\"},{\"resourceId\":\"aexbkhxjxjo\"},{\"resourceId\":\"lqxr\"}]}]},\"location\":\"knkob\",\"id\":\"ktmbozomtzami\",\"name\":\"bigwcdgzseznu\",\"type\":\"keuair\"}")
             .toObject(TopologyResourceInner.class);
     }
 

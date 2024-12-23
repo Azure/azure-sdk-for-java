@@ -14,22 +14,22 @@ public final class ApplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"knnqvsaznq\",\"description\":\"orudsgsa\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datayc\",\"datarauwjuetaebu\",\"datau\"]},\"id\":\"dmovsm\",\"name\":\"l\",\"type\":\"wabm\"}")
+            "{\"properties\":{\"displayName\":\"rbuukzclewyhmlwp\",\"description\":\"tzpofncckwyfzq\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataxbuy\",\"dataa\"]},\"id\":\"zfeqztppri\",\"name\":\"lxorjaltolmncws\",\"type\":\"bqwcsdbnwdcf\"}")
             .toObject(ApplicationInner.class);
-        Assertions.assertEquals("knnqvsaznq", model.displayName());
-        Assertions.assertEquals("orudsgsa", model.description());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.displayName());
+        Assertions.assertEquals("tzpofncckwyfzq", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInner model = new ApplicationInner().withDisplayName("knnqvsaznq")
-            .withDescription("orudsgsa")
+        ApplicationInner model = new ApplicationInner().withDisplayName("rbuukzclewyhmlwp")
+            .withDescription("tzpofncckwyfzq")
             .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-            .withConditionSets(Arrays.asList("datayc", "datarauwjuetaebu", "datau"));
+            .withConditionSets(Arrays.asList("dataxbuy", "dataa"));
         model = BinaryData.fromObject(model).toObject(ApplicationInner.class);
-        Assertions.assertEquals("knnqvsaznq", model.displayName());
-        Assertions.assertEquals("orudsgsa", model.description());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.displayName());
+        Assertions.assertEquals("tzpofncckwyfzq", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 }

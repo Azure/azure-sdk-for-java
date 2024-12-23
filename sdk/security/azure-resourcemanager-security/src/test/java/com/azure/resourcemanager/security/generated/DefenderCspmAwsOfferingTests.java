@@ -9,8 +9,8 @@ import com.azure.resourcemanager.security.models.DefenderCspmAwsOffering;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingCiem;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingCiemDiscovery;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingCiemOidc;
-import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingDatabasesDspm;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingDataSensitivityDiscovery;
+import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingDatabasesDspm;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingMdcContainersImageAssessment;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingVmScanners;
@@ -24,23 +24,23 @@ public final class DefenderCspmAwsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOffering model = BinaryData.fromString(
-            "{\"offeringType\":\"DefenderCspmAws\",\"vmScanners\":{\"cloudRoleArn\":\"ynjcwmhlymgnukxr\",\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"bc\":\"lrlzaudgjt\",\"dwnhczbutoucgjti\":\"akkuc\",\"qqwwvgwks\":\"jwayhi\",\"abv\":\"vlizedvb\"}}},\"dataSensitivityDiscovery\":{\"enabled\":false,\"cloudRoleArn\":\"kzyqxadyfhbmw\"},\"databasesDspm\":{\"enabled\":true,\"cloudRoleArn\":\"ttbspvkh\"},\"ciem\":{\"ciemDiscovery\":{\"cloudRoleArn\":\"jsgyzstujrzxrk\"},\"ciemOidc\":{\"cloudRoleArn\":\"d\",\"azureActiveDirectoryAppName\":\"duyehiiitt\"}},\"mdcContainersImageAssessment\":{\"enabled\":false,\"cloudRoleArn\":\"wrldax\"},\"mdcContainersAgentlessDiscoveryK8s\":{\"enabled\":false,\"cloudRoleArn\":\"zcsozjvxdz\"},\"description\":\"ggbnvtxo\"}")
+            "{\"offeringType\":\"DefenderCspmAws\",\"vmScanners\":{\"cloudRoleArn\":\"ylztp\",\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"fvezefk\":\"k\",\"zcntogffjwajnrtw\":\"kqtwqlepjjzkcasf\"}}},\"dataSensitivityDiscovery\":{\"enabled\":true,\"cloudRoleArn\":\"ifmxawo\"},\"databasesDspm\":{\"enabled\":false,\"cloudRoleArn\":\"nhrkmjqncfvdsc\"},\"ciem\":{\"ciemDiscovery\":{\"cloudRoleArn\":\"vwfnqqwypvn\"},\"ciemOidc\":{\"cloudRoleArn\":\"b\",\"azureActiveDirectoryAppName\":\"dtggrssg\"}},\"mdcContainersImageAssessment\":{\"enabled\":true,\"cloudRoleArn\":\"injmuymve\"},\"mdcContainersAgentlessDiscoveryK8s\":{\"enabled\":true,\"cloudRoleArn\":\"cbgmusaictd\"},\"description\":\"nkzzohnrddclz\"}")
             .toObject(DefenderCspmAwsOffering.class);
         Assertions.assertEquals(false, model.vmScanners().enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("lrlzaudgjt", model.vmScanners().configuration().exclusionTags().get("bc"));
-        Assertions.assertEquals("ynjcwmhlymgnukxr", model.vmScanners().cloudRoleArn());
-        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
-        Assertions.assertEquals("kzyqxadyfhbmw", model.dataSensitivityDiscovery().cloudRoleArn());
-        Assertions.assertEquals(true, model.databasesDspm().enabled());
-        Assertions.assertEquals("ttbspvkh", model.databasesDspm().cloudRoleArn());
-        Assertions.assertEquals("jsgyzstujrzxrk", model.ciem().ciemDiscovery().cloudRoleArn());
-        Assertions.assertEquals("d", model.ciem().ciemOidc().cloudRoleArn());
-        Assertions.assertEquals("duyehiiitt", model.ciem().ciemOidc().azureActiveDirectoryAppName());
-        Assertions.assertEquals(false, model.mdcContainersImageAssessment().enabled());
-        Assertions.assertEquals("wrldax", model.mdcContainersImageAssessment().cloudRoleArn());
-        Assertions.assertEquals(false, model.mdcContainersAgentlessDiscoveryK8S().enabled());
-        Assertions.assertEquals("zcsozjvxdz", model.mdcContainersAgentlessDiscoveryK8S().cloudRoleArn());
+        Assertions.assertEquals("k", model.vmScanners().configuration().exclusionTags().get("fvezefk"));
+        Assertions.assertEquals("ylztp", model.vmScanners().cloudRoleArn());
+        Assertions.assertEquals(true, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("ifmxawo", model.dataSensitivityDiscovery().cloudRoleArn());
+        Assertions.assertEquals(false, model.databasesDspm().enabled());
+        Assertions.assertEquals("nhrkmjqncfvdsc", model.databasesDspm().cloudRoleArn());
+        Assertions.assertEquals("vwfnqqwypvn", model.ciem().ciemDiscovery().cloudRoleArn());
+        Assertions.assertEquals("b", model.ciem().ciemOidc().cloudRoleArn());
+        Assertions.assertEquals("dtggrssg", model.ciem().ciemOidc().azureActiveDirectoryAppName());
+        Assertions.assertEquals(true, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("injmuymve", model.mdcContainersImageAssessment().cloudRoleArn());
+        Assertions.assertEquals(true, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("cbgmusaictd", model.mdcContainersAgentlessDiscoveryK8S().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
@@ -48,38 +48,38 @@ public final class DefenderCspmAwsOfferingTests {
         DefenderCspmAwsOffering model = new DefenderCspmAwsOffering()
             .withVmScanners(new DefenderCspmAwsOfferingVmScanners().withEnabled(false)
                 .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                    .withExclusionTags(mapOf("bc", "lrlzaudgjt", "dwnhczbutoucgjti", "akkuc", "qqwwvgwks", "jwayhi",
-                        "abv", "vlizedvb")))
-                .withCloudRoleArn("ynjcwmhlymgnukxr"))
-            .withDataSensitivityDiscovery(new DefenderCspmAwsOfferingDataSensitivityDiscovery().withEnabled(false)
-                .withCloudRoleArn("kzyqxadyfhbmw"))
+                    .withExclusionTags(mapOf("fvezefk", "k", "zcntogffjwajnrtw", "kqtwqlepjjzkcasf")))
+                .withCloudRoleArn("ylztp"))
+            .withDataSensitivityDiscovery(
+                new DefenderCspmAwsOfferingDataSensitivityDiscovery().withEnabled(true).withCloudRoleArn("ifmxawo"))
             .withDatabasesDspm(
-                new DefenderCspmAwsOfferingDatabasesDspm().withEnabled(true).withCloudRoleArn("ttbspvkh"))
+                new DefenderCspmAwsOfferingDatabasesDspm().withEnabled(false).withCloudRoleArn("nhrkmjqncfvdsc"))
             .withCiem(new DefenderCspmAwsOfferingCiem()
-                .withCiemDiscovery(new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("jsgyzstujrzxrk"))
-                .withCiemOidc(new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("d")
-                    .withAzureActiveDirectoryAppName("duyehiiitt")))
+                .withCiemDiscovery(new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("vwfnqqwypvn"))
+                .withCiemOidc(new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("b")
+                    .withAzureActiveDirectoryAppName("dtggrssg")))
             .withMdcContainersImageAssessment(
-                new DefenderCspmAwsOfferingMdcContainersImageAssessment().withEnabled(false).withCloudRoleArn("wrldax"))
+                new DefenderCspmAwsOfferingMdcContainersImageAssessment().withEnabled(true)
+                    .withCloudRoleArn("injmuymve"))
             .withMdcContainersAgentlessDiscoveryK8S(
-                new DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
-                    .withCloudRoleArn("zcsozjvxdz"));
+                new DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
+                    .withCloudRoleArn("cbgmusaictd"));
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOffering.class);
         Assertions.assertEquals(false, model.vmScanners().enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("lrlzaudgjt", model.vmScanners().configuration().exclusionTags().get("bc"));
-        Assertions.assertEquals("ynjcwmhlymgnukxr", model.vmScanners().cloudRoleArn());
-        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
-        Assertions.assertEquals("kzyqxadyfhbmw", model.dataSensitivityDiscovery().cloudRoleArn());
-        Assertions.assertEquals(true, model.databasesDspm().enabled());
-        Assertions.assertEquals("ttbspvkh", model.databasesDspm().cloudRoleArn());
-        Assertions.assertEquals("jsgyzstujrzxrk", model.ciem().ciemDiscovery().cloudRoleArn());
-        Assertions.assertEquals("d", model.ciem().ciemOidc().cloudRoleArn());
-        Assertions.assertEquals("duyehiiitt", model.ciem().ciemOidc().azureActiveDirectoryAppName());
-        Assertions.assertEquals(false, model.mdcContainersImageAssessment().enabled());
-        Assertions.assertEquals("wrldax", model.mdcContainersImageAssessment().cloudRoleArn());
-        Assertions.assertEquals(false, model.mdcContainersAgentlessDiscoveryK8S().enabled());
-        Assertions.assertEquals("zcsozjvxdz", model.mdcContainersAgentlessDiscoveryK8S().cloudRoleArn());
+        Assertions.assertEquals("k", model.vmScanners().configuration().exclusionTags().get("fvezefk"));
+        Assertions.assertEquals("ylztp", model.vmScanners().cloudRoleArn());
+        Assertions.assertEquals(true, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("ifmxawo", model.dataSensitivityDiscovery().cloudRoleArn());
+        Assertions.assertEquals(false, model.databasesDspm().enabled());
+        Assertions.assertEquals("nhrkmjqncfvdsc", model.databasesDspm().cloudRoleArn());
+        Assertions.assertEquals("vwfnqqwypvn", model.ciem().ciemDiscovery().cloudRoleArn());
+        Assertions.assertEquals("b", model.ciem().ciemOidc().cloudRoleArn());
+        Assertions.assertEquals("dtggrssg", model.ciem().ciemOidc().azureActiveDirectoryAppName());
+        Assertions.assertEquals(true, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("injmuymve", model.mdcContainersImageAssessment().cloudRoleArn());
+        Assertions.assertEquals(true, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("cbgmusaictd", model.mdcContainersAgentlessDiscoveryK8S().cloudRoleArn());
     }
 
     // Use "Map.of" if available

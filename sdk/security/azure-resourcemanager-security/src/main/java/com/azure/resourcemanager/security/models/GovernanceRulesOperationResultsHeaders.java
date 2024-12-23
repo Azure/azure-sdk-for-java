@@ -7,7 +7,6 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The GovernanceRulesOperationResultsHeaders model.
@@ -17,7 +16,6 @@ public final class GovernanceRulesOperationResultsHeaders {
     /*
      * The location property.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     // HttpHeaders containing the raw property values.

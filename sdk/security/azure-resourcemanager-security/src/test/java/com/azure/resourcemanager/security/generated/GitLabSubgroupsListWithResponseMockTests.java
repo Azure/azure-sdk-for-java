@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupListResponse;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitLabSubgroupsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"rtjpairpwjmcgiws\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-12T10:16:48Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"vqopugrserg\",\"fullyQualifiedFriendlyName\":\"ztqefz\",\"url\":\"ult\",\"onboardingState\":\"Onboarded\"},\"id\":\"bcendidhu\",\"name\":\"pikwcxoasgukqmki\",\"type\":\"nbfvkiwmqnwmytc\"}],\"nextLink\":\"irgyutexnzh\"}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"x\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-17T14:16:03Z\",\"provisioningState\":\"DeletionSuccess\",\"fullyQualifiedName\":\"a\",\"fullyQualifiedFriendlyName\":\"cdzdobuesdy\",\"url\":\"xnzpfdfupkt\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"pse\",\"name\":\"ivytabvbbkflewg\",\"type\":\"ltutbuvedwuuq\"}],\"nextLink\":\"enxcqsxwclykcrud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +32,10 @@ public final class GitLabSubgroupsListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitLabGroupListResponse response = manager.gitLabSubgroups()
-            .listWithResponse("zkhi", "mrwpe", "i", com.azure.core.util.Context.NONE)
+            .listWithResponse("lcappnvcebspci", "yomhkdwuwedupb", "mzkwhjjsqwhae", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION,
-            response.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, response.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("irgyutexnzh", response.nextLink());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("enxcqsxwclykcrud", response.nextLink());
     }
 }

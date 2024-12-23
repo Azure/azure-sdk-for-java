@@ -7,8 +7,8 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionProperties;
 import com.azure.resourcemanager.security.models.AdditionalWorkspaceDataType;
-import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
+import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import com.azure.resourcemanager.security.models.DataSource;
 import com.azure.resourcemanager.security.models.ExportData;
 import com.azure.resourcemanager.security.models.RecommendationConfigStatus;
@@ -24,22 +24,22 @@ public final class IoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"workspace\":\"fiwzcxmjpbyep\",\"displayName\":\"mgtvlj\",\"status\":\"Disabled\",\"export\":[\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"xhnpo\",\"yqwcabvnuil\",\"ey\",\"swlpaugmrmfj\"],\"userDefinedResources\":{\"query\":\"xwtoaukhfkvc\",\"querySubscriptions\":[\"izmoaeds\",\"jwuive\"]},\"autoDiscoveredResources\":[\"gyeewxeiq\",\"psmgo\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_VulnerableTLSCipherSuite\",\"name\":\"ljdlrgmspl\",\"status\":\"Disabled\"}],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[{\"workspace\":\"hhvnewgnxkymp\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\"]},{\"workspace\":\"xtwbta\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\"]}]}")
+            "{\"workspace\":\"yuuatvlmbjwcolbm\",\"displayName\":\"lbnwtpcpahp\",\"status\":\"Disabled\",\"export\":[\"RawEvents\",\"RawEvents\",\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"nxzcm\",\"hngxnoqrxtd\"],\"userDefinedResources\":{\"query\":\"njevhdlmydidw\",\"querySubscriptions\":[\"pfwwt\",\"f\"]},\"autoDiscoveredResources\":[\"sxxh\",\"wcdbckyoik\",\"kxhnegknj\",\"rbhtmeplvukaobr\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"nbagnchj\",\"status\":\"Disabled\"}],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[{\"workspace\":\"akywalhjymxcgqta\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]}]}")
             .toObject(IoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("fiwzcxmjpbyep", model.workspace());
-        Assertions.assertEquals("mgtvlj", model.displayName());
+        Assertions.assertEquals("yuuatvlmbjwcolbm", model.workspace());
+        Assertions.assertEquals("lbnwtpcpahp", model.displayName());
         Assertions.assertEquals(SecuritySolutionStatus.DISABLED, model.status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, model.export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, model.disabledDataSources().get(0));
-        Assertions.assertEquals("xhnpo", model.iotHubs().get(0));
-        Assertions.assertEquals("xwtoaukhfkvc", model.userDefinedResources().query());
-        Assertions.assertEquals("izmoaeds", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE,
+        Assertions.assertEquals("nxzcm", model.iotHubs().get(0));
+        Assertions.assertEquals("njevhdlmydidw", model.userDefinedResources().query());
+        Assertions.assertEquals("pfwwt", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
         Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, model.unmaskedIpLoggingStatus());
-        Assertions.assertEquals("hhvnewgnxkymp", model.additionalWorkspaces().get(0).workspace());
+        Assertions.assertEquals("akywalhjymxcgqta", model.additionalWorkspaces().get(0).workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.additionalWorkspaces().get(0).type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS,
             model.additionalWorkspaces().get(0).dataTypes().get(0));
@@ -47,43 +47,37 @@ public final class IoTSecuritySolutionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecuritySolutionProperties model
-            = new IoTSecuritySolutionProperties().withWorkspace("fiwzcxmjpbyep")
-                .withDisplayName("mgtvlj")
-                .withStatus(SecuritySolutionStatus.DISABLED)
-                .withExport(Arrays.asList(ExportData.RAW_EVENTS))
-                .withDisabledDataSources(Arrays.asList(DataSource.TWIN_DATA))
-                .withIotHubs(Arrays.asList("xhnpo", "yqwcabvnuil", "ey", "swlpaugmrmfj"))
-                .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("xwtoaukhfkvc")
-                    .withQuerySubscriptions(Arrays.asList("izmoaeds", "jwuive")))
-                .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
-                    .withRecommendationType(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE)
-                    .withStatus(RecommendationConfigStatus.DISABLED)))
-                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.ENABLED)
-                .withAdditionalWorkspaces(
-                    Arrays.asList(
-                        new AdditionalWorkspacesProperties().withWorkspace("hhvnewgnxkymp")
-                            .withType(AdditionalWorkspaceType.SENTINEL)
-                            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.ALERTS,
-                                AdditionalWorkspaceDataType.RAW_EVENTS)),
-                        new AdditionalWorkspacesProperties().withWorkspace("xtwbta")
-                            .withType(AdditionalWorkspaceType.SENTINEL)
-                            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.RAW_EVENTS))));
+        IoTSecuritySolutionProperties model = new IoTSecuritySolutionProperties().withWorkspace("yuuatvlmbjwcolbm")
+            .withDisplayName("lbnwtpcpahp")
+            .withStatus(SecuritySolutionStatus.DISABLED)
+            .withExport(Arrays.asList(ExportData.RAW_EVENTS, ExportData.RAW_EVENTS, ExportData.RAW_EVENTS))
+            .withDisabledDataSources(Arrays.asList(DataSource.TWIN_DATA))
+            .withIotHubs(Arrays.asList("nxzcm", "hngxnoqrxtd"))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("njevhdlmydidw")
+                .withQuerySubscriptions(Arrays.asList("pfwwt", "f")))
+            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
+                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+                .withStatus(RecommendationConfigStatus.DISABLED)))
+            .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.ENABLED)
+            .withAdditionalWorkspaces(
+                Arrays.asList(new AdditionalWorkspacesProperties().withWorkspace("akywalhjymxcgqta")
+                    .withType(AdditionalWorkspaceType.SENTINEL)
+                    .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.ALERTS))));
         model = BinaryData.fromObject(model).toObject(IoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("fiwzcxmjpbyep", model.workspace());
-        Assertions.assertEquals("mgtvlj", model.displayName());
+        Assertions.assertEquals("yuuatvlmbjwcolbm", model.workspace());
+        Assertions.assertEquals("lbnwtpcpahp", model.displayName());
         Assertions.assertEquals(SecuritySolutionStatus.DISABLED, model.status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, model.export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, model.disabledDataSources().get(0));
-        Assertions.assertEquals("xhnpo", model.iotHubs().get(0));
-        Assertions.assertEquals("xwtoaukhfkvc", model.userDefinedResources().query());
-        Assertions.assertEquals("izmoaeds", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE,
+        Assertions.assertEquals("nxzcm", model.iotHubs().get(0));
+        Assertions.assertEquals("njevhdlmydidw", model.userDefinedResources().query());
+        Assertions.assertEquals("pfwwt", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
         Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, model.unmaskedIpLoggingStatus());
-        Assertions.assertEquals("hhvnewgnxkymp", model.additionalWorkspaces().get(0).workspace());
+        Assertions.assertEquals("akywalhjymxcgqta", model.additionalWorkspaces().get(0).workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.additionalWorkspaces().get(0).type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS,
             model.additionalWorkspaces().get(0).dataTypes().get(0));
