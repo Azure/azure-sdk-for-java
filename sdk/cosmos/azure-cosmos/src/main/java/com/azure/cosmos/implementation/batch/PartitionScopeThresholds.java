@@ -54,7 +54,7 @@ public class PartitionScopeThresholds {
             new AtomicInteger(
                 Math.max(
                     Math.min(options.getInitialMicroBatchSize(), this.maxMicroBatchSize),
-                    this.minTargetMicroBatchSize));
+                    Math.min(this.minTargetMicroBatchSize,  this.maxMicroBatchSize)));
     }
 
     public String getPartitionKeyRangeId() {
@@ -113,21 +113,25 @@ public class PartitionScopeThresholds {
         int microBatchSizeAfter = microBatchSizeBefore;
 
         if (retryRate < this.minRetryRate && microBatchSizeBefore < maxMicroBatchSize) {
-            int targetedNewBatchSize = Math.max(
+            int targetedNewBatchSize =
                 Math.min(
-                    Math.min(
-                        microBatchSizeBefore * 2,
-                        microBatchSizeBefore + (int)(maxMicroBatchSize * this.avgRetryRate)),
-                    maxMicroBatchSize),
-                this.minTargetMicroBatchSize);
+                    Math.max(
+                        Math.min(
+                            microBatchSizeBefore * 2,
+                            microBatchSizeBefore + (int)(maxMicroBatchSize * this.avgRetryRate)),
+                        this.minTargetMicroBatchSize),
+                    this.maxMicroBatchSize);
             if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
                 microBatchSizeAfter = targetedNewBatchSize;
             }
         } else if (!onlyUpscale && retryRate > this.maxRetryRate && microBatchSizeBefore > 1) {
             double deltaRate = retryRate - this.avgRetryRate;
-            int targetedNewBatchSize = Math.max(
-                this.minTargetMicroBatchSize,
-                (int) (microBatchSizeBefore * (1 - deltaRate)));
+            int targetedNewBatchSize =
+                Math.min(
+                    Math.max(
+                        this.minTargetMicroBatchSize,
+                        (int) (microBatchSizeBefore * (1 - deltaRate))),
+                    this.maxMicroBatchSize);
             if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
                 microBatchSizeAfter = targetedNewBatchSize;
             }
