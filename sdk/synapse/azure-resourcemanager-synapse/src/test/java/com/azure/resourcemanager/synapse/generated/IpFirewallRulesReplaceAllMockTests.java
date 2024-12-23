@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public final class IpFirewallRulesReplaceAllMockTests {
     @Test
     public void testReplaceAll() throws Exception {
-        String responseStr = "{\"operationId\":\"ejrthcfjzhxlyub\"}";
+        String responseStr = "{\"operationId\":\"xvkqm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,16 @@ public final class IpFirewallRulesReplaceAllMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ReplaceAllFirewallRulesOperationResponse response = manager.ipFirewallRules()
-            .replaceAll("dcqjkedwqurc", "ojmrvvxwjongzse",
-                new ReplaceAllIpFirewallRulesRequest().withIpFirewallRules(mapOf("bvriaqgvtojrulfu",
-                    new IpFirewallRuleProperties().withEndIpAddress("silc").withStartIpAddress("xxkan"))),
+            .replaceAll("zp", "lxeehuxiq", new ReplaceAllIpFirewallRulesRequest().withIpFirewallRules(mapOf("fdsajred",
+                new IpFirewallRuleProperties().withEndIpAddress("aymezx").withStartIpAddress("hmx"), "zdyi",
+                new IpFirewallRuleProperties().withEndIpAddress("yyshtuwgmevua").withStartIpAddress("yifrkgwltxeqipx"),
+                "vwjtqpkevmyltjc",
+                new IpFirewallRuleProperties().withEndIpAddress("fayorpravkjoges")
+                    .withStartIpAddress("smjkwynqxaekqsy"),
+                "osewxi", new IpFirewallRuleProperties().withEndIpAddress("pxklurccl").withStartIpAddress("nnnoytz"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ejrthcfjzhxlyub", response.operationId());
+        Assertions.assertEquals("xvkqm", response.operationId());
     }
 
     // Use "Map.of" if available

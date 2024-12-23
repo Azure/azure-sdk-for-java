@@ -13,21 +13,21 @@ public final class ManagedVirtualNetworkSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVirtualNetworkSettings model = BinaryData.fromString(
-            "{\"preventDataExfiltration\":true,\"linkedAccessCheckOnTargetResource\":true,\"allowedAadTenantIdsForLinking\":[\"failcfx\"]}")
+            "{\"preventDataExfiltration\":true,\"linkedAccessCheckOnTargetResource\":false,\"allowedAadTenantIdsForLinking\":[\"j\",\"qrsxyp\",\"uuuybnchrsziz\"]}")
             .toObject(ManagedVirtualNetworkSettings.class);
         Assertions.assertEquals(true, model.preventDataExfiltration());
-        Assertions.assertEquals(true, model.linkedAccessCheckOnTargetResource());
-        Assertions.assertEquals("failcfx", model.allowedAadTenantIdsForLinking().get(0));
+        Assertions.assertEquals(false, model.linkedAccessCheckOnTargetResource());
+        Assertions.assertEquals("j", model.allowedAadTenantIdsForLinking().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedVirtualNetworkSettings model = new ManagedVirtualNetworkSettings().withPreventDataExfiltration(true)
-            .withLinkedAccessCheckOnTargetResource(true)
-            .withAllowedAadTenantIdsForLinking(Arrays.asList("failcfx"));
+            .withLinkedAccessCheckOnTargetResource(false)
+            .withAllowedAadTenantIdsForLinking(Arrays.asList("j", "qrsxyp", "uuuybnchrsziz"));
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkSettings.class);
         Assertions.assertEquals(true, model.preventDataExfiltration());
-        Assertions.assertEquals(true, model.linkedAccessCheckOnTargetResource());
-        Assertions.assertEquals("failcfx", model.allowedAadTenantIdsForLinking().get(0));
+        Assertions.assertEquals(false, model.linkedAccessCheckOnTargetResource());
+        Assertions.assertEquals("j", model.allowedAadTenantIdsForLinking().get(0));
     }
 }

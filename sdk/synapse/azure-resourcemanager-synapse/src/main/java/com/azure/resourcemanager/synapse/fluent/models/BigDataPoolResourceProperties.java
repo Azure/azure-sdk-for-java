@@ -16,9 +16,9 @@ import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
 import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
-import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -52,11 +52,6 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
      * Whether compute isolation is required or not.
      */
     private Boolean isComputeIsolationEnabled;
-
-    /*
-     * Whether autotune is required or not.
-     */
-    private Boolean isAutotuneEnabled;
 
     /*
      * Whether session level packages enabled.
@@ -96,7 +91,7 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
     /*
      * Spark configuration file to specify additional properties
      */
-    private SparkConfigProperties sparkConfigProperties;
+    private LibraryRequirements sparkConfigProperties;
 
     /*
      * The Apache Spark version.
@@ -179,6 +174,17 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
     }
 
     /**
+     * Set the creationDate property: The time when the Big Data pool was created.
+     * 
+     * @param creationDate the creationDate value to set.
+     * @return the BigDataPoolResourceProperties object itself.
+     */
+    public BigDataPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    /**
      * Get the autoPause property: Auto-pausing properties.
      * 
      * @return the autoPause value.
@@ -215,26 +221,6 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
      */
     public BigDataPoolResourceProperties withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
         this.isComputeIsolationEnabled = isComputeIsolationEnabled;
-        return this;
-    }
-
-    /**
-     * Get the isAutotuneEnabled property: Whether autotune is required or not.
-     * 
-     * @return the isAutotuneEnabled value.
-     */
-    public Boolean isAutotuneEnabled() {
-        return this.isAutotuneEnabled;
-    }
-
-    /**
-     * Set the isAutotuneEnabled property: Whether autotune is required or not.
-     * 
-     * @param isAutotuneEnabled the isAutotuneEnabled value to set.
-     * @return the BigDataPoolResourceProperties object itself.
-     */
-    public BigDataPoolResourceProperties withIsAutotuneEnabled(Boolean isAutotuneEnabled) {
-        this.isAutotuneEnabled = isAutotuneEnabled;
         return this;
     }
 
@@ -384,7 +370,7 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
      * 
      * @return the sparkConfigProperties value.
      */
-    public SparkConfigProperties sparkConfigProperties() {
+    public LibraryRequirements sparkConfigProperties() {
         return this.sparkConfigProperties;
     }
 
@@ -394,7 +380,7 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceProperties object itself.
      */
-    public BigDataPoolResourceProperties withSparkConfigProperties(SparkConfigProperties sparkConfigProperties) {
+    public BigDataPoolResourceProperties withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
         this.sparkConfigProperties = sparkConfigProperties;
         return this;
     }
@@ -522,9 +508,10 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("provisioningState", this.provisioningState);
         jsonWriter.writeJsonField("autoScale", this.autoScale);
+        jsonWriter.writeStringField("creationDate",
+            this.creationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationDate));
         jsonWriter.writeJsonField("autoPause", this.autoPause);
         jsonWriter.writeBooleanField("isComputeIsolationEnabled", this.isComputeIsolationEnabled);
-        jsonWriter.writeBooleanField("isAutotuneEnabled", this.isAutotuneEnabled);
         jsonWriter.writeBooleanField("sessionLevelPackagesEnabled", this.sessionLevelPackagesEnabled);
         jsonWriter.writeNumberField("cacheSize", this.cacheSize);
         jsonWriter.writeJsonField("dynamicExecutorAllocation", this.dynamicExecutorAllocation);
@@ -570,9 +557,6 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
                 } else if ("isComputeIsolationEnabled".equals(fieldName)) {
                     deserializedBigDataPoolResourceProperties.isComputeIsolationEnabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("isAutotuneEnabled".equals(fieldName)) {
-                    deserializedBigDataPoolResourceProperties.isAutotuneEnabled
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sessionLevelPackagesEnabled".equals(fieldName)) {
                     deserializedBigDataPoolResourceProperties.sessionLevelPackagesEnabled
                         = reader.getNullable(JsonReader::getBoolean);
@@ -593,7 +577,7 @@ public final class BigDataPoolResourceProperties implements JsonSerializable<Big
                     deserializedBigDataPoolResourceProperties.customLibraries = customLibraries;
                 } else if ("sparkConfigProperties".equals(fieldName)) {
                     deserializedBigDataPoolResourceProperties.sparkConfigProperties
-                        = SparkConfigProperties.fromJson(reader);
+                        = LibraryRequirements.fromJson(reader);
                 } else if ("sparkVersion".equals(fieldName)) {
                     deserializedBigDataPoolResourceProperties.sparkVersion = reader.getString();
                 } else if ("defaultSparkLogFolder".equals(fieldName)) {

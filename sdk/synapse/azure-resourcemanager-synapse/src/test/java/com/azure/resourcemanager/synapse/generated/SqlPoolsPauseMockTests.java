@@ -10,20 +10,15 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
-import com.azure.resourcemanager.synapse.models.CreateMode;
-import com.azure.resourcemanager.synapse.models.SqlPool;
-import com.azure.resourcemanager.synapse.models.StorageAccountType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class SqlPoolsPauseMockTests {
     @Test
     public void testPause() throws Exception {
-        String responseStr
-            = "{\"sku\":{\"tier\":\"otjgxieqfkyfhi\",\"name\":\"jaqupbyynvskpaj\",\"capacity\":1759748665},\"properties\":{\"maxSizeBytes\":2039790406204571348,\"collation\":\"mj\",\"sourceDatabaseId\":\"cbccwkqmt\",\"recoverableDatabaseId\":\"p\",\"provisioningState\":\"Succeeded\",\"status\":\"lgftrqrejdaa\",\"restorePointInTime\":\"2021-09-25T09:55:52Z\",\"createMode\":\"Default\",\"creationDate\":\"2021-08-03T10:17:37Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-07-07T07:02:15Z\"},\"location\":\"xlm\",\"tags\":{\"oshjgcze\":\"muadjnfsncski\",\"j\":\"ybnxgztlcgc\"},\"id\":\"hfjv\",\"name\":\"ywjzebecuvlbefvw\",\"type\":\"ljkxpylrwoxz\"}";
+        String responseStr = "\"datacdrnxsl\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,22 +27,8 @@ public final class SqlPoolsPauseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlPool response
-            = manager.sqlPools().pause("ersejeg", "rkjguwrjmwvvbt", "qkxximwgxql", com.azure.core.util.Context.NONE);
+        Object response
+            = manager.sqlPools().pause("qvmvuaytuadxkxe", "bwpntghy", "sa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xlm", response.location());
-        Assertions.assertEquals("muadjnfsncski", response.tags().get("oshjgcze"));
-        Assertions.assertEquals("otjgxieqfkyfhi", response.sku().tier());
-        Assertions.assertEquals("jaqupbyynvskpaj", response.sku().name());
-        Assertions.assertEquals(1759748665, response.sku().capacity());
-        Assertions.assertEquals(2039790406204571348L, response.maxSizeBytes());
-        Assertions.assertEquals("mj", response.collation());
-        Assertions.assertEquals("cbccwkqmt", response.sourceDatabaseId());
-        Assertions.assertEquals("p", response.recoverableDatabaseId());
-        Assertions.assertEquals("Succeeded", response.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T09:55:52Z"), response.restorePointInTime());
-        Assertions.assertEquals(CreateMode.DEFAULT, response.createMode());
-        Assertions.assertEquals(StorageAccountType.GRS, response.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T07:02:15Z"), response.sourceDatabaseDeletionDate());
     }
 }

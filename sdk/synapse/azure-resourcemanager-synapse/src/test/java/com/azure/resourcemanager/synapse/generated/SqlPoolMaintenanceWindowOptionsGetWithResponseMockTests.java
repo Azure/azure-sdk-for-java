@@ -22,7 +22,7 @@ public final class SqlPoolMaintenanceWindowOptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isEnabled\":true,\"maintenanceWindowCycles\":[{\"dayOfWeek\":\"Saturday\",\"startTime\":\"vztiucwviqllukh\",\"duration\":\"cqx\"}],\"minDurationInMinutes\":1730615801,\"defaultDurationInMinutes\":598547995,\"minCycles\":2041316576,\"timeGranularityInMinutes\":934395697,\"allowMultipleMaintenanceWindowsPerCycle\":false},\"id\":\"po\",\"name\":\"stsinvag\",\"type\":\"vjyhdrxbrdvc\"}";
+            = "{\"properties\":{\"isEnabled\":true,\"maintenanceWindowCycles\":[{\"dayOfWeek\":\"Sunday\",\"startTime\":\"jrthcfjzhx\",\"duration\":\"ubqjro\"},{\"dayOfWeek\":\"Monday\",\"startTime\":\"jeqmtzzbeqrzt\",\"duration\":\"alx\"},{\"dayOfWeek\":\"Thursday\",\"startTime\":\"bsrwrsnrhpqat\",\"duration\":\"kkvyanxk\"},{\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ems\",\"duration\":\"v\"}],\"minDurationInMinutes\":769444047,\"defaultDurationInMinutes\":1509454369,\"minCycles\":964046312,\"timeGranularityInMinutes\":692508605,\"allowMultipleMaintenanceWindowsPerCycle\":true},\"id\":\"ivrjjxnwxdc\",\"name\":\"p\",\"type\":\"jxlehzlx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class SqlPoolMaintenanceWindowOptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MaintenanceWindowOptions response = manager.sqlPoolMaintenanceWindowOptions()
-            .getWithResponse("ihraxqudd", "wjc", "jbrhlhpvzadbw", "nnin", com.azure.core.util.Context.NONE)
+            .getWithResponse("qqrsil", "chskxxka", "sbvr", "aqgvto", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(true, response.isEnabled());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, response.maintenanceWindowCycles().get(0).dayOfWeek());
-        Assertions.assertEquals("vztiucwviqllukh", response.maintenanceWindowCycles().get(0).startTime());
-        Assertions.assertEquals("cqx", response.maintenanceWindowCycles().get(0).duration());
-        Assertions.assertEquals(1730615801, response.minDurationInMinutes());
-        Assertions.assertEquals(598547995, response.defaultDurationInMinutes());
-        Assertions.assertEquals(2041316576, response.minCycles());
-        Assertions.assertEquals(934395697, response.timeGranularityInMinutes());
-        Assertions.assertEquals(false, response.allowMultipleMaintenanceWindowsPerCycle());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, response.maintenanceWindowCycles().get(0).dayOfWeek());
+        Assertions.assertEquals("jrthcfjzhx", response.maintenanceWindowCycles().get(0).startTime());
+        Assertions.assertEquals("ubqjro", response.maintenanceWindowCycles().get(0).duration());
+        Assertions.assertEquals(769444047, response.minDurationInMinutes());
+        Assertions.assertEquals(1509454369, response.defaultDurationInMinutes());
+        Assertions.assertEquals(964046312, response.minCycles());
+        Assertions.assertEquals(692508605, response.timeGranularityInMinutes());
+        Assertions.assertEquals(true, response.allowMultipleMaintenanceWindowsPerCycle());
     }
 }

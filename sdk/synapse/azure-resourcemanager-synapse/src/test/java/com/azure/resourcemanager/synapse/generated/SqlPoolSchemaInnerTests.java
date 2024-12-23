@@ -11,7 +11,7 @@ public final class SqlPoolSchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolSchemaInner model
-            = BinaryData.fromString("{\"id\":\"kpj\",\"name\":\"qqmtedltmmji\",\"type\":\"yeozphvwauyqncy\"}")
+            = BinaryData.fromString("{\"id\":\"slstvasy\",\"name\":\"wxdzaumweoohgu\",\"type\":\"fuzboyjathwtzolb\"}")
                 .toObject(SqlPoolSchemaInner.class);
     }
 

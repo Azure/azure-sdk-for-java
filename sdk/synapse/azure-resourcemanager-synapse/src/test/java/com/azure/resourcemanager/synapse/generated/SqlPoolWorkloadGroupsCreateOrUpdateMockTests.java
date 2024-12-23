@@ -21,7 +21,7 @@ public final class SqlPoolWorkloadGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"minResourcePercent\":464620773,\"maxResourcePercent\":1081611869,\"minResourcePercentPerRequest\":26.635860012908495,\"maxResourcePercentPerRequest\":37.11285666442489,\"importance\":\"orimmo\",\"queryExecutionTimeout\":1287065466},\"id\":\"de\",\"name\":\"kkmvhzfovanyrva\",\"type\":\"rtgelg\"}";
+            = "{\"properties\":{\"minResourcePercent\":1820004369,\"maxResourcePercent\":138567947,\"minResourcePercentPerRequest\":91.25878692489961,\"maxResourcePercentPerRequest\":23.282740053067407,\"importance\":\"vztiucwviqllukh\",\"queryExecutionTimeout\":576317178},\"id\":\"qxgcbvzarmqcbpo\",\"name\":\"stsinvag\",\"type\":\"vjyhdrxbrdvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,21 @@ public final class SqlPoolWorkloadGroupsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadGroup response = manager.sqlPoolWorkloadGroups()
-            .define("qvkixnmbzmecuyrz")
-            .withExistingSqlPool("flqjfshtu", "cyohigimwdcs", "lkq")
-            .withMinResourcePercent(1409427025)
-            .withMaxResourcePercent(513897021)
-            .withMinResourcePercentPerRequest(67.91735830131613)
-            .withMaxResourcePercentPerRequest(85.2231290647608D)
-            .withImportance("vrietvfp")
-            .withQueryExecutionTimeout(1948776985)
+            .define("i")
+            .withExistingSqlPool("ikyjtkakvlb", "shjvpzaptuoskaoi", "jixwfgc")
+            .withMinResourcePercent(1869059553)
+            .withMaxResourcePercent(89327285)
+            .withMinResourcePercentPerRequest(50.80002194867509)
+            .withMaxResourcePercentPerRequest(64.43193670749677D)
+            .withImportance("qynvavitmdm")
+            .withQueryExecutionTimeout(708536304)
             .create();
 
-        Assertions.assertEquals(464620773, response.minResourcePercent());
-        Assertions.assertEquals(1081611869, response.maxResourcePercent());
-        Assertions.assertEquals(26.635860012908495, response.minResourcePercentPerRequest());
-        Assertions.assertEquals(37.11285666442489D, response.maxResourcePercentPerRequest());
-        Assertions.assertEquals("orimmo", response.importance());
-        Assertions.assertEquals(1287065466, response.queryExecutionTimeout());
+        Assertions.assertEquals(1820004369, response.minResourcePercent());
+        Assertions.assertEquals(138567947, response.maxResourcePercent());
+        Assertions.assertEquals(91.25878692489961, response.minResourcePercentPerRequest());
+        Assertions.assertEquals(23.282740053067407D, response.maxResourcePercentPerRequest());
+        Assertions.assertEquals("vztiucwviqllukh", response.importance());
+        Assertions.assertEquals(576317178, response.queryExecutionTimeout());
     }
 }

@@ -241,6 +241,20 @@ public final class SqlPoolPatchInfo implements JsonSerializable<SqlPoolPatchInfo
     }
 
     /**
+     * Set the status property: Resource status.
+     * 
+     * @param status the status value to set.
+     * @return the SqlPoolPatchInfo object itself.
+     */
+    public SqlPoolPatchInfo withStatus(String status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      * 
      * @return the restorePointInTime value.
@@ -320,6 +334,20 @@ public final class SqlPoolPatchInfo implements JsonSerializable<SqlPoolPatchInfo
     }
 
     /**
+     * Set the creationDate property: Date the SQL pool was created.
+     * 
+     * @param creationDate the creationDate value to set.
+     * @return the SqlPoolPatchInfo object itself.
+     */
+    public SqlPoolPatchInfo withCreationDate(OffsetDateTime creationDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCreationDate(creationDate);
+        return this;
+    }
+
+    /**
      * Get the storageAccountType property: The storage account type used to store backups for this sql pool.
      * 
      * @return the storageAccountType value.
@@ -339,29 +367,6 @@ public final class SqlPoolPatchInfo implements JsonSerializable<SqlPoolPatchInfo
             this.innerProperties = new SqlPoolResourceProperties();
         }
         this.innerProperties().withStorageAccountType(storageAccountType);
-        return this;
-    }
-
-    /**
-     * Get the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     * 
-     * @return the sourceDatabaseDeletionDate value.
-     */
-    public OffsetDateTime sourceDatabaseDeletionDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseDeletionDate();
-    }
-
-    /**
-     * Set the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-     * 
-     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
-     * @return the SqlPoolPatchInfo object itself.
-     */
-    public SqlPoolPatchInfo withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SqlPoolResourceProperties();
-        }
-        this.innerProperties().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
         return this;
     }
 
