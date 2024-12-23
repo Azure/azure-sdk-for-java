@@ -22,7 +22,7 @@ public final class SqlPoolColumnsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"columnType\":\"ntext\",\"isComputed\":false},\"id\":\"maln\",\"name\":\"swoykdn\",\"type\":\"naaxw\"}";
+            = "{\"properties\":{\"columnType\":\"varbinary\",\"isComputed\":true},\"id\":\"s\",\"name\":\"hqhud\",\"type\":\"musuaawja\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SqlPoolColumnsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SqlPoolColumn response = manager.sqlPoolColumns()
-            .getWithResponse("pxtokljmtznp", "xwfqtyyqiprcl", "ungbsoljc", "miigzb", "uck", "kdskswtiiqqc",
+            .getWithResponse("mlnfyz", "vfrbypic", "bkpdjtaqhsmq", "zpdgonjhxshthmgp", "zqulptkbv", "pxtzhigqqbtimpk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ColumnDataType.NTEXT, response.columnType());
+        Assertions.assertEquals(ColumnDataType.VARBINARY, response.columnType());
     }
 }

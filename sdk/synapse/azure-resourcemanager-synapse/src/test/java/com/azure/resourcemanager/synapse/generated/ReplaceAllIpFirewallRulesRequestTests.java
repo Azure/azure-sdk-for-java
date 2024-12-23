@@ -15,21 +15,22 @@ public final class ReplaceAllIpFirewallRulesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplaceAllIpFirewallRulesRequest model = BinaryData.fromString(
-            "{\"ipFirewallRules\":{\"xqhabi\":{\"endIpAddress\":\"fhfcb\",\"provisioningState\":\"DeleteError\",\"startIpAddress\":\"git\"},\"rkxvdum\":{\"endIpAddress\":\"ikxwc\",\"provisioningState\":\"Provisioning\",\"startIpAddress\":\"cnpqxuhivyqniwby\"}}}")
+            "{\"ipFirewallRules\":{\"dkcglhsl\":{\"endIpAddress\":\"mohctb\",\"provisioningState\":\"Deleting\",\"startIpAddress\":\"wxdndnvowgujjug\"},\"kh\":{\"endIpAddress\":\"jdyggdtji\",\"provisioningState\":\"Provisioning\",\"startIpAddress\":\"uofqwe\"},\"cibvyvdcsitynn\":{\"endIpAddress\":\"n\",\"provisioningState\":\"Deleting\",\"startIpAddress\":\"exfwhy\"}}}")
             .toObject(ReplaceAllIpFirewallRulesRequest.class);
-        Assertions.assertEquals("fhfcb", model.ipFirewallRules().get("xqhabi").endIpAddress());
-        Assertions.assertEquals("git", model.ipFirewallRules().get("xqhabi").startIpAddress());
+        Assertions.assertEquals("mohctb", model.ipFirewallRules().get("dkcglhsl").endIpAddress());
+        Assertions.assertEquals("wxdndnvowgujjug", model.ipFirewallRules().get("dkcglhsl").startIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplaceAllIpFirewallRulesRequest model
-            = new ReplaceAllIpFirewallRulesRequest().withIpFirewallRules(mapOf("xqhabi",
-                new IpFirewallRuleProperties().withEndIpAddress("fhfcb").withStartIpAddress("git"), "rkxvdum",
-                new IpFirewallRuleProperties().withEndIpAddress("ikxwc").withStartIpAddress("cnpqxuhivyqniwby")));
+            = new ReplaceAllIpFirewallRulesRequest().withIpFirewallRules(mapOf("dkcglhsl",
+                new IpFirewallRuleProperties().withEndIpAddress("mohctb").withStartIpAddress("wxdndnvowgujjug"), "kh",
+                new IpFirewallRuleProperties().withEndIpAddress("jdyggdtji").withStartIpAddress("uofqwe"),
+                "cibvyvdcsitynn", new IpFirewallRuleProperties().withEndIpAddress("n").withStartIpAddress("exfwhy")));
         model = BinaryData.fromObject(model).toObject(ReplaceAllIpFirewallRulesRequest.class);
-        Assertions.assertEquals("fhfcb", model.ipFirewallRules().get("xqhabi").endIpAddress());
-        Assertions.assertEquals("git", model.ipFirewallRules().get("xqhabi").startIpAddress());
+        Assertions.assertEquals("mohctb", model.ipFirewallRules().get("dkcglhsl").endIpAddress());
+        Assertions.assertEquals("wxdndnvowgujjug", model.ipFirewallRules().get("dkcglhsl").startIpAddress());
     }
 
     // Use "Map.of" if available

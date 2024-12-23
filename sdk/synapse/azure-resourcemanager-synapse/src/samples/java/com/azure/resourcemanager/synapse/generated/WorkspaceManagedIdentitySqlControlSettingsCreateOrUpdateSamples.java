@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
-import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
+import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 
 /**
  * Samples for WorkspaceManagedIdentitySqlControlSettings CreateOrUpdate.
  */
 public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateManagedIdentitySqlControlSettings.json
      */
     /**
@@ -27,7 +27,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSampl
             .createOrUpdate("resourceGroup1", "workspace1",
                 new ManagedIdentitySqlControlSettingsModelInner().withGrantSqlControlToManagedIdentity(
                     new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED)),
+                        .withDesiredState(
+                            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED)),
                 com.azure.core.util.Context.NONE);
     }
 }

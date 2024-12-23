@@ -12,18 +12,18 @@ public final class MetadataSyncConfigInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetadataSyncConfigInner model = BinaryData.fromString(
-            "{\"properties\":{\"enabled\":false,\"syncIntervalInMinutes\":1315398087},\"id\":\"ycduier\",\"name\":\"gccymvaolpssl\",\"type\":\"lfmmdnbbglzpswi\"}")
+            "{\"properties\":{\"enabled\":true,\"syncIntervalInMinutes\":635360833},\"id\":\"o\",\"name\":\"buffkmrqemvvhm\",\"type\":\"tdrjfutacoebj\"}")
             .toObject(MetadataSyncConfigInner.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(1315398087, model.syncIntervalInMinutes());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(635360833, model.syncIntervalInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetadataSyncConfigInner model
-            = new MetadataSyncConfigInner().withEnabled(false).withSyncIntervalInMinutes(1315398087);
+            = new MetadataSyncConfigInner().withEnabled(true).withSyncIntervalInMinutes(635360833);
         model = BinaryData.fromObject(model).toObject(MetadataSyncConfigInner.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(1315398087, model.syncIntervalInMinutes());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(635360833, model.syncIntervalInMinutes());
     }
 }

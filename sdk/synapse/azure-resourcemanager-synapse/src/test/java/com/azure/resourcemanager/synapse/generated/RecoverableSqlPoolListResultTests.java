@@ -11,7 +11,7 @@ public final class RecoverableSqlPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoverableSqlPoolListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"edition\":\"pgfewetwlyx\",\"serviceLevelObjective\":\"cxy\",\"elasticPoolName\":\"hdjhlimmbcx\",\"lastAvailableBackupDate\":\"2021-11-18T02:45:39Z\"},\"id\":\"cporxvxcjz\",\"name\":\"qizxfpxtgqscjavf\",\"type\":\"juhdqazkmtgguwpi\"},{\"properties\":{\"edition\":\"jcivmmg\",\"serviceLevelObjective\":\"cf\",\"elasticPoolName\":\"rxgkne\",\"lastAvailableBackupDate\":\"2021-03-10T19:40:09Z\"},\"id\":\"inzqodfvpgs\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"zflbqvg\"}],\"nextLink\":\"vl\"}")
+            "{\"value\":[{\"properties\":{\"edition\":\"nixjawrtmjfjmy\",\"serviceLevelObjective\":\"xlzhcoxovnekh\",\"elasticPoolName\":\"lusfnrdtjxtxrdcq\",\"lastAvailableBackupDate\":\"2021-05-25T21:09:17Z\"},\"id\":\"idttgepus\",\"name\":\"vyjtcvu\",\"type\":\"kasizie\"},{\"properties\":{\"edition\":\"ughtuqfecjxeygtu\",\"serviceLevelObjective\":\"uicbuewmrsw\",\"elasticPoolName\":\"lx\",\"lastAvailableBackupDate\":\"2021-07-01T09:20:25Z\"},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}],\"nextLink\":\"ucoig\"}")
             .toObject(RecoverableSqlPoolListResult.class);
     }
 

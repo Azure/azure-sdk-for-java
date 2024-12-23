@@ -23,7 +23,7 @@ public final class SqlPoolSensitivityLabelsListCurrentMockTests {
     @Test
     public void testListCurrent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"schemaName\":\"nzocxmtfshksnyzm\",\"tableName\":\"amwbwmbnlslcef\",\"columnName\":\"d\",\"labelName\":\"wtkvi\",\"labelId\":\"pfliwo\",\"informationType\":\"guuzh\",\"informationTypeId\":\"ladpcmhjha\",\"isDisabled\":false,\"rank\":\"Critical\"},\"managedBy\":\"kymffztsils\",\"id\":\"v\",\"name\":\"syeiih\",\"type\":\"ymkouih\"}]}";
+            = "{\"value\":[{\"properties\":{\"schemaName\":\"fkwdvbtbrekqh\",\"tableName\":\"htfpwpqb\",\"columnName\":\"j\",\"labelName\":\"yqwdqi\",\"labelId\":\"ghg\",\"informationType\":\"z\",\"informationTypeId\":\"lujkhn\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"fmkhcqtwmlmhjnqt\",\"id\":\"eahjedv\",\"name\":\"agpokddxe\",\"type\":\"hhkvguavtptbk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class SqlPoolSensitivityLabelsListCurrentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SensitivityLabel> response = manager.sqlPoolSensitivityLabels()
-            .listCurrent("vgs", "jtoxjdzjsj", "nvhxqqmqip", "y", com.azure.core.util.Context.NONE);
+            .listCurrent("tclg", "rvwerfwxbsmtb", "jj", "h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wtkvi", response.iterator().next().labelName());
-        Assertions.assertEquals("pfliwo", response.iterator().next().labelId());
-        Assertions.assertEquals("guuzh", response.iterator().next().informationType());
-        Assertions.assertEquals("ladpcmhjha", response.iterator().next().informationTypeId());
+        Assertions.assertEquals("yqwdqi", response.iterator().next().labelName());
+        Assertions.assertEquals("ghg", response.iterator().next().labelId());
+        Assertions.assertEquals("z", response.iterator().next().informationType());
+        Assertions.assertEquals("lujkhn", response.iterator().next().informationTypeId());
         Assertions.assertEquals(SensitivityLabelRank.CRITICAL, response.iterator().next().rank());
     }
 }

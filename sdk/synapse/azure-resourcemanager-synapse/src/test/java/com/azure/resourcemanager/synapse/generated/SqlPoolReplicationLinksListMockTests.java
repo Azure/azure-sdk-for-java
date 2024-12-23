@@ -21,7 +21,7 @@ public final class SqlPoolReplicationLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"rkskwztsdetjy\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"cq\",\"partnerServer\":\"lzkgysdgzyybzo\",\"partnerDatabase\":\"v\",\"partnerLocation\":\"ptvdxxheigm\",\"role\":\"Primary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-02-21T13:20:16Z\",\"percentComplete\":1650972175,\"replicationState\":\"SUSPENDED\"},\"id\":\"m\",\"name\":\"bzzbwayb\",\"type\":\"mdafbgymqt\"}]}";
+            = "{\"value\":[{\"location\":\"pztraudsvhl\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"regp\",\"partnerServer\":\"moj\",\"partnerDatabase\":\"rztnv\",\"partnerLocation\":\"shqrdgrt\",\"role\":\"Source\",\"partnerRole\":\"Secondary\",\"startTime\":\"2021-09-25T13:34:45Z\",\"percentComplete\":1804650099,\"replicationState\":\"PENDING\"},\"id\":\"fa\",\"name\":\"zwjcaye\",\"type\":\"zrransyb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class SqlPoolReplicationLinksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReplicationLink> response
-            = manager.sqlPoolReplicationLinks().list("oksz", "nm", "wgpterdiuw", com.azure.core.util.Context.NONE);
+        PagedIterable<ReplicationLink> response = manager.sqlPoolReplicationLinks()
+            .list("ohaitranizerwgud", "smxubvf", "ngfcocefhpriyl", com.azure.core.util.Context.NONE);
 
     }
 }

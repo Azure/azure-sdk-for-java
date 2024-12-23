@@ -15,7 +15,7 @@ public final class GeoBackupPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GeoBackupPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"xssadbzmnvdf\"},\"kind\":\"ud\",\"location\":\"dvxzbncblylpst\",\"id\":\"bhhxsrzdzuc\",\"name\":\"rsc\",\"type\":\"ntnev\"},{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"jmygtdsslswtmwer\"},\"kind\":\"fzp\",\"location\":\"semwabnet\",\"id\":\"hhszh\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"},{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"wwtppj\"},\"kind\":\"cxogaokonzm\",\"location\":\"ikvmkqzeqqk\",\"id\":\"l\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"}]}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"wcpmguaadraufac\"},\"kind\":\"ahzovajjziuxxp\",\"location\":\"neekulfg\",\"id\":\"lqubkwdlen\",\"name\":\"d\",\"type\":\"utujba\"},{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"uo\"},\"kind\":\"inyflnorwmduvwp\",\"location\":\"vxwmygd\",\"id\":\"pgpqchiszepnnb\",\"name\":\"crxgibb\",\"type\":\"axconfozauo\"}]}")
             .toObject(GeoBackupPolicyListResult.class);
         Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.value().get(0).state());
     }
@@ -24,8 +24,7 @@ public final class GeoBackupPolicyListResultTests {
     public void testSerialize() throws Exception {
         GeoBackupPolicyListResult model = new GeoBackupPolicyListResult()
             .withValue(Arrays.asList(new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED),
-                new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED),
-                new GeoBackupPolicyInner().withState(GeoBackupPolicyState.DISABLED)));
+                new GeoBackupPolicyInner().withState(GeoBackupPolicyState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(GeoBackupPolicyListResult.class);
         Assertions.assertEquals(GeoBackupPolicyState.DISABLED, model.value().get(0).state());
     }
