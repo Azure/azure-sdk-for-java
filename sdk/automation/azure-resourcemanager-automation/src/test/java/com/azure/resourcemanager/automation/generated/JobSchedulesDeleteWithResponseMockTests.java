@@ -29,7 +29,7 @@ public final class JobSchedulesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.jobSchedules()
-            .deleteWithResponse("y", "it", UUID.fromString("bec5ea25-53ae-4264-b097-2721aba73aa2"),
+            .deleteWithResponse("y", "it", UUID.fromString("5c4b9923-fa6c-4c3a-ba69-d632a9e261b9"),
                 com.azure.core.util.Context.NONE);
 
     }
