@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the StorageMoverClientImpl type.
+ * A builder for creating a new instance of the StorageMoverManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { StorageMoverClientImpl.class })
-public final class StorageMoverClientBuilder {
+@ServiceClientBuilder(serviceClients = { StorageMoverManagementClientImpl.class })
+public final class StorageMoverManagementClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -28,9 +28,9 @@ public final class StorageMoverClientBuilder {
      * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder subscriptionId(String subscriptionId) {
+    public StorageMoverManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class StorageMoverClientBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder endpoint(String endpoint) {
+    public StorageMoverManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class StorageMoverClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder environment(AzureEnvironment environment) {
+    public StorageMoverManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class StorageMoverClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder pipeline(HttpPipeline pipeline) {
+    public StorageMoverManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class StorageMoverClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public StorageMoverManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class StorageMoverClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the StorageMoverClientBuilder.
+     * @return the StorageMoverManagementClientBuilder.
      */
-    public StorageMoverClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public StorageMoverManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of StorageMoverClientImpl with the provided parameters.
+     * Builds an instance of StorageMoverManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of StorageMoverClientImpl.
+     * @return an instance of StorageMoverManagementClientImpl.
      */
-    public StorageMoverClientImpl buildClient() {
+    public StorageMoverManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class StorageMoverClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        StorageMoverClientImpl client = new StorageMoverClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
+        StorageMoverManagementClientImpl client = new StorageMoverManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }
