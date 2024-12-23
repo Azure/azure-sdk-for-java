@@ -1,14 +1,21 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2024-12-23)
 
-### Features Added
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
 
 ## 1.2.0 (2024-06-17)
 
