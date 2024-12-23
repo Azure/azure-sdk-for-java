@@ -45,7 +45,6 @@
 
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <developers>
