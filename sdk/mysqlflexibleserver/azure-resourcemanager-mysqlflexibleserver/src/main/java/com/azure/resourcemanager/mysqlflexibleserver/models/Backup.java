@@ -24,11 +24,6 @@ public final class Backup implements JsonSerializable<Backup> {
     private Integer backupRetentionDays;
 
     /*
-     * Backup interval hours for the server.
-     */
-    private Integer backupIntervalHours;
-
-    /*
      * Whether or not geo redundant backup is enabled.
      */
     private EnableStatusEnum geoRedundantBackup;
@@ -61,26 +56,6 @@ public final class Backup implements JsonSerializable<Backup> {
      */
     public Backup withBackupRetentionDays(Integer backupRetentionDays) {
         this.backupRetentionDays = backupRetentionDays;
-        return this;
-    }
-
-    /**
-     * Get the backupIntervalHours property: Backup interval hours for the server.
-     * 
-     * @return the backupIntervalHours value.
-     */
-    public Integer backupIntervalHours() {
-        return this.backupIntervalHours;
-    }
-
-    /**
-     * Set the backupIntervalHours property: Backup interval hours for the server.
-     * 
-     * @param backupIntervalHours the backupIntervalHours value to set.
-     * @return the Backup object itself.
-     */
-    public Backup withBackupIntervalHours(Integer backupIntervalHours) {
-        this.backupIntervalHours = backupIntervalHours;
         return this;
     }
 
@@ -128,7 +103,6 @@ public final class Backup implements JsonSerializable<Backup> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("backupRetentionDays", this.backupRetentionDays);
-        jsonWriter.writeNumberField("backupIntervalHours", this.backupIntervalHours);
         jsonWriter.writeStringField("geoRedundantBackup",
             this.geoRedundantBackup == null ? null : this.geoRedundantBackup.toString());
         return jsonWriter.writeEndObject();
@@ -151,8 +125,6 @@ public final class Backup implements JsonSerializable<Backup> {
 
                 if ("backupRetentionDays".equals(fieldName)) {
                     deserializedBackup.backupRetentionDays = reader.getNullable(JsonReader::getInt);
-                } else if ("backupIntervalHours".equals(fieldName)) {
-                    deserializedBackup.backupIntervalHours = reader.getNullable(JsonReader::getInt);
                 } else if ("geoRedundantBackup".equals(fieldName)) {
                     deserializedBackup.geoRedundantBackup = EnableStatusEnum.fromString(reader.getString());
                 } else if ("earliestRestoreDate".equals(fieldName)) {

@@ -3,6 +3,9 @@
 
 package io.clientcore.core.implementation.http.rest;
 
+import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -13,12 +16,18 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.ReflectionSerializable;
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
+import io.clientcore.core.implementation.http.serializer.MalformedValueException;
 import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.util.binarydata.InputStreamBinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.SerializationFormat;
 
@@ -26,12 +35,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
-public class RestProxyImpl extends RestProxyBase {
+public class RestProxyImpl {
+    static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
+
+    // RestProxy is a commonly used class, use a static logger.
+    static final ClientLogger LOGGER = new ClientLogger(RestProxyImpl.class);
+
+    final HttpPipeline httpPipeline;
+    final CompositeSerializer serializer;
+    final SwaggerInterfaceParser interfaceParser;
 
     /**
      * Create a RestProxy.
@@ -43,36 +64,210 @@ public class RestProxyImpl extends RestProxyBase {
      */
     public RestProxyImpl(HttpPipeline httpPipeline, SwaggerInterfaceParser interfaceParser,
         ObjectSerializer... serializers) {
-        super(httpPipeline, interfaceParser, serializers);
+        this.httpPipeline = httpPipeline;
+        this.interfaceParser = interfaceParser;
+        this.serializer = new CompositeSerializer(Arrays.asList(serializers));
     }
 
     /**
-     * Send the provided request, applying any request policies provided to the HttpClient instance.
+     * Invokes the provided method using the provided arguments.
      *
-     * @param request the HTTP request to send.
-     *
-     * @return A {@link Response}.
+     * @param proxy The proxy object to invoke the method on.
+     * @param options The RequestOptions to use for the request.
+     * @param methodParser The SwaggerMethodParser that contains information about the method to invoke.
+     * @param args The arguments to use when invoking the method.
+     * @return The result of invoking the method.
+     * @throws UncheckedIOException When an I/O error occurs.
+     * @throws RuntimeException When a URI syntax error occurs.
      */
-    Response<?> send(HttpRequest request) {
-        return httpPipeline.send(request);
+    @SuppressWarnings({ "try", "unused" })
+    public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
+        try {
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
+                .setServerSentEventListener(methodParser.setServerSentEventListener(args));
+
+            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // This is because the callbacks may mutate the request body.
+            if (request.getRequestOptions() != null) {
+                request.getRequestOptions().getRequestCallback().accept(request);
+            }
+
+            if (request.getBody() != null) {
+                request.setBody(RestProxyImpl.validateLength(request));
+            }
+
+            final Response<?> response = httpPipeline.send(request);
+
+            return handleRestReturnType(response, methodParser, methodParser.getReturnType(), serializer);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+        }
     }
 
-    @SuppressWarnings({ "try", "unused" })
-    @Override
-    public Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request) {
-        // If there is 'RequestOptions' apply its request callback operations before validating the body.
-        // This is because the callbacks may mutate the request body.
-        if (request.getRequestOptions() != null) {
-            request.getRequestOptions().getRequestCallback().accept(request);
+    /**
+     * Validates the Length of the input request matches its configured Content Length.
+     *
+     * @param request the input request to validate.
+     * @return the requests body as BinaryData on successful validation.
+     */
+    static BinaryData validateLength(final HttpRequest request) {
+        final BinaryData binaryData = request.getBody();
+
+        if (binaryData == null) {
+            return null;
         }
 
-        if (request.getBody() != null) {
-            request.setBody(RestProxyUtils.validateLength(request));
+        final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+
+        if (binaryData instanceof InputStreamBinaryData) {
+            InputStream inputStream = binaryData.toStream();
+            LengthValidatingInputStream lengthValidatingInputStream
+                = new LengthValidatingInputStream(inputStream, expectedLength);
+
+            return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
+        } else {
+            if (binaryData.getLength() == null) {
+                byte[] b = binaryData.toBytes();
+
+                validateLengthInternal(b.length, expectedLength);
+
+                return BinaryData.fromBytes(b);
+            } else {
+                validateLengthInternal(binaryData.getLength(), expectedLength);
+
+                return binaryData;
+            }
+        }
+    }
+
+    private static void validateLengthInternal(long length, long expectedLength) {
+        if (length > expectedLength) {
+            throw new IllegalStateException(bodyTooLarge(length, expectedLength));
         }
 
-        final Response<?> response = send(request);
+        if (length < expectedLength) {
+            throw new IllegalStateException(bodyTooSmall(length, expectedLength));
+        }
+    }
 
-        return handleRestReturnType(response, methodParser, methodParser.getReturnType());
+    static String bodyTooLarge(long length, long expectedLength) {
+        return "Request body emitted " + length + " bytes, more than the expected " + expectedLength + " bytes.";
+    }
+
+    static String bodyTooSmall(long length, long expectedLength) {
+        return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
+    }
+
+    /**
+     * Create an HttpRequest for the provided Swagger method using the provided arguments.
+     *
+     * @param methodParser The Swagger method parser to use.
+     * @param args The arguments to use to populate the method's annotation values.
+     * @return An HttpRequest.
+     * @throws IOException If the body contents cannot be serialized.
+     */
+    private static HttpRequest createHttpRequest(SwaggerMethodParser methodParser, CompositeSerializer serializer,
+        Object[] args) throws IOException, URISyntaxException {
+
+        // Sometimes people pass in a full URI for the value of their PathParam annotated argument.
+        // This definitely happens in paging scenarios. In that case, just use the full URI and
+        // ignore the Host annotation.
+        final String path = methodParser.setPath(args, serializer);
+        final UriBuilder pathUriBuilder = UriBuilder.parse(path);
+        final UriBuilder uriBuilder;
+
+        if (pathUriBuilder.getScheme() != null) {
+            uriBuilder = pathUriBuilder;
+        } else {
+            uriBuilder = new UriBuilder();
+
+            methodParser.setSchemeAndHost(args, uriBuilder, serializer);
+
+            // Set the path after host, concatenating the path segment in the host.
+            if (path != null && !path.isEmpty() && !"/".equals(path)) {
+                String hostPath = uriBuilder.getPath();
+
+                if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
+                    uriBuilder.setPath(path);
+                } else {
+                    if (path.startsWith("/")) {
+                        uriBuilder.setPath(hostPath + path);
+                    } else {
+                        uriBuilder.setPath(hostPath + "/" + path);
+                    }
+                }
+            }
+        }
+
+        methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
+
+        final URI uri = uriBuilder.toUri();
+        final HttpRequest request
+            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, serializer, args);
+        // Headers from Swagger method arguments always take precedence over inferred headers from body types
+        HttpHeaders httpHeaders = request.getHeaders();
+
+        methodParser.setHeaders(args, httpHeaders, serializer);
+
+        return request;
+    }
+
+    private static HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
+        CompositeSerializer serializer, Object[] args) throws IOException {
+        final Object bodyContentObject = methodParser.setBody(args, serializer);
+
+        if (bodyContentObject == null) {
+            request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0");
+        } else {
+            // We read the content type from the @BodyParam annotation
+            String contentType = methodParser.getBodyContentType();
+
+            // If this is null or empty, the service interface definition is incomplete and should
+            // be fixed to ensure correct definitions are applied
+            if (contentType == null || contentType.isEmpty()) {
+                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                } else {
+                    contentType = ContentType.APPLICATION_JSON;
+                }
+            }
+
+            request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+
+            if (bodyContentObject instanceof BinaryData) {
+                BinaryData binaryData = (BinaryData) bodyContentObject;
+
+                if (binaryData.getLength() != null) {
+                    request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
+                }
+
+                // The request body is not read here. BinaryData lazily converts the underlying content which is then
+                // read by HttpClient implementations when sending the request to the service. There is no memory
+                // copy that happens here. Sources like InputStream or File will not be eagerly copied into memory
+                // until it's required by the HttpClient implementations.
+                request.setBody(binaryData);
+
+                return request;
+            }
+
+            // TODO(jogiles) this feels hacky
+            boolean isJson = false;
+            final String[] contentTypeParts = contentType.split(";");
+
+            for (final String contentTypePart : contentTypeParts) {
+                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                    isJson = true;
+
+                    break;
+                }
+            }
+
+            updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject), serializer);
+        }
+
+        return request;
     }
 
     /**
@@ -85,10 +280,10 @@ public class RestProxyImpl extends RestProxyBase {
      * @param response The Response to check.
      * @param methodParser The method parser that contains information about the service interface method that initiated
      * the HTTP request.
-     *
      * @return The decodedResponse.
      */
-    private Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser) {
+    private static Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser,
+        CompositeSerializer serializer) {
         int responseStatusCode = response.getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return it.
@@ -108,8 +303,53 @@ public class RestProxyImpl extends RestProxyBase {
         }
     }
 
-    private Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
-        Type entityType) {
+    /**
+     * Creates an HttpResponseException exception using the details provided in http response and its content.
+     *
+     * @param unexpectedExceptionInformation The exception holding UnexpectedException's details.
+     * @param response The http response to parse when constructing exception
+     * @param responseBody The response body to use when constructing exception
+     * @param responseDecodedBody The decoded response content to use when constructing exception
+     * @return The {@link HttpResponseException} created from the provided details.
+     */
+    private static HttpResponseException instantiateUnexpectedException(
+        UnexpectedExceptionInformation unexpectedExceptionInformation, Response<?> response, BinaryData responseBody,
+        Object responseDecodedBody) {
+        StringBuilder exceptionMessage
+            = new StringBuilder("Status code ").append(response.getStatusCode()).append(", ");
+
+        final String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
+        } else if (responseBody == null || responseBody.toBytes().length == 0) {
+            exceptionMessage.append("(empty body)");
+        } else {
+            exceptionMessage.append('\"')
+                .append(new String(responseBody.toBytes(), StandardCharsets.UTF_8))
+                .append('\"');
+        }
+
+        // If the decoded response body is on of these exception types there was a failure in creating the actual
+        // exception body type. In this case return an HttpResponseException to maintain the exception having a
+        // reference to the Response and information about what caused the deserialization failure.
+        if (responseDecodedBody instanceof IOException
+            || responseDecodedBody instanceof MalformedValueException
+            || responseDecodedBody instanceof IllegalStateException) {
+
+            return new HttpResponseException(exceptionMessage.toString(), response, null,
+                (Throwable) responseDecodedBody);
+        }
+
+        HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
+
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType, responseDecodedBody);
+    }
+
+    private static Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
+        Type entityType, CompositeSerializer serializer) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
@@ -131,10 +371,10 @@ public class RestProxyImpl extends RestProxyBase {
 
                 if (responseBodyMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
-                        handleResponseBody(response, methodParser, bodyType, response.getBody()));
+                        handleResponseBody(response, methodParser, bodyType, response.getBody(), serializer));
                 } else {
                     HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response,
-                        (body) -> handleResponseBody(response, methodParser, bodyType, body));
+                        (body) -> handleResponseBody(response, methodParser, bodyType, body, serializer));
                 }
 
                 Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
@@ -148,12 +388,34 @@ public class RestProxyImpl extends RestProxyBase {
         } else {
             // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
             // return type.
-            return handleResponseBody(response, methodParser, entityType, response.getBody());
+            return handleResponseBody(response, methodParser, entityType, response.getBody(), serializer);
         }
     }
 
-    private Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
-        BinaryData responseBody) {
+    @SuppressWarnings({ "unchecked" })
+    private static Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
+        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
+
+        // Inspection of the response type needs to be performed to determine the course of action: either return the
+        // Response or rely on reflection to create an appropriate Response subtype.
+        if (clazz.equals(Response.class)) {
+            // Return the Response.
+            return response;
+        } else {
+            // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
+            // subtype.
+            //
+            // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
+            // be given a way to register their constructor as a callback method that consumes Response and the body as
+            // an Object.
+            ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
+
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
+        }
+    }
+
+    private static Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
+        BinaryData responseBody, CompositeSerializer serializer) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -195,11 +457,11 @@ public class RestProxyImpl extends RestProxyBase {
      * @param response The HTTP response to the original HTTP request.
      * @param methodParser The SwaggerMethodParser that the request originates from.
      * @param returnType The type of value that will be returned.
-     *
      * @return The deserialized result.
      */
-    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType) {
-        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser);
+    private static Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
+        CompositeSerializer serializer) {
+        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, serializer);
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
@@ -211,13 +473,14 @@ public class RestProxyImpl extends RestProxyBase {
 
             result = null;
         } else {
-            result = handleRestResponseReturnType(response, methodParser, returnType);
+            result = handleRestResponseReturnType(response, methodParser, returnType, serializer);
         }
 
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, CompositeSerializer serializer) {
+    private static void updateRequest(RequestDataConfiguration requestDataConfiguration,
+        CompositeSerializer serializer) {
 
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();

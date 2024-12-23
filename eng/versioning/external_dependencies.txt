@@ -412,6 +412,9 @@ springboot3_org.springframework:spring-web;6.2.0
 springboot3_org.springframework:spring-webmvc;6.2.0
 springboot3_org.testcontainers:junit-jupiter;1.20.4
 springboot3_org.testcontainers:azure;1.20.4
+# Used for Spring version updates
+springboot3_org.springframework.boot:spring-boot-dependencies;3.4.0
+springboot3_org.springframework.cloud:spring-cloud-dependencies;2024.0.0
 
 # Java 7 support
 
