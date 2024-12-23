@@ -6,25 +6,26 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Country;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Countries Response Object.
  */
 @Fluent
-public final class CountriesResponseInner {
+public final class CountriesResponseInner implements JsonSerializable<CountriesResponseInner> {
     /*
      * List of countries
      */
-    @JsonProperty(value = "value", required = true)
-    private List<Country> value;
+    private List<CountryInner> value;
 
     /*
      * next link
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -38,7 +39,7 @@ public final class CountriesResponseInner {
      * 
      * @return the value value.
      */
-    public List<Country> value() {
+    public List<CountryInner> value() {
         return this.value;
     }
 
@@ -48,7 +49,7 @@ public final class CountriesResponseInner {
      * @param value the value value to set.
      * @return the CountriesResponseInner object itself.
      */
-    public CountriesResponseInner withValue(List<Country> value) {
+    public CountriesResponseInner withValue(List<CountryInner> value) {
         this.value = value;
         return this;
     }
@@ -80,12 +81,53 @@ public final class CountriesResponseInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CountriesResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model CountriesResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CountriesResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CountriesResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CountriesResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CountriesResponseInner.
+     */
+    public static CountriesResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CountriesResponseInner deserializedCountriesResponseInner = new CountriesResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CountryInner> value = reader.readArray(reader1 -> CountryInner.fromJson(reader1));
+                    deserializedCountriesResponseInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCountriesResponseInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCountriesResponseInner;
+        });
+    }
 }

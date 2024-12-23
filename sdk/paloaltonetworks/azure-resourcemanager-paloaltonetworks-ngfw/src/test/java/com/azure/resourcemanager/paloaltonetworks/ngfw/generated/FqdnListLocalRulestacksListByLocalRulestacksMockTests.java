@@ -6,56 +6,37 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FqdnListLocalRulestackResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FqdnListLocalRulestacksListByLocalRulestacksMockTests {
     @Test
     public void testListByLocalRulestacks() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"atxtjrrlkmdskjhh\",\"fqdnList\":[\"lajfoxcxscvslxlh\"],\"etag\":\"vkrmukmyjmkx\",\"auditComment\":\"tcsloj\",\"provisioningState\":\"Succeeded\"},\"id\":\"dnqtoqxjhqx\",\"name\":\"s\",\"type\":\"htkbtnq\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"krvfyifkdschl\",\"fqdnList\":[\"fict\",\"kjjwgcwn\",\"hbkgfyrt\",\"gm\"],\"etag\":\"j\",\"auditComment\":\"scdfpdqw\",\"provisioningState\":\"Deleted\"},\"id\":\"vgwmseharxifvqnr\",\"name\":\"tmbpjp\",\"type\":\"nvwjhrsidqpxl\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FqdnListLocalRulestackResource> response = manager.fqdnListLocalRulestacks()
-            .listByLocalRulestacks("ybkcgsuthhllnmwy", "efxexlf", com.azure.core.util.Context.NONE);
+            .listByLocalRulestacks("gybpmfb", "ununm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("atxtjrrlkmdskjhh", response.iterator().next().description());
-        Assertions.assertEquals("lajfoxcxscvslxlh", response.iterator().next().fqdnList().get(0));
-        Assertions.assertEquals("vkrmukmyjmkx", response.iterator().next().etag());
-        Assertions.assertEquals("tcsloj", response.iterator().next().auditComment());
+        Assertions.assertEquals("krvfyifkdschl", response.iterator().next().description());
+        Assertions.assertEquals("fict", response.iterator().next().fqdnList().get(0));
+        Assertions.assertEquals("j", response.iterator().next().etag());
+        Assertions.assertEquals("scdfpdqw", response.iterator().next().auditComment());
     }
 }

@@ -5,22 +5,23 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PredefinedUrlCategory;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoryInner;
 import org.junit.jupiter.api.Assertions;
 
-public final class PredefinedUrlCategoryTests {
+public final class PredefinedUrlCategoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PredefinedUrlCategory model = BinaryData.fromString("{\"action\":\"qdqgbi\",\"name\":\"ylihkaetckt\"}")
-            .toObject(PredefinedUrlCategory.class);
+        PredefinedUrlCategoryInner model = BinaryData.fromString("{\"action\":\"qdqgbi\",\"name\":\"ylihkaetckt\"}")
+            .toObject(PredefinedUrlCategoryInner.class);
         Assertions.assertEquals("qdqgbi", model.action());
         Assertions.assertEquals("ylihkaetckt", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PredefinedUrlCategory model = new PredefinedUrlCategory().withAction("qdqgbi").withName("ylihkaetckt");
-        model = BinaryData.fromObject(model).toObject(PredefinedUrlCategory.class);
+        PredefinedUrlCategoryInner model
+            = new PredefinedUrlCategoryInner().withAction("qdqgbi").withName("ylihkaetckt");
+        model = BinaryData.fromObject(model).toObject(PredefinedUrlCategoryInner.class);
         Assertions.assertEquals("qdqgbi", model.action());
         Assertions.assertEquals("ylihkaetckt", model.name());
     }

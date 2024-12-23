@@ -4,84 +4,30 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CountryInner;
 
 /**
- * Country Description.
+ * An immutable client-side representation of Country.
  */
-@Fluent
-public final class Country {
-    /*
-     * country code
-     */
-    @JsonProperty(value = "code", required = true)
-    private String code;
-
-    /*
-     * code description
-     */
-    @JsonProperty(value = "description")
-    private String description;
-
+public interface Country {
     /**
-     * Creates an instance of Country class.
-     */
-    public Country() {
-    }
-
-    /**
-     * Get the code property: country code.
+     * Gets the code property: country code.
      * 
      * @return the code value.
      */
-    public String code() {
-        return this.code;
-    }
+    String code();
 
     /**
-     * Set the code property: country code.
-     * 
-     * @param code the code value to set.
-     * @return the Country object itself.
-     */
-    public Country withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the description property: code description.
+     * Gets the description property: code description.
      * 
      * @return the description value.
      */
-    public String description() {
-        return this.description;
-    }
+    String description();
 
     /**
-     * Set the description property: code description.
+     * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CountryInner object.
      * 
-     * @param description the description value to set.
-     * @return the Country object itself.
+     * @return the inner object.
      */
-    public Country withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property code in model Country"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Country.class);
+    CountryInner innerModel();
 }

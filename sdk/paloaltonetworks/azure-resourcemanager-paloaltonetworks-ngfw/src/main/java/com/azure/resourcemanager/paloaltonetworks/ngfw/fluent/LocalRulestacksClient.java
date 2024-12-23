@@ -13,11 +13,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.AdvSecurityObjectListResponseInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ChangelogInner;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CountriesResponseInner;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ListAppIdResponseInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ListFirewallsResponseInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LocalRulestackResourceInner;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoriesResponseInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SecurityServicesResponseInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SupportInfoInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectTypeEnum;
@@ -393,68 +390,6 @@ public interface LocalRulestacksClient {
         AdvSecurityObjectTypeEnum type);
 
     /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param appIdVersion The appIdVersion parameter.
-     * @param appPrefix The appPrefix parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListAppIdResponseInner> listAppIdsWithResponse(String resourceGroupName, String localRulestackName,
-        String appIdVersion, String appPrefix, String skip, Integer top, Context context);
-
-    /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListAppIdResponseInner listAppIds(String resourceGroupName, String localRulestackName);
-
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CountriesResponseInner> listCountriesWithResponse(String resourceGroupName, String localRulestackName,
-        String skip, Integer top, Context context);
-
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CountriesResponseInner listCountries(String resourceGroupName, String localRulestackName);
-
-    /**
      * List of Firewalls associated with Rulestack.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -481,37 +416,6 @@ public interface LocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ListFirewallsResponseInner listFirewalls(String resourceGroupName, String localRulestackName);
-
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(String resourceGroupName,
-        String localRulestackName, String skip, Integer top, Context context);
-
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(String resourceGroupName,
-        String localRulestackName);
 
     /**
      * List the security services for rulestack.

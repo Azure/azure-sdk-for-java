@@ -11,14 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.LocalRulestackResourceInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AzureResourceManagerManagedIdentityProperties;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Changelog;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CountriesResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.DefaultMode;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ListAppIdResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ListFirewallsResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRulestackResource;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRulestackResourceUpdate;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRulestackResourceUpdateProperties;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PredefinedUrlCategoriesResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ScopeType;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServices;
@@ -184,8 +181,8 @@ public final class LocalRulestackResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = Utils.getValueFromIdByName(innerObject.id(), "localRulestacks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
     }
 
     public LocalRulestackResource refresh() {
@@ -230,25 +227,6 @@ public final class LocalRulestackResourceImpl
         return serviceManager.localRulestacks().getSupportInfo(resourceGroupName, localRulestackName);
     }
 
-    public Response<ListAppIdResponse> listAppIdsWithResponse(String appIdVersion, String appPrefix, String skip,
-        Integer top, Context context) {
-        return serviceManager.localRulestacks()
-            .listAppIdsWithResponse(resourceGroupName, localRulestackName, appIdVersion, appPrefix, skip, top, context);
-    }
-
-    public ListAppIdResponse listAppIds() {
-        return serviceManager.localRulestacks().listAppIds(resourceGroupName, localRulestackName);
-    }
-
-    public Response<CountriesResponse> listCountriesWithResponse(String skip, Integer top, Context context) {
-        return serviceManager.localRulestacks()
-            .listCountriesWithResponse(resourceGroupName, localRulestackName, skip, top, context);
-    }
-
-    public CountriesResponse listCountries() {
-        return serviceManager.localRulestacks().listCountries(resourceGroupName, localRulestackName);
-    }
-
     public Response<ListFirewallsResponse> listFirewallsWithResponse(Context context) {
         return serviceManager.localRulestacks()
             .listFirewallsWithResponse(resourceGroupName, localRulestackName, context);
@@ -256,16 +234,6 @@ public final class LocalRulestackResourceImpl
 
     public ListFirewallsResponse listFirewalls() {
         return serviceManager.localRulestacks().listFirewalls(resourceGroupName, localRulestackName);
-    }
-
-    public Response<PredefinedUrlCategoriesResponse> listPredefinedUrlCategoriesWithResponse(String skip, Integer top,
-        Context context) {
-        return serviceManager.localRulestacks()
-            .listPredefinedUrlCategoriesWithResponse(resourceGroupName, localRulestackName, skip, top, context);
-    }
-
-    public PredefinedUrlCategoriesResponse listPredefinedUrlCategories() {
-        return serviceManager.localRulestacks().listPredefinedUrlCategories(resourceGroupName, localRulestackName);
     }
 
     public Response<Void> revertWithResponse(Context context) {

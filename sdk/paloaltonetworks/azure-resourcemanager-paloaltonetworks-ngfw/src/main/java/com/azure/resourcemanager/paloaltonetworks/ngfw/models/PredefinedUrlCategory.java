@@ -4,88 +4,30 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoryInner;
 
 /**
- * Predefined URL category object.
+ * An immutable client-side representation of PredefinedUrlCategory.
  */
-@Fluent
-public final class PredefinedUrlCategory {
-    /*
-     * The action property.
-     */
-    @JsonProperty(value = "action", required = true)
-    private String action;
-
-    /*
-     * The name property.
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
-
+public interface PredefinedUrlCategory {
     /**
-     * Creates an instance of PredefinedUrlCategory class.
-     */
-    public PredefinedUrlCategory() {
-    }
-
-    /**
-     * Get the action property: The action property.
+     * Gets the action property: The action property.
      * 
      * @return the action value.
      */
-    public String action() {
-        return this.action;
-    }
+    String action();
 
     /**
-     * Set the action property: The action property.
-     * 
-     * @param action the action value to set.
-     * @return the PredefinedUrlCategory object itself.
-     */
-    public PredefinedUrlCategory withAction(String action) {
-        this.action = action;
-        return this;
-    }
-
-    /**
-     * Get the name property: The name property.
+     * Gets the name property: The name property.
      * 
      * @return the name value.
      */
-    public String name() {
-        return this.name;
-    }
+    String name();
 
     /**
-     * Set the name property: The name property.
+     * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoryInner object.
      * 
-     * @param name the name value to set.
-     * @return the PredefinedUrlCategory object itself.
+     * @return the inner object.
      */
-    public PredefinedUrlCategory withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (action() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property action in model PredefinedUrlCategory"));
-        }
-        if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model PredefinedUrlCategory"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PredefinedUrlCategory.class);
+    PredefinedUrlCategoryInner innerModel();
 }

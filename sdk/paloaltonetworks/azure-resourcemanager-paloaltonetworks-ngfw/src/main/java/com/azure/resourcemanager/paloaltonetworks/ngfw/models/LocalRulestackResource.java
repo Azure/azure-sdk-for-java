@@ -510,53 +510,6 @@ public interface LocalRulestackResource {
     SupportInfo getSupportInfo();
 
     /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @param appIdVersion The appIdVersion parameter.
-     * @param appPrefix The appPrefix parameter.
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    Response<ListAppIdResponse> listAppIdsWithResponse(String appIdVersion, String appPrefix, String skip, Integer top,
-        Context context);
-
-    /**
-     * List of AppIds for LocalRulestack ApiVersion.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    ListAppIdResponse listAppIds();
-
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object along with {@link Response}.
-     */
-    Response<CountriesResponse> listCountriesWithResponse(String skip, Integer top, Context context);
-
-    /**
-     * List of countries for Rulestack.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return countries Response Object.
-     */
-    CountriesResponse listCountries();
-
-    /**
      * List of Firewalls associated with Rulestack.
      * 
      * @param context The context to associate with this operation.
@@ -575,29 +528,6 @@ public interface LocalRulestackResource {
      * @return list firewalls response.
      */
     ListFirewallsResponse listFirewalls();
-
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @param skip The skip parameter.
-     * @param top The top parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response along with {@link Response}.
-     */
-    Response<PredefinedUrlCategoriesResponse> listPredefinedUrlCategoriesWithResponse(String skip, Integer top,
-        Context context);
-
-    /**
-     * List predefined URL categories for rulestack.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return predefined url categories response.
-     */
-    PredefinedUrlCategoriesResponse listPredefinedUrlCategories();
 
     /**
      * Revert rulestack configuration.

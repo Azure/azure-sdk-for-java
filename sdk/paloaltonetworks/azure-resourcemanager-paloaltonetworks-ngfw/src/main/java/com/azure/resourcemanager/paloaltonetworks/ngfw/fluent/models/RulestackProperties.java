@@ -5,70 +5,65 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.DefaultMode;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ScopeType;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServices;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * PAN Rulestack Describe Object.
  */
 @Fluent
-public final class RulestackProperties {
+public final class RulestackProperties implements JsonSerializable<RulestackProperties> {
     /*
      * PanEtag info
      */
-    @JsonProperty(value = "panEtag")
     private String panEtag;
 
     /*
      * Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks
      */
-    @JsonProperty(value = "panLocation")
     private String panLocation;
 
     /*
      * Rulestack Type
      */
-    @JsonProperty(value = "scope")
     private ScopeType scope;
 
     /*
      * subscription scope of global rulestack
      */
-    @JsonProperty(value = "associatedSubscriptions")
     private List<String> associatedSubscriptions;
 
     /*
      * rulestack description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Mode for default rules creation
      */
-    @JsonProperty(value = "defaultMode")
     private DefaultMode defaultMode;
 
     /*
      * minimum version
      */
-    @JsonProperty(value = "minAppIdVersion")
     private String minAppIdVersion;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Security Profile
      */
-    @JsonProperty(value = "securityServices")
     private SecurityServices securityServices;
 
     /**
@@ -255,5 +250,67 @@ public final class RulestackProperties {
         if (securityServices() != null) {
             securityServices().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("panEtag", this.panEtag);
+        jsonWriter.writeStringField("panLocation", this.panLocation);
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        jsonWriter.writeArrayField("associatedSubscriptions", this.associatedSubscriptions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("defaultMode", this.defaultMode == null ? null : this.defaultMode.toString());
+        jsonWriter.writeStringField("minAppIdVersion", this.minAppIdVersion);
+        jsonWriter.writeJsonField("securityServices", this.securityServices);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulestackProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulestackProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RulestackProperties.
+     */
+    public static RulestackProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulestackProperties deserializedRulestackProperties = new RulestackProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("panEtag".equals(fieldName)) {
+                    deserializedRulestackProperties.panEtag = reader.getString();
+                } else if ("panLocation".equals(fieldName)) {
+                    deserializedRulestackProperties.panLocation = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedRulestackProperties.scope = ScopeType.fromString(reader.getString());
+                } else if ("associatedSubscriptions".equals(fieldName)) {
+                    List<String> associatedSubscriptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRulestackProperties.associatedSubscriptions = associatedSubscriptions;
+                } else if ("description".equals(fieldName)) {
+                    deserializedRulestackProperties.description = reader.getString();
+                } else if ("defaultMode".equals(fieldName)) {
+                    deserializedRulestackProperties.defaultMode = DefaultMode.fromString(reader.getString());
+                } else if ("minAppIdVersion".equals(fieldName)) {
+                    deserializedRulestackProperties.minAppIdVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRulestackProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("securityServices".equals(fieldName)) {
+                    deserializedRulestackProperties.securityServices = SecurityServices.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulestackProperties;
+        });
     }
 }

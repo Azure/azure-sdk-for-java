@@ -6,7 +6,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoriesResponseInner;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PredefinedUrlCategory;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PredefinedUrlCategoryInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -24,8 +24,8 @@ public final class PredefinedUrlCategoriesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PredefinedUrlCategoriesResponseInner model = new PredefinedUrlCategoriesResponseInner()
-            .withValue(Arrays.asList(new PredefinedUrlCategory().withAction("zf").withName("beypewrmjmw"),
-                new PredefinedUrlCategory().withAction("vjektcxsenh").withName("lrsf")))
+            .withValue(Arrays.asList(new PredefinedUrlCategoryInner().withAction("zf").withName("beypewrmjmw"),
+                new PredefinedUrlCategoryInner().withAction("vjektcxsenh").withName("lrsf")))
             .withNextLink("zpwv");
         model = BinaryData.fromObject(model).toObject(PredefinedUrlCategoriesResponseInner.class);
         Assertions.assertEquals("zf", model.value().get(0).action());
