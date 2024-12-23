@@ -28,7 +28,7 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
     SupportsUpdatingPrivateEndpointConnection {
 
     /**
-     * Gets the SKU of the container registry..
+     * Gets the SKU of the container registry.
      *
      * @return the SKU of the container registry.
      */
@@ -49,7 +49,7 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
     OffsetDateTime creationDate();
 
     /**
-     * Checks whether the value that indicates whether the admin user is enabled.
+     * Checks whether the admin user is enabled.
      *
      * @return the value that indicates whether the admin user is enabled
      */
@@ -156,7 +156,7 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
     boolean isZoneRedundancyEnabled();
 
     /**
-     * Gets list of host names that will serve data.
+     * Gets list of host names that will serve data when isDedicatedDataEndpointsEnabled is true.
      *
      * @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true
      */
