@@ -23,99 +23,102 @@ public final class ScanResultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScanResultProperties model = BinaryData.fromString(
-            "{\"ruleId\":\"otxhojujby\",\"status\":\"Finding\",\"isTrimmed\":false,\"queryResults\":[[\"ixbjx\",\"fw\",\"yl\"],[\"ool\",\"ttpkiwkkbnujrywv\",\"y\",\"bfpncurdo\"]],\"remediation\":{\"description\":\"ithtywu\",\"scripts\":[\"bihwqknfdnt\",\"jchrdgoihxumw\"],\"automated\":false,\"portalLink\":\"dzjlu\"},\"baselineAdjustedResult\":{\"baseline\":{\"expectedResults\":[[\"gg\",\"tsbwtovvtgse\",\"nqfiufxqknpi\",\"gnepttwqmsni\"]],\"updatedTime\":\"2021-04-12T20:00:21Z\"},\"status\":\"NonFinding\",\"resultsNotInBaseline\":[[\"ojlpijnkrxf\"],[\"dhcrati\",\"zronasxift\",\"zq\"],[\"hftwesgog\"]],\"resultsOnlyInBaseline\":[[\"nnxk\",\"lgnyhmo\",\"sxkkg\"],[\"rrghxjbdhqxvcxgf\"],[\"dsofbshrns\"],[\"uswdv\",\"yybyc\",\"unvjsrtkfawnopq\"]]},\"ruleMetadata\":{\"ruleId\":\"yzirtxdyuxzejn\",\"severity\":\"Low\",\"category\":\"wgioilqukry\",\"ruleType\":\"BaselineExpected\",\"title\":\"mieoxorgguf\",\"description\":\"aomtbghhavgrvkff\",\"rationale\":\"jzhpjbibgjmfx\",\"queryCheck\":{\"query\":\"fcluyov\",\"expectedResult\":[[\"kfezzxscyhwz\",\"g\",\"rujbzbomvzzbtdc\",\"vp\"],[\"yujviylwdshfssn\",\"bgye\",\"rymsgaojfmw\",\"cotmr\"],[\"irctymoxoftpipiw\",\"czuhxacpqjlihh\",\"usps\",\"asdvl\"]],\"columnNames\":[\"dgzxulucvpamrsr\",\"uzvx\",\"risjnhnytxifqjz\"]},\"benchmarkReferences\":[{\"benchmark\":\"hu\",\"reference\":\"wp\"},{\"benchmark\":\"sutrgjup\",\"reference\":\"utpwoqhihejqgw\"},{\"benchmark\":\"nfqn\",\"reference\":\"ypsxjvfoim\"}]}}")
+            "{\"ruleId\":\"jbibg\",\"status\":\"Finding\",\"isTrimmed\":false,\"queryResults\":[[\"cluyovwxnbkf\",\"zzxscyhwzdgiruj\"],[\"bomvzzbtdcqv\",\"niyujv\",\"ylwdshfssn\",\"bgye\"],[\"ymsgaojfmwnc\",\"tmr\",\"hirctymoxoftpipi\"],[\"czuhxacpqjlihh\",\"usps\",\"asdvl\"]],\"remediation\":{\"description\":\"dgzxulucvpamrsr\",\"scripts\":[\"vxurisjnhnytxifq\",\"zgxmr\",\"ublwpcesutrg\"],\"automated\":false,\"portalLink\":\"uutpwoqhih\"},\"baselineAdjustedResult\":{\"baseline\":{\"expectedResults\":[[\"pnfqntcyp\",\"xjvfoimwksl\",\"rcizjxvyd\",\"ceacvlhvygdy\"]],\"updatedTime\":\"2021-04-02T04:25:09Z\"},\"status\":\"NonFinding\",\"resultsNotInBaseline\":[[\"awjs\",\"biwkojgcyzt\",\"fmznba\",\"qphchqnrnrpxehuw\"],[\"k\",\"gaifmvik\",\"bydvkhbejdz\"],[\"cvdsrhnj\"]],\"resultsOnlyInBaseline\":[[\"v\",\"novqfzge\"],[\"dftuljltduce\",\"mtmczuome\",\"wcw\"],[\"ioknssxmoj\",\"sv\",\"kjprvk\"]]},\"ruleMetadata\":{\"ruleId\":\"zqljyxgtczh\",\"severity\":\"Medium\",\"category\":\"sdshmkxmaehvb\",\"ruleType\":\"PositiveList\",\"title\":\"iplt\",\"description\":\"htba\",\"rationale\":\"gx\",\"queryCheck\":{\"query\":\"ckpyklyhplu\",\"expectedResult\":[[\"ruud\"],[\"zibt\",\"ostgkts\",\"vdxec\",\"zedqbcvhzlhplo\"]],\"columnNames\":[\"dlwwqfbumlkxt\"]},\"benchmarkReferences\":[{\"benchmark\":\"smlmbtxhwgfwsrta\",\"reference\":\"oezbrhubsk\"},{\"benchmark\":\"dyg\",\"reference\":\"okkqfqjbvleo\"},{\"benchmark\":\"ml\",\"reference\":\"qtqzfavyv\"},{\"benchmark\":\"qybaryeua\",\"reference\":\"kq\"}]}}")
             .toObject(ScanResultProperties.class);
-        Assertions.assertEquals("otxhojujby", model.ruleId());
+        Assertions.assertEquals("jbibg", model.ruleId());
         Assertions.assertEquals(RuleStatus.FINDING, model.status());
         Assertions.assertEquals(false, model.isTrimmed());
-        Assertions.assertEquals("ixbjx", model.queryResults().get(0).get(0));
-        Assertions.assertEquals("ithtywu", model.remediation().description());
-        Assertions.assertEquals("bihwqknfdnt", model.remediation().scripts().get(0));
+        Assertions.assertEquals("cluyovwxnbkf", model.queryResults().get(0).get(0));
+        Assertions.assertEquals("dgzxulucvpamrsr", model.remediation().description());
+        Assertions.assertEquals("vxurisjnhnytxifq", model.remediation().scripts().get(0));
         Assertions.assertEquals(false, model.remediation().automated());
-        Assertions.assertEquals("dzjlu", model.remediation().portalLink());
-        Assertions.assertEquals("gg", model.baselineAdjustedResult().baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T20:00:21Z"),
+        Assertions.assertEquals("uutpwoqhih", model.remediation().portalLink());
+        Assertions.assertEquals("pnfqntcyp", model.baselineAdjustedResult().baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"),
             model.baselineAdjustedResult().baseline().updatedTime());
         Assertions.assertEquals(RuleStatus.NON_FINDING, model.baselineAdjustedResult().status());
-        Assertions.assertEquals("ojlpijnkrxf", model.baselineAdjustedResult().resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("nnxk", model.baselineAdjustedResult().resultsOnlyInBaseline().get(0).get(0));
-        Assertions.assertEquals("yzirtxdyuxzejn", model.ruleMetadata().ruleId());
-        Assertions.assertEquals(RuleSeverity.LOW, model.ruleMetadata().severity());
-        Assertions.assertEquals("wgioilqukry", model.ruleMetadata().category());
-        Assertions.assertEquals(RuleType.BASELINE_EXPECTED, model.ruleMetadata().ruleType());
-        Assertions.assertEquals("mieoxorgguf", model.ruleMetadata().title());
-        Assertions.assertEquals("aomtbghhavgrvkff", model.ruleMetadata().description());
-        Assertions.assertEquals("jzhpjbibgjmfx", model.ruleMetadata().rationale());
-        Assertions.assertEquals("fcluyov", model.ruleMetadata().queryCheck().query());
-        Assertions.assertEquals("kfezzxscyhwz", model.ruleMetadata().queryCheck().expectedResult().get(0).get(0));
-        Assertions.assertEquals("dgzxulucvpamrsr", model.ruleMetadata().queryCheck().columnNames().get(0));
-        Assertions.assertEquals("hu", model.ruleMetadata().benchmarkReferences().get(0).benchmark());
-        Assertions.assertEquals("wp", model.ruleMetadata().benchmarkReferences().get(0).reference());
+        Assertions.assertEquals("awjs", model.baselineAdjustedResult().resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("v", model.baselineAdjustedResult().resultsOnlyInBaseline().get(0).get(0));
+        Assertions.assertEquals("zqljyxgtczh", model.ruleMetadata().ruleId());
+        Assertions.assertEquals(RuleSeverity.MEDIUM, model.ruleMetadata().severity());
+        Assertions.assertEquals("sdshmkxmaehvb", model.ruleMetadata().category());
+        Assertions.assertEquals(RuleType.POSITIVE_LIST, model.ruleMetadata().ruleType());
+        Assertions.assertEquals("iplt", model.ruleMetadata().title());
+        Assertions.assertEquals("htba", model.ruleMetadata().description());
+        Assertions.assertEquals("gx", model.ruleMetadata().rationale());
+        Assertions.assertEquals("ckpyklyhplu", model.ruleMetadata().queryCheck().query());
+        Assertions.assertEquals("ruud", model.ruleMetadata().queryCheck().expectedResult().get(0).get(0));
+        Assertions.assertEquals("dlwwqfbumlkxt", model.ruleMetadata().queryCheck().columnNames().get(0));
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.ruleMetadata().benchmarkReferences().get(0).benchmark());
+        Assertions.assertEquals("oezbrhubsk", model.ruleMetadata().benchmarkReferences().get(0).reference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScanResultProperties model = new ScanResultProperties().withRuleId("otxhojujby")
+        ScanResultProperties model = new ScanResultProperties().withRuleId("jbibg")
             .withStatus(RuleStatus.FINDING)
             .withIsTrimmed(false)
-            .withQueryResults(Arrays.asList(Arrays.asList("ixbjx", "fw", "yl"),
-                Arrays.asList("ool", "ttpkiwkkbnujrywv", "y", "bfpncurdo")))
-            .withRemediation(new Remediation().withDescription("ithtywu")
-                .withScripts(Arrays.asList("bihwqknfdnt", "jchrdgoihxumw"))
+            .withQueryResults(Arrays.asList(Arrays.asList("cluyovwxnbkf", "zzxscyhwzdgiruj"),
+                Arrays.asList("bomvzzbtdcqv", "niyujv", "ylwdshfssn", "bgye"),
+                Arrays.asList("ymsgaojfmwnc", "tmr", "hirctymoxoftpipi"),
+                Arrays.asList("czuhxacpqjlihh", "usps", "asdvl")))
+            .withRemediation(new Remediation().withDescription("dgzxulucvpamrsr")
+                .withScripts(Arrays.asList("vxurisjnhnytxifq", "zgxmr", "ublwpcesutrg"))
                 .withAutomated(false)
-                .withPortalLink("dzjlu"))
+                .withPortalLink("uutpwoqhih"))
             .withBaselineAdjustedResult(new BaselineAdjustedResult()
                 .withBaseline(new Baseline()
                     .withExpectedResults(
-                        Arrays.asList(Arrays.asList("gg", "tsbwtovvtgse", "nqfiufxqknpi", "gnepttwqmsni")))
-                    .withUpdatedTime(OffsetDateTime.parse("2021-04-12T20:00:21Z")))
+                        Arrays.asList(Arrays.asList("pnfqntcyp", "xjvfoimwksl", "rcizjxvyd", "ceacvlhvygdy")))
+                    .withUpdatedTime(OffsetDateTime.parse("2021-04-02T04:25:09Z")))
                 .withStatus(RuleStatus.NON_FINDING)
-                .withResultsNotInBaseline(Arrays.asList(Arrays.asList("ojlpijnkrxf"),
-                    Arrays.asList("dhcrati", "zronasxift", "zq"), Arrays.asList("hftwesgog")))
-                .withResultsOnlyInBaseline(
-                    Arrays.asList(Arrays.asList("nnxk", "lgnyhmo", "sxkkg"), Arrays.asList("rrghxjbdhqxvcxgf"),
-                        Arrays.asList("dsofbshrns"), Arrays.asList("uswdv", "yybyc", "unvjsrtkfawnopq"))))
-            .withRuleMetadata(new VaRule().withRuleId("yzirtxdyuxzejn")
-                .withSeverity(RuleSeverity.LOW)
-                .withCategory("wgioilqukry")
-                .withRuleType(RuleType.BASELINE_EXPECTED)
-                .withTitle("mieoxorgguf")
-                .withDescription("aomtbghhavgrvkff")
-                .withRationale("jzhpjbibgjmfx")
-                .withQueryCheck(new QueryCheck().withQuery("fcluyov")
-                    .withExpectedResult(Arrays.asList(Arrays.asList("kfezzxscyhwz", "g", "rujbzbomvzzbtdc", "vp"),
-                        Arrays.asList("yujviylwdshfssn", "bgye", "rymsgaojfmw", "cotmr"),
-                        Arrays.asList("irctymoxoftpipiw", "czuhxacpqjlihh", "usps", "asdvl")))
-                    .withColumnNames(Arrays.asList("dgzxulucvpamrsr", "uzvx", "risjnhnytxifqjz")))
-                .withBenchmarkReferences(Arrays.asList(new BenchmarkReference().withBenchmark("hu").withReference("wp"),
-                    new BenchmarkReference().withBenchmark("sutrgjup").withReference("utpwoqhihejqgw"),
-                    new BenchmarkReference().withBenchmark("nfqn").withReference("ypsxjvfoim"))));
+                .withResultsNotInBaseline(
+                    Arrays.asList(Arrays.asList("awjs", "biwkojgcyzt", "fmznba", "qphchqnrnrpxehuw"),
+                        Arrays.asList("k", "gaifmvik", "bydvkhbejdz"), Arrays.asList("cvdsrhnj")))
+                .withResultsOnlyInBaseline(Arrays.asList(Arrays.asList("v", "novqfzge"),
+                    Arrays.asList("dftuljltduce", "mtmczuome", "wcw"), Arrays.asList("ioknssxmoj", "sv", "kjprvk"))))
+            .withRuleMetadata(new VaRule().withRuleId("zqljyxgtczh")
+                .withSeverity(RuleSeverity.MEDIUM)
+                .withCategory("sdshmkxmaehvb")
+                .withRuleType(RuleType.POSITIVE_LIST)
+                .withTitle("iplt")
+                .withDescription("htba")
+                .withRationale("gx")
+                .withQueryCheck(new QueryCheck().withQuery("ckpyklyhplu")
+                    .withExpectedResult(Arrays.asList(Arrays.asList("ruud"),
+                        Arrays.asList("zibt", "ostgkts", "vdxec", "zedqbcvhzlhplo")))
+                    .withColumnNames(Arrays.asList("dlwwqfbumlkxt")))
+                .withBenchmarkReferences(Arrays.asList(
+                    new BenchmarkReference().withBenchmark("smlmbtxhwgfwsrta").withReference("oezbrhubsk"),
+                    new BenchmarkReference().withBenchmark("dyg").withReference("okkqfqjbvleo"),
+                    new BenchmarkReference().withBenchmark("ml").withReference("qtqzfavyv"),
+                    new BenchmarkReference().withBenchmark("qybaryeua").withReference("kq"))));
         model = BinaryData.fromObject(model).toObject(ScanResultProperties.class);
-        Assertions.assertEquals("otxhojujby", model.ruleId());
+        Assertions.assertEquals("jbibg", model.ruleId());
         Assertions.assertEquals(RuleStatus.FINDING, model.status());
         Assertions.assertEquals(false, model.isTrimmed());
-        Assertions.assertEquals("ixbjx", model.queryResults().get(0).get(0));
-        Assertions.assertEquals("ithtywu", model.remediation().description());
-        Assertions.assertEquals("bihwqknfdnt", model.remediation().scripts().get(0));
+        Assertions.assertEquals("cluyovwxnbkf", model.queryResults().get(0).get(0));
+        Assertions.assertEquals("dgzxulucvpamrsr", model.remediation().description());
+        Assertions.assertEquals("vxurisjnhnytxifq", model.remediation().scripts().get(0));
         Assertions.assertEquals(false, model.remediation().automated());
-        Assertions.assertEquals("dzjlu", model.remediation().portalLink());
-        Assertions.assertEquals("gg", model.baselineAdjustedResult().baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T20:00:21Z"),
+        Assertions.assertEquals("uutpwoqhih", model.remediation().portalLink());
+        Assertions.assertEquals("pnfqntcyp", model.baselineAdjustedResult().baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"),
             model.baselineAdjustedResult().baseline().updatedTime());
         Assertions.assertEquals(RuleStatus.NON_FINDING, model.baselineAdjustedResult().status());
-        Assertions.assertEquals("ojlpijnkrxf", model.baselineAdjustedResult().resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("nnxk", model.baselineAdjustedResult().resultsOnlyInBaseline().get(0).get(0));
-        Assertions.assertEquals("yzirtxdyuxzejn", model.ruleMetadata().ruleId());
-        Assertions.assertEquals(RuleSeverity.LOW, model.ruleMetadata().severity());
-        Assertions.assertEquals("wgioilqukry", model.ruleMetadata().category());
-        Assertions.assertEquals(RuleType.BASELINE_EXPECTED, model.ruleMetadata().ruleType());
-        Assertions.assertEquals("mieoxorgguf", model.ruleMetadata().title());
-        Assertions.assertEquals("aomtbghhavgrvkff", model.ruleMetadata().description());
-        Assertions.assertEquals("jzhpjbibgjmfx", model.ruleMetadata().rationale());
-        Assertions.assertEquals("fcluyov", model.ruleMetadata().queryCheck().query());
-        Assertions.assertEquals("kfezzxscyhwz", model.ruleMetadata().queryCheck().expectedResult().get(0).get(0));
-        Assertions.assertEquals("dgzxulucvpamrsr", model.ruleMetadata().queryCheck().columnNames().get(0));
-        Assertions.assertEquals("hu", model.ruleMetadata().benchmarkReferences().get(0).benchmark());
-        Assertions.assertEquals("wp", model.ruleMetadata().benchmarkReferences().get(0).reference());
+        Assertions.assertEquals("awjs", model.baselineAdjustedResult().resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("v", model.baselineAdjustedResult().resultsOnlyInBaseline().get(0).get(0));
+        Assertions.assertEquals("zqljyxgtczh", model.ruleMetadata().ruleId());
+        Assertions.assertEquals(RuleSeverity.MEDIUM, model.ruleMetadata().severity());
+        Assertions.assertEquals("sdshmkxmaehvb", model.ruleMetadata().category());
+        Assertions.assertEquals(RuleType.POSITIVE_LIST, model.ruleMetadata().ruleType());
+        Assertions.assertEquals("iplt", model.ruleMetadata().title());
+        Assertions.assertEquals("htba", model.ruleMetadata().description());
+        Assertions.assertEquals("gx", model.ruleMetadata().rationale());
+        Assertions.assertEquals("ckpyklyhplu", model.ruleMetadata().queryCheck().query());
+        Assertions.assertEquals("ruud", model.ruleMetadata().queryCheck().expectedResult().get(0).get(0));
+        Assertions.assertEquals("dlwwqfbumlkxt", model.ruleMetadata().queryCheck().columnNames().get(0));
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.ruleMetadata().benchmarkReferences().get(0).benchmark());
+        Assertions.assertEquals("oezbrhubsk", model.ruleMetadata().benchmarkReferences().get(0).reference());
     }
 }

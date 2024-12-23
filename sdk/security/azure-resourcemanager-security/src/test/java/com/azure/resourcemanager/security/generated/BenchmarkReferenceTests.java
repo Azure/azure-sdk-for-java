@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BenchmarkReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BenchmarkReference model = BinaryData.fromString("{\"benchmark\":\"lywjhh\",\"reference\":\"nhxmsi\"}")
+        BenchmarkReference model = BinaryData.fromString("{\"benchmark\":\"zivj\",\"reference\":\"rqttbajlkatnw\"}")
             .toObject(BenchmarkReference.class);
-        Assertions.assertEquals("lywjhh", model.benchmark());
-        Assertions.assertEquals("nhxmsi", model.reference());
+        Assertions.assertEquals("zivj", model.benchmark());
+        Assertions.assertEquals("rqttbajlkatnw", model.reference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BenchmarkReference model = new BenchmarkReference().withBenchmark("lywjhh").withReference("nhxmsi");
+        BenchmarkReference model = new BenchmarkReference().withBenchmark("zivj").withReference("rqttbajlkatnw");
         model = BinaryData.fromObject(model).toObject(BenchmarkReference.class);
-        Assertions.assertEquals("lywjhh", model.benchmark());
-        Assertions.assertEquals("nhxmsi", model.reference());
+        Assertions.assertEquals("zivj", model.benchmark());
+        Assertions.assertEquals("rqttbajlkatnw", model.reference());
     }
 }

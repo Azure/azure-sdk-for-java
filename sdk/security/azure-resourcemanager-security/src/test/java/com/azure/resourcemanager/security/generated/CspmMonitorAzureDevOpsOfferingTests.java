@@ -11,7 +11,7 @@ public final class CspmMonitorAzureDevOpsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CspmMonitorAzureDevOpsOffering model
-            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"vrak\"}")
+            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"wqu\"}")
                 .toObject(CspmMonitorAzureDevOpsOffering.class);
     }
 

@@ -11,7 +11,7 @@ public final class TopologySingleResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopologySingleResource model = BinaryData.fromString(
-            "{\"resourceId\":\"ffcvvyezslpuxgcb\",\"severity\":\"valpnptwt\",\"recommendationsExist\":true,\"networkZones\":\"pazwug\",\"topologyScore\":582469208,\"location\":\"njobfelhldiu\",\"parents\":[{\"resourceId\":\"qlmfaewz\"},{\"resourceId\":\"udjpxpqht\"}],\"children\":[{\"resourceId\":\"mhk\"},{\"resourceId\":\"zsdsuxheqdgcrux\"},{\"resourceId\":\"inymmqgwokmikp\"},{\"resourceId\":\"fbmjxuvji\"}]}")
+            "{\"resourceId\":\"khmocgjs\",\"severity\":\"ouarhwvixqqggljk\",\"recommendationsExist\":true,\"networkZones\":\"rcl\",\"topologyScore\":1114410250,\"location\":\"qnrbc\",\"parents\":[{\"resourceId\":\"jhxpcvrd\"},{\"resourceId\":\"eitaneqadynzjahw\"}],\"children\":[{\"resourceId\":\"mzczfkicee\"},{\"resourceId\":\"a\"},{\"resourceId\":\"wspcaxikhfjqebg\"}]}")
             .toObject(TopologySingleResource.class);
     }
 

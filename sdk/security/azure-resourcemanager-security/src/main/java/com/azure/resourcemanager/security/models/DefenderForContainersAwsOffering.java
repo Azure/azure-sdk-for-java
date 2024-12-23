@@ -5,99 +5,79 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Defender for Containers AWS offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderForContainersAwsOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForContainersAws")
 @Fluent
 public final class DefenderForContainersAwsOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_CONTAINERS_AWS;
 
     /*
      * The kubernetes service connection configuration
      */
-    @JsonProperty(value = "kubernetesService")
     private DefenderForContainersAwsOfferingKubernetesService kubernetesService;
 
     /*
      * The kubernetes data collection connection configuration
      */
-    @JsonProperty(value = "kubernetesDataCollection")
     private DefenderForContainersAwsOfferingKubernetesDataCollection kubernetesDataCollection;
 
     /*
      * The cloudwatch to kinesis connection configuration
      */
-    @JsonProperty(value = "cloudWatchToKinesis")
     private DefenderForContainersAwsOfferingCloudWatchToKinesis cloudWatchToKinesis;
 
     /*
      * The kinesis to s3 connection configuration
      */
-    @JsonProperty(value = "kinesisToS3")
     private DefenderForContainersAwsOfferingKinesisToS3 kinesisToS3;
 
     /*
      * Is audit logs data collection enabled
      */
-    @JsonProperty(value = "enableAuditLogsAutoProvisioning")
     private Boolean enableAuditLogsAutoProvisioning;
 
     /*
      * Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "enableDefenderAgentAutoProvisioning")
     private Boolean enableDefenderAgentAutoProvisioning;
 
     /*
      * Is Policy Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "enablePolicyAgentAutoProvisioning")
     private Boolean enablePolicyAgentAutoProvisioning;
 
     /*
      * The retention time in days of kube audit logs set on the CloudWatch log group
      */
-    @JsonProperty(value = "kubeAuditRetentionTime")
     private Long kubeAuditRetentionTime;
 
     /*
      * The externalId used by the data reader to prevent the confused deputy attack
      */
-    @JsonProperty(value = "dataCollectionExternalId")
     private String dataCollectionExternalId;
 
     /*
      * The Microsoft Defender container image assessment configuration
      */
-    @JsonProperty(value = "mdcContainersImageAssessment")
     private DefenderForContainersAwsOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
 
     /*
      * The Microsoft Defender container agentless discovery K8s configuration
      */
-    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
     private DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
 
     /*
      * The Microsoft Defender for Container K8s VM host scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderForContainersAwsOfferingVmScanners vmScanners;
 
     /**
@@ -379,7 +359,6 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (kubernetesService() != null) {
             kubernetesService().validate();
         }
@@ -401,5 +380,92 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
         if (vmScanners() != null) {
             vmScanners().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("kubernetesService", this.kubernetesService);
+        jsonWriter.writeJsonField("kubernetesDataCollection", this.kubernetesDataCollection);
+        jsonWriter.writeJsonField("cloudWatchToKinesis", this.cloudWatchToKinesis);
+        jsonWriter.writeJsonField("kinesisToS3", this.kinesisToS3);
+        jsonWriter.writeBooleanField("enableAuditLogsAutoProvisioning", this.enableAuditLogsAutoProvisioning);
+        jsonWriter.writeBooleanField("enableDefenderAgentAutoProvisioning", this.enableDefenderAgentAutoProvisioning);
+        jsonWriter.writeBooleanField("enablePolicyAgentAutoProvisioning", this.enablePolicyAgentAutoProvisioning);
+        jsonWriter.writeNumberField("kubeAuditRetentionTime", this.kubeAuditRetentionTime);
+        jsonWriter.writeStringField("dataCollectionExternalId", this.dataCollectionExternalId);
+        jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
+        jsonWriter.writeJsonField("mdcContainersAgentlessDiscoveryK8s", this.mdcContainersAgentlessDiscoveryK8S);
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForContainersAwsOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForContainersAwsOffering if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForContainersAwsOffering.
+     */
+    public static DefenderForContainersAwsOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForContainersAwsOffering deserializedDefenderForContainersAwsOffering
+                = new DefenderForContainersAwsOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("kubernetesService".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.kubernetesService
+                        = DefenderForContainersAwsOfferingKubernetesService.fromJson(reader);
+                } else if ("kubernetesDataCollection".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.kubernetesDataCollection
+                        = DefenderForContainersAwsOfferingKubernetesDataCollection.fromJson(reader);
+                } else if ("cloudWatchToKinesis".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.cloudWatchToKinesis
+                        = DefenderForContainersAwsOfferingCloudWatchToKinesis.fromJson(reader);
+                } else if ("kinesisToS3".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.kinesisToS3
+                        = DefenderForContainersAwsOfferingKinesisToS3.fromJson(reader);
+                } else if ("enableAuditLogsAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.enableAuditLogsAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableDefenderAgentAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.enableDefenderAgentAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePolicyAgentAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.enablePolicyAgentAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kubeAuditRetentionTime".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.kubeAuditRetentionTime
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("dataCollectionExternalId".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.dataCollectionExternalId = reader.getString();
+                } else if ("mdcContainersImageAssessment".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.mdcContainersImageAssessment
+                        = DefenderForContainersAwsOfferingMdcContainersImageAssessment.fromJson(reader);
+                } else if ("mdcContainersAgentlessDiscoveryK8s".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.mdcContainersAgentlessDiscoveryK8S
+                        = DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.fromJson(reader);
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.vmScanners
+                        = DefenderForContainersAwsOfferingVmScanners.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForContainersAwsOffering;
+        });
     }
 }

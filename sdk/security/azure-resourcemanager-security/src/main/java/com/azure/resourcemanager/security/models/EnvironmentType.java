@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,6 +37,16 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
     public static final EnvironmentType GITLAB_SCOPE = fromString("GitlabScope");
 
     /**
+     * Static value DockerHubOrganization for EnvironmentType.
+     */
+    public static final EnvironmentType DOCKER_HUB_ORGANIZATION = fromString("DockerHubOrganization");
+
+    /**
+     * Static value JFrogArtifactory for EnvironmentType.
+     */
+    public static final EnvironmentType JFROG_ARTIFACTORY = fromString("JFrogArtifactory");
+
+    /**
      * Creates a new instance of EnvironmentType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -52,7 +61,6 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
      * @param name a name to look for.
      * @return the corresponding EnvironmentType.
      */
-    @JsonCreator
     public static EnvironmentType fromString(String name) {
         return fromString(name, EnvironmentType.class);
     }

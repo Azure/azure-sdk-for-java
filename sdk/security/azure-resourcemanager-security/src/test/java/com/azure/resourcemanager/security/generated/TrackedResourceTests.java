@@ -14,26 +14,25 @@ public final class TrackedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrackedResource model = BinaryData.fromString(
-            "{\"location\":\"cxqqxmyzklaoanp\",\"kind\":\"rvmzrqra\",\"etag\":\"divznl\",\"tags\":{\"jtgzgtaiywbq\":\"lkskhjqjpvbaih\",\"mhljqlxspm\":\"roigbsfsgsaenwld\",\"ryldsxeb\":\"jc\",\"hefr\":\"hsxrznmgsdaluyc\"},\"id\":\"hs\",\"name\":\"uerbgpxebjl\",\"type\":\"dcaytujraxd\"}")
+            "{\"location\":\"jgcf\",\"kind\":\"xtbw\",\"etag\":\"irmu\",\"tags\":{\"ofgeoagf\":\"fttm\"},\"id\":\"oftnxodwxm\",\"name\":\"aj\",\"type\":\"iygmgs\"}")
             .toObject(TrackedResource.class);
-        Assertions.assertEquals("cxqqxmyzklaoanp", model.location());
-        Assertions.assertEquals("rvmzrqra", model.kind());
-        Assertions.assertEquals("divznl", model.etag());
-        Assertions.assertEquals("lkskhjqjpvbaih", model.tags().get("jtgzgtaiywbq"));
+        Assertions.assertEquals("jgcf", model.location());
+        Assertions.assertEquals("xtbw", model.kind());
+        Assertions.assertEquals("irmu", model.etag());
+        Assertions.assertEquals("fttm", model.tags().get("ofgeoagf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackedResource model = new TrackedResource().withLocation("cxqqxmyzklaoanp")
-            .withKind("rvmzrqra")
-            .withEtag("divznl")
-            .withTags(mapOf("jtgzgtaiywbq", "lkskhjqjpvbaih", "mhljqlxspm", "roigbsfsgsaenwld", "ryldsxeb", "jc",
-                "hefr", "hsxrznmgsdaluyc"));
+        TrackedResource model = new TrackedResource().withLocation("jgcf")
+            .withKind("xtbw")
+            .withEtag("irmu")
+            .withTags(mapOf("ofgeoagf", "fttm"));
         model = BinaryData.fromObject(model).toObject(TrackedResource.class);
-        Assertions.assertEquals("cxqqxmyzklaoanp", model.location());
-        Assertions.assertEquals("rvmzrqra", model.kind());
-        Assertions.assertEquals("divznl", model.etag());
-        Assertions.assertEquals("lkskhjqjpvbaih", model.tags().get("jtgzgtaiywbq"));
+        Assertions.assertEquals("jgcf", model.location());
+        Assertions.assertEquals("xtbw", model.kind());
+        Assertions.assertEquals("irmu", model.etag());
+        Assertions.assertEquals("fttm", model.tags().get("ofgeoagf"));
     }
 
     // Use "Map.of" if available

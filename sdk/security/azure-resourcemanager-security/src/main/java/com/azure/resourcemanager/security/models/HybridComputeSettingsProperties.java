@@ -6,47 +6,46 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for hybrid compute management.
  */
 @Fluent
-public final class HybridComputeSettingsProperties {
+public final class HybridComputeSettingsProperties implements JsonSerializable<HybridComputeSettingsProperties> {
     /*
      * State of the service principal and its secret
      */
-    @JsonProperty(value = "hybridComputeProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private HybridComputeProvisioningState hybridComputeProvisioningState;
 
     /*
      * Whether or not to automatically install Azure Arc (hybrid compute) agents on machines
      */
-    @JsonProperty(value = "autoProvision", required = true)
     private AutoProvision autoProvision;
 
     /*
      * The name of the resource group where Arc (Hybrid Compute) connectors are connected.
      */
-    @JsonProperty(value = "resourceGroupName")
     private String resourceGroupName;
 
     /*
      * The location where the metadata of machines will be stored
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
-     * For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure machine can use.
+     * For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure
+     * machine can use.
      */
-    @JsonProperty(value = "proxyServer")
     private ProxyServerProperties proxyServer;
 
     /*
      * An object to access resources that are secured by an Azure AD tenant.
      */
-    @JsonProperty(value = "servicePrincipal")
     private ServicePrincipalProperties servicePrincipal;
 
     /**
@@ -190,4 +189,59 @@ public final class HybridComputeSettingsProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HybridComputeSettingsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("autoProvision", this.autoProvision == null ? null : this.autoProvision.toString());
+        jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeJsonField("proxyServer", this.proxyServer);
+        jsonWriter.writeJsonField("servicePrincipal", this.servicePrincipal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridComputeSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridComputeSettingsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HybridComputeSettingsProperties.
+     */
+    public static HybridComputeSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridComputeSettingsProperties deserializedHybridComputeSettingsProperties
+                = new HybridComputeSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoProvision".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.autoProvision
+                        = AutoProvision.fromString(reader.getString());
+                } else if ("hybridComputeProvisioningState".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.hybridComputeProvisioningState
+                        = HybridComputeProvisioningState.fromString(reader.getString());
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.resourceGroupName = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.region = reader.getString();
+                } else if ("proxyServer".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.proxyServer = ProxyServerProperties.fromJson(reader);
+                } else if ("servicePrincipal".equals(fieldName)) {
+                    deserializedHybridComputeSettingsProperties.servicePrincipal
+                        = ServicePrincipalProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridComputeSettingsProperties;
+        });
+    }
 }

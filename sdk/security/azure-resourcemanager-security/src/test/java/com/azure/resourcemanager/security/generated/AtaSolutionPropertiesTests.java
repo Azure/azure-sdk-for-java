@@ -13,24 +13,24 @@ public final class AtaSolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AtaSolutionProperties model = BinaryData.fromString(
-            "{\"lastEventReceived\":\"ondegjdydhqkkk\",\"deviceVendor\":\"uckcatuqbhpow\",\"deviceType\":\"xtpzdlyse\",\"workspace\":{\"id\":\"oa\"},\"\":{\"qfdpf\":\"dataprytgrhz\"}}")
+            "{\"lastEventReceived\":\"ecuyr\",\"deviceVendor\":\"imb\",\"deviceType\":\"yspzvrie\",\"workspace\":{\"id\":\"phmdzxplgtp\"},\"\":{\"chnzrsbkkzo\":\"dataatlzmg\",\"uworimmov\":\"datalzdmnfmfwsxafo\",\"mvhzfovanyrvaprt\":\"datawdehk\"}}")
             .toObject(AtaSolutionProperties.class);
-        Assertions.assertEquals("uckcatuqbhpow", model.deviceVendor());
-        Assertions.assertEquals("xtpzdlyse", model.deviceType());
-        Assertions.assertEquals("oa", model.workspace().id());
-        Assertions.assertEquals("ondegjdydhqkkk", model.lastEventReceived());
+        Assertions.assertEquals("imb", model.deviceVendor());
+        Assertions.assertEquals("yspzvrie", model.deviceType());
+        Assertions.assertEquals("phmdzxplgtp", model.workspace().id());
+        Assertions.assertEquals("ecuyr", model.lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AtaSolutionProperties model = new AtaSolutionProperties().withDeviceVendor("uckcatuqbhpow")
-            .withDeviceType("xtpzdlyse")
-            .withWorkspace(new ConnectedWorkspace().withId("oa"))
-            .withLastEventReceived("ondegjdydhqkkk");
+        AtaSolutionProperties model = new AtaSolutionProperties().withDeviceVendor("imb")
+            .withDeviceType("yspzvrie")
+            .withWorkspace(new ConnectedWorkspace().withId("phmdzxplgtp"))
+            .withLastEventReceived("ecuyr");
         model = BinaryData.fromObject(model).toObject(AtaSolutionProperties.class);
-        Assertions.assertEquals("uckcatuqbhpow", model.deviceVendor());
-        Assertions.assertEquals("xtpzdlyse", model.deviceType());
-        Assertions.assertEquals("oa", model.workspace().id());
-        Assertions.assertEquals("ondegjdydhqkkk", model.lastEventReceived());
+        Assertions.assertEquals("imb", model.deviceVendor());
+        Assertions.assertEquals("yspzvrie", model.deviceType());
+        Assertions.assertEquals("phmdzxplgtp", model.workspace().id());
+        Assertions.assertEquals("ecuyr", model.lastEventReceived());
     }
 }

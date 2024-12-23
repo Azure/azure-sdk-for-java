@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.GovernanceAssignmentAdditionalData;
 import com.azure.resourcemanager.security.models.GovernanceEmailNotification;
 import com.azure.resourcemanager.security.models.RemediationEta;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Describes properties of an governance assignment.
  */
 @Fluent
-public final class GovernanceAssignmentProperties {
+public final class GovernanceAssignmentProperties implements JsonSerializable<GovernanceAssignmentProperties> {
     /*
      * The Owner for the governance assignment - e.g. user@contoso.com - see example
      */
-    @JsonProperty(value = "owner")
     private String owner;
 
     /*
-     * The remediation due-date - after this date Secure Score will be affected (in case of  active grace-period)
+     * The remediation due-date - after this date Secure Score will be affected (in case of active grace-period)
      */
-    @JsonProperty(value = "remediationDueDate", required = true)
     private OffsetDateTime remediationDueDate;
 
     /*
      * The ETA (estimated time of arrival) for remediation (optional), see example
      */
-    @JsonProperty(value = "remediationEta")
     private RemediationEta remediationEta;
 
     /*
      * Defines whether there is a grace period on the governance assignment
      */
-    @JsonProperty(value = "isGracePeriod")
     private Boolean isGracePeriod;
 
     /*
-     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
+     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and
+     * owners
      */
-    @JsonProperty(value = "governanceEmailNotification")
     private GovernanceEmailNotification governanceEmailNotification;
 
     /*
      * The additional data for the governance assignment - e.g. links to ticket (optional), see example
      */
-    @JsonProperty(value = "additionalData")
     private GovernanceAssignmentAdditionalData additionalData;
 
     /**
@@ -209,4 +210,64 @@ public final class GovernanceAssignmentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GovernanceAssignmentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("remediationDueDate",
+            this.remediationDueDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.remediationDueDate));
+        jsonWriter.writeStringField("owner", this.owner);
+        jsonWriter.writeJsonField("remediationEta", this.remediationEta);
+        jsonWriter.writeBooleanField("isGracePeriod", this.isGracePeriod);
+        jsonWriter.writeJsonField("governanceEmailNotification", this.governanceEmailNotification);
+        jsonWriter.writeJsonField("additionalData", this.additionalData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GovernanceAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GovernanceAssignmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GovernanceAssignmentProperties.
+     */
+    public static GovernanceAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GovernanceAssignmentProperties deserializedGovernanceAssignmentProperties
+                = new GovernanceAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remediationDueDate".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.remediationDueDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("owner".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.owner = reader.getString();
+                } else if ("remediationEta".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.remediationEta = RemediationEta.fromJson(reader);
+                } else if ("isGracePeriod".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.isGracePeriod
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("governanceEmailNotification".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.governanceEmailNotification
+                        = GovernanceEmailNotification.fromJson(reader);
+                } else if ("additionalData".equals(fieldName)) {
+                    deserializedGovernanceAssignmentProperties.additionalData
+                        = GovernanceAssignmentAdditionalData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGovernanceAssignmentProperties;
+        });
+    }
 }

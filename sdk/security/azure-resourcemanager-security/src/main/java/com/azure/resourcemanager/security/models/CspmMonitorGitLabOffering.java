@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CSPM (Cloud security posture management) monitoring for gitlab offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = CspmMonitorGitLabOffering.class,
-    visible = true)
-@JsonTypeName("CspmMonitorGitLab")
 @Immutable
 public final class CspmMonitorGitLabOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.CSPM_MONITOR_GIT_LAB;
 
     /**
@@ -51,6 +43,43 @@ public final class CspmMonitorGitLabOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CspmMonitorGitLabOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CspmMonitorGitLabOffering if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CspmMonitorGitLabOffering.
+     */
+    public static CspmMonitorGitLabOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CspmMonitorGitLabOffering deserializedCspmMonitorGitLabOffering = new CspmMonitorGitLabOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedCspmMonitorGitLabOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedCspmMonitorGitLabOffering.offeringType = OfferingType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCspmMonitorGitLabOffering;
+        });
     }
 }

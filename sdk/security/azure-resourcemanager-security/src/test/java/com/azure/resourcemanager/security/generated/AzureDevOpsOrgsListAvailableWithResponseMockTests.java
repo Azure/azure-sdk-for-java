@@ -12,7 +12,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrgListResponse;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +24,7 @@ public final class AzureDevOpsOrgsListAvailableWithResponseMockTests {
     @Test
     public void testListAvailableWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"zizxlbiqqeb\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-16T13:33:39Z\",\"provisioningState\":\"Canceled\",\"onboardingState\":\"NotOnboarded\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"hdbtjmkuzonrklb\",\"name\":\"z\",\"type\":\"xhuqfvpanloqov\"},{\"properties\":{\"provisioningStatusMessage\":\"qtquirgopgz\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-30T06:52:13Z\",\"provisioningState\":\"DeletionSuccess\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"xchquo\",\"name\":\"hqrcsksxqfhlr\",\"type\":\"uvdagvyjcdpncv\"},{\"properties\":{\"provisioningStatusMessage\":\"yodiij\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-22T15:27:54Z\",\"provisioningState\":\"PendingDeletion\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"mevljbcuwrfgpjfv\",\"name\":\"wkseodvlmd\",\"type\":\"gvcykzzu\"},{\"properties\":{\"provisioningStatusMessage\":\"gb\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-04T02:18:38Z\",\"provisioningState\":\"Failed\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{},{},{},{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"mxwcv\",\"name\":\"mnrut\",\"type\":\"nkeqjftvltj\"}],\"nextLink\":\"ecvpkbzltno\"}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"lxosgiht\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-18T06:40:49Z\",\"provisioningState\":\"DeletionSuccess\",\"onboardingState\":\"NotApplicable\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{},{},{},{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"qs\",\"name\":\"shesgcsqose\",\"type\":\"xlngouf\"},{\"properties\":{\"provisioningStatusMessage\":\"b\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-28T21:50:57Z\",\"provisioningState\":\"PendingDeletion\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"plxg\",\"name\":\"dumjtycildrzn\",\"type\":\"axozqthkwxf\"},{\"properties\":{\"provisioningStatusMessage\":\"izyxduyjnqzb\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-13T04:38:10Z\",\"provisioningState\":\"Failed\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"amnsbqoitwhmucj\",\"name\":\"uhcxy\",\"type\":\"ehyklelyqdvpqfbx\"}],\"nextLink\":\"cudusdmtxqlefn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +34,14 @@ public final class AzureDevOpsOrgsListAvailableWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureDevOpsOrgListResponse response = manager.azureDevOpsOrgs()
-            .listAvailableWithResponse("x", "rxiperrplfm", com.azure.core.util.Context.NONE)
+            .listAvailableWithResponse("cbkgnrfrjsc", "jxncqzahgtvbgdob", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED,
-            response.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.value().get(0).properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, response.value().get(0).properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.DISABLED,
             response.value().get(0).properties().actionableRemediation().state());
         Assertions.assertEquals(InheritFromParentState.ENABLED,
             response.value().get(0).properties().actionableRemediation().inheritFromParentState());
-        Assertions.assertEquals("ecvpkbzltno", response.nextLink());
+        Assertions.assertEquals("cudusdmtxqlefn", response.nextLink());
     }
 }

@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.security.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettingInner;
 import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
-import com.azure.resourcemanager.security.models.OperationStatus;
+import com.azure.resourcemanager.security.models.DefenderForStorageSettingProperties;
+import com.azure.resourcemanager.security.models.MalwareScan;
 import com.azure.resourcemanager.security.models.SettingName;
 
 public final class DefenderForStorageSettingImpl
@@ -34,36 +36,8 @@ public final class DefenderForStorageSettingImpl
         return this.innerModel().type();
     }
 
-    public Boolean isEnabled() {
-        return this.innerModel().isEnabled();
-    }
-
-    public Boolean overrideSubscriptionLevelSettings() {
-        return this.innerModel().overrideSubscriptionLevelSettings();
-    }
-
-    public String scanResultsEventGridTopicResourceId() {
-        return this.innerModel().scanResultsEventGridTopicResourceId();
-    }
-
-    public OperationStatus operationStatus() {
-        return this.innerModel().operationStatus();
-    }
-
-    public Boolean isEnabledMalwareScanningIsEnabled() {
-        return this.innerModel().isEnabledMalwareScanningIsEnabled();
-    }
-
-    public Integer capGBPerMonth() {
-        return this.innerModel().capGBPerMonth();
-    }
-
-    public Boolean isEnabledSensitiveDataDiscoveryIsEnabled() {
-        return this.innerModel().isEnabledSensitiveDataDiscoveryIsEnabled();
-    }
-
-    public OperationStatus operationStatusSensitiveDataDiscoveryOperationStatus() {
-        return this.innerModel().operationStatusSensitiveDataDiscoveryOperationStatus();
+    public DefenderForStorageSettingProperties properties() {
+        return this.innerModel().properties();
     }
 
     public DefenderForStorageSettingInner innerModel() {
@@ -121,37 +95,16 @@ public final class DefenderForStorageSettingImpl
         return this;
     }
 
-    public DefenderForStorageSettingImpl withIsEnabled(Boolean isEnabled) {
-        this.innerModel().withIsEnabled(isEnabled);
-        return this;
+    public Response<MalwareScan> startMalwareScanWithResponse(Context context) {
+        return serviceManager.defenderForStorages().startMalwareScanWithResponse(resourceId, settingName, context);
     }
 
-    public DefenderForStorageSettingImpl
-        withOverrideSubscriptionLevelSettings(Boolean overrideSubscriptionLevelSettings) {
-        this.innerModel().withOverrideSubscriptionLevelSettings(overrideSubscriptionLevelSettings);
-        return this;
+    public MalwareScan startMalwareScan() {
+        return serviceManager.defenderForStorages().startMalwareScan(resourceId, settingName);
     }
 
-    public DefenderForStorageSettingImpl
-        withScanResultsEventGridTopicResourceId(String scanResultsEventGridTopicResourceId) {
-        this.innerModel().withScanResultsEventGridTopicResourceId(scanResultsEventGridTopicResourceId);
-        return this;
-    }
-
-    public DefenderForStorageSettingImpl
-        withIsEnabledMalwareScanningIsEnabled(Boolean isEnabledMalwareScanningIsEnabled) {
-        this.innerModel().withIsEnabledMalwareScanningIsEnabled(isEnabledMalwareScanningIsEnabled);
-        return this;
-    }
-
-    public DefenderForStorageSettingImpl withCapGBPerMonth(Integer capGBPerMonth) {
-        this.innerModel().withCapGBPerMonth(capGBPerMonth);
-        return this;
-    }
-
-    public DefenderForStorageSettingImpl
-        withIsEnabledSensitiveDataDiscoveryIsEnabled(Boolean isEnabledSensitiveDataDiscoveryIsEnabled) {
-        this.innerModel().withIsEnabledSensitiveDataDiscoveryIsEnabled(isEnabledSensitiveDataDiscoveryIsEnabled);
+    public DefenderForStorageSettingImpl withProperties(DefenderForStorageSettingProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 }

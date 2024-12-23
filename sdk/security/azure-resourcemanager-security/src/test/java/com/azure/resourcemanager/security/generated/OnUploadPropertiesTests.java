@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.fluent.models.OnUploadProperties;
+import com.azure.resourcemanager.security.models.OnUploadProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class OnUploadPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnUploadProperties model = BinaryData.fromString("{\"isEnabled\":false,\"capGBPerMonth\":1422593899}")
+        OnUploadProperties model = BinaryData.fromString("{\"isEnabled\":false,\"capGBPerMonth\":1154493453}")
             .toObject(OnUploadProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1422593899, model.capGBPerMonth());
+        Assertions.assertEquals(1154493453, model.capGBPerMonth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnUploadProperties model = new OnUploadProperties().withIsEnabled(false).withCapGBPerMonth(1422593899);
+        OnUploadProperties model = new OnUploadProperties().withIsEnabled(false).withCapGBPerMonth(1154493453);
         model = BinaryData.fromObject(model).toObject(OnUploadProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1422593899, model.capGBPerMonth());
+        Assertions.assertEquals(1154493453, model.capGBPerMonth());
     }
 }

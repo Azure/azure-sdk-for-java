@@ -7,7 +7,10 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Custom entity store assignment.
@@ -17,14 +20,27 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * describes custom entity store assignment properties.
      */
-    @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of CustomEntityStoreAssignmentInner class.
@@ -48,6 +64,36 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
      */
     private CustomEntityStoreAssignmentProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -107,5 +153,52 @@ public final class CustomEntityStoreAssignmentInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEntityStoreAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntityStoreAssignmentInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEntityStoreAssignmentInner.
+     */
+    public static CustomEntityStoreAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEntityStoreAssignmentInner deserializedCustomEntityStoreAssignmentInner
+                = new CustomEntityStoreAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentInner.innerProperties
+                        = CustomEntityStoreAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomEntityStoreAssignmentInner;
+        });
     }
 }

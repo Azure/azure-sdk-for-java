@@ -14,14 +14,14 @@ public final class SecurityTaskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityTaskProperties model = BinaryData.fromString(
-            "{\"state\":\"mutduqktaps\",\"creationTimeUtc\":\"2021-02-04T06:09:20Z\",\"securityTaskParameters\":{\"name\":\"ertumkdo\",\"\":{\"bbjfddgmbmbexp\":\"datawhbmd\"}},\"lastStateChangeTimeUtc\":\"2021-01-22T16:16:35Z\",\"subState\":\"q\"}")
+            "{\"state\":\"ebvmgxsabkyqd\",\"creationTimeUtc\":\"2021-11-09T22:26:22Z\",\"securityTaskParameters\":{\"name\":\"c\",\"\":{\"d\":\"datadzevndhkrw\",\"eusnhutj\":\"datappdsbdkvwrwj\"}},\"lastStateChangeTimeUtc\":\"2021-03-06T17:49:31Z\",\"subState\":\"rl\"}")
             .toObject(SecurityTaskProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityTaskProperties model = new SecurityTaskProperties().withSecurityTaskParameters(
-            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ertumkdo")));
+        SecurityTaskProperties model = new SecurityTaskProperties()
+            .withSecurityTaskParameters(new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "c")));
         model = BinaryData.fromObject(model).toObject(SecurityTaskProperties.class);
     }
 

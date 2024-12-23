@@ -14,20 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class VmScannersBaseConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmScannersBaseConfiguration model = BinaryData
-            .fromString("{\"scanningMode\":\"Default\",\"exclusionTags\":{\"mwgsghq\":\"haxttpf\",\"dd\":\"cum\"}}")
-            .toObject(VmScannersBaseConfiguration.class);
+        VmScannersBaseConfiguration model
+            = BinaryData.fromString("{\"scanningMode\":\"Default\",\"exclusionTags\":{\"v\":\"zmlghny\"}}")
+                .toObject(VmScannersBaseConfiguration.class);
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("haxttpf", model.exclusionTags().get("mwgsghq"));
+        Assertions.assertEquals("zmlghny", model.exclusionTags().get("v"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmScannersBaseConfiguration model = new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-            .withExclusionTags(mapOf("mwgsghq", "haxttpf", "dd", "cum"));
+            .withExclusionTags(mapOf("v", "zmlghny"));
         model = BinaryData.fromObject(model).toObject(VmScannersBaseConfiguration.class);
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("haxttpf", model.exclusionTags().get("mwgsghq"));
+        Assertions.assertEquals("zmlghny", model.exclusionTags().get("v"));
     }
 
     // Use "Map.of" if available

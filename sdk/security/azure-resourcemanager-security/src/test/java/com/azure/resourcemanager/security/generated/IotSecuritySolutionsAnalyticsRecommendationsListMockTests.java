@@ -22,7 +22,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recommendationName\":\"w\",\"recommendationDisplayName\":\"bpybqeigxuyxsxte\",\"description\":\"khznfffnhcgna\",\"recommendationTypeId\":\"rmrfqderkrgsdco\",\"detectedBy\":\"mgqlwyqznbbyzpo\",\"remediationSteps\":\"futgpbygbnb\",\"reportedSeverity\":\"Informational\",\"healthyDevices\":7114086833528562588,\"unhealthyDeviceCount\":8323413568519061994,\"logAnalyticsQuery\":\"qewf\"},\"tags\":{\"rkqsqvvdkfpfjda\":\"hxzuxerxhyw\"},\"id\":\"dqx\",\"name\":\"mxxyfrdjid\",\"type\":\"etfvgwfw\"}]}";
+            = "{\"value\":[{\"properties\":{\"recommendationName\":\"dpkwdtobpgdcid\",\"recommendationDisplayName\":\"aqermnddlir\",\"description\":\"clsaqifepdu\",\"recommendationTypeId\":\"evivkigliokl\",\"detectedBy\":\"ffpxeswctlfyt\",\"remediationSteps\":\"tytvnpbgces\",\"reportedSeverity\":\"High\",\"healthyDevices\":1597146389580948713,\"unhealthyDeviceCount\":5733980130708274981,\"logAnalyticsQuery\":\"rofofkbcjzzw\"},\"tags\":{\"nkfs\":\"blbtdqzhixc\",\"gbbzdsl\":\"gvyoxmyqzyqe\",\"xwukfjvqglaxseis\":\"okcevoxdddpwmg\",\"ejk\":\"vvgyphheo\"},\"id\":\"aleczt\",\"name\":\"thrtzpuv\",\"type\":\"s\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsListMockTests {
 
         PagedIterable<IoTSecurityAggregatedRecommendation> response
             = manager.iotSecuritySolutionsAnalyticsRecommendations()
-                .list("njze", "picciyoypoe", 410849146, com.azure.core.util.Context.NONE);
+                .list("dpvhwirilam", "trhqdoxdeg", 1967570412, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hxzuxerxhyw", response.iterator().next().tags().get("rkqsqvvdkfpfjda"));
-        Assertions.assertEquals("w", response.iterator().next().recommendationName());
+        Assertions.assertEquals("blbtdqzhixc", response.iterator().next().tags().get("nkfs"));
+        Assertions.assertEquals("dpkwdtobpgdcid", response.iterator().next().recommendationName());
     }
 }

@@ -6,18 +6,21 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SuppressionAlertsScope model.
  */
 @Fluent
-public final class SuppressionAlertsScope {
+public final class SuppressionAlertsScope implements JsonSerializable<SuppressionAlertsScope> {
     /*
      * All the conditions inside need to be true in order to suppress the alert
      */
-    @JsonProperty(value = "allOf", required = true)
     private List<ScopeElement> allOf;
 
     /**
@@ -61,4 +64,42 @@ public final class SuppressionAlertsScope {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SuppressionAlertsScope.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allOf", this.allOf, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuppressionAlertsScope from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuppressionAlertsScope if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SuppressionAlertsScope.
+     */
+    public static SuppressionAlertsScope fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuppressionAlertsScope deserializedSuppressionAlertsScope = new SuppressionAlertsScope();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allOf".equals(fieldName)) {
+                    List<ScopeElement> allOf = reader.readArray(reader1 -> ScopeElement.fromJson(reader1));
+                    deserializedSuppressionAlertsScope.allOf = allOf;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuppressionAlertsScope;
+        });
+    }
 }

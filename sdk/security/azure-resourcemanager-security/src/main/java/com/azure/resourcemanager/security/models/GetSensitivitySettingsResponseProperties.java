@@ -5,37 +5,40 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The sensitivity settings properties.
  */
 @Fluent
-public final class GetSensitivitySettingsResponseProperties {
+public final class GetSensitivitySettingsResponseProperties
+    implements JsonSerializable<GetSensitivitySettingsResponseProperties> {
     /*
      * List of selected sensitive info types' IDs.
      */
-    @JsonProperty(value = "sensitiveInfoTypesIds")
     private List<UUID> sensitiveInfoTypesIds;
 
     /*
-     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If set to -1, sensitivity by labels is turned off
+     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If
+     * set to -1, sensitivity by labels is turned off
      */
-    @JsonProperty(value = "sensitivityThresholdLabelOrder")
     private Float sensitivityThresholdLabelOrder;
 
     /*
      * The id of the sensitivity threshold label. Any label at or above this rank will be considered sensitive.
      */
-    @JsonProperty(value = "sensitivityThresholdLabelId")
     private UUID sensitivityThresholdLabelId;
 
     /*
      * Microsoft information protection built-in and custom information types, labels, and integration status.
      */
-    @JsonProperty(value = "mipInformation")
     private GetSensitivitySettingsResponsePropertiesMipInformation mipInformation;
 
     /**
@@ -141,5 +144,58 @@ public final class GetSensitivitySettingsResponseProperties {
         if (mipInformation() != null) {
             mipInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sensitiveInfoTypesIds", this.sensitiveInfoTypesIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeNumberField("sensitivityThresholdLabelOrder", this.sensitivityThresholdLabelOrder);
+        jsonWriter.writeStringField("sensitivityThresholdLabelId",
+            Objects.toString(this.sensitivityThresholdLabelId, null));
+        jsonWriter.writeJsonField("mipInformation", this.mipInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetSensitivitySettingsResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetSensitivitySettingsResponseProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetSensitivitySettingsResponseProperties.
+     */
+    public static GetSensitivitySettingsResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetSensitivitySettingsResponseProperties deserializedGetSensitivitySettingsResponseProperties
+                = new GetSensitivitySettingsResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sensitiveInfoTypesIds".equals(fieldName)) {
+                    List<UUID> sensitiveInfoTypesIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedGetSensitivitySettingsResponseProperties.sensitiveInfoTypesIds = sensitiveInfoTypesIds;
+                } else if ("sensitivityThresholdLabelOrder".equals(fieldName)) {
+                    deserializedGetSensitivitySettingsResponseProperties.sensitivityThresholdLabelOrder
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("sensitivityThresholdLabelId".equals(fieldName)) {
+                    deserializedGetSensitivitySettingsResponseProperties.sensitivityThresholdLabelId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("mipInformation".equals(fieldName)) {
+                    deserializedGetSensitivitySettingsResponseProperties.mipInformation
+                        = GetSensitivitySettingsResponsePropertiesMipInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetSensitivitySettingsResponseProperties;
+        });
     }
 }

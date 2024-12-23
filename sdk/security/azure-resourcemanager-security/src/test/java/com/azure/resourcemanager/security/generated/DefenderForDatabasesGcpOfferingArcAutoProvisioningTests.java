@@ -14,22 +14,22 @@ public final class DefenderForDatabasesGcpOfferingArcAutoProvisioningTests {
     public void testDeserialize() throws Exception {
         DefenderForDatabasesGcpOfferingArcAutoProvisioning model = BinaryData
             .fromString(
-                "{\"enabled\":true,\"configuration\":{\"proxy\":\"ehlbzqixbnjrqvzy\",\"privateLinkScope\":\"xozony\"}}")
+                "{\"enabled\":false,\"configuration\":{\"proxy\":\"bxaot\",\"privateLinkScope\":\"bzxmbtplefoio\"}}")
             .toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ehlbzqixbnjrqvzy", model.configuration().proxy());
-        Assertions.assertEquals("xozony", model.configuration().privateLinkScope());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("bxaot", model.configuration().proxy());
+        Assertions.assertEquals("bzxmbtplefoio", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForDatabasesGcpOfferingArcAutoProvisioning model
-            = new DefenderForDatabasesGcpOfferingArcAutoProvisioning().withEnabled(true)
-                .withConfiguration(new ArcAutoProvisioningConfiguration().withProxy("ehlbzqixbnjrqvzy")
-                    .withPrivateLinkScope("xozony"));
+            = new DefenderForDatabasesGcpOfferingArcAutoProvisioning().withEnabled(false)
+                .withConfiguration(
+                    new ArcAutoProvisioningConfiguration().withProxy("bxaot").withPrivateLinkScope("bzxmbtplefoio"));
         model = BinaryData.fromObject(model).toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ehlbzqixbnjrqvzy", model.configuration().proxy());
-        Assertions.assertEquals("xozony", model.configuration().privateLinkScope());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("bxaot", model.configuration().proxy());
+        Assertions.assertEquals("bzxmbtplefoio", model.configuration().privateLinkScope());
     }
 }

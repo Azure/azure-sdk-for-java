@@ -24,7 +24,7 @@ public final class SecurityConnectorApplicationOperationsCreateOrUpdateWithRespo
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"mtbtdvucfvvra\",\"description\":\"eurdeewlsuxp\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datakdwjyjiznioro\",\"datafmfta\",\"datapmcreihu\",\"datatrnighm\"]},\"id\":\"nuwqxungro\",\"name\":\"gwfmsxjwdylwxm\",\"type\":\"zjow\"}";
+            = "{\"properties\":{\"displayName\":\"jrxgunnq\",\"description\":\"puqtnylquevqmvy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datammuebsn\",\"datanwg\"]},\"id\":\"qufmjxcyoseq\",\"name\":\"azisvbr\",\"type\":\"gcyjpgawepk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,16 @@ public final class SecurityConnectorApplicationOperationsCreateOrUpdateWithRespo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response = manager.securityConnectorApplicationOperations()
-            .createOrUpdateWithResponse("krbuoggtdltlcuha", "zijvaylzeo", "lpsftqkrvm",
-                new ApplicationInner().withDisplayName("vvcpwtqsuspn")
-                    .withDescription("zydffet")
+            .createOrUpdateWithResponse("dwcgldo", "gcandxfhhhtes", "dqtdnnc",
+                new ApplicationInner().withDisplayName("ljdshvvfk")
+                    .withDescription("ccyijjimhi")
                     .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                    .withConditionSets(
-                        Arrays.asList("datantfknwacycsyo", "datactkhfh", "datasatvcs", "datarmhnmizhvpr")),
+                    .withConditionSets(Arrays.asList("dataqnjxmv", "datas", "datauy", "datawnwgruhhqldrdy")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mtbtdvucfvvra", response.displayName());
-        Assertions.assertEquals("eurdeewlsuxp", response.description());
+        Assertions.assertEquals("jrxgunnq", response.displayName());
+        Assertions.assertEquals("puqtnylquevqmvy", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

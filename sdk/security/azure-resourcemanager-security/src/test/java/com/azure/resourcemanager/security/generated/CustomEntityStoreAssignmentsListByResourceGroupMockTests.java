@@ -22,7 +22,7 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principal\":\"dymy\",\"entityStoreDatabaseLink\":\"hdosmbngkq\"},\"id\":\"gxzduvxdmxe\",\"name\":\"atmdmn\",\"type\":\"senxoirxyd\"}]}";
+            = "{\"value\":[{\"properties\":{\"principal\":\"teki\",\"entityStoreDatabaseLink\":\"anduew\"},\"id\":\"hvpxjhxz\",\"name\":\"bfjzabbwzgvzuaix\",\"type\":\"dckixspsaigavkmv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CustomEntityStoreAssignment> response
-            = manager.customEntityStoreAssignments().listByResourceGroup("zhblivw", com.azure.core.util.Context.NONE);
+        PagedIterable<CustomEntityStoreAssignment> response = manager.customEntityStoreAssignments()
+            .listByResourceGroup("cyoaqxukui", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dymy", response.iterator().next().principal());
-        Assertions.assertEquals("hdosmbngkq", response.iterator().next().entityStoreDatabaseLink());
+        Assertions.assertEquals("teki", response.iterator().next().principal());
+        Assertions.assertEquals("anduew", response.iterator().next().entityStoreDatabaseLink());
     }
 }

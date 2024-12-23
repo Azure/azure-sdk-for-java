@@ -19,32 +19,32 @@ public final class AlertsSuppressionRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertsSuppressionRuleProperties model = BinaryData.fromString(
-            "{\"alertType\":\"y\",\"lastModifiedUtc\":\"2021-01-23T15:12:07Z\",\"expirationDateUtc\":\"2020-12-25T06:53:33Z\",\"reason\":\"uqqkpik\",\"state\":\"Disabled\",\"comment\":\"gvtqagnbuynh\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"mebf\",\"\":{\"rcvpnazzmhjrunmp\":\"datarbu\"}}]}}")
+            "{\"alertType\":\"yudxorrqnbp\",\"lastModifiedUtc\":\"2021-02-11T00:33:58Z\",\"expirationDateUtc\":\"2021-10-04T17:32:47Z\",\"reason\":\"i\",\"state\":\"Enabled\",\"comment\":\"vkd\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"lrmv\",\"\":{\"zwtruwiqzbqjvsov\":\"datawatkpnpulexxb\"}}]}}")
             .toObject(AlertsSuppressionRuleProperties.class);
-        Assertions.assertEquals("y", model.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T06:53:33Z"), model.expirationDateUtc());
-        Assertions.assertEquals("uqqkpik", model.reason());
-        Assertions.assertEquals(RuleState.DISABLED, model.state());
-        Assertions.assertEquals("gvtqagnbuynh", model.comment());
-        Assertions.assertEquals("mebf", model.suppressionAlertsScope().allOf().get(0).field());
+        Assertions.assertEquals("yudxorrqnbp", model.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T17:32:47Z"), model.expirationDateUtc());
+        Assertions.assertEquals("i", model.reason());
+        Assertions.assertEquals(RuleState.ENABLED, model.state());
+        Assertions.assertEquals("vkd", model.comment());
+        Assertions.assertEquals("lrmv", model.suppressionAlertsScope().allOf().get(0).field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertsSuppressionRuleProperties model = new AlertsSuppressionRuleProperties().withAlertType("y")
-            .withExpirationDateUtc(OffsetDateTime.parse("2020-12-25T06:53:33Z"))
-            .withReason("uqqkpik")
-            .withState(RuleState.DISABLED)
-            .withComment("gvtqagnbuynh")
+        AlertsSuppressionRuleProperties model = new AlertsSuppressionRuleProperties().withAlertType("yudxorrqnbp")
+            .withExpirationDateUtc(OffsetDateTime.parse("2021-10-04T17:32:47Z"))
+            .withReason("i")
+            .withState(RuleState.ENABLED)
+            .withComment("vkd")
             .withSuppressionAlertsScope(new SuppressionAlertsScope()
-                .withAllOf(Arrays.asList(new ScopeElement().withField("mebf").withAdditionalProperties(mapOf()))));
+                .withAllOf(Arrays.asList(new ScopeElement().withField("lrmv").withAdditionalProperties(mapOf()))));
         model = BinaryData.fromObject(model).toObject(AlertsSuppressionRuleProperties.class);
-        Assertions.assertEquals("y", model.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T06:53:33Z"), model.expirationDateUtc());
-        Assertions.assertEquals("uqqkpik", model.reason());
-        Assertions.assertEquals(RuleState.DISABLED, model.state());
-        Assertions.assertEquals("gvtqagnbuynh", model.comment());
-        Assertions.assertEquals("mebf", model.suppressionAlertsScope().allOf().get(0).field());
+        Assertions.assertEquals("yudxorrqnbp", model.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T17:32:47Z"), model.expirationDateUtc());
+        Assertions.assertEquals("i", model.reason());
+        Assertions.assertEquals(RuleState.ENABLED, model.state());
+        Assertions.assertEquals("vkd", model.comment());
+        Assertions.assertEquals("lrmv", model.suppressionAlertsScope().allOf().get(0).field());
     }
 
     // Use "Map.of" if available

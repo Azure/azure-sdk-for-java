@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Rule results input.
  */
 @Fluent
-public final class RuleResultsInput {
+public final class RuleResultsInput implements JsonSerializable<RuleResultsInput> {
     /*
      * Take results from latest scan.
      */
-    @JsonProperty(value = "latestScan")
     private Boolean latestScan;
 
     /*
      * Expected results to be inserted into the baseline.
      * Leave this field empty it LatestScan == true.
      */
-    @JsonProperty(value = "results")
     private List<List<String>> results;
 
     /**
@@ -80,5 +82,47 @@ public final class RuleResultsInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("latestScan", this.latestScan);
+        jsonWriter.writeArrayField("results", this.results,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleResultsInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleResultsInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleResultsInput.
+     */
+    public static RuleResultsInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleResultsInput deserializedRuleResultsInput = new RuleResultsInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latestScan".equals(fieldName)) {
+                    deserializedRuleResultsInput.latestScan = reader.getNullable(JsonReader::getBoolean);
+                } else if ("results".equals(fieldName)) {
+                    List<List<String>> results
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedRuleResultsInput.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleResultsInput;
+        });
     }
 }

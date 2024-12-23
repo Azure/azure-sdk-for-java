@@ -13,14 +13,14 @@ public final class MdeOnboardingDataListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MdeOnboardingDataListInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{},\"id\":\"ondjmq\",\"name\":\"xvy\",\"type\":\"omgkopkwho\"},{\"properties\":{},\"id\":\"jqg\",\"name\":\"ysmocmbqfqvmkcxo\",\"type\":\"apvhelxprgly\"}]}")
+            "{\"value\":[{\"properties\":{},\"id\":\"ntnev\",\"name\":\"iwjmygtdssls\",\"type\":\"tmweriofzpyq\"}]}")
             .toObject(MdeOnboardingDataListInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MdeOnboardingDataListInner model = new MdeOnboardingDataListInner()
-            .withValue(Arrays.asList(new MdeOnboardingDataInner(), new MdeOnboardingDataInner()));
+        MdeOnboardingDataListInner model
+            = new MdeOnboardingDataListInner().withValue(Arrays.asList(new MdeOnboardingDataInner()));
         model = BinaryData.fromObject(model).toObject(MdeOnboardingDataListInner.class);
     }
 }

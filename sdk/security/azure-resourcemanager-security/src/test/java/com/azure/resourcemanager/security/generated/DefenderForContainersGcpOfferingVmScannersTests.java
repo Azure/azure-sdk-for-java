@@ -16,23 +16,23 @@ public final class DefenderForContainersGcpOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingVmScanners model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"machbkv\":\"o\",\"mvgoqpleh\":\"rpbj\",\"llcz\":\"umkz\"}}}")
+            "{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"dklotcsubmzo\":\"ulcrc\",\"hkxfpwhdyslbklgl\":\"nsvob\",\"kwayqshwy\":\"nn\"}}}")
             .toObject(DefenderForContainersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("o", model.configuration().exclusionTags().get("machbkv"));
+        Assertions.assertEquals("ulcrc", model.configuration().exclusionTags().get("dklotcsubmzo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingVmScanners model
-            = new DefenderForContainersGcpOfferingVmScanners().withEnabled(false)
+            = new DefenderForContainersGcpOfferingVmScanners().withEnabled(true)
                 .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                    .withExclusionTags(mapOf("machbkv", "o", "mvgoqpleh", "rpbj", "llcz", "umkz")));
+                    .withExclusionTags(mapOf("dklotcsubmzo", "ulcrc", "hkxfpwhdyslbklgl", "nsvob", "kwayqshwy", "nn")));
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("o", model.configuration().exclusionTags().get("machbkv"));
+        Assertions.assertEquals("ulcrc", model.configuration().exclusionTags().get("dklotcsubmzo"));
     }
 
     // Use "Map.of" if available

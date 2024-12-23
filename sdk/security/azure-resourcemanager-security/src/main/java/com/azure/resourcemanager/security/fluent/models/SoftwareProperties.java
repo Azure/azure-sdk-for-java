@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.EndOfSupportStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Software Inventory resource properties.
  */
 @Fluent
-public final class SoftwareProperties {
+public final class SoftwareProperties implements JsonSerializable<SoftwareProperties> {
     /*
      * Unique identifier for the virtual machine in the service.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * Platform of the operating system running on the device.
      */
-    @JsonProperty(value = "osPlatform")
     private String osPlatform;
 
     /*
      * Name of the software vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * Name of the software product.
      */
-    @JsonProperty(value = "softwareName")
     private String softwareName;
 
     /*
      * Version number of the software product.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * End of support status.
      */
-    @JsonProperty(value = "endOfSupportStatus")
     private EndOfSupportStatus endOfSupportStatus;
 
     /*
      * The end of support date in case the product is upcoming end of support.
      */
-    @JsonProperty(value = "endOfSupportDate")
     private String endOfSupportDate;
 
     /*
      * Number of weaknesses.
      */
-    @JsonProperty(value = "numberOfKnownVulnerabilities")
     private Integer numberOfKnownVulnerabilities;
 
     /*
      * First time that the software was seen in the device.
      */
-    @JsonProperty(value = "firstSeenAt")
     private String firstSeenAt;
 
     /**
@@ -259,5 +254,68 @@ public final class SoftwareProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("osPlatform", this.osPlatform);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("softwareName", this.softwareName);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("endOfSupportStatus",
+            this.endOfSupportStatus == null ? null : this.endOfSupportStatus.toString());
+        jsonWriter.writeStringField("endOfSupportDate", this.endOfSupportDate);
+        jsonWriter.writeNumberField("numberOfKnownVulnerabilities", this.numberOfKnownVulnerabilities);
+        jsonWriter.writeStringField("firstSeenAt", this.firstSeenAt);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftwareProperties.
+     */
+    public static SoftwareProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareProperties deserializedSoftwareProperties = new SoftwareProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedSoftwareProperties.deviceId = reader.getString();
+                } else if ("osPlatform".equals(fieldName)) {
+                    deserializedSoftwareProperties.osPlatform = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedSoftwareProperties.vendor = reader.getString();
+                } else if ("softwareName".equals(fieldName)) {
+                    deserializedSoftwareProperties.softwareName = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSoftwareProperties.version = reader.getString();
+                } else if ("endOfSupportStatus".equals(fieldName)) {
+                    deserializedSoftwareProperties.endOfSupportStatus
+                        = EndOfSupportStatus.fromString(reader.getString());
+                } else if ("endOfSupportDate".equals(fieldName)) {
+                    deserializedSoftwareProperties.endOfSupportDate = reader.getString();
+                } else if ("numberOfKnownVulnerabilities".equals(fieldName)) {
+                    deserializedSoftwareProperties.numberOfKnownVulnerabilities
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("firstSeenAt".equals(fieldName)) {
+                    deserializedSoftwareProperties.firstSeenAt = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareProperties;
+        });
     }
 }

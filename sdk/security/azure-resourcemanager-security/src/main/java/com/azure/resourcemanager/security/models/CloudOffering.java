@@ -5,51 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The security offering details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "offeringType", defaultImpl = CloudOffering.class, visible = true)
-@JsonTypeName("CloudOffering")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "CspmMonitorAws", value = CspmMonitorAwsOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForContainersAws", value = DefenderForContainersAwsOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForServersAws", value = DefenderForServersAwsOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDatabasesAws", value = DefenderFoDatabasesAwsOffering.class),
-    @JsonSubTypes.Type(name = "CspmMonitorGcp", value = CspmMonitorGcpOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForServersGcp", value = DefenderForServersGcpOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDatabasesGcp", value = DefenderForDatabasesGcpOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForContainersGcp", value = DefenderForContainersGcpOffering.class),
-    @JsonSubTypes.Type(name = "CspmMonitorGithub", value = CspmMonitorGithubOffering.class),
-    @JsonSubTypes.Type(name = "CspmMonitorAzureDevOps", value = CspmMonitorAzureDevOpsOffering.class),
-    @JsonSubTypes.Type(name = "DefenderCspmAws", value = DefenderCspmAwsOffering.class),
-    @JsonSubTypes.Type(name = "DefenderCspmGcp", value = DefenderCspmGcpOffering.class),
-    @JsonSubTypes.Type(name = "CspmMonitorGitLab", value = CspmMonitorGitLabOffering.class) })
 @Immutable
-public class CloudOffering {
+public class CloudOffering implements JsonSerializable<CloudOffering> {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
-    private OfferingType offeringType;
+    private OfferingType offeringType = OfferingType.fromString("CloudOffering");
 
     /*
      * The offering description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
      * Creates an instance of CloudOffering class.
      */
     public CloudOffering() {
-        this.offeringType = OfferingType.fromString("CloudOffering");
     }
 
     /**
@@ -71,10 +51,120 @@ public class CloudOffering {
     }
 
     /**
+     * Set the description property: The offering description.
+     * 
+     * @param description the description value to set.
+     * @return the CloudOffering object itself.
+     */
+    CloudOffering withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudOffering if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudOffering.
+     */
+    public static CloudOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("offeringType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("CspmMonitorAws".equals(discriminatorValue)) {
+                    return CspmMonitorAwsOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForContainersAws".equals(discriminatorValue)) {
+                    return DefenderForContainersAwsOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForServersAws".equals(discriminatorValue)) {
+                    return DefenderForServersAwsOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForDatabasesAws".equals(discriminatorValue)) {
+                    return DefenderFoDatabasesAwsOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorGcp".equals(discriminatorValue)) {
+                    return CspmMonitorGcpOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForServersGcp".equals(discriminatorValue)) {
+                    return DefenderForServersGcpOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForDatabasesGcp".equals(discriminatorValue)) {
+                    return DefenderForDatabasesGcpOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForContainersGcp".equals(discriminatorValue)) {
+                    return DefenderForContainersGcpOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorGithub".equals(discriminatorValue)) {
+                    return CspmMonitorGithubOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorAzureDevOps".equals(discriminatorValue)) {
+                    return CspmMonitorAzureDevOpsOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderCspmAws".equals(discriminatorValue)) {
+                    return DefenderCspmAwsOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderCspmGcp".equals(discriminatorValue)) {
+                    return DefenderCspmGcpOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorGitLab".equals(discriminatorValue)) {
+                    return CspmMonitorGitLabOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorDockerHub".equals(discriminatorValue)) {
+                    return CspmMonitorDockerHubOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForContainersDockerHub".equals(discriminatorValue)) {
+                    return DefenderForContainersDockerHubOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderCspmDockerHub".equals(discriminatorValue)) {
+                    return DefenderCspmDockerHubOffering.fromJson(readerToUse.reset());
+                } else if ("CspmMonitorJFrog".equals(discriminatorValue)) {
+                    return CspmMonitorJFrogOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderForContainersJFrog".equals(discriminatorValue)) {
+                    return DefenderForContainersJFrogOffering.fromJson(readerToUse.reset());
+                } else if ("DefenderCspmJFrog".equals(discriminatorValue)) {
+                    return DefenderCspmJFrogOffering.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CloudOffering fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudOffering deserializedCloudOffering = new CloudOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offeringType".equals(fieldName)) {
+                    deserializedCloudOffering.offeringType = OfferingType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedCloudOffering.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudOffering;
+        });
     }
 }

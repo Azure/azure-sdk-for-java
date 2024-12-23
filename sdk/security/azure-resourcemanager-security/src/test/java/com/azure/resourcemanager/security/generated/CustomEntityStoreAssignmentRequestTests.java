@@ -12,16 +12,16 @@ public final class CustomEntityStoreAssignmentRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomEntityStoreAssignmentRequest model
-            = BinaryData.fromString("{\"properties\":{\"principal\":\"zzewkfvhqcrai\"}}")
+            = BinaryData.fromString("{\"properties\":{\"principal\":\"fqqnvwpmqtaruo\"}}")
                 .toObject(CustomEntityStoreAssignmentRequest.class);
-        Assertions.assertEquals("zzewkfvhqcrai", model.principal());
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.principal());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomEntityStoreAssignmentRequest model
-            = new CustomEntityStoreAssignmentRequest().withPrincipal("zzewkfvhqcrai");
+            = new CustomEntityStoreAssignmentRequest().withPrincipal("fqqnvwpmqtaruo");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentRequest.class);
-        Assertions.assertEquals("zzewkfvhqcrai", model.principal());
+        Assertions.assertEquals("fqqnvwpmqtaruo", model.principal());
     }
 }

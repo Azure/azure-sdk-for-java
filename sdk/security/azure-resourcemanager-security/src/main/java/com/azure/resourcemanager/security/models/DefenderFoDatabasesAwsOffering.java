@@ -5,45 +5,34 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Defender for Databases AWS offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderFoDatabasesAwsOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForDatabasesAws")
 @Fluent
 public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_DATABASES_AWS;
 
     /*
      * The ARC autoprovisioning configuration
      */
-    @JsonProperty(value = "arcAutoProvisioning")
     private DefenderFoDatabasesAwsOfferingArcAutoProvisioning arcAutoProvisioning;
 
     /*
      * The RDS configuration
      */
-    @JsonProperty(value = "rds")
     private DefenderFoDatabasesAwsOfferingRds rds;
 
     /*
      * The databases data security posture management (DSPM) configuration
      */
-    @JsonProperty(value = "databasesDspm")
     private DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm;
 
     /**
@@ -130,7 +119,6 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (arcAutoProvisioning() != null) {
             arcAutoProvisioning().validate();
         }
@@ -140,5 +128,56 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
         if (databasesDspm() != null) {
             databasesDspm().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("arcAutoProvisioning", this.arcAutoProvisioning);
+        jsonWriter.writeJsonField("rds", this.rds);
+        jsonWriter.writeJsonField("databasesDspm", this.databasesDspm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderFoDatabasesAwsOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderFoDatabasesAwsOffering if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderFoDatabasesAwsOffering.
+     */
+    public static DefenderFoDatabasesAwsOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderFoDatabasesAwsOffering deserializedDefenderFoDatabasesAwsOffering
+                = new DefenderFoDatabasesAwsOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderFoDatabasesAwsOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderFoDatabasesAwsOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("arcAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderFoDatabasesAwsOffering.arcAutoProvisioning
+                        = DefenderFoDatabasesAwsOfferingArcAutoProvisioning.fromJson(reader);
+                } else if ("rds".equals(fieldName)) {
+                    deserializedDefenderFoDatabasesAwsOffering.rds = DefenderFoDatabasesAwsOfferingRds.fromJson(reader);
+                } else if ("databasesDspm".equals(fieldName)) {
+                    deserializedDefenderFoDatabasesAwsOffering.databasesDspm
+                        = DefenderFoDatabasesAwsOfferingDatabasesDspm.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderFoDatabasesAwsOffering;
+        });
     }
 }

@@ -6,94 +6,77 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * GCP cloud account connector based service to service credentials, the credentials are composed of the organization ID
  * and a JSON API key (write only).
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = GcpCredentialsDetailsProperties.class,
-    visible = true)
-@JsonTypeName("gcpCredentials")
 @Fluent
 public final class GcpCredentialsDetailsProperties extends AuthenticationDetailsProperties {
     /*
-     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
+     * account organization credentials.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private AuthenticationType authenticationType = AuthenticationType.GCP_CREDENTIALS;
 
     /*
      * The organization ID of the GCP cloud account
      */
-    @JsonProperty(value = "organizationId", required = true)
     private String organizationId;
 
     /*
      * Type field of the API key (write only)
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * Project ID field of the API key (write only)
      */
-    @JsonProperty(value = "projectId", required = true)
     private String projectId;
 
     /*
      * Private key ID field of the API key (write only)
      */
-    @JsonProperty(value = "privateKeyId", required = true)
     private String privateKeyId;
 
     /*
      * Private key field of the API key (write only)
      */
-    @JsonProperty(value = "privateKey", required = true)
     private String privateKey;
 
     /*
      * Client email field of the API key (write only)
      */
-    @JsonProperty(value = "clientEmail", required = true)
     private String clientEmail;
 
     /*
      * Client ID field of the API key (write only)
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
      * Auth URI field of the API key (write only)
      */
-    @JsonProperty(value = "authUri", required = true)
     private String authUri;
 
     /*
      * Token URI field of the API key (write only)
      */
-    @JsonProperty(value = "tokenUri", required = true)
     private String tokenUri;
 
     /*
      * Auth provider x509 certificate URL field of the API key (write only)
      */
-    @JsonProperty(value = "authProviderX509CertUrl", required = true)
     private String authProviderX509CertUrl;
 
     /*
      * Client x509 certificate URL field of the API key (write only)
      */
-    @JsonProperty(value = "clientX509CertUrl", required = true)
     private String clientX509CertUrl;
 
     /**
@@ -340,7 +323,6 @@ public final class GcpCredentialsDetailsProperties extends AuthenticationDetails
      */
     @Override
     public void validate() {
-        super.validate();
         if (organizationId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -399,4 +381,84 @@ public final class GcpCredentialsDetailsProperties extends AuthenticationDetails
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GcpCredentialsDetailsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationId", this.organizationId);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("projectId", this.projectId);
+        jsonWriter.writeStringField("privateKeyId", this.privateKeyId);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        jsonWriter.writeStringField("clientEmail", this.clientEmail);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("authUri", this.authUri);
+        jsonWriter.writeStringField("tokenUri", this.tokenUri);
+        jsonWriter.writeStringField("authProviderX509CertUrl", this.authProviderX509CertUrl);
+        jsonWriter.writeStringField("clientX509CertUrl", this.clientX509CertUrl);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcpCredentialsDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcpCredentialsDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GcpCredentialsDetailsProperties.
+     */
+    public static GcpCredentialsDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcpCredentialsDetailsProperties deserializedGcpCredentialsDetailsProperties
+                = new GcpCredentialsDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationProvisioningState".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.withAuthenticationProvisioningState(
+                        AuthenticationProvisioningState.fromString(reader.getString()));
+                } else if ("grantedPermissions".equals(fieldName)) {
+                    List<PermissionProperty> grantedPermissions
+                        = reader.readArray(reader1 -> PermissionProperty.fromString(reader1.getString()));
+                    deserializedGcpCredentialsDetailsProperties.withGrantedPermissions(grantedPermissions);
+                } else if ("organizationId".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.organizationId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.type = reader.getString();
+                } else if ("projectId".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.projectId = reader.getString();
+                } else if ("privateKeyId".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.privateKeyId = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.privateKey = reader.getString();
+                } else if ("clientEmail".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.clientEmail = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.clientId = reader.getString();
+                } else if ("authUri".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.authUri = reader.getString();
+                } else if ("tokenUri".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.tokenUri = reader.getString();
+                } else if ("authProviderX509CertUrl".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.authProviderX509CertUrl = reader.getString();
+                } else if ("clientX509CertUrl".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.clientX509CertUrl = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedGcpCredentialsDetailsProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcpCredentialsDetailsProperties;
+        });
+    }
 }

@@ -13,24 +13,24 @@ public final class RemediationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Remediation model = BinaryData.fromString(
-            "{\"description\":\"slirciz\",\"scripts\":[\"ydfce\",\"cvlhv\",\"gdyftumrtwna\",\"jslb\"],\"automated\":true,\"portalLink\":\"jgcyztsfmznba\"}")
+            "{\"description\":\"qgzsles\",\"scripts\":[\"hernntiewdjc\",\"bquwrbehw\",\"gohbuffkmrq\"],\"automated\":true,\"portalLink\":\"hmxtdr\"}")
             .toObject(Remediation.class);
-        Assertions.assertEquals("slirciz", model.description());
-        Assertions.assertEquals("ydfce", model.scripts().get(0));
+        Assertions.assertEquals("qgzsles", model.description());
+        Assertions.assertEquals("hernntiewdjc", model.scripts().get(0));
         Assertions.assertEquals(true, model.automated());
-        Assertions.assertEquals("jgcyztsfmznba", model.portalLink());
+        Assertions.assertEquals("hmxtdr", model.portalLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Remediation model = new Remediation().withDescription("slirciz")
-            .withScripts(Arrays.asList("ydfce", "cvlhv", "gdyftumrtwna", "jslb"))
+        Remediation model = new Remediation().withDescription("qgzsles")
+            .withScripts(Arrays.asList("hernntiewdjc", "bquwrbehw", "gohbuffkmrq"))
             .withAutomated(true)
-            .withPortalLink("jgcyztsfmznba");
+            .withPortalLink("hmxtdr");
         model = BinaryData.fromObject(model).toObject(Remediation.class);
-        Assertions.assertEquals("slirciz", model.description());
-        Assertions.assertEquals("ydfce", model.scripts().get(0));
+        Assertions.assertEquals("qgzsles", model.description());
+        Assertions.assertEquals("hernntiewdjc", model.scripts().get(0));
         Assertions.assertEquals(true, model.automated());
-        Assertions.assertEquals("jgcyztsfmznba", model.portalLink());
+        Assertions.assertEquals("hmxtdr", model.portalLink());
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -25,6 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.security.fluent.DefenderForStoragesClient;
 import com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettingInner;
+import com.azure.resourcemanager.security.fluent.models.MalwareScanInner;
 import com.azure.resourcemanager.security.models.SettingName;
 import reactor.core.publisher.Mono;
 
@@ -79,6 +81,35 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
             @PathParam("settingName") SettingName settingName,
             @BodyParam("application/json") DefenderForStorageSettingInner defenderForStorageSetting,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}/startMalwareScan")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MalwareScanInner>> startMalwareScan(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @PathParam("settingName") SettingName settingName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}/malwareScans/{scanId}/cancelMalwareScan")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MalwareScanInner>> cancelMalwareScan(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @PathParam("settingName") SettingName settingName, @PathParam("scanId") String scanId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceId}/providers/Microsoft.Security/defenderForStorageSettings/{settingName}/malwareScans/{scanId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MalwareScanInner>> getMalwareScan(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @PathParam("settingName") SettingName settingName, @PathParam("scanId") String scanId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -105,7 +136,7 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
         if (settingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2024-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -138,7 +169,7 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
         if (settingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2024-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, resourceId, settingName, accept, context);
@@ -222,7 +253,7 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
         } else {
             defenderForStorageSetting.validate();
         }
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2024-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), apiVersion, resourceId, settingName,
@@ -261,7 +292,7 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
         } else {
             defenderForStorageSetting.validate();
         }
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2024-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, resourceId, settingName, defenderForStorageSetting,
@@ -319,5 +350,364 @@ public final class DefenderForStoragesClientImpl implements DefenderForStoragesC
     public DefenderForStorageSettingInner create(String resourceId, SettingName settingName,
         DefenderForStorageSettingInner defenderForStorageSetting) {
         return createWithResponse(resourceId, settingName, defenderForStorageSetting, Context.NONE).getValue();
+    }
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> startMalwareScanWithResponseAsync(String resourceId,
+        SettingName settingName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.startMalwareScan(this.client.getEndpoint(), apiVersion, resourceId,
+                settingName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> startMalwareScanWithResponseAsync(String resourceId,
+        SettingName settingName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.startMalwareScan(this.client.getEndpoint(), apiVersion, resourceId, settingName, accept,
+            context);
+    }
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MalwareScanInner> startMalwareScanAsync(String resourceId, SettingName settingName) {
+        return startMalwareScanWithResponseAsync(resourceId, settingName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MalwareScanInner> startMalwareScanWithResponse(String resourceId, SettingName settingName,
+        Context context) {
+        return startMalwareScanWithResponseAsync(resourceId, settingName, context).block();
+    }
+
+    /**
+     * Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MalwareScanInner startMalwareScan(String resourceId, SettingName settingName) {
+        return startMalwareScanWithResponse(resourceId, settingName, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancels a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> cancelMalwareScanWithResponseAsync(String resourceId,
+        SettingName settingName, String scanId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        if (scanId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scanId is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.cancelMalwareScan(this.client.getEndpoint(), apiVersion, resourceId,
+                settingName, scanId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Cancels a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> cancelMalwareScanWithResponseAsync(String resourceId,
+        SettingName settingName, String scanId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        if (scanId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scanId is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.cancelMalwareScan(this.client.getEndpoint(), apiVersion, resourceId, settingName, scanId, accept,
+            context);
+    }
+
+    /**
+     * Cancels a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MalwareScanInner> cancelMalwareScanAsync(String resourceId, SettingName settingName, String scanId) {
+        return cancelMalwareScanWithResponseAsync(resourceId, settingName, scanId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancels a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MalwareScanInner> cancelMalwareScanWithResponse(String resourceId, SettingName settingName,
+        String scanId, Context context) {
+        return cancelMalwareScanWithResponseAsync(resourceId, settingName, scanId, context).block();
+    }
+
+    /**
+     * Cancels a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the state of a malware scan operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MalwareScanInner cancelMalwareScan(String resourceId, SettingName settingName, String scanId) {
+        return cancelMalwareScanWithResponse(resourceId, settingName, scanId, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Defender for Storage malware scan for the specified storage resource along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> getMalwareScanWithResponseAsync(String resourceId, SettingName settingName,
+        String scanId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        if (scanId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scanId is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getMalwareScan(this.client.getEndpoint(), apiVersion, resourceId,
+                settingName, scanId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Defender for Storage malware scan for the specified storage resource along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MalwareScanInner>> getMalwareScanWithResponseAsync(String resourceId, SettingName settingName,
+        String scanId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (settingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
+        }
+        if (scanId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scanId is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getMalwareScan(this.client.getEndpoint(), apiVersion, resourceId, settingName, scanId, accept,
+            context);
+    }
+
+    /**
+     * Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Defender for Storage malware scan for the specified storage resource on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MalwareScanInner> getMalwareScanAsync(String resourceId, SettingName settingName, String scanId) {
+        return getMalwareScanWithResponseAsync(resourceId, settingName, scanId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Defender for Storage malware scan for the specified storage resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MalwareScanInner> getMalwareScanWithResponse(String resourceId, SettingName settingName,
+        String scanId, Context context) {
+        return getMalwareScanWithResponseAsync(resourceId, settingName, scanId, context).block();
+    }
+
+    /**
+     * Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param settingName Defender for Storage setting name.
+     * @param scanId The identifier of the scan. Can be either 'latest' or a GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Defender for Storage malware scan for the specified storage resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MalwareScanInner getMalwareScan(String resourceId, SettingName settingName, String scanId) {
+        return getMalwareScanWithResponse(resourceId, settingName, scanId, Context.NONE).getValue();
     }
 }

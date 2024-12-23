@@ -12,20 +12,20 @@ public final class DefenderForContainersAwsOfferingMdcContainersAgentlessDiscove
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S model
-            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"bzwgwhgkgsoau\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"rezsvav\"}")
                 .toObject(DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("bzwgwhgkgsoau", model.cloudRoleArn());
+        Assertions.assertEquals("rezsvav", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S model
             = new DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
-                .withCloudRoleArn("bzwgwhgkgsoau");
+                .withCloudRoleArn("rezsvav");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("bzwgwhgkgsoau", model.cloudRoleArn());
+        Assertions.assertEquals("rezsvav", model.cloudRoleArn());
     }
 }

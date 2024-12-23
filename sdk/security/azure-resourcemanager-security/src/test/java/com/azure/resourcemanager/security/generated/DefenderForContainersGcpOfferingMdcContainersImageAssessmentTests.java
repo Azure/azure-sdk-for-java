@@ -12,23 +12,23 @@ public final class DefenderForContainersGcpOfferingMdcContainersImageAssessmentT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersImageAssessment model = BinaryData.fromString(
-            "{\"enabled\":true,\"workloadIdentityProviderId\":\"rktj\",\"serviceAccountEmailAddress\":\"ifibfiplhxfns\"}")
+            "{\"enabled\":false,\"workloadIdentityProviderId\":\"tidajjvyweocf\",\"serviceAccountEmailAddress\":\"mcfjxokyelsy\"}")
             .toObject(DefenderForContainersGcpOfferingMdcContainersImageAssessment.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("rktj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ifibfiplhxfns", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("tidajjvyweocf", model.workloadIdentityProviderId());
+        Assertions.assertEquals("mcfjxokyelsy", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersImageAssessment model
-            = new DefenderForContainersGcpOfferingMdcContainersImageAssessment().withEnabled(true)
-                .withWorkloadIdentityProviderId("rktj")
-                .withServiceAccountEmailAddress("ifibfiplhxfns");
+            = new DefenderForContainersGcpOfferingMdcContainersImageAssessment().withEnabled(false)
+                .withWorkloadIdentityProviderId("tidajjvyweocf")
+                .withServiceAccountEmailAddress("mcfjxokyelsy");
         model
             = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOfferingMdcContainersImageAssessment.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("rktj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ifibfiplhxfns", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("tidajjvyweocf", model.workloadIdentityProviderId());
+        Assertions.assertEquals("mcfjxokyelsy", model.serviceAccountEmailAddress());
     }
 }

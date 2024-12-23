@@ -15,19 +15,16 @@ public final class RegulatoryComplianceStandardListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceStandardList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Passed\",\"passedControls\":1971435113,\"failedControls\":435215346,\"skippedControls\":746279797,\"unsupportedControls\":996509936},\"id\":\"hsmtxpsiebtfhvp\",\"name\":\"sapskr\",\"type\":\"qmhjjdhtld\"},{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":1711095303,\"failedControls\":1677238877,\"skippedControls\":1210562441,\"unsupportedControls\":276161293},\"id\":\"scwsv\",\"name\":\"xotogtwrupqsxv\",\"type\":\"micykvceoveilo\"},{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":297433861,\"failedControls\":914615331,\"skippedControls\":1745104172,\"unsupportedControls\":625040434},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"},{\"properties\":{\"state\":\"Skipped\",\"passedControls\":927719856,\"failedControls\":661305446,\"skippedControls\":1227353846,\"unsupportedControls\":1314028538},\"id\":\"oxuscrpabgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"}],\"nextLink\":\"suyonobglaocq\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Skipped\",\"passedControls\":1192449755,\"failedControls\":624724935,\"skippedControls\":491108548,\"unsupportedControls\":895884461},\"id\":\"tmryw\",\"name\":\"uzoqft\",\"type\":\"yqzrnkcqvyxlw\"}],\"nextLink\":\"lsicohoqqnwv\"}")
             .toObject(RegulatoryComplianceStandardList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        Assertions.assertEquals(State.SKIPPED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegulatoryComplianceStandardList model = new RegulatoryComplianceStandardList()
-            .withValue(Arrays.asList(new RegulatoryComplianceStandardInner().withState(State.PASSED),
-                new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED),
-                new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED),
-                new RegulatoryComplianceStandardInner().withState(State.SKIPPED)));
+            .withValue(Arrays.asList(new RegulatoryComplianceStandardInner().withState(State.SKIPPED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceStandardList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        Assertions.assertEquals(State.SKIPPED, model.value().get(0).state());
     }
 }

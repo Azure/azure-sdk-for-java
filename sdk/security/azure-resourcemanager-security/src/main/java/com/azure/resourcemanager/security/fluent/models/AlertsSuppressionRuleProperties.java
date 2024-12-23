@@ -5,57 +5,56 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.RuleState;
 import com.azure.resourcemanager.security.models.SuppressionAlertsScope;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * describes AlertsSuppressionRule properties.
  */
 @Fluent
-public final class AlertsSuppressionRuleProperties {
+public final class AlertsSuppressionRuleProperties implements JsonSerializable<AlertsSuppressionRuleProperties> {
     /*
      * Type of the alert to automatically suppress. For all alert types, use '*'
      */
-    @JsonProperty(value = "alertType", required = true)
     private String alertType;
 
     /*
      * The last time this rule was modified
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * Expiration date of the rule, if value is not provided or provided as null there will no expiration at all
      */
-    @JsonProperty(value = "expirationDateUtc")
     private OffsetDateTime expirationDateUtc;
 
     /*
      * The reason for dismissing the alert
      */
-    @JsonProperty(value = "reason", required = true)
     private String reason;
 
     /*
      * Possible states of the rule
      */
-    @JsonProperty(value = "state", required = true)
     private RuleState state;
 
     /*
      * Any comment regarding the rule
      */
-    @JsonProperty(value = "comment")
     private String comment;
 
     /*
      * The suppression conditions
      */
-    @JsonProperty(value = "suppressionAlertsScope")
     private SuppressionAlertsScope suppressionAlertsScope;
 
     /**
@@ -222,4 +221,65 @@ public final class AlertsSuppressionRuleProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AlertsSuppressionRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alertType", this.alertType);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("expirationDateUtc",
+            this.expirationDateUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateUtc));
+        jsonWriter.writeStringField("comment", this.comment);
+        jsonWriter.writeJsonField("suppressionAlertsScope", this.suppressionAlertsScope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertsSuppressionRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertsSuppressionRuleProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertsSuppressionRuleProperties.
+     */
+    public static AlertsSuppressionRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertsSuppressionRuleProperties deserializedAlertsSuppressionRuleProperties
+                = new AlertsSuppressionRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertType".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.alertType = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.reason = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.state = RuleState.fromString(reader.getString());
+                } else if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDateUtc".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.expirationDateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("comment".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.comment = reader.getString();
+                } else if ("suppressionAlertsScope".equals(fieldName)) {
+                    deserializedAlertsSuppressionRuleProperties.suppressionAlertsScope
+                        = SuppressionAlertsScope.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertsSuppressionRuleProperties;
+        });
+    }
 }

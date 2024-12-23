@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectedWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedWorkspace model
-            = BinaryData.fromString("{\"id\":\"uxkqllczipvwdt\"}").toObject(ConnectedWorkspace.class);
-        Assertions.assertEquals("uxkqllczipvwdt", model.id());
+        ConnectedWorkspace model = BinaryData.fromString("{\"id\":\"cvnpv\"}").toObject(ConnectedWorkspace.class);
+        Assertions.assertEquals("cvnpv", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedWorkspace model = new ConnectedWorkspace().withId("uxkqllczipvwdt");
+        ConnectedWorkspace model = new ConnectedWorkspace().withId("cvnpv");
         model = BinaryData.fromObject(model).toObject(ConnectedWorkspace.class);
-        Assertions.assertEquals("uxkqllczipvwdt", model.id());
+        Assertions.assertEquals("cvnpv", model.id());
     }
 }

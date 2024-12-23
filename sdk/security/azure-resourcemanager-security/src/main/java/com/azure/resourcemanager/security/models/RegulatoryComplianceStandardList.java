@@ -6,25 +6,27 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceStandardInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of regulatory compliance standards response.
  */
 @Fluent
-public final class RegulatoryComplianceStandardList {
+public final class RegulatoryComplianceStandardList implements JsonSerializable<RegulatoryComplianceStandardList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
     private List<RegulatoryComplianceStandardInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -78,4 +80,46 @@ public final class RegulatoryComplianceStandardList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceStandardList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegulatoryComplianceStandardList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegulatoryComplianceStandardList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegulatoryComplianceStandardList.
+     */
+    public static RegulatoryComplianceStandardList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegulatoryComplianceStandardList deserializedRegulatoryComplianceStandardList
+                = new RegulatoryComplianceStandardList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RegulatoryComplianceStandardInner> value
+                        = reader.readArray(reader1 -> RegulatoryComplianceStandardInner.fromJson(reader1));
+                    deserializedRegulatoryComplianceStandardList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegulatoryComplianceStandardList;
+        });
+    }
 }

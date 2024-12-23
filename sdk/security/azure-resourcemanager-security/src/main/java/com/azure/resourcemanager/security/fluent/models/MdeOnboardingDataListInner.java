@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of all MDE onboarding data resources.
  */
 @Fluent
-public final class MdeOnboardingDataListInner {
+public final class MdeOnboardingDataListInner implements JsonSerializable<MdeOnboardingDataListInner> {
     /*
      * List of the resources of the configuration or data needed to onboard the machine to MDE
      */
-    @JsonProperty(value = "value")
     private List<MdeOnboardingDataInner> value;
 
     /**
@@ -54,5 +57,43 @@ public final class MdeOnboardingDataListInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MdeOnboardingDataListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MdeOnboardingDataListInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MdeOnboardingDataListInner.
+     */
+    public static MdeOnboardingDataListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MdeOnboardingDataListInner deserializedMdeOnboardingDataListInner = new MdeOnboardingDataListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MdeOnboardingDataInner> value
+                        = reader.readArray(reader1 -> MdeOnboardingDataInner.fromJson(reader1));
+                    deserializedMdeOnboardingDataListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMdeOnboardingDataListInner;
+        });
     }
 }

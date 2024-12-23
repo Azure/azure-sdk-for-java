@@ -21,7 +21,7 @@ public final class AdvancedThreatProtectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isEnabled\":false},\"id\":\"izyxduyjnqzb\",\"name\":\"qcakmfckviyj\",\"type\":\"camnsbqoitwhm\"}";
+            = "{\"properties\":{\"isEnabled\":false},\"id\":\"mb\",\"name\":\"ttmhlvr\",\"type\":\"cyxrn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AdvancedThreatProtectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AdvancedThreatProtectionSetting response = manager.advancedThreatProtections()
-            .getWithResponse("drznlaxozqthkwxf", com.azure.core.util.Context.NONE)
+            .getWithResponse("jnskvct", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(false, response.isEnabled());

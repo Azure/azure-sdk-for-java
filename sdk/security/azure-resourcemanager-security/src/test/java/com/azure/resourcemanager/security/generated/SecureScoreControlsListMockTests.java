@@ -22,7 +22,7 @@ public final class SecureScoreControlsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"iqz\",\"score\":{\"max\":54901872,\"current\":3.2985076494420507,\"percentage\":49.76715802273021},\"healthyResourceCount\":377361045,\"unhealthyResourceCount\":555061270,\"notApplicableResourceCount\":894691694,\"weight\":1839839279218585084,\"definition\":{\"properties\":{\"displayName\":\"muwdbvytqavou\",\"description\":\"kdeuqxlvz\",\"maxScore\":743354807,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{}]},\"id\":\"iw\",\"name\":\"gopqlktt\",\"type\":\"bmrrmtr\"}},\"id\":\"gjmpd\",\"name\":\"rjzwawpewajccs\",\"type\":\"juzmu\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"wb\",\"score\":{\"max\":1142089486,\"current\":59.99647035572985,\"percentage\":57.0323945974888},\"healthyResourceCount\":1764025787,\"unhealthyResourceCount\":469042137,\"notApplicableResourceCount\":134246656,\"weight\":7364641012433636328,\"definition\":{\"properties\":{\"displayName\":\"uepaco\",\"description\":\"ohex\",\"maxScore\":1609115708,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{}]},\"id\":\"sycbdymbnp\",\"name\":\"enlqtqyvlfbs\",\"type\":\"vqdvfjdsqephtosh\"}},\"id\":\"tuarjw\",\"name\":\"ujrcnxa\",\"type\":\"ypyqoizfyasydd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

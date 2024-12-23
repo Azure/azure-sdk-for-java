@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration payload for PR Annotations.
  */
 @Fluent
-public final class ActionableRemediation {
+public final class ActionableRemediation implements JsonSerializable<ActionableRemediation> {
     /*
      * ActionableRemediation Setting.
      * None - the setting was never set.
      * Enabled - ActionableRemediation is enabled.
      * Disabled - ActionableRemediation is disabled.
      */
-    @JsonProperty(value = "state")
     private ActionableRemediationState state;
 
     /*
      * Gets or sets list of categories and severity levels.
      */
-    @JsonProperty(value = "categoryConfigurations")
     private List<CategoryConfiguration> categoryConfigurations;
 
     /*
      * Repository branch configuration for PR Annotations.
      */
-    @JsonProperty(value = "branchConfiguration")
     private TargetBranchConfiguration branchConfiguration;
 
     /*
@@ -40,7 +41,6 @@ public final class ActionableRemediation {
      * Enabled - Resource should inherit configurations from parent.
      * Disabled - Resource should not inherit configurations from parent.
      */
-    @JsonProperty(value = "inheritFromParentState")
     private InheritFromParentState inheritFromParentState;
 
     /**
@@ -153,5 +153,55 @@ public final class ActionableRemediation {
         if (branchConfiguration() != null) {
             branchConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("categoryConfigurations", this.categoryConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("branchConfiguration", this.branchConfiguration);
+        jsonWriter.writeStringField("inheritFromParentState",
+            this.inheritFromParentState == null ? null : this.inheritFromParentState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionableRemediation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionableRemediation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionableRemediation.
+     */
+    public static ActionableRemediation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionableRemediation deserializedActionableRemediation = new ActionableRemediation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedActionableRemediation.state = ActionableRemediationState.fromString(reader.getString());
+                } else if ("categoryConfigurations".equals(fieldName)) {
+                    List<CategoryConfiguration> categoryConfigurations
+                        = reader.readArray(reader1 -> CategoryConfiguration.fromJson(reader1));
+                    deserializedActionableRemediation.categoryConfigurations = categoryConfigurations;
+                } else if ("branchConfiguration".equals(fieldName)) {
+                    deserializedActionableRemediation.branchConfiguration = TargetBranchConfiguration.fromJson(reader);
+                } else if ("inheritFromParentState".equals(fieldName)) {
+                    deserializedActionableRemediation.inheritFromParentState
+                        = InheritFromParentState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionableRemediation;
+        });
     }
 }

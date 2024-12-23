@@ -11,7 +11,7 @@ public final class SecureScoreItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureScoreItemInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"sm\",\"score\":{\"max\":1321939729,\"current\":4.254131093990932,\"percentage\":33.67535928405786},\"weight\":3225471395239353225},\"id\":\"nawnvz\",\"name\":\"lnk\",\"type\":\"ywsxvjabjqqaxu\"}")
+            "{\"properties\":{\"displayName\":\"zipbwxgoooxzp\",\"score\":{\"max\":1614343126,\"current\":42.07049672261507,\"percentage\":14.929723512422733},\"weight\":8768207513111580436},\"id\":\"igjsugswhgs\",\"name\":\"odkwwnbafocto\",\"type\":\"zhaquvwsxb\"}")
             .toObject(SecureScoreItemInner.class);
     }
 

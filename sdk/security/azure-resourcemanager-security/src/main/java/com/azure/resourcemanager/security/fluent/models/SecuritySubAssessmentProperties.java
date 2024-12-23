@@ -5,75 +5,70 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AdditionalData;
 import com.azure.resourcemanager.security.models.ResourceDetails;
 import com.azure.resourcemanager.security.models.SubAssessmentStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes properties of an sub-assessment.
  */
 @Fluent
-public final class SecuritySubAssessmentProperties {
+public final class SecuritySubAssessmentProperties implements JsonSerializable<SecuritySubAssessmentProperties> {
     /*
      * Vulnerability ID
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * User friendly display name of the sub-assessment
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Status of the sub-assessment
      */
-    @JsonProperty(value = "status")
     private SubAssessmentStatus status;
 
     /*
      * Information on how to remediate this sub-assessment
      */
-    @JsonProperty(value = "remediation", access = JsonProperty.Access.WRITE_ONLY)
     private String remediation;
 
     /*
      * Description of the impact of this sub-assessment
      */
-    @JsonProperty(value = "impact", access = JsonProperty.Access.WRITE_ONLY)
     private String impact;
 
     /*
      * Category of the sub-assessment
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * Human readable description of the assessment status
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The date and time the sub-assessment was generated
      */
-    @JsonProperty(value = "timeGenerated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeGenerated;
 
     /*
      * Details of the resource that was assessed
      */
-    @JsonProperty(value = "resourceDetails")
     private ResourceDetails resourceDetails;
 
     /*
      * Details of the sub-assessment
      */
-    @JsonProperty(value = "additionalData")
     private AdditionalData additionalData;
 
     /**
@@ -220,5 +215,63 @@ public final class SecuritySubAssessmentProperties {
         if (additionalData() != null) {
             additionalData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeJsonField("resourceDetails", this.resourceDetails);
+        jsonWriter.writeJsonField("additionalData", this.additionalData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySubAssessmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySubAssessmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecuritySubAssessmentProperties.
+     */
+    public static SecuritySubAssessmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySubAssessmentProperties deserializedSecuritySubAssessmentProperties
+                = new SecuritySubAssessmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.displayName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.status = SubAssessmentStatus.fromJson(reader);
+                } else if ("remediation".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.remediation = reader.getString();
+                } else if ("impact".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.impact = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.category = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.description = reader.getString();
+                } else if ("timeGenerated".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.timeGenerated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceDetails".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.resourceDetails = ResourceDetails.fromJson(reader);
+                } else if ("additionalData".equals(fieldName)) {
+                    deserializedSecuritySubAssessmentProperties.additionalData = AdditionalData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySubAssessmentProperties;
+        });
     }
 }

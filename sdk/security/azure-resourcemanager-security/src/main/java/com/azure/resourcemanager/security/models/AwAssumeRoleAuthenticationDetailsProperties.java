@@ -6,10 +6,11 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * AWS cloud account connector based assume role, the role enables delegating access to your AWS resources. The role is
@@ -17,37 +18,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html"&gt;Creating a Role to Delegate
  * Permissions to an IAM User (write only)&lt;/a&gt;.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = AwAssumeRoleAuthenticationDetailsProperties.class,
-    visible = true)
-@JsonTypeName("awsAssumeRole")
 @Fluent
 public final class AwAssumeRoleAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
     /*
-     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
+     * account organization credentials.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private AuthenticationType authenticationType = AuthenticationType.AWS_ASSUME_ROLE;
 
     /*
      * The ID of the cloud account
      */
-    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     private String accountId;
 
     /*
      * Assumed role ID is an identifier that you can use to create temporary security credentials.
      */
-    @JsonProperty(value = "awsAssumeRoleArn", required = true)
     private String awsAssumeRoleArn;
 
     /*
      * A unique identifier that is required when you assume a role in another account.
      */
-    @JsonProperty(value = "awsExternalId", required = true)
     private String awsExternalId;
 
     /**
@@ -125,7 +116,6 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
      */
     @Override
     public void validate() {
-        super.validate();
         if (awsAssumeRoleArn() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -139,4 +129,59 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AwAssumeRoleAuthenticationDetailsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("awsAssumeRoleArn", this.awsAssumeRoleArn);
+        jsonWriter.writeStringField("awsExternalId", this.awsExternalId);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwAssumeRoleAuthenticationDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwAssumeRoleAuthenticationDetailsProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwAssumeRoleAuthenticationDetailsProperties.
+     */
+    public static AwAssumeRoleAuthenticationDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwAssumeRoleAuthenticationDetailsProperties deserializedAwAssumeRoleAuthenticationDetailsProperties
+                = new AwAssumeRoleAuthenticationDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationProvisioningState".equals(fieldName)) {
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.withAuthenticationProvisioningState(
+                        AuthenticationProvisioningState.fromString(reader.getString()));
+                } else if ("grantedPermissions".equals(fieldName)) {
+                    List<PermissionProperty> grantedPermissions
+                        = reader.readArray(reader1 -> PermissionProperty.fromString(reader1.getString()));
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.withGrantedPermissions(grantedPermissions);
+                } else if ("awsAssumeRoleArn".equals(fieldName)) {
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.awsAssumeRoleArn = reader.getString();
+                } else if ("awsExternalId".equals(fieldName)) {
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.awsExternalId = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedAwAssumeRoleAuthenticationDetailsProperties.accountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwAssumeRoleAuthenticationDetailsProperties;
+        });
+    }
 }

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GovernanceRulesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetManagementGroupGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over management group scope.
@@ -24,7 +26,9 @@ public final class GovernanceRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over subscription scope.
@@ -39,7 +43,9 @@ public final class GovernanceRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over security connector scope.

@@ -21,7 +21,7 @@ public final class TasksListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"fcwrri\",\"creationTimeUtc\":\"2021-05-14T18:49:22Z\",\"securityTaskParameters\":{\"name\":\"zwyhjmbjiqe\",\"\":{\"ohcwhpyv\":\"datadb\",\"z\":\"datakgdet\"}},\"lastStateChangeTimeUtc\":\"2021-11-17T14:20:34Z\",\"subState\":\"zbjekw\"},\"id\":\"yckyvne\",\"name\":\"smuffiwjb\",\"type\":\"tvbpzujqj\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"yd\",\"creationTimeUtc\":\"2021-05-29T18:37:33Z\",\"securityTaskParameters\":{\"name\":\"hyhgo\",\"\":{\"spglq\":\"dataoyqyxyjrcbqpb\"}},\"lastStateChangeTimeUtc\":\"2021-05-23T05:40:58Z\",\"subState\":\"dahneaoovty\"},\"id\":\"ztivfwjl\",\"name\":\"fzekfsrm\",\"type\":\"uklajvcfoc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TasksListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityTask> response
-            = manager.tasks().listByHomeRegion("xvzfffhtjnwos", "tfjxtvlx", com.azure.core.util.Context.NONE);
+            = manager.tasks().listByHomeRegion("lhpses", "fga", com.azure.core.util.Context.NONE);
 
     }
 }

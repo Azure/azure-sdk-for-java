@@ -13,23 +13,22 @@ public final class QueryCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueryCheck model = BinaryData.fromString(
-            "{\"query\":\"utujba\",\"expectedResult\":[[\"o\"],[\"inyflnorwmduvwp\",\"lvxwmyg\",\"xpgpq\"],[\"isze\",\"nnbj\",\"rxgibbd\",\"xconfozauors\"],[\"okwbqplh\",\"vnuuepzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"]],\"columnNames\":[\"ork\"]}")
+            "{\"query\":\"zdwlvwlyoupfgfb\",\"expectedResult\":[[\"dyhgkfminsg\",\"wzf\",\"tsttktlahbq\",\"ctxtgzukxi\"],[\"m\",\"tg\",\"qqxhrnxrxcpj\"]],\"columnNames\":[\"av\",\"k\",\"dzf\"]}")
             .toObject(QueryCheck.class);
-        Assertions.assertEquals("utujba", model.query());
-        Assertions.assertEquals("o", model.expectedResult().get(0).get(0));
-        Assertions.assertEquals("ork", model.columnNames().get(0));
+        Assertions.assertEquals("zdwlvwlyoupfgfb", model.query());
+        Assertions.assertEquals("dyhgkfminsg", model.expectedResult().get(0).get(0));
+        Assertions.assertEquals("av", model.columnNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryCheck model = new QueryCheck().withQuery("utujba")
-            .withExpectedResult(Arrays.asList(Arrays.asList("o"), Arrays.asList("inyflnorwmduvwp", "lvxwmyg", "xpgpq"),
-                Arrays.asList("isze", "nnbj", "rxgibbd", "xconfozauors"),
-                Arrays.asList("okwbqplh", "vnuuepzl", "phwzsoldweyuqdu", "vmnnrw")))
-            .withColumnNames(Arrays.asList("ork"));
+        QueryCheck model = new QueryCheck().withQuery("zdwlvwlyoupfgfb")
+            .withExpectedResult(Arrays.asList(Arrays.asList("dyhgkfminsg", "wzf", "tsttktlahbq", "ctxtgzukxi"),
+                Arrays.asList("m", "tg", "qqxhrnxrxcpj")))
+            .withColumnNames(Arrays.asList("av", "k", "dzf"));
         model = BinaryData.fromObject(model).toObject(QueryCheck.class);
-        Assertions.assertEquals("utujba", model.query());
-        Assertions.assertEquals("o", model.expectedResult().get(0).get(0));
-        Assertions.assertEquals("ork", model.columnNames().get(0));
+        Assertions.assertEquals("zdwlvwlyoupfgfb", model.query());
+        Assertions.assertEquals("dyhgkfminsg", model.expectedResult().get(0).get(0));
+        Assertions.assertEquals("av", model.columnNames().get(0));
     }
 }

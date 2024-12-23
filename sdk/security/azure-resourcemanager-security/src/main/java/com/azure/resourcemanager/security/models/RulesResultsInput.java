@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,19 +17,16 @@ import java.util.Map;
  * Rules results input.
  */
 @Fluent
-public final class RulesResultsInput {
+public final class RulesResultsInput implements JsonSerializable<RulesResultsInput> {
     /*
      * Take results from latest scan.
      */
-    @JsonProperty(value = "latestScan")
     private Boolean latestScan;
 
     /*
      * Expected results to be inserted into the baseline.
      * Leave this field empty it LatestScan == true.
      */
-    @JsonProperty(value = "results")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<List<String>>> results;
 
     /**
@@ -83,5 +83,47 @@ public final class RulesResultsInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("latestScan", this.latestScan);
+        jsonWriter.writeMapField("results", this.results, (writer, element) -> writer.writeArray(element,
+            (writer1, element1) -> writer1.writeArray(element1, (writer2, element2) -> writer2.writeString(element2))));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesResultsInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesResultsInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RulesResultsInput.
+     */
+    public static RulesResultsInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesResultsInput deserializedRulesResultsInput = new RulesResultsInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latestScan".equals(fieldName)) {
+                    deserializedRulesResultsInput.latestScan = reader.getNullable(JsonReader::getBoolean);
+                } else if ("results".equals(fieldName)) {
+                    Map<String, List<List<String>>> results = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> reader2.readArray(reader3 -> reader3.getString())));
+                    deserializedRulesResultsInput.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesResultsInput;
+        });
     }
 }

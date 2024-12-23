@@ -14,14 +14,14 @@ public final class SecurityTaskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityTaskInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"fkgiawxk\",\"creationTimeUtc\":\"2021-05-21T20:11:19Z\",\"securityTaskParameters\":{\"name\":\"wckbasyypnd\",\"\":{\"nqgoulzndli\":\"datagcbacphejkot\",\"dgak\":\"datawyqkgfgibm\"}},\"lastStateChangeTimeUtc\":\"2021-01-01T02:28:26Z\",\"subState\":\"xybz\"},\"id\":\"qedqytbciqfoufl\",\"name\":\"mnkzsmod\",\"type\":\"glougpbk\"}")
+            "{\"properties\":{\"state\":\"fkufublj\",\"creationTimeUtc\":\"2021-08-30T04:38:09Z\",\"securityTaskParameters\":{\"name\":\"ofjaeqjhqjb\",\"\":{\"ybkzgcwr\":\"datamsmjqulngsntn\"}},\"lastStateChangeTimeUtc\":\"2021-09-26T22:03:54Z\",\"subState\":\"xwrljdouskcqvkoc\"},\"id\":\"cjdkwtnhxbnjbi\",\"name\":\"sqrglssainq\",\"type\":\"jwnzlljfmp\"}")
             .toObject(SecurityTaskInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityTaskInner model = new SecurityTaskInner().withSecurityTaskParameters(
-            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "wckbasyypnd")));
+            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ofjaeqjhqjb")));
         model = BinaryData.fromObject(model).toObject(SecurityTaskInner.class);
     }
 

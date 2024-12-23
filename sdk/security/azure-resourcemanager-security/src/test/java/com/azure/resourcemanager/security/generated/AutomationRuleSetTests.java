@@ -16,33 +16,29 @@ public final class AutomationRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRuleSet model = BinaryData.fromString(
-            "{\"rules\":[{\"propertyJPath\":\"lnacgcc\",\"propertyType\":\"String\",\"expectedValue\":\"xkizvy\",\"operator\":\"Contains\"},{\"propertyJPath\":\"vuljraaeranokqg\",\"propertyType\":\"String\",\"expectedValue\":\"qnvb\",\"operator\":\"LesserThanOrEqualTo\"},{\"propertyJPath\":\"a\",\"propertyType\":\"Number\",\"expectedValue\":\"cdisd\",\"operator\":\"GreaterThan\"}]}")
+            "{\"rules\":[{\"propertyJPath\":\"glqgleoh\",\"propertyType\":\"Number\",\"expectedValue\":\"nlu\",\"operator\":\"StartsWith\"},{\"propertyJPath\":\"rfxeeebtij\",\"propertyType\":\"Integer\",\"expectedValue\":\"bmqzbqqxlajrnwx\",\"operator\":\"LesserThan\"}]}")
             .toObject(AutomationRuleSet.class);
-        Assertions.assertEquals("lnacgcc", model.rules().get(0).propertyJPath());
-        Assertions.assertEquals(PropertyType.STRING, model.rules().get(0).propertyType());
-        Assertions.assertEquals("xkizvy", model.rules().get(0).expectedValue());
-        Assertions.assertEquals(Operator.CONTAINS, model.rules().get(0).operator());
+        Assertions.assertEquals("glqgleoh", model.rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.NUMBER, model.rules().get(0).propertyType());
+        Assertions.assertEquals("nlu", model.rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.STARTS_WITH, model.rules().get(0).operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationRuleSet model = new AutomationRuleSet().withRules(Arrays.asList(
-            new AutomationTriggeringRule().withPropertyJPath("lnacgcc")
-                .withPropertyType(PropertyType.STRING)
-                .withExpectedValue("xkizvy")
-                .withOperator(Operator.CONTAINS),
-            new AutomationTriggeringRule().withPropertyJPath("vuljraaeranokqg")
-                .withPropertyType(PropertyType.STRING)
-                .withExpectedValue("qnvb")
-                .withOperator(Operator.LESSER_THAN_OR_EQUAL_TO),
-            new AutomationTriggeringRule().withPropertyJPath("a")
+            new AutomationTriggeringRule().withPropertyJPath("glqgleoh")
                 .withPropertyType(PropertyType.NUMBER)
-                .withExpectedValue("cdisd")
-                .withOperator(Operator.GREATER_THAN)));
+                .withExpectedValue("nlu")
+                .withOperator(Operator.STARTS_WITH),
+            new AutomationTriggeringRule().withPropertyJPath("rfxeeebtij")
+                .withPropertyType(PropertyType.INTEGER)
+                .withExpectedValue("bmqzbqqxlajrnwx")
+                .withOperator(Operator.LESSER_THAN)));
         model = BinaryData.fromObject(model).toObject(AutomationRuleSet.class);
-        Assertions.assertEquals("lnacgcc", model.rules().get(0).propertyJPath());
-        Assertions.assertEquals(PropertyType.STRING, model.rules().get(0).propertyType());
-        Assertions.assertEquals("xkizvy", model.rules().get(0).expectedValue());
-        Assertions.assertEquals(Operator.CONTAINS, model.rules().get(0).operator());
+        Assertions.assertEquals("glqgleoh", model.rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.NUMBER, model.rules().get(0).propertyType());
+        Assertions.assertEquals("nlu", model.rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.STARTS_WITH, model.rules().get(0).operator());
     }
 }

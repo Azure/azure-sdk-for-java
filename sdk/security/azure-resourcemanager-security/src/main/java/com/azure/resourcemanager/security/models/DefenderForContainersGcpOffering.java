@@ -5,75 +5,59 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The containers GCP offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderForContainersGcpOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForContainersGcp")
 @Fluent
 public final class DefenderForContainersGcpOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_CONTAINERS_GCP;
 
     /*
      * The native cloud connection configuration
      */
-    @JsonProperty(value = "nativeCloudConnection")
     private DefenderForContainersGcpOfferingNativeCloudConnection nativeCloudConnection;
 
     /*
      * The native cloud connection configuration
      */
-    @JsonProperty(value = "dataPipelineNativeCloudConnection")
     private DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection dataPipelineNativeCloudConnection;
 
     /*
      * Is audit logs data collection enabled
      */
-    @JsonProperty(value = "enableAuditLogsAutoProvisioning")
     private Boolean enableAuditLogsAutoProvisioning;
 
     /*
      * Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "enableDefenderAgentAutoProvisioning")
     private Boolean enableDefenderAgentAutoProvisioning;
 
     /*
      * Is Policy Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "enablePolicyAgentAutoProvisioning")
     private Boolean enablePolicyAgentAutoProvisioning;
 
     /*
      * The Microsoft Defender Container image assessment configuration
      */
-    @JsonProperty(value = "mdcContainersImageAssessment")
     private DefenderForContainersGcpOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
 
     /*
      * The Microsoft Defender Container agentless discovery configuration
      */
-    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
     private DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
 
     /*
      * The Microsoft Defender for Container K8s VM host scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderForContainersGcpOfferingVmScanners vmScanners;
 
     /**
@@ -270,7 +254,6 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (nativeCloudConnection() != null) {
             nativeCloudConnection().validate();
         }
@@ -286,5 +269,77 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
         if (vmScanners() != null) {
             vmScanners().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("nativeCloudConnection", this.nativeCloudConnection);
+        jsonWriter.writeJsonField("dataPipelineNativeCloudConnection", this.dataPipelineNativeCloudConnection);
+        jsonWriter.writeBooleanField("enableAuditLogsAutoProvisioning", this.enableAuditLogsAutoProvisioning);
+        jsonWriter.writeBooleanField("enableDefenderAgentAutoProvisioning", this.enableDefenderAgentAutoProvisioning);
+        jsonWriter.writeBooleanField("enablePolicyAgentAutoProvisioning", this.enablePolicyAgentAutoProvisioning);
+        jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
+        jsonWriter.writeJsonField("mdcContainersAgentlessDiscoveryK8s", this.mdcContainersAgentlessDiscoveryK8S);
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForContainersGcpOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForContainersGcpOffering if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForContainersGcpOffering.
+     */
+    public static DefenderForContainersGcpOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForContainersGcpOffering deserializedDefenderForContainersGcpOffering
+                = new DefenderForContainersGcpOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("nativeCloudConnection".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.nativeCloudConnection
+                        = DefenderForContainersGcpOfferingNativeCloudConnection.fromJson(reader);
+                } else if ("dataPipelineNativeCloudConnection".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.dataPipelineNativeCloudConnection
+                        = DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection.fromJson(reader);
+                } else if ("enableAuditLogsAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.enableAuditLogsAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableDefenderAgentAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.enableDefenderAgentAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePolicyAgentAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.enablePolicyAgentAutoProvisioning
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("mdcContainersImageAssessment".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.mdcContainersImageAssessment
+                        = DefenderForContainersGcpOfferingMdcContainersImageAssessment.fromJson(reader);
+                } else if ("mdcContainersAgentlessDiscoveryK8s".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.mdcContainersAgentlessDiscoveryK8S
+                        = DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.fromJson(reader);
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOffering.vmScanners
+                        = DefenderForContainersGcpOfferingVmScanners.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForContainersGcpOffering;
+        });
     }
 }

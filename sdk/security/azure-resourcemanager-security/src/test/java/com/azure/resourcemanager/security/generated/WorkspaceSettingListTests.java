@@ -14,18 +14,18 @@ public final class WorkspaceSettingListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceSettingList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"workspaceId\":\"hqyudxorrqnbpoc\",\"scope\":\"vyifqrvkdvjsl\"},\"id\":\"rm\",\"name\":\"vdfwatkpn\",\"type\":\"ulexxbczwtr\"}],\"nextLink\":\"iqzbq\"}")
+            "{\"value\":[{\"properties\":{\"workspaceId\":\"wooc\",\"scope\":\"cbonqvpk\"},\"id\":\"lrxnjeaseiphe\",\"name\":\"f\",\"type\":\"okeyyienj\"}],\"nextLink\":\"lwtgrhpdj\"}")
             .toObject(WorkspaceSettingList.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.value().get(0).workspaceId());
-        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).scope());
+        Assertions.assertEquals("wooc", model.value().get(0).workspaceId());
+        Assertions.assertEquals("cbonqvpk", model.value().get(0).scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceSettingList model = new WorkspaceSettingList().withValue(
-            Arrays.asList(new WorkspaceSettingInner().withWorkspaceId("hqyudxorrqnbpoc").withScope("vyifqrvkdvjsl")));
+        WorkspaceSettingList model = new WorkspaceSettingList()
+            .withValue(Arrays.asList(new WorkspaceSettingInner().withWorkspaceId("wooc").withScope("cbonqvpk")));
         model = BinaryData.fromObject(model).toObject(WorkspaceSettingList.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.value().get(0).workspaceId());
-        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).scope());
+        Assertions.assertEquals("wooc", model.value().get(0).workspaceId());
+        Assertions.assertEquals("cbonqvpk", model.value().get(0).scope());
     }
 }

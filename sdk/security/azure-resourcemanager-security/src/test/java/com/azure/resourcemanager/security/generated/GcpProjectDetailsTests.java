@@ -12,18 +12,17 @@ public final class GcpProjectDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GcpProjectDetails model = BinaryData.fromString(
-            "{\"projectNumber\":\"zvfbhwbdquf\",\"projectId\":\"gnrglaqrwyamb\",\"workloadIdentityPoolId\":\"afebzxfkjq\",\"projectName\":\"ibhlenntrv\"}")
+            "{\"projectNumber\":\"ajamc\",\"projectId\":\"yh\",\"workloadIdentityPoolId\":\"p\",\"projectName\":\"rryklleynqan\"}")
             .toObject(GcpProjectDetails.class);
-        Assertions.assertEquals("zvfbhwbdquf", model.projectNumber());
-        Assertions.assertEquals("gnrglaqrwyamb", model.projectId());
+        Assertions.assertEquals("ajamc", model.projectNumber());
+        Assertions.assertEquals("yh", model.projectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GcpProjectDetails model
-            = new GcpProjectDetails().withProjectNumber("zvfbhwbdquf").withProjectId("gnrglaqrwyamb");
+        GcpProjectDetails model = new GcpProjectDetails().withProjectNumber("ajamc").withProjectId("yh");
         model = BinaryData.fromObject(model).toObject(GcpProjectDetails.class);
-        Assertions.assertEquals("zvfbhwbdquf", model.projectNumber());
-        Assertions.assertEquals("gnrglaqrwyamb", model.projectId());
+        Assertions.assertEquals("ajamc", model.projectNumber());
+        Assertions.assertEquals("yh", model.projectId());
     }
 }

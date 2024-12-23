@@ -12,18 +12,18 @@ public final class ArcAutoProvisioningConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcAutoProvisioningConfiguration model
-            = BinaryData.fromString("{\"proxy\":\"vqzrwtrd\",\"privateLinkScope\":\"cnvqeons\"}")
+            = BinaryData.fromString("{\"proxy\":\"nii\",\"privateLinkScope\":\"cgagdvcdqhftzbp\"}")
                 .toObject(ArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("vqzrwtrd", model.proxy());
-        Assertions.assertEquals("cnvqeons", model.privateLinkScope());
+        Assertions.assertEquals("nii", model.proxy());
+        Assertions.assertEquals("cgagdvcdqhftzbp", model.privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcAutoProvisioningConfiguration model
-            = new ArcAutoProvisioningConfiguration().withProxy("vqzrwtrd").withPrivateLinkScope("cnvqeons");
+            = new ArcAutoProvisioningConfiguration().withProxy("nii").withPrivateLinkScope("cgagdvcdqhftzbp");
         model = BinaryData.fromObject(model).toObject(ArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("vqzrwtrd", model.proxy());
-        Assertions.assertEquals("cnvqeons", model.privateLinkScope());
+        Assertions.assertEquals("nii", model.proxy());
+        Assertions.assertEquals("cgagdvcdqhftzbp", model.privateLinkScope());
     }
 }

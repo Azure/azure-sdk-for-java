@@ -28,7 +28,7 @@ public final class GovernanceAssignmentsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.governanceAssignments()
-            .deleteWithResponse("lfrsbzrnmuv", "vp", "ofddtbfmek", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("zvcmbpwd", "udayprldidwmtf", "bvtzldzchub", com.azure.core.util.Context.NONE);
 
     }
 }

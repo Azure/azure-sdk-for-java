@@ -17,7 +17,9 @@ import com.azure.resourcemanager.security.models.ServicePrincipalProperties;
  */
 public final class ConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateGcpCredentialsConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateGcpCredentialsConnectorSubscription_example.json
      */
     /**
      * Sample code: gcpCredentials - Create a cloud account connector for a subscription.
@@ -45,7 +47,9 @@ public final class ConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsCredConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateAwsCredConnectorSubscription_example.json
      */
     /**
      * Sample code: AwsCred - Create a cloud account connector for a subscription.
@@ -70,7 +74,9 @@ public final class ConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
      */
     /**
      * Sample code: AwsAssumeRole - Create a cloud account connector for a subscription.

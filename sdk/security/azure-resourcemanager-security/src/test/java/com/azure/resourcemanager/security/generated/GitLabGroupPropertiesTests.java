@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -14,18 +13,16 @@ public final class GitLabGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"qqzjkoxdu\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-21T20:01:13Z\",\"provisioningState\":\"Failed\",\"fullyQualifiedName\":\"rouigdmfivjqte\",\"fullyQualifiedFriendlyName\":\"qq\",\"url\":\"dydkghpcvrwqir\",\"onboardingState\":\"Onboarded\"}")
+            "{\"provisioningStatusMessage\":\"havpmhbrbqgvg\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-12T02:37:11Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"tefjoknssqyzq\",\"fullyQualifiedFriendlyName\":\"ik\",\"url\":\"rdbiqmrjge\",\"onboardingState\":\"OnboardedByOtherConnector\"}")
             .toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabGroupProperties model = new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-            .withOnboardingState(OnboardingState.ONBOARDED);
+        GitLabGroupProperties model
+            = new GitLabGroupProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR);
         model = BinaryData.fromObject(model).toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
     }
 }

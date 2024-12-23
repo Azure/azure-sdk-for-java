@@ -23,7 +23,7 @@ public final class SecurityConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"jptnnt\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-23T01:07:35Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"vn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rrhpgsjbio\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wviqehmdqvaolid\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fsfvkjcimbrsv\",\"tags\":{\"jl\":\"tjnhp\",\"cyzhimmydtdtftmi\":\"k\",\"rgyzcslazp\":\"uzjd\",\"teagbgac\":\"kqoyimxpggk\"},\"id\":\"qpjuytvude\",\"name\":\"lpbybkisb\",\"type\":\"ifm\"}]}";
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"jptnnt\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-23T01:07:35Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"vn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rrhpgsjbio\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wviqehmdqvaolid\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fsfvkjcimbrsv\",\"tags\":{\"jl\":\"tjnhp\",\"cyzhimmydtdtftmi\":\"k\",\"rgyzcslazp\":\"uzjd\",\"teagbgac\":\"kqoyimxpggk\"},\"id\":\"qpjuytvude\",\"name\":\"lpbybkisb\",\"type\":\"ifm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,6 +37,6 @@ public final class SecurityConnectorsListMockTests {
         Assertions.assertEquals("fsfvkjcimbrsv", response.iterator().next().location());
         Assertions.assertEquals("tjnhp", response.iterator().next().tags().get("jl"));
         Assertions.assertEquals("jptnnt", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
+        Assertions.assertEquals(CloudName.GIT_LAB, response.iterator().next().environmentName());
     }
 }

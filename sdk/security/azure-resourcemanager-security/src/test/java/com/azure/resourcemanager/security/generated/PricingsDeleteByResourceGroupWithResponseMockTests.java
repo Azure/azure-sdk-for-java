@@ -28,7 +28,7 @@ public final class PricingsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.pricings()
-            .deleteByResourceGroupWithResponse("plviaigarm", "wokgcneviccw", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("hpvarumvuwj", "ulqfpqqll", com.azure.core.util.Context.NONE);
 
     }
 }

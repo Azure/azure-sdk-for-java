@@ -5,31 +5,49 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.security.models.ActionType;
 import com.azure.resourcemanager.security.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.security.models.Origin;
+import java.io.IOException;
 
 /**
- * Possible operation in the REST API of Microsoft.Security.
+ * REST API Operation
+ * 
+ * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
 @Fluent
-public final class OperationInner {
+public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
-     * Name of the operation
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Where the operation is originated
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
-    private String origin;
+    private Boolean isDataAction;
 
     /*
-     * Security operation display
+     * Localized display information for this particular operation.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /*
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
+     */
+    private Origin origin;
+
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    private ActionType actionType;
 
     /**
      * Creates an instance of OperationInner class.
@@ -38,7 +56,8 @@ public final class OperationInner {
     }
 
     /**
-     * Get the name property: Name of the operation.
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
      * 
      * @return the name value.
      */
@@ -47,16 +66,17 @@ public final class OperationInner {
     }
 
     /**
-     * Get the origin property: Where the operation is originated.
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
      * 
-     * @return the origin value.
+     * @return the isDataAction value.
      */
-    public String origin() {
-        return this.origin;
+    public Boolean isDataAction() {
+        return this.isDataAction;
     }
 
     /**
-     * Get the display property: Security operation display.
+     * Get the display property: Localized display information for this particular operation.
      * 
      * @return the display value.
      */
@@ -65,7 +85,7 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: Security operation display.
+     * Set the display property: Localized display information for this particular operation.
      * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
@@ -73,6 +93,26 @@ public final class OperationInner {
     public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
+     * @return the origin value.
+     */
+    public Origin origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**
@@ -84,5 +124,49 @@ public final class OperationInner {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationInner.
+     */
+    public static OperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationInner deserializedOperationInner = new OperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationInner.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationInner.origin = Origin.fromString(reader.getString());
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperationInner.actionType = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationInner;
+        });
     }
 }

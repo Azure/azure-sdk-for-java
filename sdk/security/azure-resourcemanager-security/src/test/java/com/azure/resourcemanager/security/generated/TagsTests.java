@@ -14,18 +14,16 @@ public final class TagsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Tags model = BinaryData
-            .fromString(
-                "{\"tags\":{\"dxihc\":\"mvpdvjdhttzaef\",\"bg\":\"rphkmcrjdqnsdfz\",\"euutlwxezwzh\":\"gkylkdghr\"}}")
+            .fromString("{\"tags\":{\"yasiibmiy\":\"dsmexiitdfux\",\"nlj\":\"nnust\",\"mavmq\":\"nmgixh\"}}")
             .toObject(Tags.class);
-        Assertions.assertEquals("mvpdvjdhttzaef", model.tags().get("dxihc"));
+        Assertions.assertEquals("dsmexiitdfux", model.tags().get("yasiibmiy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Tags model = new Tags()
-            .withTags(mapOf("dxihc", "mvpdvjdhttzaef", "bg", "rphkmcrjdqnsdfz", "euutlwxezwzh", "gkylkdghr"));
+        Tags model = new Tags().withTags(mapOf("yasiibmiy", "dsmexiitdfux", "nlj", "nnust", "mavmq", "nmgixh"));
         model = BinaryData.fromObject(model).toObject(Tags.class);
-        Assertions.assertEquals("mvpdvjdhttzaef", model.tags().get("dxihc"));
+        Assertions.assertEquals("dsmexiitdfux", model.tags().get("yasiibmiy"));
     }
 
     // Use "Map.of" if available

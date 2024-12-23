@@ -15,23 +15,25 @@ public final class RulesResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RulesResultsInput model = BinaryData.fromString(
-            "{\"latestScan\":true,\"results\":{\"zhjjklffhmouwq\":[[\"sjabibs\"],[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"]],\"bjbsybb\":[[\"rfzeey\",\"bizikayuhq\"]],\"slthaq\":[[\"vtldgmfpgvmpip\"]],\"hneuyowqkd\":[[\"smwutwbdsrezpd\"]]}}")
+            "{\"latestScan\":false,\"results\":{\"ayhmtnvyqiatkz\":[[\"vfbgofeljagrqmqh\",\"dvriiiojnal\",\"hfkvtvsexsowuel\"],[\"hhahhxvrhmzkwpjg\",\"wspughftqsxhqx\",\"j\",\"ukndxdigrjgu\"],[\"zdmsyqtfi\"],[\"hbotzingamvppho\",\"zqzudph\",\"amvdkfwynwcvtbv\"]],\"semdwzrmu\":[[\"npwzcjaes\",\"vvsccyajguq\",\"hwyg\",\"lvdnkfx\"]],\"wccsnjvcdwxlpqek\":[[\"fcqdpsq\",\"qvpsvuoymg\"],[\"elvezrypq\",\"mfe\"],[\"erqwkyhkobopg\",\"edkowepbqpcrfk\"]]}}")
             .toObject(RulesResultsInput.class);
-        Assertions.assertEquals(true, model.latestScan());
-        Assertions.assertEquals("sjabibs", model.results().get("zhjjklffhmouwq").get(0).get(0));
+        Assertions.assertEquals(false, model.latestScan());
+        Assertions.assertEquals("vfbgofeljagrqmqh", model.results().get("ayhmtnvyqiatkz").get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesResultsInput model = new RulesResultsInput().withLatestScan(true)
-            .withResults(mapOf("zhjjklffhmouwq",
-                Arrays.asList(Arrays.asList("sjabibs"), Arrays.asList("tawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo")),
-                "bjbsybb", Arrays.asList(Arrays.asList("rfzeey", "bizikayuhq")), "slthaq",
-                Arrays.asList(Arrays.asList("vtldgmfpgvmpip")), "hneuyowqkd",
-                Arrays.asList(Arrays.asList("smwutwbdsrezpd"))));
+        RulesResultsInput model = new RulesResultsInput().withLatestScan(false)
+            .withResults(mapOf("ayhmtnvyqiatkz",
+                Arrays.asList(Arrays.asList("vfbgofeljagrqmqh", "dvriiiojnal", "hfkvtvsexsowuel"),
+                    Arrays.asList("hhahhxvrhmzkwpjg", "wspughftqsxhqx", "j", "ukndxdigrjgu"),
+                    Arrays.asList("zdmsyqtfi"), Arrays.asList("hbotzingamvppho", "zqzudph", "amvdkfwynwcvtbv")),
+                "semdwzrmu", Arrays.asList(Arrays.asList("npwzcjaes", "vvsccyajguq", "hwyg", "lvdnkfx")),
+                "wccsnjvcdwxlpqek", Arrays.asList(Arrays.asList("fcqdpsq", "qvpsvuoymg"),
+                    Arrays.asList("elvezrypq", "mfe"), Arrays.asList("erqwkyhkobopg", "edkowepbqpcrfk"))));
         model = BinaryData.fromObject(model).toObject(RulesResultsInput.class);
-        Assertions.assertEquals(true, model.latestScan());
-        Assertions.assertEquals("sjabibs", model.results().get("zhjjklffhmouwq").get(0).get(0));
+        Assertions.assertEquals(false, model.latestScan());
+        Assertions.assertEquals("vfbgofeljagrqmqh", model.results().get("ayhmtnvyqiatkz").get(0).get(0));
     }
 
     // Use "Map.of" if available

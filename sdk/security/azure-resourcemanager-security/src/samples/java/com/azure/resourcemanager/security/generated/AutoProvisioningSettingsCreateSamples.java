@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.AutoProvision;
  */
 public final class AutoProvisioningSettingsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/AutoProvisioningSettings/CreateAutoProvisioningSettingsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * AutoProvisioningSettings/CreateAutoProvisioningSettingsSubscription_example.json
      */
     /**
      * Sample code: Create auto provisioning settings for subscription.

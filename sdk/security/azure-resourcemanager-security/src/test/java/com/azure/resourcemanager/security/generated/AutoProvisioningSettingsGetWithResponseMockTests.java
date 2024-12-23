@@ -22,7 +22,7 @@ public final class AutoProvisioningSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"g\",\"name\":\"esymzqh\",\"type\":\"qpfzlpejtznxlue\"}";
+            = "{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"yvdkgdetszw\",\"name\":\"anzbjekwuyckyvn\",\"type\":\"nsm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,9 @@ public final class AutoProvisioningSettingsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AutoProvisioningSetting response = manager.autoProvisioningSettings()
-            .getWithResponse("kqiyvnd", com.azure.core.util.Context.NONE)
-            .getValue();
+        AutoProvisioningSetting response
+            = manager.autoProvisioningSettings().getWithResponse("hc", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(AutoProvision.ON, response.autoProvision());
+        Assertions.assertEquals(AutoProvision.OFF, response.autoProvision());
     }
 }

@@ -21,7 +21,9 @@ import java.util.Map;
  */
 public final class AlertsSuppressionRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/PutAlertsSuppressionRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/PutAlertsSuppressionRule_example.json
      */
     /**
      * Sample code: Update or create suppression rule for subscription.

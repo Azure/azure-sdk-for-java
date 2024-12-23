@@ -16,22 +16,22 @@ public final class DefenderCspmGcpOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOfferingVmScanners model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"qpgaixwrgrkk\":\"kyfozkbnzxbyp\",\"swqi\":\"erf\"}}}")
+            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"mvgoqpleh\":\"rpbj\"}}}")
             .toObject(DefenderCspmGcpOfferingVmScanners.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("kyfozkbnzxbyp", model.configuration().exclusionTags().get("qpgaixwrgrkk"));
+        Assertions.assertEquals("rpbj", model.configuration().exclusionTags().get("mvgoqpleh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingVmScanners model = new DefenderCspmGcpOfferingVmScanners().withEnabled(false)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("qpgaixwrgrkk", "kyfozkbnzxbyp", "swqi", "erf")));
+                .withExclusionTags(mapOf("mvgoqpleh", "rpbj")));
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingVmScanners.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("kyfozkbnzxbyp", model.configuration().exclusionTags().get("qpgaixwrgrkk"));
+        Assertions.assertEquals("rpbj", model.configuration().exclusionTags().get("mvgoqpleh"));
     }
 
     // Use "Map.of" if available

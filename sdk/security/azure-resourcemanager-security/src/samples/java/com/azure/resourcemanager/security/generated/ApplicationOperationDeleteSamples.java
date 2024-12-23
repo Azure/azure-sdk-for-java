@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApplicationOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/DeleteApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * DeleteApplication_example.json
      */
     /**
      * Sample code: Delete security Application.

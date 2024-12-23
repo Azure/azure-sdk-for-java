@@ -28,7 +28,7 @@ public final class AlertsUpdateResourceGroupLevelStateToActivateWithResponseMock
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateResourceGroupLevelStateToActivateWithResponse("hxgiknr", "ugseiqbroq", "feamz",
+            .updateResourceGroupLevelStateToActivateWithResponse("oljjhcsgz", "oef", "sdttbqkaqdvwo",
                 com.azure.core.util.Context.NONE);
 
     }

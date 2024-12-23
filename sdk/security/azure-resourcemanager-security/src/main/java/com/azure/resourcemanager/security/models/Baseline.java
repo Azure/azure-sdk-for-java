@@ -5,25 +5,29 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Baseline details.
  */
 @Fluent
-public final class Baseline {
+public final class Baseline implements JsonSerializable<Baseline> {
     /*
      * Expected results.
      */
-    @JsonProperty(value = "expectedResults")
     private List<List<String>> expectedResults;
 
     /*
      * Baseline update time (UTC).
      */
-    @JsonProperty(value = "updatedTime")
     private OffsetDateTime updatedTime;
 
     /**
@@ -78,5 +82,49 @@ public final class Baseline {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("expectedResults", this.expectedResults,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("updatedTime",
+            this.updatedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Baseline from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Baseline if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Baseline.
+     */
+    public static Baseline fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Baseline deserializedBaseline = new Baseline();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expectedResults".equals(fieldName)) {
+                    List<List<String>> expectedResults
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedBaseline.expectedResults = expectedResults;
+                } else if ("updatedTime".equals(fieldName)) {
+                    deserializedBaseline.updatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseline;
+        });
     }
 }

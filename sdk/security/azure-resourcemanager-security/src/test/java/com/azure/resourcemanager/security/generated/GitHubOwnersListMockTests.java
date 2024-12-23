@@ -11,7 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwner;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class GitHubOwnersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"sizfwgnpcjni\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-15T20:19:01Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"jjioq\",\"gitHubInternalId\":\"uogdkpnmwrfuqjd\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"xqucnbgibkls\",\"name\":\"wdkouzyvi\",\"type\":\"evbfvxmtsmgkret\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"cetfvgwfwsl\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-05T21:46:34Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"ppvydd\",\"gitHubInternalId\":\"vclrsn\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"p\",\"name\":\"wwqclmdmtfxxepz\",\"type\":\"xzxlcqzfxa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +33,8 @@ public final class GitHubOwnersListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GitHubOwner> response
-            = manager.gitHubOwners().list("nblzrmiukot", "yfjbpnhd", com.azure.core.util.Context.NONE);
+            = manager.gitHubOwners().list("ajdqxymxx", "fr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED,
-            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             response.iterator().next().properties().onboardingState());
     }

@@ -6,23 +6,26 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Workspace setting data.
  */
 @Fluent
-public final class WorkspaceSettingProperties {
+public final class WorkspaceSettingProperties implements JsonSerializable<WorkspaceSettingProperties> {
     /*
      * The full Azure ID of the workspace to save the data in
      */
-    @JsonProperty(value = "workspaceId", required = true)
     private String workspaceId;
 
     /*
-     * All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope
+     * All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting
+     * with more specific scope
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /**
@@ -92,4 +95,44 @@ public final class WorkspaceSettingProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspaceSettingProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceSettingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceSettingProperties.
+     */
+    public static WorkspaceSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceSettingProperties deserializedWorkspaceSettingProperties = new WorkspaceSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedWorkspaceSettingProperties.workspaceId = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedWorkspaceSettingProperties.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceSettingProperties;
+        });
+    }
 }

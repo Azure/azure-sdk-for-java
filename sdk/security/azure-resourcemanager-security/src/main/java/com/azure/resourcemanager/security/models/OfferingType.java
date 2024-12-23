@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -78,6 +77,36 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
     public static final OfferingType CSPM_MONITOR_GIT_LAB = fromString("CspmMonitorGitLab");
 
     /**
+     * Static value CspmMonitorDockerHub for OfferingType.
+     */
+    public static final OfferingType CSPM_MONITOR_DOCKER_HUB = fromString("CspmMonitorDockerHub");
+
+    /**
+     * Static value DefenderForContainersDockerHub for OfferingType.
+     */
+    public static final OfferingType DEFENDER_FOR_CONTAINERS_DOCKER_HUB = fromString("DefenderForContainersDockerHub");
+
+    /**
+     * Static value DefenderCspmDockerHub for OfferingType.
+     */
+    public static final OfferingType DEFENDER_CSPM_DOCKER_HUB = fromString("DefenderCspmDockerHub");
+
+    /**
+     * Static value CspmMonitorJFrog for OfferingType.
+     */
+    public static final OfferingType CSPM_MONITOR_JFROG = fromString("CspmMonitorJFrog");
+
+    /**
+     * Static value DefenderForContainersJFrog for OfferingType.
+     */
+    public static final OfferingType DEFENDER_FOR_CONTAINERS_JFROG = fromString("DefenderForContainersJFrog");
+
+    /**
+     * Static value DefenderCspmJFrog for OfferingType.
+     */
+    public static final OfferingType DEFENDER_CSPM_JFROG = fromString("DefenderCspmJFrog");
+
+    /**
      * Creates a new instance of OfferingType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -92,7 +121,6 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
      * @param name a name to look for.
      * @return the corresponding OfferingType.
      */
-    @JsonCreator
     public static OfferingType fromString(String name) {
         return fromString(name, OfferingType.class);
     }

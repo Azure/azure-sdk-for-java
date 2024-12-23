@@ -20,7 +20,7 @@ public final class ExternalSecuritySolutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"huvnlmdcnutie\",\"id\":\"mizunzbqvioync\",\"name\":\"fqhhvvwzprj\",\"type\":\"aaiaibtvavlya\"}";
+            = "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"axtux\",\"id\":\"rppbi\",\"name\":\"c\",\"type\":\"lygkvuixwo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ExternalSecuritySolutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExternalSecuritySolution response = manager.externalSecuritySolutions()
-            .getWithResponse("fpiqnrjoco", "wfvkywzrq", "iadd", com.azure.core.util.Context.NONE)
+            .getWithResponse("so", "db", "wjsba", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

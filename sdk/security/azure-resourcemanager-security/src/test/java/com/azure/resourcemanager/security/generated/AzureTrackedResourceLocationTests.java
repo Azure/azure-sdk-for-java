@@ -12,14 +12,14 @@ public final class AzureTrackedResourceLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureTrackedResourceLocation model
-            = BinaryData.fromString("{\"location\":\"c\"}").toObject(AzureTrackedResourceLocation.class);
-        Assertions.assertEquals("c", model.location());
+            = BinaryData.fromString("{\"location\":\"eyl\"}").toObject(AzureTrackedResourceLocation.class);
+        Assertions.assertEquals("eyl", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureTrackedResourceLocation model = new AzureTrackedResourceLocation().withLocation("c");
+        AzureTrackedResourceLocation model = new AzureTrackedResourceLocation().withLocation("eyl");
         model = BinaryData.fromObject(model).toObject(AzureTrackedResourceLocation.class);
-        Assertions.assertEquals("c", model.location());
+        Assertions.assertEquals("eyl", model.location());
     }
 }

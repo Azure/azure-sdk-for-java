@@ -12,20 +12,20 @@ public final class DefenderForContainersGcpOfferingNativeCloudConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingNativeCloudConnection model = BinaryData
-            .fromString("{\"serviceAccountEmailAddress\":\"lzqjimejtgzjxx\",\"workloadIdentityProviderId\":\"e\"}")
+            .fromString(
+                "{\"serviceAccountEmailAddress\":\"wihvaangqtnh\",\"workloadIdentityProviderId\":\"fdmfdvbbaexxjfwt\"}")
             .toObject(DefenderForContainersGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("lzqjimejtgzjxx", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("e", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wihvaangqtnh", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("fdmfdvbbaexxjfwt", model.workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingNativeCloudConnection model
-            = new DefenderForContainersGcpOfferingNativeCloudConnection()
-                .withServiceAccountEmailAddress("lzqjimejtgzjxx")
-                .withWorkloadIdentityProviderId("e");
+            = new DefenderForContainersGcpOfferingNativeCloudConnection().withServiceAccountEmailAddress("wihvaangqtnh")
+                .withWorkloadIdentityProviderId("fdmfdvbbaexxjfwt");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("lzqjimejtgzjxx", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("e", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wihvaangqtnh", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("fdmfdvbbaexxjfwt", model.workloadIdentityProviderId());
     }
 }

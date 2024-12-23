@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class InfoTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InfoType model = BinaryData.fromString(
-            "{\"name\":\"nhdwdigumbnra\",\"id\":\"2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a\",\"description\":\"zptjazysd\"}")
+        InfoType model = BinaryData
+            .fromString(
+                "{\"name\":\"gmvecactxmw\",\"id\":\"41b7288a-2ea8-445e-a292-e499b0993836\",\"description\":\"yowc\"}")
             .toObject(InfoType.class);
-        Assertions.assertEquals("nhdwdigumbnra", model.name());
-        Assertions.assertEquals(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"), model.id());
-        Assertions.assertEquals("zptjazysd", model.description());
+        Assertions.assertEquals("gmvecactxmw", model.name());
+        Assertions.assertEquals(UUID.fromString("41b7288a-2ea8-445e-a292-e499b0993836"), model.id());
+        Assertions.assertEquals("yowc", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InfoType model = new InfoType().withName("nhdwdigumbnra")
-            .withId(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"))
-            .withDescription("zptjazysd");
+        InfoType model = new InfoType().withName("gmvecactxmw")
+            .withId(UUID.fromString("41b7288a-2ea8-445e-a292-e499b0993836"))
+            .withDescription("yowc");
         model = BinaryData.fromObject(model).toObject(InfoType.class);
-        Assertions.assertEquals("nhdwdigumbnra", model.name());
-        Assertions.assertEquals(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"), model.id());
-        Assertions.assertEquals("zptjazysd", model.description());
+        Assertions.assertEquals("gmvecactxmw", model.name());
+        Assertions.assertEquals(UUID.fromString("41b7288a-2ea8-445e-a292-e499b0993836"), model.id());
+        Assertions.assertEquals("yowc", model.description());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwnerProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -14,19 +13,16 @@ public final class GitHubOwnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"xkzrn\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-03T14:02Z\",\"provisioningState\":\"PendingDeletion\",\"ownerUrl\":\"huosgwqpsqaz\",\"gitHubInternalId\":\"qodvqgcnbhcbmj\",\"onboardingState\":\"NotApplicable\"}")
+            "{\"provisioningStatusMessage\":\"o\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-15T23:12:25Z\",\"provisioningState\":\"Pending\",\"ownerUrl\":\"qjwt\",\"gitHubInternalId\":\"tgvgzp\",\"onboardingState\":\"OnboardedByOtherConnector\"}")
             .toObject(GitHubOwnerProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitHubOwnerProperties model
-            = new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.PENDING_DELETION)
-                .withOnboardingState(OnboardingState.NOT_APPLICABLE);
+            = new GitHubOwnerProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR);
         model = BinaryData.fromObject(model).toObject(GitHubOwnerProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
     }
 }
