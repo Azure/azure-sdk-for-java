@@ -203,11 +203,10 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     Mono<PrivateLinkResource> getPrivateLinkResourceAsync(String groupName);
 
     /**
-     * Gets the specific private link resource group.
-     *
+     * Gets the specific private link resource.
      *
      * @param groupName group name of private link resource
-     * @return the specific private link resource group
+     * @return the specific private link resource
      */
     PrivateLinkResource getPrivateLinkResource(String groupName);
 
