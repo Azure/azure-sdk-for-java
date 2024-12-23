@@ -292,7 +292,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     void regenerateKey(KeyKind keyKind);
 
     /**
-     * Gets a representation of the deferred computation of this call.
+     * A deferred emitter that regenerates secret keys.
      *
      * @param keyKind the key kind
      * @return a representation of the deferred computation of this call
