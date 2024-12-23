@@ -25,7 +25,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     Refreshable<CosmosDBAccount>, Updatable<CosmosDBAccount.Update>, SupportsUpdatingPrivateEndpointConnection {
 
     /**
-     * Gets indicates the type of database account.
+     * Gets the type of database account.
      *
      * @return indicates the type of database account
      */
@@ -153,14 +153,14 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     PagedFlux<SqlDatabase> listSqlDatabasesAsync();
 
     /**
-     * Check whether write is enabled for multiple locations.
+     * Checks whether write is enabled for multiple locations.
      *
      * @return whether write is enabled for multiple locations or not
      */
     boolean multipleWriteLocationsEnabled();
 
     /**
-     * CHeck whether cassandra connector is enabled.
+     * Checks whether cassandra connector is enabled.
      *
      * @return whether cassandra connector is enabled or not.
      */
@@ -174,7 +174,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
     ConnectorOffer cassandraConnectorOffer();
 
     /**
-     * Check whether metadata write access is disabled.
+     * Checks whether metadata write access is disabled.
      *
      * @return whether metadata write access is disabled or not.
      */
