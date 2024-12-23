@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateSqlPoolRestorePointDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateSqlPoolRestorePointDefinition model = BinaryData.fromString("{\"restorePointLabel\":\"vq\"}")
+        CreateSqlPoolRestorePointDefinition model = BinaryData.fromString("{\"restorePointLabel\":\"dzf\"}")
             .toObject(CreateSqlPoolRestorePointDefinition.class);
-        Assertions.assertEquals("vq", model.restorePointLabel());
+        Assertions.assertEquals("dzf", model.restorePointLabel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateSqlPoolRestorePointDefinition model
-            = new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("vq");
+            = new CreateSqlPoolRestorePointDefinition().withRestorePointLabel("dzf");
         model = BinaryData.fromObject(model).toObject(CreateSqlPoolRestorePointDefinition.class);
-        Assertions.assertEquals("vq", model.restorePointLabel());
+        Assertions.assertEquals("dzf", model.restorePointLabel());
     }
 }

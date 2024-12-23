@@ -27,7 +27,7 @@ public final class PrivateLinkHubsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateLinkHubs().delete("cjubkhjozfymcwm", "upyvqyvliq", com.azure.core.util.Context.NONE);
+        manager.privateLinkHubs().delete("obsmf", "wiyjvzuko", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class WorkspaceAadAdminsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspaceAadAdmin.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Delete workspace active directory admin.

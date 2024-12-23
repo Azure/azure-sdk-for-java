@@ -26,11 +26,6 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
      */
     private WorkspaceKeyDetails key;
 
-    /*
-     * Key encryption key
-     */
-    private KekIdentityProperties kekIdentity;
-
     /**
      * Creates an instance of CustomerManagedKeyDetails class.
      */
@@ -67,26 +62,6 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
     }
 
     /**
-     * Get the kekIdentity property: Key encryption key.
-     * 
-     * @return the kekIdentity value.
-     */
-    public KekIdentityProperties kekIdentity() {
-        return this.kekIdentity;
-    }
-
-    /**
-     * Set the kekIdentity property: Key encryption key.
-     * 
-     * @param kekIdentity the kekIdentity value to set.
-     * @return the CustomerManagedKeyDetails object itself.
-     */
-    public CustomerManagedKeyDetails withKekIdentity(KekIdentityProperties kekIdentity) {
-        this.kekIdentity = kekIdentity;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,9 +69,6 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
     public void validate() {
         if (key() != null) {
             key().validate();
-        }
-        if (kekIdentity() != null) {
-            kekIdentity().validate();
         }
     }
 
@@ -107,7 +79,6 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("key", this.key);
-        jsonWriter.writeJsonField("kekIdentity", this.kekIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,8 +101,6 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
                     deserializedCustomerManagedKeyDetails.status = reader.getString();
                 } else if ("key".equals(fieldName)) {
                     deserializedCustomerManagedKeyDetails.key = WorkspaceKeyDetails.fromJson(reader);
-                } else if ("kekIdentity".equals(fieldName)) {
-                    deserializedCustomerManagedKeyDetails.kekIdentity = KekIdentityProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

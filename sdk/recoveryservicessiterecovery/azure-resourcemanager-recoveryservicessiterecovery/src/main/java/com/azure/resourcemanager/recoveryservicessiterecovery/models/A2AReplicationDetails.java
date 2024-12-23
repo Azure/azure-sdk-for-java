@@ -5,349 +5,311 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * A2A provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * The initial primary availability zone.
      */
-    @JsonProperty(value = "initialPrimaryZone", access = JsonProperty.Access.WRITE_ONLY)
     private String initialPrimaryZone;
 
     /*
      * The initial primary fabric location.
      */
-    @JsonProperty(value = "initialPrimaryFabricLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String initialPrimaryFabricLocation;
 
     /*
      * The initial recovery availability zone.
      */
-    @JsonProperty(value = "initialRecoveryZone", access = JsonProperty.Access.WRITE_ONLY)
     private String initialRecoveryZone;
 
     /*
      * The initial primary extended location.
      */
-    @JsonProperty(value = "initialPrimaryExtendedLocation")
     private ExtendedLocation initialPrimaryExtendedLocation;
 
     /*
      * The initial recovery extended location.
      */
-    @JsonProperty(value = "initialRecoveryExtendedLocation")
     private ExtendedLocation initialRecoveryExtendedLocation;
 
     /*
      * The initial recovery fabric location.
      */
-    @JsonProperty(value = "initialRecoveryFabricLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String initialRecoveryFabricLocation;
 
     /*
      * The multi vm group Id.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The multi vm group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * Whether Multi VM group is auto created or specified by user.
      */
-    @JsonProperty(value = "multiVmGroupCreateOption")
     private MultiVmGroupCreateOption multiVmGroupCreateOption;
 
     /*
      * The management Id.
      */
-    @JsonProperty(value = "managementId")
     private String managementId;
 
     /*
      * The list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks")
     private List<A2AProtectedDiskDetails> protectedDisks;
 
     /*
      * The list of unprotected disks.
      */
-    @JsonProperty(value = "unprotectedDisks")
     private List<A2AUnprotectedDiskDetails> unprotectedDisks;
 
     /*
      * The list of protected managed disks.
      */
-    @JsonProperty(value = "protectedManagedDisks")
     private List<A2AProtectedManagedDiskDetails> protectedManagedDisks;
 
     /*
      * The recovery boot diagnostic storage account Arm Id.
      */
-    @JsonProperty(value = "recoveryBootDiagStorageAccountId")
     private String recoveryBootDiagStorageAccountId;
 
     /*
      * Primary fabric location.
      */
-    @JsonProperty(value = "primaryFabricLocation")
     private String primaryFabricLocation;
 
     /*
      * The recovery fabric location.
      */
-    @JsonProperty(value = "recoveryFabricLocation")
     private String recoveryFabricLocation;
 
     /*
      * The type of operating system.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The size of recovery virtual machine.
      */
-    @JsonProperty(value = "recoveryAzureVMSize")
     private String recoveryAzureVMSize;
 
     /*
      * The name of recovery virtual machine.
      */
-    @JsonProperty(value = "recoveryAzureVMName")
     private String recoveryAzureVMName;
 
     /*
      * The recovery resource group.
      */
-    @JsonProperty(value = "recoveryAzureResourceGroupId")
     private String recoveryAzureResourceGroupId;
 
     /*
      * The recovery cloud service.
      */
-    @JsonProperty(value = "recoveryCloudService")
     private String recoveryCloudService;
 
     /*
      * The recovery availability set.
      */
-    @JsonProperty(value = "recoveryAvailabilitySet")
     private String recoveryAvailabilitySet;
 
     /*
      * The recovery virtual network.
      */
-    @JsonProperty(value = "selectedRecoveryAzureNetworkId")
     private String selectedRecoveryAzureNetworkId;
 
     /*
      * The test failover virtual network.
      */
-    @JsonProperty(value = "selectedTfoAzureNetworkId")
     private String selectedTfoAzureNetworkId;
 
     /*
      * The virtual machine nic details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * The synced configuration details.
      */
-    @JsonProperty(value = "vmSyncedConfigDetails")
     private AzureToAzureVmSyncedConfigDetails vmSyncedConfigDetails;
 
     /*
      * The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
      */
-    @JsonProperty(value = "monitoringPercentageCompletion")
     private Integer monitoringPercentageCompletion;
 
     /*
      * The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
      */
-    @JsonProperty(value = "monitoringJobType")
     private String monitoringJobType;
 
     /*
      * The last heartbeat received from the source server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * The agent version.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * Agent expiry date.
      */
-    @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
     /*
      * A value indicating whether replication agent update is required.
      */
-    @JsonProperty(value = "isReplicationAgentUpdateRequired")
     private Boolean isReplicationAgentUpdateRequired;
 
     /*
      * Agent certificate expiry date.
      */
-    @JsonProperty(value = "agentCertificateExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime agentCertificateExpiryDate;
 
     /*
      * A value indicating whether agent certificate update is required.
      */
-    @JsonProperty(value = "isReplicationAgentCertificateUpdateRequired")
     private Boolean isReplicationAgentCertificateUpdateRequired;
 
     /*
      * The recovery fabric object Id.
      */
-    @JsonProperty(value = "recoveryFabricObjectId")
     private String recoveryFabricObjectId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
-     * An id associated with the PE that survives actions like switch protection which change the backing PE/CPE
-     * objects internally.The lifecycle id gets carried forward to have a link/continuity in being able to have an Id
-     * that denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
+     * An id associated with the PE that survives actions like switch protection which change the backing PE/CPE objects
+     * internally.The lifecycle id gets carried forward to have a link/continuity in being able to have an Id that
+     * denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
      */
-    @JsonProperty(value = "lifecycleId")
     private String lifecycleId;
 
     /*
      * The test failover fabric object Id.
      */
-    @JsonProperty(value = "testFailoverRecoveryFabricObjectId")
     private String testFailoverRecoveryFabricObjectId;
 
     /*
      * The last RPO value in seconds.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * The time (in UTC) when the last RPO value was calculated by Protection Service.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The primary availability zone.
      */
-    @JsonProperty(value = "primaryAvailabilityZone")
     private String primaryAvailabilityZone;
 
     /*
      * The recovery availability zone.
      */
-    @JsonProperty(value = "recoveryAvailabilityZone")
     private String recoveryAvailabilityZone;
 
     /*
      * The primary Extended Location.
      */
-    @JsonProperty(value = "primaryExtendedLocation")
     private ExtendedLocation primaryExtendedLocation;
 
     /*
      * The recovery Extended Location.
      */
-    @JsonProperty(value = "recoveryExtendedLocation")
     private ExtendedLocation recoveryExtendedLocation;
 
     /*
      * The encryption type of the VM.
      */
-    @JsonProperty(value = "vmEncryptionType", access = JsonProperty.Access.WRITE_ONLY)
     private VmEncryptionType vmEncryptionType;
 
     /*
      * The test failover vm name.
      */
-    @JsonProperty(value = "tfoAzureVMName")
     private String tfoAzureVMName;
 
     /*
      * The recovery azure generation.
      */
-    @JsonProperty(value = "recoveryAzureGeneration", access = JsonProperty.Access.WRITE_ONLY)
     private String recoveryAzureGeneration;
 
     /*
      * The recovery proximity placement group Id.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroupId")
     private String recoveryProximityPlacementGroupId;
 
     /*
      * A value indicating whether the auto protection is enabled.
      */
-    @JsonProperty(value = "autoProtectionOfDataDisk")
     private AutoProtectionOfDataDisk autoProtectionOfDataDisk;
 
     /*
      * The recovery virtual machine scale set id.
      */
-    @JsonProperty(value = "recoveryVirtualMachineScaleSetId")
     private String recoveryVirtualMachineScaleSetId;
 
     /*
      * The recovery capacity reservation group Id.
      */
-    @JsonProperty(value = "recoveryCapacityReservationGroupId")
     private String recoveryCapacityReservationGroupId;
 
     /*
      * A value indicating the churn option selected by user.
      */
-    @JsonProperty(value = "churnOptionSelected", access = JsonProperty.Access.WRITE_ONLY)
     private ChurnOptionSelected churnOptionSelected;
 
     /**
      * Creates an instance of A2AReplicationDetails class.
      */
     public A2AReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -847,8 +809,8 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
-     * monitoring job is defined by MonitoringJobType property.
+     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
+     * job is defined by MonitoringJobType property.
      * 
      * @return the monitoringPercentageCompletion value.
      */
@@ -857,8 +819,8 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
-     * monitoring job is defined by MonitoringJobType property.
+     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
+     * job is defined by MonitoringJobType property.
      * 
      * @param monitoringPercentageCompletion the monitoringPercentageCompletion value to set.
      * @return the A2AReplicationDetails object itself.
@@ -982,8 +944,8 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Get the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate
-     * update is required.
+     * Get the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate update
+     * is required.
      * 
      * @return the isReplicationAgentCertificateUpdateRequired value.
      */
@@ -992,8 +954,8 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Set the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate
-     * update is required.
+     * Set the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate update
+     * is required.
      * 
      * @param isReplicationAgentCertificateUpdateRequired the isReplicationAgentCertificateUpdateRequired value to set.
      * @return the A2AReplicationDetails object itself.
@@ -1366,7 +1328,6 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
      */
     @Override
     public void validate() {
-        super.validate();
         if (initialPrimaryExtendedLocation() != null) {
             initialPrimaryExtendedLocation().validate();
         }
@@ -1394,5 +1355,227 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
         if (recoveryExtendedLocation() != null) {
             recoveryExtendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeJsonField("initialPrimaryExtendedLocation", this.initialPrimaryExtendedLocation);
+        jsonWriter.writeJsonField("initialRecoveryExtendedLocation", this.initialRecoveryExtendedLocation);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmGroupCreateOption",
+            this.multiVmGroupCreateOption == null ? null : this.multiVmGroupCreateOption.toString());
+        jsonWriter.writeStringField("managementId", this.managementId);
+        jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("unprotectedDisks", this.unprotectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("protectedManagedDisks", this.protectedManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryBootDiagStorageAccountId", this.recoveryBootDiagStorageAccountId);
+        jsonWriter.writeStringField("primaryFabricLocation", this.primaryFabricLocation);
+        jsonWriter.writeStringField("recoveryFabricLocation", this.recoveryFabricLocation);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("recoveryAzureVMSize", this.recoveryAzureVMSize);
+        jsonWriter.writeStringField("recoveryAzureVMName", this.recoveryAzureVMName);
+        jsonWriter.writeStringField("recoveryAzureResourceGroupId", this.recoveryAzureResourceGroupId);
+        jsonWriter.writeStringField("recoveryCloudService", this.recoveryCloudService);
+        jsonWriter.writeStringField("recoveryAvailabilitySet", this.recoveryAvailabilitySet);
+        jsonWriter.writeStringField("selectedRecoveryAzureNetworkId", this.selectedRecoveryAzureNetworkId);
+        jsonWriter.writeStringField("selectedTfoAzureNetworkId", this.selectedTfoAzureNetworkId);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vmSyncedConfigDetails", this.vmSyncedConfigDetails);
+        jsonWriter.writeNumberField("monitoringPercentageCompletion", this.monitoringPercentageCompletion);
+        jsonWriter.writeStringField("monitoringJobType", this.monitoringJobType);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agentExpiryDate",
+            this.agentExpiryDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agentExpiryDate));
+        jsonWriter.writeBooleanField("isReplicationAgentUpdateRequired", this.isReplicationAgentUpdateRequired);
+        jsonWriter.writeBooleanField("isReplicationAgentCertificateUpdateRequired",
+            this.isReplicationAgentCertificateUpdateRequired);
+        jsonWriter.writeStringField("recoveryFabricObjectId", this.recoveryFabricObjectId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeStringField("lifecycleId", this.lifecycleId);
+        jsonWriter.writeStringField("testFailoverRecoveryFabricObjectId", this.testFailoverRecoveryFabricObjectId);
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeStringField("primaryAvailabilityZone", this.primaryAvailabilityZone);
+        jsonWriter.writeStringField("recoveryAvailabilityZone", this.recoveryAvailabilityZone);
+        jsonWriter.writeJsonField("primaryExtendedLocation", this.primaryExtendedLocation);
+        jsonWriter.writeJsonField("recoveryExtendedLocation", this.recoveryExtendedLocation);
+        jsonWriter.writeStringField("tfoAzureVMName", this.tfoAzureVMName);
+        jsonWriter.writeStringField("recoveryProximityPlacementGroupId", this.recoveryProximityPlacementGroupId);
+        jsonWriter.writeStringField("autoProtectionOfDataDisk",
+            this.autoProtectionOfDataDisk == null ? null : this.autoProtectionOfDataDisk.toString());
+        jsonWriter.writeStringField("recoveryVirtualMachineScaleSetId", this.recoveryVirtualMachineScaleSetId);
+        jsonWriter.writeStringField("recoveryCapacityReservationGroupId", this.recoveryCapacityReservationGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AReplicationDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AReplicationDetails.
+     */
+    public static A2AReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AReplicationDetails deserializedA2AReplicationDetails = new A2AReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.instanceType = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.fabricObjectId = reader.getString();
+                } else if ("initialPrimaryZone".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialPrimaryZone = reader.getString();
+                } else if ("initialPrimaryFabricLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialPrimaryFabricLocation = reader.getString();
+                } else if ("initialRecoveryZone".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialRecoveryZone = reader.getString();
+                } else if ("initialPrimaryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialPrimaryExtendedLocation
+                        = ExtendedLocation.fromJson(reader);
+                } else if ("initialRecoveryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialRecoveryExtendedLocation
+                        = ExtendedLocation.fromJson(reader);
+                } else if ("initialRecoveryFabricLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.initialRecoveryFabricLocation = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.multiVmGroupId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.multiVmGroupName = reader.getString();
+                } else if ("multiVmGroupCreateOption".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.multiVmGroupCreateOption
+                        = MultiVmGroupCreateOption.fromString(reader.getString());
+                } else if ("managementId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.managementId = reader.getString();
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<A2AProtectedDiskDetails> protectedDisks
+                        = reader.readArray(reader1 -> A2AProtectedDiskDetails.fromJson(reader1));
+                    deserializedA2AReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("unprotectedDisks".equals(fieldName)) {
+                    List<A2AUnprotectedDiskDetails> unprotectedDisks
+                        = reader.readArray(reader1 -> A2AUnprotectedDiskDetails.fromJson(reader1));
+                    deserializedA2AReplicationDetails.unprotectedDisks = unprotectedDisks;
+                } else if ("protectedManagedDisks".equals(fieldName)) {
+                    List<A2AProtectedManagedDiskDetails> protectedManagedDisks
+                        = reader.readArray(reader1 -> A2AProtectedManagedDiskDetails.fromJson(reader1));
+                    deserializedA2AReplicationDetails.protectedManagedDisks = protectedManagedDisks;
+                } else if ("recoveryBootDiagStorageAccountId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryBootDiagStorageAccountId = reader.getString();
+                } else if ("primaryFabricLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.primaryFabricLocation = reader.getString();
+                } else if ("recoveryFabricLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryFabricLocation = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.osType = reader.getString();
+                } else if ("recoveryAzureVMSize".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAzureVMSize = reader.getString();
+                } else if ("recoveryAzureVMName".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAzureVMName = reader.getString();
+                } else if ("recoveryAzureResourceGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAzureResourceGroupId = reader.getString();
+                } else if ("recoveryCloudService".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryCloudService = reader.getString();
+                } else if ("recoveryAvailabilitySet".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAvailabilitySet = reader.getString();
+                } else if ("selectedRecoveryAzureNetworkId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.selectedRecoveryAzureNetworkId = reader.getString();
+                } else if ("selectedTfoAzureNetworkId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.selectedTfoAzureNetworkId = reader.getString();
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedA2AReplicationDetails.vmNics = vmNics;
+                } else if ("vmSyncedConfigDetails".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.vmSyncedConfigDetails
+                        = AzureToAzureVmSyncedConfigDetails.fromJson(reader);
+                } else if ("monitoringPercentageCompletion".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.monitoringPercentageCompletion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("monitoringJobType".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.monitoringJobType = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.agentVersion = reader.getString();
+                } else if ("agentExpiryDate".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.agentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isReplicationAgentUpdateRequired".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.isReplicationAgentUpdateRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("agentCertificateExpiryDate".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.agentCertificateExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isReplicationAgentCertificateUpdateRequired".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.isReplicationAgentCertificateUpdateRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoveryFabricObjectId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryFabricObjectId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("lifecycleId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.lifecycleId = reader.getString();
+                } else if ("testFailoverRecoveryFabricObjectId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.testFailoverRecoveryFabricObjectId = reader.getString();
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.rpoInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("primaryAvailabilityZone".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.primaryAvailabilityZone = reader.getString();
+                } else if ("recoveryAvailabilityZone".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAvailabilityZone = reader.getString();
+                } else if ("primaryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.primaryExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("recoveryExtendedLocation".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryExtendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("vmEncryptionType".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.vmEncryptionType
+                        = VmEncryptionType.fromString(reader.getString());
+                } else if ("tfoAzureVMName".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.tfoAzureVMName = reader.getString();
+                } else if ("recoveryAzureGeneration".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryAzureGeneration = reader.getString();
+                } else if ("recoveryProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryProximityPlacementGroupId = reader.getString();
+                } else if ("autoProtectionOfDataDisk".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.autoProtectionOfDataDisk
+                        = AutoProtectionOfDataDisk.fromString(reader.getString());
+                } else if ("recoveryVirtualMachineScaleSetId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryVirtualMachineScaleSetId = reader.getString();
+                } else if ("recoveryCapacityReservationGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.recoveryCapacityReservationGroupId = reader.getString();
+                } else if ("churnOptionSelected".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.churnOptionSelected
+                        = ChurnOptionSelected.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AReplicationDetails;
+        });
     }
 }

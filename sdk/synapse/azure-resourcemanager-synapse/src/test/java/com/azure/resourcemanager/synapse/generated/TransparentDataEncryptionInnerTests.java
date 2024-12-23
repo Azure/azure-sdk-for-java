@@ -13,7 +13,7 @@ public final class TransparentDataEncryptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransparentDataEncryptionInner model = BinaryData.fromString(
-            "{\"location\":\"t\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"rxcyjmoad\",\"name\":\"uvarmywdmjsjq\",\"type\":\"jhhyxxrwlycoduhp\"}")
+            "{\"location\":\"sttijfybvp\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"sgsgbdhu\",\"name\":\"qgnjdgkynscli\",\"type\":\"hzvhxnkomtkubo\"}")
             .toObject(TransparentDataEncryptionInner.class);
         Assertions.assertEquals(TransparentDataEncryptionStatus.ENABLED, model.status());
     }
