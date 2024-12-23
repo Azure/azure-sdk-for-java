@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class AgentStatus extends ExpandableStringEnum<AgentStatus> {
      * @param name a name to look for.
      * @return the corresponding AgentStatus.
      */
-    @JsonCreator
     public static AgentStatus fromString(String name) {
         return fromString(name, AgentStatus.class);
     }

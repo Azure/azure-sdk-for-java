@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for StorageMoverClient class.
+ * The interface for StorageMoverManagementClient class.
  */
-public interface StorageMoverClient {
+public interface StorageMoverManagementClient {
     /**
      * Gets The ID of the target subscription.
      * 

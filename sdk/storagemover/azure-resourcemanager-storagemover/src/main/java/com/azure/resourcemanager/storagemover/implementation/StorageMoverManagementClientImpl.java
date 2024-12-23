@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +29,7 @@ import com.azure.resourcemanager.storagemover.fluent.JobDefinitionsClient;
 import com.azure.resourcemanager.storagemover.fluent.JobRunsClient;
 import com.azure.resourcemanager.storagemover.fluent.OperationsClient;
 import com.azure.resourcemanager.storagemover.fluent.ProjectsClient;
-import com.azure.resourcemanager.storagemover.fluent.StorageMoverClient;
+import com.azure.resourcemanager.storagemover.fluent.StorageMoverManagementClient;
 import com.azure.resourcemanager.storagemover.fluent.StorageMoversClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -41,10 +41,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the StorageMoverClientImpl type.
+ * Initializes a new instance of the StorageMoverManagementClientImpl type.
  */
-@ServiceClient(builder = StorageMoverClientBuilder.class)
-public final class StorageMoverClientImpl implements StorageMoverClient {
+@ServiceClient(builder = StorageMoverManagementClientBuilder.class)
+public final class StorageMoverManagementClientImpl implements StorageMoverManagementClient {
     /**
      * The ID of the target subscription.
      */
@@ -228,7 +228,7 @@ public final class StorageMoverClientImpl implements StorageMoverClient {
     }
 
     /**
-     * Initializes an instance of StorageMoverClient client.
+     * Initializes an instance of StorageMoverManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -237,8 +237,8 @@ public final class StorageMoverClientImpl implements StorageMoverClient {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    StorageMoverClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String subscriptionId, String endpoint) {
+    StorageMoverManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -380,5 +380,5 @@ public final class StorageMoverClientImpl implements StorageMoverClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(StorageMoverClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageMoverManagementClientImpl.class);
 }
