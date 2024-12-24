@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Builder class used to instantiate both synchronous and asynchronous {@link WeatherClient} clients.
+ */
 @ServiceClientBuilder(serviceClients = { WeatherClient.class, WeatherAsyncClient.class })
 public final class WeatherClientBuilder implements AzureKeyCredentialTrait<WeatherClientBuilder>,
     AzureSasCredentialTrait<WeatherClientBuilder>, TokenCredentialTrait<WeatherClientBuilder>,
