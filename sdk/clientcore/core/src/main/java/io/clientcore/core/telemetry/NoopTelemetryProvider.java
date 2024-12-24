@@ -1,22 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry;
 
-import io.clientcore.core.observability.tracing.Span;
-import io.clientcore.core.observability.tracing.SpanBuilder;
-import io.clientcore.core.observability.tracing.SpanContext;
-import io.clientcore.core.observability.tracing.SpanKind;
-import io.clientcore.core.observability.tracing.Tracer;
+import io.clientcore.core.telemetry.tracing.Span;
+import io.clientcore.core.telemetry.tracing.SpanBuilder;
+import io.clientcore.core.telemetry.tracing.SpanContext;
+import io.clientcore.core.telemetry.tracing.SpanKind;
+import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.Context;
 
 import java.util.Objects;
 
-class NoopObservabilityProvider implements ObservabilityProvider {
-    static final ObservabilityProvider NOOP_PROVIDER = new NoopObservabilityProvider();
+class NoopTelemetryProvider implements TelemetryProvider {
+    static final TelemetryProvider NOOP_PROVIDER = new NoopTelemetryProvider();
 
     @Override
-    public Tracer getTracer(ObservabilityOptions<?> applicationOptions, LibraryObservabilityOptions libraryOptions) {
+    public Tracer getTracer(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         return NOOP_TRACER;
     }

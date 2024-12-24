@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry;
 
-import io.clientcore.core.observability.tracing.Span;
-import io.clientcore.core.observability.tracing.SpanKind;
-import io.clientcore.core.observability.tracing.Tracer;
+import io.clientcore.core.telemetry.tracing.Span;
+import io.clientcore.core.telemetry.tracing.SpanKind;
+import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -28,12 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TracerTests {
-    private static final LibraryObservabilityOptions DEFAULT_LIB_OPTIONS
-        = new LibraryObservabilityOptions("test-library");
+    private static final LibraryTelemetryOptions DEFAULT_LIB_OPTIONS = new LibraryTelemetryOptions("test-library");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private ObservabilityOptions<OpenTelemetry> otelOptions;
+    private TelemetryOptions<OpenTelemetry> otelOptions;
 
     @BeforeEach
     public void setUp() {
@@ -41,7 +40,7 @@ public class TracerTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new ObservabilityOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
     }
 
     @AfterEach
@@ -53,7 +52,7 @@ public class TracerTests {
     @SuppressWarnings("try")
     @Test
     public void testSpan() {
-        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
         Span span = tracer.spanBuilder("test-span")
             .setAttribute("builder-string-attribute", "string")
             .setAttribute("builder-int-attribute", 42)
@@ -100,7 +99,7 @@ public class TracerTests {
     @ParameterizedTest
     @MethodSource("kindSource")
     public void testKinds(SpanKind kind, io.opentelemetry.api.trace.SpanKind expectedKind) {
-        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
         Span span = tracer.spanBuilder("test-span").setSpanKind(kind).startSpan();
 
         span.end();
@@ -114,7 +113,7 @@ public class TracerTests {
     @SuppressWarnings("try")
     @Test
     public void implicitParent() throws Exception {
-        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
@@ -136,12 +135,12 @@ public class TracerTests {
 
     @Test
     public void explicitParent() throws Exception {
-        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
         Span child = tracer.spanBuilder("child")
-            .setParent(Context.of(ObservabilityProvider.TRACE_CONTEXT_KEY,
+            .setParent(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY,
                 parent.storeInContext(io.opentelemetry.context.Context.current())))
             .startSpan();
         child.end();
@@ -158,10 +157,10 @@ public class TracerTests {
 
     @Test
     public void explicitParentWrongType() {
-        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         Span child = tracer.spanBuilder("child")
-            .setParent(Context.of(ObservabilityProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"))
+            .setParent(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"))
             .startSpan();
         child.end();
 

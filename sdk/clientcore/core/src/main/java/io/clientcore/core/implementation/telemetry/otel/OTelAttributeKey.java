@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.observability.otel;
+package io.clientcore.core.implementation.telemetry.otel;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.util.ClientLogger;
 
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 
 public class OTelAttributeKey {
     private static final ClientLogger LOGGER = new ClientLogger(OTelAttributeKey.class);

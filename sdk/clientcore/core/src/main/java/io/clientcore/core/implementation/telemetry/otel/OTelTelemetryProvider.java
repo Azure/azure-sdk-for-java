@@ -1,32 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.observability.otel;
+package io.clientcore.core.implementation.telemetry.otel;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.observability.otel.tracing.OTelTracer;
-import io.clientcore.core.implementation.observability.otel.tracing.OTelTracerBuilder;
-import io.clientcore.core.observability.LibraryObservabilityOptions;
-import io.clientcore.core.observability.ObservabilityOptions;
-import io.clientcore.core.observability.ObservabilityProvider;
-import io.clientcore.core.observability.tracing.Tracer;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracer;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracerBuilder;
+import io.clientcore.core.telemetry.LibraryTelemetryOptions;
+import io.clientcore.core.telemetry.TelemetryOptions;
+import io.clientcore.core.telemetry.TelemetryProvider;
+import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Objects;
 
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.OTEL_CLASS;
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.OTEL_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 
-public class OTelObservabilityProvider implements ObservabilityProvider {
-    public static final ObservabilityProvider INSTANCE = new OTelObservabilityProvider();
+public class OTelTelemetryProvider implements TelemetryProvider {
+    public static final TelemetryProvider INSTANCE = new OTelTelemetryProvider();
     private static final ReflectiveInvoker GET_PROVIDER_INVOKER;
     private static final ReflectiveInvoker GET_GLOBAL_PROVIDER_INVOKER;
     private static final ReflectiveInvoker GET_TRACER_BUILDER_INVOKER;
 
     private static final Object NOOP_PROVIDER;
-    private static final ClientLogger LOGGER = new ClientLogger(OTelObservabilityProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OTelTelemetryProvider.class);
     static {
         ReflectiveInvoker getProviderInvoker = null;
         ReflectiveInvoker getGlobalProviderInvoker = null;
@@ -59,7 +59,7 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
     }
 
     @Override
-    public Tracer getTracer(ObservabilityOptions<?> applicationOptions, LibraryObservabilityOptions libraryOptions) {
+    public Tracer getTracer(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
 
         if (!OTelInitializer.INSTANCE.isInitialized()
@@ -83,12 +83,12 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
     private Object getTracerProvider(Object otel) {
         if (otel != null && !OTEL_CLASS.isInstance(otel)) {
             IllegalArgumentException error
-                = new IllegalArgumentException("Observability provider is not an instance of " + OTEL_CLASS.getName());
+                = new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName());
 
             throw LOGGER.atError()
                 .addKeyValue("expectedProvider", OTEL_CLASS.getName())
                 .addKeyValue("actualProvider", otel.getClass().getName())
-                .log("Unexpected observability provider type.", error);
+                .log("Unexpected telemetry provider type.", error);
         }
 
         if (OTelInitializer.INSTANCE.isInitialized()) {

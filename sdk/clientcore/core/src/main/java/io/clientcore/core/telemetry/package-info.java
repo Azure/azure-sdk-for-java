@@ -5,4 +5,4 @@
  * Package containing core observability primitives and configuration options.
  * <p>
  */
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry;

@@ -1,27 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry;
 
 import java.util.Objects;
 
 /**
- * Options for configuring library-specific observability settings.
+ * Options for configuring library-specific telemetry settings.
  * <p>
  *
  * It's provided by the client library and is not intended to be used directly by the end users.
  */
-public final class LibraryObservabilityOptions {
+public final class LibraryTelemetryOptions {
     private final String libraryName;
     private String libraryVersion;
     private String schemaUrl;
 
     /**
-     * Creates an instance of {@link LibraryObservabilityOptions}.
+     * Creates an instance of {@link LibraryTelemetryOptions}.
      *
      * @param libraryName The client library name.
      */
-    public LibraryObservabilityOptions(String libraryName) {
+    public LibraryTelemetryOptions(String libraryName) {
         this.libraryName = Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
     }
 
@@ -29,9 +29,9 @@ public final class LibraryObservabilityOptions {
      * Sets the client library version.
      *
      * @param libraryVersion The client library version.
-     * @return The updated {@link LibraryObservabilityOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public LibraryObservabilityOptions setLibraryVersion(String libraryVersion) {
+    public LibraryTelemetryOptions setLibraryVersion(String libraryVersion) {
         this.libraryVersion = libraryVersion;
         return this;
     }
@@ -41,9 +41,9 @@ public final class LibraryObservabilityOptions {
      * the library emits.
      *
      * @param schemaUrl The schema URL.
-     * @return The updated {@link LibraryObservabilityOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public LibraryObservabilityOptions setSchemaUrl(String schemaUrl) {
+    public LibraryTelemetryOptions setSchemaUrl(String schemaUrl) {
         this.schemaUrl = schemaUrl;
         return this;
     }

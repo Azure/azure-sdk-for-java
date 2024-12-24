@@ -194,6 +194,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
   <suppress checks="IllegalImport" files="io.clientcore.http.*.stress"/>
-  <suppress checks="IllegalImport" files="io.clientcore.core.observability.*Tests"/>
+  <suppress checks="IllegalImport" files="io.clientcore.core.telemetry.*Tests"/>
   <suppress checks="IllegalImport" files="io.clientcore.core.http.pipeline.InstrumentationPolicyTests"/>
 </suppressions>

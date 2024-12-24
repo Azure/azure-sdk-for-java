@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability.tracing;
+package io.clientcore.core.telemetry.tracing;
 
 /**
  * Uniquely identifies span in a trace. It is propagated over the wire and

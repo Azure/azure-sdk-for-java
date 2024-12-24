@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability.tracing;
+package io.clientcore.core.telemetry.tracing;
 
-import io.clientcore.core.observability.Scope;
+import io.clientcore.core.telemetry.Scope;
 
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.

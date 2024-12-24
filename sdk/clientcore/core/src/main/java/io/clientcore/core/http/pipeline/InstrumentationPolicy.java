@@ -7,30 +7,44 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.observability.LibraryObservabilityOptions;
-import io.clientcore.core.observability.ObservabilityOptions;
-import io.clientcore.core.observability.ObservabilityProvider;
-import io.clientcore.core.observability.Scope;
-import io.clientcore.core.observability.tracing.Span;
-import io.clientcore.core.observability.tracing.SpanContext;
-import io.clientcore.core.observability.tracing.SpanKind;
-import io.clientcore.core.observability.tracing.Tracer;
+import io.clientcore.core.telemetry.LibraryTelemetryOptions;
+import io.clientcore.core.telemetry.TelemetryOptions;
+import io.clientcore.core.telemetry.TelemetryProvider;
+import io.clientcore.core.telemetry.Scope;
+import io.clientcore.core.telemetry.tracing.Span;
+import io.clientcore.core.telemetry.tracing.SpanContext;
+import io.clientcore.core.telemetry.tracing.SpanKind;
+import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static io.clientcore.core.observability.ObservabilityProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
 
 /**
  * The instrumentation policy is responsible for instrumenting the HTTP request and response with distributed tracing
  * and (in the future) metrics.
  */
 public class InstrumentationPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
+    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_VERSION;
 
-    // TODO (lmolkova) read from properties
-    private static final LibraryObservabilityOptions LIBRARY_OPTIONS
-        = new LibraryObservabilityOptions("clientcore").setLibraryVersion("1.0.0")
+    static {
+        Map<String, String> properties = getProperties("core.properties");
+        LIBRARY_NAME = properties.getOrDefault("name", "unknown");
+        LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
+    }
+
+    private static final LibraryTelemetryOptions LIBRARY_OPTIONS
+        = new LibraryTelemetryOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
     private static final String HTTP_REQUEST_METHOD = "http.request.method";
@@ -48,22 +62,22 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instrumentation policy.
      *
-     * @param options The observability options.
+     * @param options Application telemetry options.
      */
-    public InstrumentationPolicy(ObservabilityOptions<?> options) {
+    public InstrumentationPolicy(TelemetryOptions<?> options) {
         this(options, null, null);
     }
 
     /**
      * Creates a new instrumentation policy with the ability to capture request and response headers.
      *
-     * @param options The observability options.
+     * @param options Application telemetry options.
      * @param requestHeaders The request headers to capture.
      * @param responseHeaders The response headers to capture.
      */
-    public InstrumentationPolicy(ObservabilityOptions<?> options, Map<HttpHeaderName, String> requestHeaders,
+    public InstrumentationPolicy(TelemetryOptions<?> options, Map<HttpHeaderName, String> requestHeaders,
         Map<HttpHeaderName, String> responseHeaders) {
-        this.tracer = ObservabilityProvider.getInstance().getTracer(options, LIBRARY_OPTIONS);
+        this.tracer = TelemetryProvider.getInstance().getTracer(options, LIBRARY_OPTIONS);
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
     }
@@ -174,5 +188,24 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
                 }
             }
         }
+    }
+
+    private static Map<String, String> getProperties(String propertiesFileName) {
+        try (InputStream inputStream
+            = InstrumentationPolicy.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
+            if (inputStream != null) {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
+            }
+        } catch (IOException ex) {
+            LOGGER.atWarning()
+                .addKeyValue("propertiesFileName", propertiesFileName)
+                .log("Failed to read properties.", ex);
+        }
+
+        return Collections.emptyMap();
     }
 }

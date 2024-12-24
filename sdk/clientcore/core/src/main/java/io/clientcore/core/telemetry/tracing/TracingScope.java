@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry.tracing;
 
 /**
  * An {@code AutoCloseable} scope that controls implicit tracing context lifetime.
@@ -12,7 +12,7 @@ package io.clientcore.core.observability;
  *
  * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
  */
-public interface Scope extends AutoCloseable {
+public interface TracingScope extends AutoCloseable {
     @Override
     default void close() {
     }

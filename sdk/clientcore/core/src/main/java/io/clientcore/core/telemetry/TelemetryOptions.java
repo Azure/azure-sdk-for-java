@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.observability;
+package io.clientcore.core.telemetry;
 
 /**
- * Options for configuring observability for a specific application needs.
+ * Options for configuring telemetry for a specific application needs.
  * @param <T> The type of the provider. Only io.opentelemetry.api.OpenTelemetry is supported.
  */
-public class ObservabilityOptions<T> {
+public class TelemetryOptions<T> {
     private boolean isTracingEnabled = true;
     private T provider = null;
 
@@ -15,20 +15,20 @@ public class ObservabilityOptions<T> {
      * Enables or disables distributed tracing. Default is true.
      *
      * @param isTracingEnabled true to enable distributed tracing, false to disable.
-     * @return The updated {@link ObservabilityOptions} object.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public ObservabilityOptions<T> setTracingEnabled(boolean isTracingEnabled) {
+    public TelemetryOptions<T> setTracingEnabled(boolean isTracingEnabled) {
         this.isTracingEnabled = isTracingEnabled;
         return this;
     }
 
     /**
-     * Sets the provider to use for observability. Only io.opentelemetry.api.OpenTelemetry is supported.
+     * Sets the provider to use for telemetry. Only io.opentelemetry.api.OpenTelemetry is supported.
      *
-     * @param provider The provider to use for observability.
-     * @return The updated {@link ObservabilityOptions} object.
+     * @param provider The provider to use for telemetry.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public ObservabilityOptions<T> setProvider(T provider) {
+    public TelemetryOptions<T> setProvider(T provider) {
         this.provider = provider;
         return this;
     }
@@ -43,17 +43,17 @@ public class ObservabilityOptions<T> {
     }
 
     /**
-     * Returns the provider to use for observability.
+     * Returns the telemetry provider.
      *
-     * @return The provider to use for observability.
+     * @return The telemetry provider instance.
      */
     public T getProvider() {
         return provider;
     }
 
     /**
-     * Creates an instance of {@link ObservabilityOptions}.
+     * Creates an instance of {@link TelemetryOptions}.
      */
-    public ObservabilityOptions() {
+    public TelemetryOptions() {
     }
 }

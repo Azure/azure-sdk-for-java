@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.observability.otel.tracing;
+package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.observability.otel.OTelAttributeKey;
-import io.clientcore.core.implementation.observability.otel.OTelInitializer;
-import io.clientcore.core.observability.ObservabilityProvider;
-import io.clientcore.core.observability.tracing.Span;
-import io.clientcore.core.observability.tracing.SpanBuilder;
-import io.clientcore.core.observability.tracing.SpanKind;
+import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
+import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
+import io.clientcore.core.telemetry.TelemetryProvider;
+import io.clientcore.core.telemetry.tracing.Span;
+import io.clientcore.core.telemetry.tracing.SpanBuilder;
+import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.CONTEXT_CLASS;
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.SPAN_BUILDER_CLASS;
-import static io.clientcore.core.implementation.observability.otel.OTelInitializer.SPAN_KIND_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_BUILDER_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null);
@@ -89,7 +89,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     @Override
     public SpanBuilder setParent(Context context) {
         if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
-            Object otelContext = context.get(ObservabilityProvider.TRACE_CONTEXT_KEY);
+            Object otelContext = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
             if (!CONTEXT_CLASS.isInstance(otelContext)) {
                 return this;
             }

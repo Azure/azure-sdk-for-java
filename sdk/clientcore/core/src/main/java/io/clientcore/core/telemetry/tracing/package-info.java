@@ -7,4 +7,4 @@
  *
  * End users should not use these classes directly.
  */
-package io.clientcore.core.observability.tracing;
+package io.clientcore.core.telemetry.tracing;

@@ -8,8 +8,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.observability.ObservabilityOptions;
-import io.clientcore.core.observability.ObservabilityProvider;
+import io.clientcore.core.telemetry.TelemetryOptions;
+import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static io.clientcore.core.observability.ObservabilityProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,7 +64,7 @@ public class InstrumentationPolicyTests {
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
-    private ObservabilityOptions<OpenTelemetry> otelOptions;
+    private TelemetryOptions<OpenTelemetry> otelOptions;
 
     @BeforeEach
     public void setUp() {
@@ -72,7 +72,7 @@ public class InstrumentationPolicyTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new ObservabilityOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
     }
 
     @AfterEach
@@ -183,8 +183,7 @@ public class InstrumentationPolicyTests {
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(sampleNone).build();
-        ObservabilityOptions<OpenTelemetry> otelOptions
-            = new ObservabilityOptions<OpenTelemetry>().setProvider(openTelemetry);
+        TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions)).httpClient(request -> {
@@ -222,8 +221,8 @@ public class InstrumentationPolicyTests {
 
     @Test
     public void tracingIsDisabledOnInstance() throws IOException {
-        ObservabilityOptions<OpenTelemetry> options
-            = new ObservabilityOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(openTelemetry);
+        TelemetryOptions<OpenTelemetry> options
+            = new TelemetryOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(openTelemetry);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
@@ -240,8 +239,7 @@ public class InstrumentationPolicyTests {
 
     @Test
     public void tracingIsDisabledOnRequest() throws IOException {
-        ObservabilityOptions<OpenTelemetry> options
-            = new ObservabilityOptions<OpenTelemetry>().setProvider(openTelemetry);
+        TelemetryOptions<OpenTelemetry> options = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
@@ -378,8 +376,8 @@ public class InstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions().setContext(Context
-            .of(ObservabilityProvider.TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(testSpan)));
+        RequestOptions requestOptions = new RequestOptions().setContext(
+            Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(testSpan)));
 
         pipeline.send(new HttpRequest(HttpMethod.GET, url).setRequestOptions(requestOptions)).close();
         testSpan.end();
@@ -412,8 +410,8 @@ public class InstrumentationPolicyTests {
             assertNull(span.getAttributes().get(HTTP_RESPONSE_STATUS_CODE));
         }
 
-        assertEquals("clientcore", span.getInstrumentationScopeInfo().getName());
-        assertEquals("1.0.0", span.getInstrumentationScopeInfo().getVersion());
+        assertEquals("core", span.getInstrumentationScopeInfo().getName());
+        assertNotNull(span.getInstrumentationScopeInfo().getVersion());
         assertEquals("https://opentelemetry.io/schemas/1.29.0", span.getInstrumentationScopeInfo().getSchemaUrl());
     }
 
