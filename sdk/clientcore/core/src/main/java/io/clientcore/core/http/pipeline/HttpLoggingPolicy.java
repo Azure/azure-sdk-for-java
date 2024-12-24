@@ -11,22 +11,20 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
+import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
@@ -232,53 +230,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // TODO: limolkova - we might want to filter out binary data, but
         // if somebody enabled logging it - why not log it?
         return data != null && data.getLength() != null && data.getLength() > 0 && data.getLength() < MAX_BODY_LOG_SIZE;
-    }
-
-    /**
-     * Generates the redacted URI for logging.
-     *
-     * @param uri URI where the request is being sent.
-     * @param allowedQueryParameterNames Query parameters that are allowed to be logged.
-     * @return A URI with query parameters redacted based on configurations in this policy.
-     */
-    private static String getRedactedUri(URI uri, Set<String> allowedQueryParameterNames) {
-        String query = uri.getQuery();
-        StringBuilder uriBuilder = new StringBuilder();
-
-        // Add the protocol, host and port to the uriBuilder
-        uriBuilder.append(uri.getScheme()).append("://").append(uri.getHost());
-
-        if (uri.getPort() != -1) {
-            uriBuilder.append(":").append(uri.getPort());
-        }
-
-        // Add the path to the uriBuilder
-        uriBuilder.append(uri.getPath());
-
-        if (query != null && !query.isEmpty()) {
-            uriBuilder.append("?");
-
-            // Parse and redact the query parameters
-            boolean firstQueryParam = true;
-            for (Map.Entry<String, String> kvp : new ImplUtils.QueryParameterIterable(query)) {
-                if (!firstQueryParam) {
-                    uriBuilder.append('&');
-                }
-
-                uriBuilder.append(kvp.getKey());
-                uriBuilder.append('=');
-
-                if (allowedQueryParameterNames.contains(kvp.getKey().toLowerCase(Locale.ROOT))) {
-                    uriBuilder.append(kvp.getValue());
-                } else {
-                    uriBuilder.append(REDACTED_PLACEHOLDER);
-                }
-
-                firstQueryParam = false;
-            }
-        }
-
-        return uriBuilder.toString();
     }
 
     /**

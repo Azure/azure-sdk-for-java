@@ -5,6 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -87,7 +88,7 @@ public class InstrumentationPolicyTests {
         AtomicReference<Span> current = new AtomicReference<>();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertStartAttributes((ReadableSpan) Span.current(), request.getHttpMethod(), request.getUri());
                 assertEquals(traceparent(Span.current()),
                     request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
@@ -95,8 +96,7 @@ public class InstrumentationPolicyTests {
                 return new MockHttpResponse(request, statusCode);
             }).build();
 
-        URI url = URI.create("https://localhost/");
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
@@ -104,7 +104,7 @@ public class InstrumentationPolicyTests {
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
         assertEquals(exportedSpan.getSpanId(), current.get().getSpanContext().getSpanId());
         assertEquals(exportedSpan.getTraceId(), current.get().getSpanContext().getTraceId());
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, statusCode);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", statusCode);
 
         assertNull(exportedSpan.getAttributes().get(HTTP_REQUEST_RESEND_COUNT));
         assertNull(exportedSpan.getAttributes().get(ERROR_TYPE));
@@ -115,17 +115,17 @@ public class InstrumentationPolicyTests {
     @ParameterizedTest
     @ValueSource(ints = { 400, 404, 500, 503 })
     public void errorResponseIsRecorded(int statusCode) throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, statusCode))
             .build();
 
-        URI url = URI.create("https://localhost:8080/path/to/resource?query=param");
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, statusCode);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED",
+            statusCode);
         assertNull(exportedSpan.getAttributes().get(HTTP_REQUEST_RESEND_COUNT));
         assertEquals(String.valueOf(statusCode), exportedSpan.getAttributes().get(ERROR_TYPE));
         assertEquals(StatusCode.ERROR, exportedSpan.getStatus().getStatusCode());
@@ -140,35 +140,36 @@ public class InstrumentationPolicyTests {
         try (Scope scope = testSpan.makeCurrent()) {
             AtomicInteger count = new AtomicInteger(0);
 
-            HttpPipeline pipeline
-                = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new InstrumentationPolicy(otelOptions))
-                    .httpClient(request -> {
-                        assertEquals(traceparent(Span.current()),
-                            request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
-                        if (count.getAndIncrement() == 0) {
-                            throw new UnknownHostException("test exception");
-                        } else {
-                            return new MockHttpResponse(request, 200);
-                        }
-                    })
-                    .build();
+            HttpPipeline pipeline = new HttpPipelineBuilder()
+                .policies(new HttpRetryPolicy(), new InstrumentationPolicy(otelOptions, null))
+                .httpClient(request -> {
+                    assertEquals(traceparent(Span.current()),
+                        request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
+                    if (count.getAndIncrement() == 0) {
+                        throw new UnknownHostException("test exception");
+                    } else {
+                        return new MockHttpResponse(request, 200);
+                    }
+                })
+                .build();
 
-            URI url = URI.create("https://localhost:8080/path/to/resource?query=param");
-            pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+            pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param"))
+                .close();
 
             assertEquals(2, count.get());
             assertNotNull(exporter.getFinishedSpanItems());
             assertEquals(2, exporter.getFinishedSpanItems().size());
 
             SpanData failedTry = exporter.getFinishedSpanItems().get(0);
-            assertHttpSpan(failedTry, HttpMethod.GET, url, null);
+            assertHttpSpan(failedTry, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED", null);
             assertNull(failedTry.getAttributes().get(HTTP_REQUEST_RESEND_COUNT));
             assertEquals(UnknownHostException.class.getCanonicalName(), failedTry.getAttributes().get(ERROR_TYPE));
             assertEquals(StatusCode.ERROR, failedTry.getStatus().getStatusCode());
             assertEquals("test exception", failedTry.getStatus().getDescription());
 
             SpanData successfulTry = exporter.getFinishedSpanItems().get(1);
-            assertHttpSpan(successfulTry, HttpMethod.GET, url, 200);
+            assertHttpSpan(successfulTry, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED",
+                200);
             assertEquals(1L, successfulTry.getAttributes().get(HTTP_REQUEST_RESEND_COUNT));
             assertNull(successfulTry.getAttributes().get(ERROR_TYPE));
         } finally {
@@ -186,7 +187,7 @@ public class InstrumentationPolicyTests {
         TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertTrue(Span.current().getSpanContext().isValid());
                 assertEquals(traceparent(Span.current()),
                     request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
@@ -203,17 +204,17 @@ public class InstrumentationPolicyTests {
     public void exceptionIsRecorded() {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 throw exception;
             }).build();
 
-        URI url = URI.create("http://localhost/");
-        assertThrows(UncheckedIOException.class, () -> pipeline.send(new HttpRequest(HttpMethod.GET, url)).close());
+        assertThrows(UncheckedIOException.class,
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close());
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, null);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", null);
         assertEquals(exception.getClass().getCanonicalName(), exportedSpan.getAttributes().get(ERROR_TYPE));
         assertEquals(StatusCode.ERROR, exportedSpan.getStatus().getStatusCode());
         assertEquals(exception.getMessage(), exportedSpan.getStatus().getDescription());
@@ -224,7 +225,7 @@ public class InstrumentationPolicyTests {
         TelemetryOptions<OpenTelemetry> options
             = new TelemetryOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(openTelemetry);
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options, null)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
                 assertFalse(Span.current().isRecording());
                 assertNull(request.getHeaders().get(HttpHeaderName.TRACEPARENT));
@@ -241,7 +242,7 @@ public class InstrumentationPolicyTests {
     public void tracingIsDisabledOnRequest() throws IOException {
         TelemetryOptions<OpenTelemetry> options = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options)).httpClient(request -> {
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options, null)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
                 assertFalse(Span.current().isRecording());
                 assertNull(request.getHeaders().get(HttpHeaderName.TRACEPARENT));
@@ -259,12 +260,11 @@ public class InstrumentationPolicyTests {
 
     @Test
     public void userAgentIsRecorded() throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        URI url = URI.create("https://localhost/");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "test-user-agent");
         pipeline.send(request).close();
 
@@ -272,7 +272,7 @@ public class InstrumentationPolicyTests {
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, 200);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
 
         assertEquals("test-user-agent", exportedSpan.getAttributes().get(USER_AGENT_ORIGINAL));
     }
@@ -284,15 +284,14 @@ public class InstrumentationPolicyTests {
         Map<HttpHeaderName, String> responseHeaders
             = Collections.singletonMap(HttpHeaderName.REQUEST_ID, "custom.response.id");
         InstrumentationPolicy instrumentationPolicy
-            = new InstrumentationPolicy(otelOptions, requestHeaders, responseHeaders);
+            = new InstrumentationPolicy(otelOptions, null, requestHeaders, responseHeaders);
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(instrumentationPolicy).httpClient(request -> {
             MockHttpResponse response = new MockHttpResponse(request, 200);
             response.getHeaders().set(HttpHeaderName.REQUEST_ID, "response-id");
             return response;
         }).build();
 
-        URI url = URI.create("https://localhost/");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
         request.getHeaders().set(HttpHeaderName.CLIENT_REQUEST_ID, "request-id");
         pipeline.send(request).close();
 
@@ -300,7 +299,7 @@ public class InstrumentationPolicyTests {
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, 200);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
 
         assertEquals("request-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
         assertEquals("response-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.response.id")));
@@ -316,7 +315,7 @@ public class InstrumentationPolicyTests {
         responseHeaders.put(HttpHeaderName.fromString("x-response-foo-id"), "custom.response.foo.id");
 
         InstrumentationPolicy instrumentationPolicy
-            = new InstrumentationPolicy(otelOptions, requestHeaders, responseHeaders);
+            = new InstrumentationPolicy(otelOptions, null, requestHeaders, responseHeaders);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(instrumentationPolicy)
             .httpClient(request -> new MockHttpResponse(request, 200))
@@ -333,7 +332,7 @@ public class InstrumentationPolicyTests {
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, url, 200);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
 
         assertEquals("request-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
         assertNull(exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.foo.id")));
@@ -346,13 +345,13 @@ public class InstrumentationPolicyTests {
         Tracer testTracer = tracerProvider.get("test");
         Span testSpan = testTracer.spanBuilder("test").startSpan();
 
-        URI url = URI.create("https://localhost:8080/path/to/resource?query=param");
         try (Scope scope = testSpan.makeCurrent()) {
-            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions))
+            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
                 .httpClient(request -> new MockHttpResponse(request, 200))
                 .build();
 
-            pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+            pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param"))
+                .close();
         } finally {
             testSpan.end();
         }
@@ -361,7 +360,7 @@ public class InstrumentationPolicyTests {
         assertEquals(2, exporter.getFinishedSpanItems().size());
 
         SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(httpSpan, HttpMethod.GET, url, 200);
+        assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED", 200);
         assertEquals(testSpan.getSpanContext().getSpanId(), httpSpan.getParentSpanContext().getSpanId());
         assertEquals(testSpan.getSpanContext().getTraceId(), httpSpan.getSpanContext().getTraceId());
     }
@@ -371,24 +370,43 @@ public class InstrumentationPolicyTests {
         Tracer testTracer = tracerProvider.get("test");
         Span testSpan = testTracer.spanBuilder("test").startSpan();
 
-        URI url = URI.create("https://localhost:8080/path/to/resource?query=param");
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
         RequestOptions requestOptions = new RequestOptions().setContext(
             Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(testSpan)));
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url).setRequestOptions(requestOptions)).close();
+        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
+            .setRequestOptions(requestOptions)).close();
         testSpan.end();
 
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(2, exporter.getFinishedSpanItems().size());
 
         SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(httpSpan, HttpMethod.GET, url, 200);
+        assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED", 200);
         assertEquals(testSpan.getSpanContext().getSpanId(), httpSpan.getParentSpanContext().getSpanId());
         assertEquals(testSpan.getSpanContext().getTraceId(), httpSpan.getSpanContext().getTraceId());
+    }
+
+    @Test
+    public void customUrlRedaction() throws IOException {
+        HttpLogOptions logOptions = new HttpLogOptions().setAllowedQueryParamNames(Collections.singleton("key1"));
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, logOptions))
+            .httpClient(request -> new MockHttpResponse(request, 200))
+            .build();
+
+        pipeline
+            .send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param&key1=value1"))
+            .close();
+
+        assertNotNull(exporter.getFinishedSpanItems());
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+
+        SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
+        assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED&key1=value1",
+            200);
     }
 
     private void assertStartAttributes(ReadableSpan span, HttpMethod method, URI url) {
@@ -398,7 +416,8 @@ public class InstrumentationPolicyTests {
         assertEquals(method.toString(), span.getAttributes().get(HTTP_REQUEST_METHOD));
     }
 
-    private void assertHttpSpan(SpanData span, HttpMethod method, URI url, Integer statusCode) {
+    private void assertHttpSpan(SpanData span, HttpMethod method, String urlStr, Integer statusCode) {
+        URI url = URI.create(urlStr);
         assertEquals(method.toString(), span.getName());
         assertEquals(url.toString(), span.getAttributes().get(URL_FULL));
         assertEquals(url.getHost(), span.getAttributes().get(SERVER_ADDRESS));

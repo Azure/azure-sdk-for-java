@@ -4,6 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
@@ -26,6 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
 
 /**
@@ -56,28 +58,32 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String USER_AGENT_ORIGINAL = "user_agent.original";
 
     private final Tracer tracer;
+    private final Set<String> allowedQueryParams;
     private final Map<HttpHeaderName, String> requestHeaders;
     private final Map<HttpHeaderName, String> responseHeaders;
 
     /**
      * Creates a new instrumentation policy.
      *
-     * @param options Application telemetry options.
+     * @param telemetryOptions Application telemetry options.
+     * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
-    public InstrumentationPolicy(TelemetryOptions<?> options) {
-        this(options, null, null);
+    public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions) {
+        this(telemetryOptions, logOptions, null, null);
     }
 
     /**
      * Creates a new instrumentation policy with the ability to capture request and response headers.
      *
-     * @param options Application telemetry options.
+     * @param telemetryOptions Application telemetry options.
+     * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      * @param requestHeaders The request headers to capture.
      * @param responseHeaders The response headers to capture.
      */
-    public InstrumentationPolicy(TelemetryOptions<?> options, Map<HttpHeaderName, String> requestHeaders,
-        Map<HttpHeaderName, String> responseHeaders) {
-        this.tracer = TelemetryProvider.getInstance().getTracer(options, LIBRARY_OPTIONS);
+    public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions,
+        Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
+        this.tracer = TelemetryProvider.getInstance().getTracer(telemetryOptions, LIBRARY_OPTIONS);
+        this.allowedQueryParams = logOptions == null ? Collections.emptySet() : logOptions.getAllowedQueryParamNames();
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
     }
@@ -92,11 +98,12 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
+        String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
         Span span = tracer.spanBuilder(request.getHttpMethod().toString())
             .setSpanKind(SpanKind.CLIENT)
             .setParent(request.getRequestOptions().getContext())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL, request.getUri().toString()) // TODO (lmolkova): sanitize
+            .setAttribute(URL_FULL, sanitizedUrl)
             .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
             .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
             .startSpan();
