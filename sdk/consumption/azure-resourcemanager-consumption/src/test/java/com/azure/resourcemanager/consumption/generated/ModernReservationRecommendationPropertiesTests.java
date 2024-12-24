@@ -11,7 +11,7 @@ public final class ModernReservationRecommendationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModernReservationRecommendationProperties model = BinaryData.fromString(
-            "{\"scope\":\"ModernReservationRecommendationProperties\",\"location\":\"sxoa\",\"lookBackPeriod\":1674614666,\"instanceFlexibilityRatio\":47.442574,\"instanceFlexibilityGroup\":\"npbs\",\"normalizedSize\":\"e\",\"recommendedQuantityNormalized\":25.03646,\"meterId\":\"a996b859-39ac-4d6a-9559-da484c21eccc\",\"term\":\"srmozihmip\",\"costWithNoReservedInstances\":{\"currency\":\"txx\"},\"resourceType\":\"cxcjxgry\",\"totalCostWithReservedInstances\":{\"currency\":\"pcycilrmcaykg\"},\"netSavings\":{\"currency\":\"uztrksxwpndfcpf\"},\"firstUsageDate\":\"2021-02-28T01:50:53Z\",\"skuProperties\":[{\"name\":\"wkjaos\",\"value\":\"uzvoamktcqiosm\"},{\"name\":\"zah\",\"value\":\"qdlyrtl\"}],\"skuName\":\"ap\"}")
+            "{\"scope\":\"ModernReservationRecommendationProperties\",\"location\":\"sxoa\",\"lookBackPeriod\":1674614666,\"instanceFlexibilityRatio\":47.442574,\"instanceFlexibilityGroup\":\"npbs\",\"normalizedSize\":\"e\",\"recommendedQuantityNormalized\":25.03646,\"meterId\":\"695461f9-27e8-4f38-9110-3a7f14841eeb\",\"term\":\"srmozihmip\",\"costWithNoReservedInstances\":{\"currency\":\"txx\"},\"resourceType\":\"cxcjxgry\",\"totalCostWithReservedInstances\":{\"currency\":\"pcycilrmcaykg\"},\"netSavings\":{\"currency\":\"uztrksxwpndfcpf\"},\"firstUsageDate\":\"2021-02-28T01:50:53Z\",\"skuProperties\":[{\"name\":\"wkjaos\",\"value\":\"uzvoamktcqiosm\"},{\"name\":\"zah\",\"value\":\"qdlyrtl\"}],\"skuName\":\"ap\"}")
             .toObject(ModernReservationRecommendationProperties.class);
     }
 

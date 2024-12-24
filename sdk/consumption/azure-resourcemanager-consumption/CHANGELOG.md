@@ -1,14 +1,82 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2024-12-24)
 
-### Features Added
+- Azure Resource Manager Consumption client library for Java. This package contains Microsoft Azure SDK for Consumption Management SDK. Consumption management client provides access to consumption resources for Azure Enterprise Subscriptions. Package tag package-2021-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ModernSingleScopeReservationRecommendationProperties` was modified
 
-### Other Changes
+* `location()` was removed
+* `instanceFlexibilityRatio()` was removed
+* `recommendedQuantityNormalized()` was removed
+* `skuProperties()` was removed
+* `firstUsageDate()` was removed
+* `netSavings()` was removed
+* `skuName()` was removed
+* `term()` was removed
+* `normalizedSize()` was removed
+* `recommendedQuantity()` was removed
+* `costWithNoReservedInstances()` was removed
+* `meterId()` was removed
+* `instanceFlexibilityGroup()` was removed
+* `lookBackPeriod()` was removed
+* `totalCostWithReservedInstances()` was removed
+* `resourceType()` was removed
+
+#### `models.ModernSharedScopeReservationRecommendationProperties` was modified
+
+* `term()` was removed
+* `totalCostWithReservedInstances()` was removed
+* `recommendedQuantity()` was removed
+* `instanceFlexibilityRatio()` was removed
+* `resourceType()` was removed
+* `firstUsageDate()` was removed
+* `location()` was removed
+* `normalizedSize()` was removed
+* `skuName()` was removed
+* `skuProperties()` was removed
+* `meterId()` was removed
+* `lookBackPeriod()` was removed
+* `instanceFlexibilityGroup()` was removed
+* `costWithNoReservedInstances()` was removed
+* `netSavings()` was removed
+* `recommendedQuantityNormalized()` was removed
+
+#### `models.LegacySharedScopeReservationRecommendationProperties` was modified
+
+* `lookBackPeriod()` was removed
+* `firstUsageDate()` was removed
+* `resourceType()` was removed
+* `recommendedQuantity()` was removed
+* `recommendedQuantityNormalized()` was removed
+* `instanceFlexibilityGroup()` was removed
+* `instanceFlexibilityRatio()` was removed
+* `costWithNoReservedInstances()` was removed
+* `normalizedSize()` was removed
+* `meterId()` was removed
+* `term()` was removed
+* `totalCostWithReservedInstances()` was removed
+* `skuProperties()` was removed
+* `netSavings()` was removed
+
+#### `models.LegacySingleScopeReservationRecommendationProperties` was modified
+
+* `firstUsageDate()` was removed
+* `recommendedQuantityNormalized()` was removed
+* `term()` was removed
+* `lookBackPeriod()` was removed
+* `recommendedQuantity()` was removed
+* `normalizedSize()` was removed
+* `meterId()` was removed
+* `totalCostWithReservedInstances()` was removed
+* `costWithNoReservedInstances()` was removed
+* `instanceFlexibilityRatio()` was removed
+* `instanceFlexibilityGroup()` was removed
+* `skuProperties()` was removed
+* `resourceType()` was removed
+* `netSavings()` was removed
 
 ## 1.0.0-beta.4 (2024-10-04)
 
