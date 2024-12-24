@@ -5,52 +5,40 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The target Event Hub to which event data will be exported. To learn more about Microsoft Defender for Cloud
  * continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "actionType",
-    defaultImpl = AutomationActionEventHub.class,
-    visible = true)
-@JsonTypeName("EventHub")
 @Fluent
 public final class AutomationActionEventHub extends AutomationAction {
     /*
      * The type of the action that will be triggered by the Automation
      */
-    @JsonTypeId
-    @JsonProperty(value = "actionType", required = true)
     private ActionType actionType = ActionType.EVENT_HUB;
 
     /*
      * The target Event Hub Azure Resource ID.
      */
-    @JsonProperty(value = "eventHubResourceId")
     private String eventHubResourceId;
 
     /*
      * The target Event Hub SAS policy name.
      */
-    @JsonProperty(value = "sasPolicyName", access = JsonProperty.Access.WRITE_ONLY)
     private String sasPolicyName;
 
     /*
      * The target Event Hub connection string (it will not be included in any response).
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * Indicates whether the trusted service is enabled or not.
      */
-    @JsonProperty(value = "isTrustedServiceEnabled")
     private Boolean isTrustedServiceEnabled;
 
     /**
@@ -147,6 +135,53 @@ public final class AutomationActionEventHub extends AutomationAction {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeStringField("eventHubResourceId", this.eventHubResourceId);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeBooleanField("isTrustedServiceEnabled", this.isTrustedServiceEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationActionEventHub from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationActionEventHub if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationActionEventHub.
+     */
+    public static AutomationActionEventHub fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationActionEventHub deserializedAutomationActionEventHub = new AutomationActionEventHub();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionType".equals(fieldName)) {
+                    deserializedAutomationActionEventHub.actionType = ActionType.fromString(reader.getString());
+                } else if ("eventHubResourceId".equals(fieldName)) {
+                    deserializedAutomationActionEventHub.eventHubResourceId = reader.getString();
+                } else if ("sasPolicyName".equals(fieldName)) {
+                    deserializedAutomationActionEventHub.sasPolicyName = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAutomationActionEventHub.connectionString = reader.getString();
+                } else if ("isTrustedServiceEnabled".equals(fieldName)) {
+                    deserializedAutomationActionEventHub.isTrustedServiceEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationActionEventHub;
+        });
     }
 }

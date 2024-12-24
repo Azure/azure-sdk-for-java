@@ -1,19 +1,6 @@
 # Code snippets and samples
 
 
-## AdaptiveApplicationControls
-
-- [Delete](#adaptiveapplicationcontrols_delete)
-- [Get](#adaptiveapplicationcontrols_get)
-- [List](#adaptiveapplicationcontrols_list)
-- [Put](#adaptiveapplicationcontrols_put)
-
-## AdaptiveNetworkHardenings
-
-- [Enforce](#adaptivenetworkhardenings_enforce)
-- [Get](#adaptivenetworkhardenings_get)
-- [ListByExtendedResource](#adaptivenetworkhardenings_listbyextendedresource)
-
 ## AdvancedThreatProtection
 
 - [Create](#advancedthreatprotection_create)
@@ -156,10 +143,20 @@
 - [List](#customentitystoreassignments_list)
 - [ListByResourceGroup](#customentitystoreassignments_listbyresourcegroup)
 
+## CustomRecommendations
+
+- [CreateOrUpdate](#customrecommendations_createorupdate)
+- [Delete](#customrecommendations_delete)
+- [Get](#customrecommendations_get)
+- [List](#customrecommendations_list)
+
 ## DefenderForStorage
 
+- [CancelMalwareScan](#defenderforstorage_cancelmalwarescan)
 - [Create](#defenderforstorage_create)
 - [Get](#defenderforstorage_get)
+- [GetMalwareScan](#defenderforstorage_getmalwarescan)
+- [StartMalwareScan](#defenderforstorage_startmalwarescan)
 
 ## DevOpsConfigurations
 
@@ -172,6 +169,19 @@
 ## DevOpsOperationResults
 
 - [Get](#devopsoperationresults_get)
+
+## DevOpsPolicies
+
+- [Get](#devopspolicies_get)
+- [List](#devopspolicies_list)
+
+## DevOpsPolicyAssignments
+
+- [CreateOrUpdate](#devopspolicyassignments_createorupdate)
+- [Delete](#devopspolicyassignments_delete)
+- [Get](#devopspolicyassignments_get)
+- [List](#devopspolicyassignments_list)
+- [Update](#devopspolicyassignments_update)
 
 ## DeviceSecurityGroups
 
@@ -291,6 +301,10 @@
 - [Get](#mdeonboardings_get)
 - [List](#mdeonboardings_list)
 
+## Operations
+
+- [List](#operations_list)
+
 ## Pricings
 
 - [Delete](#pricings_delete)
@@ -371,6 +385,13 @@
 - [List](#securitysolutionsreferencedata_list)
 - [ListByHomeRegion](#securitysolutionsreferencedata_listbyhomeregion)
 
+## SecurityStandards
+
+- [CreateOrUpdate](#securitystandards_createorupdate)
+- [Delete](#securitystandards_delete)
+- [Get](#securitystandards_get)
+- [List](#securitystandards_list)
+
 ## SensitivitySettings
 
 - [CreateOrUpdate](#sensitivitysettings_createorupdate)
@@ -421,6 +442,13 @@
 - [Get](#sqlvulnerabilityassessmentscans_get)
 - [List](#sqlvulnerabilityassessmentscans_list)
 
+## StandardAssignments
+
+- [Create](#standardassignments_create)
+- [Delete](#standardassignments_delete)
+- [Get](#standardassignments_get)
+- [List](#standardassignments_list)
+
 ## SubAssessments
 
 - [Get](#subassessments_get)
@@ -450,274 +478,6 @@
 - [Get](#workspacesettings_get)
 - [List](#workspacesettings_list)
 - [Update](#workspacesettings_update)
-### AdaptiveApplicationControls_Delete
-
-```java
-/**
- * Samples for AdaptiveApplicationControls Delete.
- */
-public final class AdaptiveApplicationControlsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/DeleteAdaptiveApplicationControls_example.json
-     */
-    /**
-     * Sample code: Delete an application control machine group.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void
-        deleteAnApplicationControlMachineGroup(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls()
-            .deleteByResourceGroupWithResponse("centralus", "GROUP1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AdaptiveApplicationControls_Get
-
-```java
-/**
- * Samples for AdaptiveApplicationControls Get.
- */
-public final class AdaptiveApplicationControlsGetSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsGroup_example.json
-     */
-    /**
-     * Sample code: Gets a configured application control VM/server group.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void
-        getsAConfiguredApplicationControlVMServerGroup(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls()
-            .getWithResponse("centralus", "ERELGROUP1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AdaptiveApplicationControls_List
-
-```java
-/**
- * Samples for AdaptiveApplicationControls List.
- */
-public final class AdaptiveApplicationControlsListSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsSubscription_example.json
-     */
-    /**
-     * Sample code: Gets a list of application control groups of machines for the subscription.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void getsAListOfApplicationControlGroupsOfMachinesForTheSubscription(
-        com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls().listWithResponse(true, false, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AdaptiveApplicationControls_Put
-
-```java
-import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroup;
-import com.azure.resourcemanager.security.models.ConfigurationStatus;
-import com.azure.resourcemanager.security.models.EnforcementMode;
-import com.azure.resourcemanager.security.models.EnforcementSupport;
-import com.azure.resourcemanager.security.models.FileType;
-import com.azure.resourcemanager.security.models.PathRecommendation;
-import com.azure.resourcemanager.security.models.ProtectionMode;
-import com.azure.resourcemanager.security.models.PublisherInfo;
-import com.azure.resourcemanager.security.models.RecommendationAction;
-import com.azure.resourcemanager.security.models.RecommendationType;
-import com.azure.resourcemanager.security.models.UserRecommendation;
-import com.azure.resourcemanager.security.models.VmRecommendation;
-import java.util.Arrays;
-
-/**
- * Samples for AdaptiveApplicationControls Put.
- */
-public final class AdaptiveApplicationControlsPutSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/PutAdaptiveApplicationControls_example.json
-     */
-    /**
-     * Sample code: Update an application control machine group by adding a new application.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void updateAnApplicationControlMachineGroupByAddingANewApplication(
-        com.azure.resourcemanager.security.SecurityManager manager) {
-        AdaptiveApplicationControlGroup resource = manager.adaptiveApplicationControls()
-            .getWithResponse("centralus", "ERELGROUP1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withEnforcementMode(EnforcementMode.AUDIT)
-            .withProtectionMode(new ProtectionMode().withExe(EnforcementMode.AUDIT)
-                .withMsi(EnforcementMode.NONE)
-                .withScript(EnforcementMode.NONE))
-            .withVmRecommendations(Arrays.asList(new VmRecommendation()
-                .withConfigurationStatus(ConfigurationStatus.CONFIGURED)
-                .withRecommendationAction(RecommendationAction.RECOMMENDED)
-                .withResourceId(
-                    "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/erelh-stable/providers/microsoft.compute/virtualmachines/erelh-16090")
-                .withEnforcementSupport(EnforcementSupport.SUPPORTED),
-                new VmRecommendation().withConfigurationStatus(ConfigurationStatus.CONFIGURED)
-                    .withRecommendationAction(RecommendationAction.RECOMMENDED)
-                    .withResourceId(
-                        "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/matanvs/providers/microsoft.compute/virtualmachines/matanvs19")
-                    .withEnforcementSupport(EnforcementSupport.SUPPORTED)))
-            .withPathRecommendations(
-                Arrays.asList(
-                    new PathRecommendation()
-                        .withPath("[Exe] O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US\\*\\*\\0.0.0.0")
-                        .withAction(RecommendationAction.RECOMMENDED)
-                        .withType(RecommendationType.fromString("PublisherSignature"))
-                        .withPublisherInfo(new PublisherInfo()
-                            .withPublisherName("O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US")
-                            .withProductName("*")
-                            .withBinaryName("*")
-                            .withVersion("0.0.0.0"))
-                        .withCommon(true)
-                        .withUserSids(Arrays.asList("S-1-1-0"))
-                        .withUsernames(Arrays
-                            .asList(new UserRecommendation().withUsername("Everyone")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED)))
-                        .withFileType(FileType.EXE)
-                        .withConfigurationStatus(ConfigurationStatus.CONFIGURED),
-                    new PathRecommendation().withPath("%OSDRIVE%\\WINDOWSAZURE\\SECAGENT\\WASECAGENTPROV.EXE")
-                        .withAction(RecommendationAction.RECOMMENDED)
-                        .withType(RecommendationType.fromString("ProductSignature"))
-                        .withPublisherInfo(
-                            new PublisherInfo().withPublisherName("CN=MICROSOFT AZURE DEPENDENCY CODE SIGN")
-                                .withProductName("MICROSOFT® COREXT")
-                                .withBinaryName("*")
-                                .withVersion("0.0.0.0"))
-                        .withCommon(true)
-                        .withUserSids(Arrays.asList("S-1-1-0"))
-                        .withUsernames(Arrays
-                            .asList(new UserRecommendation().withUsername("NT AUTHORITY\\SYSTEM")
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED)))
-                        .withFileType(FileType.EXE)
-                        .withConfigurationStatus(ConfigurationStatus.CONFIGURED),
-                    new PathRecommendation()
-                        .withPath("%OSDRIVE%\\WINDOWSAZURE\\PACKAGES_201973_7415\\COLLECTGUESTLOGS.EXE")
-                        .withAction(RecommendationAction.RECOMMENDED)
-                        .withType(RecommendationType.fromString("PublisherSignature"))
-                        .withPublisherInfo(
-                            new PublisherInfo().withPublisherName("CN=MICROSOFT AZURE DEPENDENCY CODE SIGN")
-                                .withProductName("*")
-                                .withBinaryName("*")
-                                .withVersion("0.0.0.0"))
-                        .withCommon(true)
-                        .withUserSids(Arrays.asList("S-1-1-0"))
-                        .withUsernames(Arrays.asList(new UserRecommendation().withUsername("NT AUTHORITY\\SYSTEM")
-                            .withRecommendationAction(RecommendationAction.RECOMMENDED)))
-                        .withFileType(FileType.EXE)
-                        .withConfigurationStatus(ConfigurationStatus.CONFIGURED),
-                    new PathRecommendation().withPath("C:\\directory\\file.exe")
-                        .withAction(RecommendationAction.ADD)
-                        .withType(RecommendationType.fromString("File"))
-                        .withCommon(true)))
-            .apply();
-    }
-}
-```
-
-### AdaptiveNetworkHardenings_Enforce
-
-```java
-import com.azure.resourcemanager.security.models.AdaptiveNetworkHardeningEnforceRequest;
-import com.azure.resourcemanager.security.models.Direction;
-import com.azure.resourcemanager.security.models.Rule;
-import com.azure.resourcemanager.security.models.TransportProtocol;
-import java.util.Arrays;
-
-/**
- * Samples for AdaptiveNetworkHardenings Enforce.
- */
-public final class AdaptiveNetworkHardeningsEnforceSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/EnforceAdaptiveNetworkHardeningRules_example.json
-     */
-    /**
-     * Sample code: Enforces the given rules on the NSG(s) listed in the request.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void
-        enforcesTheGivenRulesOnTheNSGSListedInTheRequest(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveNetworkHardenings()
-            .enforce("rg1", "Microsoft.Compute", "virtualMachines", "vm1", "default",
-                new AdaptiveNetworkHardeningEnforceRequest()
-                    .withRules(Arrays.asList(
-                        new Rule().withName("rule1")
-                            .withDirection(Direction.INBOUND)
-                            .withDestinationPort(3389)
-                            .withProtocols(Arrays.asList(TransportProtocol.TCP))
-                            .withIpAddresses(Arrays.asList("100.10.1.1", "200.20.2.2", "81.199.3.0/24")),
-                        new Rule().withName("rule2")
-                            .withDirection(Direction.INBOUND)
-                            .withDestinationPort(22)
-                            .withProtocols(Arrays.asList(TransportProtocol.TCP))
-                            .withIpAddresses(Arrays.asList())))
-                    .withNetworkSecurityGroups(Arrays.asList(
-                        "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1",
-                        "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg2/providers/Microsoft.Network/networkSecurityGroups/nsg2")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AdaptiveNetworkHardenings_Get
-
-```java
-/**
- * Samples for AdaptiveNetworkHardenings Get.
- */
-public final class AdaptiveNetworkHardeningsGetSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/GetAdaptiveNetworkHardening_example.json
-     */
-    /**
-     * Sample code: Get a single Adaptive Network Hardening resource.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void
-        getASingleAdaptiveNetworkHardeningResource(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveNetworkHardenings()
-            .getWithResponse("rg1", "Microsoft.Compute", "virtualMachines", "vm1", "default",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AdaptiveNetworkHardenings_ListByExtendedResource
-
-```java
-/**
- * Samples for AdaptiveNetworkHardenings ListByExtendedResource.
- */
-public final class AdaptiveNetworkHardeningsListByExtendedResourceSamples {
-    /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/ListByExtendedResourceAdaptiveNetworkHardenings_example.json
-     */
-    /**
-     * Sample code: List Adaptive Network Hardenings resources of an extended resource.
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void listAdaptiveNetworkHardeningsResourcesOfAnExtendedResource(
-        com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveNetworkHardenings()
-            .listByExtendedResource("rg1", "Microsoft.Compute", "virtualMachines", "vm1",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### AdvancedThreatProtection_Create
 
 ```java
@@ -726,7 +486,9 @@ public final class AdaptiveNetworkHardeningsListByExtendedResourceSamples {
  */
 public final class AdvancedThreatProtectionCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/PutAdvancedThreatProtectionSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/
+     * PutAdvancedThreatProtectionSettings_example.json
      */
     /**
      * Sample code: Creates or updates the Advanced Threat Protection settings on a specified resource.
@@ -753,7 +515,9 @@ public final class AdvancedThreatProtectionCreateSamples {
  */
 public final class AdvancedThreatProtectionGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/GetAdvancedThreatProtectionSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/
+     * GetAdvancedThreatProtectionSettings_example.json
      */
     /**
      * Sample code: Gets the Advanced Threat Protection settings for the specified resource.
@@ -778,7 +542,8 @@ public final class AdvancedThreatProtectionGetSamples {
  */
 public final class AlertsGetResourceGroupLevelSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertResourceGroupLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security alert on a resource group from a security data location.
@@ -802,7 +567,8 @@ public final class AlertsGetResourceGroupLevelSamples {
  */
 public final class AlertsGetSubscriptionLevelSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertSubscriptionLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security alert on a subscription from a security data location.
@@ -826,7 +592,8 @@ public final class AlertsGetSubscriptionLevelSamples {
  */
 public final class AlertsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertsSubscription_example.json
      */
     /**
      * Sample code: Get security alerts on a subscription.
@@ -847,7 +614,8 @@ public final class AlertsListSamples {
  */
 public final class AlertsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsResourceGroup_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertsResourceGroup_example.json
      */
     /**
      * Sample code: Get security alerts on a resource group.
@@ -868,7 +636,8 @@ public final class AlertsListByResourceGroupSamples {
  */
 public final class AlertsListResourceGroupLevelByRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsResourceGroupLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertsResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security alerts on a resource group from a security data location.
@@ -890,7 +659,8 @@ public final class AlertsListResourceGroupLevelByRegionSamples {
  */
 public final class AlertsListSubscriptionLevelByRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsSubscriptionsLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertsSubscriptionsLocation_example.json
      */
     /**
      * Sample code: Get security alerts on a subscription from a security data location.
@@ -917,7 +687,8 @@ import java.util.Arrays;
  */
 public final class AlertsSimulateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/SimulateAlerts_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * SimulateAlerts_example.json
      */
     /**
      * Sample code: Simulate security alerts on a subscription.
@@ -945,7 +716,8 @@ public final class AlertsSimulateSamples {
  */
 public final class AlertsUpdateResourceGroupLevelStateToActivateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertResourceGroupLocation_activate_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertResourceGroupLocation_activate_example.json
      */
     /**
      * Sample code: Update security alert state on a resource group from a security data location.
@@ -969,7 +741,8 @@ public final class AlertsUpdateResourceGroupLevelStateToActivateSamples {
  */
 public final class AlertsUpdateResourceGroupLevelStateToDismissSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertResourceGroupLocation_dismiss_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertResourceGroupLocation_dismiss_example.json
      */
     /**
      * Sample code: Update security alert state on a resource group from a security data location.
@@ -993,7 +766,8 @@ public final class AlertsUpdateResourceGroupLevelStateToDismissSamples {
  */
 public final class AlertsUpdateResourceGroupLevelStateToInProgressSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertResourceGroupLocation_inProgress_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertResourceGroupLocation_inProgress_example.json
      */
     /**
      * Sample code: Update security alert state on a resource group from a security data location.
@@ -1017,7 +791,8 @@ public final class AlertsUpdateResourceGroupLevelStateToInProgressSamples {
  */
 public final class AlertsUpdateResourceGroupLevelStateToResolveSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertResourceGroupLocation_resolve_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertResourceGroupLocation_resolve_example.json
      */
     /**
      * Sample code: Update security alert state on a resource group from a security data location.
@@ -1041,7 +816,8 @@ public final class AlertsUpdateResourceGroupLevelStateToResolveSamples {
  */
 public final class AlertsUpdateSubscriptionLevelStateToActivateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertSubscriptionLocation_activate_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertSubscriptionLocation_activate_example.json
      */
     /**
      * Sample code: Update security alert state on a subscription from a security data location.
@@ -1065,7 +841,8 @@ public final class AlertsUpdateSubscriptionLevelStateToActivateSamples {
  */
 public final class AlertsUpdateSubscriptionLevelStateToDismissSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertSubscriptionLocation_dismiss_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertSubscriptionLocation_dismiss_example.json
      */
     /**
      * Sample code: Update security alert state on a subscription from a security data location.
@@ -1089,7 +866,8 @@ public final class AlertsUpdateSubscriptionLevelStateToDismissSamples {
  */
 public final class AlertsUpdateSubscriptionLevelStateToInProgressSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertSubscriptionLocation_inProgress_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertSubscriptionLocation_inProgress_example.json
      */
     /**
      * Sample code: Update security alert state on a subscription from a security data location.
@@ -1113,7 +891,8 @@ public final class AlertsUpdateSubscriptionLevelStateToInProgressSamples {
  */
 public final class AlertsUpdateSubscriptionLevelStateToResolveSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/UpdateAlertSubscriptionLocation_resolve_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * UpdateAlertSubscriptionLocation_resolve_example.json
      */
     /**
      * Sample code: Update security alert state on a subscription from a security data location.
@@ -1137,7 +916,9 @@ public final class AlertsUpdateSubscriptionLevelStateToResolveSamples {
  */
 public final class AlertsSuppressionRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/DeleteAlertsSuppressionRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/DeleteAlertsSuppressionRule_example.json
      */
     /**
      * Sample code: Delete suppression rule data for a subscription.
@@ -1159,7 +940,9 @@ public final class AlertsSuppressionRulesDeleteSamples {
  */
 public final class AlertsSuppressionRulesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/GetAlertsSuppressionRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/GetAlertsSuppressionRule_example.json
      */
     /**
      * Sample code: Get suppression alert rule for subscription.
@@ -1181,7 +964,9 @@ public final class AlertsSuppressionRulesGetSamples {
  */
 public final class AlertsSuppressionRulesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/GetAlertsSuppressionRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/GetAlertsSuppressionRules_example.json
      */
     /**
      * Sample code: Get suppression rules for subscription.
@@ -1193,7 +978,9 @@ public final class AlertsSuppressionRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/GetAlertsSuppressionRulesWithAlertType_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/GetAlertsSuppressionRulesWithAlertType_example.json
      */
     /**
      * Sample code: Get suppression alert rule for subscription, filtered by AlertType.
@@ -1227,7 +1014,9 @@ import java.util.Map;
  */
 public final class AlertsSuppressionRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/PutAlertsSuppressionRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/PutAlertsSuppressionRule_example.json
      */
     /**
      * Sample code: Update or create suppression rule for subscription.
@@ -1275,7 +1064,9 @@ import com.azure.resourcemanager.security.models.ConnectionType;
  */
 public final class AllowedConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnections_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/
+     * GetAllowedConnections_example.json
      */
     /**
      * Sample code: Get allowed connections.
@@ -1297,7 +1088,9 @@ public final class AllowedConnectionsGetSamples {
  */
 public final class AllowedConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnectionsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/
+     * GetAllowedConnectionsSubscription_example.json
      */
     /**
      * Sample code: Get allowed connections on a subscription.
@@ -1319,7 +1112,9 @@ public final class AllowedConnectionsListSamples {
  */
 public final class AllowedConnectionsListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnectionsSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/
+     * GetAllowedConnectionsSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get allowed connections on a subscription from security data location.
@@ -1341,7 +1136,9 @@ public final class AllowedConnectionsListByHomeRegionSamples {
  */
 public final class ApiCollectionsGetByAzureApiManagementServiceSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_GetByAzureApiManagementService_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_GetByAzureApiManagementService_example.json
      */
     /**
      * Sample code: Gets an Azure API Management API if it has been onboarded to Microsoft Defender for APIs.
@@ -1365,7 +1162,9 @@ public final class ApiCollectionsGetByAzureApiManagementServiceSamples {
  */
 public final class ApiCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_ListBySubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_ListBySubscription_example.json
      */
     /**
      * Sample code: Gets a list of API collections within a subscription that have been onboarded to Microsoft Defender
@@ -1388,7 +1187,9 @@ public final class ApiCollectionsListSamples {
  */
 public final class ApiCollectionsListByAzureApiManagementServiceSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_ListByAzureApiManagementService_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_ListByAzureApiManagementService_example.json
      */
     /**
      * Sample code: Gets a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs.
@@ -1411,7 +1212,9 @@ public final class ApiCollectionsListByAzureApiManagementServiceSamples {
  */
 public final class ApiCollectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_ListByResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_ListByResourceGroup_example.json
      */
     /**
      * Sample code: Gets a list of API collections within a resource group that have been onboarded to Microsoft
@@ -1434,7 +1237,9 @@ public final class ApiCollectionsListByResourceGroupSamples {
  */
 public final class ApiCollectionsOffboardAzureApiManagementApiSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_OffboardAzureApiManagementApi_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_OffboardAzureApiManagementApi_example.json
      */
     /**
      * Sample code: Offboard an Azure API Management API from Microsoft Defender for APIs.
@@ -1458,7 +1263,9 @@ public final class ApiCollectionsOffboardAzureApiManagementApiSamples {
  */
 public final class ApiCollectionsOnboardAzureApiManagementApiSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_OnboardAzureApiManagementApi_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_OnboardAzureApiManagementApi_example.json
      */
     /**
      * Sample code: Onboard an Azure API Management API to Microsoft Defender for APIs.
@@ -1487,7 +1294,9 @@ import java.util.Arrays;
  */
 public final class ApplicationOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/PutApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * PutApplication_example.json
      */
     /**
      * Sample code: Create application.
@@ -1517,7 +1326,9 @@ public final class ApplicationOperationCreateOrUpdateSamples {
  */
 public final class ApplicationOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/DeleteApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * DeleteApplication_example.json
      */
     /**
      * Sample code: Delete security Application.
@@ -1539,7 +1350,9 @@ public final class ApplicationOperationDeleteSamples {
  */
 public final class ApplicationOperationGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/GetApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * GetApplication_example.json
      */
     /**
      * Sample code: Get security application by specific applicationId.
@@ -1562,7 +1375,9 @@ public final class ApplicationOperationGetSamples {
  */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/ListBySubscriptionApplications_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * ListBySubscriptionApplications_example.json
      */
     /**
      * Sample code: List applications security by subscription level scope.
@@ -1588,7 +1403,9 @@ import com.azure.resourcemanager.security.models.AzureResourceDetails;
  */
 public final class AssessmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/PutAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * PutAssessment_example.json
      */
     /**
      * Sample code: Create security recommendation task on a resource.
@@ -1616,7 +1433,9 @@ public final class AssessmentsCreateOrUpdateSamples {
  */
 public final class AssessmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/DeleteAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * DeleteAssessment_example.json
      */
     /**
      * Sample code: Delete a security recommendation task on a resource.
@@ -1643,7 +1462,9 @@ import com.azure.resourcemanager.security.models.ExpandEnum;
  */
 public final class AssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/GetAssessmentWithExpand_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * GetAssessmentWithExpand_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location with expand parameter.
@@ -1659,7 +1480,9 @@ public final class AssessmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/GetAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * GetAssessment_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location.
@@ -1684,7 +1507,9 @@ public final class AssessmentsGetSamples {
  */
 public final class AssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/ListAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * ListAssessments_example.json
      */
     /**
      * Sample code: List security assessments.
@@ -1714,7 +1539,9 @@ import java.util.Arrays;
  */
 public final class AssessmentsMetadataCreateInSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/CreateAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * CreateAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Create security assessment metadata for subscription.
@@ -1749,7 +1576,9 @@ public final class AssessmentsMetadataCreateInSubscriptionSamples {
  */
 public final class AssessmentsMetadataDeleteInSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/DeleteAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * DeleteAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Delete a security assessment metadata for subscription.
@@ -1772,7 +1601,9 @@ public final class AssessmentsMetadataDeleteInSubscriptionSamples {
  */
 public final class AssessmentsMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/GetAssessmentsMetadata_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * GetAssessmentsMetadata_example.json
      */
     /**
      * Sample code: Get security assessment metadata.
@@ -1794,7 +1625,9 @@ public final class AssessmentsMetadataGetSamples {
  */
 public final class AssessmentsMetadataGetInSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/GetAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * GetAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Get security assessment metadata for subscription.
@@ -1817,7 +1650,9 @@ public final class AssessmentsMetadataGetInSubscriptionSamples {
  */
 public final class AssessmentsMetadataListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/ListAssessmentsMetadata_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * ListAssessmentsMetadata_example.json
      */
     /**
      * Sample code: List security assessment metadata.
@@ -1838,7 +1673,9 @@ public final class AssessmentsMetadataListSamples {
  */
 public final class AssessmentsMetadataListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/ListAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * ListAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: List security assessment metadata for subscription.
@@ -1862,7 +1699,9 @@ import com.azure.resourcemanager.security.models.AutoProvision;
  */
 public final class AutoProvisioningSettingsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/AutoProvisioningSettings/CreateAutoProvisioningSettingsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * AutoProvisioningSettings/CreateAutoProvisioningSettingsSubscription_example.json
      */
     /**
      * Sample code: Create auto provisioning settings for subscription.
@@ -1884,7 +1723,9 @@ public final class AutoProvisioningSettingsCreateSamples {
  */
 public final class AutoProvisioningSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/AutoProvisioningSettings/GetAutoProvisioningSettingSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * AutoProvisioningSettings/GetAutoProvisioningSettingSubscription_example.json
      */
     /**
      * Sample code: Get an auto provisioning setting for subscription.
@@ -1906,7 +1747,9 @@ public final class AutoProvisioningSettingsGetSamples {
  */
 public final class AutoProvisioningSettingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/AutoProvisioningSettings/GetAutoProvisioningSettingsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * AutoProvisioningSettings/GetAutoProvisioningSettingsSubscription_example.json
      */
     /**
      * Sample code: Get auto provisioning settings for subscription.
@@ -1940,7 +1783,9 @@ import java.util.Map;
  */
 public final class AutomationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutAutomationAllAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutAutomationAllAssessments_example.json
      */
     /**
      * Sample code: Create or update a security automation for all assessments (including all severities).
@@ -1968,7 +1813,9 @@ public final class AutomationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutDisableAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutDisableAutomation_example.json
      */
     /**
      * Sample code: Disable or enable a security automation.
@@ -2000,7 +1847,9 @@ public final class AutomationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PutAutomationHighSeverityAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PutAutomationHighSeverityAssessments_example.json
      */
     /**
      * Sample code: Create or update a security automation for all high severity assessments.
@@ -2054,7 +1903,9 @@ public final class AutomationsCreateOrUpdateSamples {
  */
 public final class AutomationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/DeleteAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * DeleteAutomation_example.json
      */
     /**
      * Sample code: Delete a security automation.
@@ -2076,7 +1927,9 @@ public final class AutomationsDeleteSamples {
  */
 public final class AutomationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/GetAutomationResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * GetAutomationResourceGroup_example.json
      */
     /**
      * Sample code: Retrieve a security automation.
@@ -2099,7 +1952,9 @@ public final class AutomationsGetByResourceGroupSamples {
  */
 public final class AutomationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/GetAutomationsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * GetAutomationsSubscription_example.json
      */
     /**
      * Sample code: List all security automations of a specified subscription.
@@ -2121,7 +1976,9 @@ public final class AutomationsListSamples {
  */
 public final class AutomationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/GetAutomationsResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * GetAutomationsResourceGroup_example.json
      */
     /**
      * Sample code: List all security automations of a specified resource group.
@@ -2152,7 +2009,9 @@ import java.util.Map;
  */
 public final class AutomationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PatchAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PatchAutomation_example.json
      */
     /**
      * Sample code: Update a security automation.
@@ -2213,7 +2072,9 @@ import java.util.Map;
  */
 public final class AutomationsValidateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/ValidateAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * ValidateAutomation_example.json
      */
     /**
      * Sample code: Validate the security automation model before create or update.
@@ -2272,7 +2133,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsOrgsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: CreateOrUpdate_AzureDevOpsOrgs.
@@ -2298,7 +2161,9 @@ public final class AzureDevOpsOrgsCreateOrUpdateSamples {
  */
 public final class AzureDevOpsOrgsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: Get_AzureDevOpsOrgs.
@@ -2320,7 +2185,9 @@ public final class AzureDevOpsOrgsGetSamples {
  */
 public final class AzureDevOpsOrgsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: List_AzureDevOpsOrgs.
@@ -2341,7 +2208,9 @@ public final class AzureDevOpsOrgsListSamples {
  */
 public final class AzureDevOpsOrgsListAvailableSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAvailableAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAvailableAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: ListAvailable_AzureDevOpsOrgs.
@@ -2369,7 +2238,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsOrgsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: Update_AzureDevOpsOrgs.
@@ -2401,7 +2272,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: CreateOrUpdate_AzureDevOpsProjects.
@@ -2427,7 +2300,9 @@ public final class AzureDevOpsProjectsCreateOrUpdateSamples {
  */
 public final class AzureDevOpsProjectsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetAzureDevOpsProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: Get_AzureDevOpsProjects.
@@ -2450,7 +2325,9 @@ public final class AzureDevOpsProjectsGetSamples {
  */
 public final class AzureDevOpsProjectsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: List_AzureDevOpsProjects.
@@ -2478,7 +2355,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateAzureDevOpsProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: Update_AzureDevOpsProjects.
@@ -2511,7 +2390,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsReposCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: CreateOrUpdate_AzureDevOpsRepos.
@@ -2537,7 +2418,9 @@ public final class AzureDevOpsReposCreateOrUpdateSamples {
  */
 public final class AzureDevOpsReposGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetAzureDevOpsRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: Get_AzureDevOpsRepos.
@@ -2560,7 +2443,9 @@ public final class AzureDevOpsReposGetSamples {
  */
 public final class AzureDevOpsReposListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: List_AzureDevOpsRepos.
@@ -2589,7 +2474,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsReposUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateAzureDevOpsRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: Update_AzureDevOpsRepos.
@@ -2617,7 +2504,9 @@ public final class AzureDevOpsReposUpdateSamples {
  */
 public final class ComplianceResultsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/GetComplianceResults_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/
+     * GetComplianceResults_example.json
      */
     /**
      * Sample code: Get compliance results on subscription.
@@ -2640,7 +2529,9 @@ public final class ComplianceResultsGetSamples {
  */
 public final class ComplianceResultsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/ListComplianceResults_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/
+     * ListComplianceResults_example.json
      */
     /**
      * Sample code: Get compliance results on subscription.
@@ -2662,7 +2553,9 @@ public final class ComplianceResultsListSamples {
  */
 public final class CompliancesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/GetCompliance_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/
+     * GetCompliance_example.json
      */
     /**
      * Sample code: Get security compliance data for a day.
@@ -2685,7 +2578,9 @@ public final class CompliancesGetSamples {
  */
 public final class CompliancesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/GetCompliances_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/
+     * GetCompliances_example.json
      */
     /**
      * Sample code: Get security compliance data over time.
@@ -2715,7 +2610,9 @@ import com.azure.resourcemanager.security.models.ServicePrincipalProperties;
  */
 public final class ConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateGcpCredentialsConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateGcpCredentialsConnectorSubscription_example.json
      */
     /**
      * Sample code: gcpCredentials - Create a cloud account connector for a subscription.
@@ -2743,7 +2640,9 @@ public final class ConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsCredConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateAwsCredConnectorSubscription_example.json
      */
     /**
      * Sample code: AwsCred - Create a cloud account connector for a subscription.
@@ -2768,7 +2667,9 @@ public final class ConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
      */
     /**
      * Sample code: AwsAssumeRole - Create a cloud account connector for a subscription.
@@ -2802,7 +2703,9 @@ public final class ConnectorsCreateOrUpdateSamples {
  */
 public final class ConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * DeleteConnectorSubscription_example.json
      */
     /**
      * Sample code: Delete a cloud account connector from a subscription.
@@ -2824,7 +2727,9 @@ public final class ConnectorsDeleteSamples {
  */
 public final class ConnectorsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * GetConnectorSubscription_example.json
      */
     /**
      * Sample code: Details of a specific cloud account connector.
@@ -2846,7 +2751,9 @@ public final class ConnectorsGetSamples {
  */
 public final class ConnectorsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetListConnectorSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
+     * GetListConnectorSubscription_example.json
      */
     /**
      * Sample code: Get all cloud accounts connectors of a subscription.
@@ -2871,7 +2778,9 @@ import com.azure.resourcemanager.security.models.SupportedCloudEnum;
  */
 public final class CustomAssessmentAutomationsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationCreate_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationCreate_example.json
      */
     /**
      * Sample code: Create a Custom Assessment Automation.
@@ -2902,7 +2811,9 @@ public final class CustomAssessmentAutomationsCreateSamples {
  */
 public final class CustomAssessmentAutomationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationDelete_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationDelete_example.json
      */
     /**
      * Sample code: Delete a Custom Assessment Automation.
@@ -2925,7 +2836,9 @@ public final class CustomAssessmentAutomationsDeleteSamples {
  */
 public final class CustomAssessmentAutomationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationGet_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationGet_example.json
      */
     /**
      * Sample code: Get a Custom Assessment Automation.
@@ -2948,7 +2861,9 @@ public final class CustomAssessmentAutomationsGetByResourceGroupSamples {
  */
 public final class CustomAssessmentAutomationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationListBySubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationListBySubscription_example.json
      */
     /**
      * Sample code: List Custom Assessment Automations in a subscription.
@@ -2970,7 +2885,9 @@ public final class CustomAssessmentAutomationsListSamples {
  */
 public final class CustomAssessmentAutomationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationListByResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationListByResourceGroup_example.json
      */
     /**
      * Sample code: List Custom Assessment Automations in a subscription and a resource group.
@@ -2993,7 +2910,9 @@ public final class CustomAssessmentAutomationsListByResourceGroupSamples {
  */
 public final class CustomEntityStoreAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentCreate_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomEntityStoreAssignments/customEntityStoreAssignmentCreate_example.json
      */
     /**
      * Sample code: Create a custom entity store assignment.
@@ -3018,7 +2937,9 @@ public final class CustomEntityStoreAssignmentsCreateSamples {
  */
 public final class CustomEntityStoreAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentDelete_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomEntityStoreAssignments/customEntityStoreAssignmentDelete_example.json
      */
     /**
      * Sample code: Delete a custom entity store assignment.
@@ -3041,7 +2962,9 @@ public final class CustomEntityStoreAssignmentsDeleteSamples {
  */
 public final class CustomEntityStoreAssignmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentGet_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomEntityStoreAssignments/customEntityStoreAssignmentGet_example.json
      */
     /**
      * Sample code: Get a custom entity store assignment.
@@ -3064,7 +2987,9 @@ public final class CustomEntityStoreAssignmentsGetByResourceGroupSamples {
  */
 public final class CustomEntityStoreAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentListBySubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomEntityStoreAssignments/customEntityStoreAssignmentListBySubscription_example.json
      */
     /**
      * Sample code: List custom entity store assignments in a subscription.
@@ -3086,7 +3011,9 @@ public final class CustomEntityStoreAssignmentsListSamples {
  */
 public final class CustomEntityStoreAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentListByResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomEntityStoreAssignments/customEntityStoreAssignmentListByResourceGroup_example.json
      */
     /**
      * Sample code: List custom entity store assignments in a subscription and a resource group.
@@ -3101,9 +3028,316 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupSamples {
 }
 ```
 
+### CustomRecommendations_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.security.models.RecommendationSupportedClouds;
+import com.azure.resourcemanager.security.models.SecurityIssue;
+import com.azure.resourcemanager.security.models.SeverityEnum;
+import java.util.Arrays;
+
+/**
+ * Samples for CustomRecommendations CreateOrUpdate.
+ */
+public final class CustomRecommendationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * PutBySecurityConnectorCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Create or update custom recommendation over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateCustomRecommendationOverSecurityConnectorScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .define("33e7cc6e-a139-4723-a0e5-76993aee0771")
+            .withExistingScope(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector")
+            .withQuery(
+                "RawEntityMetadata | where Environment == 'GCP' and Identifiers.Type == 'compute.firewalls' | extend IslogConfigEnabled = tobool(Record.logConfig.enable) | extend HealthStatus = iff(IslogConfigEnabled, 'HEALTHY', 'UNHEALTHY')")
+            .withCloudProviders(Arrays.asList(RecommendationSupportedClouds.AWS))
+            .withSeverity(SeverityEnum.MEDIUM)
+            .withSecurityIssue(SecurityIssue.VULNERABILITY)
+            .withDisplayName("Password Policy")
+            .withDescription("organization passwords policy")
+            .withRemediationDescription("Change password policy to...")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * PutBySubscriptionCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Create or update custom recommendation over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateCustomRecommendationOverSubscriptionScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .define("33e7cc6e-a139-4723-a0e5-76993aee0771")
+            .withExistingScope("subscriptions/e5d1b86c-3051-44d5-8802-aa65d45a279b")
+            .withQuery(
+                "RawEntityMetadata | where Environment == 'GCP' and Identifiers.Type == 'compute.firewalls' | extend IslogConfigEnabled = tobool(Record.logConfig.enable) | extend HealthStatus = iff(IslogConfigEnabled, 'HEALTHY', 'UNHEALTHY')")
+            .withCloudProviders(Arrays.asList(RecommendationSupportedClouds.AWS))
+            .withSeverity(SeverityEnum.MEDIUM)
+            .withSecurityIssue(SecurityIssue.VULNERABILITY)
+            .withDisplayName("Password Policy")
+            .withDescription("organization passwords policy")
+            .withRemediationDescription("Change password policy to...")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * PutByManagementGroupCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Create or update custom recommendation over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateCustomRecommendationOverManagementGroupScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .define("33e7cc6e-a139-4723-a0e5-76993aee0771")
+            .withExistingScope("providers/Microsoft.Management/managementGroups/contoso")
+            .withQuery(
+                "RawEntityMetadata | where Environment == 'GCP' and Identifiers.Type == 'compute.firewalls' | extend IslogConfigEnabled = tobool(Record.logConfig.enable) | extend HealthStatus = iff(IslogConfigEnabled, 'HEALTHY', 'UNHEALTHY')")
+            .withCloudProviders(Arrays.asList(RecommendationSupportedClouds.AWS))
+            .withSeverity(SeverityEnum.MEDIUM)
+            .withSecurityIssue(SecurityIssue.VULNERABILITY)
+            .withDisplayName("Password Policy")
+            .withDescription("organization passwords policy")
+            .withRemediationDescription("Change password policy to...")
+            .create();
+    }
+}
+```
+
+### CustomRecommendations_Delete
+
+```java
+/**
+ * Samples for CustomRecommendations Delete.
+ */
+public final class CustomRecommendationsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * DeleteBySecurityConnectorCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Delete a custom recommendation over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteACustomRecommendationOverSecurityConnectorScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .deleteByResourceGroupWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * DeleteBySubscriptionCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Delete a custom recommendation over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        deleteACustomRecommendationOverSubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .deleteByResourceGroupWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * DeleteByManagementGroupCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Delete a custom recommendation over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteACustomRecommendationOverManagementGroupScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CustomRecommendations_Get
+
+```java
+/**
+ * Samples for CustomRecommendations Get.
+ */
+public final class CustomRecommendationsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * GetByManagementGroupCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Get a custom recommendation over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getACustomRecommendationOverManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .getWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * GetBySecurityConnectorCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Get a custom recommendation over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getACustomRecommendationOverSecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .getWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * GetBySubscriptionCustomRecommendation_example.json
+     */
+    /**
+     * Sample code: Get a custom recommendation over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getACustomRecommendationOverSubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .getWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CustomRecommendations_List
+
+```java
+/**
+ * Samples for CustomRecommendations List.
+ */
+public final class CustomRecommendationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * ListByManagementGroupCustomRecommendations_example.json
+     */
+    /**
+     * Sample code: List custom recommendations by management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listCustomRecommendationsByManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .list("providers/Microsoft.Management/managementGroups/contoso", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * ListBySubscriptionCustomRecommendations_example.json
+     */
+    /**
+     * Sample code: List custom recommendations by subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listCustomRecommendationsBySubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/CustomRecommendations/
+     * ListBySecurityConnectorCustomRecommendations_example.json
+     */
+    /**
+     * Sample code: List custom recommendations by security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listCustomRecommendationsBySecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.customRecommendations()
+            .list(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DefenderForStorage_CancelMalwareScan
+
+```java
+import com.azure.resourcemanager.security.models.SettingName;
+
+/**
+ * Samples for DefenderForStorage CancelMalwareScan.
+ */
+public final class DefenderForStorageCancelMalwareScanSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /CancelMalwareScan_example.json
+     */
+    /**
+     * Sample code: Cancel a Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void cancelADefenderForStorageMalwareScanForTheSpecifiedStorageResource(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.defenderForStorages()
+            .cancelMalwareScanWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
+                SettingName.CURRENT, "latest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DefenderForStorage_Create
 
 ```java
+import com.azure.resourcemanager.security.models.DefenderForStorageSettingProperties;
+import com.azure.resourcemanager.security.models.MalwareScanningProperties;
+import com.azure.resourcemanager.security.models.OnUploadProperties;
+import com.azure.resourcemanager.security.models.SensitiveDataDiscoveryProperties;
 import com.azure.resourcemanager.security.models.SettingName;
 
 /**
@@ -3111,7 +3345,9 @@ import com.azure.resourcemanager.security.models.SettingName;
  */
 public final class DefenderForStorageCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage/PutDefenderForStorageSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /PutDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Creates or updates the Defender for Storage settings on a specified resource.
@@ -3124,13 +3360,13 @@ public final class DefenderForStorageCreateSamples {
             .define(SettingName.CURRENT)
             .withExistingResourceId(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount")
-            .withIsEnabled(true)
-            .withOverrideSubscriptionLevelSettings(true)
-            .withScanResultsEventGridTopicResourceId(
-                "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic")
-            .withIsEnabledMalwareScanningIsEnabled(true)
-            .withCapGBPerMonth(-1)
-            .withIsEnabledSensitiveDataDiscoveryIsEnabled(true)
+            .withProperties(new DefenderForStorageSettingProperties().withIsEnabled(true)
+                .withMalwareScanning(new MalwareScanningProperties()
+                    .withOnUpload(new OnUploadProperties().withIsEnabled(true).withCapGBPerMonth(-1))
+                    .withScanResultsEventGridTopicResourceId(
+                        "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic"))
+                .withSensitiveDataDiscovery(new SensitiveDataDiscoveryProperties().withIsEnabled(true))
+                .withOverrideSubscriptionLevelSettings(true))
             .create();
     }
 }
@@ -3146,7 +3382,9 @@ import com.azure.resourcemanager.security.models.SettingName;
  */
 public final class DefenderForStorageGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage/GetDefenderForStorageSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /GetDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Gets the Defender for Storage settings for the specified resource.
@@ -3157,6 +3395,64 @@ public final class DefenderForStorageGetSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager.defenderForStorages()
             .getWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
+                SettingName.CURRENT, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DefenderForStorage_GetMalwareScan
+
+```java
+import com.azure.resourcemanager.security.models.SettingName;
+
+/**
+ * Samples for DefenderForStorage GetMalwareScan.
+ */
+public final class DefenderForStorageGetMalwareScanSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /GetMalwareScan_example.json
+     */
+    /**
+     * Sample code: Gets the Defender for Storage malware scan for the specified storage resource.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getsTheDefenderForStorageMalwareScanForTheSpecifiedStorageResource(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.defenderForStorages()
+            .getMalwareScanWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
+                SettingName.CURRENT, "latest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DefenderForStorage_StartMalwareScan
+
+```java
+import com.azure.resourcemanager.security.models.SettingName;
+
+/**
+ * Samples for DefenderForStorage StartMalwareScan.
+ */
+public final class DefenderForStorageStartMalwareScanSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /StartMalwareScan_example.json
+     */
+    /**
+     * Sample code: Initiate a Defender for Storage malware scan for the specified storage account.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void initiateADefenderForStorageMalwareScanForTheSpecifiedStorageAccount(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.defenderForStorages()
+            .startMalwareScanWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
                 SettingName.CURRENT, com.azure.core.util.Context.NONE);
     }
@@ -3177,7 +3473,9 @@ import java.util.Arrays;
  */
 public final class DevOpsConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardCurrentAndFuture_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardCurrentAndFuture_example.json
      */
     /**
      * Sample code: CreateOrUpdate_DevOpsConfigurations_OnboardCurrentAndFuture.
@@ -3195,7 +3493,9 @@ public final class DevOpsConfigurationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardCurrentOnly_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardCurrentOnly_example.json
      */
     /**
      * Sample code: CreateOrUpdate_DevOpsConfigurations_OnboardCurrentOnly.
@@ -3213,7 +3513,9 @@ public final class DevOpsConfigurationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardSelected_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateDevOpsConfigurationsOnboardSelected_example.json
      */
     /**
      * Sample code: CreateOrUpdate_DevOpsConfigurations_OnboardSelected.
@@ -3241,7 +3543,9 @@ public final class DevOpsConfigurationsCreateOrUpdateSamples {
  */
 public final class DevOpsConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/DeleteDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/DeleteDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Delete_DevOpsConfigurations.
@@ -3262,7 +3566,9 @@ public final class DevOpsConfigurationsDeleteSamples {
  */
 public final class DevOpsConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsConfigurationsWithCapabilities_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsConfigurationsWithCapabilities_example.json
      */
     /**
      * Sample code: Get_DevOpsConfigurations_WithCapabilities.
@@ -3276,7 +3582,9 @@ public final class DevOpsConfigurationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Get_DevOpsConfigurations.
@@ -3298,7 +3606,9 @@ public final class DevOpsConfigurationsGetSamples {
  */
 public final class DevOpsConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListDevOpsConfigurations_example.json
      */
     /**
      * Sample code: List_DevOpsConfigurations.
@@ -3323,7 +3633,9 @@ import com.azure.resourcemanager.security.models.DevOpsConfigurationProperties;
  */
 public final class DevOpsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Update_DevOpsConfigurations.
@@ -3348,7 +3660,9 @@ public final class DevOpsConfigurationsUpdateSamples {
  */
 public final class DevOpsOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsOperationResultsFailed_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsOperationResultsFailed_example.json
      */
     /**
      * Sample code: Get_DevOpsOperationResults_Failed.
@@ -3362,7 +3676,9 @@ public final class DevOpsOperationResultsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsOperationResultsSucceeded_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsOperationResultsSucceeded_example.json
      */
     /**
      * Sample code: Get_DevOpsOperationResults_Succeeded.
@@ -3373,6 +3689,207 @@ public final class DevOpsOperationResultsGetSamples {
         manager.devOpsOperationResults()
             .getWithResponse("myRg", "mySecurityConnectorName", "4e826cf1-5c36-4808-a7d2-fb4f5170978b",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicies_Get
+
+```java
+/**
+ * Samples for DevOpsPolicies Get.
+ */
+public final class DevOpsPoliciesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsPolicies_example.json
+     */
+    /**
+     * Sample code: Get_DevOpsPolicies.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getDevOpsPolicies(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicies()
+            .getWithResponse("myRg", "mySecurityConnectorName", "myDevOpsPolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicies_List
+
+```java
+/**
+ * Samples for DevOpsPolicies List.
+ */
+public final class DevOpsPoliciesListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListDevOpsPolicies_example.json
+     */
+    /**
+     * Sample code: List_DevOpsPolicies.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void listDevOpsPolicies(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicies().list("myRg", "mySecurityConnectorName", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicyAssignments_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.security.models.DescendantBehavior;
+import com.azure.resourcemanager.security.models.DevOpsPolicyAssignmentProperties;
+import com.azure.resourcemanager.security.models.DevOpsPolicyDescriptor;
+import com.azure.resourcemanager.security.models.DevOpsPolicyType;
+
+/**
+ * Samples for DevOpsPolicyAssignments CreateOrUpdate.
+ */
+public final class DevOpsPolicyAssignmentsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateDevOpsPolicyAssignments_example.json
+     */
+    /**
+     * Sample code: CreateOrUpdate_DevOpsPolicyAssignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        createOrUpdateDevOpsPolicyAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicyAssignments()
+            .define("5ec87f43-62d8-437b-8f46-4c8d4032cf6d")
+            .withExistingSecurityConnector("myRg", "mySecurityConnectorName")
+            .withProperties(new DevOpsPolicyAssignmentProperties().withResourceId(
+                "/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourcegroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/Contoso")
+                .withDescendantBehavior(DescendantBehavior.OVERRIDE)
+                .withPolicy(new DevOpsPolicyDescriptor().withPolicyName("myDevOpsPolicy")
+                    .withPolicyId("00000000-0000-0000-0000-000000000000")
+                    .withPolicyVersion("1.0")
+                    .withPolicyType(DevOpsPolicyType.PIPELINE)))
+            .create();
+    }
+}
+```
+
+### DevOpsPolicyAssignments_Delete
+
+```java
+/**
+ * Samples for DevOpsPolicyAssignments Delete.
+ */
+public final class DevOpsPolicyAssignmentsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/DeleteDevOpsPolicyAssignments_example.json
+     */
+    /**
+     * Sample code: Delete_DevOpsPolicyAssignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteDevOpsPolicyAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicyAssignments()
+            .delete("myRg", "mySecurityConnectorName", "5ec87f43-62d8-437b-8f46-4c8d4032cf6d",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicyAssignments_Get
+
+```java
+/**
+ * Samples for DevOpsPolicyAssignments Get.
+ */
+public final class DevOpsPolicyAssignmentsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsPolicyAssignments_example.json
+     */
+    /**
+     * Sample code: Get_DevOpsPolicyAssignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getDevOpsPolicyAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicyAssignments()
+            .getWithResponse("myRg", "mySecurityConnectorName", "5ec87f43-62d8-437b-8f46-4c8d4032cf6d",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicyAssignments_List
+
+```java
+/**
+ * Samples for DevOpsPolicyAssignments List.
+ */
+public final class DevOpsPolicyAssignmentsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListDevOpsPolicyAssignments_example.json
+     */
+    /**
+     * Sample code: List_DevOpsPolicyAssignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void listDevOpsPolicyAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.devOpsPolicyAssignments()
+            .list("myRg", "mySecurityConnectorName", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DevOpsPolicyAssignments_Update
+
+```java
+import com.azure.resourcemanager.security.models.DescendantBehavior;
+import com.azure.resourcemanager.security.models.DevOpsPolicyAssignment;
+import com.azure.resourcemanager.security.models.DevOpsPolicyAssignmentProperties;
+import com.azure.resourcemanager.security.models.DevOpsPolicyDescriptor;
+import com.azure.resourcemanager.security.models.DevOpsPolicyType;
+
+/**
+ * Samples for DevOpsPolicyAssignments Update.
+ */
+public final class DevOpsPolicyAssignmentsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateDevOpsPolicyAssignments_example.json
+     */
+    /**
+     * Sample code: Update_DevOpsPolicyAssignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void updateDevOpsPolicyAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        DevOpsPolicyAssignment resource = manager.devOpsPolicyAssignments()
+            .getWithResponse("myRg", "mySecurityConnectorName", "5ec87f43-62d8-437b-8f46-4c8d4032cf6d",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new DevOpsPolicyAssignmentProperties().withResourceId(
+                "/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourcegroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/Contoso")
+                .withDescendantBehavior(DescendantBehavior.OVERRIDE)
+                .withPolicy(new DevOpsPolicyDescriptor().withPolicyName("myDevOpsPolicy")
+                    .withPolicyId("00000000-0000-0000-0000-000000000000")
+                    .withPolicyVersion("1.0")
+                    .withPolicyType(DevOpsPolicyType.PIPELINE)))
+            .apply();
     }
 }
 ```
@@ -3389,7 +3906,9 @@ import java.util.Arrays;
  */
 public final class DeviceSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/PutDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * PutDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Create or update a device security group for the specified IoT hub resource.
@@ -3419,7 +3938,9 @@ public final class DeviceSecurityGroupsCreateOrUpdateSamples {
  */
 public final class DeviceSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/DeleteDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * DeleteDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Delete a device security group for the specified IoT Hub resource.
@@ -3444,7 +3965,9 @@ public final class DeviceSecurityGroupsDeleteSamples {
  */
 public final class DeviceSecurityGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/GetDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * GetDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Get a device security group for the specified IoT Hub resource.
@@ -3469,7 +3992,9 @@ public final class DeviceSecurityGroupsGetSamples {
  */
 public final class DeviceSecurityGroupsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/ListDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * ListDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: List all device security groups for the specified IoT Hub resource.
@@ -3494,7 +4019,9 @@ public final class DeviceSecurityGroupsListSamples {
  */
 public final class DiscoveredSecuritySolutionsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions/GetDiscoveredSecuritySolutionResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions
+     * /GetDiscoveredSecuritySolutionResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get discovered security solution from a security data location.
@@ -3517,7 +4044,9 @@ public final class DiscoveredSecuritySolutionsGetSamples {
  */
 public final class DiscoveredSecuritySolutionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions/GetDiscoveredSecuritySolutionsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions
+     * /GetDiscoveredSecuritySolutionsSubscription_example.json
      */
     /**
      * Sample code: Get discovered security solutions.
@@ -3538,7 +4067,9 @@ public final class DiscoveredSecuritySolutionsListSamples {
  */
 public final class DiscoveredSecuritySolutionsListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions/GetDiscoveredSecuritySolutionsSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/DiscoveredSecuritySolutions
+     * /GetDiscoveredSecuritySolutionsSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get discovered security solutions from a security data location.
@@ -3560,7 +4091,9 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionSamples {
  */
 public final class ExternalSecuritySolutionsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/GetExternalSecuritySolution_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/
+     * GetExternalSecuritySolution_example.json
      */
     /**
      * Sample code: Get external security solution.
@@ -3583,7 +4116,9 @@ public final class ExternalSecuritySolutionsGetSamples {
  */
 public final class ExternalSecuritySolutionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/GetExternalSecuritySolutionsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/
+     * GetExternalSecuritySolutionsSubscription_example.json
      */
     /**
      * Sample code: Get external security solutions on a subscription.
@@ -3605,7 +4140,9 @@ public final class ExternalSecuritySolutionsListSamples {
  */
 public final class ExternalSecuritySolutionsListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/GetExternalSecuritySolutionsSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/
+     * GetExternalSecuritySolutionsSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get external security solutions on a subscription from security data location.
@@ -3627,7 +4164,9 @@ public final class ExternalSecuritySolutionsListByHomeRegionSamples {
  */
 public final class GitHubOwnersGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetGitHubOwners_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetGitHubOwners_example.json
      */
     /**
      * Sample code: Get_GitHubOwners.
@@ -3649,7 +4188,9 @@ public final class GitHubOwnersGetSamples {
  */
 public final class GitHubOwnersListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitHubOwners_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListGitHubOwners_example.json
      */
     /**
      * Sample code: List_GitHubOwners.
@@ -3670,7 +4211,9 @@ public final class GitHubOwnersListSamples {
  */
 public final class GitHubOwnersListAvailableSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAvailableGitHubOwners_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAvailableGitHubOwners_example.json
      */
     /**
      * Sample code: ListAvailable_GitHubOwners.
@@ -3692,7 +4235,9 @@ public final class GitHubOwnersListAvailableSamples {
  */
 public final class GitHubReposGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetGitHubRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetGitHubRepos_example.json
      */
     /**
      * Sample code: Get_GitHubRepos.
@@ -3715,7 +4260,9 @@ public final class GitHubReposGetSamples {
  */
 public final class GitHubReposListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitHubRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListGitHubRepos_example.json
      */
     /**
      * Sample code: List_GitHubRepos.
@@ -3737,7 +4284,9 @@ public final class GitHubReposListSamples {
  */
 public final class GitLabGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetGitLabGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetGitLabGroups_example.json
      */
     /**
      * Sample code: Get_GitLabGroups.
@@ -3760,7 +4309,9 @@ public final class GitLabGroupsGetSamples {
  */
 public final class GitLabGroupsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitLabGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListGitLabGroups_example.json
      */
     /**
      * Sample code: List_GitLabGroups.
@@ -3781,7 +4332,9 @@ public final class GitLabGroupsListSamples {
  */
 public final class GitLabGroupsListAvailableSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAvailableGitLabGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAvailableGitLabGroups_example.json
      */
     /**
      * Sample code: ListAvailable_GitLabGroups.
@@ -3803,7 +4356,9 @@ public final class GitLabGroupsListAvailableSamples {
  */
 public final class GitLabProjectsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetGitLabProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetGitLabProjects_example.json
      */
     /**
      * Sample code: Get_GitLabProjects.
@@ -3826,7 +4381,9 @@ public final class GitLabProjectsGetSamples {
  */
 public final class GitLabProjectsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitLabProjects_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListGitLabProjects_example.json
      */
     /**
      * Sample code: List_GitLabProjects.
@@ -3848,7 +4405,9 @@ public final class GitLabProjectsListSamples {
  */
 public final class GitLabSubgroupsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitLabSubgroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListGitLabSubgroups_example.json
      */
     /**
      * Sample code: List_GitLabSubgroups.
@@ -3875,7 +4434,9 @@ import java.time.OffsetDateTime;
  */
 public final class GovernanceAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceAssignments/PutGovernanceAssignment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/
+     * GovernanceAssignments/PutGovernanceAssignment_example.json
      */
     /**
      * Sample code: Create Governance assignment.
@@ -3912,7 +4473,9 @@ public final class GovernanceAssignmentsCreateOrUpdateSamples {
  */
 public final class GovernanceAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceAssignments/DeleteGovernanceAssignment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/
+     * GovernanceAssignments/DeleteGovernanceAssignment_example.json
      */
     /**
      * Sample code: Delete security assignment.
@@ -3937,7 +4500,9 @@ public final class GovernanceAssignmentsDeleteSamples {
  */
 public final class GovernanceAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceAssignments/GetGovernanceAssignment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/
+     * GovernanceAssignments/GetGovernanceAssignment_example.json
      */
     /**
      * Sample code: Get governanceAssignment by specific governanceAssignmentKey.
@@ -3963,7 +4528,9 @@ public final class GovernanceAssignmentsGetSamples {
  */
 public final class GovernanceAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceAssignments/ListGovernanceAssignments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/
+     * GovernanceAssignments/ListGovernanceAssignments_example.json
      */
     /**
      * Sample code: List governance assignments.
@@ -3996,7 +4563,9 @@ import java.util.Arrays;
  */
 public final class GovernanceRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PutManagementGroupGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PutManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Create or update governance rule over management group scope.
@@ -4030,7 +4599,9 @@ public final class GovernanceRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PutSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PutSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Create or update governance rule over security connector scope.
@@ -4064,7 +4635,9 @@ public final class GovernanceRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PutGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PutGovernanceRule_example.json
      */
     /**
      * Sample code: Create or update governance rule over subscription scope.
@@ -4106,7 +4679,9 @@ public final class GovernanceRulesCreateOrUpdateSamples {
  */
 public final class GovernanceRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteManagementGroupGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * DeleteManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over management group scope.
@@ -4121,7 +4696,9 @@ public final class GovernanceRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * DeleteGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over subscription scope.
@@ -4136,7 +4713,9 @@ public final class GovernanceRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/DeleteSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * DeleteSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Delete a Governance rule over security connector scope.
@@ -4162,7 +4741,9 @@ public final class GovernanceRulesDeleteSamples {
  */
 public final class GovernanceRulesExecuteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PostSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PostSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Execute governance rule over security connector scope.
@@ -4178,7 +4759,9 @@ public final class GovernanceRulesExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PostGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PostGovernanceRule_example.json
      */
     /**
      * Sample code: Execute Governance rule over subscription scope.
@@ -4193,7 +4776,9 @@ public final class GovernanceRulesExecuteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PostManagementGroupGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * PostManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Execute governance rule over management group scope.
@@ -4217,7 +4802,9 @@ public final class GovernanceRulesExecuteSamples {
  */
 public final class GovernanceRulesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetManagementGroupGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over management group scope.
@@ -4232,7 +4819,9 @@ public final class GovernanceRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over subscription scope.
@@ -4247,7 +4836,9 @@ public final class GovernanceRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetSecurityConnectorGovernanceRule_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetSecurityConnectorGovernanceRule_example.json
      */
     /**
      * Sample code: Get a governance rule over security connector scope.
@@ -4272,7 +4863,9 @@ public final class GovernanceRulesGetSamples {
  */
 public final class GovernanceRulesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySubscriptionGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListBySubscriptionGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by subscription scope.
@@ -4286,7 +4879,9 @@ public final class GovernanceRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySecurityConnectorGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListBySecurityConnectorGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by security connector scope.
@@ -4302,7 +4897,9 @@ public final class GovernanceRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListByManagementGroupGovernanceRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * ListByManagementGroupGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by management group scope.
@@ -4325,7 +4922,9 @@ public final class GovernanceRulesListSamples {
  */
 public final class GovernanceRulesOperationResultsSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetManagementGroupGovernanceRuleExecuteStatus_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetManagementGroupGovernanceRuleExecuteStatus_example.json
      */
     /**
      * Sample code: Get governance rules long run operation result over management group.
@@ -4341,7 +4940,9 @@ public final class GovernanceRulesOperationResultsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetSecurityConnectorGovernanceRuleExecuteStatus_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetSecurityConnectorGovernanceRuleExecuteStatus_example.json
      */
     /**
      * Sample code: Get governance rules long run operation result over security connector.
@@ -4358,7 +4959,9 @@ public final class GovernanceRulesOperationResultsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetGovernanceRuleExecuteStatus_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
+     * GetGovernanceRuleExecuteStatus_example.json
      */
     /**
      * Sample code: Get governance rules long run operation result over subscription.
@@ -4383,7 +4986,9 @@ public final class GovernanceRulesOperationResultsSamples {
  */
 public final class HealthReportsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/GetHealthReports_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/
+     * GetHealthReports_example.json
      */
     /**
      * Sample code: Get health report of resource.
@@ -4407,7 +5012,9 @@ public final class HealthReportsGetSamples {
  */
 public final class HealthReportsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/ListHealthReports_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/
+     * ListHealthReports_example.json
      */
     /**
      * Sample code: List health reports.
@@ -4438,7 +5045,9 @@ import java.util.UUID;
  */
 public final class InformationProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Create or update an information protection policy for a management group.
@@ -4501,7 +5110,9 @@ import com.azure.resourcemanager.security.models.InformationProtectionPolicyName
  */
 public final class InformationProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Get the customized information protection policy for a management group.
@@ -4516,7 +5127,9 @@ public final class InformationProtectionPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetEffectiveInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/GetEffectiveInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Get the effective information protection policy for a management group.
@@ -4540,7 +5153,9 @@ public final class InformationProtectionPoliciesGetSamples {
  */
 public final class InformationProtectionPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/ListInformationProtectionPolicies_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/ListInformationProtectionPolicies_example.json
      */
     /**
      * Sample code: Get information protection policies.
@@ -4573,7 +5188,9 @@ import java.util.Map;
  */
 public final class IotSecuritySolutionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/CreateIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * CreateIoTSecuritySolution.json
      */
     /**
      * Sample code: Create or update a IoT security solution.
@@ -4629,7 +5246,9 @@ public final class IotSecuritySolutionCreateOrUpdateSamples {
  */
 public final class IotSecuritySolutionDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/DeleteIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * DeleteIoTSecuritySolution.json
      */
     /**
      * Sample code: Delete an IoT security solution.
@@ -4651,7 +5270,9 @@ public final class IotSecuritySolutionDeleteSamples {
  */
 public final class IotSecuritySolutionGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolution.json
      */
     /**
      * Sample code: Get a IoT security solution.
@@ -4673,7 +5294,9 @@ public final class IotSecuritySolutionGetByResourceGroupSamples {
  */
 public final class IotSecuritySolutionListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsList.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsList.json
      */
     /**
      * Sample code: List IoT Security solutions by subscription.
@@ -4686,7 +5309,9 @@ public final class IotSecuritySolutionListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByIotHub.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsListByIotHub.json
      */
     /**
      * Sample code: List IoT Security solutions by IoT Hub.
@@ -4710,7 +5335,9 @@ public final class IotSecuritySolutionListSamples {
  */
 public final class IotSecuritySolutionListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByIotHubAndRg.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsListByIotHubAndRg.json
      */
     /**
      * Sample code: List IoT Security solutions by resource group and IoT Hub.
@@ -4726,7 +5353,9 @@ public final class IotSecuritySolutionListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByRg.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsListByRg.json
      */
     /**
      * Sample code: List IoT Security solutions by resource group.
@@ -4757,7 +5386,9 @@ import java.util.Map;
  */
 public final class IotSecuritySolutionUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/UpdateIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * UpdateIoTSecuritySolution.json
      */
     /**
      * Sample code: Use this method to update existing IoT Security solution.
@@ -4805,7 +5436,8 @@ public final class IotSecuritySolutionUpdateSamples {
  */
 public final class IotSecuritySolutionAnalyticsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAnalytics.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAnalytics.json
      */
     /**
      * Sample code: Get Security Solution Analytics.
@@ -4826,7 +5458,8 @@ public final class IotSecuritySolutionAnalyticsGetSamples {
  */
 public final class IotSecuritySolutionAnalyticsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAnalyticsList.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAnalyticsList.json
      */
     /**
      * Sample code: Get Security Solution Analytics.
@@ -4847,7 +5480,8 @@ public final class IotSecuritySolutionAnalyticsListSamples {
  */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertDismissSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/PostIoTSecuritySolutionsSecurityAggregatedAlertDismiss.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/PostIoTSecuritySolutionsSecurityAggregatedAlertDismiss.json
      */
     /**
      * Sample code: Dismiss an aggregated IoT Security Solution Alert.
@@ -4871,7 +5505,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertDismissSamples {
  */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAggregatedAlert.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAggregatedAlert.json
      */
     /**
      * Sample code: Get the aggregated security analytics alert of yours IoT Security solution. This aggregation is
@@ -4896,7 +5531,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertGetSamples {
  */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAggregatedAlertList.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityAggregatedAlertList.json
      */
     /**
      * Sample code: Get the aggregated alert list of yours IoT Security solution.
@@ -4919,7 +5555,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertListSamples {
  */
 public final class IotSecuritySolutionsAnalyticsRecommendationGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendation.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendation.json
      */
     /**
      * Sample code: Get the aggregated security analytics recommendation of yours IoT Security solution.
@@ -4942,7 +5579,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationGetSamples {
  */
 public final class IotSecuritySolutionsAnalyticsRecommendationListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendationList.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendationList.json
      */
     /**
      * Sample code: Get the list of aggregated security analytics recommendations of yours IoT Security solution.
@@ -4976,7 +5614,9 @@ import java.util.Arrays;
  */
 public final class JitNetworkAccessPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/CreateJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * CreateJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Create JIT network access policy.
@@ -5022,7 +5662,9 @@ public final class JitNetworkAccessPoliciesCreateOrUpdateSamples {
  */
 public final class JitNetworkAccessPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/DeleteJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * DeleteJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Delete a JIT network access policy.
@@ -5044,7 +5686,9 @@ public final class JitNetworkAccessPoliciesDeleteSamples {
  */
 public final class JitNetworkAccessPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * GetJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Get JIT network access policy.
@@ -5071,7 +5715,9 @@ import java.util.Arrays;
  */
 public final class JitNetworkAccessPoliciesInitiateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/InitiateJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * InitiateJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Initiate an action on a JIT network access policy.
@@ -5099,7 +5745,9 @@ public final class JitNetworkAccessPoliciesInitiateSamples {
  */
 public final class JitNetworkAccessPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * GetJitNetworkAccessPoliciesSubscription_example.json
      */
     /**
      * Sample code: Get JIT network access policies on a subscription.
@@ -5121,7 +5769,9 @@ public final class JitNetworkAccessPoliciesListSamples {
  */
 public final class JitNetworkAccessPoliciesListByRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get JIT network access policies on a subscription from a security data location.
@@ -5143,7 +5793,9 @@ public final class JitNetworkAccessPoliciesListByRegionSamples {
  */
 public final class JitNetworkAccessPoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * GetJitNetworkAccessPoliciesResourceGroup_example.json
      */
     /**
      * Sample code: Get JIT network access policies on a resource group.
@@ -5165,7 +5817,9 @@ public final class JitNetworkAccessPoliciesListByResourceGroupSamples {
  */
 public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * GetJitNetworkAccessPoliciesResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get JIT network access policies on a resource group from a security data location.
@@ -5188,7 +5842,9 @@ public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionSamples {
  */
 public final class LocationsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Locations/GetLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Locations/
+     * GetLocation_example.json
      */
     /**
      * Sample code: Get security data location.
@@ -5209,7 +5865,9 @@ public final class LocationsGetSamples {
  */
 public final class LocationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Locations/GetLocations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Locations/
+     * GetLocations_example.json
      */
     /**
      * Sample code: Get security data locations.
@@ -5230,7 +5888,9 @@ public final class LocationsListSamples {
  */
 public final class MdeOnboardingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-10-01-preview/examples/MdeOnboardings/GetMdeOnboardings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-10-01-preview/examples/MdeOnboardings/
+     * GetMdeOnboardings_example.json
      */
     /**
      * Sample code: The default configuration or data needed to onboard the machine to MDE.
@@ -5252,7 +5912,9 @@ public final class MdeOnboardingsGetSamples {
  */
 public final class MdeOnboardingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-10-01-preview/examples/MdeOnboardings/ListMdeOnboardings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-10-01-preview/examples/MdeOnboardings/
+     * ListMdeOnboardings_example.json
      */
     /**
      * Sample code: The configuration or data needed to onboard the machine to MDE.
@@ -5266,6 +5928,30 @@ public final class MdeOnboardingsListSamples {
 }
 ```
 
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/Operations/
+     * ListOperations_example.json
+     */
+    /**
+     * Sample code: List the operations for the Microsoft.Security (Microsoft Defender for Cloud) resource provider.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void listTheOperationsForTheMicrosoftSecurityMicrosoftDefenderForCloudResourceProvider(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Pricings_Delete
 
 ```java
@@ -5274,7 +5960,9 @@ public final class MdeOnboardingsListSamples {
  */
 public final class PricingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/DeleteResourcePricing_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * DeleteResourcePricing_example.json
      */
     /**
      * Sample code: Delete a pricing on resource.
@@ -5298,7 +5986,9 @@ public final class PricingsDeleteSamples {
  */
 public final class PricingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on resource - VirtualMachines plan.
@@ -5314,7 +6004,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameCloudPosture_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameCloudPosture_example.json
      */
     /**
      * Sample code: Get pricings on subscription - CloudPosture plan.
@@ -5329,7 +6021,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameDns_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameDns_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Dns plan.
@@ -5343,7 +6037,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameContainers_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameContainers_example.json
      */
     /**
      * Sample code: Get pricings on subscription - Containers plan.
@@ -5358,7 +6054,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameStorageAccounts_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameStorageAccounts_example.json
      */
     /**
      * Sample code: Get pricings on subscription - StorageAccounts plan.
@@ -5373,7 +6071,9 @@ public final class PricingsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/GetPricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * GetPricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Get pricings on subscription - VirtualMachines plan.
@@ -5397,7 +6097,9 @@ public final class PricingsGetSamples {
  */
 public final class PricingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListPricingsWithPlanFilter_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * ListPricingsWithPlanFilter_example.json
      */
     /**
      * Sample code: Get pricings on subscription with plans filter.
@@ -5412,7 +6114,9 @@ public final class PricingsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListPricings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * ListPricings_example.json
      */
     /**
      * Sample code: Get pricings on subscription.
@@ -5426,7 +6130,9 @@ public final class PricingsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/ListResourcePricings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * ListResourcePricings_example.json
      */
     /**
      * Sample code: Get pricings on resource.
@@ -5454,7 +6160,9 @@ import com.azure.resourcemanager.security.models.PricingTier;
  */
 public final class PricingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan).
@@ -5469,7 +6177,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByNamePartialSuccess_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingByNamePartialSuccess_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan) - partial success.
@@ -5484,7 +6194,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingVMsByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingVMsByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for VirtualMachines plan).
@@ -5500,7 +6212,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Update pricing on resource (example for VirtualMachines plan).
@@ -5526,7 +6240,9 @@ public final class PricingsUpdateSamples {
  */
 public final class RegulatoryComplianceAssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceAssessment_example.json
      */
     /**
      * Sample code: Get selected regulatory compliance assessment details and state.
@@ -5550,7 +6266,9 @@ public final class RegulatoryComplianceAssessmentsGetSamples {
  */
 public final class RegulatoryComplianceAssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceAssessmentList_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceAssessmentList_example.json
      */
     /**
      * Sample code: Get all assessments mapped to selected regulatory compliance control.
@@ -5572,7 +6290,9 @@ public final class RegulatoryComplianceAssessmentsListSamples {
  */
 public final class RegulatoryComplianceControlsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceControl_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceControl_example.json
      */
     /**
      * Sample code: Get selected regulatory compliance control details and state.
@@ -5594,7 +6314,9 @@ public final class RegulatoryComplianceControlsGetSamples {
  */
 public final class RegulatoryComplianceControlsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceControlList_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceControlList_example.json
      */
     /**
      * Sample code: Get all regulatory compliance controls details and state for selected standard.
@@ -5616,7 +6338,9 @@ public final class RegulatoryComplianceControlsListSamples {
  */
 public final class RegulatoryComplianceStandardsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceStandard_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceStandard_example.json
      */
     /**
      * Sample code: Get selected regulatory compliance standard details and state.
@@ -5638,7 +6362,9 @@ public final class RegulatoryComplianceStandardsGetSamples {
  */
 public final class RegulatoryComplianceStandardsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceStandardList_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceStandardList_example.json
      */
     /**
      * Sample code: Get all supported regulatory compliance standards details and state.
@@ -5660,7 +6386,8 @@ public final class RegulatoryComplianceStandardsListSamples {
  */
 public final class SecureScoreControlDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScoreControlDefinitions/ListSecureScoreControlDefinitions_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * secureScoreControlDefinitions/ListSecureScoreControlDefinitions_example.json
      */
     /**
      * Sample code: List security controls definition.
@@ -5681,7 +6408,8 @@ public final class SecureScoreControlDefinitionsListSamples {
  */
 public final class SecureScoreControlDefinitionsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScoreControlDefinitions/ListSecureScoreControlDefinitions_subscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * secureScoreControlDefinitions/ListSecureScoreControlDefinitions_subscription_example.json
      */
     /**
      * Sample code: List security controls definition by subscription.
@@ -5704,7 +6432,9 @@ public final class SecureScoreControlDefinitionsListBySubscriptionSamples {
  */
 public final class SecureScoreControlsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScoreControls_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScoreControls_example.json
      */
     /**
      * Sample code: List all secure scores controls.
@@ -5727,7 +6457,9 @@ import com.azure.resourcemanager.security.models.ExpandControlsEnum;
  */
 public final class SecureScoreControlsListBySecureScoreSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScoreControlsForNameWithExpand_builtin_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScoreControlsForNameWithExpand_builtin_example.json
      */
     /**
      * Sample code: Get security controls and their current score for the specified initiative with the expand
@@ -5742,7 +6474,9 @@ public final class SecureScoreControlsListBySecureScoreSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScoreControlsForName_builtin_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScoreControlsForName_builtin_example.json
      */
     /**
      * Sample code: Get security controls and their current score for the specified initiative.
@@ -5764,7 +6498,9 @@ public final class SecureScoreControlsListBySecureScoreSamples {
  */
 public final class SecureScoresGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/GetSecureScoresSingle_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * GetSecureScoresSingle_example.json
      */
     /**
      * Sample code: Get single secure score.
@@ -5785,7 +6521,9 @@ public final class SecureScoresGetSamples {
  */
 public final class SecureScoresListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScores_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScores_example.json
      */
     /**
      * Sample code: List secure scores.
@@ -5813,7 +6551,9 @@ import java.util.Arrays;
  */
 public final class SecurityConnectorApplicationOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/PutSecurityConnectorApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * PutSecurityConnectorApplication_example.json
      */
     /**
      * Sample code: Create Application.
@@ -5844,7 +6584,9 @@ public final class SecurityConnectorApplicationOperationCreateOrUpdateSamples {
  */
 public final class SecurityConnectorApplicationOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/DeleteSecurityConnectorApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * DeleteSecurityConnectorApplication_example.json
      */
     /**
      * Sample code: Delete security Application.
@@ -5867,7 +6609,9 @@ public final class SecurityConnectorApplicationOperationDeleteSamples {
  */
 public final class SecurityConnectorApplicationOperationGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/GetSecurityConnectorApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * GetSecurityConnectorApplication_example.json
      */
     /**
      * Sample code: Get security applications by specific applicationId.
@@ -5891,7 +6635,9 @@ public final class SecurityConnectorApplicationOperationGetSamples {
  */
 public final class SecurityConnectorApplicationsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/ListBySecurityConnectorApplications_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * ListBySecurityConnectorApplications_example.json
      */
     /**
      * Sample code: List security applications by security connector level scope.
@@ -5922,7 +6668,9 @@ import java.util.Map;
  */
 public final class SecurityConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/PutSecurityConnector_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /PutSecurityConnector_example.json
      */
     /**
      * Sample code: Create or update a security connector.
@@ -5966,7 +6714,9 @@ public final class SecurityConnectorsCreateOrUpdateSamples {
  */
 public final class SecurityConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/DeleteSecurityConnector_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /DeleteSecurityConnector_example.json
      */
     /**
      * Sample code: Delete a security connector.
@@ -5988,7 +6738,9 @@ public final class SecurityConnectorsDeleteSamples {
  */
 public final class SecurityConnectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorSingleResource_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /GetSecurityConnectorSingleResource_example.json
      */
     /**
      * Sample code: Retrieve a security connector.
@@ -6011,7 +6763,9 @@ public final class SecurityConnectorsGetByResourceGroupSamples {
  */
 public final class SecurityConnectorsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /GetSecurityConnectorsSubscription_example.json
      */
     /**
      * Sample code: List all security connectors of a specified subscription.
@@ -6033,7 +6787,9 @@ public final class SecurityConnectorsListSamples {
  */
 public final class SecurityConnectorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorsResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /GetSecurityConnectorsResourceGroup_example.json
      */
     /**
      * Sample code: List all security connectors of a specified resource group.
@@ -6064,7 +6820,9 @@ import java.util.Map;
  */
 public final class SecurityConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2024-03-01-preview/examples/SecurityConnectors/PatchSecurityConnector_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-08-01-preview/examples/SecurityConnectors
+     * /PatchSecurityConnector_example.json
      */
     /**
      * Sample code: Update a security connector.
@@ -6119,7 +6877,9 @@ import java.util.Arrays;
  */
 public final class SecurityContactsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/CreateSecurityContact_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * CreateSecurityContact_example.json
      */
     /**
      * Sample code: Create security contact data.
@@ -6153,7 +6913,9 @@ import com.azure.resourcemanager.security.models.SecurityContactName;
  */
 public final class SecurityContactsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/DeleteSecurityContact_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * DeleteSecurityContact_example.json
      */
     /**
      * Sample code: Deletes a security contact data.
@@ -6176,7 +6938,9 @@ import com.azure.resourcemanager.security.models.SecurityContactName;
  */
 public final class SecurityContactsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/GetSecurityContact_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * GetSecurityContact_example.json
      */
     /**
      * Sample code: Get a security contact.
@@ -6197,7 +6961,9 @@ public final class SecurityContactsGetSamples {
  */
 public final class SecurityContactsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/GetSecurityContactsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * GetSecurityContactsSubscription_example.json
      */
     /**
      * Sample code: List security contact data.
@@ -6218,7 +6984,9 @@ public final class SecurityContactsListSamples {
  */
 public final class SecurityOperatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/PutSecurityOperatorByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * PutSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Create a security operator on the given scope.
@@ -6242,7 +7010,9 @@ public final class SecurityOperatorsCreateOrUpdateSamples {
  */
 public final class SecurityOperatorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/DeleteSecurityOperatorByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * DeleteSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Delete SecurityOperator on subscription.
@@ -6266,7 +7036,9 @@ public final class SecurityOperatorsDeleteSamples {
  */
 public final class SecurityOperatorsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/GetSecurityOperatorByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * GetSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Get a specific security operator by scope and securityOperatorName.
@@ -6289,7 +7061,9 @@ public final class SecurityOperatorsGetSamples {
  */
 public final class SecurityOperatorsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/ListSecurityOperators_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * ListSecurityOperators_example.json
      */
     /**
      * Sample code: List SecurityOperators.
@@ -6310,7 +7084,9 @@ public final class SecurityOperatorsListSamples {
  */
 public final class SecuritySolutionsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/GetSecuritySolutionsResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/
+     * GetSecuritySolutionsResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get a security solution from a security data location.
@@ -6333,7 +7109,9 @@ public final class SecuritySolutionsGetSamples {
  */
 public final class SecuritySolutionsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/GetSecuritySolutionsSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/
+     * GetSecuritySolutionsSubscription_example.json
      */
     /**
      * Sample code: Get security solutions.
@@ -6354,7 +7132,8 @@ public final class SecuritySolutionsListSamples {
  */
 public final class SecuritySolutionsReferenceDataListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscription_example.json
      */
     /**
      * Sample code: Get security solutions.
@@ -6375,7 +7154,8 @@ public final class SecuritySolutionsReferenceDataListSamples {
  */
 public final class SecuritySolutionsReferenceDataListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscriptionLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security solutions from a security data location.
@@ -6386,6 +7166,274 @@ public final class SecuritySolutionsReferenceDataListByHomeRegionSamples {
         getSecuritySolutionsFromASecurityDataLocation(com.azure.resourcemanager.security.SecurityManager manager) {
         manager.securitySolutionsReferenceDatas()
             .listByHomeRegionWithResponse("westcentralus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityStandards_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.security.models.PartialAssessmentProperties;
+import com.azure.resourcemanager.security.models.StandardSupportedCloud;
+import java.util.Arrays;
+
+/**
+ * Samples for SecurityStandards CreateOrUpdate.
+ */
+public final class SecurityStandardsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * PutBySubscriptionSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Create or update security standard over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateSecurityStandardOverSubscriptionScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .define("8bb8be0a-6010-4789-812f-e4d661c4ed0e")
+            .withExistingScope("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23")
+            .withDisplayName("Azure Test Security Standard 1")
+            .withDescription("description of Azure Test Security Standard 1")
+            .withAssessments(Arrays.asList(new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder"),
+                new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder")))
+            .withCloudProviders(Arrays.asList(StandardSupportedCloud.GCP))
+            .withPolicySetDefinitionId(
+                "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Authorization/policySetDefinitions/patchorchestration-applicationversions")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * PutBySecurityConnectorSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Create or update security standard over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateSecurityStandardOverSecurityConnectorScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .define("8bb8be0a-6010-4789-812f-e4d661c4ed0e")
+            .withExistingScope(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector")
+            .withDisplayName("Azure Test Security Standard 1")
+            .withDescription("description of Azure Test Security Standard 1")
+            .withAssessments(Arrays.asList(new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder"),
+                new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder")))
+            .withCloudProviders(Arrays.asList(StandardSupportedCloud.GCP))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * PutByManagementGroupSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Create or update security standard over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createOrUpdateSecurityStandardOverManagementGroupScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .define("8bb8be0a-6010-4789-812f-e4d661c4ed0e")
+            .withExistingScope("providers/Microsoft.Management/managementGroups/contoso")
+            .withDisplayName("Azure Test Security Standard 1")
+            .withDescription("description of Azure Test Security Standard 1")
+            .withAssessments(Arrays.asList(new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder"),
+                new PartialAssessmentProperties().withAssessmentKey("fakeTokenPlaceholder")))
+            .withCloudProviders(Arrays.asList(StandardSupportedCloud.GCP))
+            .withPolicySetDefinitionId(
+                "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Authorization/policySetDefinitions/patchorchestration-applicationversions")
+            .create();
+    }
+}
+```
+
+### SecurityStandards_Delete
+
+```java
+/**
+ * Samples for SecurityStandards Delete.
+ */
+public final class SecurityStandardsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * DeleteBySecurityConnectorSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Delete a security standard over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        deleteASecurityStandardOverSecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .deleteByResourceGroupWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * DeleteByManagementGroupSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Delete a security standard over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        deleteASecurityStandardOverManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * DeleteBySubscriptionSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Delete a security standard over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        deleteASecurityStandardOverSubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .deleteByResourceGroupWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityStandards_Get
+
+```java
+/**
+ * Samples for SecurityStandards Get.
+ */
+public final class SecurityStandardsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * GetBySecurityConnectorSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Get a security standard over security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getASecurityStandardOverSecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .getWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * GetByManagementGroupSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Get a security standard over management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getASecurityStandardOverManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .getWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * GetBySubscriptionSecurityStandard_example.json
+     */
+    /**
+     * Sample code: Get a security standard over subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        getASecurityStandardOverSubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .getWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityStandards_List
+
+```java
+/**
+ * Samples for SecurityStandards List.
+ */
+public final class SecurityStandardsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * ListByManagementGroupSecurityStandards_example.json
+     */
+    /**
+     * Sample code: List security standards by management group scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listSecurityStandardsByManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .list("providers/Microsoft.Management/managementGroups/contoso", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * ListBySubscriptionSecurityStandards_example.json
+     */
+    /**
+     * Sample code: List security standards by subscription scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listSecurityStandardsBySubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/SecurityStandards/
+     * ListBySecurityConnectorSecurityStandards_example.json
+     */
+    /**
+     * Sample code: List security standards by security connector scope.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void
+        listSecurityStandardsBySecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityStandards()
+            .list(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6402,7 +7450,9 @@ import java.util.UUID;
  */
 public final class SensitivitySettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/SensitivitySettings/PutSensitivitySettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/
+     * SensitivitySettings/PutSensitivitySettings_example.json
      */
     /**
      * Sample code: Update sensitivity settings.
@@ -6431,7 +7481,9 @@ public final class SensitivitySettingsCreateOrUpdateSamples {
  */
 public final class SensitivitySettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/SensitivitySettings/GetSensitivitySettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/
+     * SensitivitySettings/GetSensitivitySettings_example.json
      */
     /**
      * Sample code: Get sensitivity settings.
@@ -6452,7 +7504,9 @@ public final class SensitivitySettingsGetSamples {
  */
 public final class SensitivitySettingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/SensitivitySettings/GetSensitivitySettingsList_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/
+     * SensitivitySettings/GetSensitivitySettingsList_example.json
      */
     /**
      * Sample code: Get sensitivity settings list.
@@ -6473,7 +7527,8 @@ public final class SensitivitySettingsListSamples {
  */
 public final class ServerVulnerabilityAssessmentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ServerVulnerabilityAssessments/CreateServerVulnerabilityAssessments_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * ServerVulnerabilityAssessments/CreateServerVulnerabilityAssessments_example.json
      */
     /**
      * Sample code: Create a server vulnerability assessments on a resource. Only 'default' resource is supported. Once
@@ -6499,7 +7554,8 @@ public final class ServerVulnerabilityAssessmentCreateOrUpdateSamples {
  */
 public final class ServerVulnerabilityAssessmentDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ServerVulnerabilityAssessments/DeleteServerVulnerabilityAssessments_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * ServerVulnerabilityAssessments/DeleteServerVulnerabilityAssessments_example.json
      */
     /**
      * Sample code: Delete a server vulnerability assessments on a resource. Only 'default' resource is supported. Once
@@ -6524,7 +7580,8 @@ public final class ServerVulnerabilityAssessmentDeleteSamples {
  */
 public final class ServerVulnerabilityAssessmentGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ServerVulnerabilityAssessments/GetServerVulnerabilityAssessments_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * ServerVulnerabilityAssessments/GetServerVulnerabilityAssessments_example.json
      */
     /**
      * Sample code: Get a server vulnerability assessments onboarding status on a resource. Currently Microsoft.Security
@@ -6549,7 +7606,8 @@ public final class ServerVulnerabilityAssessmentGetSamples {
  */
 public final class ServerVulnerabilityAssessmentListByExtendedResourceSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ServerVulnerabilityAssessments/ListByExtendedResourceServerVulnerabilityAssessments_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
+     * ServerVulnerabilityAssessments/ListByExtendedResourceServerVulnerabilityAssessments_example.json
      */
     /**
      * Sample code: Get a list of server vulnerability assessments on a resource. Though this API returns a list,
@@ -6579,7 +7637,8 @@ import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessmentsS
  */
 public final class ServerVulnerabilityAssessmentsSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/ServerVulnerabilityAssessmentsSettings/PutServerVulnerabilityAssessmentsSetting_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/
+     * ServerVulnerabilityAssessmentsSettings/PutServerVulnerabilityAssessmentsSetting_example.json
      */
     /**
      * Sample code: Set a server vulnerability assessments setting of the kind settingKind on the subscription.
@@ -6607,7 +7666,8 @@ import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessmentsS
  */
 public final class ServerVulnerabilityAssessmentsSettingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/ServerVulnerabilityAssessmentsSettings/DeleteServerVulnerabilityAssessmentsSetting_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/
+     * ServerVulnerabilityAssessmentsSettings/DeleteServerVulnerabilityAssessmentsSetting_example.json
      */
     /**
      * Sample code: Delete the server vulnerability assessments setting of the kind settingKind from the subscription.
@@ -6633,7 +7693,8 @@ import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessmentsS
  */
 public final class ServerVulnerabilityAssessmentsSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/ServerVulnerabilityAssessmentsSettings/GetServerVulnerabilityAssessmentsSetting_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/
+     * ServerVulnerabilityAssessmentsSettings/GetServerVulnerabilityAssessmentsSetting_example.json
      */
     /**
      * Sample code: Get the server vulnerability assessments setting of the kind settingKind that is set on the
@@ -6658,7 +7719,8 @@ public final class ServerVulnerabilityAssessmentsSettingsGetSamples {
  */
 public final class ServerVulnerabilityAssessmentsSettingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/ServerVulnerabilityAssessmentsSettings/ListServerVulnerabilityAssessmentsSettings_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-05-01/examples/
+     * ServerVulnerabilityAssessmentsSettings/ListServerVulnerabilityAssessmentsSettings_example.json
      */
     /**
      * Sample code: List the server vulnerability assessments settings set on the subscription.
@@ -6682,7 +7744,9 @@ import com.azure.resourcemanager.security.models.SettingNameAutoGenerated;
  */
 public final class SettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example
+     * .json
      */
     /**
      * Sample code: Get a setting on subscription.
@@ -6703,7 +7767,9 @@ public final class SettingsGetSamples {
  */
 public final class SettingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/
+     * GetSettings_example.json
      */
     /**
      * Sample code: Get settings of subscription.
@@ -6727,7 +7793,9 @@ import com.azure.resourcemanager.security.models.SettingNameAutoGenerated;
  */
 public final class SettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/UpdateSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/
+     * UpdateSetting_example.json
      */
     /**
      * Sample code: Update a setting for subscription.
@@ -6750,7 +7818,9 @@ public final class SettingsUpdateSamples {
  */
 public final class SoftwareInventoriesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/GetSoftware_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/GetSoftware_example.json
      */
     /**
      * Sample code: Gets a single software data of the virtual machine.
@@ -6774,7 +7844,9 @@ public final class SoftwareInventoriesGetSamples {
  */
 public final class SoftwareInventoriesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListBySubscriptionSoftwareInventories_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/ListBySubscriptionSoftwareInventories_example.json
      */
     /**
      * Sample code: Gets the software inventory of all virtual machines in the subscriptions.
@@ -6796,7 +7868,9 @@ public final class SoftwareInventoriesListSamples {
  */
 public final class SoftwareInventoriesListByExtendedResourceSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListByExtendedResourceSoftwareInventories_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/ListByExtendedResourceSoftwareInventories_example.json
      */
     /**
      * Sample code: Gets the software inventory of the virtual machine.
@@ -6825,7 +7899,9 @@ import java.util.Map;
  */
 public final class SqlVulnerabilityAssessmentBaselineRulesAddSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Add.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Add.json
      */
     /**
      * Sample code: Create a baseline for all rules.
@@ -6844,7 +7920,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesAddSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_AddLatest.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_AddLatest.json
      */
     /**
      * Sample code: Create a baseline for all rules using the latest scan results.
@@ -6883,7 +7961,9 @@ import java.util.Arrays;
  */
 public final class SqlVulnerabilityAssessmentBaselineRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_PutLatest.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_PutLatest.json
      */
     /**
      * Sample code: Create a baseline using the latest scan results.
@@ -6903,7 +7983,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesCreateOrUpdateSamples 
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Put.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Put.json
      */
     /**
      * Sample code: Create a baseline.
@@ -6931,7 +8013,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesCreateOrUpdateSamples 
  */
 public final class SqlVulnerabilityAssessmentBaselineRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Delete.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Delete.json
      */
     /**
      * Sample code: Delete the baseline.
@@ -6955,7 +8039,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesDeleteSamples {
  */
 public final class SqlVulnerabilityAssessmentBaselineRulesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Get.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_Get.json
      */
     /**
      * Sample code: Get the baseline.
@@ -6979,7 +8065,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesGetSamples {
  */
 public final class SqlVulnerabilityAssessmentBaselineRulesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_List.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsBaselineRuleOperations/ArcMachineBaselineRules_List.json
      */
     /**
      * Sample code: List baseline for all rules.
@@ -7003,7 +8091,9 @@ public final class SqlVulnerabilityAssessmentBaselineRulesListSamples {
  */
 public final class SqlVulnerabilityAssessmentScanResultsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_Get.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_Get.json
      */
     /**
      * Sample code: Get scan details of a scan record.
@@ -7018,7 +8108,9 @@ public final class SqlVulnerabilityAssessmentScanResultsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_GetLatest.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_GetLatest.json
      */
     /**
      * Sample code: Get scan details of the latest scan record.
@@ -7042,7 +8134,9 @@ public final class SqlVulnerabilityAssessmentScanResultsGetSamples {
  */
 public final class SqlVulnerabilityAssessmentScanResultsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_ListLatest.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_ListLatest.json
      */
     /**
      * Sample code: List scan results of the latest scan.
@@ -7057,7 +8151,9 @@ public final class SqlVulnerabilityAssessmentScanResultsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_List.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentsScanResultsOperations/ArcMachineScanResults_List.json
      */
     /**
      * Sample code: List scan results.
@@ -7081,7 +8177,9 @@ public final class SqlVulnerabilityAssessmentScanResultsListSamples {
  */
 public final class SqlVulnerabilityAssessmentScansGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_Get.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_Get.json
      */
     /**
      * Sample code: Get scan details of a scan record.
@@ -7096,7 +8194,9 @@ public final class SqlVulnerabilityAssessmentScansGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_GetLatest.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_GetLatest.json
      */
     /**
      * Sample code: Get scan details of the latest scan record.
@@ -7120,7 +8220,9 @@ public final class SqlVulnerabilityAssessmentScansGetSamples {
  */
 public final class SqlVulnerabilityAssessmentScansListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_List.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-01-preview/examples/
+     * sqlVulnerabilityAssessmentScanOperations/ArcMachineScans_List.json
      */
     /**
      * Sample code: List scan details.
@@ -7136,6 +8238,150 @@ public final class SqlVulnerabilityAssessmentScansListSamples {
 }
 ```
 
+### StandardAssignments_Create
+
+```java
+import com.azure.resourcemanager.security.models.AssignedAssessmentItem;
+import com.azure.resourcemanager.security.models.AssignedStandardItem;
+import com.azure.resourcemanager.security.models.Effect;
+import com.azure.resourcemanager.security.models.ExemptionCategory;
+import com.azure.resourcemanager.security.models.StandardAssignmentPropertiesExemptionData;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+/**
+ * Samples for StandardAssignments Create.
+ */
+public final class StandardAssignmentsCreateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/StandardAssignments/
+     * PutStandardAssignment.json
+     */
+    /**
+     * Sample code: Put an audit standard assignment.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void putAnAuditStandardAssignment(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.standardAssignments()
+            .define("1f3afdf9-d0c9-4c3d-847f-89da613e70a8")
+            .withExistingResourceId("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23")
+            .withDisplayName("ASC Default")
+            .withDescription("Set of policies monitored by Azure Security Center for cross cloud")
+            .withAssignedStandard(new AssignedStandardItem()
+                .withId("/providers/Microsoft.Security/securityStandards/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"))
+            .withEffect(Effect.AUDIT)
+            .withExcludedScopes(Arrays.asList())
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/StandardAssignments/
+     * PutExemptionStandardAssignment.json
+     */
+    /**
+     * Sample code: Put exemption standard assignment.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void putExemptionStandardAssignment(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.standardAssignments()
+            .define("1f3afdf9-d0c9-4c3d-847f-89da613e70a8")
+            .withExistingResourceId(
+                "subscriptions/212f9889-769e-45ae-ab43-6da33674bd26/resourceGroups/ANAT_TEST_RG/providers/Microsoft.Compute/virtualMachines/anatTestE2LA")
+            .withDisplayName("Test exemption")
+            .withDescription("Exemption description")
+            .withAssignedStandard(new AssignedStandardItem()
+                .withId("/providers/Microsoft.Security/securityStandards/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"))
+            .withEffect(Effect.EXEMPT)
+            .withExpiresOn(OffsetDateTime.parse("2022-05-01T19:50:47.083633Z"))
+            .withExemptionData(
+                new StandardAssignmentPropertiesExemptionData().withExemptionCategory(ExemptionCategory.WAIVER)
+                    .withAssignedAssessment(new AssignedAssessmentItem().withAssessmentKey("fakeTokenPlaceholder")))
+            .create();
+    }
+}
+```
+
+### StandardAssignments_Delete
+
+```java
+/**
+ * Samples for StandardAssignments Delete.
+ */
+public final class StandardAssignmentsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/StandardAssignments/
+     * DeleteStandardAssignment.json
+     */
+    /**
+     * Sample code: Delete a standard assignment.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteAStandardAssignment(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.standardAssignments()
+            .deleteByResourceGroupWithResponse(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandardAssignments_Get
+
+```java
+/**
+ * Samples for StandardAssignments Get.
+ */
+public final class StandardAssignmentsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/StandardAssignments/
+     * GetStandardAssignment.json
+     */
+    /**
+     * Sample code: Retrieve a standard assignment.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void retrieveAStandardAssignment(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.standardAssignments()
+            .getWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandardAssignments_List
+
+```java
+/**
+ * Samples for StandardAssignments List.
+ */
+public final class StandardAssignmentsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-08-01/examples/StandardAssignments/
+     * ListStandardAssignments.json
+     */
+    /**
+     * Sample code: List standard assignments.
+     * 
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void listStandardAssignments(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.standardAssignments()
+            .list(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### SubAssessments_Get
 
 ```java
@@ -7144,7 +8390,9 @@ public final class SqlVulnerabilityAssessmentScansListSamples {
  */
 public final class SubAssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/GetSubAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/
+     * GetSubAssessment_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location.
@@ -7170,7 +8418,9 @@ public final class SubAssessmentsGetSamples {
  */
 public final class SubAssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/ListSubAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/
+     * ListSubAssessments_example.json
      */
     /**
      * Sample code: List security sub-assessments.
@@ -7193,7 +8443,9 @@ public final class SubAssessmentsListSamples {
  */
 public final class SubAssessmentsListAllSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/ListSubscriptionSubAssessments_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/
+     * ListSubscriptionSubAssessments_example.json
      */
     /**
      * Sample code: List security sub-assessments.
@@ -7215,7 +8467,9 @@ public final class SubAssessmentsListAllSamples {
  */
 public final class TasksGetResourceGroupLevelTaskSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTaskResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTaskResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security recommendation task in a resource group.
@@ -7239,7 +8493,9 @@ public final class TasksGetResourceGroupLevelTaskSamples {
  */
 public final class TasksGetSubscriptionLevelTaskSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTaskSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTaskSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location.
@@ -7263,7 +8519,9 @@ public final class TasksGetSubscriptionLevelTaskSamples {
  */
 public final class TasksListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksSubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTasksSubscription_example.json
      */
     /**
      * Sample code: Get security recommendations tasks.
@@ -7284,7 +8542,9 @@ public final class TasksListSamples {
  */
 public final class TasksListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTasksSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security recommendations tasks from security data location.
@@ -7306,7 +8566,9 @@ public final class TasksListByHomeRegionSamples {
  */
 public final class TasksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTasksResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security recommendation tasks in a resource group.
@@ -7330,7 +8592,9 @@ import com.azure.resourcemanager.security.models.TaskUpdateActionType;
  */
 public final class TasksUpdateResourceGroupLevelTaskStateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/UpdateTaskResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * UpdateTaskResourceGroupLocation_example.json
      */
     /**
      * Sample code: Change security recommendation task state.
@@ -7356,7 +8620,9 @@ import com.azure.resourcemanager.security.models.TaskUpdateActionType;
  */
 public final class TasksUpdateSubscriptionLevelTaskStateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/UpdateTaskSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * UpdateTaskSubscriptionLocation_example.json
      */
     /**
      * Sample code: Change security recommendation task state.
@@ -7380,7 +8646,9 @@ public final class TasksUpdateSubscriptionLevelTaskStateSamples {
  */
 public final class TopologyGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopology_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/
+     * GetTopology_example.json
      */
     /**
      * Sample code: Get topology.
@@ -7401,7 +8669,9 @@ public final class TopologyGetSamples {
  */
 public final class TopologyListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopologySubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/
+     * GetTopologySubscription_example.json
      */
     /**
      * Sample code: Get topology on a subscription.
@@ -7422,7 +8692,9 @@ public final class TopologyListSamples {
  */
 public final class TopologyListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopologySubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/
+     * GetTopologySubscriptionLocation_example.json
      */
     /**
      * Sample code: Get topology on a subscription from security data location.
@@ -7444,7 +8716,9 @@ public final class TopologyListByHomeRegionSamples {
  */
 public final class WorkspaceSettingsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/CreateWorkspaceSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * CreateWorkspaceSetting_example.json
      */
     /**
      * Sample code: Create a workspace setting data for subscription.
@@ -7471,7 +8745,9 @@ public final class WorkspaceSettingsCreateSamples {
  */
 public final class WorkspaceSettingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/DeleteWorkspaceSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * DeleteWorkspaceSetting_example.json
      */
     /**
      * Sample code: Delete a workspace setting data for resource group.
@@ -7493,7 +8769,9 @@ public final class WorkspaceSettingsDeleteSamples {
  */
 public final class WorkspaceSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/GetWorkspaceSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * GetWorkspaceSetting_example.json
      */
     /**
      * Sample code: Get a workspace setting on subscription.
@@ -7514,7 +8792,9 @@ public final class WorkspaceSettingsGetSamples {
  */
 public final class WorkspaceSettingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/GetWorkspaceSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * GetWorkspaceSettings_example.json
      */
     /**
      * Sample code: Get workspace settings on subscription.
@@ -7537,7 +8817,9 @@ import com.azure.resourcemanager.security.models.WorkspaceSetting;
  */
 public final class WorkspaceSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/UpdateWorkspaceSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/WorkspaceSettings/
+     * UpdateWorkspaceSetting_example.json
      */
     /**
      * Sample code: Update a workspace setting data for subscription.

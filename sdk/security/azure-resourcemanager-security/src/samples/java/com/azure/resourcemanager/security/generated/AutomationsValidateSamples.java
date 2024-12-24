@@ -22,7 +22,9 @@ import java.util.Map;
  */
 public final class AutomationsValidateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/ValidateAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * ValidateAutomation_example.json
      */
     /**
      * Sample code: Validate the security automation model before create or update.

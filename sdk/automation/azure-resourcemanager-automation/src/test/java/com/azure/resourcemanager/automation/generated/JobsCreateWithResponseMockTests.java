@@ -27,7 +27,7 @@ public final class JobsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"runbook\":{\"name\":\"hthvazjpwex\"},\"startedBy\":\"rzprobzzxe\",\"runOn\":\"nrkjgpjeuxsph\",\"jobId\":\"dab39e4f-fdb3-4063-831b-52c710fc5409\",\"creationTime\":\"2021-03-15T01:10:50Z\",\"status\":\"Running\",\"statusDetails\":\"jpdvzvfbhwbdquf\",\"startTime\":\"2021-01-18T22:04:24Z\",\"endTime\":\"2021-08-21T00:53:43Z\",\"exception\":\"laqrwyam\",\"lastModifiedTime\":\"2021-04-13T19:54:11Z\",\"lastStatusModifiedTime\":\"2021-03-21T09:06:36Z\",\"parameters\":{\"l\":\"zxfkjqutib\"},\"provisioningState\":\"Suspended\"},\"id\":\"trvrkpsab\",\"name\":\"u\",\"type\":\"vzm\"}";
+            = "{\"properties\":{\"runbook\":{\"name\":\"hthvazjpwex\"},\"startedBy\":\"rzprobzzxe\",\"runOn\":\"nrkjgpjeuxsph\",\"jobId\":\"fdb8da80-0297-40f4-a967-8accce396fac\",\"creationTime\":\"2021-03-15T01:10:50Z\",\"status\":\"Running\",\"statusDetails\":\"jpdvzvfbhwbdquf\",\"startTime\":\"2021-01-18T22:04:24Z\",\"endTime\":\"2021-08-21T00:53:43Z\",\"exception\":\"laqrwyam\",\"lastModifiedTime\":\"2021-04-13T19:54:11Z\",\"lastStatusModifiedTime\":\"2021-03-21T09:06:36Z\",\"parameters\":{\"l\":\"zxfkjqutib\"},\"provisioningState\":\"Suspended\"},\"id\":\"trvrkpsab\",\"name\":\"u\",\"type\":\"vzm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -48,7 +48,7 @@ public final class JobsCreateWithResponseMockTests {
         Assertions.assertEquals("hthvazjpwex", response.runbook().name());
         Assertions.assertEquals("rzprobzzxe", response.startedBy());
         Assertions.assertEquals("nrkjgpjeuxsph", response.runOn());
-        Assertions.assertEquals(UUID.fromString("dab39e4f-fdb3-4063-831b-52c710fc5409"), response.jobId());
+        Assertions.assertEquals(UUID.fromString("fdb8da80-0297-40f4-a967-8accce396fac"), response.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T01:10:50Z"), response.creationTime());
         Assertions.assertEquals(JobStatus.RUNNING, response.status());
         Assertions.assertEquals("jpdvzvfbhwbdquf", response.statusDetails());

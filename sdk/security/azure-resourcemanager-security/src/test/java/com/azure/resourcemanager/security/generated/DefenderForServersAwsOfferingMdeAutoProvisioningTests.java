@@ -12,17 +12,17 @@ public final class DefenderForServersAwsOfferingMdeAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersAwsOfferingMdeAutoProvisioning model
-            = BinaryData.fromString("{\"enabled\":false,\"configuration\":\"datahxpthceop\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"configuration\":\"datacwmhjobzrfpr\"}")
                 .toObject(DefenderForServersAwsOfferingMdeAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersAwsOfferingMdeAutoProvisioning model
-            = new DefenderForServersAwsOfferingMdeAutoProvisioning().withEnabled(false)
-                .withConfiguration("datahxpthceop");
+            = new DefenderForServersAwsOfferingMdeAutoProvisioning().withEnabled(true)
+                .withConfiguration("datacwmhjobzrfpr");
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingMdeAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

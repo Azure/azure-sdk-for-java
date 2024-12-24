@@ -13,25 +13,25 @@ public final class DiscoveredSecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"sruqnmdvha\",\"publisher\":\"c\",\"sku\":\"jy\"},\"location\":\"qswbqerzwx\",\"id\":\"ytxtdgu\",\"name\":\"vlbpktgdstyou\",\"type\":\"mbewreswmo\"}")
+            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"offer\":\"geumil\",\"publisher\":\"wuit\",\"sku\":\"dexyionofninbdb\"},\"location\":\"xcwqqrsmpc\",\"id\":\"bprt\",\"name\":\"gavbzbcyk\",\"type\":\"ivmfogdrtbf\"}")
             .toObject(DiscoveredSecuritySolutionInner.class);
-        Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("sruqnmdvha", model.offer());
-        Assertions.assertEquals("c", model.publisher());
-        Assertions.assertEquals("jy", model.sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("geumil", model.offer());
+        Assertions.assertEquals("wuit", model.publisher());
+        Assertions.assertEquals("dexyionofninbdb", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredSecuritySolutionInner model
-            = new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
-                .withOffer("sruqnmdvha")
-                .withPublisher("c")
-                .withSku("jy");
+            = new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
+                .withOffer("geumil")
+                .withPublisher("wuit")
+                .withSku("dexyionofninbdb");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionInner.class);
-        Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("sruqnmdvha", model.offer());
-        Assertions.assertEquals("c", model.publisher());
-        Assertions.assertEquals("jy", model.sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("geumil", model.offer());
+        Assertions.assertEquals("wuit", model.publisher());
+        Assertions.assertEquals("dexyionofninbdb", model.sku());
     }
 }

@@ -21,7 +21,7 @@ public final class TopologiesListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-05-25T08:24:35Z\",\"topologyResources\":[{\"resourceId\":\"elxtpfcya\",\"severity\":\"xdwrvyvtkmxvz\",\"recommendationsExist\":false,\"networkZones\":\"ugf\",\"topologyScore\":1147065199,\"location\":\"gkflv\",\"parents\":[{},{}],\"children\":[{},{},{},{}]}]},\"location\":\"uzwbkqcgzygtdj\",\"id\":\"tbarpt\",\"name\":\"ur\",\"type\":\"uoyyumhzpstocq\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-05-24T21:37:45Z\",\"topologyResources\":[{\"resourceId\":\"bxaxoyjyhutwe\",\"severity\":\"givkteccxfnatntm\",\"recommendationsExist\":true,\"networkZones\":\"qpmfhjikqcnbdq\",\"topologyScore\":1198461354,\"location\":\"nm\",\"parents\":[{},{},{}],\"children\":[{},{}]}]},\"location\":\"hmyucgrmw\",\"id\":\"vh\",\"name\":\"iyplgqqqgrbrhh\",\"type\":\"ipgtipaao\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TopologiesListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TopologyResource> response
-            = manager.topologies().listByHomeRegion("eqzvdbb", com.azure.core.util.Context.NONE);
+            = manager.topologies().listByHomeRegion("lndxrmyzvti", com.azure.core.util.Context.NONE);
 
     }
 }

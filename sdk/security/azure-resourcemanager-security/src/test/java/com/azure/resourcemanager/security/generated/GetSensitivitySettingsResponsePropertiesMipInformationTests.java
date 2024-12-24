@@ -18,20 +18,20 @@ public final class GetSensitivitySettingsResponsePropertiesMipInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetSensitivitySettingsResponsePropertiesMipInformation model = BinaryData.fromString(
-            "{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"dmflv\",\"id\":\"c4f0b265-4fb4-4c8a-bf71-7462b6eba69f\",\"order\":95.2019},{\"name\":\"lx\",\"id\":\"701e5c9f-8f36-4154-b85a-596aa16a11f7\",\"order\":85.26994}],\"customInfoTypes\":[{\"name\":\"peewchpxlkt\",\"id\":\"b9761e2b-7963-4bb2-8e31-c70dad9ad195\",\"description\":\"ziycslevufuztck\"},{\"name\":\"h\",\"id\":\"06c775e1-19bb-43f9-89bc-cb69007ecfd6\",\"description\":\"edcg\"},{\"name\":\"lwmmrqzzrrjv\",\"id\":\"6812394b-5cf7-4d52-87aa-f784ebcdab09\",\"description\":\"ydzgkrvqeevtoe\"}],\"builtInInfoTypes\":[{\"name\":\"t\",\"id\":\"1b836fe6-b03d-4826-ae4e-aa4f0bc8f6ad\",\"type\":\"tpzdmovzvfvaawzq\"},{\"name\":\"f\",\"id\":\"08509d56-3bf2-47b4-83b9-3fc8ad1c56b2\",\"type\":\"ur\"},{\"name\":\"laecxndticok\",\"id\":\"983a737b-19fb-4ef8-bc09-614409d6a0a1\",\"type\":\"mlqtmldgxob\"},{\"name\":\"rclnpkc\",\"id\":\"dfffc63b-9cf9-4e88-8ad9-38bac595e4f2\",\"type\":\"zriykhy\"}]}")
+            "{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"moy\",\"id\":\"3d1a6803-fe2e-4a9b-a467-06b752e9b40d\",\"order\":31.595718},{\"name\":\"ibhmfdn\",\"id\":\"43422a56-810f-40d6-88ed-37b15a85e7c2\",\"order\":72.701584},{\"name\":\"f\",\"id\":\"fb248495-c828-4099-b4ce-a898c7031e41\",\"order\":39.601517},{\"name\":\"aeoisrvh\",\"id\":\"6985e129-033e-4be5-8919-fa47f39794bb\",\"order\":3.3644319}],\"customInfoTypes\":[{\"name\":\"kiscvwmzhwpl\",\"id\":\"6c4adbf8-fba5-40b5-b0b2-f8922193faeb\",\"description\":\"xvxilcbtg\"},{\"name\":\"nzeyqxtjj\",\"id\":\"de231a8d-b6c8-466f-a6a3-5138921178bb\",\"description\":\"lqhy\"},{\"name\":\"vodggxdbee\",\"id\":\"e5950c49-be0b-4dcb-8350-56c1d439fa03\",\"description\":\"eknlra\"}],\"builtInInfoTypes\":[{\"name\":\"wiuagydwqf\",\"id\":\"8e9c7e3c-881f-4288-8115-6cc19579a9af\",\"type\":\"yr\"},{\"name\":\"iagtc\",\"id\":\"c7af1c64-3885-4969-96f8-6d2f56006442\",\"type\":\"cqwogfnzjvusfzl\"},{\"name\":\"ozuxylfsbtkadpys\",\"id\":\"da5c4bdd-82dc-44eb-bfea-008f30abecc1\",\"type\":\"btgkbugrjqctoj\"},{\"name\":\"isofieypefojyqd\",\"id\":\"c7470b1e-003f-4101-a9f3-2eb1b026ba56\",\"type\":\"plcplcwkhi\"}]}")
             .toObject(GetSensitivitySettingsResponsePropertiesMipInformation.class);
         Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS, model.mipIntegrationStatus());
-        Assertions.assertEquals("dmflv", model.labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("c4f0b265-4fb4-4c8a-bf71-7462b6eba69f"), model.labels().get(0).id());
-        Assertions.assertEquals(95.2019F, model.labels().get(0).order());
-        Assertions.assertEquals("peewchpxlkt", model.customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("b9761e2b-7963-4bb2-8e31-c70dad9ad195"),
+        Assertions.assertEquals("moy", model.labels().get(0).name());
+        Assertions.assertEquals(UUID.fromString("3d1a6803-fe2e-4a9b-a467-06b752e9b40d"), model.labels().get(0).id());
+        Assertions.assertEquals(31.595718F, model.labels().get(0).order());
+        Assertions.assertEquals("kiscvwmzhwpl", model.customInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("6c4adbf8-fba5-40b5-b0b2-f8922193faeb"),
             model.customInfoTypes().get(0).id());
-        Assertions.assertEquals("ziycslevufuztck", model.customInfoTypes().get(0).description());
-        Assertions.assertEquals("t", model.builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("1b836fe6-b03d-4826-ae4e-aa4f0bc8f6ad"),
+        Assertions.assertEquals("xvxilcbtg", model.customInfoTypes().get(0).description());
+        Assertions.assertEquals("wiuagydwqf", model.builtInInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("8e9c7e3c-881f-4288-8115-6cc19579a9af"),
             model.builtInInfoTypes().get(0).id());
-        Assertions.assertEquals("tpzdmovzvfvaawzq", model.builtInInfoTypes().get(0).type());
+        Assertions.assertEquals("yr", model.builtInInfoTypes().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,47 +40,53 @@ public final class GetSensitivitySettingsResponsePropertiesMipInformationTests {
             = new GetSensitivitySettingsResponsePropertiesMipInformation()
                 .withMipIntegrationStatus(MipIntegrationStatus.NO_MIP_LABELS)
                 .withLabels(Arrays.asList(
-                    new Label().withName("dmflv")
-                        .withId(UUID.fromString("c4f0b265-4fb4-4c8a-bf71-7462b6eba69f"))
-                        .withOrder(95.2019F),
-                    new Label().withName("lx")
-                        .withId(UUID.fromString("701e5c9f-8f36-4154-b85a-596aa16a11f7"))
-                        .withOrder(85.26994F)))
+                    new Label().withName("moy")
+                        .withId(UUID.fromString("3d1a6803-fe2e-4a9b-a467-06b752e9b40d"))
+                        .withOrder(31.595718F),
+                    new Label().withName("ibhmfdn")
+                        .withId(UUID.fromString("43422a56-810f-40d6-88ed-37b15a85e7c2"))
+                        .withOrder(72.701584F),
+                    new Label().withName("f")
+                        .withId(UUID.fromString("fb248495-c828-4099-b4ce-a898c7031e41"))
+                        .withOrder(39.601517F),
+                    new Label().withName("aeoisrvh")
+                        .withId(UUID.fromString("6985e129-033e-4be5-8919-fa47f39794bb"))
+                        .withOrder(3.3644319F)))
                 .withCustomInfoTypes(Arrays.asList(
-                    new InfoType().withName("peewchpxlkt")
-                        .withId(UUID.fromString("b9761e2b-7963-4bb2-8e31-c70dad9ad195"))
-                        .withDescription("ziycslevufuztck"),
-                    new InfoType().withName("h")
-                        .withId(UUID.fromString("06c775e1-19bb-43f9-89bc-cb69007ecfd6"))
-                        .withDescription("edcg"),
-                    new InfoType().withName("lwmmrqzzrrjv")
-                        .withId(UUID.fromString("6812394b-5cf7-4d52-87aa-f784ebcdab09"))
-                        .withDescription("ydzgkrvqeevtoe")))
+                    new InfoType().withName("kiscvwmzhwpl")
+                        .withId(UUID.fromString("6c4adbf8-fba5-40b5-b0b2-f8922193faeb"))
+                        .withDescription("xvxilcbtg"),
+                    new InfoType().withName("nzeyqxtjj")
+                        .withId(UUID.fromString("de231a8d-b6c8-466f-a6a3-5138921178bb"))
+                        .withDescription("lqhy"),
+                    new InfoType().withName("vodggxdbee")
+                        .withId(UUID.fromString("e5950c49-be0b-4dcb-8350-56c1d439fa03"))
+                        .withDescription("eknlra")))
                 .withBuiltInInfoTypes(Arrays.asList(
-                    new BuiltInInfoType().withName("t")
-                        .withId(UUID.fromString("1b836fe6-b03d-4826-ae4e-aa4f0bc8f6ad"))
-                        .withType("tpzdmovzvfvaawzq"),
-                    new BuiltInInfoType().withName("f")
-                        .withId(UUID.fromString("08509d56-3bf2-47b4-83b9-3fc8ad1c56b2"))
-                        .withType("ur"),
-                    new BuiltInInfoType().withName("laecxndticok")
-                        .withId(UUID.fromString("983a737b-19fb-4ef8-bc09-614409d6a0a1"))
-                        .withType("mlqtmldgxob"),
-                    new BuiltInInfoType().withName("rclnpkc")
-                        .withId(UUID.fromString("dfffc63b-9cf9-4e88-8ad9-38bac595e4f2"))
-                        .withType("zriykhy")));
+                    new BuiltInInfoType().withName("wiuagydwqf")
+                        .withId(UUID.fromString("8e9c7e3c-881f-4288-8115-6cc19579a9af"))
+                        .withType("yr"),
+                    new BuiltInInfoType().withName("iagtc")
+                        .withId(UUID.fromString("c7af1c64-3885-4969-96f8-6d2f56006442"))
+                        .withType("cqwogfnzjvusfzl"),
+                    new BuiltInInfoType().withName("ozuxylfsbtkadpys")
+                        .withId(UUID.fromString("da5c4bdd-82dc-44eb-bfea-008f30abecc1"))
+                        .withType("btgkbugrjqctoj"),
+                    new BuiltInInfoType().withName("isofieypefojyqd")
+                        .withId(UUID.fromString("c7470b1e-003f-4101-a9f3-2eb1b026ba56"))
+                        .withType("plcplcwkhi")));
         model = BinaryData.fromObject(model).toObject(GetSensitivitySettingsResponsePropertiesMipInformation.class);
         Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS, model.mipIntegrationStatus());
-        Assertions.assertEquals("dmflv", model.labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("c4f0b265-4fb4-4c8a-bf71-7462b6eba69f"), model.labels().get(0).id());
-        Assertions.assertEquals(95.2019F, model.labels().get(0).order());
-        Assertions.assertEquals("peewchpxlkt", model.customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("b9761e2b-7963-4bb2-8e31-c70dad9ad195"),
+        Assertions.assertEquals("moy", model.labels().get(0).name());
+        Assertions.assertEquals(UUID.fromString("3d1a6803-fe2e-4a9b-a467-06b752e9b40d"), model.labels().get(0).id());
+        Assertions.assertEquals(31.595718F, model.labels().get(0).order());
+        Assertions.assertEquals("kiscvwmzhwpl", model.customInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("6c4adbf8-fba5-40b5-b0b2-f8922193faeb"),
             model.customInfoTypes().get(0).id());
-        Assertions.assertEquals("ziycslevufuztck", model.customInfoTypes().get(0).description());
-        Assertions.assertEquals("t", model.builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("1b836fe6-b03d-4826-ae4e-aa4f0bc8f6ad"),
+        Assertions.assertEquals("xvxilcbtg", model.customInfoTypes().get(0).description());
+        Assertions.assertEquals("wiuagydwqf", model.builtInInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("8e9c7e3c-881f-4288-8115-6cc19579a9af"),
             model.builtInInfoTypes().get(0).id());
-        Assertions.assertEquals("tpzdmovzvfvaawzq", model.builtInInfoTypes().get(0).type());
+        Assertions.assertEquals("yr", model.builtInInfoTypes().get(0).type());
     }
 }

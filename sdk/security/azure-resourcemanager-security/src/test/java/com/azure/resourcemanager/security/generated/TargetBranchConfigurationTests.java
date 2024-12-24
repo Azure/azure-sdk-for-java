@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetBranchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetBranchConfiguration model
-            = BinaryData.fromString("{\"branchNames\":[\"ogh\",\"saidjan\"],\"annotateDefaultBranch\":\"Enabled\"}")
-                .toObject(TargetBranchConfiguration.class);
-        Assertions.assertEquals("ogh", model.branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED, model.annotateDefaultBranch());
+        TargetBranchConfiguration model = BinaryData.fromString(
+            "{\"branchNames\":[\"hgfgrwsd\",\"gratzvzbglbyvict\",\"tbrxkjz\",\"rgxffmshkw\"],\"annotateDefaultBranch\":\"Disabled\"}")
+            .toObject(TargetBranchConfiguration.class);
+        Assertions.assertEquals("hgfgrwsd", model.branchNames().get(0));
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED, model.annotateDefaultBranch());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetBranchConfiguration model
-            = new TargetBranchConfiguration().withBranchNames(Arrays.asList("ogh", "saidjan"))
-                .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED);
+        TargetBranchConfiguration model = new TargetBranchConfiguration()
+            .withBranchNames(Arrays.asList("hgfgrwsd", "gratzvzbglbyvict", "tbrxkjz", "rgxffmshkw"))
+            .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED);
         model = BinaryData.fromObject(model).toObject(TargetBranchConfiguration.class);
-        Assertions.assertEquals("ogh", model.branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED, model.annotateDefaultBranch());
+        Assertions.assertEquals("hgfgrwsd", model.branchNames().get(0));
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED, model.annotateDefaultBranch());
     }
 }

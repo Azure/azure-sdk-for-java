@@ -10,8 +10,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.DefenderForStoragesClient;
 import com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettingInner;
-import com.azure.resourcemanager.security.models.DefenderForStorages;
+import com.azure.resourcemanager.security.fluent.models.MalwareScanInner;
 import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
+import com.azure.resourcemanager.security.models.DefenderForStorages;
+import com.azure.resourcemanager.security.models.MalwareScan;
 import com.azure.resourcemanager.security.models.SettingName;
 
 public final class DefenderForStoragesImpl implements DefenderForStorages {
@@ -43,6 +45,69 @@ public final class DefenderForStoragesImpl implements DefenderForStorages {
         DefenderForStorageSettingInner inner = this.serviceClient().get(resourceId, settingName);
         if (inner != null) {
             return new DefenderForStorageSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MalwareScan> startMalwareScanWithResponse(String resourceId, SettingName settingName,
+        Context context) {
+        Response<MalwareScanInner> inner
+            = this.serviceClient().startMalwareScanWithResponse(resourceId, settingName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MalwareScanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MalwareScan startMalwareScan(String resourceId, SettingName settingName) {
+        MalwareScanInner inner = this.serviceClient().startMalwareScan(resourceId, settingName);
+        if (inner != null) {
+            return new MalwareScanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MalwareScan> cancelMalwareScanWithResponse(String resourceId, SettingName settingName,
+        String scanId, Context context) {
+        Response<MalwareScanInner> inner
+            = this.serviceClient().cancelMalwareScanWithResponse(resourceId, settingName, scanId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MalwareScanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MalwareScan cancelMalwareScan(String resourceId, SettingName settingName, String scanId) {
+        MalwareScanInner inner = this.serviceClient().cancelMalwareScan(resourceId, settingName, scanId);
+        if (inner != null) {
+            return new MalwareScanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MalwareScan> getMalwareScanWithResponse(String resourceId, SettingName settingName, String scanId,
+        Context context) {
+        Response<MalwareScanInner> inner
+            = this.serviceClient().getMalwareScanWithResponse(resourceId, settingName, scanId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MalwareScanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MalwareScan getMalwareScan(String resourceId, SettingName settingName, String scanId) {
+        MalwareScanInner inner = this.serviceClient().getMalwareScan(resourceId, settingName, scanId);
+        if (inner != null) {
+            return new MalwareScanImpl(inner, this.manager());
         } else {
             return null;
         }

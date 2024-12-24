@@ -21,7 +21,7 @@ public final class AllowedConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"calculatedDateTime\":\"2021-01-26T03:12:07Z\",\"connectableResources\":[{\"id\":\"bzrrxeyvidcowlr\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"xavejo\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"yzgavplnd\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{}]},{\"id\":\"kiskyyyaeknfffy\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{},{}]}]},\"location\":\"lmlcufbbjiu\",\"id\":\"fofhoajjyls\",\"name\":\"qyjnu\",\"type\":\"zvlqquyhbce\"}";
+            = "{\"properties\":{\"calculatedDateTime\":\"2021-05-03T23:24:47Z\",\"connectableResources\":[{\"id\":\"hhrurmrf\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"ibzqrsddcuqddld\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{}]}]},\"location\":\"tqewqjojesxjhty\",\"id\":\"zwqocygoyineuaxp\",\"name\":\"ezitrguzlweoyxfo\",\"type\":\"fz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AllowedConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AllowedConnectionsResource response = manager.allowedConnections()
-            .getWithResponse("nyuvbtcuhjcgjt", "kntomnlz", ConnectionType.INTERNAL, com.azure.core.util.Context.NONE)
+            .getWithResponse("bdsvkllrzhshhkb", "hcazkgdjth", ConnectionType.INTERNAL, com.azure.core.util.Context.NONE)
             .getValue();
 
     }

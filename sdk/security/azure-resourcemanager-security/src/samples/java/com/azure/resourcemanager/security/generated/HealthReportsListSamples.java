@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class HealthReportsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/ListHealthReports_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-05-01-preview/examples/HealthReports/
+     * ListHealthReports_example.json
      */
     /**
      * Sample code: List health reports.

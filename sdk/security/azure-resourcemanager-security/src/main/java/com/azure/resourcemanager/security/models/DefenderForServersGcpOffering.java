@@ -5,63 +5,49 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Defender for Servers GCP offering configurations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderForServersGcpOffering.class,
-    visible = true)
-@JsonTypeName("DefenderForServersGcp")
 @Fluent
 public final class DefenderForServersGcpOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_FOR_SERVERS_GCP;
 
     /*
      * The Defender for servers connection configuration
      */
-    @JsonProperty(value = "defenderForServers")
     private DefenderForServersGcpOfferingDefenderForServers defenderForServers;
 
     /*
      * The ARC autoprovisioning configuration
      */
-    @JsonProperty(value = "arcAutoProvisioning")
     private DefenderForServersGcpOfferingArcAutoProvisioning arcAutoProvisioning;
 
     /*
      * The Vulnerability Assessment autoprovisioning configuration
      */
-    @JsonProperty(value = "vaAutoProvisioning")
     private DefenderForServersGcpOfferingVaAutoProvisioning vaAutoProvisioning;
 
     /*
      * The Microsoft Defender for Endpoint autoprovisioning configuration
      */
-    @JsonProperty(value = "mdeAutoProvisioning")
     private DefenderForServersGcpOfferingMdeAutoProvisioning mdeAutoProvisioning;
 
     /*
      * configuration for the servers offering subPlan
      */
-    @JsonProperty(value = "subPlan")
     private DefenderForServersGcpOfferingSubPlan subPlan;
 
     /*
      * The Microsoft Defender for Server VM scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderForServersGcpOfferingVmScanners vmScanners;
 
     /**
@@ -211,7 +197,6 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
      */
     @Override
     public void validate() {
-        super.validate();
         if (defenderForServers() != null) {
             defenderForServers().validate();
         }
@@ -230,5 +215,69 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
         if (vmScanners() != null) {
             vmScanners().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("defenderForServers", this.defenderForServers);
+        jsonWriter.writeJsonField("arcAutoProvisioning", this.arcAutoProvisioning);
+        jsonWriter.writeJsonField("vaAutoProvisioning", this.vaAutoProvisioning);
+        jsonWriter.writeJsonField("mdeAutoProvisioning", this.mdeAutoProvisioning);
+        jsonWriter.writeJsonField("subPlan", this.subPlan);
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForServersGcpOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForServersGcpOffering if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderForServersGcpOffering.
+     */
+    public static DefenderForServersGcpOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForServersGcpOffering deserializedDefenderForServersGcpOffering
+                = new DefenderForServersGcpOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.withDescription(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.offeringType
+                        = OfferingType.fromString(reader.getString());
+                } else if ("defenderForServers".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.defenderForServers
+                        = DefenderForServersGcpOfferingDefenderForServers.fromJson(reader);
+                } else if ("arcAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.arcAutoProvisioning
+                        = DefenderForServersGcpOfferingArcAutoProvisioning.fromJson(reader);
+                } else if ("vaAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.vaAutoProvisioning
+                        = DefenderForServersGcpOfferingVaAutoProvisioning.fromJson(reader);
+                } else if ("mdeAutoProvisioning".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.mdeAutoProvisioning
+                        = DefenderForServersGcpOfferingMdeAutoProvisioning.fromJson(reader);
+                } else if ("subPlan".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.subPlan
+                        = DefenderForServersGcpOfferingSubPlan.fromJson(reader);
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderForServersGcpOffering.vmScanners
+                        = DefenderForServersGcpOfferingVmScanners.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForServersGcpOffering;
+        });
     }
 }

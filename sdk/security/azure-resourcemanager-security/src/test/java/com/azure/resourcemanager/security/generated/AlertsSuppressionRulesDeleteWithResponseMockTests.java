@@ -27,7 +27,7 @@ public final class AlertsSuppressionRulesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.alertsSuppressionRules().deleteWithResponse("iciqppo", com.azure.core.util.Context.NONE);
+        manager.alertsSuppressionRules().deleteWithResponse("hvsexduetbapf", com.azure.core.util.Context.NONE);
 
     }
 }

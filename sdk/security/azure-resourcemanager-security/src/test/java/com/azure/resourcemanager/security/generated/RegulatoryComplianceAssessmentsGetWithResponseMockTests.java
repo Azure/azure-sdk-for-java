@@ -22,7 +22,7 @@ public final class RegulatoryComplianceAssessmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"fvmkinw\",\"assessmentType\":\"yrqsh\",\"assessmentDetailsLink\":\"bcejopylbl\",\"state\":\"Passed\",\"passedResources\":138589030,\"failedResources\":1512415185,\"skippedResources\":1268289968,\"unsupportedResources\":1543386017},\"id\":\"tc\",\"name\":\"vfxrdytz\",\"type\":\"slxizhqikmgob\"}";
+            = "{\"properties\":{\"description\":\"idhz\",\"assessmentType\":\"re\",\"assessmentDetailsLink\":\"zsdtm\",\"state\":\"Skipped\",\"passedResources\":227264468,\"failedResources\":1345633295,\"skippedResources\":1807547374,\"unsupportedResources\":1705816353},\"id\":\"ychakvy\",\"name\":\"fbqvumkxqj\",\"type\":\"iuepmaxfnzlpqmp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class RegulatoryComplianceAssessmentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RegulatoryComplianceAssessment response = manager.regulatoryComplianceAssessments()
-            .getWithResponse("jlm", "vdorsirx", "hyrkqakofajfr", com.azure.core.util.Context.NONE)
+            .getWithResponse("vtzrxzhclecwwtz", "zclo", "hy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(State.PASSED, response.state());
+        Assertions.assertEquals(State.SKIPPED, response.state());
     }
 }

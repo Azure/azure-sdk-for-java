@@ -7,7 +7,6 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitLabGroupInner;
 import com.azure.resourcemanager.security.fluent.models.GitLabGroupListResponseInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.util.Arrays;
@@ -17,28 +16,23 @@ public final class GitLabGroupListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"qdktwtkvihlp\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-27T05:27:05Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"nguuzhwvla\",\"fullyQualifiedFriendlyName\":\"cmhjhausybkeky\",\"url\":\"fztsi\",\"onboardingState\":\"NotApplicable\"},\"id\":\"v\",\"name\":\"syeiih\",\"type\":\"ymkouih\"},{\"properties\":{\"provisioningStatusMessage\":\"u\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-18T17:28:52Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"hogsmgbvmtd\",\"fullyQualifiedFriendlyName\":\"qbe\",\"url\":\"nfvegl\",\"onboardingState\":\"Onboarded\"},\"id\":\"vkbiw\",\"name\":\"nhtfgfi\",\"type\":\"udy\"}],\"nextLink\":\"zpacz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"zujksrlsmdes\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-22T11:30:41Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"jcdoewb\",\"fullyQualifiedFriendlyName\":\"yvteowxvgpiudeu\",\"url\":\"sxze\",\"onboardingState\":\"NotApplicable\"},\"id\":\"xw\",\"name\":\"ufykhvuhxepmru\",\"type\":\"znabaobns\"},{\"properties\":{\"provisioningStatusMessage\":\"jltymkmvguihy\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-21T11:58:54Z\",\"provisioningState\":\"Canceled\",\"fullyQualifiedName\":\"phkixkykxdssjpe\",\"fullyQualifiedFriendlyName\":\"ucfx\",\"url\":\"kkflrmymyincqlhr\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"sl\",\"name\":\"iiiovgqcgxuugq\",\"type\":\"ctotiowlx\"}],\"nextLink\":\"qd\"}")
             .toObject(GitLabGroupListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("zpacz", model.nextLink());
+        Assertions.assertEquals("qd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabGroupListResponseInner model = new GitLabGroupListResponseInner().withValue(Arrays.asList(
-            new GitLabGroupInner().withProperties(
-                new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                    .withOnboardingState(OnboardingState.NOT_APPLICABLE)),
-            new GitLabGroupInner()
-                .withProperties(new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                    .withOnboardingState(OnboardingState.ONBOARDED))))
-            .withNextLink("zpacz");
+        GitLabGroupListResponseInner model = new GitLabGroupListResponseInner()
+            .withValue(Arrays.asList(
+                new GitLabGroupInner()
+                    .withProperties(new GitLabGroupProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)),
+                new GitLabGroupInner()
+                    .withProperties(new GitLabGroupProperties().withOnboardingState(OnboardingState.NOT_ONBOARDED))))
+            .withNextLink("qd");
         model = BinaryData.fromObject(model).toObject(GitLabGroupListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("zpacz", model.nextLink());
+        Assertions.assertEquals("qd", model.nextLink());
     }
 }

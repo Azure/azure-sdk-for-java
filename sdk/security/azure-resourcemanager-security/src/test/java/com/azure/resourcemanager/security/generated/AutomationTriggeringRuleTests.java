@@ -14,24 +14,24 @@ public final class AutomationTriggeringRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationTriggeringRule model = BinaryData.fromString(
-            "{\"propertyJPath\":\"b\",\"propertyType\":\"Integer\",\"expectedValue\":\"jrwhryvy\",\"operator\":\"EndsWith\"}")
+            "{\"propertyJPath\":\"ehjku\",\"propertyType\":\"Integer\",\"expectedValue\":\"fgaoq\",\"operator\":\"LesserThanOrEqualTo\"}")
             .toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("b", model.propertyJPath());
+        Assertions.assertEquals("ehjku", model.propertyJPath());
         Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
-        Assertions.assertEquals("jrwhryvy", model.expectedValue());
-        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
+        Assertions.assertEquals("fgaoq", model.expectedValue());
+        Assertions.assertEquals(Operator.LESSER_THAN_OR_EQUAL_TO, model.operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationTriggeringRule model = new AutomationTriggeringRule().withPropertyJPath("b")
+        AutomationTriggeringRule model = new AutomationTriggeringRule().withPropertyJPath("ehjku")
             .withPropertyType(PropertyType.INTEGER)
-            .withExpectedValue("jrwhryvy")
-            .withOperator(Operator.ENDS_WITH);
+            .withExpectedValue("fgaoq")
+            .withOperator(Operator.LESSER_THAN_OR_EQUAL_TO);
         model = BinaryData.fromObject(model).toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("b", model.propertyJPath());
+        Assertions.assertEquals("ehjku", model.propertyJPath());
         Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
-        Assertions.assertEquals("jrwhryvy", model.expectedValue());
-        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
+        Assertions.assertEquals("fgaoq", model.expectedValue());
+        Assertions.assertEquals(Operator.LESSER_THAN_OR_EQUAL_TO, model.operator());
     }
 }

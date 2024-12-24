@@ -6,23 +6,27 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the MDE configuration or data parameter needed to onboard the machine to MDE.
  */
 @Fluent
-public final class MdeOnboardingDataProperties {
+public final class MdeOnboardingDataProperties implements JsonSerializable<MdeOnboardingDataProperties> {
     /*
-     * The onboarding package used to onboard Windows machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+     * The onboarding package used to onboard Windows machines to MDE, coded in base64. This can also be used for
+     * onboarding using the dedicated VM Extension
      */
-    @JsonProperty(value = "onboardingPackageWindows")
     private byte[] onboardingPackageWindows;
 
     /*
-     * The onboarding package used to onboard Linux machines to MDE, coded in base64. This can also be used for onboarding using the dedicated VM Extension
+     * The onboarding package used to onboard Linux machines to MDE, coded in base64. This can also be used for
+     * onboarding using the dedicated VM Extension
      */
-    @JsonProperty(value = "onboardingPackageLinux")
     private byte[] onboardingPackageLinux;
 
     /**
@@ -81,5 +85,44 @@ public final class MdeOnboardingDataProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("onboardingPackageWindows", this.onboardingPackageWindows);
+        jsonWriter.writeBinaryField("onboardingPackageLinux", this.onboardingPackageLinux);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MdeOnboardingDataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MdeOnboardingDataProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MdeOnboardingDataProperties.
+     */
+    public static MdeOnboardingDataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MdeOnboardingDataProperties deserializedMdeOnboardingDataProperties = new MdeOnboardingDataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("onboardingPackageWindows".equals(fieldName)) {
+                    deserializedMdeOnboardingDataProperties.onboardingPackageWindows = reader.getBinary();
+                } else if ("onboardingPackageLinux".equals(fieldName)) {
+                    deserializedMdeOnboardingDataProperties.onboardingPackageLinux = reader.getBinary();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMdeOnboardingDataProperties;
+        });
     }
 }

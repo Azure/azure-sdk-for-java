@@ -14,7 +14,9 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsOrgsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsOrgs_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/CreateOrUpdateAzureDevOpsOrgs_example.json
      */
     /**
      * Sample code: CreateOrUpdate_AzureDevOpsOrgs.

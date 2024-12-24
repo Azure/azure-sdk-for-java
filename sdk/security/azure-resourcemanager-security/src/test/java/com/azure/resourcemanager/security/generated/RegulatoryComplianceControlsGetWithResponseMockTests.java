@@ -22,7 +22,7 @@ public final class RegulatoryComplianceControlsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"fzhhezvhjudxdyyr\",\"state\":\"Unsupported\",\"passedAssessments\":1832432500,\"failedAssessments\":1860749004,\"skippedAssessments\":1725220315},\"id\":\"dkxbq\",\"name\":\"sgfenffdxb\",\"type\":\"wfqjch\"}";
+            = "{\"properties\":{\"description\":\"rlzh\",\"state\":\"Failed\",\"passedAssessments\":765370074,\"failedAssessments\":664387912,\"skippedAssessments\":992938806},\"id\":\"qzlxn\",\"name\":\"zubfo\",\"type\":\"fdbgmkfwm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class RegulatoryComplianceControlsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RegulatoryComplianceControl response = manager.regulatoryComplianceControls()
-            .getWithResponse("crtfodqhuauzm", "iv", com.azure.core.util.Context.NONE)
+            .getWithResponse("fleev", "oqayrehjuqwv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(State.UNSUPPORTED, response.state());
+        Assertions.assertEquals(State.FAILED, response.state());
     }
 }

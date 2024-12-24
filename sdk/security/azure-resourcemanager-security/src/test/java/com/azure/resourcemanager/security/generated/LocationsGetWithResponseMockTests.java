@@ -19,8 +19,7 @@ import reactor.core.publisher.Mono;
 public final class LocationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":\"datasdlzm\",\"id\":\"xerxxxoteehk\",\"name\":\"owgomvvhxowp\",\"type\":\"bap\"}";
+        String responseStr = "{\"properties\":\"datav\",\"id\":\"cgytoxuw\",\"name\":\"ttnzqsaq\",\"type\":\"ebg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +29,7 @@ public final class LocationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AscLocation response
-            = manager.locations().getWithResponse("lmpctwj", com.azure.core.util.Context.NONE).getValue();
+            = manager.locations().getWithResponse("vamyyznmrgcdo", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

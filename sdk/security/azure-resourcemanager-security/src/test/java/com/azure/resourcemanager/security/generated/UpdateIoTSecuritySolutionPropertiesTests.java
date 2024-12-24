@@ -17,30 +17,30 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"userDefinedResources\":{\"query\":\"qqagwwr\",\"querySubscriptions\":[\"omzisglrrcz\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"ltn\",\"status\":\"Disabled\"}]}")
+            "{\"userDefinedResources\":{\"query\":\"osbz\",\"querySubscriptions\":[\"hg\",\"vkbcknjolgjyyxp\",\"els\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"evxoqei\",\"status\":\"Enabled\"}]}")
             .toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals("osbz", model.userDefinedResources().query());
+        Assertions.assertEquals("hg", model.userDefinedResources().querySubscriptions().get(0));
         Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
             model.recommendationsConfiguration().get(0).status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = new UpdateIoTSecuritySolutionProperties()
-            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qqagwwr")
-                .withQuerySubscriptions(Arrays.asList("omzisglrrcz")))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("osbz")
+                .withQuerySubscriptions(Arrays.asList("hg", "vkbcknjolgjyyxp", "els")))
             .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
                 .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
-                .withStatus(RecommendationConfigStatus.DISABLED)));
+                .withStatus(RecommendationConfigStatus.ENABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals("osbz", model.userDefinedResources().query());
+        Assertions.assertEquals("hg", model.userDefinedResources().querySubscriptions().get(0));
         Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
             model.recommendationsConfiguration().get(0).status());
     }
 }

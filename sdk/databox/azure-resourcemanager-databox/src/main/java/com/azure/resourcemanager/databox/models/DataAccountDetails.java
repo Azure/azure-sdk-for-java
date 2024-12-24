@@ -19,7 +19,7 @@ public class DataAccountDetails implements JsonSerializable<DataAccountDetails> 
     /*
      * Account Type of the data to be transferred.
      */
-    private DataAccountType dataAccountType = DataAccountType.fromString("DataAccountDetails");
+    private DataAccountType dataAccountType;
 
     /*
      * Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure

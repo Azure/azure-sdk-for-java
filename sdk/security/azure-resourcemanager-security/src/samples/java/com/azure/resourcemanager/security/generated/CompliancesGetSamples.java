@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class CompliancesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/GetCompliance_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/Compliances/
+     * GetCompliance_example.json
      */
     /**
      * Sample code: Get security compliance data for a day.

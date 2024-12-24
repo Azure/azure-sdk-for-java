@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SoftwareInventoriesListByExtendedResourceSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListByExtendedResourceSoftwareInventories_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/ListByExtendedResourceSoftwareInventories_example.json
      */
     /**
      * Sample code: Gets the software inventory of the virtual machine.

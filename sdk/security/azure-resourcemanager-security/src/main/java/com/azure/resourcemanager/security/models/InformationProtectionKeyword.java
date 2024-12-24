@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The information type keyword.
  */
 @Fluent
-public final class InformationProtectionKeyword {
+public final class InformationProtectionKeyword implements JsonSerializable<InformationProtectionKeyword> {
     /*
      * The keyword pattern.
      */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
      * Indicates whether the keyword is custom or not.
      */
-    @JsonProperty(value = "custom")
     private Boolean custom;
 
     /*
      * Indicates whether the keyword can be applied on numeric types or not.
      */
-    @JsonProperty(value = "canBeNumeric")
     private Boolean canBeNumeric;
 
     /*
      * Indicates whether the keyword is excluded or not.
      */
-    @JsonProperty(value = "excluded")
     private Boolean excluded;
 
     /**
@@ -128,5 +128,50 @@ public final class InformationProtectionKeyword {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pattern", this.pattern);
+        jsonWriter.writeBooleanField("custom", this.custom);
+        jsonWriter.writeBooleanField("canBeNumeric", this.canBeNumeric);
+        jsonWriter.writeBooleanField("excluded", this.excluded);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InformationProtectionKeyword from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InformationProtectionKeyword if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InformationProtectionKeyword.
+     */
+    public static InformationProtectionKeyword fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InformationProtectionKeyword deserializedInformationProtectionKeyword = new InformationProtectionKeyword();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pattern".equals(fieldName)) {
+                    deserializedInformationProtectionKeyword.pattern = reader.getString();
+                } else if ("custom".equals(fieldName)) {
+                    deserializedInformationProtectionKeyword.custom = reader.getNullable(JsonReader::getBoolean);
+                } else if ("canBeNumeric".equals(fieldName)) {
+                    deserializedInformationProtectionKeyword.canBeNumeric = reader.getNullable(JsonReader::getBoolean);
+                } else if ("excluded".equals(fieldName)) {
+                    deserializedInformationProtectionKeyword.excluded = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInformationProtectionKeyword;
+        });
     }
 }

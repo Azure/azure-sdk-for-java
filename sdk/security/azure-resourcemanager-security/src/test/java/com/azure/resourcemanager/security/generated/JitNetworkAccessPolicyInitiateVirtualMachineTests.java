@@ -15,32 +15,29 @@ public final class JitNetworkAccessPolicyInitiateVirtualMachineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessPolicyInitiateVirtualMachine model = BinaryData.fromString(
-            "{\"id\":\"zzoslpkyb\",\"ports\":[{\"number\":1502522516,\"allowedSourceAddressPrefix\":\"kzpgaj\",\"endTimeUtc\":\"2021-11-25T07:52:54Z\"},{\"number\":1240101833,\"allowedSourceAddressPrefix\":\"emqbmfuvqarwzxuq\",\"endTimeUtc\":\"2021-07-16T14:19:09Z\"},{\"number\":2143333617,\"allowedSourceAddressPrefix\":\"uim\",\"endTimeUtc\":\"2021-10-18T08:32:02Z\"}]}")
+            "{\"id\":\"uhoduchvlscrdpib\",\"ports\":[{\"number\":558739047,\"allowedSourceAddressPrefix\":\"dusspyszekbhwlka\",\"endTimeUtc\":\"2021-04-30T09:54:32Z\"},{\"number\":1634365368,\"allowedSourceAddressPrefix\":\"rehbfrnuybff\",\"endTimeUtc\":\"2021-07-03T09:37:37Z\"}]}")
             .toObject(JitNetworkAccessPolicyInitiateVirtualMachine.class);
-        Assertions.assertEquals("zzoslpkyb", model.id());
-        Assertions.assertEquals(1502522516, model.ports().get(0).number());
-        Assertions.assertEquals("kzpgaj", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T07:52:54Z"), model.ports().get(0).endTimeUtc());
+        Assertions.assertEquals("uhoduchvlscrdpib", model.id());
+        Assertions.assertEquals(558739047, model.ports().get(0).number());
+        Assertions.assertEquals("dusspyszekbhwlka", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T09:54:32Z"), model.ports().get(0).endTimeUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JitNetworkAccessPolicyInitiateVirtualMachine model
-            = new JitNetworkAccessPolicyInitiateVirtualMachine().withId("zzoslpkyb")
+            = new JitNetworkAccessPolicyInitiateVirtualMachine().withId("uhoduchvlscrdpib")
                 .withPorts(Arrays.asList(
-                    new JitNetworkAccessPolicyInitiatePort().withNumber(1502522516)
-                        .withAllowedSourceAddressPrefix("kzpgaj")
-                        .withEndTimeUtc(OffsetDateTime.parse("2021-11-25T07:52:54Z")),
-                    new JitNetworkAccessPolicyInitiatePort().withNumber(1240101833)
-                        .withAllowedSourceAddressPrefix("emqbmfuvqarwzxuq")
-                        .withEndTimeUtc(OffsetDateTime.parse("2021-07-16T14:19:09Z")),
-                    new JitNetworkAccessPolicyInitiatePort().withNumber(2143333617)
-                        .withAllowedSourceAddressPrefix("uim")
-                        .withEndTimeUtc(OffsetDateTime.parse("2021-10-18T08:32:02Z"))));
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(558739047)
+                        .withAllowedSourceAddressPrefix("dusspyszekbhwlka")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-04-30T09:54:32Z")),
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(1634365368)
+                        .withAllowedSourceAddressPrefix("rehbfrnuybff")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-07-03T09:37:37Z"))));
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPolicyInitiateVirtualMachine.class);
-        Assertions.assertEquals("zzoslpkyb", model.id());
-        Assertions.assertEquals(1502522516, model.ports().get(0).number());
-        Assertions.assertEquals("kzpgaj", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T07:52:54Z"), model.ports().get(0).endTimeUtc());
+        Assertions.assertEquals("uhoduchvlscrdpib", model.id());
+        Assertions.assertEquals(558739047, model.ports().get(0).number());
+        Assertions.assertEquals("dusspyszekbhwlka", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T09:54:32Z"), model.ports().get(0).endTimeUtc());
     }
 }

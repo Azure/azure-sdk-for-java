@@ -11,7 +11,7 @@ public final class SecureScoreControlDefinitionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureScoreControlDefinitionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"cwv\",\"description\":\"mdqntycnaw\",\"maxScore\":504224699,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"yeamcmhudf\"},{\"id\":\"cehokw\"},{\"id\":\"qtwloes\"}]},\"id\":\"rg\",\"name\":\"vrbnyrukoil\",\"type\":\"ciduwjle\"},{\"properties\":{\"displayName\":\"lh\",\"description\":\"xpzruzythqkk\",\"maxScore\":408154151,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"vulnxdmn\"}]},\"id\":\"tmujdtvmc\",\"name\":\"yymffhmjp\",\"type\":\"dnyxfzuvrz\"}],\"nextLink\":\"qmzjqrbrpvnmdy\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"jcvbxqlapsns\",\"description\":\"vyxpavidni\",\"maxScore\":1914716275,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"ezslp\"},{\"id\":\"gcbdsvalpnptw\"},{\"id\":\"kx\"}]},\"id\":\"pazwug\",\"name\":\"yqvnjobfe\",\"type\":\"hldiuhzzgqlm\"},{\"properties\":{\"displayName\":\"wz\",\"description\":\"udjpxpqht\",\"maxScore\":1132001580,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"zsdsuxheqdgcrux\"},{\"id\":\"inymmqgwokmikp\"},{\"id\":\"fbmjxuvji\"}]},\"id\":\"fdvhaxdvwzae\",\"name\":\"pphthdklmvetatla\",\"type\":\"fqoixwgiksbbvt\"}],\"nextLink\":\"xrpo\"}")
             .toObject(SecureScoreControlDefinitionList.class);
     }
 

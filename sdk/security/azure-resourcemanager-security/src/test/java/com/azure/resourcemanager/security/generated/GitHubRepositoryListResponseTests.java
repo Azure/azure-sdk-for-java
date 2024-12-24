@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitHubRepositoryInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubRepositoryListResponse;
 import com.azure.resourcemanager.security.models.GitHubRepositoryProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
@@ -17,26 +16,32 @@ public final class GitHubRepositoryListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubRepositoryListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"ntsxjmfmeftvh\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-28T22:33:38Z\",\"provisioningState\":\"Failed\",\"repoId\":\"rh\",\"repoName\":\"bwgmjgrul\",\"repoFullName\":\"ogxhcxn\",\"onboardingState\":\"NotOnboarded\",\"repoUrl\":\"fdz\",\"parentOwnerName\":\"ouzfwofwakuk\"},\"id\":\"kdt\",\"name\":\"xsoednlw\",\"type\":\"li\"}],\"nextLink\":\"zomucmqgisnionet\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"jmjsmwrokcdxf\",\"provisioningStatusUpdateTimeUtc\":\"2020-12-22T09:51:03Z\",\"provisioningState\":\"DeletionFailure\",\"repoId\":\"afitlhguynuchlg\",\"repoName\":\"txd\",\"repoFullName\":\"mozusgzvlnsnnjz\",\"onboardingState\":\"NotOnboarded\",\"repoUrl\":\"olpy\",\"parentOwnerName\":\"amxqzragpgdphtv\"},\"id\":\"ulajvlejchc\",\"name\":\"rlzk\",\"type\":\"mzlanru\"},{\"properties\":{\"provisioningStatusMessage\":\"nphcnzqtpjhmqrh\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-11T22:21:51Z\",\"provisioningState\":\"DeletionSuccess\",\"repoId\":\"wdcxsmlzzhz\",\"repoName\":\"xetlgydlhqv\",\"repoFullName\":\"npxybafiq\",\"onboardingState\":\"Onboarded\",\"repoUrl\":\"rbgjekglkl\",\"parentOwnerName\":\"ulidwc\"},\"id\":\"vmzegj\",\"name\":\"nfhjirwgdnqzbr\",\"type\":\"kspzhzmtksjcit\"},{\"properties\":{\"provisioningStatusMessage\":\"xcdglj\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-10T15:56:09Z\",\"provisioningState\":\"Canceled\",\"repoId\":\"chtomflrytsw\",\"repoName\":\"fmdgycxnms\",\"repoFullName\":\"hqjjys\",\"onboardingState\":\"OnboardedByOtherConnector\",\"repoUrl\":\"pshhkvpedwqslsr\",\"parentOwnerName\":\"pq\"},\"id\":\"wwsko\",\"name\":\"dcbrwimuvq\",\"type\":\"josovyrrl\"},{\"properties\":{\"provisioningStatusMessage\":\"inuqtljq\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-31T13:57:23Z\",\"provisioningState\":\"DeletionFailure\",\"repoId\":\"ehcecyb\",\"repoName\":\"qbr\",\"repoFullName\":\"bmpxdlvykfrexc\",\"onboardingState\":\"OnboardedByOtherConnector\",\"repoUrl\":\"wjksghudgzhxo\",\"parentOwnerName\":\"ggsvoujkxibdaf\"},\"id\":\"rkmdyom\",\"name\":\"xfbvfb\",\"type\":\"dy\"}],\"nextLink\":\"hpwpgddeimawzovg\"}")
             .toObject(GitHubRepositoryListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("ouzfwofwakuk", model.value().get(0).properties().parentOwnerName());
-        Assertions.assertEquals("zomucmqgisnionet", model.nextLink());
+        Assertions.assertEquals("amxqzragpgdphtv", model.value().get(0).properties().parentOwnerName());
+        Assertions.assertEquals("hpwpgddeimawzovg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubRepositoryListResponse model
-            = new GitHubRepositoryListResponse().withValue(Arrays.asList(new GitHubRepositoryInner()
-                .withProperties(new GitHubRepositoryProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-                    .withOnboardingState(OnboardingState.NOT_ONBOARDED)
-                    .withParentOwnerName("ouzfwofwakuk"))))
-                .withNextLink("zomucmqgisnionet");
+        GitHubRepositoryListResponse model = new GitHubRepositoryListResponse().withValue(Arrays.asList(
+            new GitHubRepositoryInner()
+                .withProperties(new GitHubRepositoryProperties().withOnboardingState(OnboardingState.NOT_ONBOARDED)
+                    .withParentOwnerName("amxqzragpgdphtv")),
+            new GitHubRepositoryInner()
+                .withProperties(new GitHubRepositoryProperties().withOnboardingState(OnboardingState.ONBOARDED)
+                    .withParentOwnerName("ulidwc")),
+            new GitHubRepositoryInner().withProperties(
+                new GitHubRepositoryProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
+                    .withParentOwnerName("pq")),
+            new GitHubRepositoryInner().withProperties(
+                new GitHubRepositoryProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
+                    .withParentOwnerName("ggsvoujkxibdaf"))))
+            .withNextLink("hpwpgddeimawzovg");
         model = BinaryData.fromObject(model).toObject(GitHubRepositoryListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("ouzfwofwakuk", model.value().get(0).properties().parentOwnerName());
-        Assertions.assertEquals("zomucmqgisnionet", model.nextLink());
+        Assertions.assertEquals("amxqzragpgdphtv", model.value().get(0).properties().parentOwnerName());
+        Assertions.assertEquals("hpwpgddeimawzovg", model.nextLink());
     }
 }

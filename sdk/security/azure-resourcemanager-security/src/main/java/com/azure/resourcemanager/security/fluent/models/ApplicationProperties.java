@@ -6,37 +6,37 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ApplicationSourceResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes properties of an application.
  */
 @Fluent
-public final class ApplicationProperties {
+public final class ApplicationProperties implements JsonSerializable<ApplicationProperties> {
     /*
      * display name of the application
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * description of the application
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The application source, what it affects, e.g. Assessments
      */
-    @JsonProperty(value = "sourceResourceType", required = true)
     private ApplicationSourceResourceType sourceResourceType;
 
     /*
      * The application conditionSets - see examples
      */
-    @JsonProperty(value = "conditionSets", required = true)
     private List<Object> conditionSets;
 
     /**
@@ -144,4 +144,54 @@ public final class ApplicationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceResourceType",
+            this.sourceResourceType == null ? null : this.sourceResourceType.toString());
+        jsonWriter.writeArrayField("conditionSets", this.conditionSets,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationProperties.
+     */
+    public static ApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationProperties deserializedApplicationProperties = new ApplicationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceResourceType".equals(fieldName)) {
+                    deserializedApplicationProperties.sourceResourceType
+                        = ApplicationSourceResourceType.fromString(reader.getString());
+                } else if ("conditionSets".equals(fieldName)) {
+                    List<Object> conditionSets = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedApplicationProperties.conditionSets = conditionSets;
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApplicationProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationProperties;
+        });
+    }
 }

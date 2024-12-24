@@ -13,13 +13,14 @@ public final class SecurityTaskParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityTaskParameters model = BinaryData.fromString(
-            "{\"name\":\"ol\",\"\":{\"gjyjgzjaoyfhrtxi\":\"datapsalgbqux\",\"rkujy\":\"datan\",\"rlyxwjkcprbnw\":\"datavlejuvfqa\"}}")
+            "{\"name\":\"ugjzzdatqxhocdge\",\"\":{\"zwyiftyhxhur\":\"datagphuticndvka\",\"tyxolniwpwc\":\"datak\"}}")
             .toObject(SecurityTaskParameters.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityTaskParameters model = new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ol"));
+        SecurityTaskParameters model
+            = new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "ugjzzdatqxhocdge"));
         model = BinaryData.fromObject(model).toObject(SecurityTaskParameters.class);
     }
 

@@ -19,8 +19,7 @@ public class ValidationInputRequest implements JsonSerializable<ValidationInputR
     /*
      * Identifies the type of validation request.
      */
-    private ValidationInputDiscriminator validationType
-        = ValidationInputDiscriminator.fromString("ValidationInputRequest");
+    private ValidationInputDiscriminator validationType;
 
     /**
      * Creates an instance of ValidationInputRequest class.

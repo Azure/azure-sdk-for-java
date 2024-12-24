@@ -27,7 +27,7 @@ public final class DataNetworksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dataNetworks().delete("itgueiookjbs", "hrtdtpdelq", "cslmotoebnfxo", com.azure.core.util.Context.NONE);
+        manager.dataNetworks().delete("izrzb", "psfxsf", "ztlvtmvagbwidqlv", com.azure.core.util.Context.NONE);
 
     }
 }

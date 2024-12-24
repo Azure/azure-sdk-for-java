@@ -6,10 +6,13 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AutomationAction;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +24,22 @@ public final class AutomationInner extends Resource {
     /*
      * Security automation data
      */
-    @JsonProperty(value = "properties")
     private AutomationProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AutomationInner class.
@@ -37,6 +54,36 @@ public final class AutomationInner extends Resource {
      */
     private AutomationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -189,5 +236,55 @@ public final class AutomationInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutomationInner.
+     */
+    public static AutomationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationInner deserializedAutomationInner = new AutomationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAutomationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutomationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAutomationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAutomationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAutomationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAutomationInner.innerProperties = AutomationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationInner;
+        });
     }
 }

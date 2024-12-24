@@ -13,22 +13,22 @@ public final class DefenderForServersGcpOfferingArcAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingArcAutoProvisioning model = BinaryData
-            .fromString("{\"enabled\":true,\"configuration\":{\"proxy\":\"rugjqyckgtx\",\"privateLinkScope\":\"dtu\"}}")
+            .fromString("{\"enabled\":false,\"configuration\":{\"proxy\":\"ue\",\"privateLinkScope\":\"gmcdcpkshl\"}}")
             .toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("rugjqyckgtx", model.configuration().proxy());
-        Assertions.assertEquals("dtu", model.configuration().privateLinkScope());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ue", model.configuration().proxy());
+        Assertions.assertEquals("gmcdcpkshl", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersGcpOfferingArcAutoProvisioning model
-            = new DefenderForServersGcpOfferingArcAutoProvisioning().withEnabled(true)
+            = new DefenderForServersGcpOfferingArcAutoProvisioning().withEnabled(false)
                 .withConfiguration(
-                    new ArcAutoProvisioningConfiguration().withProxy("rugjqyckgtx").withPrivateLinkScope("dtu"));
+                    new ArcAutoProvisioningConfiguration().withProxy("ue").withPrivateLinkScope("gmcdcpkshl"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("rugjqyckgtx", model.configuration().proxy());
-        Assertions.assertEquals("dtu", model.configuration().privateLinkScope());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ue", model.configuration().proxy());
+        Assertions.assertEquals("gmcdcpkshl", model.configuration().privateLinkScope());
     }
 }

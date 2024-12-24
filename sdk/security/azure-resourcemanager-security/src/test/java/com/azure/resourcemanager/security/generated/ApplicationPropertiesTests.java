@@ -14,22 +14,22 @@ public final class ApplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationProperties model = BinaryData.fromString(
-            "{\"displayName\":\"efkifr\",\"description\":\"puqujmqlgkfbtn\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataongbjcnt\",\"datajitcjedftwwaez\"]}")
+            "{\"displayName\":\"cqdpfuv\",\"description\":\"sbjjc\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataxbvtvudu\"]}")
             .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("efkifr", model.displayName());
-        Assertions.assertEquals("puqujmqlgkfbtn", model.description());
+        Assertions.assertEquals("cqdpfuv", model.displayName());
+        Assertions.assertEquals("sbjjc", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationProperties model = new ApplicationProperties().withDisplayName("efkifr")
-            .withDescription("puqujmqlgkfbtn")
+        ApplicationProperties model = new ApplicationProperties().withDisplayName("cqdpfuv")
+            .withDescription("sbjjc")
             .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-            .withConditionSets(Arrays.asList("dataongbjcnt", "datajitcjedftwwaez"));
+            .withConditionSets(Arrays.asList("dataxbvtvudu"));
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("efkifr", model.displayName());
-        Assertions.assertEquals("puqujmqlgkfbtn", model.description());
+        Assertions.assertEquals("cqdpfuv", model.displayName());
+        Assertions.assertEquals("sbjjc", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 }

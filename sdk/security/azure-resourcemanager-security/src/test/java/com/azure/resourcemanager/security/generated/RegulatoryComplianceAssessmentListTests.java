@@ -15,16 +15,19 @@ public final class RegulatoryComplianceAssessmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceAssessmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"cugicjoox\",\"assessmentType\":\"ebwpucwwfvo\",\"assessmentDetailsLink\":\"vmeueci\",\"state\":\"Unsupported\",\"passedResources\":343837467,\"failedResources\":1240635196,\"skippedResources\":1339093969,\"unsupportedResources\":745513484},\"id\":\"rw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}],\"nextLink\":\"txnrjaw\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"pnazzm\",\"assessmentType\":\"runmp\",\"assessmentDetailsLink\":\"tdbhrbnla\",\"state\":\"Failed\",\"passedResources\":2082057353,\"failedResources\":266718281,\"skippedResources\":1350964894,\"unsupportedResources\":743667383},\"id\":\"nbtkcxywnytnr\",\"name\":\"yn\",\"type\":\"qidybyx\"},{\"properties\":{\"description\":\"clha\",\"assessmentType\":\"dbabp\",\"assessmentDetailsLink\":\"wrqlfktsthsuco\",\"state\":\"Unsupported\",\"passedResources\":1572561560,\"failedResources\":533461500,\"skippedResources\":104811707,\"unsupportedResources\":1372436938},\"id\":\"wwrq\",\"name\":\"uedck\",\"type\":\"ywbiexzfeyueax\"},{\"properties\":{\"description\":\"ujwb\",\"assessmentType\":\"walm\",\"assessmentDetailsLink\":\"yoxa\",\"state\":\"Skipped\",\"passedResources\":1936487561,\"failedResources\":2111181142,\"skippedResources\":539118010,\"unsupportedResources\":1987726952},\"id\":\"rhdwbavxbniw\",\"name\":\"jswztsdbpg\",\"type\":\"xytxhpzxbz\"},{\"properties\":{\"description\":\"abgl\",\"assessmentType\":\"hxw\",\"assessmentDetailsLink\":\"tyq\",\"state\":\"Failed\",\"passedResources\":1091212098,\"failedResources\":2077643232,\"skippedResources\":779451406,\"unsupportedResources\":1043675485},\"id\":\"bhvgy\",\"name\":\"gu\",\"type\":\"svmkfssxquk\"}],\"nextLink\":\"plgmgsxnk\"}")
             .toObject(RegulatoryComplianceAssessmentList.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
+        Assertions.assertEquals(State.FAILED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegulatoryComplianceAssessmentList model = new RegulatoryComplianceAssessmentList()
-            .withValue(Arrays.asList(new RegulatoryComplianceAssessmentInner().withState(State.UNSUPPORTED)));
+            .withValue(Arrays.asList(new RegulatoryComplianceAssessmentInner().withState(State.FAILED),
+                new RegulatoryComplianceAssessmentInner().withState(State.UNSUPPORTED),
+                new RegulatoryComplianceAssessmentInner().withState(State.SKIPPED),
+                new RegulatoryComplianceAssessmentInner().withState(State.FAILED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceAssessmentList.class);
-        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
+        Assertions.assertEquals(State.FAILED, model.value().get(0).state());
     }
 }

@@ -25,11 +25,6 @@ public final class MigrateSqlServerSqlMITaskOutputError extends MigrateSqlServer
      */
     private ReportableException error;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlMITaskOutputError class.
      */
@@ -53,16 +48,6 @@ public final class MigrateSqlServerSqlMITaskOutputError extends MigrateSqlServer
      */
     public ReportableException error() {
         return this.error;
-    }
-
-    /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -104,7 +89,7 @@ public final class MigrateSqlServerSqlMITaskOutputError extends MigrateSqlServer
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMITaskOutputError.id = reader.getString();
+                    deserializedMigrateSqlServerSqlMITaskOutputError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskOutputError.resultType = reader.getString();
                 } else if ("error".equals(fieldName)) {

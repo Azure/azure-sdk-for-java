@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AzureDevOps scope connector's environment data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "environmentType",
-    defaultImpl = AzureDevOpsScopeEnvironmentData.class,
-    visible = true)
-@JsonTypeName("AzureDevOpsScope")
 @Immutable
 public final class AzureDevOpsScopeEnvironmentData extends EnvironmentData {
     /*
      * The type of the environment data.
      */
-    @JsonTypeId
-    @JsonProperty(value = "environmentType", required = true)
     private EnvironmentType environmentType = EnvironmentType.AZURE_DEV_OPS_SCOPE;
 
     /**
@@ -51,6 +43,44 @@ public final class AzureDevOpsScopeEnvironmentData extends EnvironmentData {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentType",
+            this.environmentType == null ? null : this.environmentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDevOpsScopeEnvironmentData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDevOpsScopeEnvironmentData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDevOpsScopeEnvironmentData.
+     */
+    public static AzureDevOpsScopeEnvironmentData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDevOpsScopeEnvironmentData deserializedAzureDevOpsScopeEnvironmentData
+                = new AzureDevOpsScopeEnvironmentData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentType".equals(fieldName)) {
+                    deserializedAzureDevOpsScopeEnvironmentData.environmentType
+                        = EnvironmentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDevOpsScopeEnvironmentData;
+        });
     }
 }

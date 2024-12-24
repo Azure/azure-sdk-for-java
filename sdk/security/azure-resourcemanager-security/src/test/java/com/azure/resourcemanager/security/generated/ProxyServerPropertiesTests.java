@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ProxyServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProxyServerProperties model = BinaryData.fromString("{\"ip\":\"ellwptfdy\",\"port\":\"fqbuaceopzf\"}")
+        ProxyServerProperties model = BinaryData.fromString("{\"ip\":\"zbaliourqha\",\"port\":\"uhashsfwx\"}")
             .toObject(ProxyServerProperties.class);
-        Assertions.assertEquals("ellwptfdy", model.ip());
-        Assertions.assertEquals("fqbuaceopzf", model.port());
+        Assertions.assertEquals("zbaliourqha", model.ip());
+        Assertions.assertEquals("uhashsfwx", model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProxyServerProperties model = new ProxyServerProperties().withIp("ellwptfdy").withPort("fqbuaceopzf");
+        ProxyServerProperties model = new ProxyServerProperties().withIp("zbaliourqha").withPort("uhashsfwx");
         model = BinaryData.fromObject(model).toObject(ProxyServerProperties.class);
-        Assertions.assertEquals("ellwptfdy", model.ip());
-        Assertions.assertEquals("fqbuaceopzf", model.port());
+        Assertions.assertEquals("zbaliourqha", model.ip());
+        Assertions.assertEquals("uhashsfwx", model.port());
     }
 }

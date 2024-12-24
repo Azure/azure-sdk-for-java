@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defenders CSPM Permissions Management offering configurations.
  */
 @Fluent
-public final class DefenderCspmAwsOfferingCiem {
+public final class DefenderCspmAwsOfferingCiem implements JsonSerializable<DefenderCspmAwsOfferingCiem> {
     /*
      * Defender CSPM Permissions Management discovery configuration
      */
-    @JsonProperty(value = "ciemDiscovery")
     private DefenderCspmAwsOfferingCiemDiscovery ciemDiscovery;
 
     /*
      * AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
      */
-    @JsonProperty(value = "ciemOidc")
     private DefenderCspmAwsOfferingCiemOidc ciemOidc;
 
     /**
@@ -84,5 +86,45 @@ public final class DefenderCspmAwsOfferingCiem {
         if (ciemOidc() != null) {
             ciemOidc().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ciemDiscovery", this.ciemDiscovery);
+        jsonWriter.writeJsonField("ciemOidc", this.ciemOidc);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderCspmAwsOfferingCiem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderCspmAwsOfferingCiem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderCspmAwsOfferingCiem.
+     */
+    public static DefenderCspmAwsOfferingCiem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderCspmAwsOfferingCiem deserializedDefenderCspmAwsOfferingCiem = new DefenderCspmAwsOfferingCiem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ciemDiscovery".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOfferingCiem.ciemDiscovery
+                        = DefenderCspmAwsOfferingCiemDiscovery.fromJson(reader);
+                } else if ("ciemOidc".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOfferingCiem.ciemOidc = DefenderCspmAwsOfferingCiemOidc.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderCspmAwsOfferingCiem;
+        });
     }
 }

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class EtagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Etag model = BinaryData.fromString("{\"etag\":\"nfnw\"}").toObject(Etag.class);
-        Assertions.assertEquals("nfnw", model.etag());
+        Etag model = BinaryData.fromString("{\"etag\":\"yhlqhykprlpyznu\"}").toObject(Etag.class);
+        Assertions.assertEquals("yhlqhykprlpyznu", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Etag model = new Etag().withEtag("nfnw");
+        Etag model = new Etag().withEtag("yhlqhykprlpyznu");
         model = BinaryData.fromObject(model).toObject(Etag.class);
-        Assertions.assertEquals("nfnw", model.etag());
+        Assertions.assertEquals("yhlqhykprlpyznu", model.etag());
     }
 }

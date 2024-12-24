@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-security</artifactId>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-security;current} -->
+  <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-security;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Security Management</name>
@@ -46,6 +46,7 @@
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <revapi.skip>true</revapi.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

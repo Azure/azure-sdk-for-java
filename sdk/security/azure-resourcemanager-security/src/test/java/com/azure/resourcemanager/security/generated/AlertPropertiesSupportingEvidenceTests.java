@@ -12,15 +12,15 @@ import java.util.Map;
 public final class AlertPropertiesSupportingEvidenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertPropertiesSupportingEvidence model
-            = BinaryData.fromString("{\"type\":\"bctbhp\",\"\":{\"it\":\"datapcvrdny\"}}")
-                .toObject(AlertPropertiesSupportingEvidence.class);
+        AlertPropertiesSupportingEvidence model = BinaryData.fromString(
+            "{\"type\":\"wmtqsmoxsaz\",\"\":{\"inqbdnddbbozs\":\"datajgwecywnfyszzacz\",\"lxeeiht\":\"datavrmkjmyitrchwu\"}}")
+            .toObject(AlertPropertiesSupportingEvidence.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertPropertiesSupportingEvidence model
-            = new AlertPropertiesSupportingEvidence().withAdditionalProperties(mapOf("type", "bctbhp"));
+            = new AlertPropertiesSupportingEvidence().withAdditionalProperties(mapOf("type", "wmtqsmoxsaz"));
         model = BinaryData.fromObject(model).toObject(AlertPropertiesSupportingEvidence.class);
     }
 

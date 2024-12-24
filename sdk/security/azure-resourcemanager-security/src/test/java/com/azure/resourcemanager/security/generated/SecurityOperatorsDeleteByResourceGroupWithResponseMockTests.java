@@ -28,7 +28,7 @@ public final class SecurityOperatorsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.securityOperators()
-            .deleteByResourceGroupWithResponse("hhxmoevvud", "epfhgannvwx", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("wfmsxj", "dylwx", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A VM scanning configuration for a security offering of a given environment.
  */
 @Fluent
-public class VmScannersBase {
+public class VmScannersBase implements JsonSerializable<VmScannersBase> {
     /*
      * Is VM scanning enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Configuration for VM scanning
      */
-    @JsonProperty(value = "configuration")
     private VmScannersBaseConfiguration configuration;
 
     /**
@@ -79,5 +81,44 @@ public class VmScannersBase {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmScannersBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmScannersBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VmScannersBase.
+     */
+    public static VmScannersBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmScannersBase deserializedVmScannersBase = new VmScannersBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedVmScannersBase.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedVmScannersBase.configuration = VmScannersBaseConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmScannersBase;
+        });
     }
 }

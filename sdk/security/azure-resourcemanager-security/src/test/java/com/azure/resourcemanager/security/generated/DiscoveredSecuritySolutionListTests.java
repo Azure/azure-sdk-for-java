@@ -15,25 +15,37 @@ public final class DiscoveredSecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"mktp\",\"publisher\":\"wxqcsehchkhufmpq\",\"sku\":\"mqyjgy\"},\"location\":\"ulodsaeuzanhsfnh\",\"id\":\"enwphpzfngq\",\"name\":\"clid\",\"type\":\"tujwjju\"}],\"nextLink\":\"beqrkuorh\"}")
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"iipsnawwlqkz\",\"publisher\":\"xhhllxricct\",\"sku\":\"wmuqqoajxeiygle\"},\"location\":\"wvaexhdctr\",\"id\":\"eqnkbrupobehdml\",\"name\":\"zacvu\",\"type\":\"epj\"},{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"ibnzp\",\"publisher\":\"hep\",\"sku\":\"fexleqirccjcly\"},\"location\":\"gxvrpjl\",\"id\":\"czuod\",\"name\":\"cpunettepdjx\",\"type\":\"eskoy\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"offer\":\"iylpck\",\"publisher\":\"ewsedveskwxe\",\"sku\":\"qphr\"},\"location\":\"nzhctmjtsgh\",\"id\":\"bcbcpz\",\"name\":\"rpzeqac\",\"type\":\"ldtzmpypefcp\"},{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"shnuqnd\",\"publisher\":\"izupfkhu\",\"sku\":\"tu\"},\"location\":\"xhmt\",\"id\":\"tvegwqiukvzwy\",\"name\":\"wtthaokgksk\",\"type\":\"i\"}],\"nextLink\":\"sshajqfukpee\"}")
             .toObject(DiscoveredSecuritySolutionList.class);
         Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
-        Assertions.assertEquals("mktp", model.value().get(0).offer());
-        Assertions.assertEquals("wxqcsehchkhufmpq", model.value().get(0).publisher());
-        Assertions.assertEquals("mqyjgy", model.value().get(0).sku());
+        Assertions.assertEquals("iipsnawwlqkz", model.value().get(0).offer());
+        Assertions.assertEquals("xhhllxricct", model.value().get(0).publisher());
+        Assertions.assertEquals("wmuqqoajxeiygle", model.value().get(0).sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveredSecuritySolutionList model = new DiscoveredSecuritySolutionList()
-            .withValue(Arrays.asList(new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
-                .withOffer("mktp")
-                .withPublisher("wxqcsehchkhufmpq")
-                .withSku("mqyjgy")));
+        DiscoveredSecuritySolutionList model = new DiscoveredSecuritySolutionList().withValue(Arrays.asList(
+            new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
+                .withOffer("iipsnawwlqkz")
+                .withPublisher("xhhllxricct")
+                .withSku("wmuqqoajxeiygle"),
+            new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
+                .withOffer("ibnzp")
+                .withPublisher("hep")
+                .withSku("fexleqirccjcly"),
+            new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
+                .withOffer("iylpck")
+                .withPublisher("ewsedveskwxe")
+                .withSku("qphr"),
+            new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
+                .withOffer("shnuqnd")
+                .withPublisher("izupfkhu")
+                .withSku("tu")));
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionList.class);
         Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
-        Assertions.assertEquals("mktp", model.value().get(0).offer());
-        Assertions.assertEquals("wxqcsehchkhufmpq", model.value().get(0).publisher());
-        Assertions.assertEquals("mqyjgy", model.value().get(0).sku());
+        Assertions.assertEquals("iipsnawwlqkz", model.value().get(0).offer());
+        Assertions.assertEquals("xhhllxricct", model.value().get(0).publisher());
+        Assertions.assertEquals("wmuqqoajxeiygle", model.value().get(0).sku());
     }
 }

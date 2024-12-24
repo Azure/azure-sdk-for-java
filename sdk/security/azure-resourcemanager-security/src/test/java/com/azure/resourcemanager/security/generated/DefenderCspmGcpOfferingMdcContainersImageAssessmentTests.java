@@ -11,23 +11,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderCspmGcpOfferingMdcContainersImageAssessmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderCspmGcpOfferingMdcContainersImageAssessment model = BinaryData.fromString(
-            "{\"enabled\":false,\"workloadIdentityProviderId\":\"gchzpgfqumj\",\"serviceAccountEmailAddress\":\"xhzghgodkynr\"}")
+        DefenderCspmGcpOfferingMdcContainersImageAssessment model = BinaryData
+            .fromString(
+                "{\"enabled\":true,\"workloadIdentityProviderId\":\"vrak\",\"serviceAccountEmailAddress\":\"ry\"}")
             .toObject(DefenderCspmGcpOfferingMdcContainersImageAssessment.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gchzpgfqumj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("xhzghgodkynr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("vrak", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ry", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersImageAssessment model
-            = new DefenderCspmGcpOfferingMdcContainersImageAssessment().withEnabled(false)
-                .withWorkloadIdentityProviderId("gchzpgfqumj")
-                .withServiceAccountEmailAddress("xhzghgodkynr");
+            = new DefenderCspmGcpOfferingMdcContainersImageAssessment().withEnabled(true)
+                .withWorkloadIdentityProviderId("vrak")
+                .withServiceAccountEmailAddress("ry");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingMdcContainersImageAssessment.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gchzpgfqumj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("xhzghgodkynr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("vrak", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ry", model.serviceAccountEmailAddress());
     }
 }

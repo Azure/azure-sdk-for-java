@@ -5,39 +5,29 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The gcpOrganization data for the member account.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "organizationMembershipType",
-    defaultImpl = GcpOrganizationalDataMember.class,
-    visible = true)
-@JsonTypeName("Member")
 @Fluent
 public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
     /*
      * The multi cloud account's membership type in the organization
      */
-    @JsonTypeId
-    @JsonProperty(value = "organizationMembershipType", required = true)
     private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.MEMBER;
 
     /*
      * If the multi cloud account is not of membership type organization, this will be the ID of the project's parent
      */
-    @JsonProperty(value = "parentHierarchyId")
     private String parentHierarchyId;
 
     /*
      * The GCP management project number from organizational onboarding
      */
-    @JsonProperty(value = "managementProjectNumber")
     private String managementProjectNumber;
 
     /**
@@ -105,6 +95,49 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationMembershipType",
+            this.organizationMembershipType == null ? null : this.organizationMembershipType.toString());
+        jsonWriter.writeStringField("parentHierarchyId", this.parentHierarchyId);
+        jsonWriter.writeStringField("managementProjectNumber", this.managementProjectNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcpOrganizationalDataMember from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcpOrganizationalDataMember if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcpOrganizationalDataMember.
+     */
+    public static GcpOrganizationalDataMember fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcpOrganizationalDataMember deserializedGcpOrganizationalDataMember = new GcpOrganizationalDataMember();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationMembershipType".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataMember.organizationMembershipType
+                        = OrganizationMembershipType.fromString(reader.getString());
+                } else if ("parentHierarchyId".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataMember.parentHierarchyId = reader.getString();
+                } else if ("managementProjectNumber".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataMember.managementProjectNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcpOrganizationalDataMember;
+        });
     }
 }

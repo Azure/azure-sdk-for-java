@@ -12,20 +12,20 @@ public final class HealthDataClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthDataClassification model
-            = BinaryData.fromString("{\"component\":\"wgdsl\",\"scenario\":\"ihhrmo\",\"scope\":\"z\"}")
+            = BinaryData.fromString("{\"component\":\"uwivkxoy\",\"scenario\":\"nbixxrti\",\"scope\":\"cpwpg\"}")
                 .toObject(HealthDataClassification.class);
-        Assertions.assertEquals("wgdsl", model.component());
-        Assertions.assertEquals("ihhrmo", model.scenario());
-        Assertions.assertEquals("z", model.scope());
+        Assertions.assertEquals("uwivkxoy", model.component());
+        Assertions.assertEquals("nbixxrti", model.scenario());
+        Assertions.assertEquals("cpwpg", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HealthDataClassification model
-            = new HealthDataClassification().withComponent("wgdsl").withScenario("ihhrmo").withScope("z");
+            = new HealthDataClassification().withComponent("uwivkxoy").withScenario("nbixxrti").withScope("cpwpg");
         model = BinaryData.fromObject(model).toObject(HealthDataClassification.class);
-        Assertions.assertEquals("wgdsl", model.component());
-        Assertions.assertEquals("ihhrmo", model.scenario());
-        Assertions.assertEquals("z", model.scope());
+        Assertions.assertEquals("uwivkxoy", model.component());
+        Assertions.assertEquals("nbixxrti", model.scenario());
+        Assertions.assertEquals("cpwpg", model.scope());
     }
 }

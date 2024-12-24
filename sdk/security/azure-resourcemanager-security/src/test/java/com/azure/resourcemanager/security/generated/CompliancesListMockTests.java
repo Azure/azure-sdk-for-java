@@ -21,7 +21,7 @@ public final class CompliancesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-02-23T22:02:45Z\",\"resourceCount\":1246413054,\"assessmentResult\":[{\"segmentType\":\"wiuasfg\",\"percentage\":53.90945033532123},{\"segmentType\":\"hfaimqvdruozkg\",\"percentage\":33.53438075015429}]},\"id\":\"oehgfmqmskkixvlz\",\"name\":\"xplhpeva\",\"type\":\"yntvzjyielbq\"}]}";
+            = "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-10-22T05:19:33Z\",\"resourceCount\":170420039,\"assessmentResult\":[{\"segmentType\":\"p\",\"percentage\":39.89308260011934},{\"segmentType\":\"zgxqgqwlxr\",\"percentage\":46.85440553879548},{\"segmentType\":\"vtqqy\",\"percentage\":18.185849788030716},{\"segmentType\":\"eozejogmkorvv\",\"percentage\":25.732137505190334}]},\"id\":\"ofnqhlbs\",\"name\":\"osnqliwkmzojfe\",\"type\":\"yalhtgm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class CompliancesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Compliance> response
-            = manager.compliances().list("diuycsbskowkrbhz", com.azure.core.util.Context.NONE);
+        PagedIterable<Compliance> response = manager.compliances().list("gxwjwil", com.azure.core.util.Context.NONE);
 
     }
 }

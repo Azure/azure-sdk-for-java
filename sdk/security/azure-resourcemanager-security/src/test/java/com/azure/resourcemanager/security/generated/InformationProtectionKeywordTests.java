@@ -12,24 +12,24 @@ public final class InformationProtectionKeywordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformationProtectionKeyword model = BinaryData
-            .fromString("{\"pattern\":\"tehfiqscjeypvh\",\"custom\":true,\"canBeNumeric\":true,\"excluded\":true}")
+            .fromString("{\"pattern\":\"objoghmewu\",\"custom\":false,\"canBeNumeric\":true,\"excluded\":false}")
             .toObject(InformationProtectionKeyword.class);
-        Assertions.assertEquals("tehfiqscjeypvh", model.pattern());
-        Assertions.assertEquals(true, model.custom());
+        Assertions.assertEquals("objoghmewu", model.pattern());
+        Assertions.assertEquals(false, model.custom());
         Assertions.assertEquals(true, model.canBeNumeric());
-        Assertions.assertEquals(true, model.excluded());
+        Assertions.assertEquals(false, model.excluded());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformationProtectionKeyword model = new InformationProtectionKeyword().withPattern("tehfiqscjeypvh")
-            .withCustom(true)
+        InformationProtectionKeyword model = new InformationProtectionKeyword().withPattern("objoghmewu")
+            .withCustom(false)
             .withCanBeNumeric(true)
-            .withExcluded(true);
+            .withExcluded(false);
         model = BinaryData.fromObject(model).toObject(InformationProtectionKeyword.class);
-        Assertions.assertEquals("tehfiqscjeypvh", model.pattern());
-        Assertions.assertEquals(true, model.custom());
+        Assertions.assertEquals("objoghmewu", model.pattern());
+        Assertions.assertEquals(false, model.custom());
         Assertions.assertEquals(true, model.canBeNumeric());
-        Assertions.assertEquals(true, model.excluded());
+        Assertions.assertEquals(false, model.excluded());
     }
 }

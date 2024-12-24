@@ -14,7 +14,6 @@ import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepository;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -28,7 +27,7 @@ public final class AzureDevOpsReposListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"avyotp\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-21T10:13:59Z\",\"provisioningState\":\"DeletionSuccess\",\"parentOrgName\":\"pkvyqpvzxxzn\",\"parentProjectName\":\"tominrufq\",\"repoId\":\"uygasfmhb\",\"repoUrl\":\"ewk\",\"visibility\":\"atxvuzccaliry\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"hlc\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"xyyhhs\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"qfrpanteqiw\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"aamimkjz\",\"category\":\"Containers\"}],\"branchConfiguration\":{\"branchNames\":[\"f\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"jrjgyindexi\",\"name\":\"ovuyxu\",\"type\":\"pzeaddatopdtphvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"eunbydlg\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-26T16:49:54Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"ubwt\",\"parentProjectName\":\"yn\",\"repoId\":\"vjfqreeoxvqjmrn\",\"repoUrl\":\"ih\",\"visibility\":\"bfb\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"jg\",\"category\":\"Artifacts\"}],\"branchConfiguration\":{\"branchNames\":[\"awe\",\"cfxaubuhru\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"riqzzdc\",\"name\":\"h\",\"type\":\"qdrrj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,17 +37,14 @@ public final class AzureDevOpsReposListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureDevOpsRepository> response = manager.azureDevOpsRepos()
-            .list("oyjmjwqdslqreo", "zrkrztpyay", "hxl", "mwaxsymnrtv", com.azure.core.util.Context.NONE);
+            .list("conyse", "jijfhpxni", "ouoxfalo", "bskkypor", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_SUCCESS,
-            response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals("pkvyqpvzxxzn", response.iterator().next().properties().parentOrgName());
-        Assertions.assertEquals("tominrufq", response.iterator().next().properties().parentProjectName());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
-            response.iterator().next().properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.DISABLED,
+        Assertions.assertEquals("ubwt", response.iterator().next().properties().parentOrgName());
+        Assertions.assertEquals("yn", response.iterator().next().properties().parentProjectName());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, response.iterator().next().properties().onboardingState());
+        Assertions.assertEquals(ActionableRemediationState.NONE,
             response.iterator().next().properties().actionableRemediation().state());
-        Assertions.assertEquals("hlc",
+        Assertions.assertEquals("jg",
             response.iterator()
                 .next()
                 .properties()
@@ -58,7 +54,7 @@ public final class AzureDevOpsReposListMockTests {
                 .minimumSeverityLevel());
         Assertions.assertEquals(RuleCategory.ARTIFACTS,
             response.iterator().next().properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("f",
+        Assertions.assertEquals("awe",
             response.iterator().next().properties().actionableRemediation().branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             response.iterator()

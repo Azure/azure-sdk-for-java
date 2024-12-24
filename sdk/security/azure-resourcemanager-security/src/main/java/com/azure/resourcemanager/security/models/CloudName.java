@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,6 +42,16 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
     public static final CloudName GIT_LAB = fromString("GitLab");
 
     /**
+     * Static value DockerHub for CloudName.
+     */
+    public static final CloudName DOCKER_HUB = fromString("DockerHub");
+
+    /**
+     * Static value JFrog for CloudName.
+     */
+    public static final CloudName JFROG = fromString("JFrog");
+
+    /**
      * Creates a new instance of CloudName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -57,7 +66,6 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
      * @param name a name to look for.
      * @return the corresponding CloudName.
      */
-    @JsonCreator
     public static CloudName fromString(String name) {
         return fromString(name, CloudName.class);
     }

@@ -13,15 +13,15 @@ public final class AutoProvisioningSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoProvisioningSettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"uht\",\"name\":\"mwisdkfthwxmnt\",\"type\":\"i\"}")
+            "{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"kwtmutduqktapspw\",\"name\":\"cuertu\",\"type\":\"kdosvqw\"}")
             .toObject(AutoProvisioningSettingInner.class);
-        Assertions.assertEquals(AutoProvision.OFF, model.autoProvision());
+        Assertions.assertEquals(AutoProvision.ON, model.autoProvision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoProvisioningSettingInner model = new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.OFF);
+        AutoProvisioningSettingInner model = new AutoProvisioningSettingInner().withAutoProvision(AutoProvision.ON);
         model = BinaryData.fromObject(model).toObject(AutoProvisioningSettingInner.class);
-        Assertions.assertEquals(AutoProvision.OFF, model.autoProvision());
+        Assertions.assertEquals(AutoProvision.ON, model.autoProvision());
     }
 }

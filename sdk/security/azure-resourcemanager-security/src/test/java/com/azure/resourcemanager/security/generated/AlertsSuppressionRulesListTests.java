@@ -20,60 +20,32 @@ public final class AlertsSuppressionRulesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertsSuppressionRulesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"alertType\":\"byao\",\"lastModifiedUtc\":\"2021-06-03T02:24:21Z\",\"expirationDateUtc\":\"2021-04-28T17:45:05Z\",\"reason\":\"sonpclhocohs\",\"state\":\"Enabled\",\"comment\":\"vleggzfbuhfmvfax\",\"suppressionAlertsScope\":{\"allOf\":[{},{},{}]}},\"id\":\"eiithlvmez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"alertType\":\"wburvjxxjnspydpt\",\"lastModifiedUtc\":\"2021-09-24T03:08Z\",\"expirationDateUtc\":\"2021-12-01T07:03:23Z\",\"reason\":\"ou\",\"state\":\"Disabled\",\"comment\":\"udwtiukbl\",\"suppressionAlertsScope\":{\"allOf\":[{},{},{},{}]}},\"id\":\"kpoc\",\"name\":\"pazyxoegukg\",\"type\":\"npiucgygevqznty\"},{\"properties\":{\"alertType\":\"rbpizc\",\"lastModifiedUtc\":\"2021-02-24T05:44:07Z\",\"expirationDateUtc\":\"2021-11-25T14:54:19Z\",\"reason\":\"dpydn\",\"state\":\"Enabled\",\"comment\":\"xdeoejzic\",\"suppressionAlertsScope\":{\"allOf\":[{}]}},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"},{\"properties\":{\"alertType\":\"lpbuxwgipwhonowk\",\"lastModifiedUtc\":\"2021-09-21T08:55:02Z\",\"expirationDateUtc\":\"2021-05-17T00:15:40Z\",\"reason\":\"nkixzbinj\",\"state\":\"Expired\",\"comment\":\"ttmrywnuzoqf\",\"suppressionAlertsScope\":{\"allOf\":[{},{},{},{}]}},\"id\":\"qzrnkcqvyxlwhz\",\"name\":\"sicohoqqnwvlry\",\"type\":\"vwhheunmmqhgyx\"}],\"nextLink\":\"onocukok\"}")
+            "{\"value\":[{\"properties\":{\"alertType\":\"uesnzwdejbavo\",\"lastModifiedUtc\":\"2021-09-27T19:00:57Z\",\"expirationDateUtc\":\"2021-03-31T13:31:51Z\",\"reason\":\"ohctbqvudwx\",\"state\":\"Disabled\",\"comment\":\"nvowgujju\",\"suppressionAlertsScope\":{\"allOf\":[{},{}]}},\"id\":\"kcglhslaz\",\"name\":\"dyggdtjixhbku\",\"type\":\"fqweykhmene\"}],\"nextLink\":\"yexfwh\"}")
             .toObject(AlertsSuppressionRulesList.class);
-        Assertions.assertEquals("byao", model.value().get(0).alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T17:45:05Z"), model.value().get(0).expirationDateUtc());
-        Assertions.assertEquals("sonpclhocohs", model.value().get(0).reason());
-        Assertions.assertEquals(RuleState.ENABLED, model.value().get(0).state());
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.value().get(0).comment());
+        Assertions.assertEquals("uesnzwdejbavo", model.value().get(0).alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T13:31:51Z"), model.value().get(0).expirationDateUtc());
+        Assertions.assertEquals("ohctbqvudwx", model.value().get(0).reason());
+        Assertions.assertEquals(RuleState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("nvowgujju", model.value().get(0).comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertsSuppressionRulesList model = new AlertsSuppressionRulesList().withValue(Arrays.asList(
-            new AlertsSuppressionRuleInner().withAlertType("byao")
-                .withExpirationDateUtc(OffsetDateTime.parse("2021-04-28T17:45:05Z"))
-                .withReason("sonpclhocohs")
-                .withState(RuleState.ENABLED)
-                .withComment("vleggzfbuhfmvfax")
-                .withSuppressionAlertsScope(new SuppressionAlertsScope()
-                    .withAllOf(Arrays.asList(new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf())))),
-            new AlertsSuppressionRuleInner().withAlertType("wburvjxxjnspydpt")
-                .withExpirationDateUtc(OffsetDateTime.parse("2021-12-01T07:03:23Z"))
-                .withReason("ou")
+        AlertsSuppressionRulesList model = new AlertsSuppressionRulesList()
+            .withValue(Arrays.asList(new AlertsSuppressionRuleInner().withAlertType("uesnzwdejbavo")
+                .withExpirationDateUtc(OffsetDateTime.parse("2021-03-31T13:31:51Z"))
+                .withReason("ohctbqvudwx")
                 .withState(RuleState.DISABLED)
-                .withComment("udwtiukbl")
+                .withComment("nvowgujju")
                 .withSuppressionAlertsScope(new SuppressionAlertsScope()
                     .withAllOf(Arrays.asList(new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf())))),
-            new AlertsSuppressionRuleInner().withAlertType("rbpizc")
-                .withExpirationDateUtc(OffsetDateTime.parse("2021-11-25T14:54:19Z"))
-                .withReason("dpydn")
-                .withState(RuleState.ENABLED)
-                .withComment("xdeoejzic")
-                .withSuppressionAlertsScope(new SuppressionAlertsScope()
-                    .withAllOf(Arrays.asList(new ScopeElement().withAdditionalProperties(mapOf())))),
-            new AlertsSuppressionRuleInner().withAlertType("lpbuxwgipwhonowk")
-                .withExpirationDateUtc(OffsetDateTime.parse("2021-05-17T00:15:40Z"))
-                .withReason("nkixzbinj")
-                .withState(RuleState.EXPIRED)
-                .withComment("ttmrywnuzoqf")
-                .withSuppressionAlertsScope(new SuppressionAlertsScope()
-                    .withAllOf(Arrays.asList(new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf()),
-                        new ScopeElement().withAdditionalProperties(mapOf()),
                         new ScopeElement().withAdditionalProperties(mapOf()))))));
         model = BinaryData.fromObject(model).toObject(AlertsSuppressionRulesList.class);
-        Assertions.assertEquals("byao", model.value().get(0).alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T17:45:05Z"), model.value().get(0).expirationDateUtc());
-        Assertions.assertEquals("sonpclhocohs", model.value().get(0).reason());
-        Assertions.assertEquals(RuleState.ENABLED, model.value().get(0).state());
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.value().get(0).comment());
+        Assertions.assertEquals("uesnzwdejbavo", model.value().get(0).alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T13:31:51Z"), model.value().get(0).expirationDateUtc());
+        Assertions.assertEquals("ohctbqvudwx", model.value().get(0).reason());
+        Assertions.assertEquals(RuleState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("nvowgujju", model.value().get(0).comment());
     }
 
     // Use "Map.of" if available

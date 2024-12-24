@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.SettingName;
  */
 public final class DefenderForStorageGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage/GetDefenderForStorageSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-10-01-preview/examples/DefenderForStorage
+     * /GetDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Gets the Defender for Storage settings for the specified resource.

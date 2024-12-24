@@ -12,23 +12,23 @@ public final class DefenderForContainersGcpOfferingMdcContainersAgentlessDiscove
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData.fromString(
-            "{\"enabled\":true,\"workloadIdentityProviderId\":\"owly\",\"serviceAccountEmailAddress\":\"zmudsqcm\"}")
+            "{\"enabled\":true,\"workloadIdentityProviderId\":\"nkwmygjj\",\"serviceAccountEmailAddress\":\"rknfdrugjqyc\"}")
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
-        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("nkwmygjj", model.workloadIdentityProviderId());
+        Assertions.assertEquals("rknfdrugjqyc", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model
             = new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
-                .withWorkloadIdentityProviderId("owly")
-                .withServiceAccountEmailAddress("zmudsqcm");
+                .withWorkloadIdentityProviderId("nkwmygjj")
+                .withServiceAccountEmailAddress("rknfdrugjqyc");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
-        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("nkwmygjj", model.workloadIdentityProviderId());
+        Assertions.assertEquals("rknfdrugjqyc", model.serviceAccountEmailAddress());
     }
 }

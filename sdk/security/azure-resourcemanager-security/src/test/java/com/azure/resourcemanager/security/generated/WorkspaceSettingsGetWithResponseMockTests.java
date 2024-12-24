@@ -21,7 +21,7 @@ public final class WorkspaceSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workspaceId\":\"ensckhbmcarm\",\"scope\":\"yfxxkwykuqdnd\"},\"id\":\"lykhkg\",\"name\":\"apvd\",\"type\":\"t\"}";
+            = "{\"properties\":{\"workspaceId\":\"khtupsvyou\",\"scope\":\"euiyxfwkztsms\"},\"id\":\"b\",\"name\":\"vy\",\"type\":\"lznfhkqytkztado\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class WorkspaceSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkspaceSetting response
-            = manager.workspaceSettings().getWithResponse("ilzfbpnto", com.azure.core.util.Context.NONE).getValue();
+            = manager.workspaceSettings().getWithResponse("nstlpwqpjn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ensckhbmcarm", response.workspaceId());
-        Assertions.assertEquals("yfxxkwykuqdnd", response.scope());
+        Assertions.assertEquals("khtupsvyou", response.workspaceId());
+        Assertions.assertEquals("euiyxfwkztsms", response.scope());
     }
 }

@@ -16,22 +16,20 @@ public final class SecurityConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityConnectorProperties model = BinaryData.fromString(
-            "{\"hierarchyIdentifier\":\"rlpyznuciqdsmexi\",\"hierarchyIdentifierTrialEndDate\":\"2021-11-16T11:22:07Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"asiibmiybnnust\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ljhnmgixhcmav\"},{\"offeringType\":\"CloudOffering\",\"description\":\"foudor\"},{\"offeringType\":\"CloudOffering\",\"description\":\"gyyprotwy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}}")
+            "{\"hierarchyIdentifier\":\"aaoepttaqut\",\"hierarchyIdentifierTrialEndDate\":\"2021-07-04T14:20:54Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"vru\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}}")
             .toObject(SecurityConnectorProperties.class);
-        Assertions.assertEquals("rlpyznuciqdsmexi", model.hierarchyIdentifier());
+        Assertions.assertEquals("aaoepttaqut", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GIT_LAB, model.environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityConnectorProperties model
-            = new SecurityConnectorProperties().withHierarchyIdentifier("rlpyznuciqdsmexi")
-                .withEnvironmentName(CloudName.GIT_LAB)
-                .withOfferings(
-                    Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
-                .withEnvironmentData(new EnvironmentData());
+        SecurityConnectorProperties model = new SecurityConnectorProperties().withHierarchyIdentifier("aaoepttaqut")
+            .withEnvironmentName(CloudName.GIT_LAB)
+            .withOfferings(Arrays.asList(new CloudOffering()))
+            .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorProperties.class);
-        Assertions.assertEquals("rlpyznuciqdsmexi", model.hierarchyIdentifier());
+        Assertions.assertEquals("aaoepttaqut", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GIT_LAB, model.environmentName());
     }
 }

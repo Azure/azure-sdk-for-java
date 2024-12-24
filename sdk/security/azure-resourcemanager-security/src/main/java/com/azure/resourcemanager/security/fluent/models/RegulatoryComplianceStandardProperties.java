@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Regulatory compliance standard data.
  */
 @Fluent
-public final class RegulatoryComplianceStandardProperties {
+public final class RegulatoryComplianceStandardProperties
+    implements JsonSerializable<RegulatoryComplianceStandardProperties> {
     /*
      * Aggregative state based on the standard's supported controls states
      */
-    @JsonProperty(value = "state")
     private State state;
 
     /*
      * The number of supported regulatory compliance controls of the given standard with a passed state
      */
-    @JsonProperty(value = "passedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer passedControls;
 
     /*
      * The number of supported regulatory compliance controls of the given standard with a failed state
      */
-    @JsonProperty(value = "failedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedControls;
 
     /*
      * The number of supported regulatory compliance controls of the given standard with a skipped state
      */
-    @JsonProperty(value = "skippedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer skippedControls;
 
     /*
      * The number of regulatory compliance controls of the given standard which are unsupported by automated assessments
      */
-    @JsonProperty(value = "unsupportedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedControls;
 
     /**
@@ -115,5 +115,54 @@ public final class RegulatoryComplianceStandardProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegulatoryComplianceStandardProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegulatoryComplianceStandardProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegulatoryComplianceStandardProperties.
+     */
+    public static RegulatoryComplianceStandardProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegulatoryComplianceStandardProperties deserializedRegulatoryComplianceStandardProperties
+                = new RegulatoryComplianceStandardProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardProperties.state = State.fromString(reader.getString());
+                } else if ("passedControls".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardProperties.passedControls
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedControls".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardProperties.failedControls
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("skippedControls".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardProperties.skippedControls
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("unsupportedControls".equals(fieldName)) {
+                    deserializedRegulatoryComplianceStandardProperties.unsupportedControls
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegulatoryComplianceStandardProperties;
+        });
     }
 }

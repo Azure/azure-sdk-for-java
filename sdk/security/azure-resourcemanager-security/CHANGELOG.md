@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.9 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,352 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.8 (2024-12-23)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.EffectiveNetworkSecurityGroups` was removed
+
+#### `models.RecommendationAction` was removed
+
+#### `models.Direction` was removed
+
+#### `models.AdaptiveApplicationControlIssueSummary` was removed
+
+#### `models.Rule` was removed
+
+#### `models.RecommendationStatus` was removed
+
+#### `models.AdaptiveApplicationControlGroup$Definition` was removed
+
+#### `models.FileType` was removed
+
+#### `models.SourceSystem` was removed
+
+#### `models.AdaptiveApplicationControlGroup$UpdateStages` was removed
+
+#### `models.AdaptiveApplicationControls` was removed
+
+#### `models.AdaptiveApplicationControlGroups` was removed
+
+#### `models.AdaptiveNetworkHardeningEnforceRequest` was removed
+
+#### `models.AdaptiveApplicationControlGroup` was removed
+
+#### `models.AdaptiveNetworkHardening` was removed
+
+#### `models.ProtectionMode` was removed
+
+#### `models.EnforcementMode` was removed
+
+#### `models.AdaptiveNetworkHardenings` was removed
+
+#### `models.EnforcementSupport` was removed
+
+#### `models.PathRecommendation` was removed
+
+#### `models.AdaptiveNetworkHardeningsList` was removed
+
+#### `models.AdaptiveApplicationControlGroup$Update` was removed
+
+#### `models.UserRecommendation` was removed
+
+#### `models.OperationList` was removed
+
+#### `models.VmRecommendation` was removed
+
+#### `models.AdaptiveApplicationControlGroup$DefinitionStages` was removed
+
+#### `models.TransportProtocol` was removed
+
+#### `models.AdaptiveApplicationControlIssue` was removed
+
+#### `models.ConfigurationStatus` was removed
+
+#### `models.PublisherInfo` was removed
+
+#### `models.DefenderForStorageSetting$Definition` was modified
+
+* `withCapGBPerMonth(java.lang.Integer)` was removed
+* `withIsEnabled(java.lang.Boolean)` was removed
+* `withIsEnabledSensitiveDataDiscoveryIsEnabled(java.lang.Boolean)` was removed
+* `withScanResultsEventGridTopicResourceId(java.lang.String)` was removed
+* `withIsEnabledMalwareScanningIsEnabled(java.lang.Boolean)` was removed
+* `withOverrideSubscriptionLevelSettings(java.lang.Boolean)` was removed
+
+#### `models.Operation` was modified
+
+* `java.lang.String origin()` -> `models.Origin origin()`
+
+#### `SecurityManager` was modified
+
+* `adaptiveApplicationControls()` was removed
+* `adaptiveNetworkHardenings()` was removed
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `isEnabledSensitiveDataDiscoveryIsEnabled()` was removed
+* `isEnabledMalwareScanningIsEnabled()` was removed
+* `overrideSubscriptionLevelSettings()` was removed
+* `operationStatusSensitiveDataDiscoveryOperationStatus()` was removed
+* `operationStatus()` was removed
+* `isEnabled()` was removed
+* `capGBPerMonth()` was removed
+* `scanResultsEventGridTopicResourceId()` was removed
+
+### Features Added
+
+* `models.StandardAssignmentsList` was added
+
+* `models.CustomRecommendation$Update` was added
+
+* `models.StandardAssignmentPropertiesExemptionData` was added
+
+* `models.ScanSummary` was added
+
+* `models.DevOpsPolicyAssignment$UpdateStages` was added
+
+* `models.DockerHubEnvironmentData` was added
+
+* `models.CspmMonitorDockerHubOffering` was added
+
+* `models.CustomRecommendations` was added
+
+* `models.DevOpsPolicyProperties` was added
+
+* `models.ExemptionCategory` was added
+
+* `models.AttestationComplianceState` was added
+
+* `models.StandardAssignment` was added
+
+* `models.DevOpsPolicyAssignment$DefinitionStages` was added
+
+* `models.MalwareScanProperties` was added
+
+* `models.DescendantBehavior` was added
+
+* `models.OnUploadProperties` was added
+
+* `models.SecurityStandard$DefinitionStages` was added
+
+* `models.DevOpsPolicies` was added
+
+* `models.CspmMonitorJFrogOffering` was added
+
+* `models.DevOpsPolicyAssignment$Update` was added
+
+* `models.AssignedAssessmentItem` was added
+
+* `models.Authentication` was added
+
+* `models.SecurityStandardList` was added
+
+* `models.Effect` was added
+
+* `models.MalwareScan` was added
+
+* `models.DefenderCspmJFrogOfferingMdcContainersImageAssessment` was added
+
+* `models.DevOpsPolicy` was added
+
+* `models.OperationListResult` was added
+
+* `models.DevOpsPolicyAssignmentProperties` was added
+
+* `models.CustomRecommendation$UpdateStages` was added
+
+* `models.StandardAssignment$DefinitionStages` was added
+
+* `models.StandardAssignments` was added
+
+* `models.CustomRecommendationsList` was added
+
+* `models.SecurityStandard` was added
+
+* `models.DevOpsPolicyAssignment` was added
+
+* `models.DevOpsPolicyAssignmentListResponse` was added
+
+* `models.DefenderForStorageSettingProperties` was added
+
+* `models.PartialAssessmentProperties` was added
+
+* `models.MalwareScanningProperties` was added
+
+* `models.DevOpsPolicySource` was added
+
+* `models.SecurityStandard$UpdateStages` was added
+
+* `models.StandardType` was added
+
+* `models.DefenderForContainersJFrogOffering` was added
+
+* `models.RecommendationSupportedClouds` was added
+
+* `models.SensitiveDataDiscoveryProperties` was added
+
+* `models.AssignedStandardItem` was added
+
+* `models.JFrogEnvironmentData` was added
+
+* `models.CustomRecommendation` was added
+
+* `models.SecurityIssue` was added
+
+* `models.StandardAssignment$Definition` was added
+
+* `models.StandardAssignmentMetadata` was added
+
+* `models.StandardAssignmentPropertiesAttestationData` was added
+
+* `models.DevOpsPolicyAssignment$Definition` was added
+
+* `models.Origin` was added
+
+* `models.StandardSupportedCloud` was added
+
+* `models.CustomRecommendation$Definition` was added
+
+* `models.StandardMetadata` was added
+
+* `models.DevOpsPolicyType` was added
+
+* `models.AttestationEvidence` was added
+
+* `models.DevOpsPolicyListResponse` was added
+
+* `models.AccessTokenAuthentication` was added
+
+* `models.DevOpsPolicyDescriptor` was added
+
+* `models.SecurityStandards` was added
+
+* `models.DefenderCspmDockerHubOffering` was added
+
+* `models.DefenderForContainersDockerHubOffering` was added
+
+* `models.SecurityStandard$Update` was added
+
+* `models.BlobsScanSummary` was added
+
+* `models.CustomRecommendation$DefinitionStages` was added
+
+* `models.DevOpsPolicyAssignments` was added
+
+* `models.DefenderCspmJFrogOffering` was added
+
+* `models.SecurityStandard$Definition` was added
+
+#### `models.DefenderForStorageSetting$Definition` was modified
+
+* `withProperties(models.DefenderForStorageSettingProperties)` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+* `actionType()` was added
+
+#### `models.CustomAssessmentAutomationRequest` was modified
+
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+#### `models.SecuritySolutionsReferenceData` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.AzureServersSetting` was modified
+
+* `systemData()` was added
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.AtaExternalSecuritySolution` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+* `location()` was added
+
+#### `models.AlertSyncSettings` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.CefExternalSecuritySolution` was modified
+
+* `type()` was added
+* `name()` was added
+* `location()` was added
+* `id()` was added
+
+#### `SecurityManager` was modified
+
+* `securityStandards()` was added
+* `devOpsPolicies()` was added
+* `customRecommendations()` was added
+* `devOpsPolicyAssignments()` was added
+* `standardAssignments()` was added
+
+#### `models.DefenderForStorages` was modified
+
+* `getMalwareScanWithResponse(java.lang.String,models.SettingName,java.lang.String,com.azure.core.util.Context)` was added
+* `cancelMalwareScanWithResponse(java.lang.String,models.SettingName,java.lang.String,com.azure.core.util.Context)` was added
+* `cancelMalwareScan(java.lang.String,models.SettingName,java.lang.String)` was added
+* `startMalwareScan(java.lang.String,models.SettingName)` was added
+* `getMalwareScan(java.lang.String,models.SettingName,java.lang.String)` was added
+* `startMalwareScanWithResponse(java.lang.String,models.SettingName,com.azure.core.util.Context)` was added
+
+#### `models.SecurityAssessment` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.DataExportSettings` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.AadExternalSecuritySolution` was modified
+
+* `type()` was added
+* `name()` was added
+* `location()` was added
+* `id()` was added
+
+#### `models.TrackedResource` was modified
+
+* `type()` was added
+* `id()` was added
+* `name()` was added
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `startMalwareScan()` was added
+* `startMalwareScanWithResponse(com.azure.core.util.Context)` was added
+* `properties()` was added
 
 ## 1.0.0-beta.7 (2024-05-15)
 

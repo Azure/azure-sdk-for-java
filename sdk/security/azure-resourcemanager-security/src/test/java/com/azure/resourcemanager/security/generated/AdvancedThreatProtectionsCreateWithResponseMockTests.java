@@ -21,7 +21,7 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isEnabled\":false},\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
+            = "{\"properties\":{\"isEnabled\":false},\"id\":\"iqii\",\"name\":\"xcor\",\"type\":\"vudyhgtrttcuayi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,8 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AdvancedThreatProtectionSetting response = manager.advancedThreatProtections()
-            .define()
-            .withExistingResourceId("cjiuhcxyveh")
-            .withIsEnabled(true)
-            .create();
+        AdvancedThreatProtectionSetting response
+            = manager.advancedThreatProtections().define().withExistingResourceId("ukfaj").withIsEnabled(true).create();
 
         Assertions.assertEquals(false, response.isEnabled());
     }

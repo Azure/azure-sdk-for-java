@@ -6,107 +6,99 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.GovernanceRuleEmailNotification;
 import com.azure.resourcemanager.security.models.GovernanceRuleMetadata;
 import com.azure.resourcemanager.security.models.GovernanceRuleOwnerSource;
 import com.azure.resourcemanager.security.models.GovernanceRuleSourceResourceType;
 import com.azure.resourcemanager.security.models.GovernanceRuleType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes properties of an governance rule.
  */
 @Fluent
-public final class GovernanceRuleProperties {
+public final class GovernanceRuleProperties implements JsonSerializable<GovernanceRuleProperties> {
     /*
      * The tenantId (GUID)
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Display name of the governance rule
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Description of the governance rule
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g. 7.00:00:00 - means 7 days
+     * Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g.
+     * 7.00:00:00 - means 7 days
      */
-    @JsonProperty(value = "remediationTimeframe")
     private String remediationTimeframe;
 
     /*
      * Defines whether there is a grace period on the governance rule
      */
-    @JsonProperty(value = "isGracePeriod")
     private Boolean isGracePeriod;
 
     /*
-     * The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will not be allowed
+     * The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will
+     * not be allowed
      */
-    @JsonProperty(value = "rulePriority", required = true)
     private int rulePriority;
 
     /*
      * Defines whether the rule is active/inactive
      */
-    @JsonProperty(value = "isDisabled")
     private Boolean isDisabled;
 
     /*
      * The rule type of the governance rule, defines the source of the rule e.g. Integrated
      */
-    @JsonProperty(value = "ruleType", required = true)
     private GovernanceRuleType ruleType;
 
     /*
      * The governance rule source, what the rule affects, e.g. Assessments
      */
-    @JsonProperty(value = "sourceResourceType", required = true)
     private GovernanceRuleSourceResourceType sourceResourceType;
 
     /*
      * Excluded scopes, filter out the descendants of the scope (on management scopes)
      */
-    @JsonProperty(value = "excludedScopes")
     private List<String> excludedScopes;
 
     /*
      * The governance rule conditionSets - see examples
      */
-    @JsonProperty(value = "conditionSets", required = true)
     private List<Object> conditionSets;
 
     /*
      * Defines whether the rule is management scope rule (master connector as a single scope or management scope)
      */
-    @JsonProperty(value = "includeMemberScopes")
     private Boolean includeMemberScopes;
 
     /*
      * The owner source for the governance rule - e.g. Manually by user@contoso.com - see example
      */
-    @JsonProperty(value = "ownerSource", required = true)
     private GovernanceRuleOwnerSource ownerSource;
 
     /*
-     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
+     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and
+     * owners
      */
-    @JsonProperty(value = "governanceEmailNotification")
     private GovernanceRuleEmailNotification governanceEmailNotification;
 
     /*
      * The governance rule metadata
      */
-    @JsonProperty(value = "metadata")
     private GovernanceRuleMetadata metadata;
 
     /**
@@ -457,4 +449,90 @@ public final class GovernanceRuleProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GovernanceRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeIntField("rulePriority", this.rulePriority);
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeStringField("sourceResourceType",
+            this.sourceResourceType == null ? null : this.sourceResourceType.toString());
+        jsonWriter.writeArrayField("conditionSets", this.conditionSets,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("ownerSource", this.ownerSource);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("remediationTimeframe", this.remediationTimeframe);
+        jsonWriter.writeBooleanField("isGracePeriod", this.isGracePeriod);
+        jsonWriter.writeBooleanField("isDisabled", this.isDisabled);
+        jsonWriter.writeArrayField("excludedScopes", this.excludedScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("includeMemberScopes", this.includeMemberScopes);
+        jsonWriter.writeJsonField("governanceEmailNotification", this.governanceEmailNotification);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GovernanceRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GovernanceRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GovernanceRuleProperties.
+     */
+    public static GovernanceRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GovernanceRuleProperties deserializedGovernanceRuleProperties = new GovernanceRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.displayName = reader.getString();
+                } else if ("rulePriority".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.rulePriority = reader.getInt();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.ruleType = GovernanceRuleType.fromString(reader.getString());
+                } else if ("sourceResourceType".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.sourceResourceType
+                        = GovernanceRuleSourceResourceType.fromString(reader.getString());
+                } else if ("conditionSets".equals(fieldName)) {
+                    List<Object> conditionSets = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGovernanceRuleProperties.conditionSets = conditionSets;
+                } else if ("ownerSource".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.ownerSource = GovernanceRuleOwnerSource.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.tenantId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.description = reader.getString();
+                } else if ("remediationTimeframe".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.remediationTimeframe = reader.getString();
+                } else if ("isGracePeriod".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.isGracePeriod = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDisabled".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.isDisabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("excludedScopes".equals(fieldName)) {
+                    List<String> excludedScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGovernanceRuleProperties.excludedScopes = excludedScopes;
+                } else if ("includeMemberScopes".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.includeMemberScopes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("governanceEmailNotification".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.governanceEmailNotification
+                        = GovernanceRuleEmailNotification.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedGovernanceRuleProperties.metadata = GovernanceRuleMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGovernanceRuleProperties;
+        });
+    }
 }

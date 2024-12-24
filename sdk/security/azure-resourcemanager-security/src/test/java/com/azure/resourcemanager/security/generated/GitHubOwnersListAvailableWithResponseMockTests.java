@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwnerListResponse;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitHubOwnersListAvailableWithResponseMockTests {
     @Test
     public void testListAvailableWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"wkzfggsuzkv\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-21T17:44:02Z\",\"provisioningState\":\"DeletionSuccess\",\"ownerUrl\":\"uiwaz\",\"gitHubInternalId\":\"bthutctcabc\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"bzfihszfkpoidfzw\",\"name\":\"gvuojuwg\",\"type\":\"eccvufjqvfcfss\"},{\"properties\":{\"provisioningStatusMessage\":\"emkrhbsdgktluifi\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-02T18:13:56Z\",\"provisioningState\":\"Canceled\",\"ownerUrl\":\"enobqysbeespqbvv\",\"gitHubInternalId\":\"rszsu\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"aut\",\"name\":\"ricv\",\"type\":\"ofenin\"},{\"properties\":{\"provisioningStatusMessage\":\"hyyqxckdlxjp\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-27T02:35:06Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"wincbesfvij\",\"gitHubInternalId\":\"bxfiiytqxewj\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"tezlghkvoxdpo\",\"name\":\"xkivbkuto\",\"type\":\"ecyqoytwssbvqnp\"}],\"nextLink\":\"wdmuvyakrbqpw\"}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"ynoy\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-02T19:20:06Z\",\"provisioningState\":\"DeletionSuccess\",\"ownerUrl\":\"sbnlyoifgdfzjqth\",\"gitHubInternalId\":\"cvoevcwfz\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"xxlwwooxgbsdz\",\"name\":\"gcvypjhu\",\"type\":\"dmgobxehujcqg\"},{\"properties\":{\"provisioningStatusMessage\":\"wi\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-12T15:32:02Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"jklqrljdcukyla\",\"gitHubInternalId\":\"jiqoq\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"hgphgxuwudg\",\"name\":\"yqruvumryddnqiva\",\"type\":\"fc\"},{\"properties\":{\"provisioningStatusMessage\":\"zebpicci\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-22T15:14:26Z\",\"provisioningState\":\"Canceled\",\"ownerUrl\":\"dkspwwibpy\",\"gitHubInternalId\":\"eig\",\"onboardingState\":\"NotApplicable\"},\"id\":\"xsxteuikhznff\",\"name\":\"nhcgn\",\"type\":\"qsrmrfqderk\"},{\"properties\":{\"provisioningStatusMessage\":\"cobpmgqlwy\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-08T02:33:17Z\",\"provisioningState\":\"Canceled\",\"ownerUrl\":\"zposzfu\",\"gitHubInternalId\":\"pbygbnbcmoiq\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"pvqewflwz\",\"name\":\"xzuxerxh\",\"type\":\"wl\"}],\"nextLink\":\"qsqvvdkfpfj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +32,11 @@ public final class GitHubOwnersListAvailableWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitHubOwnerListResponse response = manager.gitHubOwners()
-            .listAvailableWithResponse("rrsjscosanjso", "trztogujg", com.azure.core.util.Context.NONE)
+            .listAvailableWithResponse("ts", "ruyk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_SUCCESS,
-            response.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             response.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("wdmuvyakrbqpw", response.nextLink());
+        Assertions.assertEquals("qsqvvdkfpfj", response.nextLink());
     }
 }

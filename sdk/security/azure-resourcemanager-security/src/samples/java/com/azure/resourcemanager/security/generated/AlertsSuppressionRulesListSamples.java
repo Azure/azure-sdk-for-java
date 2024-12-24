@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AlertsSuppressionRulesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/GetAlertsSuppressionRules_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/GetAlertsSuppressionRules_example.json
      */
     /**
      * Sample code: Get suppression rules for subscription.
@@ -21,7 +23,9 @@ public final class AlertsSuppressionRulesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/AlertsSuppressionRules/GetAlertsSuppressionRulesWithAlertType_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * AlertsSuppressionRules/GetAlertsSuppressionRulesWithAlertType_example.json
      */
     /**
      * Sample code: Get suppression alert rule for subscription, filtered by AlertType.

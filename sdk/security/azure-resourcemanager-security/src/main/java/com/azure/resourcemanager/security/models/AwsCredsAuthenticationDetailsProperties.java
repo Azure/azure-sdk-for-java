@@ -6,47 +6,38 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * AWS cloud account connector based credentials, the credentials is composed of access key ID and secret key, for more
  * details, refer to &lt;a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html"&gt;Creating an
  * IAM User in Your AWS Account (write only)&lt;/a&gt;.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = AwsCredsAuthenticationDetailsProperties.class,
-    visible = true)
-@JsonTypeName("awsCreds")
 @Fluent
 public final class AwsCredsAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
     /*
-     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
+     * account organization credentials.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private AuthenticationType authenticationType = AuthenticationType.AWS_CREDS;
 
     /*
      * The ID of the cloud account
      */
-    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     private String accountId;
 
     /*
      * Public key element of the AWS credential object (write only)
      */
-    @JsonProperty(value = "awsAccessKeyId", required = true)
     private String awsAccessKeyId;
 
     /*
      * Secret key element of the AWS credential object (write only)
      */
-    @JsonProperty(value = "awsSecretAccessKey", required = true)
     private String awsSecretAccessKey;
 
     /**
@@ -122,7 +113,6 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
      */
     @Override
     public void validate() {
-        super.validate();
         if (awsAccessKeyId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -136,4 +126,59 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AwsCredsAuthenticationDetailsProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("awsAccessKeyId", this.awsAccessKeyId);
+        jsonWriter.writeStringField("awsSecretAccessKey", this.awsSecretAccessKey);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsCredsAuthenticationDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsCredsAuthenticationDetailsProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwsCredsAuthenticationDetailsProperties.
+     */
+    public static AwsCredsAuthenticationDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsCredsAuthenticationDetailsProperties deserializedAwsCredsAuthenticationDetailsProperties
+                = new AwsCredsAuthenticationDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationProvisioningState".equals(fieldName)) {
+                    deserializedAwsCredsAuthenticationDetailsProperties.withAuthenticationProvisioningState(
+                        AuthenticationProvisioningState.fromString(reader.getString()));
+                } else if ("grantedPermissions".equals(fieldName)) {
+                    List<PermissionProperty> grantedPermissions
+                        = reader.readArray(reader1 -> PermissionProperty.fromString(reader1.getString()));
+                    deserializedAwsCredsAuthenticationDetailsProperties.withGrantedPermissions(grantedPermissions);
+                } else if ("awsAccessKeyId".equals(fieldName)) {
+                    deserializedAwsCredsAuthenticationDetailsProperties.awsAccessKeyId = reader.getString();
+                } else if ("awsSecretAccessKey".equals(fieldName)) {
+                    deserializedAwsCredsAuthenticationDetailsProperties.awsSecretAccessKey = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAwsCredsAuthenticationDetailsProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedAwsCredsAuthenticationDetailsProperties.accountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsCredsAuthenticationDetailsProperties;
+        });
+    }
 }

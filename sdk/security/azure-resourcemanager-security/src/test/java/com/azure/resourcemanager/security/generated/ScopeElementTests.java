@@ -14,16 +14,16 @@ public final class ScopeElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScopeElement model = BinaryData.fromString(
-            "{\"field\":\"zabglcuhxwt\",\"\":{\"bbovplwzbhvgyugu\":\"dataqik\",\"fpl\":\"datasvmkfssxquk\",\"xnkjzkdesl\":\"datamg\",\"kdwzbaiuebbaumny\":\"datavlopwiyighx\"}}")
+            "{\"field\":\"rbpizc\",\"\":{\"dpydn\":\"dataj\",\"sjttgzfbish\":\"datayhxdeoejzicwi\",\"jdeyeamdpha\":\"databkh\",\"wkgshwa\":\"dataalpbuxwgipwhon\"}}")
             .toObject(ScopeElement.class);
-        Assertions.assertEquals("zabglcuhxwt", model.field());
+        Assertions.assertEquals("rbpizc", model.field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeElement model = new ScopeElement().withField("zabglcuhxwt").withAdditionalProperties(mapOf());
+        ScopeElement model = new ScopeElement().withField("rbpizc").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ScopeElement.class);
-        Assertions.assertEquals("zabglcuhxwt", model.field());
+        Assertions.assertEquals("rbpizc", model.field());
     }
 
     // Use "Map.of" if available

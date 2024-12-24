@@ -16,57 +16,57 @@ public final class ScanInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScanInner model = BinaryData.fromString(
-            "{\"properties\":{\"triggerType\":\"OnDemand\",\"state\":\"Failed\",\"server\":\"ircgpikpz\",\"database\":\"ejzanlfz\",\"sqlVersion\":\"av\",\"startTime\":\"2021-07-20T21:52:58Z\",\"endTime\":\"2021-04-27T08:06:47Z\",\"highSeverityFailedRulesCount\":392764686,\"mediumSeverityFailedRulesCount\":185109829,\"lowSeverityFailedRulesCount\":988966310,\"totalPassedRulesCount\":115638191,\"totalFailedRulesCount\":1122267125,\"totalRulesCount\":1711524187,\"isBaselineApplied\":false,\"lastScanTime\":\"2021-01-31T15:02:11Z\"},\"id\":\"lazszrn\",\"name\":\"oiindfpwpjy\",\"type\":\"wbtlhflsjcdh\"}")
+            "{\"properties\":{\"triggerType\":\"OnDemand\",\"state\":\"FailedToRun\",\"server\":\"syingwfqatmtdht\",\"database\":\"vypgikdg\",\"sqlVersion\":\"ywkbirryuzhlhkjo\",\"startTime\":\"2021-06-25T16:08:27Z\",\"endTime\":\"2021-09-24T04:17:08Z\",\"highSeverityFailedRulesCount\":2015959117,\"mediumSeverityFailedRulesCount\":2065168211,\"lowSeverityFailedRulesCount\":1644860092,\"totalPassedRulesCount\":1142747875,\"totalFailedRulesCount\":1624870428,\"totalRulesCount\":843520484,\"isBaselineApplied\":true,\"lastScanTime\":\"2021-11-16T07:49:22Z\"},\"id\":\"bfggjioolvr\",\"name\":\"x\",\"type\":\"v\"}")
             .toObject(ScanInner.class);
         Assertions.assertEquals(ScanTriggerType.ON_DEMAND, model.properties().triggerType());
-        Assertions.assertEquals(ScanState.FAILED, model.properties().state());
-        Assertions.assertEquals("ircgpikpz", model.properties().server());
-        Assertions.assertEquals("ejzanlfz", model.properties().database());
-        Assertions.assertEquals("av", model.properties().sqlVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T21:52:58Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-27T08:06:47Z"), model.properties().endTime());
-        Assertions.assertEquals(392764686, model.properties().highSeverityFailedRulesCount());
-        Assertions.assertEquals(185109829, model.properties().mediumSeverityFailedRulesCount());
-        Assertions.assertEquals(988966310, model.properties().lowSeverityFailedRulesCount());
-        Assertions.assertEquals(115638191, model.properties().totalPassedRulesCount());
-        Assertions.assertEquals(1122267125, model.properties().totalFailedRulesCount());
-        Assertions.assertEquals(1711524187, model.properties().totalRulesCount());
-        Assertions.assertEquals(false, model.properties().isBaselineApplied());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:02:11Z"), model.properties().lastScanTime());
+        Assertions.assertEquals(ScanState.FAILED_TO_RUN, model.properties().state());
+        Assertions.assertEquals("syingwfqatmtdht", model.properties().server());
+        Assertions.assertEquals("vypgikdg", model.properties().database());
+        Assertions.assertEquals("ywkbirryuzhlhkjo", model.properties().sqlVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T16:08:27Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T04:17:08Z"), model.properties().endTime());
+        Assertions.assertEquals(2015959117, model.properties().highSeverityFailedRulesCount());
+        Assertions.assertEquals(2065168211, model.properties().mediumSeverityFailedRulesCount());
+        Assertions.assertEquals(1644860092, model.properties().lowSeverityFailedRulesCount());
+        Assertions.assertEquals(1142747875, model.properties().totalPassedRulesCount());
+        Assertions.assertEquals(1624870428, model.properties().totalFailedRulesCount());
+        Assertions.assertEquals(843520484, model.properties().totalRulesCount());
+        Assertions.assertEquals(true, model.properties().isBaselineApplied());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T07:49:22Z"), model.properties().lastScanTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScanInner model = new ScanInner().withProperties(new ScanProperties().withTriggerType(ScanTriggerType.ON_DEMAND)
-            .withState(ScanState.FAILED)
-            .withServer("ircgpikpz")
-            .withDatabase("ejzanlfz")
-            .withSqlVersion("av")
-            .withStartTime(OffsetDateTime.parse("2021-07-20T21:52:58Z"))
-            .withEndTime(OffsetDateTime.parse("2021-04-27T08:06:47Z"))
-            .withHighSeverityFailedRulesCount(392764686)
-            .withMediumSeverityFailedRulesCount(185109829)
-            .withLowSeverityFailedRulesCount(988966310)
-            .withTotalPassedRulesCount(115638191)
-            .withTotalFailedRulesCount(1122267125)
-            .withTotalRulesCount(1711524187)
-            .withIsBaselineApplied(false)
-            .withLastScanTime(OffsetDateTime.parse("2021-01-31T15:02:11Z")));
+            .withState(ScanState.FAILED_TO_RUN)
+            .withServer("syingwfqatmtdht")
+            .withDatabase("vypgikdg")
+            .withSqlVersion("ywkbirryuzhlhkjo")
+            .withStartTime(OffsetDateTime.parse("2021-06-25T16:08:27Z"))
+            .withEndTime(OffsetDateTime.parse("2021-09-24T04:17:08Z"))
+            .withHighSeverityFailedRulesCount(2015959117)
+            .withMediumSeverityFailedRulesCount(2065168211)
+            .withLowSeverityFailedRulesCount(1644860092)
+            .withTotalPassedRulesCount(1142747875)
+            .withTotalFailedRulesCount(1624870428)
+            .withTotalRulesCount(843520484)
+            .withIsBaselineApplied(true)
+            .withLastScanTime(OffsetDateTime.parse("2021-11-16T07:49:22Z")));
         model = BinaryData.fromObject(model).toObject(ScanInner.class);
         Assertions.assertEquals(ScanTriggerType.ON_DEMAND, model.properties().triggerType());
-        Assertions.assertEquals(ScanState.FAILED, model.properties().state());
-        Assertions.assertEquals("ircgpikpz", model.properties().server());
-        Assertions.assertEquals("ejzanlfz", model.properties().database());
-        Assertions.assertEquals("av", model.properties().sqlVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T21:52:58Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-27T08:06:47Z"), model.properties().endTime());
-        Assertions.assertEquals(392764686, model.properties().highSeverityFailedRulesCount());
-        Assertions.assertEquals(185109829, model.properties().mediumSeverityFailedRulesCount());
-        Assertions.assertEquals(988966310, model.properties().lowSeverityFailedRulesCount());
-        Assertions.assertEquals(115638191, model.properties().totalPassedRulesCount());
-        Assertions.assertEquals(1122267125, model.properties().totalFailedRulesCount());
-        Assertions.assertEquals(1711524187, model.properties().totalRulesCount());
-        Assertions.assertEquals(false, model.properties().isBaselineApplied());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:02:11Z"), model.properties().lastScanTime());
+        Assertions.assertEquals(ScanState.FAILED_TO_RUN, model.properties().state());
+        Assertions.assertEquals("syingwfqatmtdht", model.properties().server());
+        Assertions.assertEquals("vypgikdg", model.properties().database());
+        Assertions.assertEquals("ywkbirryuzhlhkjo", model.properties().sqlVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T16:08:27Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T04:17:08Z"), model.properties().endTime());
+        Assertions.assertEquals(2015959117, model.properties().highSeverityFailedRulesCount());
+        Assertions.assertEquals(2065168211, model.properties().mediumSeverityFailedRulesCount());
+        Assertions.assertEquals(1644860092, model.properties().lowSeverityFailedRulesCount());
+        Assertions.assertEquals(1142747875, model.properties().totalPassedRulesCount());
+        Assertions.assertEquals(1624870428, model.properties().totalFailedRulesCount());
+        Assertions.assertEquals(843520484, model.properties().totalRulesCount());
+        Assertions.assertEquals(true, model.properties().isBaselineApplied());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T07:49:22Z"), model.properties().lastScanTime());
     }
 }

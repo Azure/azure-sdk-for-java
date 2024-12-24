@@ -28,7 +28,7 @@ public final class AlertsUpdateSubscriptionLevelStateToResolveWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateSubscriptionLevelStateToResolveWithResponse("njl", "icqomanefwl", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToResolveWithResponse("watessw", "rn", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -14,21 +14,20 @@ public final class BaselineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Baseline model = BinaryData.fromString(
-            "{\"expectedResults\":[[\"kl\",\"hpluodpvruudlg\",\"ibthostgktstvd\",\"eclze\"],[\"bcvhzlhpl\",\"dqkdlwwqfbu\",\"lkxt\"],[\"jfsmlmbtxhwgfwsr\",\"a\",\"coezbrhubskh\"],[\"ygo\"]],\"updatedTime\":\"2021-03-17T09:54:44Z\"}")
+            "{\"expectedResults\":[[\"gibbdaxc\",\"nfo\"],[\"uors\",\"kokwbqplhlvnu\",\"epzl\"]],\"updatedTime\":\"2021-06-18T22:25:05Z\"}")
             .toObject(Baseline.class);
-        Assertions.assertEquals("kl", model.expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T09:54:44Z"), model.updatedTime());
+        Assertions.assertEquals("gibbdaxc", model.expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T22:25:05Z"), model.updatedTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Baseline model = new Baseline()
-            .withExpectedResults(Arrays.asList(Arrays.asList("kl", "hpluodpvruudlg", "ibthostgktstvd", "eclze"),
-                Arrays.asList("bcvhzlhpl", "dqkdlwwqfbu", "lkxt"),
-                Arrays.asList("jfsmlmbtxhwgfwsr", "a", "coezbrhubskh"), Arrays.asList("ygo")))
-            .withUpdatedTime(OffsetDateTime.parse("2021-03-17T09:54:44Z"));
+            .withExpectedResults(
+                Arrays.asList(Arrays.asList("gibbdaxc", "nfo"), Arrays.asList("uors", "kokwbqplhlvnu", "epzl")))
+            .withUpdatedTime(OffsetDateTime.parse("2021-06-18T22:25:05Z"));
         model = BinaryData.fromObject(model).toObject(Baseline.class);
-        Assertions.assertEquals("kl", model.expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T09:54:44Z"), model.updatedTime());
+        Assertions.assertEquals("gibbdaxc", model.expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T22:25:05Z"), model.updatedTime());
     }
 }

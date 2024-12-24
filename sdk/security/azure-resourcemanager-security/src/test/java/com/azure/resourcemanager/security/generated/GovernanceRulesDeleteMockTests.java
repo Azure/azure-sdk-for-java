@@ -27,7 +27,7 @@ public final class GovernanceRulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.governanceRules().delete("cowscuyfqlam", "bqhsujkafu", com.azure.core.util.Context.NONE);
+        manager.governanceRules().delete("gjhxerxl", "bkdbtq", com.azure.core.util.Context.NONE);
 
     }
 }

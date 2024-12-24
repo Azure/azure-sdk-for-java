@@ -12,18 +12,18 @@ public final class WorkspaceSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceSettingProperties model
-            = BinaryData.fromString("{\"workspaceId\":\"sauuimj\",\"scope\":\"vxieduugidyj\"}")
+            = BinaryData.fromString("{\"workspaceId\":\"pgacftadehxnlty\",\"scope\":\"sop\"}")
                 .toObject(WorkspaceSettingProperties.class);
-        Assertions.assertEquals("sauuimj", model.workspaceId());
-        Assertions.assertEquals("vxieduugidyj", model.scope());
+        Assertions.assertEquals("pgacftadehxnlty", model.workspaceId());
+        Assertions.assertEquals("sop", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceSettingProperties model
-            = new WorkspaceSettingProperties().withWorkspaceId("sauuimj").withScope("vxieduugidyj");
+            = new WorkspaceSettingProperties().withWorkspaceId("pgacftadehxnlty").withScope("sop");
         model = BinaryData.fromObject(model).toObject(WorkspaceSettingProperties.class);
-        Assertions.assertEquals("sauuimj", model.workspaceId());
-        Assertions.assertEquals("vxieduugidyj", model.scope());
+        Assertions.assertEquals("pgacftadehxnlty", model.workspaceId());
+        Assertions.assertEquals("sop", model.scope());
     }
 }

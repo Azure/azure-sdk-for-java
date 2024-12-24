@@ -22,7 +22,7 @@ public final class AlertsSuppressionRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alertType\":\"dc\",\"lastModifiedUtc\":\"2021-11-24T09:50:18Z\",\"expirationDateUtc\":\"2021-08-28T15:04:01Z\",\"reason\":\"fasfod\",\"state\":\"Enabled\",\"comment\":\"alvngtwy\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"gqrnt\",\"\":{\"zuppiyx\":\"datadrcjlvkrkegty\",\"abm\":\"datazmiyddeeqzq\",\"pfczewxtrl\":\"datavsexduetb\",\"kjpirgzxvbczw\":\"databpxya\"}},{\"field\":\"egbthm\",\"\":{\"fvua\":\"datatjbuiggruno\"}}]}},\"id\":\"jthoivsdwsngkr\",\"name\":\"ihscjvakmhzbhw\",\"type\":\"hf\"}";
+            = "{\"properties\":{\"alertType\":\"xxkwykuqdndx\",\"lastModifiedUtc\":\"2021-08-07T12:28:36Z\",\"expirationDateUtc\":\"2021-07-22T14:36:57Z\",\"reason\":\"gga\",\"state\":\"Enabled\",\"comment\":\"gtf\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"scdx\",\"\":{\"bgacnr\":\"datanjrcuf\"}},{\"field\":\"dtncmsps\",\"\":{\"b\":\"dataame\",\"skkqjmxptuei\":\"dataqiqmlfvhlq\"}}]}},\"id\":\"uugkw\",\"name\":\"rq\",\"type\":\"rpahuuonjkkxuk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class AlertsSuppressionRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AlertsSuppressionRule response = manager.alertsSuppressionRules()
-            .getWithResponse("uafixlxicwgp", com.azure.core.util.Context.NONE)
+            .getWithResponse("gkensckhbmcarmo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dc", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T15:04:01Z"), response.expirationDateUtc());
-        Assertions.assertEquals("fasfod", response.reason());
+        Assertions.assertEquals("xxkwykuqdndx", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T14:36:57Z"), response.expirationDateUtc());
+        Assertions.assertEquals("gga", response.reason());
         Assertions.assertEquals(RuleState.ENABLED, response.state());
-        Assertions.assertEquals("alvngtwy", response.comment());
-        Assertions.assertEquals("gqrnt", response.suppressionAlertsScope().allOf().get(0).field());
+        Assertions.assertEquals("gtf", response.comment());
+        Assertions.assertEquals("scdx", response.suppressionAlertsScope().allOf().get(0).field());
     }
 }

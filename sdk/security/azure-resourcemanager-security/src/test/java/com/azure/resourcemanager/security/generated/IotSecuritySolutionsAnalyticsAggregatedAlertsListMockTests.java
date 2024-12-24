@@ -22,7 +22,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"alertType\":\"z\",\"alertDisplayName\":\"yovqmqcudptoqwr\",\"vendorName\":\"kjthl\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"wawfu\",\"description\":\"ngejjxumowynjmoo\",\"count\":8742565226811425459,\"effectedResourceType\":\"tdrsjtmnkxjou\",\"systemSource\":\"zcfdtstiaxtyrnu\",\"actionTaken\":\"fhepis\",\"logAnalyticsQuery\":\"cmlroiommemso\",\"topDevicesList\":[{\"deviceId\":\"cyeqd\",\"alertsCount\":4380794604325601453,\"lastOccurrence\":\"qcabebck\"},{\"deviceId\":\"srsixwn\",\"alertsCount\":505938771822321914,\"lastOccurrence\":\"bjgfmyqyy\"},{\"deviceId\":\"ridzfpsfyakid\",\"alertsCount\":183154782545041181,\"lastOccurrence\":\"rqke\"},{\"deviceId\":\"umkq\",\"alertsCount\":43365760248026067,\"lastOccurrence\":\"triysjrgtruwpuq\"}]},\"tags\":{\"gclvbwa\":\"cekdvvoydwedgg\"},\"id\":\"zadrjbjngoar\",\"name\":\"rdrwiem\",\"type\":\"cyniapy\"}]}";
+            = "{\"value\":[{\"properties\":{\"alertType\":\"ssj\",\"alertDisplayName\":\"ykdygjvgs\",\"vendorName\":\"fzhjngwqxcrbcrg\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"msszzcctvkognht\",\"description\":\"gwnnwcnvpnyldjdk\",\"count\":4533283804730177991,\"effectedResourceType\":\"knkxi\",\"systemSource\":\"hnrjlqdoqejexfdl\",\"actionTaken\":\"hdkubgywadr\",\"logAnalyticsQuery\":\"pdyehjrwc\",\"topDevicesList\":[{\"deviceId\":\"bocayw\",\"alertsCount\":5464073503345863115,\"lastOccurrence\":\"zmolhve\"}]},\"tags\":{\"ymlhklmnjqzm\":\"gsfmhwdxqu\",\"bthb\":\"ynhitrnwqgq\"},\"id\":\"piqnrjoc\",\"name\":\"gwfv\",\"type\":\"ywzrqeiadd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IoTSecurityAggregatedAlert> response = manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
-            .list("liqwzutiyelrnhh", "t", 263278670, com.azure.core.util.Context.NONE);
+            .list("nxebycympohx", "bnnpnsebcxnous", 1582695926, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cekdvvoydwedgg", response.iterator().next().tags().get("gclvbwa"));
+        Assertions.assertEquals("gsfmhwdxqu", response.iterator().next().tags().get("ymlhklmnjqzm"));
     }
 }

@@ -34,7 +34,7 @@ public interface CustomCertificate {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
@@ -106,7 +106,8 @@ public interface CustomCertificate {
             /**
              * Specifies resourceGroupName, resourceName.
              * 
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
+             * value from the Azure Resource Manager API or the portal.
              * @param resourceName The name of the resource.
              * @return the next definition stage.
              */

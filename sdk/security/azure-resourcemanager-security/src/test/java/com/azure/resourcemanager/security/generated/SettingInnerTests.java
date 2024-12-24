@@ -11,8 +11,7 @@ public final class SettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingInner model = BinaryData
-            .fromString(
-                "{\"kind\":\"Setting\",\"id\":\"bdxzfxnxmlbmu\",\"name\":\"swkjmdihdcyyyz\",\"type\":\"whbwzjnufzrf\"}")
+            .fromString("{\"kind\":\"Setting\",\"id\":\"bqggw\",\"name\":\"eiwdhdmncgbfzu\",\"type\":\"cstu\"}")
             .toObject(SettingInner.class);
     }
 

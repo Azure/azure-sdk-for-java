@@ -12,18 +12,18 @@ public final class DefenderFoDatabasesAwsOfferingRdsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderFoDatabasesAwsOfferingRds model
-            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"kakddidahzllrqm\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"rjdljlkqhvkrb\"}")
                 .toObject(DefenderFoDatabasesAwsOfferingRds.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("kakddidahzllrqm", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rjdljlkqhvkrb", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderFoDatabasesAwsOfferingRds model
-            = new DefenderFoDatabasesAwsOfferingRds().withEnabled(false).withCloudRoleArn("kakddidahzllrqm");
+            = new DefenderFoDatabasesAwsOfferingRds().withEnabled(true).withCloudRoleArn("rjdljlkqhvkrb");
         model = BinaryData.fromObject(model).toObject(DefenderFoDatabasesAwsOfferingRds.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("kakddidahzllrqm", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rjdljlkqhvkrb", model.cloudRoleArn());
     }
 }

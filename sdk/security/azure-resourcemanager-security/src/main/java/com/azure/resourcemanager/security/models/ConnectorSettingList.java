@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * For a subscription, list of all cloud account connectors and their settings.
  */
 @Fluent
-public final class ConnectorSettingList {
+public final class ConnectorSettingList implements JsonSerializable<ConnectorSettingList> {
     /*
      * List of all the cloud account connector settings
      */
-    @JsonProperty(value = "value")
     private List<ConnectorSettingInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class ConnectorSettingList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorSettingList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorSettingList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectorSettingList.
+     */
+    public static ConnectorSettingList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorSettingList deserializedConnectorSettingList = new ConnectorSettingList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConnectorSettingInner> value
+                        = reader.readArray(reader1 -> ConnectorSettingInner.fromJson(reader1));
+                    deserializedConnectorSettingList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConnectorSettingList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorSettingList;
+        });
     }
 }

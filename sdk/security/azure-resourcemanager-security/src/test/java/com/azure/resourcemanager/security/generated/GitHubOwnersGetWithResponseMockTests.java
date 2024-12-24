@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwner;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitHubOwnersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"aoymyckdpzb\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-26T04:54:27Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"rjyfjleuxix\",\"gitHubInternalId\":\"sjldg\",\"onboardingState\":\"Onboarded\"},\"id\":\"qoacfqzxjziqcs\",\"name\":\"twqtkpd\",\"type\":\"defqoermgm\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"ltenlbfxlm\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-22T05:22:18Z\",\"provisioningState\":\"DeletionSuccess\",\"ownerUrl\":\"doduo\",\"gitHubInternalId\":\"xjbrixymc\",\"onboardingState\":\"NotApplicable\"},\"id\":\"kqyvurhwishyfm\",\"name\":\"zcq\",\"type\":\"evnkyakck\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +31,10 @@ public final class GitHubOwnersGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GitHubOwner response
-            = manager.gitHubOwners().getWithResponse("ny", "ceulbyz", "c", com.azure.core.util.Context.NONE).getValue();
+        GitHubOwner response = manager.gitHubOwners()
+            .getWithResponse("tiqmcjbsmkirp", "n", "pudmhkcomeobw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, response.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, response.properties().onboardingState());
     }
 }

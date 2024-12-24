@@ -12,7 +12,9 @@ import com.azure.resourcemanager.security.models.SupportedCloudEnum;
  */
 public final class CustomAssessmentAutomationsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationCreate_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
+     * CustomAssessmentAutomations/customAssessmentAutomationCreate_example.json
      */
     /**
      * Sample code: Create a Custom Assessment Automation.

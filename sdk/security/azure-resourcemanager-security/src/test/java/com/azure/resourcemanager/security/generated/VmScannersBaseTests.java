@@ -16,22 +16,23 @@ public final class VmScannersBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmScannersBase model = BinaryData.fromString(
-            "{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"hqnmotpuwnno\":\"rhbjdqk\",\"c\":\"mmzng\",\"pwyiulayno\":\"rju\"}}}")
+            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"jeuxsphlo\":\"rkjg\",\"ufvcgnrgl\":\"fpmijpdvzvfbhwbd\",\"afebzxfkjq\":\"qrwyambh\",\"vrkpsa\":\"tibhlennt\"}}}")
             .toObject(VmScannersBase.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("rhbjdqk", model.configuration().exclusionTags().get("hqnmotpuwnno"));
+        Assertions.assertEquals("rkjg", model.configuration().exclusionTags().get("jeuxsphlo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmScannersBase model = new VmScannersBase().withEnabled(true)
+        VmScannersBase model = new VmScannersBase().withEnabled(false)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("hqnmotpuwnno", "rhbjdqk", "c", "mmzng", "pwyiulayno", "rju")));
+                .withExclusionTags(mapOf("jeuxsphlo", "rkjg", "ufvcgnrgl", "fpmijpdvzvfbhwbd", "afebzxfkjq", "qrwyambh",
+                    "vrkpsa", "tibhlennt")));
         model = BinaryData.fromObject(model).toObject(VmScannersBase.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("rhbjdqk", model.configuration().exclusionTags().get("hqnmotpuwnno"));
+        Assertions.assertEquals("rkjg", model.configuration().exclusionTags().get("jeuxsphlo"));
     }
 
     // Use "Map.of" if available

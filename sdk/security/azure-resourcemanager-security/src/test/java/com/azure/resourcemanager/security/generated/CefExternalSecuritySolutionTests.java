@@ -14,31 +14,31 @@ public final class CefExternalSecuritySolutionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CefExternalSecuritySolution model = BinaryData.fromString(
-            "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"gschnzrsbk\",\"agent\":\"ovlzdm\",\"lastEventReceived\":\"mfwsxafofu\",\"deviceVendor\":\"rimm\",\"deviceType\":\"zwdehkkmvhz\",\"workspace\":{\"id\":\"anyrvaprtgelgwe\"},\"\":{\"j\":\"datafyaqandmymnqo\",\"paxmfm\":\"datamovsfbpbvz\",\"nqifb\":\"datasmcwoxfaxd\",\"ugmocpc\":\"dataatroiaue\"}},\"location\":\"cboe\",\"id\":\"rgttw\",\"name\":\"ldsiuorinikc\",\"type\":\"dpk\"}")
+            "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"kwppthuzdprmimr\",\"agent\":\"dpoqfxyem\",\"lastEventReceived\":\"ftb\",\"deviceVendor\":\"whtecloamfmxtll\",\"deviceType\":\"tymqcnrrfijhggab\",\"workspace\":{\"id\":\"amklilirwdv\"},\"\":{\"jxrdfd\":\"datasdpzouhktqrxqwq\"}},\"location\":\"ullygtavczcx\",\"id\":\"fweapyfmlx\",\"name\":\"ljphraspifleimi\",\"type\":\"lmdbgic\"}")
             .toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("rimm", model.properties().deviceVendor());
-        Assertions.assertEquals("zwdehkkmvhz", model.properties().deviceType());
-        Assertions.assertEquals("anyrvaprtgelgwe", model.properties().workspace().id());
-        Assertions.assertEquals("gschnzrsbk", model.properties().hostname());
-        Assertions.assertEquals("ovlzdm", model.properties().agent());
-        Assertions.assertEquals("mfwsxafofu", model.properties().lastEventReceived());
+        Assertions.assertEquals("whtecloamfmxtll", model.properties().deviceVendor());
+        Assertions.assertEquals("tymqcnrrfijhggab", model.properties().deviceType());
+        Assertions.assertEquals("amklilirwdv", model.properties().workspace().id());
+        Assertions.assertEquals("kwppthuzdprmimr", model.properties().hostname());
+        Assertions.assertEquals("dpoqfxyem", model.properties().agent());
+        Assertions.assertEquals("ftb", model.properties().lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CefExternalSecuritySolution model
-            = new CefExternalSecuritySolution().withProperties(new CefSolutionProperties().withDeviceVendor("rimm")
-                .withDeviceType("zwdehkkmvhz")
-                .withWorkspace(new ConnectedWorkspace().withId("anyrvaprtgelgwe"))
-                .withHostname("gschnzrsbk")
-                .withAgent("ovlzdm")
-                .withLastEventReceived("mfwsxafofu"));
+        CefExternalSecuritySolution model = new CefExternalSecuritySolution()
+            .withProperties(new CefSolutionProperties().withDeviceVendor("whtecloamfmxtll")
+                .withDeviceType("tymqcnrrfijhggab")
+                .withWorkspace(new ConnectedWorkspace().withId("amklilirwdv"))
+                .withHostname("kwppthuzdprmimr")
+                .withAgent("dpoqfxyem")
+                .withLastEventReceived("ftb"));
         model = BinaryData.fromObject(model).toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("rimm", model.properties().deviceVendor());
-        Assertions.assertEquals("zwdehkkmvhz", model.properties().deviceType());
-        Assertions.assertEquals("anyrvaprtgelgwe", model.properties().workspace().id());
-        Assertions.assertEquals("gschnzrsbk", model.properties().hostname());
-        Assertions.assertEquals("ovlzdm", model.properties().agent());
-        Assertions.assertEquals("mfwsxafofu", model.properties().lastEventReceived());
+        Assertions.assertEquals("whtecloamfmxtll", model.properties().deviceVendor());
+        Assertions.assertEquals("tymqcnrrfijhggab", model.properties().deviceType());
+        Assertions.assertEquals("amklilirwdv", model.properties().workspace().id());
+        Assertions.assertEquals("kwppthuzdprmimr", model.properties().hostname());
+        Assertions.assertEquals("dpoqfxyem", model.properties().agent());
+        Assertions.assertEquals("ftb", model.properties().lastEventReceived());
     }
 }

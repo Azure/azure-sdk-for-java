@@ -23,7 +23,7 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"shzn\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-06T15:28:17Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"axxdcdjmd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"txfrm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"cxstowageh\",\"tags\":{\"gblkkncyp\":\"hwesrtja\"},\"id\":\"tevspsaneyvaerp\",\"name\":\"obnhrfbrjokjwqd\",\"type\":\"raq\"}]}";
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"shzn\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-06T15:28:17Z\",\"environmentName\":\"AzureDevOps\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"axxdcdjmd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"txfrm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"cxstowageh\",\"tags\":{\"gblkkncyp\":\"hwesrtja\"},\"id\":\"tevspsaneyvaerp\",\"name\":\"obnhrfbrjokjwqd\",\"type\":\"raq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,6 +38,6 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
         Assertions.assertEquals("cxstowageh", response.iterator().next().location());
         Assertions.assertEquals("hwesrtja", response.iterator().next().tags().get("gblkkncyp"));
         Assertions.assertEquals("shzn", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, response.iterator().next().environmentName());
+        Assertions.assertEquals(CloudName.AZURE_DEV_OPS, response.iterator().next().environmentName());
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of the action that will be triggered by the Automation.
+ * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
  */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
+    /**
+     * Static value Internal for ActionType.
+     */
+    public static final ActionType INTERNAL = fromString("Internal");
+
     /**
      * Static value LogicApp for ActionType.
      */
@@ -42,7 +46,6 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
-    @JsonCreator
     public static ActionType fromString(String name) {
         return fromString(name, ActionType.class);
     }

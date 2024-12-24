@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class SettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"kind\":\"Setting\",\"id\":\"aeyzwloqrmgd\",\"name\":\"ymipvlxty\",\"type\":\"ukhjd\"}";
+        String responseStr
+            = "{\"kind\":\"Setting\",\"id\":\"idcfwoolku\",\"name\":\"zowgmmixf\",\"type\":\"aupgblna\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

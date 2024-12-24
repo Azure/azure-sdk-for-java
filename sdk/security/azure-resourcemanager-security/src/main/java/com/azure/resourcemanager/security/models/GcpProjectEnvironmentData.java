@@ -5,45 +5,34 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GCP project connector environment data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "environmentType",
-    defaultImpl = GcpProjectEnvironmentData.class,
-    visible = true)
-@JsonTypeName("GcpProject")
 @Fluent
 public final class GcpProjectEnvironmentData extends EnvironmentData {
     /*
      * The type of the environment data.
      */
-    @JsonTypeId
-    @JsonProperty(value = "environmentType", required = true)
     private EnvironmentType environmentType = EnvironmentType.GCP_PROJECT;
 
     /*
      * The Gcp project's organizational data
      */
-    @JsonProperty(value = "organizationalData")
     private GcpOrganizationalData organizationalData;
 
     /*
      * The Gcp project's details
      */
-    @JsonProperty(value = "projectDetails")
     private GcpProjectDetails projectDetails;
 
     /*
      * Scan interval in hours (value should be between 1-hour to 24-hours)
      */
-    @JsonProperty(value = "scanInterval")
     private Long scanInterval;
 
     /**
@@ -129,12 +118,58 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
      */
     @Override
     public void validate() {
-        super.validate();
         if (organizationalData() != null) {
             organizationalData().validate();
         }
         if (projectDetails() != null) {
             projectDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentType",
+            this.environmentType == null ? null : this.environmentType.toString());
+        jsonWriter.writeJsonField("organizationalData", this.organizationalData);
+        jsonWriter.writeJsonField("projectDetails", this.projectDetails);
+        jsonWriter.writeNumberField("scanInterval", this.scanInterval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcpProjectEnvironmentData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcpProjectEnvironmentData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcpProjectEnvironmentData.
+     */
+    public static GcpProjectEnvironmentData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcpProjectEnvironmentData deserializedGcpProjectEnvironmentData = new GcpProjectEnvironmentData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentType".equals(fieldName)) {
+                    deserializedGcpProjectEnvironmentData.environmentType
+                        = EnvironmentType.fromString(reader.getString());
+                } else if ("organizationalData".equals(fieldName)) {
+                    deserializedGcpProjectEnvironmentData.organizationalData = GcpOrganizationalData.fromJson(reader);
+                } else if ("projectDetails".equals(fieldName)) {
+                    deserializedGcpProjectEnvironmentData.projectDetails = GcpProjectDetails.fromJson(reader);
+                } else if ("scanInterval".equals(fieldName)) {
+                    deserializedGcpProjectEnvironmentData.scanInterval = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcpProjectEnvironmentData;
+        });
     }
 }

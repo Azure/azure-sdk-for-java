@@ -27,7 +27,7 @@ public final class ConnectorsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.connectors().deleteWithResponse("xkgrvf", com.azure.core.util.Context.NONE);
+        manager.connectors().deleteWithResponse("tfnonpi", com.azure.core.util.Context.NONE);
 
     }
 }

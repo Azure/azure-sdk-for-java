@@ -13,27 +13,27 @@ public final class SensitivityLabelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SensitivityLabel model = BinaryData.fromString(
-            "{\"displayName\":\"bjnpg\",\"description\":\"ftadehxnltyfs\",\"rank\":\"High\",\"order\":1752385169,\"enabled\":false}")
+            "{\"displayName\":\"fkgukdkexxppof\",\"description\":\"axcfjpgddtocjjx\",\"rank\":\"Medium\",\"order\":70113912,\"enabled\":false}")
             .toObject(SensitivityLabel.class);
-        Assertions.assertEquals("bjnpg", model.displayName());
-        Assertions.assertEquals("ftadehxnltyfs", model.description());
-        Assertions.assertEquals(Rank.HIGH, model.rank());
-        Assertions.assertEquals(1752385169, model.order());
+        Assertions.assertEquals("fkgukdkexxppof", model.displayName());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.description());
+        Assertions.assertEquals(Rank.MEDIUM, model.rank());
+        Assertions.assertEquals(70113912, model.order());
         Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabel model = new SensitivityLabel().withDisplayName("bjnpg")
-            .withDescription("ftadehxnltyfs")
-            .withRank(Rank.HIGH)
-            .withOrder(1752385169)
+        SensitivityLabel model = new SensitivityLabel().withDisplayName("fkgukdkexxppof")
+            .withDescription("axcfjpgddtocjjx")
+            .withRank(Rank.MEDIUM)
+            .withOrder(70113912)
             .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(SensitivityLabel.class);
-        Assertions.assertEquals("bjnpg", model.displayName());
-        Assertions.assertEquals("ftadehxnltyfs", model.description());
-        Assertions.assertEquals(Rank.HIGH, model.rank());
-        Assertions.assertEquals(1752385169, model.order());
+        Assertions.assertEquals("fkgukdkexxppof", model.displayName());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.description());
+        Assertions.assertEquals(Rank.MEDIUM, model.rank());
+        Assertions.assertEquals(70113912, model.order());
         Assertions.assertEquals(false, model.enabled());
     }
 }

@@ -13,19 +13,20 @@ public final class RuleResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleResultsInput model = BinaryData.fromString(
-            "{\"latestScan\":false,\"results\":[[\"nswhcc\",\"ph\"],[\"ivwitqscywugg\",\"oluhczbwemh\",\"i\"],[\"brgz\",\"wmsweypqwd\"]]}")
+            "{\"latestScan\":false,\"results\":[[\"swe\",\"pqwd\",\"ggicccnxqhue\",\"mkttlstvlzywem\"],[\"rncsdtclu\",\"iypbsfgytgusl\"],[\"adcy\",\"qukyhejhzi\",\"xgfpelolppv\",\"srp\"]]}")
             .toObject(RuleResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("nswhcc", model.results().get(0).get(0));
+        Assertions.assertEquals("swe", model.results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuleResultsInput model = new RuleResultsInput().withLatestScan(false)
-            .withResults(Arrays.asList(Arrays.asList("nswhcc", "ph"),
-                Arrays.asList("ivwitqscywugg", "oluhczbwemh", "i"), Arrays.asList("brgz", "wmsweypqwd")));
+            .withResults(Arrays.asList(Arrays.asList("swe", "pqwd", "ggicccnxqhue", "mkttlstvlzywem"),
+                Arrays.asList("rncsdtclu", "iypbsfgytgusl"),
+                Arrays.asList("adcy", "qukyhejhzi", "xgfpelolppv", "srp")));
         model = BinaryData.fromObject(model).toObject(RuleResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("nswhcc", model.results().get(0).get(0));
+        Assertions.assertEquals("swe", model.results().get(0).get(0));
     }
 }

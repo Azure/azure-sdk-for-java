@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.ComplianceSegment;
 public final class ComplianceSegmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceSegment model
-            = BinaryData.fromString("{\"segmentType\":\"icbtwnpzao\",\"percentage\":80.97010698078728}")
-                .toObject(ComplianceSegment.class);
+        ComplianceSegment model = BinaryData.fromString("{\"segmentType\":\"kyfi\",\"percentage\":41.406256199584135}")
+            .toObject(ComplianceSegment.class);
     }
 
     @org.junit.jupiter.api.Test

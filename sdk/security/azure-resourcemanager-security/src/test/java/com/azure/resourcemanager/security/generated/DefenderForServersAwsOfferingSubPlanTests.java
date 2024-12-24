@@ -13,14 +13,14 @@ public final class DefenderForServersAwsOfferingSubPlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersAwsOfferingSubPlan model
-            = BinaryData.fromString("{\"type\":\"P2\"}").toObject(DefenderForServersAwsOfferingSubPlan.class);
-        Assertions.assertEquals(SubPlan.P2, model.type());
+            = BinaryData.fromString("{\"type\":\"P1\"}").toObject(DefenderForServersAwsOfferingSubPlan.class);
+        Assertions.assertEquals(SubPlan.P1, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingSubPlan model = new DefenderForServersAwsOfferingSubPlan().withType(SubPlan.P2);
+        DefenderForServersAwsOfferingSubPlan model = new DefenderForServersAwsOfferingSubPlan().withType(SubPlan.P1);
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingSubPlan.class);
-        Assertions.assertEquals(SubPlan.P2, model.type());
+        Assertions.assertEquals(SubPlan.P1, model.type());
     }
 }

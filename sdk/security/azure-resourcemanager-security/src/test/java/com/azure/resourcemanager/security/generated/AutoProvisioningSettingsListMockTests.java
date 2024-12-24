@@ -23,7 +23,7 @@ public final class AutoProvisioningSettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"aloow\",\"name\":\"zizznyu\",\"type\":\"pqzstifgufyjf\"}]}";
+            = "{\"value\":[{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"xt\",\"name\":\"lxxzqfcwrriomxee\",\"type\":\"wyhjmbjiqegmxdbs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
