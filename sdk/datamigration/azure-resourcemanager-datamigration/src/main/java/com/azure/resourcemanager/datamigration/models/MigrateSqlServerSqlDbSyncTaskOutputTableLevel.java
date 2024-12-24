@@ -87,11 +87,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputTableLevel extends Migrate
      */
     private OffsetDateTime lastModifiedTime;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbSyncTaskOutputTableLevel class.
      */
@@ -226,16 +221,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputTableLevel extends Migrate
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -271,7 +256,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputTableLevel extends Migrate
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbSyncTaskOutputTableLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbSyncTaskOutputTableLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbSyncTaskOutputTableLevel.resultType = reader.getString();
                 } else if ("tableName".equals(fieldName)) {
