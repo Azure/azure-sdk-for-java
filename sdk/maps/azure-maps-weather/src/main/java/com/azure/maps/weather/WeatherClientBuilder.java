@@ -43,25 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Builder class used to instantiate both synchronous and asynchronous {@link WeatherClient} clients.
- * <p><b>Example usage</b></p>
- * Creating a sync client using a {@link AzureKeyCredential}:
- * <!-- src_embed com.azure.maps.weather.sync.builder.key.instantiation -->
- * <pre>
- * &#47;&#47; Authenticates using subscription key
- * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
- *
- * &#47;&#47; Creates a builder
- * WeatherClientBuilder builder = new WeatherClientBuilder&#40;&#41;;
- * builder.credential&#40;keyCredential&#41;;
- * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
- *
- * &#47;&#47; Builds the client
- * WeatherClient client = builder.buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.maps.weather.sync.builder.ad.instantiation -->
- */
 @ServiceClientBuilder(serviceClients = { WeatherClient.class, WeatherAsyncClient.class })
 public final class WeatherClientBuilder implements AzureKeyCredentialTrait<WeatherClientBuilder>,
     AzureSasCredentialTrait<WeatherClientBuilder>, TokenCredentialTrait<WeatherClientBuilder>,
