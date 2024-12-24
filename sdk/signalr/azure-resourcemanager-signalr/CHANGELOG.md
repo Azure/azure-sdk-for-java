@@ -1,14 +1,59 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0 (2024-12-24)
 
-### Features Added
+- Azure Resource Manager SignalR client library for Java. This package contains Microsoft Azure SDK for SignalR Management SDK. REST API for Azure SignalR Service. Package tag package-2023-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SignalRReplicas` was removed
 
-### Other Changes
+#### `models.Replica` was removed
+
+#### `models.IpRule` was removed
+
+#### `models.Replica$Update` was removed
+
+#### `models.ReplicaList` was removed
+
+#### `models.Replica$DefinitionStages` was removed
+
+#### `models.Replica$UpdateStages` was removed
+
+#### `models.Replica$Definition` was removed
+
+#### `models.SignalRs` was modified
+
+* `listReplicaSkus(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `listReplicaSkusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was removed
+
+#### `models.SignalRNetworkACLs` was modified
+
+* `ipRules()` was removed
+* `withIpRules(java.util.List)` was removed
+
+#### `models.SignalRResource$Definition` was modified
+
+* `withResourceStopped(java.lang.String)` was removed
+* `withRegionEndpointEnabled(java.lang.String)` was removed
+
+#### `models.SignalRResource` was modified
+
+* `regionEndpointEnabled()` was removed
+* `resourceStopped()` was removed
+
+#### `models.SignalRResource$Update` was modified
+
+* `withResourceStopped(java.lang.String)` was removed
+* `withRegionEndpointEnabled(java.lang.String)` was removed
+
+#### `SignalRManager` was modified
+
+* `signalRReplicas()` was removed
 
 ## 1.0.0-beta.9 (2024-10-31)
 
