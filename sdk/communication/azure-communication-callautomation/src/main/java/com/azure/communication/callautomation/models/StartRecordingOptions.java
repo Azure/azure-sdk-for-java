@@ -3,11 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.List;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * The options for creating a call.
@@ -17,7 +16,7 @@ public final class StartRecordingOptions {
     /**
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
-    private final CallLocator callLocator;
+    private CallLocator callLocator;
 
     private String recordingStateCallbackUrl;
 
@@ -35,13 +34,22 @@ public final class StartRecordingOptions {
 
     private RecordingStorage recordingStorage;
 
+    private String callConnectionId;
+
+    /**
+     * Constructor
+     *
+     */
+    public StartRecordingOptions() {
+    }
+
     /**
      * Constructor
      *
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
-        Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
+        // Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
     }
 
@@ -225,5 +233,24 @@ public final class StartRecordingOptions {
     public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
         this.channelAffinity = channelAffinity;
         return this;
+    }
+
+    /**
+     * Set the callConnectionId
+     *
+     * @param callConnectionId to send state change callbacks.
+     * @return the {@link callConnectionId}
+     */
+    public StartRecordingOptions setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
+    * Get callConnectionId for the call
+    * @return callConnectionId for the call
+    */
+    public String getCallConnectionId() {
+        return callConnectionId;
     }
 }
