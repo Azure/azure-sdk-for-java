@@ -21,7 +21,7 @@ public final class SignalRCustomDomainsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Running\",\"domainName\":\"ovpbbttefjoknssq\",\"customCertificate\":{\"id\":\"qedikdfrd\"}},\"id\":\"qmrjg\",\"name\":\"ihfqlggwfiwzc\",\"type\":\"mjpb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"domainName\":\"csrlzknmzl\",\"customCertificate\":{\"id\":\"rupdwvnphcnzq\"}},\"id\":\"pjhmqrhvthl\",\"name\":\"iwdcxsmlzzhzd\",\"type\":\"xetlgydlhqv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SignalRCustomDomainsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomDomain response = manager.signalRCustomDomains()
-            .getWithResponse("pivlsbbjpm", "ubkmifo", "xkubvphavpmhbrbq", com.azure.core.util.Context.NONE)
+            .getWithResponse("rag", "gdphtvdula", "vl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ovpbbttefjoknssq", response.domainName());
-        Assertions.assertEquals("qedikdfrd", response.customCertificate().id());
+        Assertions.assertEquals("csrlzknmzl", response.domainName());
+        Assertions.assertEquals("rupdwvnphcnzq", response.customCertificate().id());
     }
 }

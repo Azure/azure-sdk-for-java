@@ -20,14 +20,14 @@ import java.io.IOException;
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
     /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
+
+    /*
      * Describes the properties of an existing Shared Private Link Resource
      */
     private SharedPrivateLinkResourceProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -51,21 +51,21 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the innerProperties property: Describes the properties of an existing Shared Private Link Resource.
      * 
      * @return the innerProperties value.
      */
     private SharedPrivateLinkResourceProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -229,11 +229,11 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
                     deserializedSharedPrivateLinkResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSharedPrivateLinkResourceInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSharedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedSharedPrivateLinkResourceInner.innerProperties
                         = SharedPrivateLinkResourceProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedSharedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
