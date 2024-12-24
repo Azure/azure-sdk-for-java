@@ -21,7 +21,7 @@ public class JobDetails implements JsonSerializable<JobDetails> {
     /*
      * Indicates the type of job details.
      */
-    private ClassDiscriminator jobDetailsType = ClassDiscriminator.fromString("JobDetails");
+    private ClassDiscriminator jobDetailsType;
 
     /*
      * List of stages that run in the job.
