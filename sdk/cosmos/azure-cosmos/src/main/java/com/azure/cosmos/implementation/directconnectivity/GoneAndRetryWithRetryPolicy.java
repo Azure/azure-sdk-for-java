@@ -209,7 +209,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     this.attemptCount,
                     exception);
 
-                return Mono.just(ShouldRetryResult.noRetry(
+                exceptionToThrow = logAndWrapExceptionWithLastRetryWithException(exception);
+
+                return Mono.just(ShouldRetryResult.noRetry(exceptionToThrow,
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount.get())));
             }
 
