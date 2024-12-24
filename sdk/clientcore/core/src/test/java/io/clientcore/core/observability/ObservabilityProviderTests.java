@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.observability;
 
 import io.clientcore.core.observability.tracing.Tracer;
@@ -25,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class ObservabilityProviderTests {
-    private final LibraryObservabilityOptions DEFAULT_LIB_OPTIONS = new LibraryObservabilityOptions("test-library");
+    private static final LibraryObservabilityOptions DEFAULT_LIB_OPTIONS
+        = new LibraryObservabilityOptions("test-library");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
 
@@ -49,13 +53,10 @@ public class ObservabilityProviderTests {
 
     @Test
     public void createTracerTracingDisabled() {
-        OpenTelemetry otel = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
+        OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
 
-        ObservabilityOptions<OpenTelemetry> options = new ObservabilityOptions<OpenTelemetry>()
-            .setTracingEnabled(false)
-            .setProvider(otel);
+        ObservabilityOptions<OpenTelemetry> options
+            = new ObservabilityOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(otel);
 
         Tracer tracer = ObservabilityProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS);
         assertFalse(tracer.isEnabled());
@@ -64,11 +65,11 @@ public class ObservabilityProviderTests {
         assertEquals(0, exporter.getFinishedSpanItems().size());
     }
 
+    @SuppressWarnings("try")
     @Test
     public void createTracerGlobalOTel() throws Exception {
-        try (AutoCloseable otel = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()) {
+        try (AutoCloseable otel
+            = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
             Tracer tracer = ObservabilityProvider.getInstance().getTracer(null, DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
@@ -84,22 +85,20 @@ public class ObservabilityProviderTests {
         }
     }
 
+    @SuppressWarnings("try")
     @Test
     public void createTracerExplicitOTel() throws Exception {
-        try (AutoCloseable global = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()) {
+        try (AutoCloseable global
+            = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
             InMemorySpanExporter localExporter = InMemorySpanExporter.create();
-            SdkTracerProvider localTracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(localExporter)).build();
+            SdkTracerProvider localTracerProvider
+                = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(localExporter)).build();
 
-            OpenTelemetry localOTel = OpenTelemetrySdk.builder()
-                .setTracerProvider(localTracerProvider)
-                .build();
+            OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
-            Tracer tracer = ObservabilityProvider.getInstance().getTracer(
-                new ObservabilityOptions<OpenTelemetry>().setProvider(localOTel),
-                DEFAULT_LIB_OPTIONS);
+            Tracer tracer = ObservabilityProvider.getInstance()
+                .getTracer(new ObservabilityOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test").startSpan().end();
@@ -112,24 +111,23 @@ public class ObservabilityProviderTests {
 
     @Test
     public void createTracerBadArguments() {
-        ObservabilityOptions<TracerProvider> options = new ObservabilityOptions<TracerProvider>()
-            .setProvider(tracerProvider);
+        ObservabilityOptions<TracerProvider> options
+            = new ObservabilityOptions<TracerProvider>().setProvider(tracerProvider);
 
-        assertThrows(IllegalArgumentException.class, () ->
-            ObservabilityProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS));
-        assertThrows(NullPointerException.class, () ->
-            ObservabilityProvider.getInstance().getTracer(null, null));
+        assertThrows(IllegalArgumentException.class,
+            () -> ObservabilityProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS));
+        assertThrows(NullPointerException.class, () -> ObservabilityProvider.getInstance().getTracer(null, null));
     }
 
+    @SuppressWarnings("try")
     @Test
     public void createTracerWithLibInfo() throws Exception {
-        try (AutoCloseable otel = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()) {
+        try (AutoCloseable otel
+            = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            LibraryObservabilityOptions libOptions = new LibraryObservabilityOptions("test-library")
-                .setLibraryVersion("1.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            LibraryObservabilityOptions libOptions
+                = new LibraryObservabilityOptions("test-library").setLibraryVersion("1.0.0")
+                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
             Tracer tracer = ObservabilityProvider.getInstance().getTracer(null, libOptions);
             assertTrue(tracer.isEnabled());

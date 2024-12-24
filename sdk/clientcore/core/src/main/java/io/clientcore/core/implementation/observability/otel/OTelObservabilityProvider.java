@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.implementation.observability.otel;
 
 import io.clientcore.core.implementation.ReflectionUtils;
@@ -17,7 +20,7 @@ import static io.clientcore.core.implementation.observability.otel.OTelInitializ
 import static io.clientcore.core.implementation.observability.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 
 public class OTelObservabilityProvider implements ObservabilityProvider {
-
+    public static final ObservabilityProvider INSTANCE = new OTelObservabilityProvider();
     private static final ReflectiveInvoker GET_PROVIDER_INVOKER;
     private static final ReflectiveInvoker GET_GLOBAL_PROVIDER_INVOKER;
     private static final ReflectiveInvoker GET_TRACER_BUILDER_INVOKER;
@@ -33,15 +36,15 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
 
         if (OTelInitializer.INSTANCE.isInitialized()) {
             try {
-                getProviderInvoker = ReflectionUtils.getMethodInvoker(OTEL_CLASS,
-                    OTEL_CLASS.getMethod("getTracerProvider"));
+                getProviderInvoker
+                    = ReflectionUtils.getMethodInvoker(OTEL_CLASS, OTEL_CLASS.getMethod("getTracerProvider"));
                 getGlobalProviderInvoker = ReflectionUtils.getMethodInvoker(GLOBAL_OTEL_CLASS,
                     GLOBAL_OTEL_CLASS.getMethod("getTracerProvider"));
                 getTracerBuilderInvoker = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS,
                     TRACER_PROVIDER_CLASS.getMethod("tracerBuilder", String.class));
 
-                ReflectiveInvoker noopProviderInvoker = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS,
-                    TRACER_PROVIDER_CLASS.getMethod("noop"));
+                ReflectiveInvoker noopProviderInvoker
+                    = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS, TRACER_PROVIDER_CLASS.getMethod("noop"));
 
                 noopProvider = noopProviderInvoker.invokeStatic();
             } catch (Throwable t) {
@@ -59,7 +62,8 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
     public Tracer getTracer(ObservabilityOptions<?> applicationOptions, LibraryObservabilityOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
 
-        if (!OTelInitializer.INSTANCE.isInitialized() || (applicationOptions != null && !applicationOptions.isTracingEnabled())) {
+        if (!OTelInitializer.INSTANCE.isInitialized()
+            || (applicationOptions != null && !applicationOptions.isTracingEnabled())) {
             return OTelTracer.NOOP;
         }
 
@@ -71,15 +75,15 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
         }
 
         OTelTracerBuilder otelTracerBuilder = getTracerBuilder(otelTracerProvider, libraryOptions.getLibraryName());
-        return otelTracerBuilder
-            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+        return otelTracerBuilder.setInstrumentationVersion(libraryOptions.getLibraryVersion())
             .setSchemaUrl(libraryOptions.getSchemaUrl())
             .build();
     }
 
     private Object getTracerProvider(Object otel) {
         if (otel != null && !OTEL_CLASS.isInstance(otel)) {
-            IllegalArgumentException error = new IllegalArgumentException("Observability provider is not an instance of " + OTEL_CLASS.getName());
+            IllegalArgumentException error
+                = new IllegalArgumentException("Observability provider is not an instance of " + OTEL_CLASS.getName());
 
             throw LOGGER.atError()
                 .addKeyValue("expectedProvider", OTEL_CLASS.getName())
@@ -104,7 +108,8 @@ public class OTelObservabilityProvider implements ObservabilityProvider {
     private OTelTracerBuilder getTracerBuilder(Object otelTracerProvider, String instrumentationName) {
         if (OTelInitializer.INSTANCE.isInitialized()) {
             try {
-                Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invokeWithArguments(otelTracerProvider, instrumentationName);
+                Object tracerBuilder
+                    = GET_TRACER_BUILDER_INVOKER.invokeWithArguments(otelTracerProvider, instrumentationName);
                 return new OTelTracerBuilder(tracerBuilder);
             } catch (Throwable t) {
                 OTelInitializer.INSTANCE.runtimeError(LOGGER, t);

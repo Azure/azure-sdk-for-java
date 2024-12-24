@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.implementation.observability.otel;
 
 import io.clientcore.core.util.ClientLogger;
 
-public class OTelInitializer {
+public final class OTelInitializer {
     private static final ClientLogger LOGGER = new ClientLogger(OTelInitializer.class);
     public static final OTelInitializer INSTANCE;
 
@@ -27,8 +30,7 @@ public class OTelInitializer {
     public static final Class<?> TRACER_BUILDER_CLASS;
     public static final Class<?> TRACER_PROVIDER_CLASS;
 
-
-    public volatile boolean initialized;
+    private volatile boolean initialized;
 
     static {
         Class<?> attributeKeyClass = null;

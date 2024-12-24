@@ -1,7 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.observability;
 
 import java.util.Objects;
 
+/**
+ * Options for configuring library-specific observability settings.
+ * <p>
+ *
+ * It's provided by the client library and is not intended to be used directly by the end users.
+ */
 public final class LibraryObservabilityOptions {
     private final String libraryName;
     private String libraryVersion;

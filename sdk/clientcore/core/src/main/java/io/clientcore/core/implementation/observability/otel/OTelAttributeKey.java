@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.implementation.observability.otel;
 
 import io.clientcore.core.implementation.ReflectionUtils;
@@ -8,10 +11,10 @@ import static io.clientcore.core.implementation.observability.otel.OTelInitializ
 
 public class OTelAttributeKey {
     private static final ClientLogger LOGGER = new ClientLogger(OTelAttributeKey.class);
-    private final static ReflectiveInvoker CREATE_STRING_KEY_INVOKER;
-    private final static ReflectiveInvoker CREATE_BOOLEAN_KEY_INVOKER;
-    private final static ReflectiveInvoker CREATE_LONG_KEY_INVOKER;
-    private final static ReflectiveInvoker CREATE_DOUBLE_KEY_INVOKER;
+    private static final ReflectiveInvoker CREATE_STRING_KEY_INVOKER;
+    private static final ReflectiveInvoker CREATE_BOOLEAN_KEY_INVOKER;
+    private static final ReflectiveInvoker CREATE_LONG_KEY_INVOKER;
+    private static final ReflectiveInvoker CREATE_DOUBLE_KEY_INVOKER;
 
     static {
         ReflectiveInvoker createStringKeyInvoker = null;
@@ -55,7 +58,8 @@ public class OTelAttributeKey {
                 } else if (value instanceof Double) {
                     return CREATE_DOUBLE_KEY_INVOKER.invokeStatic(key);
                 } else {
-                    LOGGER.atVerbose().addKeyValue("key", key)
+                    LOGGER.atVerbose()
+                        .addKeyValue("key", key)
                         .addKeyValue("type", value.getClass().getName())
                         .log("Could not populate attribute. Type is not supported.");
                     return null;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.implementation.observability.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectionUtils;
@@ -15,14 +18,15 @@ import static io.clientcore.core.implementation.observability.otel.OTelInitializ
 
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    private static final Scope NOOP_SCOPE = new Scope() {};
-    private final static ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
-    private final static ReflectiveInvoker SET_STATUS_INVOKER;
-    private final static ReflectiveInvoker END_INVOKER;
-    private final static ReflectiveInvoker GET_SPAN_CONTEXT_INVOKER;
-    private final static ReflectiveInvoker IS_RECORDING_INVOKER;
-    private final static ReflectiveInvoker MAKE_CURRENT_INVOKER;
-    private final static Object ERROR_STATUS_CODE;
+    private static final Scope NOOP_SCOPE = new Scope() {
+    };
+    private static final ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
+    private static final ReflectiveInvoker SET_STATUS_INVOKER;
+    private static final ReflectiveInvoker END_INVOKER;
+    private static final ReflectiveInvoker GET_SPAN_CONTEXT_INVOKER;
+    private static final ReflectiveInvoker IS_RECORDING_INVOKER;
+    private static final ReflectiveInvoker MAKE_CURRENT_INVOKER;
+    private static final Object ERROR_STATUS_CODE;
     private final Object otelSpan;
 
     static {
@@ -43,17 +47,14 @@ public class OTelSpan implements Span {
                 setStatusInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS,
                     SPAN_CLASS.getMethod("setStatus", STATUS_CODE_CLASS, String.class));
 
-                endInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS,
-                    SPAN_CLASS.getMethod("end"));
+                endInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("end"));
 
-                isRecordingInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS,
-                    SPAN_CLASS.getMethod("isRecording"));
+                isRecordingInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("isRecording"));
 
-                getSpanContextInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS,
-                    SPAN_CLASS.getMethod("getSpanContext"));
+                getSpanContextInvoker
+                    = ReflectionUtils.getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("getSpanContext"));
 
-                makeCurrentInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS,
-                    SPAN_CLASS.getMethod("makeCurrent"));
+                makeCurrentInvoker = ReflectionUtils.getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("makeCurrent"));
 
                 errorStatusCode = STATUS_CODE_CLASS.getField("ERROR").get(null);
             } catch (Throwable t) {
@@ -77,7 +78,8 @@ public class OTelSpan implements Span {
     public OTelSpan setAttribute(String key, Object value) {
         if (OTelInitializer.INSTANCE.isInitialized() && otelSpan != null) {
             try {
-                SET_ATTRIBUTE_INVOKER.invokeWithArguments(otelSpan, OTelAttributeKey.getKey(key, value), OTelAttributeKey.castAttributeValue(value));
+                SET_ATTRIBUTE_INVOKER.invokeWithArguments(otelSpan, OTelAttributeKey.getKey(key, value),
+                    OTelAttributeKey.castAttributeValue(value));
             } catch (Throwable t) {
                 OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
             }
@@ -161,12 +163,12 @@ public class OTelSpan implements Span {
                         @Override
                         public void close() {
                             try {
-                                ((AutoCloseable)scope).close();
+                                ((AutoCloseable) scope).close();
                             } catch (Exception e) {
                                 OTelInitializer.INSTANCE.runtimeError(LOGGER, e);
                             }
                         }
-                    } ;
+                    };
                 } else {
                     OTelInitializer.INSTANCE.runtimeError(LOGGER, "makeCurrent returned non-AutoCloseable");
                 }

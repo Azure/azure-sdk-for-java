@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.implementation.observability.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectionUtils;
@@ -25,11 +28,11 @@ public class OTelSpanBuilder implements SpanBuilder {
     private static final ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
     private static final ReflectiveInvoker SET_SPAN_KIND_INVOKER;
     private static final ReflectiveInvoker START_SPAN_INVOKER;
-    private final static Object INTERNAL_KIND;
-    private final static Object SERVER_KIND;
-    private final static Object CLIENT_KIND;
-    private final static Object PRODUCER_KIND;
-    private final static Object CONSUMER_KIND;
+    private static final Object INTERNAL_KIND;
+    private static final Object SERVER_KIND;
+    private static final Object CLIENT_KIND;
+    private static final Object PRODUCER_KIND;
+    private static final Object CONSUMER_KIND;
 
     private final Object otelSpanBuilder;
     static {
@@ -55,8 +58,8 @@ public class OTelSpanBuilder implements SpanBuilder {
                 setSpanKindInvoker = ReflectionUtils.getMethodInvoker(SPAN_BUILDER_CLASS,
                     SPAN_BUILDER_CLASS.getMethod("setSpanKind", SPAN_KIND_CLASS));
 
-                startSpanInvoker = ReflectionUtils.getMethodInvoker(SPAN_BUILDER_CLASS,
-                    SPAN_BUILDER_CLASS.getMethod("startSpan"));
+                startSpanInvoker
+                    = ReflectionUtils.getMethodInvoker(SPAN_BUILDER_CLASS, SPAN_BUILDER_CLASS.getMethod("startSpan"));
 
                 internalKind = SPAN_KIND_CLASS.getField("INTERNAL").get(null);
                 serverKind = SPAN_KIND_CLASS.getField("SERVER").get(null);
@@ -105,7 +108,8 @@ public class OTelSpanBuilder implements SpanBuilder {
     public SpanBuilder setAttribute(String key, Object value) {
         if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
             try {
-                SET_ATTRIBUTE_INVOKER.invokeWithArguments(otelSpanBuilder, OTelAttributeKey.getKey(key, value), OTelAttributeKey.castAttributeValue(value));
+                SET_ATTRIBUTE_INVOKER.invokeWithArguments(otelSpanBuilder, OTelAttributeKey.getKey(key, value),
+                    OTelAttributeKey.castAttributeValue(value));
             } catch (Throwable t) {
                 OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
             }
@@ -145,12 +149,16 @@ public class OTelSpanBuilder implements SpanBuilder {
         switch (spanKind) {
             case SERVER:
                 return SERVER_KIND;
+
             case CLIENT:
                 return CLIENT_KIND;
+
             case PRODUCER:
                 return PRODUCER_KIND;
+
             case CONSUMER:
                 return CONSUMER_KIND;
+
             default:
                 return INTERNAL_KIND;
         }

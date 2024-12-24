@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.observability.tracing;
 
-
 /**
- * Represents the tracing span type.
+ * Represents the span kind.
  */
 public enum SpanKind {
     /**

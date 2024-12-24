@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.observability;
 
 import io.clientcore.core.observability.tracing.Span;
@@ -89,8 +92,8 @@ class NoopObservabilityProvider implements ObservabilityProvider {
         }
 
         @Override
-        public Object getTraceFlags() {
-            return null;
+        public String getTraceFlags() {
+            return "00";
         }
     };
 

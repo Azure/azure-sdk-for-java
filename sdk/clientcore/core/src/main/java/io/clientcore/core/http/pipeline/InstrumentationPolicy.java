@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -9,6 +12,7 @@ import io.clientcore.core.observability.ObservabilityOptions;
 import io.clientcore.core.observability.ObservabilityProvider;
 import io.clientcore.core.observability.Scope;
 import io.clientcore.core.observability.tracing.Span;
+import io.clientcore.core.observability.tracing.SpanContext;
 import io.clientcore.core.observability.tracing.SpanKind;
 import io.clientcore.core.observability.tracing.Tracer;
 import io.clientcore.core.util.Context;
@@ -18,10 +22,16 @@ import java.util.Set;
 
 import static io.clientcore.core.observability.ObservabilityProvider.DISABLE_TRACING_KEY;
 
+/**
+ * The instrumentation policy is responsible for instrumenting the HTTP request and response with distributed tracing
+ * and (in the future) metrics.
+ */
 public class InstrumentationPolicy implements HttpPipelinePolicy {
-    private static final LibraryObservabilityOptions LIBRARY_OPTIONS = new LibraryObservabilityOptions("clientcore")
-        .setLibraryVersion("1.0.0")
-        .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+
+    // TODO (lmolkova) read from properties
+    private static final LibraryObservabilityOptions LIBRARY_OPTIONS
+        = new LibraryObservabilityOptions("clientcore").setLibraryVersion("1.0.0")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
     private static final String HTTP_REQUEST_METHOD = "http.request.method";
     private static final String HTTP_RESPONSE_STATUS_CODE = "http.response.status_code";
@@ -35,16 +45,33 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private final Map<HttpHeaderName, String> requestHeaders;
     private final Map<HttpHeaderName, String> responseHeaders;
 
+    /**
+     * Creates a new instrumentation policy.
+     *
+     * @param options The observability options.
+     */
     public InstrumentationPolicy(ObservabilityOptions<?> options) {
         this(options, null, null);
     }
 
-    public InstrumentationPolicy(ObservabilityOptions<?> options, Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
+    /**
+     * Creates a new instrumentation policy with the ability to capture request and response headers.
+     *
+     * @param options The observability options.
+     * @param requestHeaders The request headers to capture.
+     * @param responseHeaders The response headers to capture.
+     */
+    public InstrumentationPolicy(ObservabilityOptions<?> options, Map<HttpHeaderName, String> requestHeaders,
+        Map<HttpHeaderName, String> responseHeaders) {
         this.tracer = ObservabilityProvider.getInstance().getTracer(options, LIBRARY_OPTIONS);
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("try")
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
         if (!isTracingEnabled(request)) {
@@ -55,13 +82,13 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             .setSpanKind(SpanKind.CLIENT)
             .setParent(request.getRequestOptions().getContext())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL, request.getUri().toString()) // TODO: sanitize
+            .setAttribute(URL_FULL, request.getUri().toString()) // TODO (lmolkova): sanitize
             .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
             .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
             .startSpan();
 
-        try(Scope scope = span.makeCurrent()) {
-            propagateContext(request, span);
+        try (Scope scope = span.makeCurrent()) {
+            propagateContext(request, span.getSpanContext());
             Response<?> response = next.process();
 
             if (span.isRecording()) {
@@ -69,7 +96,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
                 int retryCount = HttpRequestAccessHelper.getRetryCount(request);
                 if (retryCount > 1) {
-                    span.setAttribute(HTTP_REQUEST_RESEND_COUNT, (long) HttpRequestAccessHelper.getRetryCount(request) - 1);
+                    span.setAttribute(HTTP_REQUEST_RESEND_COUNT,
+                        (long) HttpRequestAccessHelper.getRetryCount(request) - 1);
                 }
 
                 String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
@@ -79,7 +107,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
                 addRequestHeaders(request, span);
                 addResponseHeaders(response, span);
-                // TODO url.template?
+                // TODO (lmolkova) url.template and experimental features
             }
 
             if (response.getStatusCode() >= 400) {
@@ -116,11 +144,11 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return t;
     }
 
-    private void propagateContext(HttpRequest request, Span span) {
+    private void propagateContext(HttpRequest request, SpanContext spanContext) {
         // TODO (lmolkova): we should support full propagation including tracestate and baggage, especially for messaging cases
         // for now we'll only support traceparent
-        String traceparent = "00-" + span.getSpanContext().getTraceId() + "-" + span.getSpanContext().getSpanId() + "-" +
-            span.getSpanContext().getTraceFlags().toString();
+        String traceparent
+            = "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId() + "-" + spanContext.getTraceFlags();
         request.getHeaders().set(HttpHeaderName.TRACEPARENT, traceparent);
     }
 

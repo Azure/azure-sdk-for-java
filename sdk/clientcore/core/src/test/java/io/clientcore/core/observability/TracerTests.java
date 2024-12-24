@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.clientcore.core.observability;
 
 import io.clientcore.core.observability.tracing.Span;
@@ -25,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TracerTests {
-    private final LibraryObservabilityOptions DEFAULT_LIB_OPTIONS = new LibraryObservabilityOptions("test-library");
+    private static final LibraryObservabilityOptions DEFAULT_LIB_OPTIONS
+        = new LibraryObservabilityOptions("test-library");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
@@ -46,10 +50,10 @@ public class TracerTests {
         tracerProvider.close();
     }
 
+    @SuppressWarnings("try")
     @Test
     public void testSpan() {
-        Tracer tracer = ObservabilityProvider.getInstance()
-            .getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
         Span span = tracer.spanBuilder("test-span")
             .setAttribute("builder-string-attribute", "string")
             .setAttribute("builder-int-attribute", 42)
@@ -96,11 +100,8 @@ public class TracerTests {
     @ParameterizedTest
     @MethodSource("kindSource")
     public void testKinds(SpanKind kind, io.opentelemetry.api.trace.SpanKind expectedKind) {
-        Tracer tracer = ObservabilityProvider.getInstance()
-            .getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-        Span span = tracer.spanBuilder("test-span")
-            .setSpanKind(kind)
-            .startSpan();
+        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Span span = tracer.spanBuilder("test-span").setSpanKind(kind).startSpan();
 
         span.end();
 
@@ -110,10 +111,10 @@ public class TracerTests {
         assertEquals(expectedKind, spanData.getKind());
     }
 
+    @SuppressWarnings("try")
     @Test
     public void implicitParent() throws Exception {
-        Tracer tracer = ObservabilityProvider.getInstance()
-            .getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
@@ -135,13 +136,13 @@ public class TracerTests {
 
     @Test
     public void explicitParent() throws Exception {
-        Tracer tracer = ObservabilityProvider.getInstance()
-            .getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
         Span child = tracer.spanBuilder("child")
-            .setParent(Context.of(ObservabilityProvider.TRACE_CONTEXT_KEY, parent.storeInContext(io.opentelemetry.context.Context.current())))
+            .setParent(Context.of(ObservabilityProvider.TRACE_CONTEXT_KEY,
+                parent.storeInContext(io.opentelemetry.context.Context.current())))
             .startSpan();
         child.end();
         parent.end();
@@ -157,8 +158,7 @@ public class TracerTests {
 
     @Test
     public void explicitParentWrongType() {
-        Tracer tracer = ObservabilityProvider.getInstance()
-            .getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = ObservabilityProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
         Span child = tracer.spanBuilder("child")
             .setParent(Context.of(ObservabilityProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"))
@@ -173,8 +173,7 @@ public class TracerTests {
     }
 
     public static Stream<Arguments> kindSource() {
-        return Stream.of(
-            Arguments.of(SpanKind.INTERNAL, io.opentelemetry.api.trace.SpanKind.INTERNAL),
+        return Stream.of(Arguments.of(SpanKind.INTERNAL, io.opentelemetry.api.trace.SpanKind.INTERNAL),
             Arguments.of(SpanKind.CLIENT, io.opentelemetry.api.trace.SpanKind.CLIENT),
             Arguments.of(SpanKind.PRODUCER, io.opentelemetry.api.trace.SpanKind.PRODUCER),
             Arguments.of(SpanKind.CONSUMER, io.opentelemetry.api.trace.SpanKind.CONSUMER),
