@@ -14,29 +14,32 @@ public final class InfrastructureNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InfrastructureNetwork model = BinaryData.fromString(
-            "{\"subnetMask\":\"tpnapnyiropuhpig\",\"gateway\":\"gylgqgitxmedjvcs\",\"ipPools\":[{\"startingAddress\":\"wwncwzzhxgk\",\"endingAddress\":\"mgucna\"}],\"dnsServers\":[\"eoellwptfdygp\"],\"useDhcp\":false}")
+            "{\"subnetMask\":\"lylpstdb\",\"gateway\":\"xsrz\",\"ipPools\":[{\"startingAddress\":\"erscdntne\",\"endingAddress\":\"iwjmygtdssls\"},{\"startingAddress\":\"mweriofzpy\",\"endingAddress\":\"emwabnet\"},{\"startingAddress\":\"hszhedplvwiwu\",\"endingAddress\":\"wmbesldnkw\"},{\"startingAddress\":\"pp\",\"endingAddress\":\"lcxog\"}],\"dnsServers\":[\"onz\",\"nsikvmkqzeqqkdl\",\"fzxmhhvhgureodkw\"],\"useDhcp\":true}")
             .toObject(InfrastructureNetwork.class);
-        Assertions.assertEquals("tpnapnyiropuhpig", model.subnetMask());
-        Assertions.assertEquals("gylgqgitxmedjvcs", model.gateway());
-        Assertions.assertEquals("wwncwzzhxgk", model.ipPools().get(0).startingAddress());
-        Assertions.assertEquals("mgucna", model.ipPools().get(0).endingAddress());
-        Assertions.assertEquals("eoellwptfdygp", model.dnsServers().get(0));
-        Assertions.assertEquals(false, model.useDhcp());
+        Assertions.assertEquals("lylpstdb", model.subnetMask());
+        Assertions.assertEquals("xsrz", model.gateway());
+        Assertions.assertEquals("erscdntne", model.ipPools().get(0).startingAddress());
+        Assertions.assertEquals("iwjmygtdssls", model.ipPools().get(0).endingAddress());
+        Assertions.assertEquals("onz", model.dnsServers().get(0));
+        Assertions.assertEquals(true, model.useDhcp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InfrastructureNetwork model = new InfrastructureNetwork().withSubnetMask("tpnapnyiropuhpig")
-            .withGateway("gylgqgitxmedjvcs")
-            .withIpPools(Arrays.asList(new IpPools().withStartingAddress("wwncwzzhxgk").withEndingAddress("mgucna")))
-            .withDnsServers(Arrays.asList("eoellwptfdygp"))
-            .withUseDhcp(false);
+        InfrastructureNetwork model = new InfrastructureNetwork().withSubnetMask("lylpstdb")
+            .withGateway("xsrz")
+            .withIpPools(Arrays.asList(new IpPools().withStartingAddress("erscdntne").withEndingAddress("iwjmygtdssls"),
+                new IpPools().withStartingAddress("mweriofzpy").withEndingAddress("emwabnet"),
+                new IpPools().withStartingAddress("hszhedplvwiwu").withEndingAddress("wmbesldnkw"),
+                new IpPools().withStartingAddress("pp").withEndingAddress("lcxog")))
+            .withDnsServers(Arrays.asList("onz", "nsikvmkqzeqqkdl", "fzxmhhvhgureodkw"))
+            .withUseDhcp(true);
         model = BinaryData.fromObject(model).toObject(InfrastructureNetwork.class);
-        Assertions.assertEquals("tpnapnyiropuhpig", model.subnetMask());
-        Assertions.assertEquals("gylgqgitxmedjvcs", model.gateway());
-        Assertions.assertEquals("wwncwzzhxgk", model.ipPools().get(0).startingAddress());
-        Assertions.assertEquals("mgucna", model.ipPools().get(0).endingAddress());
-        Assertions.assertEquals("eoellwptfdygp", model.dnsServers().get(0));
-        Assertions.assertEquals(false, model.useDhcp());
+        Assertions.assertEquals("lylpstdb", model.subnetMask());
+        Assertions.assertEquals("xsrz", model.gateway());
+        Assertions.assertEquals("erscdntne", model.ipPools().get(0).startingAddress());
+        Assertions.assertEquals("iwjmygtdssls", model.ipPools().get(0).endingAddress());
+        Assertions.assertEquals("onz", model.dnsServers().get(0));
+        Assertions.assertEquals(true, model.useDhcp());
     }
 }

@@ -1,8 +1,8 @@
-# Azure Resource Manager AzureStackHci client library for Java
+# Azure Resource Manager azurestackhci client library for Java
 
-Azure Resource Manager AzureStackHci client library for Java.
+Azure Resource Manager azurestackhci client library for Java.
 
-This package contains Microsoft Azure SDK for AzureStackHci Management SDK. Azure Stack HCI management service. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for azurestackhci Management SDK. Azure Stack HCI management service. Package tag package-2024-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-azurestackhci</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,7 +56,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-AzureStackHciManager manager = AzureStackHciManager
+AzurestackhciManager manager = AzurestackhciManager
     .authenticate(credential, profile);
 ```
 

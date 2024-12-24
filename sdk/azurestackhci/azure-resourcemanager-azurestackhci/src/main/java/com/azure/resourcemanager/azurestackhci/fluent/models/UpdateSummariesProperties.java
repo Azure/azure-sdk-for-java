@@ -36,11 +36,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
     private String oemFamily;
 
     /*
-     * Current OEM Version.
-     */
-    private String currentOemVersion;
-
-    /*
      * Name of the hardware model.
      */
     private String hardwareModel;
@@ -54,11 +49,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
      * Current Solution Bundle version of the stamp.
      */
     private String currentVersion;
-
-    /*
-     * Current Sbe version of the stamp.
-     */
-    private String currentSbeVersion;
 
     /*
      * Last time an update installation completed successfully.
@@ -126,26 +116,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
     }
 
     /**
-     * Get the currentOemVersion property: Current OEM Version.
-     * 
-     * @return the currentOemVersion value.
-     */
-    public String currentOemVersion() {
-        return this.currentOemVersion;
-    }
-
-    /**
-     * Set the currentOemVersion property: Current OEM Version.
-     * 
-     * @param currentOemVersion the currentOemVersion value to set.
-     * @return the UpdateSummariesProperties object itself.
-     */
-    public UpdateSummariesProperties withCurrentOemVersion(String currentOemVersion) {
-        this.currentOemVersion = currentOemVersion;
-        return this;
-    }
-
-    /**
      * Get the hardwareModel property: Name of the hardware model.
      * 
      * @return the hardwareModel value.
@@ -202,26 +172,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
      */
     public UpdateSummariesProperties withCurrentVersion(String currentVersion) {
         this.currentVersion = currentVersion;
-        return this;
-    }
-
-    /**
-     * Get the currentSbeVersion property: Current Sbe version of the stamp.
-     * 
-     * @return the currentSbeVersion value.
-     */
-    public String currentSbeVersion() {
-        return this.currentSbeVersion;
-    }
-
-    /**
-     * Set the currentSbeVersion property: Current Sbe version of the stamp.
-     * 
-     * @param currentSbeVersion the currentSbeVersion value to set.
-     * @return the UpdateSummariesProperties object itself.
-     */
-    public UpdateSummariesProperties withCurrentSbeVersion(String currentSbeVersion) {
-        this.currentSbeVersion = currentSbeVersion;
         return this;
     }
 
@@ -366,12 +316,10 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("oemFamily", this.oemFamily);
-        jsonWriter.writeStringField("currentOemVersion", this.currentOemVersion);
         jsonWriter.writeStringField("hardwareModel", this.hardwareModel);
         jsonWriter.writeArrayField("packageVersions", this.packageVersions,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("currentVersion", this.currentVersion);
-        jsonWriter.writeStringField("currentSbeVersion", this.currentSbeVersion);
         jsonWriter.writeStringField("lastUpdated",
             this.lastUpdated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdated));
         jsonWriter.writeStringField("lastChecked",
@@ -405,8 +353,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("oemFamily".equals(fieldName)) {
                     deserializedUpdateSummariesProperties.oemFamily = reader.getString();
-                } else if ("currentOemVersion".equals(fieldName)) {
-                    deserializedUpdateSummariesProperties.currentOemVersion = reader.getString();
                 } else if ("hardwareModel".equals(fieldName)) {
                     deserializedUpdateSummariesProperties.hardwareModel = reader.getString();
                 } else if ("packageVersions".equals(fieldName)) {
@@ -415,8 +361,6 @@ public final class UpdateSummariesProperties implements JsonSerializable<UpdateS
                     deserializedUpdateSummariesProperties.packageVersions = packageVersions;
                 } else if ("currentVersion".equals(fieldName)) {
                     deserializedUpdateSummariesProperties.currentVersion = reader.getString();
-                } else if ("currentSbeVersion".equals(fieldName)) {
-                    deserializedUpdateSummariesProperties.currentSbeVersion = reader.getString();
                 } else if ("lastUpdated".equals(fieldName)) {
                     deserializedUpdateSummariesProperties.lastUpdated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

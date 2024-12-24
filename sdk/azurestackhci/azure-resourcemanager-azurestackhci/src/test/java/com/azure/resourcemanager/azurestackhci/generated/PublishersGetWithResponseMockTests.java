@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Publisher;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,18 +20,17 @@ public final class PublishersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"pfuofixcnpcfykkp\"},\"id\":\"cpawmp\",\"name\":\"prdpwrpc\",\"type\":\"pcf\"}";
+            = "{\"properties\":{\"provisioningState\":\"vpimyndnoxa\"},\"id\":\"rqaqotn\",\"name\":\"dxolousdv\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Publisher response = manager.publishers()
-            .getWithResponse("eajczxvlgsrgkr", "izrpywlptyuqhrl", "cs", com.azure.core.util.Context.NONE)
-            .getValue();
+        Publisher response
+            = manager.publishers().getWithResponse("rk", "xsg", "znsvlrd", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
 
 /**
@@ -33,13 +34,6 @@ public interface EdgeDevice {
     String type();
 
     /**
-     * Gets the kind property: Device kind to support polymorphic resource.
-     * 
-     * @return the kind value.
-     */
-    DeviceKind kind();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -47,9 +41,196 @@ public interface EdgeDevice {
     SystemData systemData();
 
     /**
+     * Gets the deviceConfiguration property: Device Configuration.
+     * 
+     * @return the deviceConfiguration value.
+     */
+    DeviceConfiguration deviceConfiguration();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of edgeDevice resource.
+     * 
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
      * Gets the inner com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner object.
      * 
      * @return the inner object.
      */
     EdgeDeviceInner innerModel();
+
+    /**
+     * The entirety of the EdgeDevice definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The EdgeDevice definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the EdgeDevice definition.
+         */
+        interface Blank extends WithScope {
+        }
+
+        /**
+         * The stage of the EdgeDevice definition allowing to specify parent resource.
+         */
+        interface WithScope {
+            /**
+             * Specifies resourceUri.
+             * 
+             * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingResourceUri(String resourceUri);
+        }
+
+        /**
+         * The stage of the EdgeDevice definition which contains all the minimum required properties for the resource to
+         * be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithDeviceConfiguration, DefinitionStages.WithProvisioningState {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            EdgeDevice create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            EdgeDevice create(Context context);
+        }
+
+        /**
+         * The stage of the EdgeDevice definition allowing to specify deviceConfiguration.
+         */
+        interface WithDeviceConfiguration {
+            /**
+             * Specifies the deviceConfiguration property: Device Configuration.
+             * 
+             * @param deviceConfiguration Device Configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withDeviceConfiguration(DeviceConfiguration deviceConfiguration);
+        }
+
+        /**
+         * The stage of the EdgeDevice definition allowing to specify provisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies the provisioningState property: Provisioning state of edgeDevice resource.
+             * 
+             * @param provisioningState Provisioning state of edgeDevice resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProvisioningState(ProvisioningState provisioningState);
+        }
+    }
+
+    /**
+     * Begins update for the EdgeDevice resource.
+     * 
+     * @return the stage of resource update.
+     */
+    EdgeDevice.Update update();
+
+    /**
+     * The template for EdgeDevice update.
+     */
+    interface Update extends UpdateStages.WithDeviceConfiguration, UpdateStages.WithProvisioningState {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        EdgeDevice apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        EdgeDevice apply(Context context);
+    }
+
+    /**
+     * The EdgeDevice update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the EdgeDevice update allowing to specify deviceConfiguration.
+         */
+        interface WithDeviceConfiguration {
+            /**
+             * Specifies the deviceConfiguration property: Device Configuration.
+             * 
+             * @param deviceConfiguration Device Configuration.
+             * @return the next definition stage.
+             */
+            Update withDeviceConfiguration(DeviceConfiguration deviceConfiguration);
+        }
+
+        /**
+         * The stage of the EdgeDevice update allowing to specify provisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies the provisioningState property: Provisioning state of edgeDevice resource.
+             * 
+             * @param provisioningState Provisioning state of edgeDevice resource.
+             * @return the next definition stage.
+             */
+            Update withProvisioningState(ProvisioningState provisioningState);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    EdgeDevice refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    EdgeDevice refresh(Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param validateRequest The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Accepted response with an Operation-Location header.
+     */
+    ValidateResponse validate(ValidateRequest validateRequest);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param validateRequest The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Accepted response with an Operation-Location header.
+     */
+    ValidateResponse validate(ValidateRequest validateRequest, Context context);
 }

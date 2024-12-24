@@ -15,12 +15,8 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
-import com.azure.resourcemanager.azurestackhci.models.LogCollectionProperties;
-import com.azure.resourcemanager.azurestackhci.models.LogCollectionRequest;
 import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
-import com.azure.resourcemanager.azurestackhci.models.RemoteSupportRequest;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
@@ -34,7 +30,7 @@ import java.util.UUID;
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -126,14 +122,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().softwareAssuranceProperties();
     }
 
-    public LogCollectionProperties logCollectionProperties() {
-        return this.innerModel().logCollectionProperties();
-    }
-
-    public RemoteSupportProperties remoteSupportProperties() {
-        return this.innerModel().remoteSupportProperties();
-    }
-
     public ClusterDesiredProperties desiredProperties() {
         return this.innerModel().desiredProperties();
     }
@@ -190,7 +178,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -221,7 +209,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    ClusterImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -248,7 +236,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -296,24 +284,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         Context context) {
         return serviceManager.clusters()
             .extendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest, context);
-    }
-
-    public Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest) {
-        return serviceManager.clusters().triggerLogCollection(resourceGroupName, clusterName, logCollectionRequest);
-    }
-
-    public Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest, Context context) {
-        return serviceManager.clusters()
-            .triggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, context);
-    }
-
-    public Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest) {
-        return serviceManager.clusters().configureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest);
-    }
-
-    public Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest, Context context) {
-        return serviceManager.clusters()
-            .configureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, context);
     }
 
     public ClusterImpl withRegion(Region location) {
@@ -393,16 +363,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties) {
         this.innerModel().withSoftwareAssuranceProperties(softwareAssuranceProperties);
-        return this;
-    }
-
-    public ClusterImpl withLogCollectionProperties(LogCollectionProperties logCollectionProperties) {
-        this.innerModel().withLogCollectionProperties(logCollectionProperties);
-        return this;
-    }
-
-    public ClusterImpl withRemoteSupportProperties(RemoteSupportProperties remoteSupportProperties) {
-        this.innerModel().withRemoteSupportProperties(remoteSupportProperties);
         return this;
     }
 

@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,14 +29,24 @@ import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.DeploymentSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.EdgeDevicesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.GalleryImagesOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.GuestAgentsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.GuestAgentsOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.HybridIdentityMetadatasClient;
+import com.azure.resourcemanager.azurestackhci.fluent.LogicalNetworksOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.MarketplaceGalleryImagesOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.NetworkInterfacesOperationsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OffersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.PublishersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SecuritySettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SkusClient;
+import com.azure.resourcemanager.azurestackhci.fluent.StorageContainersOperationsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateRunsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.UpdatesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.UpdatesClient;
+import com.azure.resourcemanager.azurestackhci.fluent.VirtualHardDisksOperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.VirtualMachineInstancesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -52,12 +62,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = AzureStackHciClientBuilder.class)
 public final class AzureStackHciClientImpl implements AzureStackHciClient {
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * The ID of the target subscription.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -206,6 +216,62 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
     }
 
     /**
+     * The GalleryImagesOperationsClient object to access its operations.
+     */
+    private final GalleryImagesOperationsClient galleryImagesOperations;
+
+    /**
+     * Gets the GalleryImagesOperationsClient object to access its operations.
+     * 
+     * @return the GalleryImagesOperationsClient object.
+     */
+    public GalleryImagesOperationsClient getGalleryImagesOperations() {
+        return this.galleryImagesOperations;
+    }
+
+    /**
+     * The LogicalNetworksOperationsClient object to access its operations.
+     */
+    private final LogicalNetworksOperationsClient logicalNetworksOperations;
+
+    /**
+     * Gets the LogicalNetworksOperationsClient object to access its operations.
+     * 
+     * @return the LogicalNetworksOperationsClient object.
+     */
+    public LogicalNetworksOperationsClient getLogicalNetworksOperations() {
+        return this.logicalNetworksOperations;
+    }
+
+    /**
+     * The MarketplaceGalleryImagesOperationsClient object to access its operations.
+     */
+    private final MarketplaceGalleryImagesOperationsClient marketplaceGalleryImagesOperations;
+
+    /**
+     * Gets the MarketplaceGalleryImagesOperationsClient object to access its operations.
+     * 
+     * @return the MarketplaceGalleryImagesOperationsClient object.
+     */
+    public MarketplaceGalleryImagesOperationsClient getMarketplaceGalleryImagesOperations() {
+        return this.marketplaceGalleryImagesOperations;
+    }
+
+    /**
+     * The NetworkInterfacesOperationsClient object to access its operations.
+     */
+    private final NetworkInterfacesOperationsClient networkInterfacesOperations;
+
+    /**
+     * Gets the NetworkInterfacesOperationsClient object to access its operations.
+     * 
+     * @return the NetworkInterfacesOperationsClient object.
+     */
+    public NetworkInterfacesOperationsClient getNetworkInterfacesOperations() {
+        return this.networkInterfacesOperations;
+    }
+
+    /**
      * The OffersClient object to access its operations.
      */
     private final OffersClient offers;
@@ -276,6 +342,20 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
     }
 
     /**
+     * The StorageContainersOperationsClient object to access its operations.
+     */
+    private final StorageContainersOperationsClient storageContainersOperations;
+
+    /**
+     * Gets the StorageContainersOperationsClient object to access its operations.
+     * 
+     * @return the StorageContainersOperationsClient object.
+     */
+    public StorageContainersOperationsClient getStorageContainersOperations() {
+        return this.storageContainersOperations;
+    }
+
+    /**
      * The UpdateRunsClient object to access its operations.
      */
     private final UpdateRunsClient updateRuns;
@@ -318,13 +398,83 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
     }
 
     /**
+     * The VirtualHardDisksOperationsClient object to access its operations.
+     */
+    private final VirtualHardDisksOperationsClient virtualHardDisksOperations;
+
+    /**
+     * Gets the VirtualHardDisksOperationsClient object to access its operations.
+     * 
+     * @return the VirtualHardDisksOperationsClient object.
+     */
+    public VirtualHardDisksOperationsClient getVirtualHardDisksOperations() {
+        return this.virtualHardDisksOperations;
+    }
+
+    /**
+     * The VirtualMachineInstancesClient object to access its operations.
+     */
+    private final VirtualMachineInstancesClient virtualMachineInstances;
+
+    /**
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     * 
+     * @return the VirtualMachineInstancesClient object.
+     */
+    public VirtualMachineInstancesClient getVirtualMachineInstances() {
+        return this.virtualMachineInstances;
+    }
+
+    /**
+     * The HybridIdentityMetadatasClient object to access its operations.
+     */
+    private final HybridIdentityMetadatasClient hybridIdentityMetadatas;
+
+    /**
+     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     * 
+     * @return the HybridIdentityMetadatasClient object.
+     */
+    public HybridIdentityMetadatasClient getHybridIdentityMetadatas() {
+        return this.hybridIdentityMetadatas;
+    }
+
+    /**
+     * The GuestAgentsClient object to access its operations.
+     */
+    private final GuestAgentsClient guestAgents;
+
+    /**
+     * Gets the GuestAgentsClient object to access its operations.
+     * 
+     * @return the GuestAgentsClient object.
+     */
+    public GuestAgentsClient getGuestAgents() {
+        return this.guestAgents;
+    }
+
+    /**
+     * The GuestAgentsOperationsClient object to access its operations.
+     */
+    private final GuestAgentsOperationsClient guestAgentsOperations;
+
+    /**
+     * Gets the GuestAgentsOperationsClient object to access its operations.
+     * 
+     * @return the GuestAgentsOperationsClient object.
+     */
+    public GuestAgentsOperationsClient getGuestAgentsOperations() {
+        return this.guestAgentsOperations;
+    }
+
+    /**
      * Initializes an instance of AzureStackHciClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     AzureStackHciClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -334,20 +484,30 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-04-01";
+        this.apiVersion = "2024-01-01";
         this.arcSettings = new ArcSettingsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.deploymentSettings = new DeploymentSettingsClientImpl(this);
         this.edgeDevices = new EdgeDevicesClientImpl(this);
         this.extensions = new ExtensionsClientImpl(this);
+        this.galleryImagesOperations = new GalleryImagesOperationsClientImpl(this);
+        this.logicalNetworksOperations = new LogicalNetworksOperationsClientImpl(this);
+        this.marketplaceGalleryImagesOperations = new MarketplaceGalleryImagesOperationsClientImpl(this);
+        this.networkInterfacesOperations = new NetworkInterfacesOperationsClientImpl(this);
         this.offers = new OffersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.publishers = new PublishersClientImpl(this);
         this.securitySettings = new SecuritySettingsClientImpl(this);
         this.skus = new SkusClientImpl(this);
+        this.storageContainersOperations = new StorageContainersOperationsClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.updateSummariesOperations = new UpdateSummariesOperationsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
+        this.virtualHardDisksOperations = new VirtualHardDisksOperationsClientImpl(this);
+        this.virtualMachineInstances = new VirtualMachineInstancesClientImpl(this);
+        this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
+        this.guestAgents = new GuestAgentsClientImpl(this);
+        this.guestAgentsOperations = new GuestAgentsOperationsClientImpl(this);
     }
 
     /**

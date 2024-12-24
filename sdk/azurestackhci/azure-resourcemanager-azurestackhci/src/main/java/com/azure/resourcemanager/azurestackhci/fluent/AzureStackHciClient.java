@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface AzureStackHciClient {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -82,6 +82,34 @@ public interface AzureStackHciClient {
     ExtensionsClient getExtensions();
 
     /**
+     * Gets the GalleryImagesOperationsClient object to access its operations.
+     * 
+     * @return the GalleryImagesOperationsClient object.
+     */
+    GalleryImagesOperationsClient getGalleryImagesOperations();
+
+    /**
+     * Gets the LogicalNetworksOperationsClient object to access its operations.
+     * 
+     * @return the LogicalNetworksOperationsClient object.
+     */
+    LogicalNetworksOperationsClient getLogicalNetworksOperations();
+
+    /**
+     * Gets the MarketplaceGalleryImagesOperationsClient object to access its operations.
+     * 
+     * @return the MarketplaceGalleryImagesOperationsClient object.
+     */
+    MarketplaceGalleryImagesOperationsClient getMarketplaceGalleryImagesOperations();
+
+    /**
+     * Gets the NetworkInterfacesOperationsClient object to access its operations.
+     * 
+     * @return the NetworkInterfacesOperationsClient object.
+     */
+    NetworkInterfacesOperationsClient getNetworkInterfacesOperations();
+
+    /**
      * Gets the OffersClient object to access its operations.
      * 
      * @return the OffersClient object.
@@ -117,6 +145,13 @@ public interface AzureStackHciClient {
     SkusClient getSkus();
 
     /**
+     * Gets the StorageContainersOperationsClient object to access its operations.
+     * 
+     * @return the StorageContainersOperationsClient object.
+     */
+    StorageContainersOperationsClient getStorageContainersOperations();
+
+    /**
      * Gets the UpdateRunsClient object to access its operations.
      * 
      * @return the UpdateRunsClient object.
@@ -136,4 +171,39 @@ public interface AzureStackHciClient {
      * @return the UpdatesClient object.
      */
     UpdatesClient getUpdates();
+
+    /**
+     * Gets the VirtualHardDisksOperationsClient object to access its operations.
+     * 
+     * @return the VirtualHardDisksOperationsClient object.
+     */
+    VirtualHardDisksOperationsClient getVirtualHardDisksOperations();
+
+    /**
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     * 
+     * @return the VirtualMachineInstancesClient object.
+     */
+    VirtualMachineInstancesClient getVirtualMachineInstances();
+
+    /**
+     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     * 
+     * @return the HybridIdentityMetadatasClient object.
+     */
+    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
+
+    /**
+     * Gets the GuestAgentsClient object to access its operations.
+     * 
+     * @return the GuestAgentsClient object.
+     */
+    GuestAgentsClient getGuestAgents();
+
+    /**
+     * Gets the GuestAgentsOperationsClient object to access its operations.
+     * 
+     * @return the GuestAgentsOperationsClient object.
+     */
+    GuestAgentsOperationsClient getGuestAgentsOperations();
 }

@@ -12,24 +12,25 @@ public final class ClusterIdentityResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterIdentityResponseProperties model = BinaryData.fromString(
-            "{\"aadClientId\":\"ytdxwit\",\"aadTenantId\":\"rjaw\",\"aadServicePrincipalObjectId\":\"wgxhn\",\"aadApplicationObjectId\":\"kxfbkpycgklwndn\"}")
+            "{\"aadClientId\":\"ynqwwncwzzhxgk\",\"aadTenantId\":\"mgucna\",\"aadServicePrincipalObjectId\":\"t\",\"aadApplicationObjectId\":\"ellwptfdy\"}")
             .toObject(ClusterIdentityResponseProperties.class);
-        Assertions.assertEquals("ytdxwit", model.aadClientId());
-        Assertions.assertEquals("rjaw", model.aadTenantId());
-        Assertions.assertEquals("wgxhn", model.aadServicePrincipalObjectId());
-        Assertions.assertEquals("kxfbkpycgklwndn", model.aadApplicationObjectId());
+        Assertions.assertEquals("ynqwwncwzzhxgk", model.aadClientId());
+        Assertions.assertEquals("mgucna", model.aadTenantId());
+        Assertions.assertEquals("t", model.aadServicePrincipalObjectId());
+        Assertions.assertEquals("ellwptfdy", model.aadApplicationObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterIdentityResponseProperties model = new ClusterIdentityResponseProperties().withAadClientId("ytdxwit")
-            .withAadTenantId("rjaw")
-            .withAadServicePrincipalObjectId("wgxhn")
-            .withAadApplicationObjectId("kxfbkpycgklwndn");
+        ClusterIdentityResponseProperties model
+            = new ClusterIdentityResponseProperties().withAadClientId("ynqwwncwzzhxgk")
+                .withAadTenantId("mgucna")
+                .withAadServicePrincipalObjectId("t")
+                .withAadApplicationObjectId("ellwptfdy");
         model = BinaryData.fromObject(model).toObject(ClusterIdentityResponseProperties.class);
-        Assertions.assertEquals("ytdxwit", model.aadClientId());
-        Assertions.assertEquals("rjaw", model.aadTenantId());
-        Assertions.assertEquals("wgxhn", model.aadServicePrincipalObjectId());
-        Assertions.assertEquals("kxfbkpycgklwndn", model.aadApplicationObjectId());
+        Assertions.assertEquals("ynqwwncwzzhxgk", model.aadClientId());
+        Assertions.assertEquals("mgucna", model.aadTenantId());
+        Assertions.assertEquals("t", model.aadServicePrincipalObjectId());
+        Assertions.assertEquals("ellwptfdy", model.aadApplicationObjectId());
     }
 }

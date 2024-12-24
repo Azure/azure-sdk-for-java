@@ -10,15 +10,14 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class SkusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/GetSku.
-     * json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/GetSku.json
      */
     /**
      * Sample code: Get Sku.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void getSku(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void getSku(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.skus()
             .getWithResponse("test-rg", "myCluster", "publisher1", "offer1", "sku1", null,
                 com.azure.core.util.Context.NONE);

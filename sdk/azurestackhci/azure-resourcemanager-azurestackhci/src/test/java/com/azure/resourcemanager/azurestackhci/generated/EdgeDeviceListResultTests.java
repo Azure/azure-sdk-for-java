@@ -6,7 +6,10 @@ package com.azure.resourcemanager.azurestackhci.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
+import com.azure.resourcemanager.azurestackhci.models.DeviceConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDeviceListResult;
+import com.azure.resourcemanager.azurestackhci.models.NicDetail;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,16 +17,49 @@ public final class EdgeDeviceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"rpdsof\",\"name\":\"shrnsvbuswdvz\",\"type\":\"ybycnunvj\"}],\"nextLink\":\"tkfa\"}")
+            "{\"value\":[{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"tpkxztmoobklft\"}],\"deviceMetadata\":\"gfcwqmpimaqxzhem\"},\"provisioningState\":\"NotSpecified\"},\"id\":\"hujswtwkozzwcul\",\"name\":\"bawpfajnjwltlwt\",\"type\":\"j\"},{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"lhsnvkcdmx\"},{\"adapterName\":\"rpoaimlnwi\"}],\"deviceMetadata\":\"omylwea\"},\"provisioningState\":\"NotSpecified\"},\"id\":\"sethwwn\",\"name\":\"jhlfzswpchwahf\",\"type\":\"ousnfepgfewe\"},{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"gncxykxhdj\"},{\"adapterName\":\"limmbcxf\"}],\"deviceMetadata\":\"cporxvxcjz\"},\"provisioningState\":\"NotSpecified\"},\"id\":\"xfpxtgqscja\",\"name\":\"ftjuh\",\"type\":\"qaz\"}],\"nextLink\":\"tgguwpijrajcivmm\"}")
             .toObject(EdgeDeviceListResult.class);
-        Assertions.assertEquals("tkfa", model.nextLink());
+        Assertions.assertEquals("tpkxztmoobklft",
+            model.value().get(0).deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("gfcwqmpimaqxzhem", model.value().get(0).deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("tgguwpijrajcivmm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EdgeDeviceListResult model
-            = new EdgeDeviceListResult().withValue(Arrays.asList(new EdgeDeviceInner())).withNextLink("tkfa");
+            = new EdgeDeviceListResult()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new EdgeDeviceInner()
+                                .withDeviceConfiguration(
+                                    new DeviceConfiguration()
+                                        .withNicDetails(
+                                            Arrays.asList(new NicDetail().withAdapterName("tpkxztmoobklft")))
+                                        .withDeviceMetadata("gfcwqmpimaqxzhem"))
+                                .withProvisioningState(ProvisioningState.NOT_SPECIFIED),
+                            new EdgeDeviceInner()
+                                .withDeviceConfiguration(
+                                    new DeviceConfiguration()
+                                        .withNicDetails(Arrays.asList(new NicDetail().withAdapterName("lhsnvkcdmx"),
+                                            new NicDetail().withAdapterName("rpoaimlnwi")))
+                                        .withDeviceMetadata("omylwea"))
+                                .withProvisioningState(ProvisioningState.NOT_SPECIFIED),
+                            new EdgeDeviceInner()
+                                .withDeviceConfiguration(
+                                    new DeviceConfiguration()
+                                        .withNicDetails(Arrays.asList(new NicDetail().withAdapterName("gncxykxhdj"),
+                                            new NicDetail().withAdapterName("limmbcxf")))
+                                        .withDeviceMetadata("cporxvxcjz"))
+                                .withProvisioningState(ProvisioningState.NOT_SPECIFIED)))
+                .withNextLink("tgguwpijrajcivmm");
         model = BinaryData.fromObject(model).toObject(EdgeDeviceListResult.class);
-        Assertions.assertEquals("tkfa", model.nextLink());
+        Assertions.assertEquals("tpkxztmoobklft",
+            model.value().get(0).deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("gfcwqmpimaqxzhem", model.value().get(0).deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("tgguwpijrajcivmm", model.nextLink());
     }
 }

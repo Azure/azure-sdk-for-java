@@ -14,21 +14,21 @@ public final class PackageVersionInfoTests {
     public void testDeserialize() throws Exception {
         PackageVersionInfo model = BinaryData
             .fromString(
-                "{\"packageType\":\"dfzantkwcegy\",\"version\":\"lbnseqac\",\"lastUpdated\":\"2021-04-09T20:59:15Z\"}")
+                "{\"packageType\":\"kjtasb\",\"version\":\"ispkxkdtx\",\"lastUpdated\":\"2021-04-24T09:48:36Z\"}")
             .toObject(PackageVersionInfo.class);
-        Assertions.assertEquals("dfzantkwcegy", model.packageType());
-        Assertions.assertEquals("lbnseqac", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T20:59:15Z"), model.lastUpdated());
+        Assertions.assertEquals("kjtasb", model.packageType());
+        Assertions.assertEquals("ispkxkdtx", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T09:48:36Z"), model.lastUpdated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageVersionInfo model = new PackageVersionInfo().withPackageType("dfzantkwcegy")
-            .withVersion("lbnseqac")
-            .withLastUpdated(OffsetDateTime.parse("2021-04-09T20:59:15Z"));
+        PackageVersionInfo model = new PackageVersionInfo().withPackageType("kjtasb")
+            .withVersion("ispkxkdtx")
+            .withLastUpdated(OffsetDateTime.parse("2021-04-24T09:48:36Z"));
         model = BinaryData.fromObject(model).toObject(PackageVersionInfo.class);
-        Assertions.assertEquals("dfzantkwcegy", model.packageType());
-        Assertions.assertEquals("lbnseqac", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T20:59:15Z"), model.lastUpdated());
+        Assertions.assertEquals("kjtasb", model.packageType());
+        Assertions.assertEquals("ispkxkdtx", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T09:48:36Z"), model.lastUpdated());
     }
 }

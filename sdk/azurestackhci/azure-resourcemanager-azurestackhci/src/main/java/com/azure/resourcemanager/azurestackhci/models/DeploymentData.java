@@ -60,12 +60,7 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
     /*
      * HostNetwork config to deploy AzureStackHCI Cluster.
      */
-    private DeploymentSettingHostNetwork hostNetwork;
-
-    /*
-     * SDN Integration config to deploy AzureStackHCI Cluster.
-     */
-    private SdnIntegration sdnIntegration;
+    private HostNetwork hostNetwork;
 
     /*
      * The path to the Active Directory Organizational Unit container object prepared for the deployment.
@@ -73,15 +68,9 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
     private String adouPath;
 
     /*
-     * Azure keyvault endpoint. This property is deprecated from 2023-12-01-preview. Please use secrets property
-     * instead.
+     * The URI to the keyvault / secret store.
      */
     private String secretsLocation;
-
-    /*
-     * secrets used for cloud deployment.
-     */
-    private List<EceDeploymentSecrets> secrets;
 
     /*
      * OptionalServices config to deploy AzureStackHCI Cluster.
@@ -259,7 +248,7 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
      * 
      * @return the hostNetwork value.
      */
-    public DeploymentSettingHostNetwork hostNetwork() {
+    public HostNetwork hostNetwork() {
         return this.hostNetwork;
     }
 
@@ -269,28 +258,8 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
      * @param hostNetwork the hostNetwork value to set.
      * @return the DeploymentData object itself.
      */
-    public DeploymentData withHostNetwork(DeploymentSettingHostNetwork hostNetwork) {
+    public DeploymentData withHostNetwork(HostNetwork hostNetwork) {
         this.hostNetwork = hostNetwork;
-        return this;
-    }
-
-    /**
-     * Get the sdnIntegration property: SDN Integration config to deploy AzureStackHCI Cluster.
-     * 
-     * @return the sdnIntegration value.
-     */
-    public SdnIntegration sdnIntegration() {
-        return this.sdnIntegration;
-    }
-
-    /**
-     * Set the sdnIntegration property: SDN Integration config to deploy AzureStackHCI Cluster.
-     * 
-     * @param sdnIntegration the sdnIntegration value to set.
-     * @return the DeploymentData object itself.
-     */
-    public DeploymentData withSdnIntegration(SdnIntegration sdnIntegration) {
-        this.sdnIntegration = sdnIntegration;
         return this;
     }
 
@@ -317,8 +286,7 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
     }
 
     /**
-     * Get the secretsLocation property: Azure keyvault endpoint. This property is deprecated from 2023-12-01-preview.
-     * Please use secrets property instead.
+     * Get the secretsLocation property: The URI to the keyvault / secret store.
      * 
      * @return the secretsLocation value.
      */
@@ -327,34 +295,13 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
     }
 
     /**
-     * Set the secretsLocation property: Azure keyvault endpoint. This property is deprecated from 2023-12-01-preview.
-     * Please use secrets property instead.
+     * Set the secretsLocation property: The URI to the keyvault / secret store.
      * 
      * @param secretsLocation the secretsLocation value to set.
      * @return the DeploymentData object itself.
      */
     public DeploymentData withSecretsLocation(String secretsLocation) {
         this.secretsLocation = secretsLocation;
-        return this;
-    }
-
-    /**
-     * Get the secrets property: secrets used for cloud deployment.
-     * 
-     * @return the secrets value.
-     */
-    public List<EceDeploymentSecrets> secrets() {
-        return this.secrets;
-    }
-
-    /**
-     * Set the secrets property: secrets used for cloud deployment.
-     * 
-     * @param secrets the secrets value to set.
-     * @return the DeploymentData object itself.
-     */
-    public DeploymentData withSecrets(List<EceDeploymentSecrets> secrets) {
-        this.secrets = secrets;
         return this;
     }
 
@@ -405,12 +352,6 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
         if (hostNetwork() != null) {
             hostNetwork().validate();
         }
-        if (sdnIntegration() != null) {
-            sdnIntegration().validate();
-        }
-        if (secrets() != null) {
-            secrets().forEach(e -> e.validate());
-        }
         if (optionalServices() != null) {
             optionalServices().validate();
         }
@@ -432,10 +373,8 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("physicalNodes", this.physicalNodes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("hostNetwork", this.hostNetwork);
-        jsonWriter.writeJsonField("sdnIntegration", this.sdnIntegration);
         jsonWriter.writeStringField("adouPath", this.adouPath);
         jsonWriter.writeStringField("secretsLocation", this.secretsLocation);
-        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("optionalServices", this.optionalServices);
         return jsonWriter.writeEndObject();
     }
@@ -475,17 +414,11 @@ public final class DeploymentData implements JsonSerializable<DeploymentData> {
                     List<PhysicalNodes> physicalNodes = reader.readArray(reader1 -> PhysicalNodes.fromJson(reader1));
                     deserializedDeploymentData.physicalNodes = physicalNodes;
                 } else if ("hostNetwork".equals(fieldName)) {
-                    deserializedDeploymentData.hostNetwork = DeploymentSettingHostNetwork.fromJson(reader);
-                } else if ("sdnIntegration".equals(fieldName)) {
-                    deserializedDeploymentData.sdnIntegration = SdnIntegration.fromJson(reader);
+                    deserializedDeploymentData.hostNetwork = HostNetwork.fromJson(reader);
                 } else if ("adouPath".equals(fieldName)) {
                     deserializedDeploymentData.adouPath = reader.getString();
                 } else if ("secretsLocation".equals(fieldName)) {
                     deserializedDeploymentData.secretsLocation = reader.getString();
-                } else if ("secrets".equals(fieldName)) {
-                    List<EceDeploymentSecrets> secrets
-                        = reader.readArray(reader1 -> EceDeploymentSecrets.fromJson(reader1));
-                    deserializedDeploymentData.secrets = secrets;
                 } else if ("optionalServices".equals(fieldName)) {
                     deserializedDeploymentData.optionalServices = OptionalServices.fromJson(reader);
                 } else {

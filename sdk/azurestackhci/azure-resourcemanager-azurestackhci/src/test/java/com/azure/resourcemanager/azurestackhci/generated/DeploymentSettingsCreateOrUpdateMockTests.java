@@ -9,13 +9,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentData;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSetting;
-import com.azure.resourcemanager.azurestackhci.models.OperationType;
-import com.azure.resourcemanager.azurestackhci.models.SbePartnerInfo;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.ScaleUnits;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -28,29 +27,30 @@ public final class DeploymentSettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcNodeResourceIds\":[\"tclhuulriqbyokv\",\"gbzsxebrslt\",\"fyhcdjw\",\"uoard\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"pufpbpgnrholhu\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"kysolsyjprxs\",\"steps\":[{},{}]},\"deploymentStatus\":{\"status\":\"cvhtbbzjhfvh\",\"steps\":[{}]}}},\"id\":\"xpcq\",\"name\":\"gihotjeco\",\"type\":\"mx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcNodeResourceIds\":[\"hoo\",\"aexbkhxjxjo\"],\"deploymentMode\":\"Deploy\",\"deploymentConfiguration\":{\"version\":\"qxrkdknko\",\"scaleUnits\":[{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"b\",\"steps\":[{},{},{}]},\"deploymentStatus\":{\"status\":\"zamicb\",\"steps\":[{},{}]}}},\"id\":\"dgzsez\",\"name\":\"uxk\",\"type\":\"uairaabmdlqjb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeploymentSetting response = manager.deploymentSettings()
-            .define("spugzfeuzjljmph")
-            .withExistingCluster("lndbeaqbkixv", "lwynpbbfqvzfj")
-            .withArcNodeResourceIds(Arrays.asList("o", "gj", "mi", "uydoccnx"))
-            .withDeploymentMode(DeploymentMode.DEPLOY)
-            .withOperationType(OperationType.CLUSTER_PROVISIONING)
-            .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("bui")
-                .withScaleUnits(Arrays.asList(new ScaleUnits().withDeploymentData(new DeploymentData())
-                    .withSbePartnerInfo(new SbePartnerInfo()))))
+            .define("mhmnulwemp")
+            .withExistingCluster("ekdfqnhttwd", "wrczfjjnnuxxrk")
+            .withProvisioningState(ProvisioningState.NOT_SPECIFIED)
+            .withArcNodeResourceIds(Arrays.asList("hjulrsulwzpflu", "nawmhhgzotfriyrg"))
+            .withDeploymentMode(DeploymentMode.VALIDATE)
+            .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("kvzwxxyxhighctx")
+                .withScaleUnits(Arrays.asList(new ScaleUnits().withDeploymentData(new DeploymentData()),
+                    new ScaleUnits().withDeploymentData(new DeploymentData()),
+                    new ScaleUnits().withDeploymentData(new DeploymentData()))))
             .create();
 
-        Assertions.assertEquals("tclhuulriqbyokv", response.arcNodeResourceIds().get(0));
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.provisioningState());
+        Assertions.assertEquals("hoo", response.arcNodeResourceIds().get(0));
         Assertions.assertEquals(DeploymentMode.DEPLOY, response.deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.operationType());
-        Assertions.assertEquals("pufpbpgnrholhu", response.deploymentConfiguration().version());
+        Assertions.assertEquals("qxrkdknko", response.deploymentConfiguration().version());
     }
 }

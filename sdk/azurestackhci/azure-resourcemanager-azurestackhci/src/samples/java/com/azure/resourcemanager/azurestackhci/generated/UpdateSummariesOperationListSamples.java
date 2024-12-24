@@ -10,16 +10,16 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class UpdateSummariesOperationListSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/
      * ListUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
     public static void
-        getUpdateSummariesUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        getUpdateSummariesUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.updateSummariesOperations().list("testrg", "testcluster", com.azure.core.util.Context.NONE);
     }
 }

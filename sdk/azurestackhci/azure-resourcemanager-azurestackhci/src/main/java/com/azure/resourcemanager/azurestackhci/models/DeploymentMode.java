@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The deployment mode of EnterpriseCloudEngine(ECE) action for a cluster.
+ * The deployment mode for cluster deployment.
  */
 public final class DeploymentMode extends ExpandableStringEnum<DeploymentMode> {
     /**

@@ -10,15 +10,15 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class ArcSettingsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutArcSetting.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/PutArcSetting.
+     * json
      */
     /**
      * Sample code: Create ArcSetting.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void createArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void createArcSetting(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.arcSettings().define("default").withExistingCluster("test-rg", "myCluster").create();
     }
 }

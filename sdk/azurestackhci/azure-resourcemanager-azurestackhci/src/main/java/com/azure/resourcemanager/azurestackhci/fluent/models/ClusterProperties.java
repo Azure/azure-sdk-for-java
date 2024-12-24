@@ -14,9 +14,7 @@ import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
 import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
 import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
-import com.azure.resourcemanager.azurestackhci.models.LogCollectionProperties;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
 import java.io.IOException;
@@ -76,16 +74,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Software Assurance properties of the cluster.
      */
     private SoftwareAssuranceProperties softwareAssuranceProperties;
-
-    /*
-     * Log Collection properties of the cluster.
-     */
-    private LogCollectionProperties logCollectionProperties;
-
-    /*
-     * RemoteSupport properties of the cluster.
-     */
-    private RemoteSupportProperties remoteSupportProperties;
 
     /*
      * Desired properties of the cluster.
@@ -300,46 +288,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the logCollectionProperties property: Log Collection properties of the cluster.
-     * 
-     * @return the logCollectionProperties value.
-     */
-    public LogCollectionProperties logCollectionProperties() {
-        return this.logCollectionProperties;
-    }
-
-    /**
-     * Set the logCollectionProperties property: Log Collection properties of the cluster.
-     * 
-     * @param logCollectionProperties the logCollectionProperties value to set.
-     * @return the ClusterProperties object itself.
-     */
-    public ClusterProperties withLogCollectionProperties(LogCollectionProperties logCollectionProperties) {
-        this.logCollectionProperties = logCollectionProperties;
-        return this;
-    }
-
-    /**
-     * Get the remoteSupportProperties property: RemoteSupport properties of the cluster.
-     * 
-     * @return the remoteSupportProperties value.
-     */
-    public RemoteSupportProperties remoteSupportProperties() {
-        return this.remoteSupportProperties;
-    }
-
-    /**
-     * Set the remoteSupportProperties property: RemoteSupport properties of the cluster.
-     * 
-     * @param remoteSupportProperties the remoteSupportProperties value to set.
-     * @return the ClusterProperties object itself.
-     */
-    public ClusterProperties withRemoteSupportProperties(RemoteSupportProperties remoteSupportProperties) {
-        this.remoteSupportProperties = remoteSupportProperties;
-        return this;
-    }
-
-    /**
      * Get the desiredProperties property: Desired properties of the cluster.
      * 
      * @return the desiredProperties value.
@@ -450,12 +398,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         if (softwareAssuranceProperties() != null) {
             softwareAssuranceProperties().validate();
         }
-        if (logCollectionProperties() != null) {
-            logCollectionProperties().validate();
-        }
-        if (remoteSupportProperties() != null) {
-            remoteSupportProperties().validate();
-        }
         if (desiredProperties() != null) {
             desiredProperties().validate();
         }
@@ -479,8 +421,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         jsonWriter.writeStringField("aadApplicationObjectId", this.aadApplicationObjectId);
         jsonWriter.writeStringField("aadServicePrincipalObjectId", this.aadServicePrincipalObjectId);
         jsonWriter.writeJsonField("softwareAssuranceProperties", this.softwareAssuranceProperties);
-        jsonWriter.writeJsonField("logCollectionProperties", this.logCollectionProperties);
-        jsonWriter.writeJsonField("remoteSupportProperties", this.remoteSupportProperties);
         jsonWriter.writeJsonField("desiredProperties", this.desiredProperties);
         return jsonWriter.writeEndObject();
     }
@@ -522,10 +462,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                 } else if ("softwareAssuranceProperties".equals(fieldName)) {
                     deserializedClusterProperties.softwareAssuranceProperties
                         = SoftwareAssuranceProperties.fromJson(reader);
-                } else if ("logCollectionProperties".equals(fieldName)) {
-                    deserializedClusterProperties.logCollectionProperties = LogCollectionProperties.fromJson(reader);
-                } else if ("remoteSupportProperties".equals(fieldName)) {
-                    deserializedClusterProperties.remoteSupportProperties = RemoteSupportProperties.fromJson(reader);
                 } else if ("desiredProperties".equals(fieldName)) {
                     deserializedClusterProperties.desiredProperties = ClusterDesiredProperties.fromJson(reader);
                 } else if ("reportedProperties".equals(fieldName)) {

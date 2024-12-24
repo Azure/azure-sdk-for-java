@@ -19,7 +19,7 @@ import java.util.List;
 public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, UpdateRun.Update {
     private UpdateRunInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -89,10 +89,6 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         return this.innerModel().lastUpdatedTimeUtc();
     }
 
-    public String expectedExecutionTime() {
-        return this.innerModel().expectedExecutionTime();
-    }
-
     public List<Step> steps() {
         List<Step> inner = this.innerModel().steps();
         if (inner != null) {
@@ -118,7 +114,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -153,7 +149,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         return this;
     }
 
-    UpdateRunImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    UpdateRunImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new UpdateRunInner();
         this.serviceManager = serviceManager;
         this.updateRunName = name;
@@ -180,7 +176,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     UpdateRunImpl(UpdateRunInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -267,11 +263,6 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
 
     public UpdateRunImpl withLastUpdatedTimeUtc(OffsetDateTime lastUpdatedTimeUtc) {
         this.innerModel().withLastUpdatedTimeUtc(lastUpdatedTimeUtc);
-        return this;
-    }
-
-    public UpdateRunImpl withExpectedExecutionTime(String expectedExecutionTime) {
-        this.innerModel().withExpectedExecutionTime(expectedExecutionTime);
         return this;
     }
 

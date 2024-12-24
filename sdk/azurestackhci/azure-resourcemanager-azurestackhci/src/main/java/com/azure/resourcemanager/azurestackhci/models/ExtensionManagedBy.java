@@ -8,18 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Extension managed by user or Azure.
+ * Indicates if the extension is managed by azure or the user.
  */
 public final class ExtensionManagedBy extends ExpandableStringEnum<ExtensionManagedBy> {
-    /**
-     * Static value User for ExtensionManagedBy.
-     */
-    public static final ExtensionManagedBy USER = fromString("User");
-
     /**
      * Static value Azure for ExtensionManagedBy.
      */
     public static final ExtensionManagedBy AZURE = fromString("Azure");
+
+    /**
+     * Static value User for ExtensionManagedBy.
+     */
+    public static final ExtensionManagedBy USER = fromString("User");
 
     /**
      * Creates a new instance of ExtensionManagedBy value.

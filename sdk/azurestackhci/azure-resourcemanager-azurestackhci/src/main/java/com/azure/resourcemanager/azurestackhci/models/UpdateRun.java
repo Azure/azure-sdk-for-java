@@ -137,14 +137,6 @@ public interface UpdateRun {
     OffsetDateTime lastUpdatedTimeUtc();
 
     /**
-     * Gets the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @return the expectedExecutionTime value.
-     */
-    String expectedExecutionTime();
-
-    /**
      * Gets the steps property: Recursive model for child steps of this step.
      * 
      * @return the steps value.
@@ -219,8 +211,7 @@ public interface UpdateRun {
             DefinitionStages.WithLastUpdatedTime, DefinitionStages.WithDuration, DefinitionStages.WithState,
             DefinitionStages.WithNamePropertiesName, DefinitionStages.WithDescription,
             DefinitionStages.WithErrorMessage, DefinitionStages.WithStatus, DefinitionStages.WithStartTimeUtc,
-            DefinitionStages.WithEndTimeUtc, DefinitionStages.WithLastUpdatedTimeUtc,
-            DefinitionStages.WithExpectedExecutionTime, DefinitionStages.WithSteps {
+            DefinitionStages.WithEndTimeUtc, DefinitionStages.WithLastUpdatedTimeUtc, DefinitionStages.WithSteps {
             /**
              * Executes the create request.
              * 
@@ -404,21 +395,6 @@ public interface UpdateRun {
         }
 
         /**
-         * The stage of the UpdateRun definition allowing to specify expectedExecutionTime.
-         */
-        interface WithExpectedExecutionTime {
-            /**
-             * Specifies the expectedExecutionTime property: Expected execution time of a given step. This is optionally
-             * authored in the update action plan and can be empty..
-             * 
-             * @param expectedExecutionTime Expected execution time of a given step. This is optionally authored in the
-             * update action plan and can be empty.
-             * @return the next definition stage.
-             */
-            WithCreate withExpectedExecutionTime(String expectedExecutionTime);
-        }
-
-        /**
          * The stage of the UpdateRun definition allowing to specify steps.
          */
         interface WithSteps {
@@ -445,8 +421,7 @@ public interface UpdateRun {
     interface Update extends UpdateStages.WithTimeStarted, UpdateStages.WithLastUpdatedTime, UpdateStages.WithDuration,
         UpdateStages.WithState, UpdateStages.WithNamePropertiesName, UpdateStages.WithDescription,
         UpdateStages.WithErrorMessage, UpdateStages.WithStatus, UpdateStages.WithStartTimeUtc,
-        UpdateStages.WithEndTimeUtc, UpdateStages.WithLastUpdatedTimeUtc, UpdateStages.WithExpectedExecutionTime,
-        UpdateStages.WithSteps {
+        UpdateStages.WithEndTimeUtc, UpdateStages.WithLastUpdatedTimeUtc, UpdateStages.WithSteps {
         /**
          * Executes the update request.
          * 
@@ -610,21 +585,6 @@ public interface UpdateRun {
              * @return the next definition stage.
              */
             Update withLastUpdatedTimeUtc(OffsetDateTime lastUpdatedTimeUtc);
-        }
-
-        /**
-         * The stage of the UpdateRun update allowing to specify expectedExecutionTime.
-         */
-        interface WithExpectedExecutionTime {
-            /**
-             * Specifies the expectedExecutionTime property: Expected execution time of a given step. This is optionally
-             * authored in the update action plan and can be empty..
-             * 
-             * @param expectedExecutionTime Expected execution time of a given step. This is optionally authored in the
-             * update action plan and can be empty.
-             * @return the next definition stage.
-             */
-            Update withExpectedExecutionTime(String expectedExecutionTime);
         }
 
         /**

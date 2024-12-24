@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString("{\"configurationMode\":\"laulppg\"}").toObject(Storage.class);
-        Assertions.assertEquals("laulppg", model.configurationMode());
+        Storage model = BinaryData.fromString("{\"configurationMode\":\"zbn\"}").toObject(Storage.class);
+        Assertions.assertEquals("zbn", model.configurationMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withConfigurationMode("laulppg");
+        Storage model = new Storage().withConfigurationMode("zbn");
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals("laulppg", model.configurationMode());
+        Assertions.assertEquals("zbn", model.configurationMode());
     }
 }

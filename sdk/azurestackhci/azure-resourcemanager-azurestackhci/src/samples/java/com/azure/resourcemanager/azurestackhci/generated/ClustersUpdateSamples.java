@@ -18,15 +18,15 @@ import java.util.Map;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * UpdateCluster.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/UpdateCluster.
+     * json
      */
     /**
      * Sample code: Update cluster.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void updateCluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void updateCluster(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         Cluster resource = manager.clusters()
             .getByResourceGroupWithResponse("test-rg", "myCluster", com.azure.core.util.Context.NONE)
             .getValue();

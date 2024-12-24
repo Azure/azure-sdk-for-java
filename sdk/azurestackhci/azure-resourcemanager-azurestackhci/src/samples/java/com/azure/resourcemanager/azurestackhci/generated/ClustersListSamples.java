@@ -10,16 +10,16 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class ClustersListSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/
      * ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
     public static void
-        listClustersInAGivenSubscription(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        listClustersInAGivenSubscription(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }

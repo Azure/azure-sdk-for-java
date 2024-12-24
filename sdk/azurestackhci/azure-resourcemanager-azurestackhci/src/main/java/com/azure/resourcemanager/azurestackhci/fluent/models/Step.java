@@ -57,11 +57,6 @@ public final class Step implements JsonSerializable<Step> {
     private OffsetDateTime lastUpdatedTimeUtc;
 
     /*
-     * Expected execution time of a given step. This is optionally authored in the update action plan and can be empty.
-     */
-    private String expectedExecutionTime;
-
-    /*
      * Recursive model for child steps of this step.
      */
     private List<Step> steps;
@@ -215,28 +210,6 @@ public final class Step implements JsonSerializable<Step> {
     }
 
     /**
-     * Get the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @return the expectedExecutionTime value.
-     */
-    public String expectedExecutionTime() {
-        return this.expectedExecutionTime;
-    }
-
-    /**
-     * Set the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @param expectedExecutionTime the expectedExecutionTime value to set.
-     * @return the Step object itself.
-     */
-    public Step withExpectedExecutionTime(String expectedExecutionTime) {
-        this.expectedExecutionTime = expectedExecutionTime;
-        return this;
-    }
-
-    /**
      * Get the steps property: Recursive model for child steps of this step.
      * 
      * @return the steps value.
@@ -285,7 +258,6 @@ public final class Step implements JsonSerializable<Step> {
             this.lastUpdatedTimeUtc == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedTimeUtc));
-        jsonWriter.writeStringField("expectedExecutionTime", this.expectedExecutionTime);
         jsonWriter.writeArrayField("steps", this.steps, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -322,8 +294,6 @@ public final class Step implements JsonSerializable<Step> {
                 } else if ("lastUpdatedTimeUtc".equals(fieldName)) {
                     deserializedStep.lastUpdatedTimeUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("expectedExecutionTime".equals(fieldName)) {
-                    deserializedStep.expectedExecutionTime = reader.getString();
                 } else if ("steps".equals(fieldName)) {
                     List<Step> steps = reader.readArray(reader1 -> Step.fromJson(reader1));
                     deserializedStep.steps = steps;

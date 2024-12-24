@@ -23,7 +23,7 @@ import java.util.Map;
 public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, ArcSetting.Update {
     private ArcSettingInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -99,7 +99,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -133,7 +133,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
         return this;
     }
 
-    ArcSettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    ArcSettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new ArcSettingInner();
         this.serviceManager = serviceManager;
         this.arcSettingName = name;
@@ -161,7 +161,7 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     ArcSettingImpl(ArcSettingInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -72,13 +72,6 @@ public interface HciUpdate {
     String description();
 
     /**
-     * Gets the minSbeVersionRequired property: Minimum Sbe Version of the update.
-     * 
-     * @return the minSbeVersionRequired value.
-     */
-    String minSbeVersionRequired();
-
-    /**
      * Gets the state property: State of the update as it relates to this stamp.
      * 
      * @return the state value.
@@ -274,9 +267,8 @@ public interface HciUpdate {
          * The stage of the HciUpdate definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithInstalledDate, DefinitionStages.WithDescription,
-            DefinitionStages.WithMinSbeVersionRequired, DefinitionStages.WithState, DefinitionStages.WithPrerequisites,
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithInstalledDate,
+            DefinitionStages.WithDescription, DefinitionStages.WithState, DefinitionStages.WithPrerequisites,
             DefinitionStages.WithComponentVersions, DefinitionStages.WithRebootRequired,
             DefinitionStages.WithHealthState, DefinitionStages.WithHealthCheckResult,
             DefinitionStages.WithHealthCheckDate, DefinitionStages.WithPackagePath,
@@ -345,19 +337,6 @@ public interface HciUpdate {
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
-        }
-
-        /**
-         * The stage of the HciUpdate definition allowing to specify minSbeVersionRequired.
-         */
-        interface WithMinSbeVersionRequired {
-            /**
-             * Specifies the minSbeVersionRequired property: Minimum Sbe Version of the update..
-             * 
-             * @param minSbeVersionRequired Minimum Sbe Version of the update.
-             * @return the next definition stage.
-             */
-            WithCreate withMinSbeVersionRequired(String minSbeVersionRequired);
         }
 
         /**
@@ -620,14 +599,13 @@ public interface HciUpdate {
     /**
      * The template for HciUpdate update.
      */
-    interface Update
-        extends UpdateStages.WithInstalledDate, UpdateStages.WithDescription, UpdateStages.WithMinSbeVersionRequired,
-        UpdateStages.WithState, UpdateStages.WithPrerequisites, UpdateStages.WithComponentVersions,
-        UpdateStages.WithRebootRequired, UpdateStages.WithHealthState, UpdateStages.WithHealthCheckResult,
-        UpdateStages.WithHealthCheckDate, UpdateStages.WithPackagePath, UpdateStages.WithPackageSizeInMb,
-        UpdateStages.WithDisplayName, UpdateStages.WithVersion, UpdateStages.WithPublisher,
-        UpdateStages.WithReleaseLink, UpdateStages.WithAvailabilityType, UpdateStages.WithPackageType,
-        UpdateStages.WithAdditionalProperties, UpdateStages.WithProgressPercentage, UpdateStages.WithNotifyMessage {
+    interface Update extends UpdateStages.WithInstalledDate, UpdateStages.WithDescription, UpdateStages.WithState,
+        UpdateStages.WithPrerequisites, UpdateStages.WithComponentVersions, UpdateStages.WithRebootRequired,
+        UpdateStages.WithHealthState, UpdateStages.WithHealthCheckResult, UpdateStages.WithHealthCheckDate,
+        UpdateStages.WithPackagePath, UpdateStages.WithPackageSizeInMb, UpdateStages.WithDisplayName,
+        UpdateStages.WithVersion, UpdateStages.WithPublisher, UpdateStages.WithReleaseLink,
+        UpdateStages.WithAvailabilityType, UpdateStages.WithPackageType, UpdateStages.WithAdditionalProperties,
+        UpdateStages.WithProgressPercentage, UpdateStages.WithNotifyMessage {
         /**
          * Executes the update request.
          * 
@@ -672,19 +650,6 @@ public interface HciUpdate {
              * @return the next definition stage.
              */
             Update withDescription(String description);
-        }
-
-        /**
-         * The stage of the HciUpdate update allowing to specify minSbeVersionRequired.
-         */
-        interface WithMinSbeVersionRequired {
-            /**
-             * Specifies the minSbeVersionRequired property: Minimum Sbe Version of the update..
-             * 
-             * @param minSbeVersionRequired Minimum Sbe Version of the update.
-             * @return the next definition stage.
-             */
-            Update withMinSbeVersionRequired(String minSbeVersionRequired);
         }
 
         /**

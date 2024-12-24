@@ -7,7 +7,6 @@ package com.azure.resourcemanager.azurestackhci.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
 
 /**
  * Resource collection API of EdgeDevices.
@@ -62,33 +61,6 @@ public interface EdgeDevices {
     EdgeDevice get(String resourceUri, String edgeDeviceName);
 
     /**
-     * Create a EdgeDevice.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge device resource.
-     */
-    EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource);
-
-    /**
-     * Create a EdgeDevice.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge device resource.
-     */
-    EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource, Context context);
-
-    /**
      * Delete a EdgeDevice.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
@@ -138,4 +110,56 @@ public interface EdgeDevices {
      */
     ValidateResponse validate(String resourceUri, String edgeDeviceName, ValidateRequest validateRequest,
         Context context);
+
+    /**
+     * Get a EdgeDevice.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a EdgeDevice along with {@link Response}.
+     */
+    EdgeDevice getById(String id);
+
+    /**
+     * Get a EdgeDevice.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a EdgeDevice along with {@link Response}.
+     */
+    Response<EdgeDevice> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a EdgeDevice.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete a EdgeDevice.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new EdgeDevice resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new EdgeDevice definition.
+     */
+    EdgeDevice.DefinitionStages.Blank define(String name);
 }

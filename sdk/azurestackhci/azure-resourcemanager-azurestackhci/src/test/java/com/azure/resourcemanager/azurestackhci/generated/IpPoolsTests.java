@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IpPoolsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpPools model = BinaryData.fromString("{\"startingAddress\":\"ac\",\"endingAddress\":\"pzfqrhhuaoppp\"}")
-            .toObject(IpPools.class);
-        Assertions.assertEquals("ac", model.startingAddress());
-        Assertions.assertEquals("pzfqrhhuaoppp", model.endingAddress());
+        IpPools model
+            = BinaryData.fromString("{\"startingAddress\":\"gxtibqdxbxw\",\"endingAddress\":\"bogqxndlkzgxhu\"}")
+                .toObject(IpPools.class);
+        Assertions.assertEquals("gxtibqdxbxw", model.startingAddress());
+        Assertions.assertEquals("bogqxndlkzgxhu", model.endingAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPools model = new IpPools().withStartingAddress("ac").withEndingAddress("pzfqrhhuaoppp");
+        IpPools model = new IpPools().withStartingAddress("gxtibqdxbxw").withEndingAddress("bogqxndlkzgxhu");
         model = BinaryData.fromObject(model).toObject(IpPools.class);
-        Assertions.assertEquals("ac", model.startingAddress());
-        Assertions.assertEquals("pzfqrhhuaoppp", model.endingAddress());
+        Assertions.assertEquals("gxtibqdxbxw", model.startingAddress());
+        Assertions.assertEquals("bogqxndlkzgxhu", model.endingAddress());
     }
 }

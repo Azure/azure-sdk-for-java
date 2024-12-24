@@ -25,228 +25,417 @@ public final class UpdateListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"razftxejwabmdujt\",\"properties\":{\"provisioningState\":\"Disconnected\",\"installedDate\":\"2021-11-13T23:19:59Z\",\"description\":\"c\",\"minSbeVersionRequired\":\"urbuhhlkyqltq\",\"state\":\"AdditionalContentRequired\",\"prerequisites\":[{\"updateType\":\"wkffdjkt\",\"version\":\"sidfv\",\"packageName\":\"g\"},{\"updateType\":\"n\",\"version\":\"ijtk\",\"packageName\":\"sqo\"}],\"componentVersions\":[{\"packageType\":\"kayi\",\"version\":\"sharujtj\",\"lastUpdated\":\"2021-07-10T17:52:36Z\"},{\"packageType\":\"zyjq\",\"version\":\"vwkpqh\",\"lastUpdated\":\"2021-07-09T12:00:41Z\"},{\"packageType\":\"uygb\",\"version\":\"qqekewvnqvcdlgu\",\"lastUpdated\":\"2021-11-05T12:42:34Z\"},{\"packageType\":\"f\",\"version\":\"wnlaxpu\",\"lastUpdated\":\"2021-08-11T07:22:41Z\"}],\"rebootRequired\":\"Unknown\",\"healthState\":\"Failure\",\"healthCheckResult\":[{\"name\":\"tacgxmfc\",\"displayName\":\"er\",\"tags\":{},\"healthCheckTags\":\"datavs\",\"title\":\"hlwntsjgq\",\"status\":\"Failed\",\"severity\":\"Critical\",\"description\":\"uuuybnchrsziz\",\"remediation\":\"uelyetndn\",\"targetResourceID\":\"qyggagfl\",\"targetResourceName\":\"gm\",\"targetResourceType\":\"wahzjmucftbyr\",\"timestamp\":\"2021-04-22T08:33:43Z\",\"additionalData\":\"hkpigqfusuckzmkw\",\"healthCheckSource\":\"snoxaxmqeqa\"},{\"name\":\"hjnhgwydyynfsvk\",\"displayName\":\"bvqt\",\"tags\":{},\"healthCheckTags\":\"datarfdl\",\"title\":\"kh\",\"status\":\"NotYetRegistered\",\"severity\":\"Hidden\",\"description\":\"zjcpeogk\",\"remediation\":\"mgbro\",\"targetResourceID\":\"ddbhf\",\"targetResourceName\":\"fpazjzoywjxhpd\",\"targetResourceType\":\"ontacnpq\",\"timestamp\":\"2020-12-27T20:17:23Z\",\"additionalData\":\"tuevrh\",\"healthCheckSource\":\"jyoogwxh\"}],\"healthCheckDate\":\"2021-05-24T18:00:52Z\",\"packagePath\":\"ugwbsreurfqkf\",\"packageSizeInMb\":98.716385,\"displayName\":\"nlvhhtklnvnafvv\",\"version\":\"f\",\"publisher\":\"ev\",\"releaseLink\":\"oslc\",\"availabilityType\":\"Online\",\"packageType\":\"okkhminq\",\"additionalProperties\":\"mczngn\",\"updateStateProperties\":{\"progressPercentage\":4.8717856,\"notifyMessage\":\"wuninv\"}},\"id\":\"bchaqd\",\"name\":\"vqecr\",\"type\":\"ct\"},{\"location\":\"xdtddmflhuytxzv\",\"properties\":{\"provisioningState\":\"DisableInProgress\",\"installedDate\":\"2021-03-01T11:01:37Z\",\"description\":\"annovvoxczytpr\",\"minSbeVersionRequired\":\"wvroevytlyokrrr\",\"state\":\"PreparationFailed\",\"prerequisites\":[{\"updateType\":\"sasbcrymodizrx\",\"version\":\"obdxnazpmkmlm\",\"packageName\":\"vfxzopjh\"},{\"updateType\":\"xliohrdddt\",\"version\":\"xqbawpc\",\"packageName\":\"nzqcy\"},{\"updateType\":\"apqofyuicdhz\",\"version\":\"ybww\",\"packageName\":\"d\"},{\"updateType\":\"bid\",\"version\":\"m\",\"packageName\":\"f\"}],\"componentVersions\":[{\"packageType\":\"u\",\"version\":\"pckc\",\"lastUpdated\":\"2021-12-09T01:38:35Z\"},{\"packageType\":\"weyoxoy\",\"version\":\"k\",\"lastUpdated\":\"2021-09-08T11:55:35Z\"},{\"packageType\":\"mmoiroqboshbra\",\"version\":\"pyyrmfs\",\"lastUpdated\":\"2021-03-28T08:56:43Z\"}],\"rebootRequired\":\"Unknown\",\"healthState\":\"InProgress\",\"healthCheckResult\":[{\"name\":\"pdbwnupgahxkum\",\"displayName\":\"jcaacfdmmcpugm\",\"tags\":{},\"healthCheckTags\":\"dataepvufhbzehew\",\"title\":\"qhnlbqnbld\",\"status\":\"NotSpecified\",\"severity\":\"Critical\",\"description\":\"schori\",\"remediation\":\"rsrrmoucsofldp\",\"targetResourceID\":\"iyfc\",\"targetResourceName\":\"beolh\",\"targetResourceType\":\"lvbmxuqibsxtkcu\",\"timestamp\":\"2021-03-04T11:35:39Z\",\"additionalData\":\"farfs\",\"healthCheckSource\":\"wlkjxn\"},{\"name\":\"vwgf\",\"displayName\":\"mhqykizmdksa\",\"tags\":{},\"healthCheckTags\":\"datacluqvo\",\"title\":\"ycjimryvwgcwwpbm\",\"status\":\"ValidationFailed\",\"severity\":\"Informational\",\"description\":\"dsxwefoh\",\"remediation\":\"bvopwndyqle\",\"targetResourceID\":\"lklmtkhlo\",\"targetResourceName\":\"x\",\"targetResourceType\":\"vbrdfjmzsyzfho\",\"timestamp\":\"2021-03-23T11:42:29Z\",\"additionalData\":\"k\",\"healthCheckSource\":\"ychunsjlpjrtwszh\"}],\"healthCheckDate\":\"2021-11-19T08:14:33Z\",\"packagePath\":\"c\",\"packageSizeInMb\":95.381325,\"displayName\":\"rrmhwrbfdp\",\"version\":\"lubhvjg\",\"publisher\":\"ocu\",\"releaseLink\":\"lw\",\"availabilityType\":\"Notify\",\"packageType\":\"mhoocl\",\"additionalProperties\":\"n\",\"updateStateProperties\":{\"progressPercentage\":16.419632,\"notifyMessage\":\"czj\"}},\"id\":\"mykyujxsglhs\",\"name\":\"rryejylmbkzudnig\",\"type\":\"fihotj\"}],\"nextLink\":\"lpxuzzjgnrefq\"}")
+            "{\"value\":[{\"location\":\"aqkue\",\"properties\":{\"provisioningState\":\"Provisioning\",\"installedDate\":\"2021-01-04T22:14:02Z\",\"description\":\"hoygzcbyfq\",\"state\":\"HealthChecking\",\"prerequisites\":[{\"updateType\":\"tehqpuvjmvq\",\"version\":\"dwckygroe\",\"packageName\":\"ndljdjuskbr\"},{\"updateType\":\"qyn\",\"version\":\"eysfaqegplw\",\"packageName\":\"shwddkvbxgk\"},{\"updateType\":\"sybwptdaca\",\"version\":\"vlf\",\"packageName\":\"ymtpo\"}],\"componentVersions\":[{\"packageType\":\"azerohzrsq\",\"version\":\"sxkdnwqapfgsdpc\",\"lastUpdated\":\"2021-06-29T02:55:38Z\"},{\"packageType\":\"mzhhkuuipldqqc\",\"version\":\"kva\",\"lastUpdated\":\"2021-01-13T21:15:49Z\"},{\"packageType\":\"tjqvqyvweht\",\"version\":\"mxhzzysevus\",\"lastUpdated\":\"2021-05-26T10:14:06Z\"},{\"packageType\":\"rrryveimips\",\"version\":\"yzatvfuzkaft\",\"lastUpdated\":\"2021-03-25T16:42:15Z\"}],\"rebootRequired\":\"Unknown\",\"healthState\":\"Warning\",\"healthCheckResult\":[{\"name\":\"yeip\",\"displayName\":\"smjtgrqgdg\",\"tags\":{},\"title\":\"leplkcsmk\",\"status\":\"NotSpecified\",\"severity\":\"Informational\",\"description\":\"aedorvvmqf\",\"remediation\":\"ygbdgwumgxdgdhpa\",\"targetResourceID\":\"dexjddvjs\",\"targetResourceName\":\"wotmmwllcolsrsxa\",\"timestamp\":\"2020-12-31T12:02:59Z\",\"additionalData\":\"hexcgjokj\",\"healthCheckSource\":\"nhvlqjbekp\"},{\"name\":\"ksnbksdqhjv\",\"displayName\":\"lxeslkhh\",\"tags\":{},\"title\":\"cpoq\",\"status\":\"DeploymentInProgress\",\"severity\":\"Warning\",\"description\":\"jwgo\",\"remediation\":\"lejjjkxy\",\"targetResourceID\":\"fdb\",\"targetResourceName\":\"bztensvkzykjtj\",\"timestamp\":\"2021-11-07T18:10:31Z\",\"additionalData\":\"fwushcdpkupn\",\"healthCheckSource\":\"mgjfbpkuwxeoio\"},{\"name\":\"izfavkjzwf\",\"displayName\":\"yay\",\"tags\":{},\"title\":\"fz\",\"status\":\"InProgress\",\"severity\":\"Hidden\",\"description\":\"zxmdew\",\"remediation\":\"sxkrpl\",\"targetResourceID\":\"aze\",\"targetResourceName\":\"w\",\"timestamp\":\"2021-03-06T21:39:52Z\",\"additionalData\":\"y\",\"healthCheckSource\":\"uhbrnnhjxsq\"},{\"name\":\"hqkb\",\"displayName\":\"etpozycyqiq\",\"tags\":{},\"title\":\"fsetz\",\"status\":\"NotConnectedRecently\",\"severity\":\"Warning\",\"description\":\"ledynojpz\",\"remediation\":\"wfbzkkdt\",\"targetResourceID\":\"qsyclj\",\"targetResourceName\":\"lpkpbafvafhl\",\"timestamp\":\"2021-02-22T18:37:06Z\",\"additionalData\":\"cbevxrhyzdfw\",\"healthCheckSource\":\"ofpltdbm\"}],\"healthCheckDate\":\"2021-02-07T00:58:10Z\",\"packagePath\":\"hvhfnracw\",\"packageSizeInMb\":90.1312,\"displayName\":\"g\",\"version\":\"ujwouhdawsi\",\"publisher\":\"bjb\",\"releaseLink\":\"jybvit\",\"availabilityType\":\"Online\",\"packageType\":\"y\",\"additionalProperties\":\"nu\",\"updateStateProperties\":{\"progressPercentage\":79.95618,\"notifyMessage\":\"uwdchozf\"}},\"id\":\"fexl\",\"name\":\"xn\",\"type\":\"akizvoaikna\"},{\"location\":\"nuwiguyxlykwph\",\"properties\":{\"provisioningState\":\"Error\",\"installedDate\":\"2021-06-18T05:52:26Z\",\"description\":\"mpe\",\"state\":\"Ready\",\"prerequisites\":[{\"updateType\":\"aonwivkcqhrxh\",\"version\":\"nlccrm\",\"packageName\":\"yupiju\"},{\"updateType\":\"qjfkakfqfrkemyi\",\"version\":\"udxjascowv\",\"packageName\":\"jkpdxphlkksnm\"},{\"updateType\":\"vyfijdkzuqnw\",\"version\":\"thuqolyahluq\",\"packageName\":\"ulsutrjbhxy\"}],\"componentVersions\":[{\"packageType\":\"qezv\",\"version\":\"ugdrftbc\",\"lastUpdated\":\"2021-01-25T09:01:22Z\"},{\"packageType\":\"e\",\"version\":\"uowtljvfwhrea\",\"lastUpdated\":\"2021-05-20T05:27:46Z\"}],\"rebootRequired\":\"True\",\"healthState\":\"InProgress\",\"healthCheckResult\":[{\"name\":\"bczsulmdgglmepjp\",\"displayName\":\"eykgsangpszngaf\",\"tags\":{},\"title\":\"lkvec\",\"status\":\"ValidationFailed\",\"severity\":\"Informational\",\"description\":\"oady\",\"remediation\":\"mzr\",\"targetResourceID\":\"foknubnoitp\",\"targetResourceName\":\"ztrgdgxvcoq\",\"timestamp\":\"2021-01-10T20:47:36Z\",\"additionalData\":\"ugyxpqit\",\"healthCheckSource\":\"ialwv\"},{\"name\":\"buhzacaq\",\"displayName\":\"ltcoqc\",\"tags\":{},\"title\":\"dsxzakuejkmvb\",\"status\":\"NotYetRegistered\",\"severity\":\"Hidden\",\"description\":\"qcvov\",\"remediation\":\"f\",\"targetResourceID\":\"sj\",\"targetResourceName\":\"bemyeji\",\"timestamp\":\"2021-10-02T18:03:34Z\",\"additionalData\":\"egthortudawl\",\"healthCheckSource\":\"felqerpptc\"},{\"name\":\"qnzmnhiil\",\"displayName\":\"lwcjgckbbcccgzpr\",\"tags\":{},\"title\":\"nyuffat\",\"status\":\"Failed\",\"severity\":\"Warning\",\"description\":\"wcxbyubhiqdxyurn\",\"remediation\":\"uhzafccnuhii\",\"targetResourceID\":\"yl\",\"targetResourceName\":\"igvxvatvcrk\",\"timestamp\":\"2021-04-27T10:25:55Z\",\"additionalData\":\"bqxvhcsyhzlwxae\",\"healthCheckSource\":\"vurex\"}],\"healthCheckDate\":\"2021-04-19T23:39:17Z\",\"packagePath\":\"bdweade\",\"packageSizeInMb\":89.11213,\"displayName\":\"ntopa\",\"version\":\"tmvmmagoaqylkjz\",\"publisher\":\"iua\",\"releaseLink\":\"cgm\",\"availabilityType\":\"Online\",\"packageType\":\"f\",\"additionalProperties\":\"zc\",\"updateStateProperties\":{\"progressPercentage\":56.392906,\"notifyMessage\":\"rlgjm\"}},\"id\":\"drvcqguef\",\"name\":\"hompheqdurelyu\",\"type\":\"lf\"},{\"location\":\"u\",\"properties\":{\"provisioningState\":\"Canceled\",\"installedDate\":\"2021-05-07T02:59:46Z\",\"description\":\"lcdi\",\"state\":\"InstallationFailed\",\"prerequisites\":[{\"updateType\":\"rzmq\",\"version\":\"cycijoclxiut\",\"packageName\":\"cyzyzjdnrqjbt\"},{\"updateType\":\"eaoqaqbzgyhf\",\"version\":\"v\",\"packageName\":\"tbwbqamteuli\"},{\"updateType\":\"lpkcvmwfauxxep\",\"version\":\"wbormcqmi\",\"packageName\":\"ijqpkzfbojxjmcs\"}],\"componentVersions\":[{\"packageType\":\"ixvcpwnkwywzwo\",\"version\":\"lickduoi\",\"lastUpdated\":\"2021-11-13T03:54:23Z\"},{\"packageType\":\"t\",\"version\":\"sknxrwzawnvsbcf\",\"lastUpdated\":\"2021-04-25T03:12:47Z\"},{\"packageType\":\"xn\",\"version\":\"ycvdimw\",\"lastUpdated\":\"2021-08-19T02:46:59Z\"}],\"rebootRequired\":\"False\",\"healthState\":\"InProgress\",\"healthCheckResult\":[{\"name\":\"utrwpweryekz\",\"displayName\":\"hmeott\",\"tags\":{},\"title\":\"yos\",\"status\":\"Disconnected\",\"severity\":\"Warning\",\"description\":\"jtfvpndpmiljpn\",\"remediation\":\"nudqllz\",\"targetResourceID\":\"uzpjlxeehux\",\"targetResourceName\":\"hzlraymezxlsk\",\"timestamp\":\"2021-04-29T19:42:01Z\",\"additionalData\":\"rfdsajrednwy\",\"healthCheckSource\":\"htuwgmev\"},{\"name\":\"fpwzyifrkgwltx\",\"displayName\":\"ipxgzdy\",\"tags\":{},\"title\":\"fayorpravkjoges\",\"status\":\"InProgress\",\"severity\":\"Hidden\",\"description\":\"jkwynqxaekqsykv\",\"remediation\":\"tqpkevmy\",\"targetResourceID\":\"jcrspxklurcclfgx\",\"targetResourceName\":\"n\",\"timestamp\":\"2021-03-24T06:21:26Z\",\"additionalData\":\"zposewxigpxvkqm\",\"healthCheckSource\":\"pxvpifdfaif\"}],\"healthCheckDate\":\"2021-07-31T02:01:11Z\",\"packagePath\":\"eyuubei\",\"packageSizeInMb\":43.759953,\"displayName\":\"fytoi\",\"version\":\"gygvfltgvdiho\",\"publisher\":\"krxwet\",\"releaseLink\":\"drcyrucpcun\",\"availabilityType\":\"Online\",\"packageType\":\"qumoeno\",\"additionalProperties\":\"aienhqhsknd\",\"updateStateProperties\":{\"progressPercentage\":53.89595,\"notifyMessage\":\"aadl\"}},\"id\":\"wf\",\"name\":\"anniyopetxivcnr\",\"type\":\"yxnu\"},{\"location\":\"ephblkwqpatvbqs\",\"properties\":{\"provisioningState\":\"Provisioning\",\"installedDate\":\"2021-05-20T19:50:45Z\",\"description\":\"vivuzqymtuowo\",\"state\":\"NotApplicableBecauseAnotherUpdateIsInProgress\",\"prerequisites\":[{\"updateType\":\"qhzvb\",\"version\":\"cdb\",\"packageName\":\"fzndscxmxeatkd\"},{\"updateType\":\"wnrdjyibqbnaom\",\"version\":\"rmkuh\",\"packageName\":\"xljalfihc\"},{\"updateType\":\"obcancdexxqcw\",\"version\":\"xf\",\"packageName\":\"aknokzwjjzrl\"},{\"updateType\":\"xldzyyfytpqsix\",\"version\":\"m\",\"packageName\":\"jivyqlkjuv\"}],\"componentVersions\":[{\"packageType\":\"slzoyov\",\"version\":\"dbpqvybefgvm\",\"lastUpdated\":\"2021-08-07T10:44:41Z\"},{\"packageType\":\"cvtlubseskvc\",\"version\":\"rtrh\",\"lastUpdated\":\"2021-03-05T23:21:47Z\"},{\"packageType\":\"iryky\",\"version\":\"dzfqivjreuy\",\"lastUpdated\":\"2021-07-17T02:16:27Z\"}],\"rebootRequired\":\"False\",\"healthState\":\"Error\",\"healthCheckResult\":[{\"name\":\"bxoeeonql\",\"displayName\":\"wmyymvqdbpbhf\",\"tags\":{},\"title\":\"vezcrcssbzhdd\",\"status\":\"ValidationFailed\",\"severity\":\"Informational\",\"description\":\"b\",\"remediation\":\"kalehp\",\"targetResourceID\":\"awugiqjti\",\"targetResourceName\":\"qgdm\",\"timestamp\":\"2021-04-08T08:46:59Z\",\"additionalData\":\"tteajohiygs\",\"healthCheckSource\":\"bonhpczykmktp\"},{\"name\":\"xqcsehch\",\"displayName\":\"ufmpqumqyjgy\",\"tags\":{},\"title\":\"lod\",\"status\":\"NotConnectedRecently\",\"severity\":\"Hidden\",\"description\":\"n\",\"remediation\":\"fnhsenwphp\",\"targetResourceID\":\"ngqjclidf\",\"targetResourceName\":\"jwjj\",\"timestamp\":\"2021-07-16T23:29:53Z\",\"additionalData\":\"eqrkuorhtss\",\"healthCheckSource\":\"qnmdvhazcvjy\"},{\"name\":\"qswbqerzwx\",\"displayName\":\"txtd\",\"tags\":{},\"title\":\"vlbpktgdstyou\",\"status\":\"DeploymentSuccess\",\"severity\":\"Informational\",\"description\":\"esw\",\"remediation\":\"weg\",\"targetResourceID\":\"uteyxeyguq\",\"targetResourceName\":\"ijiitns\",\"timestamp\":\"2021-03-05T21:47:33Z\",\"additionalData\":\"desygrijwa\",\"healthCheckSource\":\"fanraybfu\"},{\"name\":\"frojsydgr\",\"displayName\":\"dkygywezski\",\"tags\":{},\"title\":\"f\",\"status\":\"Disconnected\",\"severity\":\"Warning\",\"description\":\"eqvdsm\",\"remediation\":\"lixqcah\",\"targetResourceID\":\"xalybxawoijpo\",\"targetResourceName\":\"blxpkkwjdjodq\",\"timestamp\":\"2021-01-07T22:22:02Z\",\"additionalData\":\"ncn\",\"healthCheckSource\":\"mehllizhceu\"}],\"healthCheckDate\":\"2021-01-23T23:01:20Z\",\"packagePath\":\"dkadppyibn\",\"packageSizeInMb\":66.63858,\"displayName\":\"d\",\"version\":\"rxwhydtlu\",\"publisher\":\"adswz\",\"releaseLink\":\"uyem\",\"availabilityType\":\"Local\",\"packageType\":\"owhl\",\"additionalProperties\":\"nwyrmouv\",\"updateStateProperties\":{\"progressPercentage\":9.2496395,\"notifyMessage\":\"kzkltrfowt\"}},\"id\":\"rfmvlihcvjdrqcrj\",\"name\":\"dhftukvhdxlwy\",\"type\":\"jbfqzdk\"}],\"nextLink\":\"jyixhaf\"}")
             .toObject(UpdateList.class);
-        Assertions.assertEquals("razftxejwabmdujt", model.value().get(0).location());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T23:19:59Z"), model.value().get(0).installedDate());
-        Assertions.assertEquals("c", model.value().get(0).description());
-        Assertions.assertEquals("urbuhhlkyqltq", model.value().get(0).minSbeVersionRequired());
-        Assertions.assertEquals(State.ADDITIONAL_CONTENT_REQUIRED, model.value().get(0).state());
-        Assertions.assertEquals("wkffdjkt", model.value().get(0).prerequisites().get(0).updateType());
-        Assertions.assertEquals("sidfv", model.value().get(0).prerequisites().get(0).version());
-        Assertions.assertEquals("g", model.value().get(0).prerequisites().get(0).packageName());
-        Assertions.assertEquals("kayi", model.value().get(0).componentVersions().get(0).packageType());
-        Assertions.assertEquals("sharujtj", model.value().get(0).componentVersions().get(0).version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T17:52:36Z"),
+        Assertions.assertEquals("aqkue", model.value().get(0).location());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T22:14:02Z"), model.value().get(0).installedDate());
+        Assertions.assertEquals("hoygzcbyfq", model.value().get(0).description());
+        Assertions.assertEquals(State.HEALTH_CHECKING, model.value().get(0).state());
+        Assertions.assertEquals("tehqpuvjmvq", model.value().get(0).prerequisites().get(0).updateType());
+        Assertions.assertEquals("dwckygroe", model.value().get(0).prerequisites().get(0).version());
+        Assertions.assertEquals("ndljdjuskbr", model.value().get(0).prerequisites().get(0).packageName());
+        Assertions.assertEquals("azerohzrsq", model.value().get(0).componentVersions().get(0).packageType());
+        Assertions.assertEquals("sxkdnwqapfgsdpc", model.value().get(0).componentVersions().get(0).version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T02:55:38Z"),
             model.value().get(0).componentVersions().get(0).lastUpdated());
         Assertions.assertEquals(RebootRequirement.UNKNOWN, model.value().get(0).rebootRequired());
-        Assertions.assertEquals(HealthState.FAILURE, model.value().get(0).healthState());
-        Assertions.assertEquals("tacgxmfc", model.value().get(0).healthCheckResult().get(0).name());
-        Assertions.assertEquals("er", model.value().get(0).healthCheckResult().get(0).displayName());
-        Assertions.assertEquals("hlwntsjgq", model.value().get(0).healthCheckResult().get(0).title());
-        Assertions.assertEquals(Status.FAILED, model.value().get(0).healthCheckResult().get(0).status());
-        Assertions.assertEquals(Severity.CRITICAL, model.value().get(0).healthCheckResult().get(0).severity());
-        Assertions.assertEquals("uuuybnchrsziz", model.value().get(0).healthCheckResult().get(0).description());
-        Assertions.assertEquals("uelyetndn", model.value().get(0).healthCheckResult().get(0).remediation());
-        Assertions.assertEquals("qyggagfl", model.value().get(0).healthCheckResult().get(0).targetResourceId());
-        Assertions.assertEquals("gm", model.value().get(0).healthCheckResult().get(0).targetResourceName());
-        Assertions.assertEquals("wahzjmucftbyr", model.value().get(0).healthCheckResult().get(0).targetResourceType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T08:33:43Z"),
+        Assertions.assertEquals(HealthState.WARNING, model.value().get(0).healthState());
+        Assertions.assertEquals("yeip", model.value().get(0).healthCheckResult().get(0).name());
+        Assertions.assertEquals("smjtgrqgdg", model.value().get(0).healthCheckResult().get(0).displayName());
+        Assertions.assertEquals("leplkcsmk", model.value().get(0).healthCheckResult().get(0).title());
+        Assertions.assertEquals(Status.NOT_SPECIFIED, model.value().get(0).healthCheckResult().get(0).status());
+        Assertions.assertEquals(Severity.INFORMATIONAL, model.value().get(0).healthCheckResult().get(0).severity());
+        Assertions.assertEquals("aedorvvmqf", model.value().get(0).healthCheckResult().get(0).description());
+        Assertions.assertEquals("ygbdgwumgxdgdhpa", model.value().get(0).healthCheckResult().get(0).remediation());
+        Assertions.assertEquals("dexjddvjs", model.value().get(0).healthCheckResult().get(0).targetResourceId());
+        Assertions.assertEquals("wotmmwllcolsrsxa",
+            model.value().get(0).healthCheckResult().get(0).targetResourceName());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T12:02:59Z"),
             model.value().get(0).healthCheckResult().get(0).timestamp());
-        Assertions.assertEquals("hkpigqfusuckzmkw", model.value().get(0).healthCheckResult().get(0).additionalData());
-        Assertions.assertEquals("snoxaxmqeqa", model.value().get(0).healthCheckResult().get(0).healthCheckSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T18:00:52Z"), model.value().get(0).healthCheckDate());
-        Assertions.assertEquals("ugwbsreurfqkf", model.value().get(0).packagePath());
-        Assertions.assertEquals(98.716385F, model.value().get(0).packageSizeInMb());
-        Assertions.assertEquals("nlvhhtklnvnafvv", model.value().get(0).displayName());
-        Assertions.assertEquals("f", model.value().get(0).version());
-        Assertions.assertEquals("ev", model.value().get(0).publisher());
-        Assertions.assertEquals("oslc", model.value().get(0).releaseLink());
+        Assertions.assertEquals("hexcgjokj", model.value().get(0).healthCheckResult().get(0).additionalData());
+        Assertions.assertEquals("nhvlqjbekp", model.value().get(0).healthCheckResult().get(0).healthCheckSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T00:58:10Z"), model.value().get(0).healthCheckDate());
+        Assertions.assertEquals("hvhfnracw", model.value().get(0).packagePath());
+        Assertions.assertEquals(90.1312F, model.value().get(0).packageSizeInMb());
+        Assertions.assertEquals("g", model.value().get(0).displayName());
+        Assertions.assertEquals("ujwouhdawsi", model.value().get(0).version());
+        Assertions.assertEquals("bjb", model.value().get(0).publisher());
+        Assertions.assertEquals("jybvit", model.value().get(0).releaseLink());
         Assertions.assertEquals(AvailabilityType.ONLINE, model.value().get(0).availabilityType());
-        Assertions.assertEquals("okkhminq", model.value().get(0).packageType());
-        Assertions.assertEquals("mczngn", model.value().get(0).additionalProperties());
-        Assertions.assertEquals(4.8717856F, model.value().get(0).progressPercentage());
-        Assertions.assertEquals("wuninv", model.value().get(0).notifyMessage());
+        Assertions.assertEquals("y", model.value().get(0).packageType());
+        Assertions.assertEquals("nu", model.value().get(0).additionalProperties());
+        Assertions.assertEquals(79.95618F, model.value().get(0).progressPercentage());
+        Assertions.assertEquals("uwdchozf", model.value().get(0).notifyMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateList model = new UpdateList().withValue(Arrays.asList(
-            new HciUpdateInner().withLocation("razftxejwabmdujt")
-                .withInstalledDate(OffsetDateTime.parse("2021-11-13T23:19:59Z"))
-                .withDescription("c")
-                .withMinSbeVersionRequired("urbuhhlkyqltq")
-                .withState(State.ADDITIONAL_CONTENT_REQUIRED)
+            new HciUpdateInner().withLocation("aqkue")
+                .withInstalledDate(OffsetDateTime.parse("2021-01-04T22:14:02Z"))
+                .withDescription("hoygzcbyfq")
+                .withState(State.HEALTH_CHECKING)
                 .withPrerequisites(Arrays.asList(
-                    new UpdatePrerequisite().withUpdateType("wkffdjkt").withVersion("sidfv").withPackageName("g"),
-                    new UpdatePrerequisite().withUpdateType("n").withVersion("ijtk").withPackageName("sqo")))
+                    new UpdatePrerequisite().withUpdateType("tehqpuvjmvq")
+                        .withVersion("dwckygroe")
+                        .withPackageName("ndljdjuskbr"),
+                    new UpdatePrerequisite().withUpdateType("qyn")
+                        .withVersion("eysfaqegplw")
+                        .withPackageName("shwddkvbxgk"),
+                    new UpdatePrerequisite().withUpdateType("sybwptdaca").withVersion("vlf").withPackageName("ymtpo")))
                 .withComponentVersions(Arrays.asList(
-                    new PackageVersionInfo().withPackageType("kayi")
-                        .withVersion("sharujtj")
-                        .withLastUpdated(OffsetDateTime.parse("2021-07-10T17:52:36Z")),
-                    new PackageVersionInfo().withPackageType("zyjq")
-                        .withVersion("vwkpqh")
-                        .withLastUpdated(OffsetDateTime.parse("2021-07-09T12:00:41Z")),
-                    new PackageVersionInfo().withPackageType("uygb")
-                        .withVersion("qqekewvnqvcdlgu")
-                        .withLastUpdated(OffsetDateTime.parse("2021-11-05T12:42:34Z")),
-                    new PackageVersionInfo().withPackageType("f")
-                        .withVersion("wnlaxpu")
-                        .withLastUpdated(OffsetDateTime.parse("2021-08-11T07:22:41Z"))))
+                    new PackageVersionInfo().withPackageType("azerohzrsq")
+                        .withVersion("sxkdnwqapfgsdpc")
+                        .withLastUpdated(OffsetDateTime.parse("2021-06-29T02:55:38Z")),
+                    new PackageVersionInfo().withPackageType("mzhhkuuipldqqc")
+                        .withVersion("kva")
+                        .withLastUpdated(OffsetDateTime.parse("2021-01-13T21:15:49Z")),
+                    new PackageVersionInfo().withPackageType("tjqvqyvweht")
+                        .withVersion("mxhzzysevus")
+                        .withLastUpdated(OffsetDateTime.parse("2021-05-26T10:14:06Z")),
+                    new PackageVersionInfo().withPackageType("rrryveimips")
+                        .withVersion("yzatvfuzkaft")
+                        .withLastUpdated(OffsetDateTime.parse("2021-03-25T16:42:15Z"))))
                 .withRebootRequired(RebootRequirement.UNKNOWN)
-                .withHealthState(HealthState.FAILURE)
+                .withHealthState(HealthState.WARNING)
                 .withHealthCheckResult(Arrays.asList(
-                    new PrecheckResult().withName("tacgxmfc")
-                        .withDisplayName("er")
+                    new PrecheckResult().withName("yeip")
+                        .withDisplayName("smjtgrqgdg")
                         .withTags(new PrecheckResultTags())
-                        .withHealthCheckTags("datavs")
-                        .withTitle("hlwntsjgq")
-                        .withStatus(Status.FAILED)
-                        .withSeverity(Severity.CRITICAL)
-                        .withDescription("uuuybnchrsziz")
-                        .withRemediation("uelyetndn")
-                        .withTargetResourceId("qyggagfl")
-                        .withTargetResourceName("gm")
-                        .withTargetResourceType("wahzjmucftbyr")
-                        .withTimestamp(OffsetDateTime.parse("2021-04-22T08:33:43Z"))
-                        .withAdditionalData("hkpigqfusuckzmkw")
-                        .withHealthCheckSource("snoxaxmqeqa"),
-                    new PrecheckResult().withName("hjnhgwydyynfsvk")
-                        .withDisplayName("bvqt")
+                        .withTitle("leplkcsmk")
+                        .withStatus(Status.NOT_SPECIFIED)
+                        .withSeverity(Severity.INFORMATIONAL)
+                        .withDescription("aedorvvmqf")
+                        .withRemediation("ygbdgwumgxdgdhpa")
+                        .withTargetResourceId("dexjddvjs")
+                        .withTargetResourceName("wotmmwllcolsrsxa")
+                        .withTimestamp(OffsetDateTime.parse("2020-12-31T12:02:59Z"))
+                        .withAdditionalData("hexcgjokj")
+                        .withHealthCheckSource("nhvlqjbekp"),
+                    new PrecheckResult().withName("ksnbksdqhjv")
+                        .withDisplayName("lxeslkhh")
                         .withTags(new PrecheckResultTags())
-                        .withHealthCheckTags("datarfdl")
-                        .withTitle("kh")
-                        .withStatus(Status.NOT_YET_REGISTERED)
+                        .withTitle("cpoq")
+                        .withStatus(Status.DEPLOYMENT_IN_PROGRESS)
+                        .withSeverity(Severity.WARNING)
+                        .withDescription("jwgo")
+                        .withRemediation("lejjjkxy")
+                        .withTargetResourceId("fdb")
+                        .withTargetResourceName("bztensvkzykjtj")
+                        .withTimestamp(OffsetDateTime.parse("2021-11-07T18:10:31Z"))
+                        .withAdditionalData("fwushcdpkupn")
+                        .withHealthCheckSource("mgjfbpkuwxeoio"),
+                    new PrecheckResult().withName("izfavkjzwf")
+                        .withDisplayName("yay")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("fz")
+                        .withStatus(Status.IN_PROGRESS)
                         .withSeverity(Severity.HIDDEN)
-                        .withDescription("zjcpeogk")
-                        .withRemediation("mgbro")
-                        .withTargetResourceId("ddbhf")
-                        .withTargetResourceName("fpazjzoywjxhpd")
-                        .withTargetResourceType("ontacnpq")
-                        .withTimestamp(OffsetDateTime.parse("2020-12-27T20:17:23Z"))
-                        .withAdditionalData("tuevrh")
-                        .withHealthCheckSource("jyoogwxh")))
-                .withHealthCheckDate(OffsetDateTime.parse("2021-05-24T18:00:52Z"))
-                .withPackagePath("ugwbsreurfqkf")
-                .withPackageSizeInMb(98.716385F)
-                .withDisplayName("nlvhhtklnvnafvv")
-                .withVersion("f")
-                .withPublisher("ev")
-                .withReleaseLink("oslc")
+                        .withDescription("zxmdew")
+                        .withRemediation("sxkrpl")
+                        .withTargetResourceId("aze")
+                        .withTargetResourceName("w")
+                        .withTimestamp(OffsetDateTime.parse("2021-03-06T21:39:52Z"))
+                        .withAdditionalData("y")
+                        .withHealthCheckSource("uhbrnnhjxsq"),
+                    new PrecheckResult().withName("hqkb")
+                        .withDisplayName("etpozycyqiq")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("fsetz")
+                        .withStatus(Status.NOT_CONNECTED_RECENTLY)
+                        .withSeverity(Severity.WARNING)
+                        .withDescription("ledynojpz")
+                        .withRemediation("wfbzkkdt")
+                        .withTargetResourceId("qsyclj")
+                        .withTargetResourceName("lpkpbafvafhl")
+                        .withTimestamp(OffsetDateTime.parse("2021-02-22T18:37:06Z"))
+                        .withAdditionalData("cbevxrhyzdfw")
+                        .withHealthCheckSource("ofpltdbm")))
+                .withHealthCheckDate(OffsetDateTime.parse("2021-02-07T00:58:10Z"))
+                .withPackagePath("hvhfnracw")
+                .withPackageSizeInMb(90.1312F)
+                .withDisplayName("g")
+                .withVersion("ujwouhdawsi")
+                .withPublisher("bjb")
+                .withReleaseLink("jybvit")
                 .withAvailabilityType(AvailabilityType.ONLINE)
-                .withPackageType("okkhminq")
-                .withAdditionalProperties("mczngn")
-                .withProgressPercentage(4.8717856F)
-                .withNotifyMessage("wuninv"),
-            new HciUpdateInner().withLocation("xdtddmflhuytxzv")
-                .withInstalledDate(OffsetDateTime.parse("2021-03-01T11:01:37Z"))
-                .withDescription("annovvoxczytpr")
-                .withMinSbeVersionRequired("wvroevytlyokrrr")
-                .withState(State.PREPARATION_FAILED)
+                .withPackageType("y")
+                .withAdditionalProperties("nu")
+                .withProgressPercentage(79.95618F)
+                .withNotifyMessage("uwdchozf"),
+            new HciUpdateInner().withLocation("nuwiguyxlykwph")
+                .withInstalledDate(OffsetDateTime.parse("2021-06-18T05:52:26Z"))
+                .withDescription("mpe")
+                .withState(State.READY)
                 .withPrerequisites(Arrays.asList(
-                    new UpdatePrerequisite().withUpdateType("sasbcrymodizrx")
-                        .withVersion("obdxnazpmkmlm")
-                        .withPackageName("vfxzopjh"),
-                    new UpdatePrerequisite().withUpdateType("xliohrdddt")
-                        .withVersion("xqbawpc")
-                        .withPackageName("nzqcy"),
-                    new UpdatePrerequisite().withUpdateType("apqofyuicdhz").withVersion("ybww").withPackageName("d"),
-                    new UpdatePrerequisite().withUpdateType("bid").withVersion("m").withPackageName("f")))
+                    new UpdatePrerequisite().withUpdateType("aonwivkcqhrxh")
+                        .withVersion("nlccrm")
+                        .withPackageName("yupiju"),
+                    new UpdatePrerequisite().withUpdateType("qjfkakfqfrkemyi")
+                        .withVersion("udxjascowv")
+                        .withPackageName("jkpdxphlkksnm"),
+                    new UpdatePrerequisite().withUpdateType("vyfijdkzuqnw")
+                        .withVersion("thuqolyahluq")
+                        .withPackageName("ulsutrjbhxy")))
                 .withComponentVersions(Arrays.asList(
-                    new PackageVersionInfo().withPackageType("u")
-                        .withVersion("pckc")
-                        .withLastUpdated(OffsetDateTime.parse("2021-12-09T01:38:35Z")),
-                    new PackageVersionInfo().withPackageType("weyoxoy")
-                        .withVersion("k")
-                        .withLastUpdated(OffsetDateTime.parse("2021-09-08T11:55:35Z")),
-                    new PackageVersionInfo().withPackageType("mmoiroqboshbra")
-                        .withVersion("pyyrmfs")
-                        .withLastUpdated(OffsetDateTime.parse("2021-03-28T08:56:43Z"))))
-                .withRebootRequired(RebootRequirement.UNKNOWN)
+                    new PackageVersionInfo().withPackageType("qezv")
+                        .withVersion("ugdrftbc")
+                        .withLastUpdated(OffsetDateTime.parse("2021-01-25T09:01:22Z")),
+                    new PackageVersionInfo().withPackageType("e")
+                        .withVersion("uowtljvfwhrea")
+                        .withLastUpdated(OffsetDateTime.parse("2021-05-20T05:27:46Z"))))
+                .withRebootRequired(RebootRequirement.TRUE)
                 .withHealthState(HealthState.IN_PROGRESS)
                 .withHealthCheckResult(Arrays.asList(
-                    new PrecheckResult().withName("pdbwnupgahxkum")
-                        .withDisplayName("jcaacfdmmcpugm")
+                    new PrecheckResult().withName("bczsulmdgglmepjp")
+                        .withDisplayName("eykgsangpszngaf")
                         .withTags(new PrecheckResultTags())
-                        .withHealthCheckTags("dataepvufhbzehew")
-                        .withTitle("qhnlbqnbld")
-                        .withStatus(Status.NOT_SPECIFIED)
-                        .withSeverity(Severity.CRITICAL)
-                        .withDescription("schori")
-                        .withRemediation("rsrrmoucsofldp")
-                        .withTargetResourceId("iyfc")
-                        .withTargetResourceName("beolh")
-                        .withTargetResourceType("lvbmxuqibsxtkcu")
-                        .withTimestamp(OffsetDateTime.parse("2021-03-04T11:35:39Z"))
-                        .withAdditionalData("farfs")
-                        .withHealthCheckSource("wlkjxn"),
-                    new PrecheckResult().withName("vwgf")
-                        .withDisplayName("mhqykizmdksa")
-                        .withTags(new PrecheckResultTags())
-                        .withHealthCheckTags("datacluqvo")
-                        .withTitle("ycjimryvwgcwwpbm")
+                        .withTitle("lkvec")
                         .withStatus(Status.VALIDATION_FAILED)
                         .withSeverity(Severity.INFORMATIONAL)
-                        .withDescription("dsxwefoh")
-                        .withRemediation("bvopwndyqle")
-                        .withTargetResourceId("lklmtkhlo")
-                        .withTargetResourceName("x")
-                        .withTargetResourceType("vbrdfjmzsyzfho")
-                        .withTimestamp(OffsetDateTime.parse("2021-03-23T11:42:29Z"))
-                        .withAdditionalData("k")
-                        .withHealthCheckSource("ychunsjlpjrtwszh")))
-                .withHealthCheckDate(OffsetDateTime.parse("2021-11-19T08:14:33Z"))
-                .withPackagePath("c")
-                .withPackageSizeInMb(95.381325F)
-                .withDisplayName("rrmhwrbfdp")
-                .withVersion("lubhvjg")
-                .withPublisher("ocu")
-                .withReleaseLink("lw")
-                .withAvailabilityType(AvailabilityType.NOTIFY)
-                .withPackageType("mhoocl")
-                .withAdditionalProperties("n")
-                .withProgressPercentage(16.419632F)
-                .withNotifyMessage("czj")));
+                        .withDescription("oady")
+                        .withRemediation("mzr")
+                        .withTargetResourceId("foknubnoitp")
+                        .withTargetResourceName("ztrgdgxvcoq")
+                        .withTimestamp(OffsetDateTime.parse("2021-01-10T20:47:36Z"))
+                        .withAdditionalData("ugyxpqit")
+                        .withHealthCheckSource("ialwv"),
+                    new PrecheckResult().withName("buhzacaq")
+                        .withDisplayName("ltcoqc")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("dsxzakuejkmvb")
+                        .withStatus(Status.NOT_YET_REGISTERED)
+                        .withSeverity(Severity.HIDDEN)
+                        .withDescription("qcvov")
+                        .withRemediation("f")
+                        .withTargetResourceId("sj")
+                        .withTargetResourceName("bemyeji")
+                        .withTimestamp(OffsetDateTime.parse("2021-10-02T18:03:34Z"))
+                        .withAdditionalData("egthortudawl")
+                        .withHealthCheckSource("felqerpptc"),
+                    new PrecheckResult().withName("qnzmnhiil")
+                        .withDisplayName("lwcjgckbbcccgzpr")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("nyuffat")
+                        .withStatus(Status.FAILED)
+                        .withSeverity(Severity.WARNING)
+                        .withDescription("wcxbyubhiqdxyurn")
+                        .withRemediation("uhzafccnuhii")
+                        .withTargetResourceId("yl")
+                        .withTargetResourceName("igvxvatvcrk")
+                        .withTimestamp(OffsetDateTime.parse("2021-04-27T10:25:55Z"))
+                        .withAdditionalData("bqxvhcsyhzlwxae")
+                        .withHealthCheckSource("vurex")))
+                .withHealthCheckDate(OffsetDateTime.parse("2021-04-19T23:39:17Z"))
+                .withPackagePath("bdweade")
+                .withPackageSizeInMb(89.11213F)
+                .withDisplayName("ntopa")
+                .withVersion("tmvmmagoaqylkjz")
+                .withPublisher("iua")
+                .withReleaseLink("cgm")
+                .withAvailabilityType(AvailabilityType.ONLINE)
+                .withPackageType("f")
+                .withAdditionalProperties("zc")
+                .withProgressPercentage(56.392906F)
+                .withNotifyMessage("rlgjm"),
+            new HciUpdateInner().withLocation("u")
+                .withInstalledDate(OffsetDateTime.parse("2021-05-07T02:59:46Z"))
+                .withDescription("lcdi")
+                .withState(State.INSTALLATION_FAILED)
+                .withPrerequisites(Arrays.asList(
+                    new UpdatePrerequisite().withUpdateType("rzmq")
+                        .withVersion("cycijoclxiut")
+                        .withPackageName("cyzyzjdnrqjbt"),
+                    new UpdatePrerequisite().withUpdateType("eaoqaqbzgyhf")
+                        .withVersion("v")
+                        .withPackageName("tbwbqamteuli"),
+                    new UpdatePrerequisite().withUpdateType("lpkcvmwfauxxep")
+                        .withVersion("wbormcqmi")
+                        .withPackageName("ijqpkzfbojxjmcs")))
+                .withComponentVersions(Arrays.asList(
+                    new PackageVersionInfo().withPackageType("ixvcpwnkwywzwo")
+                        .withVersion("lickduoi")
+                        .withLastUpdated(OffsetDateTime.parse("2021-11-13T03:54:23Z")),
+                    new PackageVersionInfo().withPackageType("t")
+                        .withVersion("sknxrwzawnvsbcf")
+                        .withLastUpdated(OffsetDateTime.parse("2021-04-25T03:12:47Z")),
+                    new PackageVersionInfo().withPackageType("xn")
+                        .withVersion("ycvdimw")
+                        .withLastUpdated(OffsetDateTime.parse("2021-08-19T02:46:59Z"))))
+                .withRebootRequired(RebootRequirement.FALSE)
+                .withHealthState(HealthState.IN_PROGRESS)
+                .withHealthCheckResult(Arrays.asList(
+                    new PrecheckResult().withName("utrwpweryekz")
+                        .withDisplayName("hmeott")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("yos")
+                        .withStatus(Status.DISCONNECTED)
+                        .withSeverity(Severity.WARNING)
+                        .withDescription("jtfvpndpmiljpn")
+                        .withRemediation("nudqllz")
+                        .withTargetResourceId("uzpjlxeehux")
+                        .withTargetResourceName("hzlraymezxlsk")
+                        .withTimestamp(OffsetDateTime.parse("2021-04-29T19:42:01Z"))
+                        .withAdditionalData("rfdsajrednwy")
+                        .withHealthCheckSource("htuwgmev"),
+                    new PrecheckResult().withName("fpwzyifrkgwltx")
+                        .withDisplayName("ipxgzdy")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("fayorpravkjoges")
+                        .withStatus(Status.IN_PROGRESS)
+                        .withSeverity(Severity.HIDDEN)
+                        .withDescription("jkwynqxaekqsykv")
+                        .withRemediation("tqpkevmy")
+                        .withTargetResourceId("jcrspxklurcclfgx")
+                        .withTargetResourceName("n")
+                        .withTimestamp(OffsetDateTime.parse("2021-03-24T06:21:26Z"))
+                        .withAdditionalData("zposewxigpxvkqm")
+                        .withHealthCheckSource("pxvpifdfaif")))
+                .withHealthCheckDate(OffsetDateTime.parse("2021-07-31T02:01:11Z"))
+                .withPackagePath("eyuubei")
+                .withPackageSizeInMb(43.759953F)
+                .withDisplayName("fytoi")
+                .withVersion("gygvfltgvdiho")
+                .withPublisher("krxwet")
+                .withReleaseLink("drcyrucpcun")
+                .withAvailabilityType(AvailabilityType.ONLINE)
+                .withPackageType("qumoeno")
+                .withAdditionalProperties("aienhqhsknd")
+                .withProgressPercentage(53.89595F)
+                .withNotifyMessage("aadl"),
+            new HciUpdateInner().withLocation("ephblkwqpatvbqs")
+                .withInstalledDate(OffsetDateTime.parse("2021-05-20T19:50:45Z"))
+                .withDescription("vivuzqymtuowo")
+                .withState(State.NOT_APPLICABLE_BECAUSE_ANOTHER_UPDATE_IS_IN_PROGRESS)
+                .withPrerequisites(Arrays.asList(
+                    new UpdatePrerequisite().withUpdateType("qhzvb")
+                        .withVersion("cdb")
+                        .withPackageName("fzndscxmxeatkd"),
+                    new UpdatePrerequisite().withUpdateType("wnrdjyibqbnaom")
+                        .withVersion("rmkuh")
+                        .withPackageName("xljalfihc"),
+                    new UpdatePrerequisite().withUpdateType("obcancdexxqcw")
+                        .withVersion("xf")
+                        .withPackageName("aknokzwjjzrl"),
+                    new UpdatePrerequisite().withUpdateType("xldzyyfytpqsix")
+                        .withVersion("m")
+                        .withPackageName("jivyqlkjuv")))
+                .withComponentVersions(Arrays.asList(
+                    new PackageVersionInfo().withPackageType("slzoyov")
+                        .withVersion("dbpqvybefgvm")
+                        .withLastUpdated(OffsetDateTime.parse("2021-08-07T10:44:41Z")),
+                    new PackageVersionInfo().withPackageType("cvtlubseskvc")
+                        .withVersion("rtrh")
+                        .withLastUpdated(OffsetDateTime.parse("2021-03-05T23:21:47Z")),
+                    new PackageVersionInfo().withPackageType("iryky")
+                        .withVersion("dzfqivjreuy")
+                        .withLastUpdated(OffsetDateTime.parse("2021-07-17T02:16:27Z"))))
+                .withRebootRequired(RebootRequirement.FALSE)
+                .withHealthState(HealthState.ERROR)
+                .withHealthCheckResult(Arrays.asList(
+                    new PrecheckResult().withName("bxoeeonql")
+                        .withDisplayName("wmyymvqdbpbhf")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("vezcrcssbzhdd")
+                        .withStatus(Status.VALIDATION_FAILED)
+                        .withSeverity(Severity.INFORMATIONAL)
+                        .withDescription("b")
+                        .withRemediation("kalehp")
+                        .withTargetResourceId("awugiqjti")
+                        .withTargetResourceName("qgdm")
+                        .withTimestamp(OffsetDateTime.parse("2021-04-08T08:46:59Z"))
+                        .withAdditionalData("tteajohiygs")
+                        .withHealthCheckSource("bonhpczykmktp"),
+                    new PrecheckResult().withName("xqcsehch")
+                        .withDisplayName("ufmpqumqyjgy")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("lod")
+                        .withStatus(Status.NOT_CONNECTED_RECENTLY)
+                        .withSeverity(Severity.HIDDEN)
+                        .withDescription("n")
+                        .withRemediation("fnhsenwphp")
+                        .withTargetResourceId("ngqjclidf")
+                        .withTargetResourceName("jwjj")
+                        .withTimestamp(OffsetDateTime.parse("2021-07-16T23:29:53Z"))
+                        .withAdditionalData("eqrkuorhtss")
+                        .withHealthCheckSource("qnmdvhazcvjy"),
+                    new PrecheckResult().withName("qswbqerzwx")
+                        .withDisplayName("txtd")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("vlbpktgdstyou")
+                        .withStatus(Status.DEPLOYMENT_SUCCESS)
+                        .withSeverity(Severity.INFORMATIONAL)
+                        .withDescription("esw")
+                        .withRemediation("weg")
+                        .withTargetResourceId("uteyxeyguq")
+                        .withTargetResourceName("ijiitns")
+                        .withTimestamp(OffsetDateTime.parse("2021-03-05T21:47:33Z"))
+                        .withAdditionalData("desygrijwa")
+                        .withHealthCheckSource("fanraybfu"),
+                    new PrecheckResult().withName("frojsydgr")
+                        .withDisplayName("dkygywezski")
+                        .withTags(new PrecheckResultTags())
+                        .withTitle("f")
+                        .withStatus(Status.DISCONNECTED)
+                        .withSeverity(Severity.WARNING)
+                        .withDescription("eqvdsm")
+                        .withRemediation("lixqcah")
+                        .withTargetResourceId("xalybxawoijpo")
+                        .withTargetResourceName("blxpkkwjdjodq")
+                        .withTimestamp(OffsetDateTime.parse("2021-01-07T22:22:02Z"))
+                        .withAdditionalData("ncn")
+                        .withHealthCheckSource("mehllizhceu")))
+                .withHealthCheckDate(OffsetDateTime.parse("2021-01-23T23:01:20Z"))
+                .withPackagePath("dkadppyibn")
+                .withPackageSizeInMb(66.63858F)
+                .withDisplayName("d")
+                .withVersion("rxwhydtlu")
+                .withPublisher("adswz")
+                .withReleaseLink("uyem")
+                .withAvailabilityType(AvailabilityType.LOCAL)
+                .withPackageType("owhl")
+                .withAdditionalProperties("nwyrmouv")
+                .withProgressPercentage(9.2496395F)
+                .withNotifyMessage("kzkltrfowt")));
         model = BinaryData.fromObject(model).toObject(UpdateList.class);
-        Assertions.assertEquals("razftxejwabmdujt", model.value().get(0).location());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T23:19:59Z"), model.value().get(0).installedDate());
-        Assertions.assertEquals("c", model.value().get(0).description());
-        Assertions.assertEquals("urbuhhlkyqltq", model.value().get(0).minSbeVersionRequired());
-        Assertions.assertEquals(State.ADDITIONAL_CONTENT_REQUIRED, model.value().get(0).state());
-        Assertions.assertEquals("wkffdjkt", model.value().get(0).prerequisites().get(0).updateType());
-        Assertions.assertEquals("sidfv", model.value().get(0).prerequisites().get(0).version());
-        Assertions.assertEquals("g", model.value().get(0).prerequisites().get(0).packageName());
-        Assertions.assertEquals("kayi", model.value().get(0).componentVersions().get(0).packageType());
-        Assertions.assertEquals("sharujtj", model.value().get(0).componentVersions().get(0).version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T17:52:36Z"),
+        Assertions.assertEquals("aqkue", model.value().get(0).location());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T22:14:02Z"), model.value().get(0).installedDate());
+        Assertions.assertEquals("hoygzcbyfq", model.value().get(0).description());
+        Assertions.assertEquals(State.HEALTH_CHECKING, model.value().get(0).state());
+        Assertions.assertEquals("tehqpuvjmvq", model.value().get(0).prerequisites().get(0).updateType());
+        Assertions.assertEquals("dwckygroe", model.value().get(0).prerequisites().get(0).version());
+        Assertions.assertEquals("ndljdjuskbr", model.value().get(0).prerequisites().get(0).packageName());
+        Assertions.assertEquals("azerohzrsq", model.value().get(0).componentVersions().get(0).packageType());
+        Assertions.assertEquals("sxkdnwqapfgsdpc", model.value().get(0).componentVersions().get(0).version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T02:55:38Z"),
             model.value().get(0).componentVersions().get(0).lastUpdated());
         Assertions.assertEquals(RebootRequirement.UNKNOWN, model.value().get(0).rebootRequired());
-        Assertions.assertEquals(HealthState.FAILURE, model.value().get(0).healthState());
-        Assertions.assertEquals("tacgxmfc", model.value().get(0).healthCheckResult().get(0).name());
-        Assertions.assertEquals("er", model.value().get(0).healthCheckResult().get(0).displayName());
-        Assertions.assertEquals("hlwntsjgq", model.value().get(0).healthCheckResult().get(0).title());
-        Assertions.assertEquals(Status.FAILED, model.value().get(0).healthCheckResult().get(0).status());
-        Assertions.assertEquals(Severity.CRITICAL, model.value().get(0).healthCheckResult().get(0).severity());
-        Assertions.assertEquals("uuuybnchrsziz", model.value().get(0).healthCheckResult().get(0).description());
-        Assertions.assertEquals("uelyetndn", model.value().get(0).healthCheckResult().get(0).remediation());
-        Assertions.assertEquals("qyggagfl", model.value().get(0).healthCheckResult().get(0).targetResourceId());
-        Assertions.assertEquals("gm", model.value().get(0).healthCheckResult().get(0).targetResourceName());
-        Assertions.assertEquals("wahzjmucftbyr", model.value().get(0).healthCheckResult().get(0).targetResourceType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T08:33:43Z"),
+        Assertions.assertEquals(HealthState.WARNING, model.value().get(0).healthState());
+        Assertions.assertEquals("yeip", model.value().get(0).healthCheckResult().get(0).name());
+        Assertions.assertEquals("smjtgrqgdg", model.value().get(0).healthCheckResult().get(0).displayName());
+        Assertions.assertEquals("leplkcsmk", model.value().get(0).healthCheckResult().get(0).title());
+        Assertions.assertEquals(Status.NOT_SPECIFIED, model.value().get(0).healthCheckResult().get(0).status());
+        Assertions.assertEquals(Severity.INFORMATIONAL, model.value().get(0).healthCheckResult().get(0).severity());
+        Assertions.assertEquals("aedorvvmqf", model.value().get(0).healthCheckResult().get(0).description());
+        Assertions.assertEquals("ygbdgwumgxdgdhpa", model.value().get(0).healthCheckResult().get(0).remediation());
+        Assertions.assertEquals("dexjddvjs", model.value().get(0).healthCheckResult().get(0).targetResourceId());
+        Assertions.assertEquals("wotmmwllcolsrsxa",
+            model.value().get(0).healthCheckResult().get(0).targetResourceName());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T12:02:59Z"),
             model.value().get(0).healthCheckResult().get(0).timestamp());
-        Assertions.assertEquals("hkpigqfusuckzmkw", model.value().get(0).healthCheckResult().get(0).additionalData());
-        Assertions.assertEquals("snoxaxmqeqa", model.value().get(0).healthCheckResult().get(0).healthCheckSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T18:00:52Z"), model.value().get(0).healthCheckDate());
-        Assertions.assertEquals("ugwbsreurfqkf", model.value().get(0).packagePath());
-        Assertions.assertEquals(98.716385F, model.value().get(0).packageSizeInMb());
-        Assertions.assertEquals("nlvhhtklnvnafvv", model.value().get(0).displayName());
-        Assertions.assertEquals("f", model.value().get(0).version());
-        Assertions.assertEquals("ev", model.value().get(0).publisher());
-        Assertions.assertEquals("oslc", model.value().get(0).releaseLink());
+        Assertions.assertEquals("hexcgjokj", model.value().get(0).healthCheckResult().get(0).additionalData());
+        Assertions.assertEquals("nhvlqjbekp", model.value().get(0).healthCheckResult().get(0).healthCheckSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T00:58:10Z"), model.value().get(0).healthCheckDate());
+        Assertions.assertEquals("hvhfnracw", model.value().get(0).packagePath());
+        Assertions.assertEquals(90.1312F, model.value().get(0).packageSizeInMb());
+        Assertions.assertEquals("g", model.value().get(0).displayName());
+        Assertions.assertEquals("ujwouhdawsi", model.value().get(0).version());
+        Assertions.assertEquals("bjb", model.value().get(0).publisher());
+        Assertions.assertEquals("jybvit", model.value().get(0).releaseLink());
         Assertions.assertEquals(AvailabilityType.ONLINE, model.value().get(0).availabilityType());
-        Assertions.assertEquals("okkhminq", model.value().get(0).packageType());
-        Assertions.assertEquals("mczngn", model.value().get(0).additionalProperties());
-        Assertions.assertEquals(4.8717856F, model.value().get(0).progressPercentage());
-        Assertions.assertEquals("wuninv", model.value().get(0).notifyMessage());
+        Assertions.assertEquals("y", model.value().get(0).packageType());
+        Assertions.assertEquals("nu", model.value().get(0).additionalProperties());
+        Assertions.assertEquals(79.95618F, model.value().get(0).progressPercentage());
+        Assertions.assertEquals("uwdchozf", model.value().get(0).notifyMessage());
     }
 }

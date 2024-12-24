@@ -15,16 +15,16 @@ import java.util.Arrays;
 public final class UpdateRunsPutSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutUpdateRuns.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/PutUpdateRuns.
+     * json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
     public static void
-        getUpdateRunsUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        getUpdateRunsUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         UpdateRun resource = manager.updateRuns()
             .getWithResponse("testrg", "testcluster", "Microsoft4.2203.2.32", "23b779ba-0d52-4a80-8571-45ca74664ec3",
                 com.azure.core.util.Context.NONE)

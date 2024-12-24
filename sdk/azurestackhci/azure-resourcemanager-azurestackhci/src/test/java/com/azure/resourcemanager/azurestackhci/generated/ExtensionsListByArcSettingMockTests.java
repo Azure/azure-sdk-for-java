@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,22 +22,22 @@ public final class ExtensionsListByArcSettingMockTests {
     @Test
     public void testListByArcSetting() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Connected\",\"extensionParameters\":{\"forceUpdateTag\":\"ylrwoxzg\",\"publisher\":\"syxjijeyp\",\"type\":\"rbkerdkd\",\"typeHandlerVersion\":\"awqwjxild\",\"autoUpgradeMinorVersion\":true,\"settings\":\"datafeygzqp\",\"protectedSettings\":\"dataisf\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"Deleting\",\"perNodeExtensionDetails\":[{\"name\":\"xumentqontwhy\",\"extension\":\"ymulwivqtowl\",\"typeHandlerVersion\":\"sycoybajasqub\",\"state\":\"Canceled\",\"instanceView\":{\"name\":\"whjq\",\"type\":\"chqohtfxcpupuk\",\"typeHandlerVersion\":\"mjzpwdlvwtiwsm\",\"status\":{}}},{\"name\":\"onhqnam\",\"extension\":\"ultassae\",\"typeHandlerVersion\":\"wnaze\",\"state\":\"PartiallyConnected\",\"instanceView\":{\"name\":\"jlcyizy\",\"type\":\"cvxodkrvfsxxby\",\"typeHandlerVersion\":\"sqlv\",\"status\":{}}},{\"name\":\"pwgoljt\",\"extension\":\"nm\",\"typeHandlerVersion\":\"dobygoogxqapj\",\"state\":\"Updating\",\"instanceView\":{\"name\":\"jfucsaodjnosdkv\",\"type\":\"fasgm\",\"typeHandlerVersion\":\"rnzpducdaak\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"zboimyfpqdo\",\"name\":\"kpp\",\"type\":\"wyytfvpctf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"extensionParameters\":{\"forceUpdateTag\":\"v\",\"publisher\":\"hikea\",\"type\":\"rvgpomxpupdtsd\",\"typeHandlerVersion\":\"yies\",\"autoUpgradeMinorVersion\":true,\"settings\":\"dataqb\",\"protectedSettings\":\"datautmp\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"UpgradeFailedRollbackSucceeded\",\"perNodeExtensionDetails\":[{\"name\":\"sbgbwwzvdajfwn\",\"extension\":\"fmaciqgjjrlhiq\",\"typeHandlerVersion\":\"ixvt\",\"state\":\"Deleted\",\"instanceView\":{\"name\":\"xtndopgjttbasua\",\"type\":\"pdlndbeaqbkixvv\",\"typeHandlerVersion\":\"ynpbbfqvzfjmspu\",\"status\":{}}}],\"managedBy\":\"Azure\"},\"id\":\"zjljmphfk\",\"name\":\"ezolgjzm\",\"type\":\"cuydoccnxshanz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Extension> response
-            = manager.extensions().listByArcSetting("j", "hfjv", "ywjzebecuvlbefvw", com.azure.core.util.Context.NONE);
+            = manager.extensions().listByArcSetting("p", "hazyntacihnco", "mip", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ylrwoxzg", response.iterator().next().forceUpdateTag());
-        Assertions.assertEquals("syxjijeyp", response.iterator().next().publisher());
-        Assertions.assertEquals("rbkerdkd", response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("awqwjxild", response.iterator().next().typeHandlerVersion());
+        Assertions.assertEquals("v", response.iterator().next().forceUpdateTag());
+        Assertions.assertEquals("hikea", response.iterator().next().publisher());
+        Assertions.assertEquals("rvgpomxpupdtsd", response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("yies", response.iterator().next().typeHandlerVersion());
         Assertions.assertEquals(true, response.iterator().next().autoUpgradeMinorVersion());
         Assertions.assertEquals(true, response.iterator().next().enableAutomaticUpgrade());
     }

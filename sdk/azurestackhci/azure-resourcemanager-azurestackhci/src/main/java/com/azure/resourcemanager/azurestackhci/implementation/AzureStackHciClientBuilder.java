@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { AzureStackHciClientImpl.class })
 public final class AzureStackHciClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
+     * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureStackHciClientBuilder.

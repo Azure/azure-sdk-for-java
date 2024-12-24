@@ -15,7 +15,7 @@ import com.azure.resourcemanager.azurestackhci.models.SecuritySetting;
 public final class SecuritySettingImpl implements SecuritySetting, SecuritySetting.Definition, SecuritySetting.Update {
     private SecuritySettingInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -37,14 +37,6 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
         return this.innerModel().securedCoreComplianceAssignment();
     }
 
-    public ComplianceAssignmentType wdacComplianceAssignment() {
-        return this.innerModel().wdacComplianceAssignment();
-    }
-
-    public ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment() {
-        return this.innerModel().smbEncryptionForIntraClusterTrafficComplianceAssignment();
-    }
-
     public SecurityComplianceStatus securityComplianceStatus() {
         return this.innerModel().securityComplianceStatus();
     }
@@ -61,7 +53,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -91,7 +83,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
         return this;
     }
 
-    SecuritySettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    SecuritySettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new SecuritySettingInner();
         this.serviceManager = serviceManager;
         this.securitySettingsName = name;
@@ -116,7 +108,7 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
     }
 
     SecuritySettingImpl(SecuritySettingInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -143,19 +135,6 @@ public final class SecuritySettingImpl implements SecuritySetting, SecuritySetti
     public SecuritySettingImpl
         withSecuredCoreComplianceAssignment(ComplianceAssignmentType securedCoreComplianceAssignment) {
         this.innerModel().withSecuredCoreComplianceAssignment(securedCoreComplianceAssignment);
-        return this;
-    }
-
-    public SecuritySettingImpl withWdacComplianceAssignment(ComplianceAssignmentType wdacComplianceAssignment) {
-        this.innerModel().withWdacComplianceAssignment(wdacComplianceAssignment);
-        return this;
-    }
-
-    public SecuritySettingImpl withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
-        ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment) {
-        this.innerModel()
-            .withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
-                smbEncryptionForIntraClusterTrafficComplianceAssignment);
         return this;
     }
 

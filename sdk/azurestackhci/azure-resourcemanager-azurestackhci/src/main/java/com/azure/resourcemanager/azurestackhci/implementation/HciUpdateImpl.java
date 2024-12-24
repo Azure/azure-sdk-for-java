@@ -24,7 +24,7 @@ import java.util.List;
 public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, HciUpdate.Update {
     private HciUpdateInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -56,10 +56,6 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
 
     public String description() {
         return this.innerModel().description();
-    }
-
-    public String minSbeVersionRequired() {
-        return this.innerModel().minSbeVersionRequired();
     }
 
     public State state() {
@@ -165,7 +161,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -197,7 +193,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
         return this;
     }
 
-    HciUpdateImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    HciUpdateImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new HciUpdateInner();
         this.serviceManager = serviceManager;
         this.updateName = name;
@@ -224,7 +220,7 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
     }
 
     HciUpdateImpl(HciUpdateInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -273,11 +269,6 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
 
     public HciUpdateImpl withDescription(String description) {
         this.innerModel().withDescription(description);
-        return this;
-    }
-
-    public HciUpdateImpl withMinSbeVersionRequired(String minSbeVersionRequired) {
-        this.innerModel().withMinSbeVersionRequired(minSbeVersionRequired);
         return this;
     }
 

@@ -9,28 +9,44 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevice;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class EdgeDevicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"kind\":\"EdgeDevice\",\"id\":\"kxxi\",\"name\":\"wgxql\",\"type\":\"ekotjgxi\"}";
+        String responseStr
+            = "{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"gjs\",\"interfaceDescription\":\"ouarhwvixqqggljk\",\"componentId\":\"sjrclrvtzq\",\"driverVersion\":\"bctbhp\",\"ip4Address\":\"xpc\",\"subnetMask\":\"dnyeita\",\"defaultGateway\":\"qady\",\"dnsServers\":[\"ahwriuomzczfk\",\"ceevsa\",\"xwspcaxikhfjq\",\"bglcxkxgzzromvy\"],\"defaultIsolationId\":\"sem\"}],\"deviceMetadata\":\"esrfsvpinkzpatq\"},\"provisioningState\":\"PartiallyConnected\"},\"id\":\"wxspvckojaz\",\"name\":\"bgspf\",\"type\":\"esubzpvpv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EdgeDevice response = manager.edgeDevices()
-            .getWithResponse("ersejeg", "rkjguwrjmwvvbt", com.azure.core.util.Context.NONE)
+            .getWithResponse("ynbpvzlqywauy", "njc", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("gjs", response.deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("ouarhwvixqqggljk",
+            response.deviceConfiguration().nicDetails().get(0).interfaceDescription());
+        Assertions.assertEquals("sjrclrvtzq", response.deviceConfiguration().nicDetails().get(0).componentId());
+        Assertions.assertEquals("bctbhp", response.deviceConfiguration().nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("xpc", response.deviceConfiguration().nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("dnyeita", response.deviceConfiguration().nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("qady", response.deviceConfiguration().nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("ahwriuomzczfk",
+            response.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("sem", response.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("esrfsvpinkzpatq", response.deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals(ProvisioningState.PARTIALLY_CONNECTED, response.provisioningState());
     }
 }

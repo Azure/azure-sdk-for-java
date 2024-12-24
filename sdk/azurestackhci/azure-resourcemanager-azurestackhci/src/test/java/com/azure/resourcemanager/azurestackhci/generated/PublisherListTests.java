@@ -11,7 +11,7 @@ public final class PublisherListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublisherList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"wahfbousnfepgfew\"},\"id\":\"wlyxgncxyk\",\"name\":\"hdjhlimmbcx\",\"type\":\"h\"},{\"properties\":{\"provisioningState\":\"orxvxcjzhqiz\"},\"id\":\"pxtgqscjav\",\"name\":\"t\",\"type\":\"uhdqazk\"}],\"nextLink\":\"gg\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"rwgdnqzbrfks\"},\"id\":\"hzmtksjc\",\"name\":\"tdigsxcdglj\",\"type\":\"lkeuac\"}],\"nextLink\":\"omflrytswfp\"}")
             .toObject(PublisherList.class);
     }
 

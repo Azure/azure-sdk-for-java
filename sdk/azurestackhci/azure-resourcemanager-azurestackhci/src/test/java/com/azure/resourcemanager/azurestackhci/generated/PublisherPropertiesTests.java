@@ -11,7 +11,7 @@ public final class PublisherPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublisherProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"vyi\"}").toObject(PublisherProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"wskondcbrwimuvqe\"}").toObject(PublisherProperties.class);
     }
 
     @org.junit.jupiter.api.Test

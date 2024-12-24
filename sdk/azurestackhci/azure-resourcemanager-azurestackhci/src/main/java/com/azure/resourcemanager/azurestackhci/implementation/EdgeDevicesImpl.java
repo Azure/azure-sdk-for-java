@@ -22,10 +22,10 @@ public final class EdgeDevicesImpl implements EdgeDevices {
 
     private final EdgeDevicesClient innerClient;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public EdgeDevicesImpl(EdgeDevicesClient innerClient,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -52,25 +52,6 @@ public final class EdgeDevicesImpl implements EdgeDevices {
 
     public EdgeDevice get(String resourceUri, String edgeDeviceName) {
         EdgeDeviceInner inner = this.serviceClient().get(resourceUri, edgeDeviceName);
-        if (inner != null) {
-            return new EdgeDeviceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource) {
-        EdgeDeviceInner inner = this.serviceClient().createOrUpdate(resourceUri, edgeDeviceName, resource);
-        if (inner != null) {
-            return new EdgeDeviceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public EdgeDevice createOrUpdate(String resourceUri, String edgeDeviceName, EdgeDeviceInner resource,
-        Context context) {
-        EdgeDeviceInner inner = this.serviceClient().createOrUpdate(resourceUri, edgeDeviceName, resource, context);
         if (inner != null) {
             return new EdgeDeviceImpl(inner, this.manager());
         } else {
@@ -106,11 +87,79 @@ public final class EdgeDevicesImpl implements EdgeDevices {
         }
     }
 
+    public EdgeDevice getById(String id) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String edgeDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "edgeDeviceName");
+        if (edgeDeviceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeDevices'.", id)));
+        }
+        return this.getWithResponse(resourceUri, edgeDeviceName, Context.NONE).getValue();
+    }
+
+    public Response<EdgeDevice> getByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String edgeDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "edgeDeviceName");
+        if (edgeDeviceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeDevices'.", id)));
+        }
+        return this.getWithResponse(resourceUri, edgeDeviceName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String edgeDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "edgeDeviceName");
+        if (edgeDeviceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeDevices'.", id)));
+        }
+        this.delete(resourceUri, edgeDeviceName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "resourceUri");
+        if (resourceUri == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
+        }
+        String edgeDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "edgeDeviceName");
+        if (edgeDeviceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeDevices'.", id)));
+        }
+        this.delete(resourceUri, edgeDeviceName, context);
+    }
+
     private EdgeDevicesClient serviceClient() {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
+    }
+
+    public EdgeDeviceImpl define(String name) {
+        return new EdgeDeviceImpl(name, this.manager());
     }
 }

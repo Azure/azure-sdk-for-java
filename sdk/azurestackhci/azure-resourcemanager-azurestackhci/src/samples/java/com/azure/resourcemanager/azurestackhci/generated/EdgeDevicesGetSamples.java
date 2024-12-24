@@ -10,15 +10,15 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class EdgeDevicesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetEdgeDevices.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/GetEdgeDevices.
+     * json
      */
     /**
      * Sample code: Get Edge Device.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void getEdgeDevice(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void getEdgeDevice(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.edgeDevices()
             .getWithResponse(
                 "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",

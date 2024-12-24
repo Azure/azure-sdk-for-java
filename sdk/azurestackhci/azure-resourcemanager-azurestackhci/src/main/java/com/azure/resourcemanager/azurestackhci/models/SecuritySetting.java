@@ -48,21 +48,6 @@ public interface SecuritySetting {
     ComplianceAssignmentType securedCoreComplianceAssignment();
 
     /**
-     * Gets the wdacComplianceAssignment property: WDAC Compliance Assignment.
-     * 
-     * @return the wdacComplianceAssignment value.
-     */
-    ComplianceAssignmentType wdacComplianceAssignment();
-
-    /**
-     * Gets the smbEncryptionForIntraClusterTrafficComplianceAssignment property: SMB encryption for intra-cluster
-     * traffic Compliance Assignment.
-     * 
-     * @return the smbEncryptionForIntraClusterTrafficComplianceAssignment value.
-     */
-    ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment();
-
-    /**
      * Gets the securityComplianceStatus property: Security Compliance Status.
      * 
      * @return the securityComplianceStatus value.
@@ -126,9 +111,7 @@ public interface SecuritySetting {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithSecuredCoreComplianceAssignment, DefinitionStages.WithWdacComplianceAssignment,
-            DefinitionStages.WithSmbEncryptionForIntraClusterTrafficComplianceAssignment,
-            DefinitionStages.WithProvisioningState {
+            extends DefinitionStages.WithSecuredCoreComplianceAssignment, DefinitionStages.WithProvisioningState {
             /**
              * Executes the create request.
              * 
@@ -159,36 +142,6 @@ public interface SecuritySetting {
         }
 
         /**
-         * The stage of the SecuritySetting definition allowing to specify wdacComplianceAssignment.
-         */
-        interface WithWdacComplianceAssignment {
-            /**
-             * Specifies the wdacComplianceAssignment property: WDAC Compliance Assignment.
-             * 
-             * @param wdacComplianceAssignment WDAC Compliance Assignment.
-             * @return the next definition stage.
-             */
-            WithCreate withWdacComplianceAssignment(ComplianceAssignmentType wdacComplianceAssignment);
-        }
-
-        /**
-         * The stage of the SecuritySetting definition allowing to specify
-         * smbEncryptionForIntraClusterTrafficComplianceAssignment.
-         */
-        interface WithSmbEncryptionForIntraClusterTrafficComplianceAssignment {
-            /**
-             * Specifies the smbEncryptionForIntraClusterTrafficComplianceAssignment property: SMB encryption for
-             * intra-cluster traffic Compliance Assignment.
-             * 
-             * @param smbEncryptionForIntraClusterTrafficComplianceAssignment SMB encryption for intra-cluster traffic
-             * Compliance Assignment.
-             * @return the next definition stage.
-             */
-            WithCreate withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
-                ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment);
-        }
-
-        /**
          * The stage of the SecuritySetting definition allowing to specify provisioningState.
          */
         interface WithProvisioningState {
@@ -212,9 +165,7 @@ public interface SecuritySetting {
     /**
      * The template for SecuritySetting update.
      */
-    interface Update
-        extends UpdateStages.WithSecuredCoreComplianceAssignment, UpdateStages.WithWdacComplianceAssignment,
-        UpdateStages.WithSmbEncryptionForIntraClusterTrafficComplianceAssignment, UpdateStages.WithProvisioningState {
+    interface Update extends UpdateStages.WithSecuredCoreComplianceAssignment, UpdateStages.WithProvisioningState {
         /**
          * Executes the update request.
          * 
@@ -246,36 +197,6 @@ public interface SecuritySetting {
              * @return the next definition stage.
              */
             Update withSecuredCoreComplianceAssignment(ComplianceAssignmentType securedCoreComplianceAssignment);
-        }
-
-        /**
-         * The stage of the SecuritySetting update allowing to specify wdacComplianceAssignment.
-         */
-        interface WithWdacComplianceAssignment {
-            /**
-             * Specifies the wdacComplianceAssignment property: WDAC Compliance Assignment.
-             * 
-             * @param wdacComplianceAssignment WDAC Compliance Assignment.
-             * @return the next definition stage.
-             */
-            Update withWdacComplianceAssignment(ComplianceAssignmentType wdacComplianceAssignment);
-        }
-
-        /**
-         * The stage of the SecuritySetting update allowing to specify
-         * smbEncryptionForIntraClusterTrafficComplianceAssignment.
-         */
-        interface WithSmbEncryptionForIntraClusterTrafficComplianceAssignment {
-            /**
-             * Specifies the smbEncryptionForIntraClusterTrafficComplianceAssignment property: SMB encryption for
-             * intra-cluster traffic Compliance Assignment.
-             * 
-             * @param smbEncryptionForIntraClusterTrafficComplianceAssignment SMB encryption for intra-cluster traffic
-             * Compliance Assignment.
-             * @return the next definition stage.
-             */
-            Update withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
-                ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment);
         }
 
         /**

@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.OperationListResult;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,11 +20,11 @@ public final class OperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wp\",\"isDataAction\":true,\"display\":{\"provider\":\"doejtighsxjpyt\",\"resource\":\"qbalahovuuwxhme\",\"operation\":\"nhjiotiffb\",\"description\":\"ngkegxcypxbbfe\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"zox\"}";
+            = "{\"value\":[{\"name\":\"zvajbvbnkrdem\",\"isDataAction\":false,\"display\":{\"provider\":\"kzidgzwdyd\",\"resource\":\"isvpztdivykpxkqe\",\"operation\":\"pjfojiunrls\",\"description\":\"uknsykdtoi\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"rcoanvxuldx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));

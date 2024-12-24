@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ValidateRequest;
 import com.azure.resourcemanager.azurestackhci.models.ValidateResponse;
 import java.nio.charset.StandardCharsets;
@@ -21,18 +21,18 @@ import reactor.core.publisher.Mono;
 public final class EdgeDevicesValidateMockTests {
     @Test
     public void testValidate() throws Exception {
-        String responseStr = "{\"status\":\"ybnxgztlcgc\"}";
+        String responseStr = "{\"status\":\"jmdihdcyyyzlw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ValidateResponse response = manager.edgeDevices()
-            .validate("rejdaahuqim", "dahlfxlmuifmuadj",
-                new ValidateRequest().withEdgeDeviceIds(Arrays.asList("snc")).withAdditionalInfo("iioshjgcz"),
+            .validate("ylytcovqseusr", "j",
+                new ValidateRequest().withEdgeDeviceIds(Arrays.asList("xzfxn")).withAdditionalInfo("lbmuos"),
                 com.azure.core.util.Context.NONE);
 
     }

@@ -21,7 +21,7 @@ import java.util.List;
 public final class ExtensionImpl implements Extension, Extension.Definition, Extension.Update {
     private ExtensionInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -100,7 +100,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -135,7 +135,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         return this;
     }
 
-    ExtensionImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    ExtensionImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new ExtensionInner();
         this.serviceManager = serviceManager;
         this.extensionName = name;
@@ -161,7 +161,7 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
     }
 
     ExtensionImpl(ExtensionInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

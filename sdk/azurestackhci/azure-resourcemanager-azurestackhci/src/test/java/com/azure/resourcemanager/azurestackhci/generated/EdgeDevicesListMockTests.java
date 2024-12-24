@@ -10,10 +10,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevice;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,17 +23,36 @@ public final class EdgeDevicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"EdgeDevice\",\"id\":\"derltfokyksyim\",\"name\":\"ccgrvkcxzznn\",\"type\":\"i\"}]}";
+            = "{\"value\":[{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"upmomihzbd\",\"interfaceDescription\":\"xpkcdp\",\"componentId\":\"yxelyicghflr\",\"driverVersion\":\"ssjyghsfx\",\"ip4Address\":\"bh\",\"subnetMask\":\"mgmqfmef\",\"defaultGateway\":\"qcpdwjgquxwey\",\"dnsServers\":[\"ndk\",\"cdjhunhg\"],\"defaultIsolationId\":\"gawnrrnquo\"},{\"adapterName\":\"sotirei\",\"interfaceDescription\":\"eobfsxstcyilbvzm\",\"componentId\":\"cjzlquzexokjxebj\",\"driverVersion\":\"zinzabwmvogljsvl\",\"ip4Address\":\"idnwceha\",\"subnetMask\":\"do\",\"defaultGateway\":\"l\",\"dnsServers\":[\"omqo\",\"pepiaeapfs\",\"rgdtpeqnacyheqw\",\"pqqncju\"],\"defaultIsolationId\":\"hjozf\"},{\"adapterName\":\"mcwmbup\",\"interfaceDescription\":\"qyvliqiipsejbsvs\",\"componentId\":\"ieswhddzydisn\",\"driverVersion\":\"pywyjlnld\",\"ip4Address\":\"ottdiiaocqibzj\",\"subnetMask\":\"weebiphryv\",\"defaultGateway\":\"wqwoqsratjhdhzyb\",\"dnsServers\":[\"jhfrzgdkkagv\"],\"defaultIsolationId\":\"khsusmmorf\"}],\"deviceMetadata\":\"hwilz\"},\"provisioningState\":\"DisableInProgress\"},\"id\":\"jmriprlkdneyttlr\",\"name\":\"xivcbkutpumlt\",\"type\":\"jflu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EdgeDevice> response
-            = manager.edgeDevices().list("vlrrskapbxwieexu", com.azure.core.util.Context.NONE);
+        PagedIterable<EdgeDevice> response = manager.edgeDevices().list("dp", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("upmomihzbd",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("xpkcdp",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).interfaceDescription());
+        Assertions.assertEquals("yxelyicghflr",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).componentId());
+        Assertions.assertEquals("ssjyghsfx",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("bh",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("mgmqfmef",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("qcpdwjgquxwey",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("ndk",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("gawnrrnquo",
+            response.iterator().next().deviceConfiguration().nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("hwilz", response.iterator().next().deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals(ProvisioningState.DISABLE_IN_PROGRESS, response.iterator().next().provisioningState());
     }
 }

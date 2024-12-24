@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,17 +20,17 @@ public final class ClustersCreateIdentityMockTests {
     @Test
     public void testCreateIdentity() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aadClientId\":\"ledjcustbvtqigd\",\"aadTenantId\":\"vsgeafgf\",\"aadServicePrincipalObjectId\":\"ehxlzsxezppk\",\"aadApplicationObjectId\":\"aaeskyfjlpze\"}}";
+            = "{\"properties\":{\"aadClientId\":\"ymh\",\"aadTenantId\":\"tyqft\",\"aadServicePrincipalObjectId\":\"hdpbo\",\"aadApplicationObjectId\":\"stkfvvdshxcdeds\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterIdentityResponse response
-            = manager.clusters().createIdentity("lsyj", "eolctaebf", com.azure.core.util.Context.NONE);
+            = manager.clusters().createIdentity("w", "sfxtjd", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,24 +21,24 @@ public final class ExtensionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Error\",\"extensionParameters\":{\"forceUpdateTag\":\"h\",\"publisher\":\"jsbcml\",\"type\":\"ahz\",\"typeHandlerVersion\":\"uroolkolirhhm\",\"autoUpgradeMinorVersion\":true,\"settings\":\"datau\",\"protectedSettings\":\"datafjzc\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"Error\",\"perNodeExtensionDetails\":[{\"name\":\"ahfxwccok\",\"extension\":\"kuk\",\"typeHandlerVersion\":\"c\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"hoqeqshavljqk\",\"type\":\"rqolnthbb\",\"typeHandlerVersion\":\"gzukw\",\"status\":{}}},{\"name\":\"zkjthfceyjn\",\"extension\":\"mlfuyfjbp\",\"typeHandlerVersion\":\"ddhlrufzcqyj\",\"state\":\"Canceled\",\"instanceView\":{\"name\":\"iocuselqkr\",\"type\":\"zrhxuddqmdtf\",\"typeHandlerVersion\":\"sjmrkkhm\",\"status\":{}}}],\"managedBy\":\"Azure\"},\"id\":\"gyqi\",\"name\":\"okwtjawhvagnqfqq\",\"type\":\"lcvmyolcaymjch\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"extensionParameters\":{\"forceUpdateTag\":\"wavvqxuajgcqwuly\",\"publisher\":\"gfcfdruwsik\",\"type\":\"tclhuulriqbyokv\",\"typeHandlerVersion\":\"bzsxebrslttfy\",\"autoUpgradeMinorVersion\":false,\"settings\":\"datawsuoardnagttpu\",\"protectedSettings\":\"databpgnrholhujbf\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"Moving\",\"perNodeExtensionDetails\":[{\"name\":\"olsyjprxsl\",\"extension\":\"dmcvhtbbz\",\"typeHandlerVersion\":\"f\",\"state\":\"Disconnected\",\"instanceView\":{\"name\":\"bx\",\"type\":\"qzgihotjecohmx\",\"typeHandlerVersion\":\"lrrskap\",\"status\":{}}},{\"name\":\"iee\",\"extension\":\"yaderltfokyks\",\"typeHandlerVersion\":\"myc\",\"state\":\"Updating\",\"instanceView\":{\"name\":\"cxzznnuife\",\"type\":\"ejeg\",\"typeHandlerVersion\":\"kjguwrjmwvvbtuq\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"wgxql\",\"name\":\"ekotjgxi\",\"type\":\"qfkyfhiwvjaqu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Extension response = manager.extensions()
-            .getWithResponse("ikff", "fgkuh", "nwhvuldbkkejj", "jigawgaz", com.azure.core.util.Context.NONE)
+            .getWithResponse("uiadhbatecaatsdo", "zn", "ucbdaom", "wiinjdllw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("h", response.forceUpdateTag());
-        Assertions.assertEquals("jsbcml", response.publisher());
-        Assertions.assertEquals("ahz", response.typePropertiesType());
-        Assertions.assertEquals("uroolkolirhhm", response.typeHandlerVersion());
-        Assertions.assertEquals(true, response.autoUpgradeMinorVersion());
+        Assertions.assertEquals("wavvqxuajgcqwuly", response.forceUpdateTag());
+        Assertions.assertEquals("gfcfdruwsik", response.publisher());
+        Assertions.assertEquals("tclhuulriqbyokv", response.typePropertiesType());
+        Assertions.assertEquals("bzsxebrslttfy", response.typeHandlerVersion());
+        Assertions.assertEquals(false, response.autoUpgradeMinorVersion());
         Assertions.assertEquals(true, response.enableAutomaticUpgrade());
     }
 }

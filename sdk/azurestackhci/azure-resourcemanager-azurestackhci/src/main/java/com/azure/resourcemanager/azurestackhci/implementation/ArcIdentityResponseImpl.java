@@ -10,10 +10,10 @@ import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 public final class ArcIdentityResponseImpl implements ArcIdentityResponse {
     private ArcIdentityResponseInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     ArcIdentityResponseImpl(ArcIdentityResponseInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +38,7 @@ public final class ArcIdentityResponseImpl implements ArcIdentityResponse {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 }

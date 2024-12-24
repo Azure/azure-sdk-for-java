@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,17 +20,17 @@ public final class ArcSettingsCreateIdentityMockTests {
     @Test
     public void testCreateIdentity() throws Exception {
         String responseStr
-            = "{\"properties\":{\"arcApplicationClientId\":\"fejdoqeykglty\",\"arcApplicationTenantId\":\"hqfgqkayejsx\",\"arcServicePrincipalObjectId\":\"gflwfgziiucijj\",\"arcApplicationObjectId\":\"atlijjjr\"}}";
+            = "{\"properties\":{\"arcApplicationClientId\":\"bbprtugav\",\"arcApplicationTenantId\":\"bcyksivmfogd\",\"arcServicePrincipalObjectId\":\"bfcmkrfts\",\"arcApplicationObjectId\":\"wjjxsgm\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ArcIdentityResponse response
-            = manager.arcSettings().createIdentity("x", "cakiqao", "djrkclamggl", com.azure.core.util.Context.NONE);
+        ArcIdentityResponse response = manager.arcSettings()
+            .createIdentity("pgeumilh", "uitrdexyiono", "ninbdbzsxcwqqrs", com.azure.core.util.Context.NONE);
 
     }
 }

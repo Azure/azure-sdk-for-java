@@ -13,21 +13,21 @@ public final class ExtensionPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionPatch model = BinaryData.fromString(
-            "{\"properties\":{\"extensionParameters\":{\"typeHandlerVersion\":\"sjkmnwqj\",\"enableAutomaticUpgrade\":true,\"settings\":\"dataiyhddvi\",\"protectedSettings\":\"dataegfnmntfpmvmemfn\"}}}")
+            "{\"properties\":{\"extensionParameters\":{\"typeHandlerVersion\":\"qgleohibetnluank\",\"enableAutomaticUpgrade\":true,\"settings\":\"dataeeebtijvacv\",\"protectedSettings\":\"dataqzbqqxlajrnwxa\"}}}")
             .toObject(ExtensionPatch.class);
-        Assertions.assertEquals("sjkmnwqj", model.extensionParameters().typeHandlerVersion());
+        Assertions.assertEquals("qgleohibetnluank", model.extensionParameters().typeHandlerVersion());
         Assertions.assertEquals(true, model.extensionParameters().enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtensionPatch model = new ExtensionPatch()
-            .withExtensionParameters(new ExtensionPatchParameters().withTypeHandlerVersion("sjkmnwqj")
+            .withExtensionParameters(new ExtensionPatchParameters().withTypeHandlerVersion("qgleohibetnluank")
                 .withEnableAutomaticUpgrade(true)
-                .withSettings("dataiyhddvi")
-                .withProtectedSettings("dataegfnmntfpmvmemfn"));
+                .withSettings("dataeeebtijvacv")
+                .withProtectedSettings("dataqzbqqxlajrnwxa"));
         model = BinaryData.fromObject(model).toObject(ExtensionPatch.class);
-        Assertions.assertEquals("sjkmnwqj", model.extensionParameters().typeHandlerVersion());
+        Assertions.assertEquals("qgleohibetnluank", model.extensionParameters().typeHandlerVersion());
         Assertions.assertEquals(true, model.extensionParameters().enableAutomaticUpgrade());
     }
 }

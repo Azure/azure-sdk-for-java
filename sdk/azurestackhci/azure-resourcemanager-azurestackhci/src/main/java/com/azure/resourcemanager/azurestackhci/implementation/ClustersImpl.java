@@ -15,8 +15,6 @@ import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
 import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
-import com.azure.resourcemanager.azurestackhci.models.LogCollectionRequest;
-import com.azure.resourcemanager.azurestackhci.models.RemoteSupportRequest;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 
@@ -25,10 +23,10 @@ public final class ClustersImpl implements Clusters {
 
     private final ClustersClient innerClient;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public ClustersImpl(ClustersClient innerClient,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -133,50 +131,6 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public Cluster triggerLogCollection(String resourceGroupName, String clusterName,
-        LogCollectionRequest logCollectionRequest) {
-        ClusterInner inner
-            = this.serviceClient().triggerLogCollection(resourceGroupName, clusterName, logCollectionRequest);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Cluster triggerLogCollection(String resourceGroupName, String clusterName,
-        LogCollectionRequest logCollectionRequest, Context context) {
-        ClusterInner inner
-            = this.serviceClient().triggerLogCollection(resourceGroupName, clusterName, logCollectionRequest, context);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
-        RemoteSupportRequest remoteSupportRequest) {
-        ClusterInner inner
-            = this.serviceClient().configureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
-        RemoteSupportRequest remoteSupportRequest, Context context) {
-        ClusterInner inner = this.serviceClient()
-            .configureRemoteSupport(resourceGroupName, clusterName, remoteSupportRequest, context);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Cluster getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -237,7 +191,7 @@ public final class ClustersImpl implements Clusters {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 

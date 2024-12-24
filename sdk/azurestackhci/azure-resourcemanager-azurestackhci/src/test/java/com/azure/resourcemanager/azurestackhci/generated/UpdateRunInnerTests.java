@@ -16,106 +16,97 @@ public final class UpdateRunInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateRunInner model = BinaryData.fromString(
-            "{\"location\":\"qmeqwigpibudqwyx\",\"properties\":{\"provisioningState\":\"InProgress\",\"timeStarted\":\"2021-06-11T15:08:27Z\",\"lastUpdatedTime\":\"2021-03-14T02:43:50Z\",\"duration\":\"nrtffyaqi\",\"state\":\"Failed\",\"progress\":{\"name\":\"ioqaqhvs\",\"description\":\"fuqyrxpdlcgqlsi\",\"errorMessage\":\"jqfrddgamquh\",\"status\":\"srsjuivfc\",\"startTimeUtc\":\"2021-02-02T15:06:24Z\",\"endTimeUtc\":\"2021-08-07T02:17:36Z\",\"lastUpdatedTimeUtc\":\"2021-01-27T18:11:59Z\",\"expectedExecutionTime\":\"zhczexrxzbujrtrh\",\"steps\":[{\"name\":\"evkh\",\"description\":\"lnzonzlrpiqywn\",\"errorMessage\":\"jtszcof\",\"status\":\"e\",\"startTimeUtc\":\"2021-11-08T03:11:49Z\",\"endTimeUtc\":\"2021-07-02T17:33:01Z\",\"lastUpdatedTimeUtc\":\"2021-11-22T18:06:29Z\",\"expectedExecutionTime\":\"vreljea\",\"steps\":[{},{},{}]},{\"name\":\"zmlovuanash\",\"description\":\"lpmjerb\",\"errorMessage\":\"elvidizozsdbccx\",\"status\":\"on\",\"startTimeUtc\":\"2021-06-26T18:58:09Z\",\"endTimeUtc\":\"2021-08-14T04:15:27Z\",\"lastUpdatedTimeUtc\":\"2021-05-09T18:26:05Z\",\"expectedExecutionTime\":\"puuw\",\"steps\":[{},{},{},{}]},{\"name\":\"uqj\",\"description\":\"zenkeifzzhmkd\",\"errorMessage\":\"vflyhbxcu\",\"status\":\"hxgsrboldfor\",\"startTimeUtc\":\"2020-12-20T04:35:15Z\",\"endTimeUtc\":\"2021-06-11T04:52:49Z\",\"lastUpdatedTimeUtc\":\"2021-02-10T16:46:43Z\",\"expectedExecutionTime\":\"bfhfovvacqp\",\"steps\":[{},{}]},{\"name\":\"dxe\",\"description\":\"abbelawumuaslzk\",\"errorMessage\":\"rwoycqucwyh\",\"status\":\"nomdrkywuhpsv\",\"startTimeUtc\":\"2021-05-26T05:35:58Z\",\"endTimeUtc\":\"2021-01-31T05:51:43Z\",\"lastUpdatedTimeUtc\":\"2021-08-15T09:05:35Z\",\"expectedExecutionTime\":\"exxwlalniexzsrz\",\"steps\":[{},{}]}]}},\"id\":\"q\",\"name\":\"yb\",\"type\":\"wwpgdakchzyvlixq\"}")
+            "{\"location\":\"klinhmdptysprq\",\"properties\":{\"provisioningState\":\"Deleted\",\"timeStarted\":\"2021-09-05T11:06:21Z\",\"lastUpdatedTime\":\"2021-05-11T07:51:19Z\",\"duration\":\"lsvjgpliu\",\"state\":\"InProgress\",\"progress\":{\"name\":\"yxq\",\"description\":\"pcohhoucqpqojx\",\"errorMessage\":\"zrzdcgd\",\"status\":\"enribc\",\"startTimeUtc\":\"2021-02-22T13:00:58Z\",\"endTimeUtc\":\"2021-06-06T13:51:25Z\",\"lastUpdatedTimeUtc\":\"2021-03-13T03:34:48Z\",\"steps\":[{\"name\":\"wflj\",\"description\":\"namtuatmzw\",\"errorMessage\":\"jncqtjzmi\",\"status\":\"gbgatzuuvbxn\",\"startTimeUtc\":\"2021-11-21T17:16:57Z\",\"endTimeUtc\":\"2021-07-25T21:14:07Z\",\"lastUpdatedTimeUtc\":\"2021-06-29T20:02:54Z\",\"steps\":[{},{},{},{}]},{\"name\":\"tzlswvaj\",\"description\":\"utlxjoqzasunwqrj\",\"errorMessage\":\"rg\",\"status\":\"aohcmbuocn\",\"startTimeUtc\":\"2021-05-14T07:13:07Z\",\"endTimeUtc\":\"2021-09-21T12:04:35Z\",\"lastUpdatedTimeUtc\":\"2021-03-20T01:13:45Z\",\"steps\":[{},{},{},{}]},{\"name\":\"xameblydyvkfkm\",\"description\":\"cxneh\",\"errorMessage\":\"mtodl\",\"status\":\"yapucygvoa\",\"startTimeUtc\":\"2021-05-31T14:41:18Z\",\"endTimeUtc\":\"2021-08-14T23:16:19Z\",\"lastUpdatedTimeUtc\":\"2021-05-24T10:00:40Z\",\"steps\":[{},{}]},{\"name\":\"ieegjl\",\"description\":\"vpaseksgbu\",\"errorMessage\":\"ntuygdhgaqipir\",\"status\":\"wrq\",\"startTimeUtc\":\"2021-07-03T05:49:55Z\",\"endTimeUtc\":\"2021-01-26T14:21:23Z\",\"lastUpdatedTimeUtc\":\"2021-02-28T23:07:33Z\",\"steps\":[{},{}]}]}},\"id\":\"exwhcb\",\"name\":\"pibkephuu\",\"type\":\"erctatoyin\"}")
             .toObject(UpdateRunInner.class);
-        Assertions.assertEquals("qmeqwigpibudqwyx", model.location());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T15:08:27Z"), model.timeStarted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T02:43:50Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("nrtffyaqi", model.duration());
-        Assertions.assertEquals(UpdateRunPropertiesState.FAILED, model.state());
-        Assertions.assertEquals("ioqaqhvs", model.namePropertiesName());
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.description());
-        Assertions.assertEquals("jqfrddgamquh", model.errorMessage());
-        Assertions.assertEquals("srsjuivfc", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T15:06:24Z"), model.startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T02:17:36Z"), model.endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T18:11:59Z"), model.lastUpdatedTimeUtc());
-        Assertions.assertEquals("zhczexrxzbujrtrh", model.expectedExecutionTime());
-        Assertions.assertEquals("evkh", model.steps().get(0).name());
-        Assertions.assertEquals("lnzonzlrpiqywn", model.steps().get(0).description());
-        Assertions.assertEquals("jtszcof", model.steps().get(0).errorMessage());
-        Assertions.assertEquals("e", model.steps().get(0).status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T03:11:49Z"), model.steps().get(0).startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T17:33:01Z"), model.steps().get(0).endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T18:06:29Z"),
+        Assertions.assertEquals("klinhmdptysprq", model.location());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T11:06:21Z"), model.timeStarted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T07:51:19Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("lsvjgpliu", model.duration());
+        Assertions.assertEquals(UpdateRunPropertiesState.IN_PROGRESS, model.state());
+        Assertions.assertEquals("yxq", model.namePropertiesName());
+        Assertions.assertEquals("pcohhoucqpqojx", model.description());
+        Assertions.assertEquals("zrzdcgd", model.errorMessage());
+        Assertions.assertEquals("enribc", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T13:00:58Z"), model.startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T13:51:25Z"), model.endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T03:34:48Z"), model.lastUpdatedTimeUtc());
+        Assertions.assertEquals("wflj", model.steps().get(0).name());
+        Assertions.assertEquals("namtuatmzw", model.steps().get(0).description());
+        Assertions.assertEquals("jncqtjzmi", model.steps().get(0).errorMessage());
+        Assertions.assertEquals("gbgatzuuvbxn", model.steps().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T17:16:57Z"), model.steps().get(0).startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T21:14:07Z"), model.steps().get(0).endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T20:02:54Z"),
             model.steps().get(0).lastUpdatedTimeUtc());
-        Assertions.assertEquals("vreljea", model.steps().get(0).expectedExecutionTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateRunInner model = new UpdateRunInner().withLocation("qmeqwigpibudqwyx")
-            .withTimeStarted(OffsetDateTime.parse("2021-06-11T15:08:27Z"))
-            .withLastUpdatedTime(OffsetDateTime.parse("2021-03-14T02:43:50Z"))
-            .withDuration("nrtffyaqi")
-            .withState(UpdateRunPropertiesState.FAILED)
-            .withNamePropertiesName("ioqaqhvs")
-            .withDescription("fuqyrxpdlcgqlsi")
-            .withErrorMessage("jqfrddgamquh")
-            .withStatus("srsjuivfc")
-            .withStartTimeUtc(OffsetDateTime.parse("2021-02-02T15:06:24Z"))
-            .withEndTimeUtc(OffsetDateTime.parse("2021-08-07T02:17:36Z"))
-            .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-01-27T18:11:59Z"))
-            .withExpectedExecutionTime("zhczexrxzbujrtrh")
+        UpdateRunInner model = new UpdateRunInner().withLocation("klinhmdptysprq")
+            .withTimeStarted(OffsetDateTime.parse("2021-09-05T11:06:21Z"))
+            .withLastUpdatedTime(OffsetDateTime.parse("2021-05-11T07:51:19Z"))
+            .withDuration("lsvjgpliu")
+            .withState(UpdateRunPropertiesState.IN_PROGRESS)
+            .withNamePropertiesName("yxq")
+            .withDescription("pcohhoucqpqojx")
+            .withErrorMessage("zrzdcgd")
+            .withStatus("enribc")
+            .withStartTimeUtc(OffsetDateTime.parse("2021-02-22T13:00:58Z"))
+            .withEndTimeUtc(OffsetDateTime.parse("2021-06-06T13:51:25Z"))
+            .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-03-13T03:34:48Z"))
             .withSteps(Arrays.asList(
-                new Step().withName("evkh")
-                    .withDescription("lnzonzlrpiqywn")
-                    .withErrorMessage("jtszcof")
-                    .withStatus("e")
-                    .withStartTimeUtc(OffsetDateTime.parse("2021-11-08T03:11:49Z"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-07-02T17:33:01Z"))
-                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-11-22T18:06:29Z"))
-                    .withExpectedExecutionTime("vreljea")
-                    .withSteps(Arrays.asList(new Step(), new Step(), new Step())),
-                new Step().withName("zmlovuanash")
-                    .withDescription("lpmjerb")
-                    .withErrorMessage("elvidizozsdbccx")
-                    .withStatus("on")
-                    .withStartTimeUtc(OffsetDateTime.parse("2021-06-26T18:58:09Z"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-08-14T04:15:27Z"))
-                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-05-09T18:26:05Z"))
-                    .withExpectedExecutionTime("puuw")
+                new Step().withName("wflj")
+                    .withDescription("namtuatmzw")
+                    .withErrorMessage("jncqtjzmi")
+                    .withStatus("gbgatzuuvbxn")
+                    .withStartTimeUtc(OffsetDateTime.parse("2021-11-21T17:16:57Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-07-25T21:14:07Z"))
+                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-06-29T20:02:54Z"))
                     .withSteps(Arrays.asList(new Step(), new Step(), new Step(), new Step())),
-                new Step().withName("uqj")
-                    .withDescription("zenkeifzzhmkd")
-                    .withErrorMessage("vflyhbxcu")
-                    .withStatus("hxgsrboldfor")
-                    .withStartTimeUtc(OffsetDateTime.parse("2020-12-20T04:35:15Z"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-06-11T04:52:49Z"))
-                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-02-10T16:46:43Z"))
-                    .withExpectedExecutionTime("bfhfovvacqp")
+                new Step().withName("tzlswvaj")
+                    .withDescription("utlxjoqzasunwqrj")
+                    .withErrorMessage("rg")
+                    .withStatus("aohcmbuocn")
+                    .withStartTimeUtc(OffsetDateTime.parse("2021-05-14T07:13:07Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-09-21T12:04:35Z"))
+                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-03-20T01:13:45Z"))
+                    .withSteps(Arrays.asList(new Step(), new Step(), new Step(), new Step())),
+                new Step().withName("xameblydyvkfkm")
+                    .withDescription("cxneh")
+                    .withErrorMessage("mtodl")
+                    .withStatus("yapucygvoa")
+                    .withStartTimeUtc(OffsetDateTime.parse("2021-05-31T14:41:18Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-08-14T23:16:19Z"))
+                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-05-24T10:00:40Z"))
                     .withSteps(Arrays.asList(new Step(), new Step())),
-                new Step().withName("dxe")
-                    .withDescription("abbelawumuaslzk")
-                    .withErrorMessage("rwoycqucwyh")
-                    .withStatus("nomdrkywuhpsv")
-                    .withStartTimeUtc(OffsetDateTime.parse("2021-05-26T05:35:58Z"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-01-31T05:51:43Z"))
-                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-08-15T09:05:35Z"))
-                    .withExpectedExecutionTime("exxwlalniexzsrz")
+                new Step().withName("ieegjl")
+                    .withDescription("vpaseksgbu")
+                    .withErrorMessage("ntuygdhgaqipir")
+                    .withStatus("wrq")
+                    .withStartTimeUtc(OffsetDateTime.parse("2021-07-03T05:49:55Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-01-26T14:21:23Z"))
+                    .withLastUpdatedTimeUtc(OffsetDateTime.parse("2021-02-28T23:07:33Z"))
                     .withSteps(Arrays.asList(new Step(), new Step()))));
         model = BinaryData.fromObject(model).toObject(UpdateRunInner.class);
-        Assertions.assertEquals("qmeqwigpibudqwyx", model.location());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T15:08:27Z"), model.timeStarted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-14T02:43:50Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("nrtffyaqi", model.duration());
-        Assertions.assertEquals(UpdateRunPropertiesState.FAILED, model.state());
-        Assertions.assertEquals("ioqaqhvs", model.namePropertiesName());
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.description());
-        Assertions.assertEquals("jqfrddgamquh", model.errorMessage());
-        Assertions.assertEquals("srsjuivfc", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T15:06:24Z"), model.startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T02:17:36Z"), model.endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T18:11:59Z"), model.lastUpdatedTimeUtc());
-        Assertions.assertEquals("zhczexrxzbujrtrh", model.expectedExecutionTime());
-        Assertions.assertEquals("evkh", model.steps().get(0).name());
-        Assertions.assertEquals("lnzonzlrpiqywn", model.steps().get(0).description());
-        Assertions.assertEquals("jtszcof", model.steps().get(0).errorMessage());
-        Assertions.assertEquals("e", model.steps().get(0).status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T03:11:49Z"), model.steps().get(0).startTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-02T17:33:01Z"), model.steps().get(0).endTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T18:06:29Z"),
+        Assertions.assertEquals("klinhmdptysprq", model.location());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T11:06:21Z"), model.timeStarted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T07:51:19Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("lsvjgpliu", model.duration());
+        Assertions.assertEquals(UpdateRunPropertiesState.IN_PROGRESS, model.state());
+        Assertions.assertEquals("yxq", model.namePropertiesName());
+        Assertions.assertEquals("pcohhoucqpqojx", model.description());
+        Assertions.assertEquals("zrzdcgd", model.errorMessage());
+        Assertions.assertEquals("enribc", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T13:00:58Z"), model.startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T13:51:25Z"), model.endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T03:34:48Z"), model.lastUpdatedTimeUtc());
+        Assertions.assertEquals("wflj", model.steps().get(0).name());
+        Assertions.assertEquals("namtuatmzw", model.steps().get(0).description());
+        Assertions.assertEquals("jncqtjzmi", model.steps().get(0).errorMessage());
+        Assertions.assertEquals("gbgatzuuvbxn", model.steps().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T17:16:57Z"), model.steps().get(0).startTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T21:14:07Z"), model.steps().get(0).endTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T20:02:54Z"),
             model.steps().get(0).lastUpdatedTimeUtc());
-        Assertions.assertEquals("vreljea", model.steps().get(0).expectedExecutionTime());
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PhysicalNodesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PhysicalNodes model
-            = BinaryData.fromString("{\"name\":\"eqx\",\"ipv4Address\":\"z\"}").toObject(PhysicalNodes.class);
-        Assertions.assertEquals("eqx", model.name());
-        Assertions.assertEquals("z", model.ipv4Address());
+        PhysicalNodes model = BinaryData.fromString("{\"name\":\"plbpodxun\",\"ipv4Address\":\"ebxmubyynt\"}")
+            .toObject(PhysicalNodes.class);
+        Assertions.assertEquals("plbpodxun", model.name());
+        Assertions.assertEquals("ebxmubyynt", model.ipv4Address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhysicalNodes model = new PhysicalNodes().withName("eqx").withIpv4Address("z");
+        PhysicalNodes model = new PhysicalNodes().withName("plbpodxun").withIpv4Address("ebxmubyynt");
         model = BinaryData.fromObject(model).toObject(PhysicalNodes.class);
-        Assertions.assertEquals("eqx", model.name());
-        Assertions.assertEquals("z", model.ipv4Address());
+        Assertions.assertEquals("plbpodxun", model.name());
+        Assertions.assertEquals("ebxmubyynt", model.ipv4Address());
     }
 }

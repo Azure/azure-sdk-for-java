@@ -40,9 +40,9 @@ public final class UpdateSummariesInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -50,9 +50,9 @@ public final class UpdateSummariesInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of UpdateSummariesInner class.
@@ -99,13 +99,13 @@ public final class UpdateSummariesInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -119,13 +119,13 @@ public final class UpdateSummariesInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -157,29 +157,6 @@ public final class UpdateSummariesInner extends ProxyResource {
             this.innerProperties = new UpdateSummariesProperties();
         }
         this.innerProperties().withOemFamily(oemFamily);
-        return this;
-    }
-
-    /**
-     * Get the currentOemVersion property: Current OEM Version.
-     * 
-     * @return the currentOemVersion value.
-     */
-    public String currentOemVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentOemVersion();
-    }
-
-    /**
-     * Set the currentOemVersion property: Current OEM Version.
-     * 
-     * @param currentOemVersion the currentOemVersion value to set.
-     * @return the UpdateSummariesInner object itself.
-     */
-    public UpdateSummariesInner withCurrentOemVersion(String currentOemVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateSummariesProperties();
-        }
-        this.innerProperties().withCurrentOemVersion(currentOemVersion);
         return this;
     }
 
@@ -249,29 +226,6 @@ public final class UpdateSummariesInner extends ProxyResource {
             this.innerProperties = new UpdateSummariesProperties();
         }
         this.innerProperties().withCurrentVersion(currentVersion);
-        return this;
-    }
-
-    /**
-     * Get the currentSbeVersion property: Current Sbe version of the stamp.
-     * 
-     * @return the currentSbeVersion value.
-     */
-    public String currentSbeVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentSbeVersion();
-    }
-
-    /**
-     * Set the currentSbeVersion property: Current Sbe version of the stamp.
-     * 
-     * @param currentSbeVersion the currentSbeVersion value to set.
-     * @return the UpdateSummariesInner object itself.
-     */
-    public UpdateSummariesInner withCurrentSbeVersion(String currentSbeVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateSummariesProperties();
-        }
-        this.innerProperties().withCurrentSbeVersion(currentSbeVersion);
         return this;
     }
 

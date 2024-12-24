@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,22 +22,22 @@ public final class ArcSettingsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"PartiallySucceeded\",\"arcInstanceResourceGroup\":\"xyfukzxuizhyhn\",\"arcApplicationClientId\":\"kpetiarxq\",\"arcApplicationTenantId\":\"bxdukecpxdazvd\",\"arcServicePrincipalObjectId\":\"tmmkosz\",\"arcApplicationObjectId\":\"blnsntrpcaqk\",\"aggregateState\":\"Deleting\",\"perNodeDetails\":[{\"name\":\"fmhklbnld\",\"arcInstance\":\"cbhhez\",\"arcNodeServicePrincipalObjectId\":\"u\",\"state\":\"PartiallySucceeded\"},{\"name\":\"xut\",\"arcInstance\":\"brruyuuatv\",\"arcNodeServicePrincipalObjectId\":\"bjwcolbmx\",\"state\":\"Connected\"},{\"name\":\"tpc\",\"arcInstance\":\"hprzrvxhmtfho\",\"arcNodeServicePrincipalObjectId\":\"xzcmjhngxno\",\"state\":\"Connected\"},{\"name\":\"disnj\",\"arcInstance\":\"hdlmydidwhe\",\"arcNodeServicePrincipalObjectId\":\"wwtjfdoesxxhmwc\",\"state\":\"Canceled\"}],\"connectivityProperties\":\"datayo\",\"defaultExtensions\":[{\"category\":\"xhn\",\"consentTime\":\"2021-05-20T23:38:08Z\"},{\"category\":\"jzrbhtmeplv\",\"consentTime\":\"2020-12-21T01:54:28Z\"},{\"category\":\"brlbpgs\",\"consentTime\":\"2021-08-24T01:01:07Z\"},{\"category\":\"nchjhgemuowakywa\",\"consentTime\":\"2021-05-09T15:29:15Z\"}]},\"id\":\"m\",\"name\":\"cgqtag\",\"type\":\"rclsso\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"arcInstanceResourceGroup\":\"mfbfununmpzkrvfy\",\"arcApplicationClientId\":\"kdschlzvfictnkjj\",\"arcApplicationTenantId\":\"cwnphbkgfyrtogm\",\"arcServicePrincipalObjectId\":\"j\",\"arcApplicationObjectId\":\"scdfpdqw\",\"aggregateState\":\"Provisioning\",\"perNodeDetails\":[{\"name\":\"wmseharxifvqn\",\"arcInstance\":\"tmbpjp\",\"arcNodeServicePrincipalObjectId\":\"vwjhrsidqpxlbt\",\"state\":\"Succeeded\"},{\"name\":\"tngatwmykyu\",\"arcInstance\":\"ym\",\"arcNodeServicePrincipalObjectId\":\"mfjhpycvjqdvdwkq\",\"state\":\"Deleted\"},{\"name\":\"lefgnaavuagnte\",\"arcInstance\":\"outnpdctuhspfefy\",\"arcNodeServicePrincipalObjectId\":\"duyeuyl\",\"state\":\"Canceled\"},{\"name\":\"tybkcgs\",\"arcInstance\":\"h\",\"arcNodeServicePrincipalObjectId\":\"lnm\",\"state\":\"PartiallySucceeded\"}],\"connectivityProperties\":\"datafxexlfciatxtjrr\",\"defaultExtensions\":[{\"category\":\"skjh\",\"consentTime\":\"2021-12-01T10:43:45Z\"},{\"category\":\"ajfoxc\",\"consentTime\":\"2021-04-15T19:18:44Z\"},{\"category\":\"slxlhu\",\"consentTime\":\"2021-01-21T19:30:07Z\"},{\"category\":\"muk\",\"consentTime\":\"2021-03-27T00:31:36Z\"}]},\"id\":\"kxettcslojfkq\",\"name\":\"dnqtoqxjhqx\",\"type\":\"s\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ArcSetting> response
-            = manager.arcSettings().listByCluster("iisb", "mnppccekuztd", com.azure.core.util.Context.NONE);
+            = manager.arcSettings().listByCluster("zptdmkrrbh", "pfulube", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xyfukzxuizhyhn", response.iterator().next().arcInstanceResourceGroup());
-        Assertions.assertEquals("kpetiarxq", response.iterator().next().arcApplicationClientId());
-        Assertions.assertEquals("bxdukecpxdazvd", response.iterator().next().arcApplicationTenantId());
-        Assertions.assertEquals("tmmkosz", response.iterator().next().arcServicePrincipalObjectId());
-        Assertions.assertEquals("blnsntrpcaqk", response.iterator().next().arcApplicationObjectId());
+        Assertions.assertEquals("mfbfununmpzkrvfy", response.iterator().next().arcInstanceResourceGroup());
+        Assertions.assertEquals("kdschlzvfictnkjj", response.iterator().next().arcApplicationClientId());
+        Assertions.assertEquals("cwnphbkgfyrtogm", response.iterator().next().arcApplicationTenantId());
+        Assertions.assertEquals("j", response.iterator().next().arcServicePrincipalObjectId());
+        Assertions.assertEquals("scdfpdqw", response.iterator().next().arcApplicationObjectId());
     }
 }

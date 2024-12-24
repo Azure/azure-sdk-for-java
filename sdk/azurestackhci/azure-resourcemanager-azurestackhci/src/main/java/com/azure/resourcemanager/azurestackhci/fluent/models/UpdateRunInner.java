@@ -37,9 +37,9 @@ public final class UpdateRunInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -47,9 +47,9 @@ public final class UpdateRunInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of UpdateRunInner class.
@@ -96,13 +96,13 @@ public final class UpdateRunInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -116,13 +116,13 @@ public final class UpdateRunInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -386,31 +386,6 @@ public final class UpdateRunInner extends ProxyResource {
             this.innerProperties = new UpdateRunProperties();
         }
         this.innerProperties().withLastUpdatedTimeUtc(lastUpdatedTimeUtc);
-        return this;
-    }
-
-    /**
-     * Get the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @return the expectedExecutionTime value.
-     */
-    public String expectedExecutionTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().expectedExecutionTime();
-    }
-
-    /**
-     * Set the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @param expectedExecutionTime the expectedExecutionTime value to set.
-     * @return the UpdateRunInner object itself.
-     */
-    public UpdateRunInner withExpectedExecutionTime(String expectedExecutionTime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateRunProperties();
-        }
-        this.innerProperties().withExpectedExecutionTime(expectedExecutionTime);
         return this;
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,32 +21,32 @@ public final class ExtensionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"extensionParameters\":{\"forceUpdateTag\":\"oyrfgxk\",\"publisher\":\"pmypgfq\",\"type\":\"tyw\",\"typeHandlerVersion\":\"a\",\"autoUpgradeMinorVersion\":false,\"settings\":\"datajpewpyjlfx\",\"protectedSettings\":\"datapqcrzgeuqxbpiat\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"Succeeded\",\"perNodeExtensionDetails\":[{\"name\":\"d\",\"extension\":\"dr\",\"typeHandlerVersion\":\"gddhjkrukizyhgs\",\"state\":\"Moving\",\"instanceView\":{\"name\":\"ktxqfpjbqgg\",\"type\":\"eiwdhdmncgbfzu\",\"typeHandlerVersion\":\"stunmlh\",\"status\":{}}},{\"name\":\"bkl\",\"extension\":\"ich\",\"typeHandlerVersion\":\"sysmvxodgw\",\"state\":\"Failed\",\"instanceView\":{\"name\":\"ifc\",\"type\":\"bdujgcwxvecbb\",\"typeHandlerVersion\":\"trdxri\",\"status\":{}}},{\"name\":\"bbgiarksykpgdqxw\",\"extension\":\"zrwiqrxha\",\"typeHandlerVersion\":\"cdosqkptj\",\"state\":\"Canceled\",\"instanceView\":{\"name\":\"mmainwhe\",\"type\":\"kp\",\"typeHandlerVersion\":\"wuntobuiz\",\"status\":{}}}],\"managedBy\":\"Azure\"},\"id\":\"wgvydjufb\",\"name\":\"klblaxp\",\"type\":\"gjwdab\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"extensionParameters\":{\"forceUpdateTag\":\"oybaja\",\"publisher\":\"ubfajc\",\"type\":\"hjqwmchqoh\",\"typeHandlerVersion\":\"xcpup\",\"autoUpgradeMinorVersion\":false,\"settings\":\"datamjzpwdlvwtiwsm\",\"protectedSettings\":\"dataaonhqnamppul\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"NotSpecified\",\"perNodeExtensionDetails\":[{\"name\":\"wnaze\",\"extension\":\"bkajlcyizy\",\"typeHandlerVersion\":\"cvxodkrvfsxxby\",\"state\":\"Updating\",\"instanceView\":{\"name\":\"vgecpwgoljtzx\",\"type\":\"xsdobygoogxqapjx\",\"typeHandlerVersion\":\"zyjfuc\",\"status\":{}}},{\"name\":\"djnosdkvibf\",\"extension\":\"gmat\",\"typeHandlerVersion\":\"zpducdaak\",\"state\":\"Error\",\"instanceView\":{\"name\":\"zboimyfpqdo\",\"type\":\"ppnwyytfvpctfji\",\"typeHandlerVersion\":\"ff\",\"status\":{}}},{\"name\":\"uhznwhvuldbk\",\"extension\":\"jjkj\",\"typeHandlerVersion\":\"awgazmxjqifh\",\"state\":\"Updating\",\"instanceView\":{\"name\":\"cmlzaahz\",\"type\":\"uroolkolirhhm\",\"typeHandlerVersion\":\"usuzgfjzcvaaxo\",\"status\":{}}},{\"name\":\"ahfxwccok\",\"extension\":\"kuk\",\"typeHandlerVersion\":\"c\",\"state\":\"PartiallySucceeded\",\"instanceView\":{\"name\":\"hoqeqshavljqk\",\"type\":\"rqolnthbb\",\"typeHandlerVersion\":\"gzukw\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"jthfceyjnc\",\"name\":\"mlfuyfjbp\",\"type\":\"iddhlrufzc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Extension response = manager.extensions()
-            .define("xkf")
-            .withExistingArcSetting("neakh", "mhobcyan", "fvqtvkhgvoo")
-            .withForceUpdateTag("mhcctopuowy")
-            .withPublisher("skbyhquhczygx")
-            .withTypePropertiesType("ajpxecxqnwhscoza")
-            .withTypeHandlerVersion("vgxsm")
-            .withAutoUpgradeMinorVersion(true)
-            .withSettings("datawirfljf")
-            .withProtectedSettings("dataxqou")
+            .define("rejdaahuqim")
+            .withExistingArcSetting("xcbccwkqmt", "apeqiscrpil", "ftr")
+            .withForceUpdateTag("xlm")
+            .withPublisher("fmuad")
+            .withTypePropertiesType("fsn")
+            .withTypeHandlerVersion("kiioshj")
+            .withAutoUpgradeMinorVersion(false)
+            .withSettings("datatybnxgztlcgctj")
+            .withProtectedSettings("datafjvmy")
             .withEnableAutomaticUpgrade(false)
             .create();
 
-        Assertions.assertEquals("oyrfgxk", response.forceUpdateTag());
-        Assertions.assertEquals("pmypgfq", response.publisher());
-        Assertions.assertEquals("tyw", response.typePropertiesType());
-        Assertions.assertEquals("a", response.typeHandlerVersion());
+        Assertions.assertEquals("oybaja", response.forceUpdateTag());
+        Assertions.assertEquals("ubfajc", response.publisher());
+        Assertions.assertEquals("hjqwmchqoh", response.typePropertiesType());
+        Assertions.assertEquals("xcpup", response.typeHandlerVersion());
         Assertions.assertEquals(false, response.autoUpgradeMinorVersion());
         Assertions.assertEquals(true, response.enableAutomaticUpgrade());
     }

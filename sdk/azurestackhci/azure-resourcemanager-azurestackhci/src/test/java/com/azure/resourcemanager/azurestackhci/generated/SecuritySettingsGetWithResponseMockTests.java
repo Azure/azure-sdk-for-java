@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.SecuritySetting;
@@ -23,24 +23,20 @@ public final class SecuritySettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"NonCompliant\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"NonCompliant\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-02-09T04:05:24Z\"},\"provisioningState\":\"Deleting\"},\"id\":\"hcxnwjtpfdzxco\",\"name\":\"z\",\"type\":\"wofw\"}";
+            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"NonCompliant\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-08-20T00:06:46Z\"},\"provisioningState\":\"PartiallyConnected\"},\"id\":\"poyu\",\"name\":\"h\",\"type\":\"ensnaa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecuritySetting response = manager.securitySettings()
-            .getWithResponse("n", "ynts", "jmfmeftvhkm", com.azure.core.util.Context.NONE)
+            .getWithResponse("ikeej", "pdfhtwmmkf", "bri", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
-            response.securedCoreComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT, response.wdacComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
-            response.smbEncryptionForIntraClusterTrafficComplianceAssignment());
-        Assertions.assertEquals(ProvisioningState.DELETING, response.provisioningState());
+        Assertions.assertEquals(ComplianceAssignmentType.AUDIT, response.securedCoreComplianceAssignment());
+        Assertions.assertEquals(ProvisioningState.PARTIALLY_CONNECTED, response.provisioningState());
     }
 }

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Sku;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,25 +22,26 @@ public final class SkusListByOfferMockTests {
     @Test
     public void testListByOffer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"c\",\"publisherId\":\"tfshksnyzm\",\"offerId\":\"amwbwmbnlslcef\",\"content\":\"d\",\"contentVersion\":\"wtkvi\",\"skuMappings\":[{\"catalogPlanId\":\"liwoyngu\",\"marketplaceSkuId\":\"hwvladpc\",\"marketplaceSkuVersions\":[\"hausybkekymffzts\"]},{\"catalogPlanId\":\"sc\",\"marketplaceSkuId\":\"syeiih\",\"marketplaceSkuVersions\":[\"kouihyeseuugcig\",\"hogsmgbvmtd\",\"rqbebjnfveglab\",\"vkbiw\"]}]},\"id\":\"htfgficudyhizpac\",\"name\":\"muhbcakznho\",\"type\":\"hoitwhrjsdmmaz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"nouhbqezkq\",\"publisherId\":\"aluzyi\",\"offerId\":\"cvcewb\",\"content\":\"hdgsjsatm\",\"contentVersion\":\"c\",\"skuMappings\":[{\"catalogPlanId\":\"fsq\",\"marketplaceSkuId\":\"yqmrejpa\",\"marketplaceSkuVersions\":[\"vgrszr\",\"wtdrcwg\"]},{\"catalogPlanId\":\"ll\",\"marketplaceSkuId\":\"lhhfi\",\"marketplaceSkuVersions\":[\"fculzjrmhpfyw\",\"yldqpzfzxsox\"]},{\"catalogPlanId\":\"unjlzkdrocq\",\"marketplaceSkuId\":\"ytqqtcmi\",\"marketplaceSkuVersions\":[\"is\"]}]},\"id\":\"mey\",\"name\":\"ajamc\",\"type\":\"jyh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Sku> response = manager.skus()
-            .listByOffer("nvgskjtoxjd", "jsjznv", "xqqm", "i", "aydhf", com.azure.core.util.Context.NONE);
+            .listByOffer("s", "ik", "ohzixyqhfnkvycqq", "dseipnquwzxhrp", "yodlhkfktltddsob",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tfshksnyzm", response.iterator().next().publisherId());
-        Assertions.assertEquals("amwbwmbnlslcef", response.iterator().next().offerId());
-        Assertions.assertEquals("d", response.iterator().next().content());
-        Assertions.assertEquals("wtkvi", response.iterator().next().contentVersion());
-        Assertions.assertEquals("liwoyngu", response.iterator().next().skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("hwvladpc", response.iterator().next().skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("hausybkekymffzts",
+        Assertions.assertEquals("aluzyi", response.iterator().next().publisherId());
+        Assertions.assertEquals("cvcewb", response.iterator().next().offerId());
+        Assertions.assertEquals("hdgsjsatm", response.iterator().next().content());
+        Assertions.assertEquals("c", response.iterator().next().contentVersion());
+        Assertions.assertEquals("fsq", response.iterator().next().skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("yqmrejpa", response.iterator().next().skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("vgrszr",
             response.iterator().next().skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

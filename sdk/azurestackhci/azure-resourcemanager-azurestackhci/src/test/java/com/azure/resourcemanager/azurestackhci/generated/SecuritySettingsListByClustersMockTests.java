@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.SecuritySetting;
@@ -24,23 +24,20 @@ public final class SecuritySettingsListByClustersMockTests {
     @Test
     public void testListByClusters() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"NonCompliant\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-01-07T16:23:40Z\"},\"provisioningState\":\"Deleting\"},\"id\":\"hqodv\",\"name\":\"gcnbhcbmjk\",\"type\":\"ti\"}]}";
+            = "{\"value\":[{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"Compliant\",\"lastUpdated\":\"2021-06-10T05:43:28Z\"},\"provisioningState\":\"Error\"},\"id\":\"gkujdsooxrqwoe\",\"name\":\"rbtigap\",\"type\":\"ya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecuritySetting> response = manager.securitySettings()
-            .listByClusters("fwzlgzawkgyepeya", "nnidmdiawpzxk", com.azure.core.util.Context.NONE);
+        PagedIterable<SecuritySetting> response
+            = manager.securitySettings().listByClusters("tqm", "wz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             response.iterator().next().securedCoreComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT, response.iterator().next().wdacComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
-            response.iterator().next().smbEncryptionForIntraClusterTrafficComplianceAssignment());
-        Assertions.assertEquals(ProvisioningState.DELETING, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ProvisioningState.ERROR, response.iterator().next().provisioningState());
     }
 }

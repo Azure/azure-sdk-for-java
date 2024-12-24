@@ -163,20 +163,6 @@ public interface Cluster {
     SoftwareAssuranceProperties softwareAssuranceProperties();
 
     /**
-     * Gets the logCollectionProperties property: Log Collection properties of the cluster.
-     * 
-     * @return the logCollectionProperties value.
-     */
-    LogCollectionProperties logCollectionProperties();
-
-    /**
-     * Gets the remoteSupportProperties property: RemoteSupport properties of the cluster.
-     * 
-     * @return the remoteSupportProperties value.
-     */
-    RemoteSupportProperties remoteSupportProperties();
-
-    /**
      * Gets the desiredProperties property: Desired properties of the cluster.
      * 
      * @return the desiredProperties value.
@@ -334,8 +320,7 @@ public interface Cluster {
             DefinitionStages.WithUserAssignedIdentities, DefinitionStages.WithCloudManagementEndpoint,
             DefinitionStages.WithAadClientId, DefinitionStages.WithAadTenantId,
             DefinitionStages.WithAadApplicationObjectId, DefinitionStages.WithAadServicePrincipalObjectId,
-            DefinitionStages.WithSoftwareAssuranceProperties, DefinitionStages.WithLogCollectionProperties,
-            DefinitionStages.WithRemoteSupportProperties, DefinitionStages.WithDesiredProperties {
+            DefinitionStages.WithSoftwareAssuranceProperties, DefinitionStages.WithDesiredProperties {
             /**
              * Executes the create request.
              * 
@@ -476,32 +461,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties);
-        }
-
-        /**
-         * The stage of the Cluster definition allowing to specify logCollectionProperties.
-         */
-        interface WithLogCollectionProperties {
-            /**
-             * Specifies the logCollectionProperties property: Log Collection properties of the cluster..
-             * 
-             * @param logCollectionProperties Log Collection properties of the cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withLogCollectionProperties(LogCollectionProperties logCollectionProperties);
-        }
-
-        /**
-         * The stage of the Cluster definition allowing to specify remoteSupportProperties.
-         */
-        interface WithRemoteSupportProperties {
-            /**
-             * Specifies the remoteSupportProperties property: RemoteSupport properties of the cluster..
-             * 
-             * @param remoteSupportProperties RemoteSupport properties of the cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withRemoteSupportProperties(RemoteSupportProperties remoteSupportProperties);
         }
 
         /**
@@ -730,50 +689,4 @@ public interface Cluster {
      */
     Cluster extendSoftwareAssuranceBenefit(SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
         Context context);
-
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest);
-
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster triggerLogCollection(LogCollectionRequest logCollectionRequest, Context context);
-
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest);
-
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster configureRemoteSupport(RemoteSupportRequest remoteSupportRequest, Context context);
 }

@@ -13,39 +13,39 @@ public final class NicDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NicDetail model = BinaryData.fromString(
-            "{\"adapterName\":\"vqejosovy\",\"interfaceDescription\":\"leaesi\",\"componentId\":\"qtljqobbpihehc\",\"driverVersion\":\"ybmrqbrjbbmp\",\"ip4Address\":\"lvykfrex\",\"subnetMask\":\"s\",\"defaultGateway\":\"wjksghudgzhxo\",\"dnsServers\":[\"gsv\",\"u\",\"kxibdafh\",\"kmdyomkxfbvfbh\"],\"defaultIsolationId\":\"i\"}")
+            "{\"adapterName\":\"tqlgehgppi\",\"interfaceDescription\":\"fhpfeoajvgcxtx\",\"componentId\":\"sheafid\",\"driverVersion\":\"ugsresmkssjhoi\",\"ip4Address\":\"xfkfwegprhptill\",\"subnetMask\":\"biqtgdq\",\"defaultGateway\":\"mcwsldrizetpwb\",\"dnsServers\":[\"llibphbqzmizak\",\"kan\"],\"defaultIsolationId\":\"p\"}")
             .toObject(NicDetail.class);
-        Assertions.assertEquals("vqejosovy", model.adapterName());
-        Assertions.assertEquals("leaesi", model.interfaceDescription());
-        Assertions.assertEquals("qtljqobbpihehc", model.componentId());
-        Assertions.assertEquals("ybmrqbrjbbmp", model.driverVersion());
-        Assertions.assertEquals("lvykfrex", model.ip4Address());
-        Assertions.assertEquals("s", model.subnetMask());
-        Assertions.assertEquals("wjksghudgzhxo", model.defaultGateway());
-        Assertions.assertEquals("gsv", model.dnsServers().get(0));
-        Assertions.assertEquals("i", model.defaultIsolationId());
+        Assertions.assertEquals("tqlgehgppi", model.adapterName());
+        Assertions.assertEquals("fhpfeoajvgcxtx", model.interfaceDescription());
+        Assertions.assertEquals("sheafid", model.componentId());
+        Assertions.assertEquals("ugsresmkssjhoi", model.driverVersion());
+        Assertions.assertEquals("xfkfwegprhptill", model.ip4Address());
+        Assertions.assertEquals("biqtgdq", model.subnetMask());
+        Assertions.assertEquals("mcwsldrizetpwb", model.defaultGateway());
+        Assertions.assertEquals("llibphbqzmizak", model.dnsServers().get(0));
+        Assertions.assertEquals("p", model.defaultIsolationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NicDetail model = new NicDetail().withAdapterName("vqejosovy")
-            .withInterfaceDescription("leaesi")
-            .withComponentId("qtljqobbpihehc")
-            .withDriverVersion("ybmrqbrjbbmp")
-            .withIp4Address("lvykfrex")
-            .withSubnetMask("s")
-            .withDefaultGateway("wjksghudgzhxo")
-            .withDnsServers(Arrays.asList("gsv", "u", "kxibdafh", "kmdyomkxfbvfbh"))
-            .withDefaultIsolationId("i");
+        NicDetail model = new NicDetail().withAdapterName("tqlgehgppi")
+            .withInterfaceDescription("fhpfeoajvgcxtx")
+            .withComponentId("sheafid")
+            .withDriverVersion("ugsresmkssjhoi")
+            .withIp4Address("xfkfwegprhptill")
+            .withSubnetMask("biqtgdq")
+            .withDefaultGateway("mcwsldrizetpwb")
+            .withDnsServers(Arrays.asList("llibphbqzmizak", "kan"))
+            .withDefaultIsolationId("p");
         model = BinaryData.fromObject(model).toObject(NicDetail.class);
-        Assertions.assertEquals("vqejosovy", model.adapterName());
-        Assertions.assertEquals("leaesi", model.interfaceDescription());
-        Assertions.assertEquals("qtljqobbpihehc", model.componentId());
-        Assertions.assertEquals("ybmrqbrjbbmp", model.driverVersion());
-        Assertions.assertEquals("lvykfrex", model.ip4Address());
-        Assertions.assertEquals("s", model.subnetMask());
-        Assertions.assertEquals("wjksghudgzhxo", model.defaultGateway());
-        Assertions.assertEquals("gsv", model.dnsServers().get(0));
-        Assertions.assertEquals("i", model.defaultIsolationId());
+        Assertions.assertEquals("tqlgehgppi", model.adapterName());
+        Assertions.assertEquals("fhpfeoajvgcxtx", model.interfaceDescription());
+        Assertions.assertEquals("sheafid", model.componentId());
+        Assertions.assertEquals("ugsresmkssjhoi", model.driverVersion());
+        Assertions.assertEquals("xfkfwegprhptill", model.ip4Address());
+        Assertions.assertEquals("biqtgdq", model.subnetMask());
+        Assertions.assertEquals("mcwsldrizetpwb", model.defaultGateway());
+        Assertions.assertEquals("llibphbqzmizak", model.dnsServers().get(0));
+        Assertions.assertEquals("p", model.defaultIsolationId());
     }
 }

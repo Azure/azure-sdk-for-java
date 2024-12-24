@@ -12,18 +12,18 @@ public final class UpdateStatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateStateProperties model
-            = BinaryData.fromString("{\"progressPercentage\":75.61018,\"notifyMessage\":\"iwdcxsmlzzhzd\"}")
+            = BinaryData.fromString("{\"progressPercentage\":91.51193,\"notifyMessage\":\"lboncqbazqicqc\"}")
                 .toObject(UpdateStateProperties.class);
-        Assertions.assertEquals(75.61018F, model.progressPercentage());
-        Assertions.assertEquals("iwdcxsmlzzhzd", model.notifyMessage());
+        Assertions.assertEquals(91.51193F, model.progressPercentage());
+        Assertions.assertEquals("lboncqbazqicqc", model.notifyMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateStateProperties model
-            = new UpdateStateProperties().withProgressPercentage(75.61018F).withNotifyMessage("iwdcxsmlzzhzd");
+            = new UpdateStateProperties().withProgressPercentage(91.51193F).withNotifyMessage("lboncqbazqicqc");
         model = BinaryData.fromObject(model).toObject(UpdateStateProperties.class);
-        Assertions.assertEquals(75.61018F, model.progressPercentage());
-        Assertions.assertEquals("iwdcxsmlzzhzd", model.notifyMessage());
+        Assertions.assertEquals(91.51193F, model.progressPercentage());
+        Assertions.assertEquals("lboncqbazqicqc", model.notifyMessage());
     }
 }

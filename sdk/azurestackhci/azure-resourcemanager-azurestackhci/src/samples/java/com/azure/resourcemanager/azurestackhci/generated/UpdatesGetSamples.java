@@ -10,15 +10,14 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class UpdatesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetUpdates.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/GetUpdates.json
      */
     /**
      * Sample code: Get a specific update.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void getASpecificUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void getASpecificUpdate(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.updates()
             .getWithResponse("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
     }

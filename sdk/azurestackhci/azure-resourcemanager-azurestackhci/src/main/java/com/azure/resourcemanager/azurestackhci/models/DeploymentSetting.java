@@ -63,13 +63,6 @@ public interface DeploymentSetting {
     DeploymentMode deploymentMode();
 
     /**
-     * Gets the operationType property: The intended operation for a cluster.
-     * 
-     * @return the operationType value.
-     */
-    OperationType operationType();
-
-    /**
      * Gets the deploymentConfiguration property: Scale units will contains list of deployment data.
      * 
      * @return the deploymentConfiguration value.
@@ -81,7 +74,7 @@ public interface DeploymentSetting {
      * 
      * @return the reportedProperties value.
      */
-    EceReportedProperties reportedProperties();
+    ReportedProperties reportedProperties();
 
     /**
      * Gets the name of the resource group.
@@ -132,8 +125,8 @@ public interface DeploymentSetting {
          * The stage of the DeploymentSetting definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithArcNodeResourceIds, DefinitionStages.WithDeploymentMode,
-            DefinitionStages.WithOperationType, DefinitionStages.WithDeploymentConfiguration {
+        interface WithCreate extends DefinitionStages.WithProvisioningState, DefinitionStages.WithArcNodeResourceIds,
+            DefinitionStages.WithDeploymentMode, DefinitionStages.WithDeploymentConfiguration {
             /**
              * Executes the create request.
              * 
@@ -148,6 +141,19 @@ public interface DeploymentSetting {
              * @return the created resource.
              */
             DeploymentSetting create(Context context);
+        }
+
+        /**
+         * The stage of the DeploymentSetting definition allowing to specify provisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies the provisioningState property: DeploymentSetting provisioning state.
+             * 
+             * @param provisioningState DeploymentSetting provisioning state.
+             * @return the next definition stage.
+             */
+            WithCreate withProvisioningState(ProvisioningState provisioningState);
         }
 
         /**
@@ -177,19 +183,6 @@ public interface DeploymentSetting {
         }
 
         /**
-         * The stage of the DeploymentSetting definition allowing to specify operationType.
-         */
-        interface WithOperationType {
-            /**
-             * Specifies the operationType property: The intended operation for a cluster..
-             * 
-             * @param operationType The intended operation for a cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withOperationType(OperationType operationType);
-        }
-
-        /**
          * The stage of the DeploymentSetting definition allowing to specify deploymentConfiguration.
          */
         interface WithDeploymentConfiguration {
@@ -213,8 +206,8 @@ public interface DeploymentSetting {
     /**
      * The template for DeploymentSetting update.
      */
-    interface Update extends UpdateStages.WithArcNodeResourceIds, UpdateStages.WithDeploymentMode,
-        UpdateStages.WithOperationType, UpdateStages.WithDeploymentConfiguration {
+    interface Update extends UpdateStages.WithProvisioningState, UpdateStages.WithArcNodeResourceIds,
+        UpdateStages.WithDeploymentMode, UpdateStages.WithDeploymentConfiguration {
         /**
          * Executes the update request.
          * 
@@ -235,6 +228,19 @@ public interface DeploymentSetting {
      * The DeploymentSetting update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the DeploymentSetting update allowing to specify provisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies the provisioningState property: DeploymentSetting provisioning state.
+             * 
+             * @param provisioningState DeploymentSetting provisioning state.
+             * @return the next definition stage.
+             */
+            Update withProvisioningState(ProvisioningState provisioningState);
+        }
+
         /**
          * The stage of the DeploymentSetting update allowing to specify arcNodeResourceIds.
          */
@@ -259,19 +265,6 @@ public interface DeploymentSetting {
              * @return the next definition stage.
              */
             Update withDeploymentMode(DeploymentMode deploymentMode);
-        }
-
-        /**
-         * The stage of the DeploymentSetting update allowing to specify operationType.
-         */
-        interface WithOperationType {
-            /**
-             * Specifies the operationType property: The intended operation for a cluster..
-             * 
-             * @param operationType The intended operation for a cluster.
-             * @return the next definition stage.
-             */
-            Update withOperationType(OperationType operationType);
         }
 
         /**

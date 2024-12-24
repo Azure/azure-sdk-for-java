@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.generated;
 
 import com.azure.resourcemanager.azurestackhci.models.DeviceConfiguration;
-import com.azure.resourcemanager.azurestackhci.models.HciEdgeDevice;
-import com.azure.resourcemanager.azurestackhci.models.HciEdgeDeviceProperties;
 import com.azure.resourcemanager.azurestackhci.models.NicDetail;
 import java.util.Arrays;
 
@@ -16,29 +14,29 @@ import java.util.Arrays;
 public final class EdgeDevicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * CreateHciEdgeDevice.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/PutEdgeDevices.
+     * json
      */
     /**
-     * Sample code: Create HCI Edge Device.
+     * Sample code: Create Edge Device.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void createHCIEdgeDevice(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void createEdgeDevice(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.edgeDevices()
-            .createOrUpdate(
-                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
-                "default",
-                new HciEdgeDevice().withProperties(new HciEdgeDeviceProperties().withDeviceConfiguration(
-                    new DeviceConfiguration().withNicDetails(Arrays.asList(new NicDetail().withAdapterName("ethernet")
-                        .withInterfaceDescription("NDIS 6.70 ")
-                        .withComponentId("VMBUS{f8615163-df3e-46c5-913f-f2d2f965ed0g} ")
-                        .withDriverVersion("10.0.20348.1547 ")
-                        .withIp4Address("10.10.10.10")
-                        .withSubnetMask("255.255.255.0")
-                        .withDefaultGateway("10.10.10.1")
-                        .withDnsServers(Arrays.asList("100.10.10.1"))
-                        .withDefaultIsolationId("0"))).withDeviceMetadata(""))),
-                com.azure.core.util.Context.NONE);
+            .define("default")
+            .withExistingResourceUri(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1")
+            .withDeviceConfiguration(
+                new DeviceConfiguration().withNicDetails(Arrays.asList(new NicDetail().withAdapterName("ethernet")
+                    .withInterfaceDescription("NDIS 6.70 ")
+                    .withComponentId("VMBUS{f8615163-df3e-46c5-913f-f2d2f965ed0g} ")
+                    .withDriverVersion("10.0.20348.1547 ")
+                    .withIp4Address("10.10.10.10")
+                    .withSubnetMask("255.255.255.0")
+                    .withDefaultGateway("10.10.10.1")
+                    .withDnsServers(Arrays.asList("100.10.10.1"))
+                    .withDefaultIsolationId("0"))).withDeviceMetadata(""))
+            .create();
     }
 }

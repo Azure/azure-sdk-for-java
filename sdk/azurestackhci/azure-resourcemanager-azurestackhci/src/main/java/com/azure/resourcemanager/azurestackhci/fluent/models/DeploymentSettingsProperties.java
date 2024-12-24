@@ -12,9 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
-import com.azure.resourcemanager.azurestackhci.models.EceReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.OperationType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.ReportedProperties;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,11 +38,6 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
     private DeploymentMode deploymentMode;
 
     /*
-     * The intended operation for a cluster.
-     */
-    private OperationType operationType;
-
-    /*
      * Scale units will contains list of deployment data
      */
     private DeploymentConfiguration deploymentConfiguration;
@@ -51,7 +45,7 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
     /*
      * Deployment Status reported from cluster.
      */
-    private EceReportedProperties reportedProperties;
+    private ReportedProperties reportedProperties;
 
     /**
      * Creates an instance of DeploymentSettingsProperties class.
@@ -66,6 +60,17 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: DeploymentSetting provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the DeploymentSettingsProperties object itself.
+     */
+    public DeploymentSettingsProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -109,26 +114,6 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
     }
 
     /**
-     * Get the operationType property: The intended operation for a cluster.
-     * 
-     * @return the operationType value.
-     */
-    public OperationType operationType() {
-        return this.operationType;
-    }
-
-    /**
-     * Set the operationType property: The intended operation for a cluster.
-     * 
-     * @param operationType the operationType value to set.
-     * @return the DeploymentSettingsProperties object itself.
-     */
-    public DeploymentSettingsProperties withOperationType(OperationType operationType) {
-        this.operationType = operationType;
-        return this;
-    }
-
-    /**
      * Get the deploymentConfiguration property: Scale units will contains list of deployment data.
      * 
      * @return the deploymentConfiguration value.
@@ -153,7 +138,7 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
      * 
      * @return the reportedProperties value.
      */
-    public EceReportedProperties reportedProperties() {
+    public ReportedProperties reportedProperties() {
         return this.reportedProperties;
     }
 
@@ -198,7 +183,8 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
         jsonWriter.writeStringField("deploymentMode",
             this.deploymentMode == null ? null : this.deploymentMode.toString());
         jsonWriter.writeJsonField("deploymentConfiguration", this.deploymentConfiguration);
-        jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -230,12 +216,8 @@ public final class DeploymentSettingsProperties implements JsonSerializable<Depl
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDeploymentSettingsProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("operationType".equals(fieldName)) {
-                    deserializedDeploymentSettingsProperties.operationType
-                        = OperationType.fromString(reader.getString());
                 } else if ("reportedProperties".equals(fieldName)) {
-                    deserializedDeploymentSettingsProperties.reportedProperties
-                        = EceReportedProperties.fromJson(reader);
+                    deserializedDeploymentSettingsProperties.reportedProperties = ReportedProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,14 +1,570 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2024-12-24)
 
-### Features Added
+- Azure Resource Manager azurestackhci client library for Java. This package contains Microsoft Azure SDK for azurestackhci Management SDK. Azure Stack HCI management service. Package tag package-2024-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.LogCollectionJobType` was removed
 
-### Other Changes
+#### `models.HciOsProfile` was removed
+
+#### `models.SwitchDetail` was removed
+
+#### `models.HciEdgeDevice` was removed
+
+#### `models.AccessLevel` was removed
+
+#### `models.HciReportedProperties` was removed
+
+#### `models.LogCollectionRequestProperties` was removed
+
+#### `models.HciEdgeDeviceProperties` was removed
+
+#### `models.HciValidationFailureDetail` was removed
+
+#### `models.DeviceKind` was removed
+
+#### `models.OperationType` was removed
+
+#### `models.EceDeploymentSecrets` was removed
+
+#### `models.RemoteSupportType` was removed
+
+#### `models.DeploymentSettingHostNetwork` was removed
+
+#### `models.EceActionStatus` was removed
+
+#### `models.LogCollectionRequest` was removed
+
+#### `models.HciEdgeDeviceAdapterPropertyOverrides` was removed
+
+#### `AzureStackHciManager$Configurable` was removed
+
+#### `models.DeploymentSettingStorageAdapterIpInfo` was removed
+
+#### `models.SdnIntegration` was removed
+
+#### `models.LogCollectionStatus` was removed
+
+#### `models.HciNetworkProfile` was removed
+
+#### `models.LogCollectionProperties` was removed
+
+#### `models.HciEdgeDeviceArcExtension` was removed
+
+#### `models.NetworkController` was removed
+
+#### `models.HciEdgeDeviceIntents` was removed
+
+#### `models.LogCollectionSession` was removed
+
+#### `models.SwitchExtension` was removed
+
+#### `models.PerNodeRemoteSupportSession` was removed
+
+#### `models.ArcExtensionState` was removed
+
+#### `models.SbeDeploymentPackageInfo` was removed
+
+#### `models.RemoteSupportProperties` was removed
+
+#### `models.DeploymentSettingVirtualSwitchConfigurationOverrides` was removed
+
+#### `models.SbePartnerProperties` was removed
+
+#### `models.HciNicDetail` was removed
+
+#### `models.EdgeDeviceProperties` was removed
+
+#### `models.EceSecrets` was removed
+
+#### `models.EceReportedProperties` was removed
+
+#### `models.HciEdgeDeviceStorageNetworks` was removed
+
+#### `models.DeploymentSettingAdapterPropertyOverrides` was removed
+
+#### `models.SbePartnerInfo` was removed
+
+#### `models.DeploymentSettingIntents` was removed
+
+#### `models.RemoteSupportRequest` was removed
+
+#### `models.SbeCredentials` was removed
+
+#### `models.ExtensionProfile` was removed
+
+#### `models.HciEdgeDeviceHostNetwork` was removed
+
+#### `models.HciEdgeDeviceStorageAdapterIpInfo` was removed
+
+#### `models.SbeDeploymentInfo` was removed
+
+#### `models.RemoteSupportNodeSettings` was removed
+
+#### `AzureStackHciManager` was removed
+
+#### `models.HciEdgeDeviceVirtualSwitchConfigurationOverrides` was removed
+
+#### `models.DeviceState` was removed
+
+#### `models.RemoteSupportRequestProperties` was removed
+
+#### `models.LogCollectionError` was removed
+
+#### `models.DeploymentSettingStorageNetworks` was removed
+
+#### `models.DeploymentData` was modified
+
+* `withHostNetwork(models.DeploymentSettingHostNetwork)` was removed
+* `sdnIntegration()` was removed
+* `secrets()` was removed
+* `withSdnIntegration(models.SdnIntegration)` was removed
+* `withSecrets(java.util.List)` was removed
+* `models.DeploymentSettingHostNetwork hostNetwork()` -> `models.HostNetwork hostNetwork()`
+
+#### `models.SecuritySetting$Update` was modified
+
+* `withWdacComplianceAssignment(models.ComplianceAssignmentType)` was removed
+* `withSmbEncryptionForIntraClusterTrafficComplianceAssignment(models.ComplianceAssignmentType)` was removed
+
+#### `models.Clusters` was modified
+
+* `triggerLogCollection(java.lang.String,java.lang.String,models.LogCollectionRequest)` was removed
+* `configureRemoteSupport(java.lang.String,java.lang.String,models.RemoteSupportRequest,com.azure.core.util.Context)` was removed
+* `triggerLogCollection(java.lang.String,java.lang.String,models.LogCollectionRequest,com.azure.core.util.Context)` was removed
+* `configureRemoteSupport(java.lang.String,java.lang.String,models.RemoteSupportRequest)` was removed
+
+#### `models.Cluster` was modified
+
+* `logCollectionProperties()` was removed
+* `configureRemoteSupport(models.RemoteSupportRequest)` was removed
+* `triggerLogCollection(models.LogCollectionRequest)` was removed
+* `configureRemoteSupport(models.RemoteSupportRequest,com.azure.core.util.Context)` was removed
+* `triggerLogCollection(models.LogCollectionRequest,com.azure.core.util.Context)` was removed
+* `remoteSupportProperties()` was removed
+
+#### `models.ScaleUnits` was modified
+
+* `withSbePartnerInfo(models.SbePartnerInfo)` was removed
+* `sbePartnerInfo()` was removed
+
+#### `models.EdgeDevice` was modified
+
+* `kind()` was removed
+
+#### `models.SecuritySetting` was modified
+
+* `smbEncryptionForIntraClusterTrafficComplianceAssignment()` was removed
+* `wdacComplianceAssignment()` was removed
+
+#### `models.ReportedProperties` was modified
+
+* `extensionProfile()` was removed
+* `deviceState()` was removed
+
+#### `models.UpdateRun` was modified
+
+* `expectedExecutionTime()` was removed
+
+#### `models.DeploymentSetting$Definition` was modified
+
+* `withOperationType(models.OperationType)` was removed
+
+#### `models.HciUpdate$Update` was modified
+
+* `withMinSbeVersionRequired(java.lang.String)` was removed
+
+#### `models.SecuritySetting$Definition` was modified
+
+* `withSmbEncryptionForIntraClusterTrafficComplianceAssignment(models.ComplianceAssignmentType)` was removed
+* `withWdacComplianceAssignment(models.ComplianceAssignmentType)` was removed
+
+#### `models.HciUpdate$Definition` was modified
+
+* `withMinSbeVersionRequired(java.lang.String)` was removed
+
+#### `models.UpdateRun$Update` was modified
+
+* `withExpectedExecutionTime(java.lang.String)` was removed
+
+#### `models.HciUpdate` was modified
+
+* `minSbeVersionRequired()` was removed
+
+#### `models.Cluster$Definition` was modified
+
+* `withLogCollectionProperties(models.LogCollectionProperties)` was removed
+* `withRemoteSupportProperties(models.RemoteSupportProperties)` was removed
+
+#### `models.UpdateRun$Definition` was modified
+
+* `withExpectedExecutionTime(java.lang.String)` was removed
+
+#### `models.EdgeDevices` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.EdgeDeviceInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.EdgeDeviceInner)` was removed
+
+#### `models.PrecheckResult` was modified
+
+* `targetResourceType()` was removed
+* `withHealthCheckTags(java.lang.Object)` was removed
+* `withTargetResourceType(java.lang.String)` was removed
+* `healthCheckTags()` was removed
+
+#### `models.DeploymentSetting` was modified
+
+* `operationType()` was removed
+* `models.EceReportedProperties reportedProperties()` -> `models.ReportedProperties reportedProperties()`
+
+#### `models.DeploymentSetting$Update` was modified
+
+* `withOperationType(models.OperationType)` was removed
+
+#### `models.UpdateSummaries` was modified
+
+* `currentSbeVersion()` was removed
+* `currentOemVersion()` was removed
+
+### Features Added
+
+* `models.GalleryOSDiskImage` was added
+
+* `models.Subnet` was added
+
+* `models.IpConfiguration` was added
+
+* `models.LogicalNetworkStatusProvisioningStatus` was added
+
+* `models.EdgeDevice$DefinitionStages` was added
+
+* `models.NetworkProfileUpdateNetworkInterfacesItem` was added
+
+* `models.StorageNetworks` was added
+
+* `models.VirtualMachineInstanceUpdateRequest` was added
+
+* `models.GalleryImageVersion` was added
+
+* `models.IpPool` was added
+
+* `models.MarketplaceGalleryImageStatusDownloadStatus` was added
+
+* `models.IpConfigurationProperties` was added
+
+* `models.VirtualMachineInstancePropertiesOsProfile` was added
+
+* `models.MarketplaceGalleryImages$Definition` was added
+
+* `models.AdapterPropertyOverrides` was added
+
+* `models.NetworkInterfaces` was added
+
+* `models.SubnetPropertiesFormatIpConfigurationReferencesItem` was added
+
+* `models.GalleryImagesUpdateRequest` was added
+
+* `models.OsProfileUpdate` was added
+
+* `models.VirtualMachineInstancePropertiesOsProfileWindowsConfiguration` was added
+
+* `models.HybridIdentityMetadataList` was added
+
+* `models.VirtualMachineInstancePropertiesStorageProfileDataDisksItem` was added
+
+* `models.StorageContainersOperations` was added
+
+* `models.StorageContainers$UpdateStages` was added
+
+* `models.LogicalNetworksUpdateRequest` was added
+
+* `models.GuestAgentInstallStatus` was added
+
+* `models.LogicalNetworkPropertiesDhcpOptions` was added
+
+* `models.VirtualMachineInstanceStatus` was added
+
+* `models.IpAllocationMethodEnum` was added
+
+* `models.VirtualMachineConfigAgentInstanceView` was added
+
+* `models.MarketplaceGalleryImages` was added
+
+* `models.LogicalNetworks$DefinitionStages` was added
+
+* `models.HybridIdentityMetadata` was added
+
+* `models.VirtualMachineInstancePropertiesOsProfileLinuxConfiguration` was added
+
+* `models.NetworkInterfaces$Update` was added
+
+* `models.NetworkInterfaceStatus` was added
+
+* `models.VirtualHardDisksUpdateRequest` was added
+
+* `models.IpConfigurationPropertiesSubnet` was added
+
+* `models.InstanceViewStatus` was added
+
+* `models.NetworkInterfacesUpdateRequest` was added
+
+* `models.VirtualHardDisksListResult` was added
+
+* `models.OsProfileUpdateLinuxConfiguration` was added
+
+* `models.LogicalNetworks$UpdateStages` was added
+
+* `models.SshConfiguration` was added
+
+* `models.MarketplaceGalleryImages$Update` was added
+
+* `models.HyperVGeneration` was added
+
+* `models.VirtualMachineInstancePropertiesHardwareProfile` was added
+
+* `models.MarketplaceGalleryImageStatusProvisioningStatus` was added
+
+* `models.StorageProfileUpdateDataDisksItem` was added
+
+* `models.EdgeDevice$UpdateStages` was added
+
+* `models.GalleryImages$Update` was added
+
+* `models.GalleryDiskImage` was added
+
+* `models.InterfaceDnsSettings` was added
+
+* `models.NetworkInterfacesOperations` was added
+
+* `models.LogicalNetworks` was added
+
+* `models.GuestAgents` was added
+
+* `models.NetworkInterfaces$UpdateStages` was added
+
+* `models.IpPoolTypeEnum` was added
+
+* `models.Route` was added
+
+* `models.LogicalNetworks$Definition` was added
+
+* `models.VirtualMachineInstancePropertiesSecurityProfile` was added
+
+* `models.NetworkProfileUpdate` was added
+
+* `models.LogicalNetworks$Update` was added
+
+* `models.StorageContainers$Definition` was added
+
+* `models.VirtualHardDisks$DefinitionStages` was added
+
+* `models.StorageContainersUpdateRequest` was added
+
+* `models.VirtualMachineInstancePropertiesStorageProfile` was added
+
+* `models.IpPoolInfo` was added
+
+* `models.VirtualMachineInstancePropertiesNetworkProfileNetworkInterfacesItem` was added
+
+* `models.StorageContainerStatus` was added
+
+* `models.GalleryImagesListResult` was added
+
+* `models.EdgeDevice$Update` was added
+
+* `models.ProvisioningStateEnum` was added
+
+* `models.NetworkInterfaces$Definition` was added
+
+* `AzurestackhciManager$Configurable` was added
+
+* `models.OperatingSystemTypes` was added
+
+* `models.ResourceIdentityType` was added
+
+* `models.GalleryImageStatusDownloadStatus` was added
+
+* `models.GalleryImages$UpdateStages` was added
+
+* `models.MarketplaceGalleryImagesOperations` was added
+
+* `models.DiskFileFormat` was added
+
+* `models.GalleryImageStatus` was added
+
+* `models.StorageProfileUpdate` was added
+
+* `models.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig` was added
+
+* `models.GalleryImageIdentifier` was added
+
+* `models.GuestAgentsOperations` was added
+
+* `models.NetworkInterfacesListResult` was added
+
+* `models.VirtualMachineInstancePropertiesSecurityProfileUefiSettings` was added
+
+* `models.VirtualMachineInstancePropertiesNetworkProfile` was added
+
+* `models.VirtualSwitchConfigurationOverrides` was added
+
+* `models.HostNetwork` was added
+
+* `models.EdgeDevice$Definition` was added
+
+* `models.MarketplaceGalleryImagesListResult` was added
+
+* `models.ValidationStatus` was added
+
+* `models.MarketplaceGalleryImagesUpdateRequest` was added
+
+* `models.StatusTypes` was added
+
+* `models.CloudInitDataSource` was added
+
+* `models.OsProfileUpdateWindowsConfiguration` was added
+
+* `models.SshPublicKey` was added
+
+* `models.HttpProxyConfiguration` was added
+
+* `models.StorageContainers$Update` was added
+
+* `models.VirtualMachineInstanceStatusProvisioningStatus` was added
+
+* `models.VirtualMachineInstanceUpdateProperties` was added
+
+* `models.GalleryImageVersionStorageProfile` was added
+
+* `models.HybridIdentityMetadatas` was added
+
+* `models.Intents` was added
+
+* `models.ProvisioningAction` was added
+
+* `models.MarketplaceGalleryImageStatus` was added
+
+* `models.VirtualMachineInstancePropertiesStorageProfileOsDisk` was added
+
+* `models.VirtualMachineInstances` was added
+
+* `models.GalleryImageStatusProvisioningStatus` was added
+
+* `models.VirtualHardDisks$Update` was added
+
+* `models.NetworkInterfaceStatusProvisioningStatus` was added
+
+* `models.VirtualHardDiskStatusProvisioningStatus` was added
+
+* `models.GuestAgent` was added
+
+* `models.LogicalNetworksOperations` was added
+
+* `models.VirtualHardDisks$UpdateStages` was added
+
+* `models.StorageContainerStatusProvisioningStatus` was added
+
+* `models.PowerStateEnum` was added
+
+* `models.VmSizeEnum` was added
+
+* `models.VirtualMachineInstanceListResult` was added
+
+* `models.DeploymentStatus` was added
+
+* `models.LogicalNetworkStatus` was added
+
+* `models.VirtualHardDisks` was added
+
+* `models.SecurityTypes` was added
+
+* `models.Identity` was added
+
+* `models.StorageContainers` was added
+
+* `models.GalleryImagesOperations` was added
+
+* `models.VirtualMachineInstancePropertiesStorageProfileImageReference` was added
+
+* `models.ExtendedLocationTypes` was added
+
+* `models.VirtualHardDiskStatus` was added
+
+* `AzurestackhciManager` was added
+
+* `models.GuestAgentList` was added
+
+* `models.GalleryImages` was added
+
+* `models.LogicalNetworksListResult` was added
+
+* `models.VirtualHardDisksOperations` was added
+
+* `models.GalleryImages$DefinitionStages` was added
+
+* `models.HardwareProfileUpdate` was added
+
+* `models.StorageContainersListResult` was added
+
+* `models.VirtualMachineInstanceView` was added
+
+* `models.MarketplaceGalleryImages$UpdateStages` was added
+
+* `models.GalleryImages$Definition` was added
+
+* `models.VirtualMachineInstance` was added
+
+* `models.GuestCredential` was added
+
+* `models.ExtendedLocation` was added
+
+* `models.NetworkInterfaces$DefinitionStages` was added
+
+* `models.MarketplaceGalleryImages$DefinitionStages` was added
+
+* `models.VirtualHardDisks$Definition` was added
+
+* `models.StorageContainers$DefinitionStages` was added
+
+* `models.RouteTable` was added
+
+#### `models.DeploymentData` was modified
+
+* `withHostNetwork(models.HostNetwork)` was added
+
+#### `models.EdgeDevice` was modified
+
+* `validate(models.ValidateRequest)` was added
+* `deviceConfiguration()` was added
+* `validate(models.ValidateRequest,com.azure.core.util.Context)` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `update()` was added
+* `provisioningState()` was added
+* `refresh()` was added
+
+#### `models.ReportedProperties` was modified
+
+* `validationStatus()` was added
+* `deploymentStatus()` was added
+
+#### `models.DeploymentSetting$Definition` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was added
+
+#### `models.EdgeDevices` was modified
+
+* `getById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DeploymentSetting$Update` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was added
 
 ## 1.0.0-beta.5 (2024-08-26)
 

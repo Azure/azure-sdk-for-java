@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UploadCertificateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UploadCertificateRequest model
-            = BinaryData.fromString("{\"properties\":{\"certificates\":[\"isgwbnbbeldawkz\",\"ali\"]}}")
-                .toObject(UploadCertificateRequest.class);
-        Assertions.assertEquals("isgwbnbbeldawkz", model.properties().certificates().get(0));
+        UploadCertificateRequest model = BinaryData
+            .fromString("{\"properties\":{\"certificates\":[\"sflhhca\",\"lnjixisxya\",\"joya\",\"cslyjpk\"]}}")
+            .toObject(UploadCertificateRequest.class);
+        Assertions.assertEquals("sflhhca", model.properties().certificates().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UploadCertificateRequest model = new UploadCertificateRequest()
-            .withProperties(new RawCertificateData().withCertificates(Arrays.asList("isgwbnbbeldawkz", "ali")));
+        UploadCertificateRequest model = new UploadCertificateRequest().withProperties(
+            new RawCertificateData().withCertificates(Arrays.asList("sflhhca", "lnjixisxya", "joya", "cslyjpk")));
         model = BinaryData.fromObject(model).toObject(UploadCertificateRequest.class);
-        Assertions.assertEquals("isgwbnbbeldawkz", model.properties().certificates().get(0));
+        Assertions.assertEquals("sflhhca", model.properties().certificates().get(0));
     }
 }

@@ -185,64 +185,6 @@ public interface Clusters {
         SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
 
     /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster triggerLogCollection(String resourceGroupName, String clusterName,
-        LogCollectionRequest logCollectionRequest);
-
-    /**
-     * Trigger Log Collection on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param logCollectionRequest Trigger Log Collection Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster triggerLogCollection(String resourceGroupName, String clusterName,
-        LogCollectionRequest logCollectionRequest, Context context);
-
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
-        RemoteSupportRequest remoteSupportRequest);
-
-    /**
-     * Configure RemoteSupport on a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param remoteSupportRequest Configure Remote Support Request Payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
-     */
-    Cluster configureRemoteSupport(String resourceGroupName, String clusterName,
-        RemoteSupportRequest remoteSupportRequest, Context context);
-
-    /**
      * Get HCI cluster.
      * 
      * @param id the resource ID.

@@ -12,21 +12,19 @@ import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
 public final class SecuritySettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/
      * PutSecuritySettings.json
      */
     /**
      * Sample code: Create Security Settings.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void createSecuritySettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void createSecuritySettings(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.securitySettings()
             .define("default")
             .withExistingCluster("test-rg", "myCluster")
             .withSecuredCoreComplianceAssignment(ComplianceAssignmentType.AUDIT)
-            .withWdacComplianceAssignment(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT)
-            .withSmbEncryptionForIntraClusterTrafficComplianceAssignment(ComplianceAssignmentType.AUDIT)
             .create();
     }
 }

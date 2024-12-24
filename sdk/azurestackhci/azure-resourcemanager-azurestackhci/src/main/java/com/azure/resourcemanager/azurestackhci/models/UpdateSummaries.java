@@ -63,13 +63,6 @@ public interface UpdateSummaries {
     String oemFamily();
 
     /**
-     * Gets the currentOemVersion property: Current OEM Version.
-     * 
-     * @return the currentOemVersion value.
-     */
-    String currentOemVersion();
-
-    /**
      * Gets the hardwareModel property: Name of the hardware model.
      * 
      * @return the hardwareModel value.
@@ -89,13 +82,6 @@ public interface UpdateSummaries {
      * @return the currentVersion value.
      */
     String currentVersion();
-
-    /**
-     * Gets the currentSbeVersion property: Current Sbe version of the stamp.
-     * 
-     * @return the currentSbeVersion value.
-     */
-    String currentSbeVersion();
 
     /**
      * Gets the lastUpdated property: Last time an update installation completed successfully.

@@ -22,11 +22,6 @@ public final class ScaleUnits implements JsonSerializable<ScaleUnits> {
      */
     private DeploymentData deploymentData;
 
-    /*
-     * Solution builder extension (SBE) partner properties
-     */
-    private SbePartnerInfo sbePartnerInfo;
-
     /**
      * Creates an instance of ScaleUnits class.
      */
@@ -54,26 +49,6 @@ public final class ScaleUnits implements JsonSerializable<ScaleUnits> {
     }
 
     /**
-     * Get the sbePartnerInfo property: Solution builder extension (SBE) partner properties.
-     * 
-     * @return the sbePartnerInfo value.
-     */
-    public SbePartnerInfo sbePartnerInfo() {
-        return this.sbePartnerInfo;
-    }
-
-    /**
-     * Set the sbePartnerInfo property: Solution builder extension (SBE) partner properties.
-     * 
-     * @param sbePartnerInfo the sbePartnerInfo value to set.
-     * @return the ScaleUnits object itself.
-     */
-    public ScaleUnits withSbePartnerInfo(SbePartnerInfo sbePartnerInfo) {
-        this.sbePartnerInfo = sbePartnerInfo;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,9 +59,6 @@ public final class ScaleUnits implements JsonSerializable<ScaleUnits> {
                 .log(new IllegalArgumentException("Missing required property deploymentData in model ScaleUnits"));
         } else {
             deploymentData().validate();
-        }
-        if (sbePartnerInfo() != null) {
-            sbePartnerInfo().validate();
         }
     }
 
@@ -99,7 +71,6 @@ public final class ScaleUnits implements JsonSerializable<ScaleUnits> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("deploymentData", this.deploymentData);
-        jsonWriter.writeJsonField("sbePartnerInfo", this.sbePartnerInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,8 +92,6 @@ public final class ScaleUnits implements JsonSerializable<ScaleUnits> {
 
                 if ("deploymentData".equals(fieldName)) {
                     deserializedScaleUnits.deploymentData = DeploymentData.fromJson(reader);
-                } else if ("sbePartnerInfo".equals(fieldName)) {
-                    deserializedScaleUnits.sbePartnerInfo = SbePartnerInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -16,15 +16,15 @@ import java.io.IOException;
 public final class ExtensionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PatchExtension.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/PatchExtension.
+     * json
      */
     /**
      * Sample code: Update Arc Extension.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void updateArcExtension(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager)
+    public static void updateArcExtension(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager)
         throws IOException {
         Extension resource = manager.extensions()
             .getWithResponse("test-rg", "myCluster", "default", "MicrosoftMonitoringAgent",

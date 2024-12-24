@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.azurestackhci.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
-import com.azure.resourcemanager.azurestackhci.models.DeviceKind;
+import com.azure.resourcemanager.azurestackhci.models.DeviceConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevice;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.ValidateRequest;
+import com.azure.resourcemanager.azurestackhci.models.ValidateResponse;
 
-public final class EdgeDeviceImpl implements EdgeDevice {
+public final class EdgeDeviceImpl implements EdgeDevice, EdgeDevice.Definition, EdgeDevice.Update {
     private EdgeDeviceInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
-
-    EdgeDeviceImpl(EdgeDeviceInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -32,19 +30,114 @@ public final class EdgeDeviceImpl implements EdgeDevice {
         return this.innerModel().type();
     }
 
-    public DeviceKind kind() {
-        return this.innerModel().kind();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DeviceConfiguration deviceConfiguration() {
+        return this.innerModel().deviceConfiguration();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public EdgeDeviceInner innerModel() {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceUri;
+
+    private String edgeDeviceName;
+
+    public EdgeDeviceImpl withExistingResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+        return this;
+    }
+
+    public EdgeDevice create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .createOrUpdate(resourceUri, edgeDeviceName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public EdgeDevice create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .createOrUpdate(resourceUri, edgeDeviceName, this.innerModel(), context);
+        return this;
+    }
+
+    EdgeDeviceImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
+        this.innerObject = new EdgeDeviceInner();
+        this.serviceManager = serviceManager;
+        this.edgeDeviceName = name;
+    }
+
+    public EdgeDeviceImpl update() {
+        return this;
+    }
+
+    public EdgeDevice apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .createOrUpdate(resourceUri, edgeDeviceName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public EdgeDevice apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .createOrUpdate(resourceUri, edgeDeviceName, this.innerModel(), context);
+        return this;
+    }
+
+    EdgeDeviceImpl(EdgeDeviceInner innerObject,
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "resourceUri");
+        this.edgeDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}", "edgeDeviceName");
+    }
+
+    public EdgeDevice refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .getWithResponse(resourceUri, edgeDeviceName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public EdgeDevice refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getEdgeDevices()
+            .getWithResponse(resourceUri, edgeDeviceName, context)
+            .getValue();
+        return this;
+    }
+
+    public ValidateResponse validate(ValidateRequest validateRequest) {
+        return serviceManager.edgeDevices().validate(resourceUri, edgeDeviceName, validateRequest);
+    }
+
+    public ValidateResponse validate(ValidateRequest validateRequest, Context context) {
+        return serviceManager.edgeDevices().validate(resourceUri, edgeDeviceName, validateRequest, context);
+    }
+
+    public EdgeDeviceImpl withDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
+        this.innerModel().withDeviceConfiguration(deviceConfiguration);
+        return this;
+    }
+
+    public EdgeDeviceImpl withProvisioningState(ProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
+        return this;
     }
 }

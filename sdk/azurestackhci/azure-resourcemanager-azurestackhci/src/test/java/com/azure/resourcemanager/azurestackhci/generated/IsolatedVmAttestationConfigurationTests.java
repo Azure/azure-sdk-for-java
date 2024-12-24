@@ -11,7 +11,7 @@ public final class IsolatedVmAttestationConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IsolatedVmAttestationConfiguration model = BinaryData.fromString(
-            "{\"attestationResourceId\":\"bjtazqugxywpmu\",\"relyingPartyServiceEndpoint\":\"fjz\",\"attestationServiceEndpoint\":\"qkqujidsu\"}")
+            "{\"attestationResourceId\":\"zjuzgwyz\",\"relyingPartyServiceEndpoint\":\"txon\",\"attestationServiceEndpoint\":\"ts\"}")
             .toObject(IsolatedVmAttestationConfiguration.class);
     }
 

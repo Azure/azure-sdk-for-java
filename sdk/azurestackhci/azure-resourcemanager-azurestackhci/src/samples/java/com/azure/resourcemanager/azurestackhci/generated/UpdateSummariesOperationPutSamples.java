@@ -14,16 +14,16 @@ import java.time.OffsetDateTime;
 public final class UpdateSummariesOperationPutSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/
      * PutUpdateSummaries.json
      */
     /**
      * Sample code: Put Update summaries under cluster resource.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
     public static void
-        putUpdateSummariesUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        putUpdateSummariesUnderClusterResource(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.updateSummariesOperations()
             .putWithResponse("testrg", "testcluster",
                 new UpdateSummariesInner().withOemFamily("DellEMC")

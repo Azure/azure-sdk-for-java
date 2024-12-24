@@ -12,19 +12,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Reported properties pushed from edge device.
+ * The DeploymentStatus of AzureStackHCI Cluster.
  */
 @Immutable
-public class ReportedProperties implements JsonSerializable<ReportedProperties> {
+public final class ReportedProperties implements JsonSerializable<ReportedProperties> {
     /*
-     * edge device state.
+     * validation status of AzureStackHCI Cluster Deployment.
      */
-    private DeviceState deviceState;
+    private ValidationStatus validationStatus;
 
     /*
-     * Extensions details for edge device.
+     * Deployment status of AzureStackHCI Cluster Deployment.
      */
-    private ExtensionProfile extensionProfile;
+    private DeploymentStatus deploymentStatus;
 
     /**
      * Creates an instance of ReportedProperties class.
@@ -33,43 +33,21 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
     }
 
     /**
-     * Get the deviceState property: edge device state.
+     * Get the validationStatus property: validation status of AzureStackHCI Cluster Deployment.
      * 
-     * @return the deviceState value.
+     * @return the validationStatus value.
      */
-    public DeviceState deviceState() {
-        return this.deviceState;
+    public ValidationStatus validationStatus() {
+        return this.validationStatus;
     }
 
     /**
-     * Set the deviceState property: edge device state.
+     * Get the deploymentStatus property: Deployment status of AzureStackHCI Cluster Deployment.
      * 
-     * @param deviceState the deviceState value to set.
-     * @return the ReportedProperties object itself.
+     * @return the deploymentStatus value.
      */
-    ReportedProperties withDeviceState(DeviceState deviceState) {
-        this.deviceState = deviceState;
-        return this;
-    }
-
-    /**
-     * Get the extensionProfile property: Extensions details for edge device.
-     * 
-     * @return the extensionProfile value.
-     */
-    public ExtensionProfile extensionProfile() {
-        return this.extensionProfile;
-    }
-
-    /**
-     * Set the extensionProfile property: Extensions details for edge device.
-     * 
-     * @param extensionProfile the extensionProfile value to set.
-     * @return the ReportedProperties object itself.
-     */
-    ReportedProperties withExtensionProfile(ExtensionProfile extensionProfile) {
-        this.extensionProfile = extensionProfile;
-        return this;
+    public DeploymentStatus deploymentStatus() {
+        return this.deploymentStatus;
     }
 
     /**
@@ -78,8 +56,11 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extensionProfile() != null) {
-            extensionProfile().validate();
+        if (validationStatus() != null) {
+            validationStatus().validate();
+        }
+        if (deploymentStatus() != null) {
+            deploymentStatus().validate();
         }
     }
 
@@ -107,10 +88,10 @@ public class ReportedProperties implements JsonSerializable<ReportedProperties> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deviceState".equals(fieldName)) {
-                    deserializedReportedProperties.deviceState = DeviceState.fromString(reader.getString());
-                } else if ("extensionProfile".equals(fieldName)) {
-                    deserializedReportedProperties.extensionProfile = ExtensionProfile.fromJson(reader);
+                if ("validationStatus".equals(fieldName)) {
+                    deserializedReportedProperties.validationStatus = ValidationStatus.fromJson(reader);
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedReportedProperties.deploymentStatus = DeploymentStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

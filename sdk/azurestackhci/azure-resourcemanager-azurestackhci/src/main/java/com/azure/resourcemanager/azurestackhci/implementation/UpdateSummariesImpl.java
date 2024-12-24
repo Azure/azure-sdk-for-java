@@ -19,10 +19,10 @@ import java.util.List;
 public final class UpdateSummariesImpl implements UpdateSummaries {
     private UpdateSummariesInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     UpdateSummariesImpl(UpdateSummariesInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -55,10 +55,6 @@ public final class UpdateSummariesImpl implements UpdateSummaries {
         return this.innerModel().oemFamily();
     }
 
-    public String currentOemVersion() {
-        return this.innerModel().currentOemVersion();
-    }
-
     public String hardwareModel() {
         return this.innerModel().hardwareModel();
     }
@@ -74,10 +70,6 @@ public final class UpdateSummariesImpl implements UpdateSummaries {
 
     public String currentVersion() {
         return this.innerModel().currentVersion();
-    }
-
-    public String currentSbeVersion() {
-        return this.innerModel().currentSbeVersion();
     }
 
     public OffsetDateTime lastUpdated() {
@@ -113,7 +105,7 @@ public final class UpdateSummariesImpl implements UpdateSummaries {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 }

@@ -13,15 +13,15 @@ public final class ClusterReportedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterReportedProperties model = BinaryData.fromString(
-            "{\"clusterName\":\"xaepdkzjancuxr\",\"clusterId\":\"wbavxbniwdj\",\"clusterVersion\":\"zt\",\"nodes\":[{\"name\":\"gnxytxhpzxbz\",\"id\":65.9889,\"windowsServerSubscription\":\"Disabled\",\"nodeType\":\"ThirdParty\",\"ehcResourceId\":\"uhxwtctyqiklbbov\",\"manufacturer\":\"wzbhvgyugu\",\"model\":\"vmkfssxqu\",\"osName\":\"fpl\",\"osVersion\":\"gsxnkjzkdeslpv\",\"osDisplayVersion\":\"pwiyig\",\"serialNumber\":\"pkdwzbai\",\"coreCount\":69.34189,\"memoryInGiB\":3.11566,\"lastLicensingTimestamp\":\"2021-01-25T19:39:32Z\",\"oemActivation\":\"Enabled\"}],\"lastUpdated\":\"2021-10-03T00:53:14Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Off\",\"supportedCapabilities\":[\"nabckhsmtx\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"btfhvpesaps\",\"oemActivation\":\"Disabled\"}")
+            "{\"clusterName\":\"hmdua\",\"clusterId\":\"exq\",\"clusterVersion\":\"fadmws\",\"nodes\":[{\"name\":\"vxpvgomz\",\"id\":46.138733,\"windowsServerSubscription\":\"Enabled\",\"nodeType\":\"FirstParty\",\"ehcResourceId\":\"nbbelda\",\"manufacturer\":\"zbaliourqha\",\"model\":\"uhashsfwx\",\"osName\":\"owzxcu\",\"osVersion\":\"cjooxdjebwpucwwf\",\"osDisplayVersion\":\"vbvmeu\",\"serialNumber\":\"ivyhzceuojgjrwju\",\"coreCount\":44.419746,\"memoryInGiB\":59.279053,\"lastLicensingTimestamp\":\"2021-06-18T15:12:06Z\",\"oemActivation\":\"Disabled\"}],\"lastUpdated\":\"2021-05-06T08:04:17Z\",\"imdsAttestation\":\"Disabled\",\"diagnosticLevel\":\"Basic\",\"supportedCapabilities\":[\"rjaw\",\"qwgxhniskx\",\"bkpyc\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"ndnhj\",\"oemActivation\":\"Enabled\"}")
             .toObject(ClusterReportedProperties.class);
-        Assertions.assertEquals(DiagnosticLevel.OFF, model.diagnosticLevel());
+        Assertions.assertEquals(DiagnosticLevel.BASIC, model.diagnosticLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterReportedProperties model = new ClusterReportedProperties().withDiagnosticLevel(DiagnosticLevel.OFF);
+        ClusterReportedProperties model = new ClusterReportedProperties().withDiagnosticLevel(DiagnosticLevel.BASIC);
         model = BinaryData.fromObject(model).toObject(ClusterReportedProperties.class);
-        Assertions.assertEquals(DiagnosticLevel.OFF, model.diagnosticLevel());
+        Assertions.assertEquals(DiagnosticLevel.BASIC, model.diagnosticLevel());
     }
 }

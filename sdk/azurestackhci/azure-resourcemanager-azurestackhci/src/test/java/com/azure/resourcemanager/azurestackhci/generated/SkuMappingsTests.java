@@ -13,21 +13,21 @@ public final class SkuMappingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuMappings model = BinaryData.fromString(
-            "{\"catalogPlanId\":\"u\",\"marketplaceSkuId\":\"cp\",\"marketplaceSkuVersions\":[\"khihihlhzds\",\"tzbsrgnowcjhf\",\"mvec\",\"ctxmwoteyowcluq\"]}")
+            "{\"catalogPlanId\":\"fojuidjpuuyj\",\"marketplaceSkuId\":\"ejikzoeovvtzejet\",\"marketplaceSkuVersions\":[\"nt\"]}")
             .toObject(SkuMappings.class);
-        Assertions.assertEquals("u", model.catalogPlanId());
-        Assertions.assertEquals("cp", model.marketplaceSkuId());
-        Assertions.assertEquals("khihihlhzds", model.marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("fojuidjpuuyj", model.catalogPlanId());
+        Assertions.assertEquals("ejikzoeovvtzejet", model.marketplaceSkuId());
+        Assertions.assertEquals("nt", model.marketplaceSkuVersions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuMappings model = new SkuMappings().withCatalogPlanId("u")
-            .withMarketplaceSkuId("cp")
-            .withMarketplaceSkuVersions(Arrays.asList("khihihlhzds", "tzbsrgnowcjhf", "mvec", "ctxmwoteyowcluq"));
+        SkuMappings model = new SkuMappings().withCatalogPlanId("fojuidjpuuyj")
+            .withMarketplaceSkuId("ejikzoeovvtzejet")
+            .withMarketplaceSkuVersions(Arrays.asList("nt"));
         model = BinaryData.fromObject(model).toObject(SkuMappings.class);
-        Assertions.assertEquals("u", model.catalogPlanId());
-        Assertions.assertEquals("cp", model.marketplaceSkuId());
-        Assertions.assertEquals("khihihlhzds", model.marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("fojuidjpuuyj", model.catalogPlanId());
+        Assertions.assertEquals("ejikzoeovvtzejet", model.marketplaceSkuId());
+        Assertions.assertEquals("nt", model.marketplaceSkuVersions().get(0));
     }
 }

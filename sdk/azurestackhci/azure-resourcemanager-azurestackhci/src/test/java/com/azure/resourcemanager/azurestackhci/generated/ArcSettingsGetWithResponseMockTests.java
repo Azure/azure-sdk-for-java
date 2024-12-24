@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,23 +21,23 @@ public final class ArcSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"arcInstanceResourceGroup\":\"t\",\"arcApplicationClientId\":\"ikizbcu\",\"arcApplicationTenantId\":\"bvntnrgmqsorhce\",\"arcServicePrincipalObjectId\":\"gnlykm\",\"arcApplicationObjectId\":\"pwzvmdoksqdti\",\"aggregateState\":\"DisableInProgress\",\"perNodeDetails\":[{\"name\":\"oncqbazqicqch\",\"arcInstance\":\"tvx\",\"arcNodeServicePrincipalObjectId\":\"janepubdpkx\",\"state\":\"PartiallySucceeded\"},{\"name\":\"xiaodet\",\"arcInstance\":\"hkxdxuwsaifmc\",\"arcNodeServicePrincipalObjectId\":\"osbz\",\"state\":\"Succeeded\"},{\"name\":\"cvk\",\"arcInstance\":\"knjolgjyyxpve\",\"arcNodeServicePrincipalObjectId\":\"zerqzevxoqei\",\"state\":\"Connected\"},{\"name\":\"aljglzobl\",\"arcInstance\":\"aafrqulhmzyqbhd\",\"arcNodeServicePrincipalObjectId\":\"fjrqpjiyr\",\"state\":\"Deleted\"}],\"connectivityProperties\":\"datagaxwmzwdfkbnrzo\",\"defaultExtensions\":[{\"category\":\"tbqctqjfgx\",\"consentTime\":\"2021-01-03T19:23:32Z\"}]},\"id\":\"tgzdgv\",\"name\":\"yig\",\"type\":\"aqqilzdcduwjoed\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"arcInstanceResourceGroup\":\"llxricc\",\"arcApplicationClientId\":\"wmuqqoajxeiygle\",\"arcApplicationTenantId\":\"wvaexhdctr\",\"arcServicePrincipalObjectId\":\"qnkbrupobehdm\",\"arcApplicationObjectId\":\"zacvu\",\"aggregateState\":\"NotSpecified\",\"perNodeDetails\":[{\"name\":\"ibnzp\",\"arcInstance\":\"epifexleqirccjc\",\"arcNodeServicePrincipalObjectId\":\"kcgxvrpjlvc\",\"state\":\"Succeeded\"},{\"name\":\"ac\",\"arcInstance\":\"nettepdjxqeskoy\",\"arcNodeServicePrincipalObjectId\":\"iylpck\",\"state\":\"Creating\"}],\"connectivityProperties\":\"dataedveskwxegqp\",\"defaultExtensions\":[{\"category\":\"nzhctmjtsgh\",\"consentTime\":\"2021-11-24T19:57:59Z\"},{\"category\":\"cp\",\"consentTime\":\"2021-04-21T13:14:50Z\"}]},\"id\":\"zeq\",\"name\":\"cdl\",\"type\":\"tz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ArcSetting response = manager.arcSettings()
-            .getWithResponse("jomevtfycnlb", "gjco", "kk", com.azure.core.util.Context.NONE)
+            .getWithResponse("htkbtnq", "rngl", "mbiipsnawwlqk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("t", response.arcInstanceResourceGroup());
-        Assertions.assertEquals("ikizbcu", response.arcApplicationClientId());
-        Assertions.assertEquals("bvntnrgmqsorhce", response.arcApplicationTenantId());
-        Assertions.assertEquals("gnlykm", response.arcServicePrincipalObjectId());
-        Assertions.assertEquals("pwzvmdoksqdti", response.arcApplicationObjectId());
+        Assertions.assertEquals("llxricc", response.arcInstanceResourceGroup());
+        Assertions.assertEquals("wmuqqoajxeiygle", response.arcApplicationClientId());
+        Assertions.assertEquals("wvaexhdctr", response.arcApplicationTenantId());
+        Assertions.assertEquals("qnkbrupobehdm", response.arcServicePrincipalObjectId());
+        Assertions.assertEquals("zacvu", response.arcApplicationObjectId());
     }
 }

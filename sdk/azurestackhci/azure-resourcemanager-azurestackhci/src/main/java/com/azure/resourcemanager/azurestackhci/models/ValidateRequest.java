@@ -24,7 +24,7 @@ public final class ValidateRequest implements JsonSerializable<ValidateRequest> 
     private List<String> edgeDeviceIds;
 
     /*
-     * Additional info required for validation.
+     * additional Info required for validation
      */
     private String additionalInfo;
 
@@ -55,7 +55,7 @@ public final class ValidateRequest implements JsonSerializable<ValidateRequest> 
     }
 
     /**
-     * Get the additionalInfo property: Additional info required for validation.
+     * Get the additionalInfo property: additional Info required for validation.
      * 
      * @return the additionalInfo value.
      */
@@ -64,7 +64,7 @@ public final class ValidateRequest implements JsonSerializable<ValidateRequest> 
     }
 
     /**
-     * Set the additionalInfo property: Additional info required for validation.
+     * Set the additionalInfo property: additional Info required for validation.
      * 
      * @param additionalInfo the additionalInfo value to set.
      * @return the ValidateRequest object itself.

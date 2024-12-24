@@ -14,38 +14,40 @@ public final class OfferPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"gkmoyxcdyuibhmfd\",\"publisherId\":\"zydvfvf\",\"content\":\"naeo\",\"contentVersion\":\"rvhmgor\",\"skuMappings\":[{\"catalogPlanId\":\"is\",\"marketplaceSkuId\":\"w\",\"marketplaceSkuVersions\":[\"wplefaxvxil\",\"btgn\",\"nzeyqxtjj\"]},{\"catalogPlanId\":\"qlqhycavodg\",\"marketplaceSkuId\":\"dbeesmie\",\"marketplaceSkuVersions\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"]},{\"catalogPlanId\":\"gtcojocqwo\",\"marketplaceSkuId\":\"nzjvusfzldm\",\"marketplaceSkuVersions\":[\"xylfsb\",\"kadpysown\",\"tgkbugrjqctojc\",\"isofieypefojyqd\"]}]}")
+            "{\"provisioningState\":\"lrocuyzlwh\",\"publisherId\":\"emhooclutnpq\",\"content\":\"mczjkm\",\"contentVersion\":\"kyujxsglhsrrr\",\"skuMappings\":[{\"catalogPlanId\":\"lmbkzu\",\"marketplaceSkuId\":\"igrfihotjewl\",\"marketplaceSkuVersions\":[\"zzjgnr\",\"fqyhqoto\",\"hiqakydiwfbrk\"]},{\"catalogPlanId\":\"zdq\",\"marketplaceSkuId\":\"hcspo\",\"marketplaceSkuVersions\":[\"axsipietgb\",\"bjfu\",\"bmoichd\",\"pnfpubntnbat\"]},{\"catalogPlanId\":\"iqsowsaaelc\",\"marketplaceSkuId\":\"tc\",\"marketplaceSkuVersions\":[\"plrvkmjcwmjvlg\",\"ggcvk\",\"y\",\"izrzb\"]},{\"catalogPlanId\":\"sfxsf\",\"marketplaceSkuId\":\"tl\",\"marketplaceSkuVersions\":[\"vagbwidqlvhukove\",\"fizr\",\"jfnmjmvlwyz\",\"iblkujr\"]}]}")
             .toObject(OfferProperties.class);
-        Assertions.assertEquals("zydvfvf", model.publisherId());
-        Assertions.assertEquals("naeo", model.content());
-        Assertions.assertEquals("rvhmgor", model.contentVersion());
-        Assertions.assertEquals("is", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("w", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("wplefaxvxil", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("emhooclutnpq", model.publisherId());
+        Assertions.assertEquals("mczjkm", model.content());
+        Assertions.assertEquals("kyujxsglhsrrr", model.contentVersion());
+        Assertions.assertEquals("lmbkzu", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("igrfihotjewl", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("zzjgnr", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfferProperties model = new OfferProperties().withPublisherId("zydvfvf")
-            .withContent("naeo")
-            .withContentVersion("rvhmgor")
+        OfferProperties model = new OfferProperties().withPublisherId("emhooclutnpq")
+            .withContent("mczjkm")
+            .withContentVersion("kyujxsglhsrrr")
             .withSkuMappings(Arrays.asList(
-                new SkuMappings().withCatalogPlanId("is")
-                    .withMarketplaceSkuId("w")
-                    .withMarketplaceSkuVersions(Arrays.asList("wplefaxvxil", "btgn", "nzeyqxtjj")),
-                new SkuMappings().withCatalogPlanId("qlqhycavodg")
-                    .withMarketplaceSkuId("dbeesmie")
-                    .withMarketplaceSkuVersions(Arrays.asList("ra", "iaa", "iuagydwqfbylyrfg")),
-                new SkuMappings().withCatalogPlanId("gtcojocqwo")
-                    .withMarketplaceSkuId("nzjvusfzldm")
-                    .withMarketplaceSkuVersions(
-                        Arrays.asList("xylfsb", "kadpysown", "tgkbugrjqctojc", "isofieypefojyqd"))));
+                new SkuMappings().withCatalogPlanId("lmbkzu")
+                    .withMarketplaceSkuId("igrfihotjewl")
+                    .withMarketplaceSkuVersions(Arrays.asList("zzjgnr", "fqyhqoto", "hiqakydiwfbrk")),
+                new SkuMappings().withCatalogPlanId("zdq")
+                    .withMarketplaceSkuId("hcspo")
+                    .withMarketplaceSkuVersions(Arrays.asList("axsipietgb", "bjfu", "bmoichd", "pnfpubntnbat")),
+                new SkuMappings().withCatalogPlanId("iqsowsaaelc")
+                    .withMarketplaceSkuId("tc")
+                    .withMarketplaceSkuVersions(Arrays.asList("plrvkmjcwmjvlg", "ggcvk", "y", "izrzb")),
+                new SkuMappings().withCatalogPlanId("sfxsf")
+                    .withMarketplaceSkuId("tl")
+                    .withMarketplaceSkuVersions(Arrays.asList("vagbwidqlvhukove", "fizr", "jfnmjmvlwyz", "iblkujr"))));
         model = BinaryData.fromObject(model).toObject(OfferProperties.class);
-        Assertions.assertEquals("zydvfvf", model.publisherId());
-        Assertions.assertEquals("naeo", model.content());
-        Assertions.assertEquals("rvhmgor", model.contentVersion());
-        Assertions.assertEquals("is", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("w", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("wplefaxvxil", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("emhooclutnpq", model.publisherId());
+        Assertions.assertEquals("mczjkm", model.content());
+        Assertions.assertEquals("kyujxsglhsrrr", model.contentVersion());
+        Assertions.assertEquals("lmbkzu", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("igrfihotjewl", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("zzjgnr", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

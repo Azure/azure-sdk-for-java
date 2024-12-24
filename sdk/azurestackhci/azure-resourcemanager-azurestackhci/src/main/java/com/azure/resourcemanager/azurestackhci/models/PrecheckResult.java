@@ -35,11 +35,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
     private PrecheckResultTags tags;
 
     /*
-     * Key-value pairs that allow grouping/filtering individual tests.
-     */
-    private Object healthCheckTags;
-
-    /*
      * User-facing name; one or more sentences indicating the direct issue.
      */
     private String title;
@@ -77,12 +72,7 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
     private String targetResourceName;
 
     /*
-     * The type of resource being referred to (well-known set of nouns in infrastructure, aligning with Monitoring).
-     */
-    private String targetResourceType;
-
-    /*
-     * The time in which the HealthCheck was called.
+     * The Time in which the HealthCheck was called.
      */
     private OffsetDateTime timestamp;
 
@@ -161,26 +151,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
      */
     public PrecheckResult withTags(PrecheckResultTags tags) {
         this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the healthCheckTags property: Key-value pairs that allow grouping/filtering individual tests.
-     * 
-     * @return the healthCheckTags value.
-     */
-    public Object healthCheckTags() {
-        return this.healthCheckTags;
-    }
-
-    /**
-     * Set the healthCheckTags property: Key-value pairs that allow grouping/filtering individual tests.
-     * 
-     * @param healthCheckTags the healthCheckTags value to set.
-     * @return the PrecheckResult object itself.
-     */
-    public PrecheckResult withHealthCheckTags(Object healthCheckTags) {
-        this.healthCheckTags = healthCheckTags;
         return this;
     }
 
@@ -329,29 +299,7 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
     }
 
     /**
-     * Get the targetResourceType property: The type of resource being referred to (well-known set of nouns in
-     * infrastructure, aligning with Monitoring).
-     * 
-     * @return the targetResourceType value.
-     */
-    public String targetResourceType() {
-        return this.targetResourceType;
-    }
-
-    /**
-     * Set the targetResourceType property: The type of resource being referred to (well-known set of nouns in
-     * infrastructure, aligning with Monitoring).
-     * 
-     * @param targetResourceType the targetResourceType value to set.
-     * @return the PrecheckResult object itself.
-     */
-    public PrecheckResult withTargetResourceType(String targetResourceType) {
-        this.targetResourceType = targetResourceType;
-        return this;
-    }
-
-    /**
-     * Get the timestamp property: The time in which the HealthCheck was called.
+     * Get the timestamp property: The Time in which the HealthCheck was called.
      * 
      * @return the timestamp value.
      */
@@ -360,7 +308,7 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
     }
 
     /**
-     * Set the timestamp property: The time in which the HealthCheck was called.
+     * Set the timestamp property: The Time in which the HealthCheck was called.
      * 
      * @param timestamp the timestamp value to set.
      * @return the PrecheckResult object itself.
@@ -432,7 +380,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeJsonField("tags", this.tags);
-        jsonWriter.writeUntypedField("healthCheckTags", this.healthCheckTags);
         jsonWriter.writeStringField("title", this.title);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
@@ -440,7 +387,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
         jsonWriter.writeStringField("remediation", this.remediation);
         jsonWriter.writeStringField("targetResourceID", this.targetResourceId);
         jsonWriter.writeStringField("targetResourceName", this.targetResourceName);
-        jsonWriter.writeStringField("targetResourceType", this.targetResourceType);
         jsonWriter.writeStringField("timestamp",
             this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeStringField("additionalData", this.additionalData);
@@ -469,8 +415,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
                     deserializedPrecheckResult.displayName = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     deserializedPrecheckResult.tags = PrecheckResultTags.fromJson(reader);
-                } else if ("healthCheckTags".equals(fieldName)) {
-                    deserializedPrecheckResult.healthCheckTags = reader.readUntyped();
                 } else if ("title".equals(fieldName)) {
                     deserializedPrecheckResult.title = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -485,8 +429,6 @@ public final class PrecheckResult implements JsonSerializable<PrecheckResult> {
                     deserializedPrecheckResult.targetResourceId = reader.getString();
                 } else if ("targetResourceName".equals(fieldName)) {
                     deserializedPrecheckResult.targetResourceName = reader.getString();
-                } else if ("targetResourceType".equals(fieldName)) {
-                    deserializedPrecheckResult.targetResourceType = reader.getString();
                 } else if ("timestamp".equals(fieldName)) {
                     deserializedPrecheckResult.timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

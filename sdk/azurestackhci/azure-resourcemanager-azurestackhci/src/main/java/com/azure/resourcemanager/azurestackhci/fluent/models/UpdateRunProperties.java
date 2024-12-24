@@ -320,31 +320,6 @@ public final class UpdateRunProperties implements JsonSerializable<UpdateRunProp
     }
 
     /**
-     * Get the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @return the expectedExecutionTime value.
-     */
-    public String expectedExecutionTime() {
-        return this.innerProgress() == null ? null : this.innerProgress().expectedExecutionTime();
-    }
-
-    /**
-     * Set the expectedExecutionTime property: Expected execution time of a given step. This is optionally authored in
-     * the update action plan and can be empty.
-     * 
-     * @param expectedExecutionTime the expectedExecutionTime value to set.
-     * @return the UpdateRunProperties object itself.
-     */
-    public UpdateRunProperties withExpectedExecutionTime(String expectedExecutionTime) {
-        if (this.innerProgress() == null) {
-            this.innerProgress = new Step();
-        }
-        this.innerProgress().withExpectedExecutionTime(expectedExecutionTime);
-        return this;
-    }
-
-    /**
      * Get the steps property: Recursive model for child steps of this step.
      * 
      * @return the steps value.

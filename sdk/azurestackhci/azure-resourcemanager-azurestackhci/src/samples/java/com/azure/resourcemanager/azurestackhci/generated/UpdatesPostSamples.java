@@ -10,15 +10,14 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class UpdatesPostSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PostUpdates.json
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/PostUpdates.json
      */
     /**
      * Sample code: List available updates.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void listAvailableUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void listAvailableUpdates(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.updates().post("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
     }
 }

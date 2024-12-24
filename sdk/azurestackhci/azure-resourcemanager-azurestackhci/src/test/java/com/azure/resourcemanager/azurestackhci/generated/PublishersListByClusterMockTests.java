@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.Publisher;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,17 +21,17 @@ public final class PublishersListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"jew\"},\"id\":\"hwkxjjmztnl\",\"name\":\"soodtmvecdhdy\",\"type\":\"wcrpt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"lupibaqzizxzpz\"},\"id\":\"ghlww\",\"name\":\"ogvgfklqiyn\",\"type\":\"veqelsbfvds\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Publisher> response
-            = manager.publishers().listByCluster("dxqlfrolq", "wnk", com.azure.core.util.Context.NONE);
+            = manager.publishers().listByCluster("nck", "nlb", com.azure.core.util.Context.NONE);
 
     }
 }

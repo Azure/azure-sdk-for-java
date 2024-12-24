@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.azurestackhci.models.DeviceKind;
-import com.azure.resourcemanager.azurestackhci.models.HciEdgeDevice;
+import com.azure.resourcemanager.azurestackhci.models.DeviceConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.io.IOException;
 
 /**
  * Edge device resource.
  */
-@Immutable
-public class EdgeDeviceInner extends ProxyResource {
+@Fluent
+public final class EdgeDeviceInner extends ProxyResource {
     /*
-     * Device kind to support polymorphic resource.
+     * The resource-specific properties for this resource.
      */
-    private DeviceKind kind = DeviceKind.fromString("EdgeDevice");
+    private EdgeDeviceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -30,9 +30,9 @@ public class EdgeDeviceInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -40,9 +40,9 @@ public class EdgeDeviceInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of EdgeDeviceInner class.
@@ -51,12 +51,12 @@ public class EdgeDeviceInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: Device kind to support polymorphic resource.
+     * Get the innerProperties property: The resource-specific properties for this resource.
      * 
-     * @return the kind value.
+     * @return the innerProperties value.
      */
-    public DeviceKind kind() {
-        return this.kind;
+    private EdgeDeviceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -66,37 +66,6 @@ public class EdgeDeviceInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the EdgeDeviceInner object itself.
-     */
-    EdgeDeviceInner withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -110,11 +79,80 @@ public class EdgeDeviceInner extends ProxyResource {
     }
 
     /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the deviceConfiguration property: Device Configuration.
+     * 
+     * @return the deviceConfiguration value.
+     */
+    public DeviceConfiguration deviceConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().deviceConfiguration();
+    }
+
+    /**
+     * Set the deviceConfiguration property: Device Configuration.
+     * 
+     * @param deviceConfiguration the deviceConfiguration value to set.
+     * @return the EdgeDeviceInner object itself.
+     */
+    public EdgeDeviceInner withDeviceConfiguration(DeviceConfiguration deviceConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EdgeDeviceProperties();
+        }
+        this.innerProperties().withDeviceConfiguration(deviceConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of edgeDevice resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of edgeDevice resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the EdgeDeviceInner object itself.
+     */
+    public EdgeDeviceInner withProvisioningState(ProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EdgeDeviceProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 
     /**
@@ -123,7 +161,7 @@ public class EdgeDeviceInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,31 +176,6 @@ public class EdgeDeviceInner extends ProxyResource {
      */
     public static EdgeDeviceInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("kind".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("HCI".equals(discriminatorValue)) {
-                    return HciEdgeDevice.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    static EdgeDeviceInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
             EdgeDeviceInner deserializedEdgeDeviceInner = new EdgeDeviceInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -174,8 +187,8 @@ public class EdgeDeviceInner extends ProxyResource {
                     deserializedEdgeDeviceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedEdgeDeviceInner.type = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    deserializedEdgeDeviceInner.kind = DeviceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEdgeDeviceInner.innerProperties = EdgeDeviceProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedEdgeDeviceInner.systemData = SystemData.fromJson(reader);
                 } else {

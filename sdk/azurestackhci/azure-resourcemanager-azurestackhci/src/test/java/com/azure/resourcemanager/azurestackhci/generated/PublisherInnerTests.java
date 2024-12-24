@@ -11,7 +11,7 @@ public final class PublisherInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublisherInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"ijr\"},\"id\":\"civmmg\",\"name\":\"f\",\"type\":\"fiwrxgkn\"}")
+            "{\"properties\":{\"provisioningState\":\"gycxnmskwhqjjys\"},\"id\":\"rlpshhkv\",\"name\":\"edwqslsrh\",\"type\":\"pq\"}")
             .toObject(PublisherInner.class);
     }
 

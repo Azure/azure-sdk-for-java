@@ -44,11 +44,6 @@ public final class UpdateProperties implements JsonSerializable<UpdateProperties
     private String description;
 
     /*
-     * Minimum Sbe Version of the update.
-     */
-    private String minSbeVersionRequired;
-
-    /*
      * State of the update as it relates to this stamp.
      */
     private State state;
@@ -189,26 +184,6 @@ public final class UpdateProperties implements JsonSerializable<UpdateProperties
      */
     public UpdateProperties withDescription(String description) {
         this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the minSbeVersionRequired property: Minimum Sbe Version of the update.
-     * 
-     * @return the minSbeVersionRequired value.
-     */
-    public String minSbeVersionRequired() {
-        return this.minSbeVersionRequired;
-    }
-
-    /**
-     * Set the minSbeVersionRequired property: Minimum Sbe Version of the update.
-     * 
-     * @param minSbeVersionRequired the minSbeVersionRequired value to set.
-     * @return the UpdateProperties object itself.
-     */
-    public UpdateProperties withMinSbeVersionRequired(String minSbeVersionRequired) {
-        this.minSbeVersionRequired = minSbeVersionRequired;
         return this;
     }
 
@@ -633,7 +608,6 @@ public final class UpdateProperties implements JsonSerializable<UpdateProperties
         jsonWriter.writeStringField("installedDate",
             this.installedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.installedDate));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("minSbeVersionRequired", this.minSbeVersionRequired);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeArrayField("prerequisites", this.prerequisites, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("componentVersions", this.componentVersions,
@@ -681,8 +655,6 @@ public final class UpdateProperties implements JsonSerializable<UpdateProperties
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("description".equals(fieldName)) {
                     deserializedUpdateProperties.description = reader.getString();
-                } else if ("minSbeVersionRequired".equals(fieldName)) {
-                    deserializedUpdateProperties.minSbeVersionRequired = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     deserializedUpdateProperties.state = State.fromString(reader.getString());
                 } else if ("prerequisites".equals(fieldName)) {

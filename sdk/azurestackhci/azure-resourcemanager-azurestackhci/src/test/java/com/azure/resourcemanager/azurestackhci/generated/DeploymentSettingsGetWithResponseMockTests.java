@@ -9,10 +9,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSetting;
-import com.azure.resourcemanager.azurestackhci.models.OperationType;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,22 +23,22 @@ public final class DeploymentSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Error\",\"arcNodeResourceIds\":[\"yies\",\"cwiqbuout\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"leofj\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"vdajfwn\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"ciqgjjrlhiqlwixv\",\"steps\":[{}]}}},\"id\":\"g\",\"name\":\"xtndopgjttbasua\",\"type\":\"ap\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"arcNodeResourceIds\":[\"fzqxjo\"],\"deploymentMode\":\"Validate\",\"deploymentConfiguration\":{\"version\":\"h\",\"scaleUnits\":[{\"deploymentData\":{}},{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"egpkhxrmex\",\"steps\":[{},{}]},\"deploymentStatus\":{\"status\":\"bfokxkhu\",\"steps\":[{},{},{},{}]}}},\"id\":\"ufgjblcdr\",\"name\":\"yfcemftz\",\"type\":\"yykyalu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeploymentSetting response = manager.deploymentSettings()
-            .getWithResponse("mliqmvlb", "i", "eaqgrvgpomxpupd", com.azure.core.util.Context.NONE)
+            .getWithResponse("vvlrlohewjjmajn", "dfl", "ionsw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yies", response.arcNodeResourceIds().get(0));
+        Assertions.assertEquals(ProvisioningState.PROVISIONING, response.provisioningState());
+        Assertions.assertEquals("fzqxjo", response.arcNodeResourceIds().get(0));
         Assertions.assertEquals(DeploymentMode.VALIDATE, response.deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.operationType());
-        Assertions.assertEquals("leofj", response.deploymentConfiguration().version());
+        Assertions.assertEquals("h", response.deploymentConfiguration().version());
     }
 }

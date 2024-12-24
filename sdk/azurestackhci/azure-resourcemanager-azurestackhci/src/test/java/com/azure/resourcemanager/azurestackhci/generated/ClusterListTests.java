@@ -9,9 +9,7 @@ import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterList;
 import com.azure.resourcemanager.azurestackhci.models.DiagnosticLevel;
-import com.azure.resourcemanager.azurestackhci.models.LogCollectionProperties;
 import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceIntent;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.UserAssignedIdentity;
@@ -25,10 +23,10 @@ public final class ClusterListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterList model = BinaryData.fromString(
-            "{\"value\":[{\"identity\":{\"principalId\":\"3abe74f6-a3d1-4c29-9b5e-12abc6e76a6f\",\"tenantId\":\"c2959bdd-2f97-4179-9732-e92591811f36\",\"type\":\"None\",\"userAssignedIdentities\":{\"jyj\":{\"principalId\":\"0f28a43e-e014-4ccd-8c6e-efdb54f0ff05\",\"clientId\":\"c3a6f3d2-061c-4fb9-8a13-42785e3735ec\"},\"aoyfhrtxilnerkuj\":{\"principalId\":\"4015ac4b-c739-4228-8c8e-4bbb6993f31c\",\"clientId\":\"9a549f0a-e272-47f3-be3b-64f95b56e1c2\"},\"l\":{\"principalId\":\"8f97f6aa-f1f3-41b0-bfc4-580996c7395a\",\"clientId\":\"a8038c1a-dca9-4011-9ab0-f0456799fc33\"},\"vfqawrlyxwjkcpr\":{\"principalId\":\"d51462af-b261-414a-96c5-b940baf5ae8e\",\"clientId\":\"710d2c46-5c16-4009-ba22-cc93f11dc964\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"DeploymentFailed\",\"connectivityStatus\":\"Connected\",\"cloudId\":\"bvpyss\",\"cloudManagementEndpoint\":\"nruj\",\"aadClientId\":\"uhmuouqfprwzwbn\",\"aadTenantId\":\"itnwuizgazxufi\",\"aadApplicationObjectId\":\"ckyfih\",\"aadServicePrincipalObjectId\":\"idf\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Enable\",\"lastUpdated\":\"2021-04-15T03:14:07Z\"},\"logCollectionProperties\":{\"fromDate\":\"2021-10-17T08:51:50Z\",\"toDate\":\"2021-06-04T23:46:10Z\",\"lastLogGenerated\":\"2021-02-04T19:12:37Z\",\"logCollectionSessionDetails\":[{},{},{},{}]},\"remoteSupportProperties\":{\"accessLevel\":\"DiagnosticsAndRepair\",\"expirationTimeStamp\":\"2021-10-31T03:21:56Z\",\"remoteSupportType\":\"Revoke\",\"remoteSupportNodeSettings\":[{},{},{},{}],\"remoteSupportSessionDetails\":[{},{},{}]},\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"mmxdcu\",\"clusterId\":\"fsrpymzidnse\",\"clusterVersion\":\"xtbzsgfyccsne\",\"nodes\":[{},{},{}],\"lastUpdated\":\"2021-09-03T07:34:10Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Off\",\"supportedCapabilities\":[\"boo\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"ro\",\"oemActivation\":\"Disabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"eeh\",\"relyingPartyServiceEndpoint\":\"vypyqrimzinpv\",\"attestationServiceEndpoint\":\"jdkirsoodqx\"},\"trialDaysRemaining\":34.670513,\"billingModel\":\"nohjt\",\"registrationTimestamp\":\"2020-12-26T05:08:12Z\",\"lastSyncTimestamp\":\"2021-01-23T02:14:07Z\",\"lastBillingTimestamp\":\"2021-05-11T08:11:32Z\",\"serviceEndpoint\":\"fiyipjxsqwpgrj\",\"resourceProviderObjectId\":\"norcjxvsnbyxqab\"},\"location\":\"ocpcy\",\"tags\":{\"klj\":\"rzafbljjgpbtoqcj\",\"qajzyulpkudjkr\":\"vbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"},{\"identity\":{\"principalId\":\"6f5a9762-c534-42d7-a8fe-fddaf1c9594f\",\"tenantId\":\"953b261b-1ce5-4716-b460-57948cc62be8\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"hbcsgl\":{\"principalId\":\"9d821af1-1a99-4514-b278-98729c5e3168\",\"clientId\":\"071a1122-43fb-4701-879a-cc04599c38d6\"},\"a\":{\"principalId\":\"707cddfe-4232-404a-b993-174940064526\",\"clientId\":\"fe75d49c-6503-48e2-83dc-90cc491d3aff\"},\"aodxo\":{\"principalId\":\"fa43fba5-041f-4d34-9893-371620415d6b\",\"clientId\":\"89d8af03-1e1d-4b4d-a091-8face594b5ba\"}}},\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Disconnected\",\"connectivityStatus\":\"NotYetRegistered\",\"cloudId\":\"okaj\",\"cloudManagementEndpoint\":\"npime\",\"aadClientId\":\"stxgc\",\"aadTenantId\":\"dg\",\"aadApplicationObjectId\":\"ajrmvdjwzrlovmc\",\"aadServicePrincipalObjectId\":\"hijco\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-07-24T11:38:54Z\"},\"logCollectionProperties\":{\"fromDate\":\"2021-02-04T17:33:10Z\",\"toDate\":\"2021-10-17T01:50:40Z\",\"lastLogGenerated\":\"2021-02-18T20:34:43Z\",\"logCollectionSessionDetails\":[{},{},{},{}]},\"remoteSupportProperties\":{\"accessLevel\":\"DiagnosticsAndRepair\",\"expirationTimeStamp\":\"2021-04-20T10:26:18Z\",\"remoteSupportType\":\"Revoke\",\"remoteSupportNodeSettings\":[{},{},{},{}],\"remoteSupportSessionDetails\":[{}]},\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"fjpgddtocjjxhvp\",\"clusterId\":\"uexhdzx\",\"clusterVersion\":\"qeojnxqbzvddntw\",\"nodes\":[{}],\"lastUpdated\":\"2021-05-28T18:35Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Enhanced\",\"supportedCapabilities\":[\"aoqvuh\"],\"clusterType\":\"ThirdParty\",\"manufacturer\":\"fcyddg\",\"oemActivation\":\"Enabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"jqkwpyeicx\",\"relyingPartyServiceEndpoint\":\"ciwqvhk\",\"attestationServiceEndpoint\":\"xuigdtopbobj\"},\"trialDaysRemaining\":11.501741,\"billingModel\":\"e\",\"registrationTimestamp\":\"2021-07-13T01:02:50Z\",\"lastSyncTimestamp\":\"2021-01-02T08:53:50Z\",\"lastBillingTimestamp\":\"2021-01-27T21:23:24Z\",\"serviceEndpoint\":\"z\",\"resourceProviderObjectId\":\"vvtpgvdfgio\"},\"location\":\"ftutqxlngxlefgu\",\"tags\":{\"mi\":\"krxd\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"},{\"identity\":{\"principalId\":\"57cb75eb-22a0-4204-8a42-05b2d9cbd8b0\",\"tenantId\":\"793e3cca-5706-4710-b366-834ba7c36df1\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"cgyncocpecf\":{\"principalId\":\"7eed1082-4c2e-48db-b829-79bae6d5d11f\",\"clientId\":\"c528e79c-024a-40cd-81f9-8d8f30c877df\"},\"coofsxlzev\":{\"principalId\":\"ad814dff-88b6-477c-b8cc-bac65d2905be\",\"clientId\":\"0dc3c164-818d-4af8-8068-584487b5292d\"},\"qjqabcypmivkwl\":{\"principalId\":\"144bc005-b61f-4cfa-b882-6f02dc954eb9\",\"clientId\":\"1c0aa821-3310-456a-9913-beadf5f8b363\"}}},\"properties\":{\"provisioningState\":\"DisableInProgress\",\"status\":\"NotSpecified\",\"connectivityStatus\":\"NotYetRegistered\",\"cloudId\":\"nbacfi\",\"cloudManagementEndpoint\":\"l\",\"aadClientId\":\"x\",\"aadTenantId\":\"qgtz\",\"aadApplicationObjectId\":\"pnqbqqwxrjfe\",\"aadServicePrincipalObjectId\":\"lnwsubisn\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Enabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-03-01T16:11:14Z\"},\"logCollectionProperties\":{\"fromDate\":\"2021-05-16T06:09:12Z\",\"toDate\":\"2021-11-21T01:43:49Z\",\"lastLogGenerated\":\"2021-08-23T00:35:40Z\",\"logCollectionSessionDetails\":[{},{},{},{}]},\"remoteSupportProperties\":{\"accessLevel\":\"Diagnostics\",\"expirationTimeStamp\":\"2021-01-15T20:14:13Z\",\"remoteSupportType\":\"Revoke\",\"remoteSupportNodeSettings\":[{},{}],\"remoteSupportSessionDetails\":[{},{},{},{}]},\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Enhanced\"},\"reportedProperties\":{\"clusterName\":\"seiphe\",\"clusterId\":\"lokeyy\",\"clusterVersion\":\"nj\",\"nodes\":[{},{},{}],\"lastUpdated\":\"2021-10-26T11:35:52Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Enhanced\",\"supportedCapabilities\":[\"pj\"],\"clusterType\":\"ThirdParty\",\"manufacturer\":\"xazjpqyegual\",\"oemActivation\":\"Enabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"e\",\"relyingPartyServiceEndpoint\":\"zzvdudgwds\",\"attestationServiceEndpoint\":\"hotwmcynpwlbjnp\"},\"trialDaysRemaining\":39.36754,\"billingModel\":\"tadehxnltyfsopp\",\"registrationTimestamp\":\"2021-06-21T13:34:16Z\",\"lastSyncTimestamp\":\"2020-12-22T21:06:46Z\",\"lastBillingTimestamp\":\"2021-04-15T21:03:11Z\",\"serviceEndpoint\":\"dejbavo\",\"resourceProviderObjectId\":\"zdmohctbqvu\"},\"location\":\"xdn\",\"tags\":{\"azjdyggd\":\"owgujjugwdkcglhs\"},\"id\":\"jixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"},{\"identity\":{\"principalId\":\"84c2648e-4061-447a-9a9f-e8f43680a046\",\"tenantId\":\"40ea4519-5b48-44e2-8523-3479e0bc8ade\",\"type\":\"None\",\"userAssignedIdentities\":{\"aamdect\":{\"principalId\":\"e8e69ba9-c4c2-4397-85f6-280636474bdd\",\"clientId\":\"fec1990f-d375-4f3c-b9fa-204eb3b995cd\"},\"iqscjeypv\":{\"principalId\":\"da157403-7363-4264-8419-1d1e3d3b49f0\",\"clientId\":\"d9407878-4847-4f4a-a67c-faa9f7b7eacb\"}}},\"properties\":{\"provisioningState\":\"Deleted\",\"status\":\"ConnectedRecently\",\"connectivityStatus\":\"NotYetRegistered\",\"cloudId\":\"jrefovgmkqsle\",\"cloudManagementEndpoint\":\"vxyqjpkcattpngjc\",\"aadClientId\":\"czsqpjhvm\",\"aadTenantId\":\"jvnysounqe\",\"aadApplicationObjectId\":\"noae\",\"aadServicePrincipalObjectId\":\"fhyhltrpmopjmcma\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Enabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-10-23T10:51:29Z\"},\"logCollectionProperties\":{\"fromDate\":\"2021-05-27T00:11:36Z\",\"toDate\":\"2021-05-15T07:44:06Z\",\"lastLogGenerated\":\"2021-01-11T08:50:44Z\",\"logCollectionSessionDetails\":[{}]},\"remoteSupportProperties\":{\"accessLevel\":\"DiagnosticsAndRepair\",\"expirationTimeStamp\":\"2021-10-28T19:56:48Z\",\"remoteSupportType\":\"Revoke\",\"remoteSupportNodeSettings\":[{},{},{}],\"remoteSupportSessionDetails\":[{},{},{},{}]},\"desiredProperties\":{\"windowsServerSubscription\":\"Enabled\",\"diagnosticLevel\":\"Off\"},\"reportedProperties\":{\"clusterName\":\"axbezyiuo\",\"clusterId\":\"twhrdxwzywqsm\",\"clusterVersion\":\"ureximoryocfs\",\"nodes\":[{}],\"lastUpdated\":\"2021-10-09T18:45:34Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Enhanced\",\"supportedCapabilities\":[\"i\",\"uxh\",\"yudxorrqnbp\",\"czvyifq\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"vjsllrmvvdfw\",\"oemActivation\":\"Enabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"pulexxbczw\",\"relyingPartyServiceEndpoint\":\"uwiqzb\",\"attestationServiceEndpoint\":\"vsovmyokac\"},\"trialDaysRemaining\":41.273003,\"billingModel\":\"lhzdobp\",\"registrationTimestamp\":\"2021-10-04T03:33:51Z\",\"lastSyncTimestamp\":\"2021-08-24T14:10:03Z\",\"lastBillingTimestamp\":\"2021-03-22T21:31:03Z\",\"serviceEndpoint\":\"nchrkcciww\",\"resourceProviderObjectId\":\"uqkhrsajiwku\"},\"location\":\"oskg\",\"tags\":{\"dyjrrfbyaosv\":\"uuimjmvxieduug\"},\"id\":\"xc\",\"name\":\"onpc\",\"type\":\"hocohslkev\"}],\"nextLink\":\"ggzfbu\"}")
+            "{\"value\":[{\"identity\":{\"principalId\":\"3d976595-8cd1-47c9-aea5-80b60c9c0154\",\"tenantId\":\"74c119f8-e5d1-45b2-80e1-049b1794b498\",\"type\":\"None\",\"userAssignedIdentities\":{\"jyj\":{\"principalId\":\"6b6ef411-2f32-4de6-8cd9-cbed3a1fedc2\",\"clientId\":\"2127a08c-0644-4aec-b4a3-790ea508e260\"},\"aoyfhrtxilnerkuj\":{\"principalId\":\"5c29f0b2-b6ac-4e9b-9c93-3cd21cb803e0\",\"clientId\":\"771b7cea-16b3-4544-ac82-d387abf03402\"},\"l\":{\"principalId\":\"ca52de09-0cba-4dc3-a217-0683e26b4d18\",\"clientId\":\"6dadad8e-10bb-45fc-9e41-9e53ddfe71ed\"},\"vfqawrlyxwjkcpr\":{\"principalId\":\"ab3211b1-8746-48fd-b6b0-045efbccbc05\",\"clientId\":\"a69c6eb2-c120-46d0-bf14-c8e0d0700c52\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"DeploymentFailed\",\"connectivityStatus\":\"Connected\",\"cloudId\":\"bvpyss\",\"cloudManagementEndpoint\":\"nruj\",\"aadClientId\":\"uhmuouqfprwzwbn\",\"aadTenantId\":\"itnwuizgazxufi\",\"aadApplicationObjectId\":\"ckyfih\",\"aadServicePrincipalObjectId\":\"idf\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Enable\",\"lastUpdated\":\"2021-04-15T03:14:07Z\"},\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"fthwxmnteiwa\",\"clusterId\":\"vkmijcmmxdcuf\",\"clusterVersion\":\"srp\",\"nodes\":[{},{},{},{}],\"lastUpdated\":\"2020-12-28T02:07:44Z\",\"imdsAttestation\":\"Disabled\",\"diagnosticLevel\":\"Enhanced\",\"supportedCapabilities\":[\"tbzsgfyccs\",\"ewmdw\",\"jeiachboosfl\",\"ro\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"t\",\"oemActivation\":\"Disabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"vypyqrimzinpv\",\"relyingPartyServiceEndpoint\":\"jdkirsoodqx\",\"attestationServiceEndpoint\":\"rmnohj\"},\"trialDaysRemaining\":13.129669,\"billingModel\":\"h\",\"registrationTimestamp\":\"2021-05-11T08:11:32Z\",\"lastSyncTimestamp\":\"2021-07-22T01:38:16Z\",\"lastBillingTimestamp\":\"2021-12-04T15:56:22Z\",\"serviceEndpoint\":\"pjxsqwpgrjbznor\",\"resourceProviderObjectId\":\"xv\"},\"location\":\"byxqabn\",\"tags\":{\"zafb\":\"pcyshu\"},\"id\":\"jjgpb\",\"name\":\"oq\",\"type\":\"jmkljavbqidtqajz\"},{\"identity\":{\"principalId\":\"1330302a-a5a2-4604-b05b-332fdb753230\",\"tenantId\":\"261d20aa-eab2-4e36-9d7a-a547416e37dd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rlkhbzhfepgzgq\":{\"principalId\":\"646aa4b6-3e45-4bab-86da-543bb87c855d\",\"clientId\":\"3fba3c5c-1de6-454b-b9bf-5ec2f9c4989b\"}}},\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Error\",\"connectivityStatus\":\"NotSpecified\",\"cloudId\":\"paierh\",\"cloudManagementEndpoint\":\"csglum\",\"aadClientId\":\"jtjaodxobnbdxkq\",\"aadTenantId\":\"okaj\",\"aadApplicationObjectId\":\"npime\",\"aadServicePrincipalObjectId\":\"stxgc\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Enabled\",\"softwareAssuranceIntent\":\"Enable\",\"lastUpdated\":\"2021-08-14T01:03:38Z\"},\"desiredProperties\":{\"windowsServerSubscription\":\"Enabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"rlovmclwhijcoej\",\"clusterId\":\"bzaqsqsycbkbfk\",\"clusterVersion\":\"kdkexxp\",\"nodes\":[{}],\"lastUpdated\":\"2021-05-26T04:34:13Z\",\"imdsAttestation\":\"Disabled\",\"diagnosticLevel\":\"Enhanced\",\"supportedCapabilities\":[\"ddtocjjxhvp\",\"o\"],\"clusterType\":\"ThirdParty\",\"manufacturer\":\"dzxibqeojnxqbzvd\",\"oemActivation\":\"Disabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"deicbtwnpzao\",\"relyingPartyServiceEndpoint\":\"uhrhcffcyddgl\",\"attestationServiceEndpoint\":\"t\"},\"trialDaysRemaining\":74.24029,\"billingModel\":\"wpyeicxmqciwqvh\",\"registrationTimestamp\":\"2021-03-25T23:46:11Z\",\"lastSyncTimestamp\":\"2021-04-08T23:48:15Z\",\"lastBillingTimestamp\":\"2021-04-28T05:58:26Z\",\"serviceEndpoint\":\"topbobjogh\",\"resourceProviderObjectId\":\"w\"},\"location\":\"m\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"},{\"identity\":{\"principalId\":\"58963884-83fd-4e93-9a8e-7e5e829c8108\",\"tenantId\":\"a2068eb8-e2e8-447a-954f-fb41d5676cdf\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"cgyncocpecf\":{\"principalId\":\"96523ad9-5f7d-4c13-9d89-8cdc51eefeea\",\"clientId\":\"303c2458-d554-4d22-86f2-278b19eefc47\"},\"coofsxlzev\":{\"principalId\":\"27dc2d7b-94b6-464e-91a0-70a339415bfa\",\"clientId\":\"9a620650-6537-4644-8f4d-45b177b04305\"},\"qjqabcypmivkwl\":{\"principalId\":\"33ae2fee-9e71-4b63-a29a-0281928573ee\",\"clientId\":\"f5694c88-f213-46db-a5d2-feae60c58e84\"}}},\"properties\":{\"provisioningState\":\"DisableInProgress\",\"status\":\"NotSpecified\",\"connectivityStatus\":\"NotYetRegistered\",\"cloudId\":\"nbacfi\",\"cloudManagementEndpoint\":\"l\",\"aadClientId\":\"x\",\"aadTenantId\":\"qgtz\",\"aadApplicationObjectId\":\"pnqbqqwxrjfe\",\"aadServicePrincipalObjectId\":\"lnwsubisn\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Enabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-03-01T16:11:14Z\"},\"desiredProperties\":{\"windowsServerSubscription\":\"Disabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"ooch\",\"clusterId\":\"onq\",\"clusterVersion\":\"kvlrxnj\",\"nodes\":[{},{}],\"lastUpdated\":\"2021-02-05T10:28:18Z\",\"imdsAttestation\":\"Enabled\",\"diagnosticLevel\":\"Off\",\"supportedCapabilities\":[\"okeyyienj\",\"dlwtgrhpdj\"],\"clusterType\":\"ThirdParty\",\"manufacturer\":\"asxazjpqyegualhb\",\"oemActivation\":\"Disabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"jzzvdud\",\"relyingPartyServiceEndpoint\":\"dslfhotwmcy\",\"attestationServiceEndpoint\":\"wlbjnpgacftade\"},\"trialDaysRemaining\":97.39918,\"billingModel\":\"tyfsoppusuesn\",\"registrationTimestamp\":\"2021-09-06T02:27:12Z\",\"lastSyncTimestamp\":\"2021-01-14T15:45:02Z\",\"lastBillingTimestamp\":\"2021-09-18T23:27:19Z\",\"serviceEndpoint\":\"orxzdmohctbqvud\",\"resourceProviderObjectId\":\"dndnvow\"},\"location\":\"jjugwdkcglhslaz\",\"tags\":{\"jixhbk\":\"ggd\",\"fwhybcibvy\":\"ofqweykhmenevfye\",\"ynnaam\":\"dcsi\"},\"id\":\"ectehf\",\"name\":\"qsc\",\"type\":\"eypvhezrkg\"},{\"identity\":{\"principalId\":\"2a9166ab-d77f-4da0-91a8-929d4742d629\",\"tenantId\":\"a676eff6-73ef-4faf-8103-90996dd122c0\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"gm\":{\"principalId\":\"2a7f0cfe-d791-415b-8b09-af2781a7d25f\",\"clientId\":\"65604b86-33d1-45d8-8ec6-70230d8aced1\"},\"leyyvx\":{\"principalId\":\"974ebce8-bade-432c-ad5b-e81a6b4ed070\",\"clientId\":\"931030e3-aec4-4532-806b-6ea4352f83c6\"},\"pkc\":{\"principalId\":\"c5437805-70c6-4af1-ae4d-f8910b7a0b70\",\"clientId\":\"d81c60f5-384e-481c-be4f-34870f347c23\"},\"pngjcrcczsqpjhvm\":{\"principalId\":\"29c86d67-beda-4039-932e-4b22e7c9fdf7\",\"clientId\":\"a35a3c08-9b6b-492d-8beb-f2359bd6c325\"}}},\"properties\":{\"provisioningState\":\"Moving\",\"status\":\"Succeeded\",\"connectivityStatus\":\"Disconnected\",\"cloudId\":\"nqecanoaeup\",\"cloudManagementEndpoint\":\"yhltrpmopjmcm\",\"aadClientId\":\"u\",\"aadTenantId\":\"thfuiuaodsfcpkvx\",\"aadApplicationObjectId\":\"puozmyzydag\",\"aadServicePrincipalObjectId\":\"axbezyiuo\",\"softwareAssuranceProperties\":{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-09-10T15:31:21Z\"},\"desiredProperties\":{\"windowsServerSubscription\":\"Enabled\",\"diagnosticLevel\":\"Basic\"},\"reportedProperties\":{\"clusterName\":\"bsureximo\",\"clusterId\":\"ocfs\",\"clusterVersion\":\"s\",\"nodes\":[{},{},{},{}],\"lastUpdated\":\"2021-01-31T18:49:05Z\",\"imdsAttestation\":\"Disabled\",\"diagnosticLevel\":\"Off\",\"supportedCapabilities\":[\"xhqyudxorrqnb\"],\"clusterType\":\"FirstParty\",\"manufacturer\":\"vyifqrvkdvjsl\",\"oemActivation\":\"Disabled\"},\"isolatedVmAttestationConfiguration\":{\"attestationResourceId\":\"d\",\"relyingPartyServiceEndpoint\":\"atkpnp\",\"attestationServiceEndpoint\":\"exxbczwtr\"},\"trialDaysRemaining\":25.228268,\"billingModel\":\"zb\",\"registrationTimestamp\":\"2021-02-10T16:58:51Z\",\"lastSyncTimestamp\":\"2021-10-26T05:51:52Z\",\"lastBillingTimestamp\":\"2021-01-03T16:48:03Z\",\"serviceEndpoint\":\"okacspk\",\"resourceProviderObjectId\":\"hzdobpxjmflbvvnc\"},\"location\":\"kcciwwzjuqkhr\",\"tags\":{\"ghsauuimjmvxied\":\"iwkuofos\",\"byao\":\"ugidyjrr\",\"xc\":\"v\",\"hocohslkev\":\"onpc\"},\"id\":\"eggzfb\",\"name\":\"hfmvfaxkffe\",\"type\":\"ithlvmezyvshxm\"}],\"nextLink\":\"bbzoggig\"}")
             .toObject(ClusterList.class);
-        Assertions.assertEquals("ocpcy", model.value().get(0).location());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.value().get(0).tags().get("klj"));
+        Assertions.assertEquals("byxqabn", model.value().get(0).location());
+        Assertions.assertEquals("pcyshu", model.value().get(0).tags().get("zafb"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).typeIdentityType());
         Assertions.assertEquals("nruj", model.value().get(0).cloudManagementEndpoint());
         Assertions.assertEquals("uhmuouqfprwzwbn", model.value().get(0).aadClientId());
@@ -44,84 +42,71 @@ public final class ClusterListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterList model
-            = new ClusterList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClusterInner().withLocation("ocpcy")
-                                .withTags(mapOf("klj", "rzafbljjgpbtoqcj", "qajzyulpkudjkr", "vbqid"))
-                                .withTypeIdentityType(ManagedServiceIdentityType.NONE)
-                                .withUserAssignedIdentities(mapOf("jyj", new UserAssignedIdentity(), "aoyfhrtxilnerkuj",
-                                    new UserAssignedIdentity(), "l", new UserAssignedIdentity(), "vfqawrlyxwjkcpr",
-                                    new UserAssignedIdentity()))
-                                .withCloudManagementEndpoint("nruj")
-                                .withAadClientId("uhmuouqfprwzwbn")
-                                .withAadTenantId("itnwuizgazxufi")
-                                .withAadApplicationObjectId("ckyfih")
-                                .withAadServicePrincipalObjectId("idf")
-                                .withSoftwareAssuranceProperties(new SoftwareAssuranceProperties()
-                                    .withSoftwareAssuranceIntent(SoftwareAssuranceIntent.ENABLE))
-                                .withLogCollectionProperties(new LogCollectionProperties())
-                                .withRemoteSupportProperties(new RemoteSupportProperties())
-                                .withDesiredProperties(new ClusterDesiredProperties()
-                                    .withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
-                                    .withDiagnosticLevel(DiagnosticLevel.BASIC)),
-                            new ClusterInner().withLocation("ftutqxlngxlefgu")
-                                .withTags(mapOf("mi", "krxd", "abhjybi", "tthzrvqd"))
-                                .withTypeIdentityType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                .withUserAssignedIdentities(mapOf("hbcsgl", new UserAssignedIdentity(), "a",
-                                    new UserAssignedIdentity(), "aodxo", new UserAssignedIdentity()))
-                                .withCloudManagementEndpoint("npime")
-                                .withAadClientId("stxgc")
-                                .withAadTenantId("dg")
-                                .withAadApplicationObjectId("ajrmvdjwzrlovmc")
-                                .withAadServicePrincipalObjectId("hijco")
-                                .withSoftwareAssuranceProperties(new SoftwareAssuranceProperties()
-                                    .withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE))
-                                .withLogCollectionProperties(new LogCollectionProperties())
-                                .withRemoteSupportProperties(new RemoteSupportProperties())
-                                .withDesiredProperties(new ClusterDesiredProperties()
-                                    .withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
-                                    .withDiagnosticLevel(DiagnosticLevel.BASIC)),
-                            new ClusterInner().withLocation("xdn")
-                                .withTags(mapOf("azjdyggd", "owgujjugwdkcglhs"))
-                                .withTypeIdentityType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentities(
-                                    mapOf("cgyncocpecf", new UserAssignedIdentity(), "coofsxlzev",
-                                        new UserAssignedIdentity(), "qjqabcypmivkwl", new UserAssignedIdentity()))
-                                .withCloudManagementEndpoint("l")
-                                .withAadClientId("x")
-                                .withAadTenantId("qgtz")
-                                .withAadApplicationObjectId("pnqbqqwxrjfe")
-                                .withAadServicePrincipalObjectId("lnwsubisn")
-                                .withSoftwareAssuranceProperties(new SoftwareAssuranceProperties()
-                                    .withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE))
-                                .withLogCollectionProperties(new LogCollectionProperties())
-                                .withRemoteSupportProperties(new RemoteSupportProperties())
-                                .withDesiredProperties(new ClusterDesiredProperties()
-                                    .withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
-                                    .withDiagnosticLevel(DiagnosticLevel.ENHANCED)),
-                            new ClusterInner().withLocation("oskg")
-                                .withTags(mapOf("dyjrrfbyaosv", "uuimjmvxieduug"))
-                                .withTypeIdentityType(ManagedServiceIdentityType.NONE)
-                                .withUserAssignedIdentities(mapOf("aamdect", new UserAssignedIdentity(), "iqscjeypv",
-                                    new UserAssignedIdentity()))
-                                .withCloudManagementEndpoint("vxyqjpkcattpngjc")
-                                .withAadClientId("czsqpjhvm")
-                                .withAadTenantId("jvnysounqe")
-                                .withAadApplicationObjectId("noae")
-                                .withAadServicePrincipalObjectId("fhyhltrpmopjmcma")
-                                .withSoftwareAssuranceProperties(new SoftwareAssuranceProperties()
-                                    .withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE))
-                                .withLogCollectionProperties(new LogCollectionProperties())
-                                .withRemoteSupportProperties(new RemoteSupportProperties())
-                                .withDesiredProperties(new ClusterDesiredProperties()
-                                    .withWindowsServerSubscription(WindowsServerSubscription.ENABLED)
-                                    .withDiagnosticLevel(DiagnosticLevel.OFF))));
+        ClusterList model = new ClusterList().withValue(Arrays.asList(
+            new ClusterInner().withLocation("byxqabn")
+                .withTags(mapOf("zafb", "pcyshu"))
+                .withTypeIdentityType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("jyj", new UserAssignedIdentity(), "aoyfhrtxilnerkuj", new UserAssignedIdentity(), "l",
+                        new UserAssignedIdentity(), "vfqawrlyxwjkcpr", new UserAssignedIdentity()))
+                .withCloudManagementEndpoint("nruj")
+                .withAadClientId("uhmuouqfprwzwbn")
+                .withAadTenantId("itnwuizgazxufi")
+                .withAadApplicationObjectId("ckyfih")
+                .withAadServicePrincipalObjectId("idf")
+                .withSoftwareAssuranceProperties(
+                    new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.ENABLE))
+                .withDesiredProperties(
+                    new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
+                        .withDiagnosticLevel(DiagnosticLevel.BASIC)),
+            new ClusterInner().withLocation("m")
+                .withTags(mapOf("t", "rzayv", "ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx", "abhjybi", "tthzrvqd"))
+                .withTypeIdentityType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("rlkhbzhfepgzgq", new UserAssignedIdentity()))
+                .withCloudManagementEndpoint("csglum")
+                .withAadClientId("jtjaodxobnbdxkq")
+                .withAadTenantId("okaj")
+                .withAadApplicationObjectId("npime")
+                .withAadServicePrincipalObjectId("stxgc")
+                .withSoftwareAssuranceProperties(
+                    new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.ENABLE))
+                .withDesiredProperties(
+                    new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.ENABLED)
+                        .withDiagnosticLevel(DiagnosticLevel.BASIC)),
+            new ClusterInner().withLocation("jjugwdkcglhslaz")
+                .withTags(mapOf("jixhbk", "ggd", "fwhybcibvy", "ofqweykhmenevfye", "ynnaam", "dcsi"))
+                .withTypeIdentityType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("cgyncocpecf", new UserAssignedIdentity(), "coofsxlzev",
+                    new UserAssignedIdentity(), "qjqabcypmivkwl", new UserAssignedIdentity()))
+                .withCloudManagementEndpoint("l")
+                .withAadClientId("x")
+                .withAadTenantId("qgtz")
+                .withAadApplicationObjectId("pnqbqqwxrjfe")
+                .withAadServicePrincipalObjectId("lnwsubisn")
+                .withSoftwareAssuranceProperties(
+                    new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE))
+                .withDesiredProperties(
+                    new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.DISABLED)
+                        .withDiagnosticLevel(DiagnosticLevel.BASIC)),
+            new ClusterInner().withLocation("kcciwwzjuqkhr")
+                .withTags(mapOf("ghsauuimjmvxied", "iwkuofos", "byao", "ugidyjrr", "xc", "v", "hocohslkev", "onpc"))
+                .withTypeIdentityType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("gm", new UserAssignedIdentity(), "leyyvx", new UserAssignedIdentity(), "pkc",
+                        new UserAssignedIdentity(), "pngjcrcczsqpjhvm", new UserAssignedIdentity()))
+                .withCloudManagementEndpoint("yhltrpmopjmcm")
+                .withAadClientId("u")
+                .withAadTenantId("thfuiuaodsfcpkvx")
+                .withAadApplicationObjectId("puozmyzydag")
+                .withAadServicePrincipalObjectId("axbezyiuo")
+                .withSoftwareAssuranceProperties(
+                    new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE))
+                .withDesiredProperties(
+                    new ClusterDesiredProperties().withWindowsServerSubscription(WindowsServerSubscription.ENABLED)
+                        .withDiagnosticLevel(DiagnosticLevel.BASIC))));
         model = BinaryData.fromObject(model).toObject(ClusterList.class);
-        Assertions.assertEquals("ocpcy", model.value().get(0).location());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.value().get(0).tags().get("klj"));
+        Assertions.assertEquals("byxqabn", model.value().get(0).location());
+        Assertions.assertEquals("pcyshu", model.value().get(0).tags().get("zafb"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).typeIdentityType());
         Assertions.assertEquals("nruj", model.value().get(0).cloudManagementEndpoint());
         Assertions.assertEquals("uhmuouqfprwzwbn", model.value().get(0).aadClientId());

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.azurestackhci.models.DeploymentConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentData;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingListResult;
-import com.azure.resourcemanager.azurestackhci.models.OperationType;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.ScaleUnits;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -19,34 +19,30 @@ public final class DeploymentSettingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"arcNodeResourceIds\":[\"rzqlveu\",\"lupj\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"obbc\",\"scaleUnits\":[{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}},{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"jriplrbpbewtghf\",\"steps\":[{},{},{}]},\"deploymentStatus\":{\"status\":\"wxzvlvqhjkb\",\"steps\":[{},{},{},{}]}}},\"id\":\"t\",\"name\":\"mxiebw\",\"type\":\"aloayqcgwrtzju\"}],\"nextLink\":\"wyzmhtxon\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcNodeResourceIds\":[\"zfq\",\"hhuao\",\"ppcqeqxolz\",\"ahzxctobgbk\"],\"deploymentMode\":\"Validate\",\"deploymentConfiguration\":{\"version\":\"izpost\",\"scaleUnits\":[{\"deploymentData\":{}},{\"deploymentData\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"bunrmfqjhhk\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"ymjhxxjyngudivkr\",\"steps\":[{},{},{}]}}},\"id\":\"xqzvszjfa\",\"name\":\"vjfdx\",\"type\":\"ivetvtcq\"}],\"nextLink\":\"tdo\"}")
             .toObject(DeploymentSettingListResult.class);
-        Assertions.assertEquals("rzqlveu", model.value().get(0).arcNodeResourceIds().get(0));
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.value().get(0).deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, model.value().get(0).operationType());
-        Assertions.assertEquals("obbc", model.value().get(0).deploymentConfiguration().version());
-        Assertions.assertEquals("wyzmhtxon", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("zfq", model.value().get(0).arcNodeResourceIds().get(0));
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.value().get(0).deploymentMode());
+        Assertions.assertEquals("izpost", model.value().get(0).deploymentConfiguration().version());
+        Assertions.assertEquals("tdo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentSettingListResult model
-            = new DeploymentSettingListResult()
-                .withValue(
-                    Arrays.asList(new DeploymentSettingInner().withArcNodeResourceIds(Arrays.asList("rzqlveu", "lupj"))
-                        .withDeploymentMode(DeploymentMode.DEPLOY)
-                        .withOperationType(OperationType.CLUSTER_UPGRADE)
-                        .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("obbc")
-                            .withScaleUnits(Arrays.asList(new ScaleUnits().withDeploymentData(new DeploymentData()),
-                                new ScaleUnits().withDeploymentData(new DeploymentData()),
-                                new ScaleUnits().withDeploymentData(new DeploymentData()),
-                                new ScaleUnits().withDeploymentData(new DeploymentData()))))))
-                .withNextLink("wyzmhtxon");
+        DeploymentSettingListResult model = new DeploymentSettingListResult()
+            .withValue(Arrays.asList(new DeploymentSettingInner().withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withArcNodeResourceIds(Arrays.asList("zfq", "hhuao", "ppcqeqxolz", "ahzxctobgbk"))
+                .withDeploymentMode(DeploymentMode.VALIDATE)
+                .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("izpost")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits().withDeploymentData(new DeploymentData()),
+                        new ScaleUnits().withDeploymentData(new DeploymentData()))))))
+            .withNextLink("tdo");
         model = BinaryData.fromObject(model).toObject(DeploymentSettingListResult.class);
-        Assertions.assertEquals("rzqlveu", model.value().get(0).arcNodeResourceIds().get(0));
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.value().get(0).deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, model.value().get(0).operationType());
-        Assertions.assertEquals("obbc", model.value().get(0).deploymentConfiguration().version());
-        Assertions.assertEquals("wyzmhtxon", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("zfq", model.value().get(0).arcNodeResourceIds().get(0));
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.value().get(0).deploymentMode());
+        Assertions.assertEquals("izpost", model.value().get(0).deploymentConfiguration().version());
+        Assertions.assertEquals("tdo", model.nextLink());
     }
 }

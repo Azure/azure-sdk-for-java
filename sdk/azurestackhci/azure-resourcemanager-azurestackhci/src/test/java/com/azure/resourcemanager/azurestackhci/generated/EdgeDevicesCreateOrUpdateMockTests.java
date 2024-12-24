@@ -9,28 +9,74 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.azurestackhci.AzureStackHciManager;
-import com.azure.resourcemanager.azurestackhci.fluent.models.EdgeDeviceInner;
+import com.azure.resourcemanager.azurestackhci.AzurestackhciManager;
+import com.azure.resourcemanager.azurestackhci.models.DeviceConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.EdgeDevice;
+import com.azure.resourcemanager.azurestackhci.models.NicDetail;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 public final class EdgeDevicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        String responseStr = "{\"kind\":\"EdgeDevice\",\"id\":\"kqmt\",\"name\":\"apeqiscrpil\",\"type\":\"ftr\"}";
+        String responseStr
+            = "{\"properties\":{\"deviceConfiguration\":{\"nicDetails\":[{\"adapterName\":\"czivfqbqna\",\"interfaceDescription\":\"sye\",\"componentId\":\"sieuscpl\",\"driverVersion\":\"vdgxly\",\"ip4Address\":\"xitdshezs\",\"subnetMask\":\"olrupjovm\",\"defaultGateway\":\"sayebra\",\"dnsServers\":[\"lpzbtzuykykipf\",\"dyepfno\",\"mbezacfpztg\"],\"defaultIsolationId\":\"wyqejgaao\"}],\"deviceMetadata\":\"tgkppgkqzkcyzmff\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fcixrh\",\"name\":\"cqvhoejgoiutgwrm\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        AzureStackHciManager manager = AzureStackHciManager.configure()
+        AzurestackhciManager manager = AzurestackhciManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EdgeDevice response = manager.edgeDevices()
-            .createOrUpdate("qfkyfhiwvjaqu", "by", new EdgeDeviceInner(), com.azure.core.util.Context.NONE);
+        EdgeDevice response
+            = manager.edgeDevices()
+                .define("m")
+                .withExistingResourceUri("bwzjnufzrf")
+                .withDeviceConfiguration(
+                    new DeviceConfiguration()
+                        .withNicDetails(
+                            Arrays
+                                .asList(
+                                    new NicDetail().withAdapterName("bzrtf")
+                                        .withInterfaceDescription("dzuubjtvgjsxm")
+                                        .withComponentId("jjvavdpww")
+                                        .withDriverVersion("tdp")
+                                        .withIp4Address("its")
+                                        .withSubnetMask("ofw")
+                                        .withDefaultGateway("m")
+                                        .withDnsServers(Arrays.asList("cauwazcgwdfriwg", "bjpozokscvgllixd", "byfg",
+                                            "ewqkjvxprwpxs"))
+                                        .withDefaultIsolationId("hu"),
+                                    new NicDetail().withAdapterName("xlcskltez")
+                                        .withInterfaceDescription("ggg")
+                                        .withComponentId("fbgrdcgubsrt")
+                                        .withDriverVersion("ylpe")
+                                        .withIp4Address("ilttjzgczfcmfpfb")
+                                        .withSubnetMask("etre")
+                                        .withDefaultGateway("gvtshu")
+                                        .withDnsServers(Arrays.asList("waivmuqkevzg"))
+                                        .withDefaultIsolationId("panhxmpdxxze")))
+                        .withDeviceMetadata("wzjwotnxlkfhg"))
+                .withProvisioningState(ProvisioningState.ERROR)
+                .create();
 
+        Assertions.assertEquals("czivfqbqna", response.deviceConfiguration().nicDetails().get(0).adapterName());
+        Assertions.assertEquals("sye", response.deviceConfiguration().nicDetails().get(0).interfaceDescription());
+        Assertions.assertEquals("sieuscpl", response.deviceConfiguration().nicDetails().get(0).componentId());
+        Assertions.assertEquals("vdgxly", response.deviceConfiguration().nicDetails().get(0).driverVersion());
+        Assertions.assertEquals("xitdshezs", response.deviceConfiguration().nicDetails().get(0).ip4Address());
+        Assertions.assertEquals("olrupjovm", response.deviceConfiguration().nicDetails().get(0).subnetMask());
+        Assertions.assertEquals("sayebra", response.deviceConfiguration().nicDetails().get(0).defaultGateway());
+        Assertions.assertEquals("lpzbtzuykykipf",
+            response.deviceConfiguration().nicDetails().get(0).dnsServers().get(0));
+        Assertions.assertEquals("wyqejgaao", response.deviceConfiguration().nicDetails().get(0).defaultIsolationId());
+        Assertions.assertEquals("tgkppgkqzkcyzmff", response.deviceConfiguration().deviceMetadata());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.provisioningState());
     }
 }

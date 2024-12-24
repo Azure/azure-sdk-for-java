@@ -10,15 +10,15 @@ package com.azure.resourcemanager.azurestackhci.generated;
 public final class DeploymentSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2024-01-01/examples/
      * GetDeploymentSettings.json
      */
     /**
      * Sample code: Get Deployment Settings.
      * 
-     * @param manager Entry point to AzureStackHciManager.
+     * @param manager Entry point to AzurestackhciManager.
      */
-    public static void getDeploymentSettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+    public static void getDeploymentSettings(com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager) {
         manager.deploymentSettings()
             .getWithResponse("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE);
     }

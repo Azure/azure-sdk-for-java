@@ -43,9 +43,9 @@ public final class HciUpdateInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -53,9 +53,9 @@ public final class HciUpdateInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of HciUpdateInner class.
@@ -102,13 +102,13 @@ public final class HciUpdateInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -122,13 +122,13 @@ public final class HciUpdateInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -183,29 +183,6 @@ public final class HciUpdateInner extends ProxyResource {
             this.innerProperties = new UpdateProperties();
         }
         this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
-     * Get the minSbeVersionRequired property: Minimum Sbe Version of the update.
-     * 
-     * @return the minSbeVersionRequired value.
-     */
-    public String minSbeVersionRequired() {
-        return this.innerProperties() == null ? null : this.innerProperties().minSbeVersionRequired();
-    }
-
-    /**
-     * Set the minSbeVersionRequired property: Minimum Sbe Version of the update.
-     * 
-     * @param minSbeVersionRequired the minSbeVersionRequired value to set.
-     * @return the HciUpdateInner object itself.
-     */
-    public HciUpdateInner withMinSbeVersionRequired(String minSbeVersionRequired) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateProperties();
-        }
-        this.innerProperties().withMinSbeVersionRequired(minSbeVersionRequired);
         return this;
     }
 

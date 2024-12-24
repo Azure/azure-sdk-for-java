@@ -11,7 +11,7 @@ public final class ValidateResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateResponseInner model
-            = BinaryData.fromString("{\"status\":\"vfcluyovwxnbkfe\"}").toObject(ValidateResponseInner.class);
+            = BinaryData.fromString("{\"status\":\"cjmeislstvasy\"}").toObject(ValidateResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

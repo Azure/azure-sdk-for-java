@@ -10,9 +10,8 @@ import com.azure.resourcemanager.azurestackhci.fluent.models.DeploymentSettingIn
 import com.azure.resourcemanager.azurestackhci.models.DeploymentConfiguration;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSetting;
-import com.azure.resourcemanager.azurestackhci.models.EceReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.OperationType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.ReportedProperties;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public final class DeploymentSettingImpl
     implements DeploymentSetting, DeploymentSetting.Definition, DeploymentSetting.Update {
     private DeploymentSettingInner innerObject;
 
-    private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
+    private final com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -55,15 +54,11 @@ public final class DeploymentSettingImpl
         return this.innerModel().deploymentMode();
     }
 
-    public OperationType operationType() {
-        return this.innerModel().operationType();
-    }
-
     public DeploymentConfiguration deploymentConfiguration() {
         return this.innerModel().deploymentConfiguration();
     }
 
-    public EceReportedProperties reportedProperties() {
+    public ReportedProperties reportedProperties() {
         return this.innerModel().reportedProperties();
     }
 
@@ -75,7 +70,7 @@ public final class DeploymentSettingImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager() {
+    private com.azure.resourcemanager.azurestackhci.AzurestackhciManager manager() {
         return this.serviceManager;
     }
 
@@ -105,7 +100,7 @@ public final class DeploymentSettingImpl
         return this;
     }
 
-    DeploymentSettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    DeploymentSettingImpl(String name, com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = new DeploymentSettingInner();
         this.serviceManager = serviceManager;
         this.deploymentSettingsName = name;
@@ -130,7 +125,7 @@ public final class DeploymentSettingImpl
     }
 
     DeploymentSettingImpl(DeploymentSettingInner innerObject,
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        com.azure.resourcemanager.azurestackhci.AzurestackhciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -154,6 +149,11 @@ public final class DeploymentSettingImpl
         return this;
     }
 
+    public DeploymentSettingImpl withProvisioningState(ProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
+        return this;
+    }
+
     public DeploymentSettingImpl withArcNodeResourceIds(List<String> arcNodeResourceIds) {
         this.innerModel().withArcNodeResourceIds(arcNodeResourceIds);
         return this;
@@ -161,11 +161,6 @@ public final class DeploymentSettingImpl
 
     public DeploymentSettingImpl withDeploymentMode(DeploymentMode deploymentMode) {
         this.innerModel().withDeploymentMode(deploymentMode);
-        return this;
-    }
-
-    public DeploymentSettingImpl withOperationType(OperationType operationType) {
-        this.innerModel().withOperationType(operationType);
         return this;
     }
 

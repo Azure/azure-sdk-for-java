@@ -25,16 +25,6 @@ public final class SecurityProperties implements JsonSerializable<SecurityProper
     private ComplianceAssignmentType securedCoreComplianceAssignment;
 
     /*
-     * WDAC Compliance Assignment
-     */
-    private ComplianceAssignmentType wdacComplianceAssignment;
-
-    /*
-     * SMB encryption for intra-cluster traffic Compliance Assignment
-     */
-    private ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment;
-
-    /*
      * Security Compliance Status
      */
     private SecurityComplianceStatus securityComplianceStatus;
@@ -68,51 +58,6 @@ public final class SecurityProperties implements JsonSerializable<SecurityProper
     public SecurityProperties
         withSecuredCoreComplianceAssignment(ComplianceAssignmentType securedCoreComplianceAssignment) {
         this.securedCoreComplianceAssignment = securedCoreComplianceAssignment;
-        return this;
-    }
-
-    /**
-     * Get the wdacComplianceAssignment property: WDAC Compliance Assignment.
-     * 
-     * @return the wdacComplianceAssignment value.
-     */
-    public ComplianceAssignmentType wdacComplianceAssignment() {
-        return this.wdacComplianceAssignment;
-    }
-
-    /**
-     * Set the wdacComplianceAssignment property: WDAC Compliance Assignment.
-     * 
-     * @param wdacComplianceAssignment the wdacComplianceAssignment value to set.
-     * @return the SecurityProperties object itself.
-     */
-    public SecurityProperties withWdacComplianceAssignment(ComplianceAssignmentType wdacComplianceAssignment) {
-        this.wdacComplianceAssignment = wdacComplianceAssignment;
-        return this;
-    }
-
-    /**
-     * Get the smbEncryptionForIntraClusterTrafficComplianceAssignment property: SMB encryption for intra-cluster
-     * traffic Compliance Assignment.
-     * 
-     * @return the smbEncryptionForIntraClusterTrafficComplianceAssignment value.
-     */
-    public ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment() {
-        return this.smbEncryptionForIntraClusterTrafficComplianceAssignment;
-    }
-
-    /**
-     * Set the smbEncryptionForIntraClusterTrafficComplianceAssignment property: SMB encryption for intra-cluster
-     * traffic Compliance Assignment.
-     * 
-     * @param smbEncryptionForIntraClusterTrafficComplianceAssignment the
-     * smbEncryptionForIntraClusterTrafficComplianceAssignment value to set.
-     * @return the SecurityProperties object itself.
-     */
-    public SecurityProperties withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
-        ComplianceAssignmentType smbEncryptionForIntraClusterTrafficComplianceAssignment) {
-        this.smbEncryptionForIntraClusterTrafficComplianceAssignment
-            = smbEncryptionForIntraClusterTrafficComplianceAssignment;
         return this;
     }
 
@@ -164,12 +109,6 @@ public final class SecurityProperties implements JsonSerializable<SecurityProper
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("securedCoreComplianceAssignment",
             this.securedCoreComplianceAssignment == null ? null : this.securedCoreComplianceAssignment.toString());
-        jsonWriter.writeStringField("wdacComplianceAssignment",
-            this.wdacComplianceAssignment == null ? null : this.wdacComplianceAssignment.toString());
-        jsonWriter.writeStringField("smbEncryptionForIntraClusterTrafficComplianceAssignment",
-            this.smbEncryptionForIntraClusterTrafficComplianceAssignment == null
-                ? null
-                : this.smbEncryptionForIntraClusterTrafficComplianceAssignment.toString());
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
         return jsonWriter.writeEndObject();
@@ -192,12 +131,6 @@ public final class SecurityProperties implements JsonSerializable<SecurityProper
 
                 if ("securedCoreComplianceAssignment".equals(fieldName)) {
                     deserializedSecurityProperties.securedCoreComplianceAssignment
-                        = ComplianceAssignmentType.fromString(reader.getString());
-                } else if ("wdacComplianceAssignment".equals(fieldName)) {
-                    deserializedSecurityProperties.wdacComplianceAssignment
-                        = ComplianceAssignmentType.fromString(reader.getString());
-                } else if ("smbEncryptionForIntraClusterTrafficComplianceAssignment".equals(fieldName)) {
-                    deserializedSecurityProperties.smbEncryptionForIntraClusterTrafficComplianceAssignment
                         = ComplianceAssignmentType.fromString(reader.getString());
                 } else if ("securityComplianceStatus".equals(fieldName)) {
                     deserializedSecurityProperties.securityComplianceStatus = SecurityComplianceStatus.fromJson(reader);

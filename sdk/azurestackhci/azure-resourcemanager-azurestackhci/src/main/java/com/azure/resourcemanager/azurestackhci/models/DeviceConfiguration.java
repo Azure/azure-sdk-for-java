@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The device Configuration for edge device.
+ * The device Configuration of a device.
  */
 @Fluent
 public final class DeviceConfiguration implements JsonSerializable<DeviceConfiguration> {
@@ -23,7 +23,7 @@ public final class DeviceConfiguration implements JsonSerializable<DeviceConfigu
     private List<NicDetail> nicDetails;
 
     /*
-     * Device metadata details.
+     * device metadata details.
      */
     private String deviceMetadata;
 
@@ -54,7 +54,7 @@ public final class DeviceConfiguration implements JsonSerializable<DeviceConfigu
     }
 
     /**
-     * Get the deviceMetadata property: Device metadata details.
+     * Get the deviceMetadata property: device metadata details.
      * 
      * @return the deviceMetadata value.
      */
@@ -63,7 +63,7 @@ public final class DeviceConfiguration implements JsonSerializable<DeviceConfigu
     }
 
     /**
-     * Set the deviceMetadata property: Device metadata details.
+     * Set the deviceMetadata property: device metadata details.
      * 
      * @param deviceMetadata the deviceMetadata value to set.
      * @return the DeviceConfiguration object itself.
