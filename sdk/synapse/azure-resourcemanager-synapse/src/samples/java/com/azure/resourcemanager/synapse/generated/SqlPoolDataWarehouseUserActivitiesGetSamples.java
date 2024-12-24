@@ -12,7 +12,7 @@ import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
 public final class SqlPoolDataWarehouseUserActivitiesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolUserActivity.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolUserActivity.json
      */
     /**
      * Sample code: Get a SQL Analytics pool user activity.

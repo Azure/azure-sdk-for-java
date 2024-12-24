@@ -21,7 +21,7 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"ivsdw\",\"properties\":{\"databaseName\":\"krfihscjv\",\"edition\":\"mhzbhwahfbwih\",\"maxSizeBytes\":\"nx\",\"serviceLevelObjective\":\"vynuqqkotauratn\",\"elasticPoolName\":\"ppfzsclef\",\"creationDate\":\"2021-04-12T17:56:47Z\",\"deletionDate\":\"2021-03-15T00:13:22Z\",\"earliestRestoreDate\":\"2021-02-01T15:48:33Z\"},\"id\":\"qlmfdg\",\"name\":\"n\",\"type\":\"buypwovvv\"}]}";
+            = "{\"value\":[{\"location\":\"dc\",\"properties\":{\"databaseName\":\"f\",\"edition\":\"vb\",\"maxSizeBytes\":\"gwhgkgsoau\",\"serviceLevelObjective\":\"rssat\",\"elasticPoolName\":\"bipufdmxuqbdqnas\",\"creationDate\":\"2021-02-08T23:31:47Z\",\"deletionDate\":\"2021-03-08T07:30:59Z\",\"earliestRestoreDate\":\"2021-06-16T23:05:01Z\"},\"id\":\"q\",\"name\":\"yopbtsixhgvb\",\"type\":\"xmndztgsqjayqmar\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RestorableDroppedSqlPool> response = manager.restorableDroppedSqlPools()
-            .listByWorkspace("jbuiggru", "ozfvualjt", com.azure.core.util.Context.NONE);
+            .listByWorkspace("pyfaofdfp", "tncwmhjobzrfpr", com.azure.core.util.Context.NONE);
 
     }
 }

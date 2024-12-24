@@ -106,9 +106,8 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -152,10 +151,9 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, sqlPoolName, parameters, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, parameters, context);
     }
 
     /**

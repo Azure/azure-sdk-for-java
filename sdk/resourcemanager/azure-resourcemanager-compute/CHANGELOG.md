@@ -1,6 +1,6 @@
 # Release History
 
-## 2.46.0-beta.1 (Unreleased)
+## 2.46.0 (2024-12-23)
 
 ### Other Changes
 

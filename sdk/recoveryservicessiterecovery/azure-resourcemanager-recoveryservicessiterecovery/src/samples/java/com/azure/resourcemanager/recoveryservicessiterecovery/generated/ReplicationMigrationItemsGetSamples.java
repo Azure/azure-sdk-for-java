@@ -20,7 +20,8 @@ public final class ReplicationMigrationItemsGetSamples {
      */
     public static void getsTheDetailsOfAMigrationItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1", com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+                com.azure.core.util.Context.NONE);
     }
 }

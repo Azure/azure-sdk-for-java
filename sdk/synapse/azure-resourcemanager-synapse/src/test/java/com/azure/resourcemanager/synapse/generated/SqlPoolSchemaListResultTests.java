@@ -11,7 +11,7 @@ public final class SqlPoolSchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolSchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"lcrpw\",\"name\":\"xeznoi\",\"type\":\"brnjwmw\"},{\"id\":\"pn\",\"name\":\"saz\",\"type\":\"jjoqkagf\"},{\"id\":\"sxtta\",\"name\":\"gzxnfaazpxdtnk\",\"type\":\"mkqjj\"},{\"id\":\"wuenvr\",\"name\":\"pyouaibrebqaays\",\"type\":\"kixqtnqtt\"}],\"nextLink\":\"lwfffi\"}")
+            "{\"value\":[{\"id\":\"ankjpdnjzh\",\"name\":\"joylh\",\"type\":\"lmuoyxprimrsopte\"}],\"nextLink\":\"jme\"}")
             .toObject(SqlPoolSchemaListResult.class);
     }
 
