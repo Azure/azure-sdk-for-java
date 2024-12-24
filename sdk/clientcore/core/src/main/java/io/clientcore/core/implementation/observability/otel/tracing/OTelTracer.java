@@ -10,7 +10,7 @@ import io.clientcore.core.util.ClientLogger;
 import static io.clientcore.core.implementation.observability.otel.OTelInitializer.TRACER_CLASS;
 
 public class OTelTracer implements Tracer {
-    static final OTelTracer NOOP = new OTelTracer(null);
+    public static final OTelTracer NOOP = new OTelTracer(null);
     private static final ClientLogger LOGGER = new ClientLogger(OTelTracer.class);
     private static final ReflectiveInvoker SPAN_BUILDER_INVOKER;
     private final Object otelTracer;
@@ -30,7 +30,7 @@ public class OTelTracer implements Tracer {
         SPAN_BUILDER_INVOKER = spanBuilderInvoker;
     }
 
-    public OTelTracer(Object otelTracer) {
+    OTelTracer(Object otelTracer) {
         this.otelTracer = otelTracer;
     }
 

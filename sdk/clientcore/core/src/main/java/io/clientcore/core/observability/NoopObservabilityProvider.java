@@ -7,10 +7,14 @@ import io.clientcore.core.observability.tracing.SpanKind;
 import io.clientcore.core.observability.tracing.Tracer;
 import io.clientcore.core.util.Context;
 
+import java.util.Objects;
+
 class NoopObservabilityProvider implements ObservabilityProvider {
     static final ObservabilityProvider NOOP_PROVIDER = new NoopObservabilityProvider();
+
     @Override
     public Tracer getTracer(ObservabilityOptions<?> applicationOptions, LibraryObservabilityOptions libraryOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         return NOOP_TRACER;
     }
 
@@ -27,11 +31,6 @@ class NoopObservabilityProvider implements ObservabilityProvider {
 
         @Override
         public Span setError(String errorType) {
-            return this;
-        }
-
-        @Override
-        public Span addLink(SpanContext spanContext, Attributes attributes) {
             return this;
         }
 
@@ -63,11 +62,6 @@ class NoopObservabilityProvider implements ObservabilityProvider {
         }
 
         @Override
-        public SpanBuilder addLink(SpanContext spanContext, Attributes attributes) {
-            return this;
-        }
-
-        @Override
         public SpanBuilder setAttribute(String key, Object value) {
             return this;
         }
@@ -82,6 +76,7 @@ class NoopObservabilityProvider implements ObservabilityProvider {
             return NOOP_SPAN;
         }
     };
+
     private static final SpanContext NOOP_SPAN_CONTEXT = new SpanContext() {
         @Override
         public String getTraceId() {
@@ -94,25 +89,11 @@ class NoopObservabilityProvider implements ObservabilityProvider {
         }
 
         @Override
-        public boolean isSampled() {
-            return false;
-        }
-
-        /*@Override
         public Object getTraceFlags() {
             return null;
         }
-
-        @Override
-        public Object getTraceState() {
-            return null;
-        }*/
-
-        @Override
-        public boolean isRemote() {
-            return false;
-        }
     };
+
     private static final Scope NOOP_SCOPE = new Scope() {
     };
     private static final Tracer NOOP_TRACER = spanName -> NOOP_SPAN_BUILDER;

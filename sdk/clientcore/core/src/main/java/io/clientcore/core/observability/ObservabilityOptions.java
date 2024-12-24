@@ -18,7 +18,7 @@ public class ObservabilityOptions<T> {
         return isTracingEnabled;
     }
 
-    public T getState() {
+    public T getProvider() {
         return provider;
     }
 

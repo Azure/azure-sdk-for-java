@@ -69,19 +69,10 @@ public class OTelAttributeKey {
     }
 
     public static Object castAttributeValue(Object value) {
-        if (value instanceof Boolean) {
-            return value;
-        } else if (value instanceof String) {
-            return value;
-        } else if (value instanceof Long) {
-            return value;
-        } else if (value instanceof Integer) {
+        if (value instanceof Integer) {
             return ((Integer) value).longValue();
-        } else if (value instanceof Double) {
-            return value;
         }
 
-        // not supported
-        return null;
+        return value;
     }
 }

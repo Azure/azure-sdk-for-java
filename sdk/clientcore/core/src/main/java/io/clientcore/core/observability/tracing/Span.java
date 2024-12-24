@@ -8,8 +8,6 @@ public interface Span {
     Span setError(Throwable error);
     Span setError(String errorType);
 
-    Span addLink(SpanContext spanContext, Attributes attributes);
-
     void end();
 
     SpanContext getSpanContext() ;
