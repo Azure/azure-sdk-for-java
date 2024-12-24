@@ -78,7 +78,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * App ID URI that might be used in the "aud" claim of an `id_token`. For instance, `api://{applicationId}`.
+     * App ID URI that might be used in the "aud" claim of an 'id_token'. For instance, 'api://{applicationId}'.
      * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
@@ -121,31 +121,31 @@ public class AadAuthenticationProperties implements InitializingBean {
     private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
 
     /**
-     * The redirect uri after logout. For instance, `http://localhost:8080/`.
+     * The redirect uri after logout. For instance, 'http://localhost:8080/'.
      * See Microsoft doc about Redirect URI for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#redirect-uri
      */
     private String postLogoutRedirectUri;
 
     /**
-     * If true activates the stateless auth filter `AADAppRoleStatelessAuthenticationFilter`. The default is false, which
-     * activates `AADAuthenticationFilter`.
+     * If true activates the stateless auth filter 'AADAppRoleStatelessAuthenticationFilter'. The default is false, which
+     * activates 'AADAuthenticationFilter'.
      */
     private Boolean sessionStateless = false;
 
     /**
      * The OAuth2 authorization clients, contains the authorization grant type, client authentication method and scope.
-     * The clients will be converted to OAuth2 `ClientRegistration`, the other `ClientRegistration` information(such as client id, client secret) inherits from the delegated OAuth2 login client `azure`.
-     * For instance,`
-     * authorization-clients.webapi.authorization-grant-type=on_behalf_of`,
-     * `authorization-clients.webapi.client-authentication-method=client_secret_post`,
-     * `authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope1`,
-     * `authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2`
+     * The clients will be converted to OAuth2 'ClientRegistration', the other 'ClientRegistration' information(such as client id, client secret) inherits from the delegated OAuth2 login client 'azure'.
+     * For instance,
+     * 'authorization-clients.webapi.authorization-grant-type=on_behalf_of',
+     * 'authorization-clients.webapi.client-authentication-method=client_secret_post',
+     * 'authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope1',
+     * 'authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2'
      * .
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * The type of the Microsoft Entra application. Supported types are: `WEB_APPLICATION`, `RESOURCE_SERVER`, `RESOURCE_SERVER_WITH_OBO`, `WEB_APPLICATION_AND_RESOURCE_SERVER`. The value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually.
+     * The type of the Microsoft Entra application. Supported types are: 'WEB_APPLICATION', 'RESOURCE_SERVER', 'RESOURCE_SERVER_WITH_OBO', 'WEB_APPLICATION_AND_RESOURCE_SERVER'. The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.
      */
     private AadApplicationType applicationType;
 
@@ -187,17 +187,17 @@ public class AadAuthenticationProperties implements InitializingBean {
     public static class UserGroupProperties {
 
         /**
-         * The group names can be used to construct `GrantedAuthority`.
+         * The group names can be used to construct 'GrantedAuthority'.
          */
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
-         * The group IDs can be used to construct `GrantedAuthority`.
+         * The group IDs can be used to construct 'GrantedAuthority'.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * Whether to use transitive way to get members. If `true`, use `v1.0/me/transitiveMemberOf` to get members. Otherwise, use `v1.0/me/memberOf`.
+         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
          */
         private boolean useTransitiveMembers = false;
 

@@ -54,7 +54,7 @@ public class AadB2cProperties implements InitializingBean {
     private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
-     * App ID URI that might be used in the "aud" claim of a token. For instance, `https://{hostname}/{applicationId}`.
+     * App ID URI that might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
      * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
