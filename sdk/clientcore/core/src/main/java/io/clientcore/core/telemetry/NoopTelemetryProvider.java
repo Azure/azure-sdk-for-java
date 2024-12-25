@@ -56,14 +56,14 @@ class NoopTelemetryProvider implements TelemetryProvider {
         public Scope makeCurrent() {
             return NOOP_SCOPE;
         }
+
+        @Override
+        public Context storeInContext(Context context) {
+            return context;
+        }
     };
 
     private static final SpanBuilder NOOP_SPAN_BUILDER = new SpanBuilder() {
-        @Override
-        public SpanBuilder setParent(Context context) {
-            return this;
-        }
-
         @Override
         public SpanBuilder setAttribute(String key, Object value) {
             return this;
@@ -97,7 +97,7 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
     };
 
-    private static final Scope NOOP_SCOPE = new Scope() {
+    private static final Scope NOOP_SCOPE = () -> {
     };
-    private static final Tracer NOOP_TRACER = spanName -> NOOP_SPAN_BUILDER;
+    private static final Tracer NOOP_TRACER = (spanName, ctx) -> NOOP_SPAN_BUILDER;
 }

@@ -7,13 +7,14 @@ import io.clientcore.core.util.ClientLogger;
 
 public final class OTelInitializer {
     private static final ClientLogger LOGGER = new ClientLogger(OTelInitializer.class);
-    public static final OTelInitializer INSTANCE;
+    private static final OTelInitializer INSTANCE;
 
     public static final Class<?> ATTRIBUTE_KEY_CLASS;
     public static final Class<?> ATTRIBUTES_CLASS;
     public static final Class<?> ATTRIBUTES_BUILDER_CLASS;
 
     public static final Class<?> CONTEXT_CLASS;
+    public static final Class<?> CONTEXT_KEY_CLASS;
     public static final Class<?> OTEL_CLASS;
     public static final Class<?> GLOBAL_OTEL_CLASS;
 
@@ -38,6 +39,7 @@ public final class OTelInitializer {
         Class<?> attributesBuilderClass = null;
 
         Class<?> contextClass = null;
+        Class<?> contextKeyClass = null;
 
         Class<?> otelClass = null;
         Class<?> globalOtelClass = null;
@@ -62,6 +64,8 @@ public final class OTelInitializer {
             attributesBuilderClass = Class.forName("io.opentelemetry.api.common.AttributesBuilder", true, classLoader);
 
             contextClass = Class.forName("io.opentelemetry.context.Context", true, classLoader);
+            contextKeyClass = Class.forName("io.opentelemetry.context.ContextKey", true, classLoader);
+
             otelClass = Class.forName("io.opentelemetry.api.OpenTelemetry", true, classLoader);
             globalOtelClass = Class.forName("io.opentelemetry.api.GlobalOpenTelemetry", true, classLoader);
 
@@ -88,6 +92,7 @@ public final class OTelInitializer {
         ATTRIBUTES_BUILDER_CLASS = attributesBuilderClass;
 
         CONTEXT_CLASS = contextClass;
+        CONTEXT_KEY_CLASS = contextKeyClass;
 
         OTEL_CLASS = otelClass;
         GLOBAL_OTEL_CLASS = globalOtelClass;
@@ -111,28 +116,28 @@ public final class OTelInitializer {
         this.initialized = initialized;
     }
 
-    public void initError(ClientLogger logger, Throwable t) {
+    public static void initError(ClientLogger logger, Throwable t) {
         logger.atVerbose().log("OpenTelemetry version is incompatible.", t);
-        initialized = false;
+        INSTANCE.initialized = false;
     }
 
-    public void runtimeError(ClientLogger logger, Throwable t) {
-        if (initialized) {
+    public static void runtimeError(ClientLogger logger, Throwable t) {
+        if (INSTANCE.initialized) {
             logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off.", t);
         }
 
-        initialized = false;
+        INSTANCE.initialized = false;
     }
 
-    public void runtimeError(ClientLogger logger, String error) {
-        if (initialized) {
+    public static void runtimeError(ClientLogger logger, String error) {
+        if (INSTANCE.initialized) {
             logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off. " + error);
         }
 
-        initialized = false;
+        INSTANCE.initialized = false;
     }
 
-    public boolean isInitialized() {
-        return initialized;
+    public static boolean isInitialized() {
+        return INSTANCE.initialized;
     }
 }

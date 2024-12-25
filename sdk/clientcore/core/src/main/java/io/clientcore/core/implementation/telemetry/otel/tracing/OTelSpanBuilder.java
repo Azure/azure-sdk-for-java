@@ -5,8 +5,10 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
 import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
+import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
@@ -20,10 +22,10 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.S
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 
 public class OTelSpanBuilder implements SpanBuilder {
-    static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null);
+    static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null, null, Context.none());
 
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
-    private static final OTelSpan NOOP_SPAN = new OTelSpan(null);
+    private static final OTelSpan NOOP_SPAN;
     private static final ReflectiveInvoker SET_PARENT_INVOKER;
     private static final ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
     private static final ReflectiveInvoker SET_SPAN_KIND_INVOKER;
@@ -35,6 +37,9 @@ public class OTelSpanBuilder implements SpanBuilder {
     private static final Object CONSUMER_KIND;
 
     private final Object otelSpanBuilder;
+    private final Context context;
+    private final boolean suppressNestedSpans;
+
     static {
         ReflectiveInvoker setParentInvoker = null;
         ReflectiveInvoker setAttributeInvoker = null;
@@ -46,8 +51,9 @@ public class OTelSpanBuilder implements SpanBuilder {
         Object clientKind = null;
         Object producerKind = null;
         Object consumerKind = null;
+        OTelSpan noopSpan = null;
 
-        if (OTelInitializer.INSTANCE.isInitialized()) {
+        if (OTelInitializer.isInitialized()) {
             try {
                 setParentInvoker = ReflectionUtils.getMethodInvoker(SPAN_BUILDER_CLASS,
                     SPAN_BUILDER_CLASS.getMethod("setParent", CONTEXT_CLASS));
@@ -66,8 +72,10 @@ public class OTelSpanBuilder implements SpanBuilder {
                 clientKind = SPAN_KIND_CLASS.getField("CLIENT").get(null);
                 producerKind = SPAN_KIND_CLASS.getField("PRODUCER").get(null);
                 consumerKind = SPAN_KIND_CLASS.getField("CONSUMER").get(null);
+
+                noopSpan = new OTelSpan(null, OTelContext.getCurrent());
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.initError(LOGGER, t);
+                OTelInitializer.initError(LOGGER, t);
             }
         }
 
@@ -80,38 +88,24 @@ public class OTelSpanBuilder implements SpanBuilder {
         CLIENT_KIND = clientKind;
         PRODUCER_KIND = producerKind;
         CONSUMER_KIND = consumerKind;
+        NOOP_SPAN = noopSpan;
     }
 
-    OTelSpanBuilder(Object otelSpanBuilder) {
+    OTelSpanBuilder(Object otelSpanBuilder, LibraryTelemetryOptions libraryOptions, Context context) {
         this.otelSpanBuilder = otelSpanBuilder;
-    }
-
-    @Override
-    public SpanBuilder setParent(Context context) {
-        if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
-            Object otelContext = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
-            if (!CONTEXT_CLASS.isInstance(otelContext)) {
-                return this;
-            }
-
-            try {
-                SET_PARENT_INVOKER.invokeWithArguments(otelSpanBuilder, otelContext);
-            } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
-            }
-        }
-
-        return this;
+        this.context = context;
+        this.suppressNestedSpans
+            = libraryOptions == null || !LibraryTelemetryOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
     }
 
     @Override
     public SpanBuilder setAttribute(String key, Object value) {
-        if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
+        if (OTelInitializer.isInitialized() && otelSpanBuilder != null) {
             try {
                 SET_ATTRIBUTE_INVOKER.invokeWithArguments(otelSpanBuilder, OTelAttributeKey.getKey(key, value),
                     OTelAttributeKey.castAttributeValue(value));
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
+                OTelInitializer.runtimeError(LOGGER, t);
             }
         }
 
@@ -120,11 +114,11 @@ public class OTelSpanBuilder implements SpanBuilder {
 
     @Override
     public SpanBuilder setSpanKind(SpanKind spanKind) {
-        if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
+        if (OTelInitializer.isInitialized() && otelSpanBuilder != null) {
             try {
                 SET_SPAN_KIND_INVOKER.invokeWithArguments(otelSpanBuilder, toOtelSpanKind(spanKind));
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
+                OTelInitializer.runtimeError(LOGGER, t);
             }
         }
 
@@ -133,16 +127,38 @@ public class OTelSpanBuilder implements SpanBuilder {
 
     @Override
     public Span startSpan() {
-        if (OTelInitializer.INSTANCE.isInitialized() && otelSpanBuilder != null) {
+        if (OTelInitializer.isInitialized() && otelSpanBuilder != null) {
             try {
-                Object otelSpan = START_SPAN_INVOKER.invokeWithArguments(otelSpanBuilder);
-                return new OTelSpan(otelSpan);
+                Object otelParentContext = setParent();
+                Object otelSpan;
+                if (suppressNestedSpans && OTelContext.hasCoreSpan(otelParentContext)) {
+                    otelSpan = OTelSpan.createPropagatingSpan(otelParentContext);
+                } else {
+                    otelSpan = START_SPAN_INVOKER.invokeWithArguments(otelSpanBuilder);
+                }
+                return new OTelSpan(otelSpan, otelParentContext);
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
+                OTelInitializer.runtimeError(LOGGER, t);
             }
         }
 
         return NOOP_SPAN;
+    }
+
+    private Object setParent() throws Exception {
+        Object otelContext = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
+        if (!CONTEXT_CLASS.isInstance(otelContext)) {
+            if (otelContext != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("expectedType", CONTEXT_CLASS.getName())
+                    .addKeyValue("actualType", otelContext.getClass().getName())
+                    .log("Context does not contain an OpenTelemetry context. Ignoring it.");
+            }
+            return OTelContext.getCurrent();
+        }
+
+        SET_PARENT_INVOKER.invokeWithArguments(otelSpanBuilder, otelContext);
+        return otelContext;
     }
 
     private Object toOtelSpanKind(SpanKind spanKind) {

@@ -6,7 +6,6 @@ package io.clientcore.core.implementation.telemetry.otel;
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracer;
-import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracerBuilder;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
@@ -23,38 +22,33 @@ public class OTelTelemetryProvider implements TelemetryProvider {
     public static final TelemetryProvider INSTANCE = new OTelTelemetryProvider();
     private static final ReflectiveInvoker GET_PROVIDER_INVOKER;
     private static final ReflectiveInvoker GET_GLOBAL_PROVIDER_INVOKER;
-    private static final ReflectiveInvoker GET_TRACER_BUILDER_INVOKER;
 
     private static final Object NOOP_PROVIDER;
     private static final ClientLogger LOGGER = new ClientLogger(OTelTelemetryProvider.class);
     static {
         ReflectiveInvoker getProviderInvoker = null;
         ReflectiveInvoker getGlobalProviderInvoker = null;
-        ReflectiveInvoker getTracerBuilderInvoker = null;
 
         Object noopProvider = null;
 
-        if (OTelInitializer.INSTANCE.isInitialized()) {
+        if (OTelInitializer.isInitialized()) {
             try {
                 getProviderInvoker
                     = ReflectionUtils.getMethodInvoker(OTEL_CLASS, OTEL_CLASS.getMethod("getTracerProvider"));
                 getGlobalProviderInvoker = ReflectionUtils.getMethodInvoker(GLOBAL_OTEL_CLASS,
                     GLOBAL_OTEL_CLASS.getMethod("getTracerProvider"));
-                getTracerBuilderInvoker = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS,
-                    TRACER_PROVIDER_CLASS.getMethod("tracerBuilder", String.class));
 
                 ReflectiveInvoker noopProviderInvoker
                     = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS, TRACER_PROVIDER_CLASS.getMethod("noop"));
 
                 noopProvider = noopProviderInvoker.invokeStatic();
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.initError(LOGGER, t);
+                OTelInitializer.initError(LOGGER, t);
             }
         }
 
         GET_PROVIDER_INVOKER = getProviderInvoker;
         GET_GLOBAL_PROVIDER_INVOKER = getGlobalProviderInvoker;
-        GET_TRACER_BUILDER_INVOKER = getTracerBuilderInvoker;
         NOOP_PROVIDER = noopProvider;
     }
 
@@ -62,7 +56,7 @@ public class OTelTelemetryProvider implements TelemetryProvider {
     public Tracer getTracer(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
 
-        if (!OTelInitializer.INSTANCE.isInitialized()
+        if (!OTelInitializer.isInitialized()
             || (applicationOptions != null && !applicationOptions.isTracingEnabled())) {
             return OTelTracer.NOOP;
         }
@@ -74,24 +68,19 @@ public class OTelTelemetryProvider implements TelemetryProvider {
             return OTelTracer.NOOP;
         }
 
-        OTelTracerBuilder otelTracerBuilder = getTracerBuilder(otelTracerProvider, libraryOptions.getLibraryName());
-        return otelTracerBuilder.setInstrumentationVersion(libraryOptions.getLibraryVersion())
-            .setSchemaUrl(libraryOptions.getSchemaUrl())
-            .build();
+        return OTelTracer.createTracer(otelTracerProvider, libraryOptions);
     }
 
     private Object getTracerProvider(Object otel) {
         if (otel != null && !OTEL_CLASS.isInstance(otel)) {
-            IllegalArgumentException error
-                = new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName());
-
             throw LOGGER.atError()
                 .addKeyValue("expectedProvider", OTEL_CLASS.getName())
                 .addKeyValue("actualProvider", otel.getClass().getName())
-                .log("Unexpected telemetry provider type.", error);
+                .log("Unexpected telemetry provider type.",
+                    new IllegalArgumentException("Telemetry provider is not an instance of " + OTEL_CLASS.getName()));
         }
 
-        if (OTelInitializer.INSTANCE.isInitialized()) {
+        if (OTelInitializer.isInitialized()) {
             try {
                 if (OTEL_CLASS.isInstance(otel)) {
                     return GET_PROVIDER_INVOKER.invokeWithArguments(otel);
@@ -99,20 +88,7 @@ public class OTelTelemetryProvider implements TelemetryProvider {
                     return GET_GLOBAL_PROVIDER_INVOKER.invokeStatic();
                 }
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
-            }
-        }
-        return null;
-    }
-
-    private OTelTracerBuilder getTracerBuilder(Object otelTracerProvider, String instrumentationName) {
-        if (OTelInitializer.INSTANCE.isInitialized()) {
-            try {
-                Object tracerBuilder
-                    = GET_TRACER_BUILDER_INVOKER.invokeWithArguments(otelTracerProvider, instrumentationName);
-                return new OTelTracerBuilder(tracerBuilder);
-            } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
+                OTelInitializer.runtimeError(LOGGER, t);
             }
         }
         return null;

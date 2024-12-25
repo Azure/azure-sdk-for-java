@@ -53,7 +53,7 @@ public class TracerTests {
     @Test
     public void testSpan() {
         Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-        Span span = tracer.spanBuilder("test-span")
+        Span span = tracer.spanBuilder("test-span", Context.none())
             .setAttribute("builder-string-attribute", "string")
             .setAttribute("builder-int-attribute", 42)
             .setAttribute("builder-long-attribute", 4242L)
@@ -100,7 +100,7 @@ public class TracerTests {
     @MethodSource("kindSource")
     public void testKinds(SpanKind kind, io.opentelemetry.api.trace.SpanKind expectedKind) {
         Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-        Span span = tracer.spanBuilder("test-span").setSpanKind(kind).startSpan();
+        Span span = tracer.spanBuilder("test-span", Context.none()).setSpanKind(kind).startSpan();
 
         span.end();
 
@@ -118,7 +118,7 @@ public class TracerTests {
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
         try (AutoCloseable scope = parent.makeCurrent()) {
-            Span child = tracer.spanBuilder("child").startSpan();
+            Span child = tracer.spanBuilder("child", Context.none()).startSpan();
             child.end();
         }
 
@@ -139,10 +139,10 @@ public class TracerTests {
 
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
-        Span child = tracer.spanBuilder("child")
-            .setParent(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY,
-                parent.storeInContext(io.opentelemetry.context.Context.current())))
-            .startSpan();
+
+        Context parentCtx = Context.of(TelemetryProvider.TRACE_CONTEXT_KEY,
+            parent.storeInContext(io.opentelemetry.context.Context.current()));
+        Span child = tracer.spanBuilder("child", parentCtx).startSpan();
         child.end();
         parent.end();
 
@@ -159,8 +159,8 @@ public class TracerTests {
     public void explicitParentWrongType() {
         Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
 
-        Span child = tracer.spanBuilder("child")
-            .setParent(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"))
+        Span child = tracer
+            .spanBuilder("child", Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"))
             .startSpan();
         child.end();
 

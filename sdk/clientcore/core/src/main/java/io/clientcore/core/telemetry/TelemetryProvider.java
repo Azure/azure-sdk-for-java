@@ -34,7 +34,7 @@ public interface TelemetryProvider {
      * @return The singleton instance of the resolved telemetry provider.
      */
     static TelemetryProvider getInstance() {
-        if (OTelInitializer.INSTANCE.isInitialized()) {
+        if (OTelInitializer.isInitialized()) {
             return OTelTelemetryProvider.INSTANCE;
         } else {
             return NOOP_PROVIDER;

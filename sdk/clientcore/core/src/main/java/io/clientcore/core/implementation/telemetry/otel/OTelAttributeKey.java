@@ -35,7 +35,7 @@ public class OTelAttributeKey {
             createDoubleKeyInvoker = ReflectionUtils.getMethodInvoker(ATTRIBUTE_KEY_CLASS,
                 ATTRIBUTE_KEY_CLASS.getMethod("doubleKey", String.class));
         } catch (Throwable t) {
-            OTelInitializer.INSTANCE.initError(LOGGER, t);
+            OTelInitializer.initError(LOGGER, t);
         }
 
         CREATE_STRING_KEY_INVOKER = createStringKeyInvoker;
@@ -45,7 +45,7 @@ public class OTelAttributeKey {
     }
 
     public static Object getKey(String key, Object value) {
-        if (OTelInitializer.INSTANCE.isInitialized()) {
+        if (OTelInitializer.isInitialized()) {
             try {
                 if (value instanceof Boolean) {
                     return CREATE_BOOLEAN_KEY_INVOKER.invokeStatic(key);
@@ -65,7 +65,7 @@ public class OTelAttributeKey {
                     return null;
                 }
             } catch (Throwable t) {
-                OTelInitializer.INSTANCE.runtimeError(LOGGER, t);
+                OTelInitializer.runtimeError(LOGGER, t);
             }
         }
 

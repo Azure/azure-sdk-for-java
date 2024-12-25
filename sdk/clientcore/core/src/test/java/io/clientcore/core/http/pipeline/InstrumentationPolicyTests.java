@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.util.Context;
@@ -407,6 +408,32 @@ public class InstrumentationPolicyTests {
         SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
         assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED&key1=value1",
             200);
+    }
+
+    @Test
+    public void explicitLibraryCallParent() throws IOException {
+        io.clientcore.core.telemetry.tracing.Tracer tracer
+            = TelemetryProvider.getInstance().getTracer(otelOptions, new LibraryTelemetryOptions("test-library"));
+        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", Context.none()).startSpan();
+
+        Context parentCtx = parent.storeInContext(Context.none());
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
+            .httpClient(request -> new MockHttpResponse(request, 200))
+            .build();
+
+        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
+            .setRequestOptions(new RequestOptions().setContext(parentCtx))).close();
+
+        parent.end();
+
+        assertNotNull(exporter.getFinishedSpanItems());
+        assertEquals(2, exporter.getFinishedSpanItems().size());
+
+        SpanData httpSpan = exporter.getFinishedSpanItems().get(0);
+        assertHttpSpan(httpSpan, HttpMethod.GET, "https://localhost:8080/path/to/resource?query=REDACTED", 200);
+        assertEquals(parent.getSpanContext().getSpanId(), httpSpan.getParentSpanContext().getSpanId());
+        assertEquals(parent.getSpanContext().getTraceId(), httpSpan.getSpanContext().getTraceId());
     }
 
     private void assertStartAttributes(ReadableSpan span, HttpMethod method, URI url) {

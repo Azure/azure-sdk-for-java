@@ -12,8 +12,8 @@ package io.clientcore.core.telemetry;
  *
  * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
  */
+@FunctionalInterface
 public interface Scope extends AutoCloseable {
     @Override
-    default void close() {
-    }
+    void close();
 }

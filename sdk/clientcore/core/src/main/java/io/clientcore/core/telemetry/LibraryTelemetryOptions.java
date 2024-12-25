@@ -3,6 +3,8 @@
 
 package io.clientcore.core.telemetry;
 
+import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
+
 import java.util.Objects;
 
 /**
@@ -15,6 +17,22 @@ public final class LibraryTelemetryOptions {
     private final String libraryName;
     private String libraryVersion;
     private String schemaUrl;
+    private boolean disableSpanSuppression;
+
+    static {
+        LibraryTelemetryOptionsAccessHelper
+            .setAccessor(new LibraryTelemetryOptionsAccessHelper.LibraryTelemetryOptionsAccessor() {
+                @Override
+                public LibraryTelemetryOptions disableSpanSuppression(LibraryTelemetryOptions options) {
+                    return options.disableSpanSuppression(true);
+                }
+
+                @Override
+                public boolean isSpanSuppressionDisabled(LibraryTelemetryOptions options) {
+                    return options.isSpanSuppressionDisabled();
+                }
+            });
+    }
 
     /**
      * Creates an instance of {@link LibraryTelemetryOptions}.
@@ -74,5 +92,14 @@ public final class LibraryTelemetryOptions {
      */
     public String getSchemaUrl() {
         return schemaUrl;
+    }
+
+    LibraryTelemetryOptions disableSpanSuppression(boolean disableSpanSuppression) {
+        this.disableSpanSuppression = disableSpanSuppression;
+        return this;
+    }
+
+    boolean isSpanSuppressionDisabled() {
+        return disableSpanSuppression;
     }
 }

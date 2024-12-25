@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
+import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
@@ -38,16 +39,23 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
+    private static final LibraryTelemetryOptions LIBRARY_OPTIONS;
 
     static {
         Map<String, String> properties = getProperties("core.properties");
         LIBRARY_NAME = properties.getOrDefault("name", "unknown");
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
-    }
+        LibraryTelemetryOptions libOptions
+            = new LibraryTelemetryOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-    private static final LibraryTelemetryOptions LIBRARY_OPTIONS
-        = new LibraryTelemetryOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+        // HTTP tracing is special - we suppress nested public API spans, but
+        // preserve nested HTTP ones.
+        // We might want to make it configurable for other cases, but let's hide the API for now.
+        LibraryTelemetryOptionsAccessHelper.disableSpanSuppression(libOptions);
+
+        LIBRARY_OPTIONS = libOptions;
+    }
 
     private static final String HTTP_REQUEST_METHOD = "http.request.method";
     private static final String HTTP_RESPONSE_STATUS_CODE = "http.response.status_code";
@@ -99,9 +107,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
-        Span span = tracer.spanBuilder(request.getHttpMethod().toString())
+        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), request.getRequestOptions().getContext())
             .setSpanKind(SpanKind.CLIENT)
-            .setParent(request.getRequestOptions().getContext())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
             .setAttribute(URL_FULL, sanitizedUrl)
             .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
