@@ -39,6 +39,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     private final Object otelSpanBuilder;
     private final Context context;
     private final boolean suppressNestedSpans;
+    private SpanKind spanKind = SpanKind.INTERNAL;
 
     static {
         ReflectiveInvoker setParentInvoker = null;
@@ -73,7 +74,7 @@ public class OTelSpanBuilder implements SpanBuilder {
                 producerKind = SPAN_KIND_CLASS.getField("PRODUCER").get(null);
                 consumerKind = SPAN_KIND_CLASS.getField("CONSUMER").get(null);
 
-                noopSpan = new OTelSpan(null, OTelContext.getCurrent());
+                noopSpan = new OTelSpan(null, OTelContext.getCurrent(), SpanKind.INTERNAL);
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -114,6 +115,7 @@ public class OTelSpanBuilder implements SpanBuilder {
 
     @Override
     public SpanBuilder setSpanKind(SpanKind spanKind) {
+        this.spanKind = spanKind;
         if (OTelInitializer.isInitialized() && otelSpanBuilder != null) {
             try {
                 SET_SPAN_KIND_INVOKER.invokeWithArguments(otelSpanBuilder, toOtelSpanKind(spanKind));
@@ -131,18 +133,24 @@ public class OTelSpanBuilder implements SpanBuilder {
             try {
                 Object otelParentContext = setParent();
                 Object otelSpan;
-                if (suppressNestedSpans && OTelContext.hasCoreSpan(otelParentContext)) {
+                if (shouldSuppress(otelParentContext)) {
                     otelSpan = OTelSpan.createPropagatingSpan(otelParentContext);
                 } else {
                     otelSpan = START_SPAN_INVOKER.invokeWithArguments(otelSpanBuilder);
                 }
-                return new OTelSpan(otelSpan, otelParentContext);
+                return new OTelSpan(otelSpan, otelParentContext, this.spanKind);
             } catch (Throwable t) {
                 OTelInitializer.runtimeError(LOGGER, t);
             }
         }
 
         return NOOP_SPAN;
+    }
+
+    private boolean shouldSuppress(Object parentContext) throws Exception {
+        return suppressNestedSpans
+            && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)
+            && OTelContext.hasClientCoreSpan(parentContext);
     }
 
     private Object setParent() throws Exception {

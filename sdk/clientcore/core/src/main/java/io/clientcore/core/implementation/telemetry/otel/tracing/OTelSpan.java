@@ -11,6 +11,7 @@ import io.clientcore.core.telemetry.Scope;
 import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanContext;
+import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -19,7 +20,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.STATUS_CODE_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelContext.withCoreSpan;
+import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelContext.markCoreSpan;
 
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
@@ -89,12 +90,14 @@ public class OTelSpan implements Span {
         WRAP_INVOKER = wrapInvoker;
     }
 
-    OTelSpan(Object otelSpan, Object otelParentContext) throws Exception {
+    OTelSpan(Object otelSpan, Object otelParentContext, SpanKind spanKind) throws Exception {
         assert CONTEXT_CLASS.isInstance(otelParentContext);
         assert otelSpan == null || SPAN_CLASS.isInstance(otelSpan);
 
         this.otelSpan = otelSpan;
-        this.otelContext = otelSpan == null ? otelParentContext : storeInContext(otelSpan, otelParentContext);
+
+        Object contextWithSpan = otelSpan != null ? storeInContext(otelSpan, otelParentContext) : otelParentContext;
+        this.otelContext = markCoreSpan(contextWithSpan, spanKind);
     }
 
     public OTelSpan setAttribute(String key, Object value) {
@@ -219,6 +222,6 @@ public class OTelSpan implements Span {
     }
 
     private static Object storeInContext(Object otelSpan, Object otelContext) throws Exception {
-        return STORE_IN_CONTEXT_INVOKER.invokeWithArguments(otelSpan, withCoreSpan(otelContext));
+        return STORE_IN_CONTEXT_INVOKER.invokeWithArguments(otelSpan, otelContext);
     }
 }
