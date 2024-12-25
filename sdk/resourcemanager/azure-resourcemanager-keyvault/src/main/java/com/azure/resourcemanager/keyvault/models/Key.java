@@ -66,7 +66,7 @@ public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, Has
     boolean managed();
 
     /**
-     * GEts a list of individual key versions with the same key name.
+     * Gets a list of individual key versions with the same key name.
      *
      * @return a list of individual key versions with the same key name
      */

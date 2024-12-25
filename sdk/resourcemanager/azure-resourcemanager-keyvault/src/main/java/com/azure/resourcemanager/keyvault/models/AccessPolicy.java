@@ -17,28 +17,28 @@ import java.util.List;
 @Fluent
 public interface AccessPolicy extends ChildResource<Vault>, HasInnerModel<AccessPolicyEntry> {
     /**
-     * Gets The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Gets the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      *
      * @return The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
     String tenantId();
 
     /**
-     * Gets The object ID of a user or service principal in the Azure Active Directory tenant for the vault.
+     * Gets the object ID of a user or service principal in the Azure Active Directory tenant for the vault.
      *
      * @return The object ID of a user or service principal in the Azure Active Directory tenant for the vault.
      */
     String objectId();
 
     /**
-     * Gets Application ID of the client making request on behalf of a principal.
+     * Gets application ID of the client making request on behalf of a principal.
      *
      * @return Application ID of the client making request on behalf of a principal.
      */
     String applicationId();
 
     /**
-     * Gets Permissions the identity has for keys and secrets.
+     * Gets permissions the identity has for keys and secrets.
      *
      * @return Permissions the identity has for keys and secrets.
      */

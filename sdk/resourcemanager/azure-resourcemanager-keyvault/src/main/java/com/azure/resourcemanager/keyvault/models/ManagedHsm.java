@@ -27,7 +27,7 @@ public interface ManagedHsm extends GroupableResource<KeyVaultManager, ManagedHs
     String tenantId();
 
     /**
-     * Gets Managed HSM SKU.
+     * Gets managed HSM SKU.
      *
      * @return Managed HSM SKU
      */
