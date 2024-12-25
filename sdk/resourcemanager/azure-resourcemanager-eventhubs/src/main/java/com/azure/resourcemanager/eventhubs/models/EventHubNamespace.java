@@ -65,7 +65,7 @@ public interface EventHubNamespace extends GroupableResource<EventHubsManager, E
     String provisioningState();
 
     /**
-     * Check whether auto-scale is enabled for the namespace.
+     * Checks whether auto-scale is enabled for the namespace.
      *
      * @return true if auto-scale is enabled for the namespace, false otherwise
      */

@@ -38,7 +38,7 @@ public interface EventHub extends NestedResource, HasManager<EventHubsManager>, 
     String namespaceName();
 
     /**
-     * Check whether the data capture enabled for the event hub events.
+     * Checks whether the data capture enabled for the event hub events.
      *
      * @return true if the data capture enabled for the event hub events, false otherwise
      */
@@ -59,7 +59,7 @@ public interface EventHub extends NestedResource, HasManager<EventHubsManager>, 
     int dataCaptureWindowSizeInMB();
 
     /**
-     * Check whether to skip empty archives when capturing is enabled.
+     * Checks whether to skip empty archives when capturing is enabled.
      *
      * @return whether to skip empty archives when capturing is enabled
      */
