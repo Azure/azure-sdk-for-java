@@ -15,19 +15,39 @@ import java.util.Map;
 @Fluent
 public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZone>, HasInnerModel<RecordSetInner> {
 
-    /** @return the type of records in this record set */
+    /**
+     * Gets the type of records in this record set.
+     *
+     * @return the type of records in this record set
+     */
     RecordType recordType();
 
-    /** @return TTL of the records in this record set */
+    /**
+     * Gets TTL of the records in this record set.
+     *
+     * @return TTL of the records in this record set
+     */
     long timeToLive();
 
-    /** @return the metadata associated with this record set. */
+    /**
+     * Gets the metadata associated with this record set..
+     *
+     * @return the metadata associated with this record set.
+     */
     Map<String, String> metadata();
 
-    /** @return the fully qualified domain name of the record set. */
+    /**
+     * Gets the fully qualified domain name of the record set..
+     *
+     * @return the fully qualified domain name of the record set.
+     */
     String fqdn();
 
-    /** @return the etag associated with the record set. */
+    /**
+     * Gets the etag associated with the record set.
+     *
+     * @return the etag associated with the record set.
+     */
     String etag();
 
     /**
