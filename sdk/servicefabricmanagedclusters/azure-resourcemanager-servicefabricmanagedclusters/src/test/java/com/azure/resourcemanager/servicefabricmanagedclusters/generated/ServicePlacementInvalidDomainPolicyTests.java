@@ -12,16 +12,15 @@ public final class ServicePlacementInvalidDomainPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServicePlacementInvalidDomainPolicy model
-            = BinaryData.fromString("{\"type\":\"InvalidDomain\",\"domainName\":\"rhublwpcesutrg\"}")
+            = BinaryData.fromString("{\"type\":\"InvalidDomain\",\"domainName\":\"ph\"}")
                 .toObject(ServicePlacementInvalidDomainPolicy.class);
-        Assertions.assertEquals("rhublwpcesutrg", model.domainName());
+        Assertions.assertEquals("ph", model.domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServicePlacementInvalidDomainPolicy model
-            = new ServicePlacementInvalidDomainPolicy().withDomainName("rhublwpcesutrg");
+        ServicePlacementInvalidDomainPolicy model = new ServicePlacementInvalidDomainPolicy().withDomainName("ph");
         model = BinaryData.fromObject(model).toObject(ServicePlacementInvalidDomainPolicy.class);
-        Assertions.assertEquals("rhublwpcesutrg", model.domainName());
+        Assertions.assertEquals("ph", model.domainName());
     }
 }
