@@ -29,34 +29,68 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure Key Vault key. */
 @Fluent
 public interface Key extends Indexable, HasInnerModel<KeyProperties>, HasId, HasName, Updatable<Key.Update> {
-    /** @return the Json web key. */
+    /**
+     * Gets the Json web key.
+     *
+     * @return the Json web key.
+     */
     JsonWebKey getJsonWebKey();
 
-    /** @return the Json web key. */
+    /**
+     * Gets the Json web key.
+     *
+     * @return the Json web key.
+     */
     Mono<JsonWebKey> getJsonWebKeyAsync();
 
-    /** @return the key management attributes. */
+    /**
+     * Gets the key management attributes.
+     *
+     * @return the key management attributes.
+     */
     KeyProperties attributes();
 
-    /** @return application specific metadata in the form of key-value pairs. */
+    /**
+     * Gets application specific metadata in the form of key-value pairs.
+     *
+     * @return application specific metadata in the form of key-value pairs.
+     */
     Map<String, String> tags();
 
     /**
+     * Checks whether the key's lifetime is managed by key vault.
+     *
      * @return true if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed
      *     will be true.
      */
     boolean managed();
 
-    /** @return a list of individual key versions with the same key name */
+    /**
+     * GEts a list of individual key versions with the same key name.
+     *
+     * @return a list of individual key versions with the same key name
+     */
     PagedIterable<Key> listVersions();
 
-    /** @return a list of individual key versions with the same key name */
+    /**
+     * Gets a list of individual key versions with the same key name.
+     *
+     * @return a list of individual key versions with the same key name
+     */
     PagedFlux<Key> listVersionsAsync();
 
-    /** @return a backup of the specified key be downloaded to the client */
+    /**
+     * GEts a backup of the specified key be downloaded to the client.
+     *
+     * @return a backup of the specified key be downloaded to the client
+     */
     byte[] backup();
 
-    /** @return a backup of the specified key be downloaded to the client */
+    /**
+     * Gets a backup of the specified key be downloaded to the client.
+     *
+     * @return a backup of the specified key be downloaded to the client
+     */
     Mono<byte[]> backupAsync();
 
     /**
