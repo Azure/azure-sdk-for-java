@@ -23,7 +23,7 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"payShield10K_LMK2_CPS250\"},\"zones\":[\"oi\",\"qukrydxt\",\"mieoxorgguf\",\"yaomtb\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"vgrvkffo\"},\"networkInterfaces\":[{\"resourceId\":\"pjbi\",\"privateIpAddress\":\"jmfxumvf\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"ovwxnbkfezzxsc\"},\"networkInterfaces\":[{\"resourceId\":\"dgirujbzbom\",\"privateIpAddress\":\"zbtd\"},{\"resourceId\":\"vp\",\"privateIpAddress\":\"yujviylwdshfssn\"},{\"resourceId\":\"gy\",\"privateIpAddress\":\"rymsgaojfmw\"}]},\"stampId\":\"otmrfhir\",\"statusMessage\":\"ymoxoftpipiwyczu\",\"provisioningState\":\"Allocating\"},\"location\":\"pqjlihhyusps\",\"tags\":{\"cvpa\":\"dvlmfwdgzxul\",\"zvxurisjnhny\":\"rsre\",\"hu\":\"xifqjzgxm\",\"cesutrgjupauut\":\"lw\"},\"id\":\"woqhihe\",\"name\":\"qg\",\"type\":\"zpnfqntcypsxj\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"id\":\"iu\"},\"networkInterfaces\":[{\"id\":\"whrdxwzywqsmbsu\",\"privateIpAddress\":\"xim\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"cfsf\"},\"networkInterfaces\":[{\"id\":\"ddystkiiuxhqy\",\"privateIpAddress\":\"xorrqnb\"},{\"id\":\"czvyifq\",\"privateIpAddress\":\"kdvjsll\"}]},\"stampId\":\"vvdfwatkpnpul\",\"statusMessage\":\"xbczwtruwiqz\",\"provisioningState\":\"Allocating\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"yokacspkw\",\"hzdobpxjmflbvvnc\",\"rkcciwwzjuqk\"],\"location\":\"rsa\",\"tags\":{\"foskghsauuimj\":\"ku\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"},\"id\":\"m\",\"name\":\"zy\",\"type\":\"shxmzsbbzoggigrx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,19 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DedicatedHsm> response
-            = manager.dedicatedHsms().listByResourceGroup("ejnt", 902595467, com.azure.core.util.Context.NONE);
+        PagedIterable<DedicatedHsm> response = manager.dedicatedHsms()
+            .listByResourceGroup("xodpuozmyzydagfu", 1113167460, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pqjlihhyusps", response.iterator().next().location());
-        Assertions.assertEquals("dvlmfwdgzxul", response.iterator().next().tags().get("cvpa"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS250, response.iterator().next().sku().name());
-        Assertions.assertEquals("oi", response.iterator().next().zones().get(0));
-        Assertions.assertEquals("vgrvkffo",
-            response.iterator().next().properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("jmfxumvf",
+        Assertions.assertEquals("rsa", response.iterator().next().location());
+        Assertions.assertEquals("ku", response.iterator().next().tags().get("foskghsauuimj"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.iterator().next().sku().name());
+        Assertions.assertEquals("yokacspkw", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("iu", response.iterator().next().properties().networkProfile().subnet().id());
+        Assertions.assertEquals("xim",
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("ovwxnbkfezzxsc",
-            response.iterator().next().properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("zbtd",
+        Assertions.assertEquals("cfsf",
+            response.iterator().next().properties().managementNetworkProfile().subnet().id());
+        Assertions.assertEquals("xorrqnb",
             response.iterator()
                 .next()
                 .properties()
@@ -53,6 +52,6 @@ public final class DedicatedHsmsListByResourceGroupMockTests {
                 .networkInterfaces()
                 .get(0)
                 .privateIpAddress());
-        Assertions.assertEquals("otmrfhir", response.iterator().next().properties().stampId());
+        Assertions.assertEquals("vvdfwatkpnpul", response.iterator().next().properties().stampId());
     }
 }

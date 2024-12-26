@@ -22,7 +22,7 @@ public final class DedicatedHsmsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"sku\":{\"name\":\"payShield10K_LMK1_CPS250\"},\"zones\":[\"bjx\",\"fw\",\"yl\",\"coolsttpkiwkkb\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"ywvtylbfpnc\"},\"networkInterfaces\":[{\"resourceId\":\"iwii\",\"privateIpAddress\":\"tywubxcbihwq\"},{\"resourceId\":\"fdntwjchrdgoih\",\"privateIpAddress\":\"mwctondzjluudfd\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"ytsbwtovv\"},\"networkInterfaces\":[{\"resourceId\":\"inqfiufxqknpirgn\",\"privateIpAddress\":\"ttwqmsni\"},{\"resourceId\":\"cdm\",\"privateIpAddress\":\"r\"},{\"resourceId\":\"lpijnkrxfrd\",\"privateIpAddress\":\"c\"}]},\"stampId\":\"tizzronasxif\",\"statusMessage\":\"zq\",\"provisioningState\":\"Allocating\"},\"location\":\"tw\",\"tags\":{\"yhmossxkkg\":\"ogczhonnxkrlg\",\"rghxjb\":\"h\",\"rnsvbuswd\":\"hqxvcxgfrpdsofbs\",\"ybycnunvj\":\"z\"},\"id\":\"rtkfawnopq\",\"name\":\"ikyzirtxdy\",\"type\":\"x\"}";
+            = "{\"properties\":{\"networkProfile\":{\"subnet\":{\"id\":\"masxazjpqyegu\"},\"networkInterfaces\":[{\"id\":\"xxhejjzzvd\",\"privateIpAddress\":\"gwdslfhotwm\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"wlbjnpgacftade\"},\"networkInterfaces\":[{\"id\":\"tyfsoppusuesn\",\"privateIpAddress\":\"dejbavo\"},{\"id\":\"zdmohctbqvu\",\"privateIpAddress\":\"xdn\"},{\"id\":\"vo\",\"privateIpAddress\":\"ujjugwdkcglh\"},{\"id\":\"azjdyggd\",\"privateIpAddress\":\"ixhbkuofqweykhm\"}]},\"stampId\":\"evfyexfwhybcib\",\"statusMessage\":\"vdcsitynn\",\"provisioningState\":\"Provisioning\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS2500\"},\"zones\":[\"hfiqscjeypvhe\"],\"location\":\"rkgqhcjrefo\",\"tags\":{\"jpkcattpng\":\"kqsleyyvxy\",\"czsqpjhvm\":\"cr\",\"a\":\"ajvnysounqe\"},\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,19 @@ public final class DedicatedHsmsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DedicatedHsm response = manager.dedicatedHsms()
-            .getByResourceGroupWithResponse("jbypel", "c", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pheoflokeyy", "enjbdlwtgrhp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tw", response.location());
-        Assertions.assertEquals("ogczhonnxkrlg", response.tags().get("yhmossxkkg"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS250, response.sku().name());
-        Assertions.assertEquals("bjx", response.zones().get(0));
-        Assertions.assertEquals("ywvtylbfpnc", response.properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("tywubxcbihwq",
+        Assertions.assertEquals("rkgqhcjrefo", response.location());
+        Assertions.assertEquals("kqsleyyvxy", response.tags().get("jpkcattpng"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, response.sku().name());
+        Assertions.assertEquals("hfiqscjeypvhe", response.zones().get(0));
+        Assertions.assertEquals("masxazjpqyegu", response.properties().networkProfile().subnet().id());
+        Assertions.assertEquals("gwdslfhotwm",
             response.properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("ytsbwtovv", response.properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("ttwqmsni",
+        Assertions.assertEquals("wlbjnpgacftade", response.properties().managementNetworkProfile().subnet().id());
+        Assertions.assertEquals("dejbavo",
             response.properties().managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("tizzronasxif", response.properties().stampId());
+        Assertions.assertEquals("evfyexfwhybcib", response.properties().stampId());
     }
 }

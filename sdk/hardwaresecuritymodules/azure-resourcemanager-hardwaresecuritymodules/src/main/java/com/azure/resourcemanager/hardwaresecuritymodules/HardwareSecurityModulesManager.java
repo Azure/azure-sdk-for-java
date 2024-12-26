@@ -25,22 +25,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.AzureHsmResourceProvider;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.AzureHsmResourceProviderBuilder;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterBackupStatusImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateEndpointConnectionsImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateLinkResourcesImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterRestoreStatusImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClustersImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.DedicatedHsmsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.OperationsImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PrivateEndpointConnectionsImpl;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterBackupStatus;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateEndpointConnections;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateLinkResources;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterRestoreStatus;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsms;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Operations;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateEndpointConnections;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,21 +41,9 @@ import java.util.stream.Collectors;
  * The Azure management API provides a RESTful set of web services that interact with Azure HSM RP.
  */
 public final class HardwareSecurityModulesManager {
-    private CloudHsmClusters cloudHsmClusters;
-
-    private CloudHsmClusterPrivateLinkResources cloudHsmClusterPrivateLinkResources;
-
-    private CloudHsmClusterPrivateEndpointConnections cloudHsmClusterPrivateEndpointConnections;
-
-    private PrivateEndpointConnections privateEndpointConnections;
-
-    private CloudHsmClusterBackupStatus cloudHsmClusterBackupStatus;
-
-    private CloudHsmClusterRestoreStatus cloudHsmClusterRestoreStatus;
+    private Operations operations;
 
     private DedicatedHsms dedicatedHsms;
-
-    private Operations operations;
 
     private final AzureHsmResourceProvider clientObject;
 
@@ -235,7 +211,7 @@ public final class HardwareSecurityModulesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hardwaresecuritymodules")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -282,81 +258,15 @@ public final class HardwareSecurityModulesManager {
     }
 
     /**
-     * Gets the resource collection API of CloudHsmClusters. It manages CloudHsmCluster.
+     * Gets the resource collection API of Operations.
      * 
-     * @return Resource collection API of CloudHsmClusters.
+     * @return Resource collection API of Operations.
      */
-    public CloudHsmClusters cloudHsmClusters() {
-        if (this.cloudHsmClusters == null) {
-            this.cloudHsmClusters = new CloudHsmClustersImpl(clientObject.getCloudHsmClusters(), this);
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
-        return cloudHsmClusters;
-    }
-
-    /**
-     * Gets the resource collection API of CloudHsmClusterPrivateLinkResources.
-     * 
-     * @return Resource collection API of CloudHsmClusterPrivateLinkResources.
-     */
-    public CloudHsmClusterPrivateLinkResources cloudHsmClusterPrivateLinkResources() {
-        if (this.cloudHsmClusterPrivateLinkResources == null) {
-            this.cloudHsmClusterPrivateLinkResources = new CloudHsmClusterPrivateLinkResourcesImpl(
-                clientObject.getCloudHsmClusterPrivateLinkResources(), this);
-        }
-        return cloudHsmClusterPrivateLinkResources;
-    }
-
-    /**
-     * Gets the resource collection API of CloudHsmClusterPrivateEndpointConnections. It manages
-     * PrivateEndpointConnection.
-     * 
-     * @return Resource collection API of CloudHsmClusterPrivateEndpointConnections.
-     */
-    public CloudHsmClusterPrivateEndpointConnections cloudHsmClusterPrivateEndpointConnections() {
-        if (this.cloudHsmClusterPrivateEndpointConnections == null) {
-            this.cloudHsmClusterPrivateEndpointConnections = new CloudHsmClusterPrivateEndpointConnectionsImpl(
-                clientObject.getCloudHsmClusterPrivateEndpointConnections(), this);
-        }
-        return cloudHsmClusterPrivateEndpointConnections;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateEndpointConnections.
-     * 
-     * @return Resource collection API of PrivateEndpointConnections.
-     */
-    public PrivateEndpointConnections privateEndpointConnections() {
-        if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections
-                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
-        }
-        return privateEndpointConnections;
-    }
-
-    /**
-     * Gets the resource collection API of CloudHsmClusterBackupStatus.
-     * 
-     * @return Resource collection API of CloudHsmClusterBackupStatus.
-     */
-    public CloudHsmClusterBackupStatus cloudHsmClusterBackupStatus() {
-        if (this.cloudHsmClusterBackupStatus == null) {
-            this.cloudHsmClusterBackupStatus
-                = new CloudHsmClusterBackupStatusImpl(clientObject.getCloudHsmClusterBackupStatus(), this);
-        }
-        return cloudHsmClusterBackupStatus;
-    }
-
-    /**
-     * Gets the resource collection API of CloudHsmClusterRestoreStatus.
-     * 
-     * @return Resource collection API of CloudHsmClusterRestoreStatus.
-     */
-    public CloudHsmClusterRestoreStatus cloudHsmClusterRestoreStatus() {
-        if (this.cloudHsmClusterRestoreStatus == null) {
-            this.cloudHsmClusterRestoreStatus
-                = new CloudHsmClusterRestoreStatusImpl(clientObject.getCloudHsmClusterRestoreStatus(), this);
-        }
-        return cloudHsmClusterRestoreStatus;
+        return operations;
     }
 
     /**
@@ -369,18 +279,6 @@ public final class HardwareSecurityModulesManager {
             this.dedicatedHsms = new DedicatedHsmsImpl(clientObject.getDedicatedHsms(), this);
         }
         return dedicatedHsms;
-    }
-
-    /**
-     * Gets the resource collection API of Operations.
-     * 
-     * @return Resource collection API of Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
     }
 
     /**
