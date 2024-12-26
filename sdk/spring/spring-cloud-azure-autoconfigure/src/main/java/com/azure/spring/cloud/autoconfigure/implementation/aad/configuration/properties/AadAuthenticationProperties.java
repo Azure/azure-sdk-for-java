@@ -90,33 +90,33 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
      */
     @Deprecated
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
      */
     @Deprecated
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
      * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
      */
     @Deprecated
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
-     * The lifespan(duration) of the cached JWK set before it expires.
+     * The lifespan (duration) of the cached JWK set before it expires.
      */
     private Duration jwkSetCacheLifespan = Duration.ofMinutes(5);
 
     /**
-     * The refresh time(duration) of the cached JWK set before it expires.
+     * The refresh time (duration) of the cached JWK set before it expires.
      */
     private Duration jwkSetCacheRefreshTime = Duration.ofMinutes(5);
 
@@ -139,8 +139,7 @@ public class AadAuthenticationProperties implements InitializingBean {
      * 'authorization-clients.webapi.authorization-grant-type=on_behalf_of',
      * 'authorization-clients.webapi.client-authentication-method=client_secret_post',
      * 'authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope1',
-     * 'authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2'
-     * .
+     * 'authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/WebApi.ExampleScope2'.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
