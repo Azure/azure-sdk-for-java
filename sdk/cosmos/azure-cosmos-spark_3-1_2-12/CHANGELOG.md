@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added options to fine-tune settings for bulk operations. - [PR 43509](https://github.com/Azure/azure-sdk-for-java/pull/43509)
 
 ### 4.35.0 (2024-11-27)
 
