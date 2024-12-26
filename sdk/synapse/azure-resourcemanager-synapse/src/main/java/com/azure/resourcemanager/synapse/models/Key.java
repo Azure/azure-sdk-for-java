@@ -150,7 +150,7 @@ public interface Key {
     /**
      * The template for Key update.
      */
-    interface Update extends UpdateStages.WithIsActiveCmk {
+    interface Update extends UpdateStages.WithIsActiveCmk, UpdateStages.WithKeyVaultUrl {
         /**
          * Executes the update request.
          * 
@@ -183,6 +183,19 @@ public interface Key {
              * @return the next definition stage.
              */
             Update withIsActiveCmk(Boolean isActiveCmk);
+        }
+
+        /**
+         * The stage of the Key update allowing to specify keyVaultUrl.
+         */
+        interface WithKeyVaultUrl {
+            /**
+             * Specifies the keyVaultUrl property: The Key Vault Url of the workspace key..
+             * 
+             * @param keyVaultUrl The Key Vault Url of the workspace key.
+             * @return the next definition stage.
+             */
+            Update withKeyVaultUrl(String keyVaultUrl);
         }
     }
 

@@ -32,17 +32,23 @@ import com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutArrayResponseWithContinuation;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomRolloutsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomRolloutsClient.
+ */
 public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomRolloutsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of CustomRolloutsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomRolloutsClientImpl(ProviderHubImpl client) {
@@ -59,8 +65,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
     @ServiceInterface(name = "ProviderHubCustomRol")
     public interface CustomRolloutsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/customRollouts/{rolloutName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomRolloutInner>> get(@HostParam("$host") String endpoint,
@@ -69,8 +74,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/customRollouts/{rolloutName}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomRolloutInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -80,8 +84,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/customRollouts")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomRolloutArrayResponseWithContinuation>> listByProviderRegistration(
@@ -100,7 +103,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +137,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -169,7 +172,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +187,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param context The context to associate with this operation.
@@ -200,7 +203,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the custom rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +218,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -256,7 +259,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -297,7 +300,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -315,7 +318,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -333,7 +336,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Creates or updates the rollout details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
      * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -350,13 +353,13 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the custom rollouts for the given provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomRolloutInner>>
@@ -384,14 +387,14 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the custom rollouts for the given provider along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomRolloutInner>> listByProviderRegistrationSinglePageAsync(String providerNamespace,
@@ -419,7 +422,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,7 +437,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +453,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -464,7 +467,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Gets the list of the custom rollouts for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,9 +482,8 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -507,9 +509,8 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

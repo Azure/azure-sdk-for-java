@@ -34,7 +34,8 @@ public class LookupActivity extends ExecutionActivity {
     private DatasetReference dataset;
 
     /*
-     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
+     * boolean).
      */
     private Object firstRowOnly;
 

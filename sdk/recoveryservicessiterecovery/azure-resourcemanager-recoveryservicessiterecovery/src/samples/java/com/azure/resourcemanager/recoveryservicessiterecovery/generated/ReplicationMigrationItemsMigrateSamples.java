@@ -23,10 +23,10 @@ public final class ReplicationMigrationItemsMigrateSamples {
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void migrateItem(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().migrate("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1",
-            new MigrateInput().withProperties(new MigrateInputProperties()
-                .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .migrate("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+                new MigrateInput().withProperties(new MigrateInputProperties()
+                    .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -150,14 +151,25 @@ public class ExecutionActivity extends Activity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (linkedServiceName() != null) {
             linkedServiceName().validate();
         }
         if (policy() != null) {
             policy().validate();
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ExecutionActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutionActivity.class);
 
     /**
      * {@inheritDoc}

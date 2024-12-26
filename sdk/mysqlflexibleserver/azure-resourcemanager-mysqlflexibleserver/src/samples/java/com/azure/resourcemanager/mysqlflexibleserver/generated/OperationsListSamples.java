@@ -9,7 +9,8 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/stable/2023-12-30/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationList.

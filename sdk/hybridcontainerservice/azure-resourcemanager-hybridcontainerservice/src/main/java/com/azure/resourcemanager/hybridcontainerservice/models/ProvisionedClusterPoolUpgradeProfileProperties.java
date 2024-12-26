@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The upgrade properties.
  */
 @Immutable
-public final class ProvisionedClusterPoolUpgradeProfileProperties {
+public final class ProvisionedClusterPoolUpgradeProfileProperties
+    implements JsonSerializable<ProvisionedClusterPoolUpgradeProfileProperties> {
     /*
      * The Kubernetes version (major.minor.patch).
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * Whether the Kubernetes version is currently in preview.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /**
@@ -54,5 +57,44 @@ public final class ProvisionedClusterPoolUpgradeProfileProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisionedClusterPoolUpgradeProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisionedClusterPoolUpgradeProfileProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisionedClusterPoolUpgradeProfileProperties.
+     */
+    public static ProvisionedClusterPoolUpgradeProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisionedClusterPoolUpgradeProfileProperties deserializedProvisionedClusterPoolUpgradeProfileProperties
+                = new ProvisionedClusterPoolUpgradeProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedProvisionedClusterPoolUpgradeProfileProperties.kubernetesVersion = reader.getString();
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedProvisionedClusterPoolUpgradeProfileProperties.isPreview
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisionedClusterPoolUpgradeProfileProperties;
+        });
     }
 }

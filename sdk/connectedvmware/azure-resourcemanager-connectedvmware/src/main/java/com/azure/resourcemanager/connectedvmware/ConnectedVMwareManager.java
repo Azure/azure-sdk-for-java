@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -56,7 +56,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ConnectedVMwareManager. Connected VMware Client. */
+/**
+ * Entry point to ConnectedVMwareManager.
+ * Connected VMware Client.
+ */
 public final class ConnectedVMwareManager {
     private Operations operations;
 
@@ -96,7 +99,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Creates an instance of ConnectedVMware service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ConnectedVMware service API instance.
@@ -109,7 +112,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Creates an instance of ConnectedVMware service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ConnectedVMware service API instance.
@@ -122,14 +125,16 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets a Configurable instance that can be used to create ConnectedVMwareManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ConnectedVMwareManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -201,8 +206,8 @@ public final class ConnectedVMwareManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -244,7 +249,7 @@ public final class ConnectedVMwareManager {
                 .append("-")
                 .append("com.azure.resourcemanager.connectedvmware")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -277,7 +282,7 @@ public final class ConnectedVMwareManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -292,7 +297,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -304,7 +309,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of ResourcePools. It manages ResourcePool.
-     *
+     * 
      * @return Resource collection API of ResourcePools.
      */
     public ResourcePools resourcePools() {
@@ -316,7 +321,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of Clusters. It manages Cluster.
-     *
+     * 
      * @return Resource collection API of Clusters.
      */
     public Clusters clusters() {
@@ -328,7 +333,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of Hosts. It manages HostModel.
-     *
+     * 
      * @return Resource collection API of Hosts.
      */
     public Hosts hosts() {
@@ -340,7 +345,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of Datastores. It manages Datastore.
-     *
+     * 
      * @return Resource collection API of Datastores.
      */
     public Datastores datastores() {
@@ -352,7 +357,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VCenters. It manages VCenter.
-     *
+     * 
      * @return Resource collection API of VCenters.
      */
     public VCenters vCenters() {
@@ -364,7 +369,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VirtualMachineTemplates. It manages VirtualMachineTemplate.
-     *
+     * 
      * @return Resource collection API of VirtualMachineTemplates.
      */
     public VirtualMachineTemplates virtualMachineTemplates() {
@@ -377,7 +382,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
-     *
+     * 
      * @return Resource collection API of VirtualNetworks.
      */
     public VirtualNetworks virtualNetworks() {
@@ -389,7 +394,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of InventoryItems. It manages InventoryItem.
-     *
+     * 
      * @return Resource collection API of InventoryItems.
      */
     public InventoryItems inventoryItems() {
@@ -401,7 +406,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VirtualMachineInstances.
-     *
+     * 
      * @return Resource collection API of VirtualMachineInstances.
      */
     public VirtualMachineInstances virtualMachineInstances() {
@@ -414,7 +419,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VmInstanceHybridIdentityMetadatas.
-     *
+     * 
      * @return Resource collection API of VmInstanceHybridIdentityMetadatas.
      */
     public VmInstanceHybridIdentityMetadatas vmInstanceHybridIdentityMetadatas() {
@@ -427,7 +432,7 @@ public final class ConnectedVMwareManager {
 
     /**
      * Gets the resource collection API of VMInstanceGuestAgents.
-     *
+     * 
      * @return Resource collection API of VMInstanceGuestAgents.
      */
     public VMInstanceGuestAgents vMInstanceGuestAgents() {
@@ -440,7 +445,7 @@ public final class ConnectedVMwareManager {
     /**
      * Gets wrapped service client ConnectedVMwareClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client ConnectedVMwareClient.
      */
     public ConnectedVMwareClient serviceClient() {

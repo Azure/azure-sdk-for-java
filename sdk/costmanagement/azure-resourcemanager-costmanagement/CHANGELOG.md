@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-12-24)
+
+- Azure Resource Manager CostManagement client library for Java. This package contains Microsoft Azure SDK for CostManagement Management SDK. CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SingleScopeBenefitRecommendationProperties` was modified
+
+* `currencyCode()` was removed
+* `costWithoutBenefit()` was removed
+* `lastConsumptionDate()` was removed
+* `totalHours()` was removed
+* `firstConsumptionDate()` was removed
+* `allRecommendationDetails()` was removed
+* `armSkuName()` was removed
+
+#### `models.SharedScopeBenefitRecommendationProperties` was modified
+
+* `allRecommendationDetails()` was removed
+* `firstConsumptionDate()` was removed
+* `costWithoutBenefit()` was removed
+* `totalHours()` was removed
+* `lastConsumptionDate()` was removed
+* `currencyCode()` was removed
+* `armSkuName()` was removed
 
 ## 1.0.0-beta.7 (2024-10-31)
 

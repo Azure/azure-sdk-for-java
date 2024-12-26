@@ -21,7 +21,7 @@ public final class SqlPoolWorkloadClassifiersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"memberName\":\"idtoakat\",\"label\":\"ytgrhzbqfd\",\"context\":\"aw\",\"startTime\":\"tvcshtkutzcttb\",\"endTime\":\"dirdammtzjgc\",\"importance\":\"fxtbwjjirmuydg\"},\"id\":\"t\",\"name\":\"mdofgeoagfuoft\",\"type\":\"xodwxm\"}";
+            = "{\"properties\":{\"memberName\":\"wglihezomu\",\"label\":\"qgisnionetbzdrd\",\"context\":\"enx\",\"startTime\":\"tlzlmtrlxcznnhz\",\"endTime\":\"nbmxlx\",\"importance\":\"tygeqzus\"},\"id\":\"toqcahfsgbjm\",\"name\":\"reesrfwsszvl\",\"type\":\"wliso\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,21 @@ public final class SqlPoolWorkloadClassifiersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadClassifier response = manager.sqlPoolWorkloadClassifiers()
-            .define("ry")
-            .withExistingWorkloadGroup("qllczipvwdtgckz", "qiqdlratrkwxoau", "xsuykznhrfg", "lglh")
-            .withMemberName("zihuioaeo")
-            .withLabel("ajtfey")
-            .withContext("bdgddkrh")
-            .withStartTime("cxbeuuqutkzwtjww")
-            .withEndTime("zytijcx")
-            .withImportance("ondegjdydhqkkk")
+            .define("hqodv")
+            .withExistingWorkloadGroup("fwzlgzawkgyepeya", "nnidmdiawpzxk", "rntmkctdhu", "sgwqpsqaz")
+            .withMemberName("cnbhcb")
+            .withLabel("kztibni")
+            .withContext("tsxjmfmeftvhkmoo")
+            .withStartTime("rh")
+            .withEndTime("bwgmjgrul")
+            .withImportance("ogxhcxn")
             .create();
 
-        Assertions.assertEquals("idtoakat", response.memberName());
-        Assertions.assertEquals("ytgrhzbqfd", response.label());
-        Assertions.assertEquals("aw", response.context());
-        Assertions.assertEquals("tvcshtkutzcttb", response.startTime());
-        Assertions.assertEquals("dirdammtzjgc", response.endTime());
-        Assertions.assertEquals("fxtbwjjirmuydg", response.importance());
+        Assertions.assertEquals("wglihezomu", response.memberName());
+        Assertions.assertEquals("qgisnionetbzdrd", response.label());
+        Assertions.assertEquals("enx", response.context());
+        Assertions.assertEquals("tlzlmtrlxcznnhz", response.startTime());
+        Assertions.assertEquals("nbmxlx", response.endTime());
+        Assertions.assertEquals("tygeqzus", response.importance());
     }
 }

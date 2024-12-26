@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DevTestLabsClientImpl type. */
+/**
+ * A builder for creating a new instance of the DevTestLabsClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { DevTestLabsClientImpl.class })
 public final class DevTestLabsClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets The subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the DevTestLabsClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class DevTestLabsClientBuilder {
 
     /**
      * Builds an instance of DevTestLabsClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of DevTestLabsClientImpl.
      */
     public DevTestLabsClientImpl buildClient() {

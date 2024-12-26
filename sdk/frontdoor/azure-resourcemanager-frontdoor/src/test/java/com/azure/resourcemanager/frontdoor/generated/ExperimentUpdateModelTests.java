@@ -15,22 +15,21 @@ public final class ExperimentUpdateModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentUpdateModel model = BinaryData.fromString(
-            "{\"tags\":{\"xakjsqzhzb\":\"wasqvdaeyyg\",\"asi\":\"zkgimsid\"},\"properties\":{\"description\":\"yvvjskgfmo\",\"enabledState\":\"Enabled\"}}")
+            "{\"tags\":{\"imzdlyj\":\"pasccbi\"},\"properties\":{\"description\":\"wmkyoqufdvruzsl\",\"enabledState\":\"Enabled\"}}")
             .toObject(ExperimentUpdateModel.class);
-        Assertions.assertEquals("wasqvdaeyyg", model.tags().get("xakjsqzhzb"));
-        Assertions.assertEquals("yvvjskgfmo", model.description());
+        Assertions.assertEquals("pasccbi", model.tags().get("imzdlyj"));
+        Assertions.assertEquals("wmkyoqufdvruzsl", model.description());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdateModel model
-            = new ExperimentUpdateModel().withTags(mapOf("xakjsqzhzb", "wasqvdaeyyg", "asi", "zkgimsid"))
-                .withDescription("yvvjskgfmo")
-                .withEnabledState(State.ENABLED);
+        ExperimentUpdateModel model = new ExperimentUpdateModel().withTags(mapOf("imzdlyj", "pasccbi"))
+            .withDescription("wmkyoqufdvruzsl")
+            .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentUpdateModel.class);
-        Assertions.assertEquals("wasqvdaeyyg", model.tags().get("xakjsqzhzb"));
-        Assertions.assertEquals("yvvjskgfmo", model.description());
+        Assertions.assertEquals("pasccbi", model.tags().get("imzdlyj"));
+        Assertions.assertEquals("wmkyoqufdvruzsl", model.description());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 

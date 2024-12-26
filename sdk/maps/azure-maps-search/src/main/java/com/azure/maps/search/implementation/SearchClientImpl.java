@@ -16,18 +16,34 @@ import com.azure.core.util.serializer.SerializerAdapter;
  */
 public final class SearchClientImpl {
     /**
-     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
-     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     */
+    private final String acceptLanguage;
+
+    /**
+     * Gets Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * 
+     * @return the acceptLanguage value.
+     */
+    public String getAcceptLanguage() {
+        return this.acceptLanguage;
+    }
+
+    /**
+     * Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents a
+     * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
+     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
     private final String clientId;
 
     /**
-     * Gets Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
-     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Gets Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents
+     * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
+     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      * 
      * @return the clientId value.
      */
@@ -108,31 +124,38 @@ public final class SearchClientImpl {
     /**
      * Initializes an instance of SearchClient client.
      * 
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(String clientId, String host, String apiVersion) {
+    SearchClientImpl(String acceptLanguage, String clientId, String host, String apiVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), clientId, host, apiVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), acceptLanguage, clientId, host, apiVersion);
     }
 
     /**
      * Initializes an instance of SearchClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(HttpPipeline httpPipeline, String clientId, String host, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), clientId, host, apiVersion);
+    SearchClientImpl(HttpPipeline httpPipeline, String acceptLanguage, String clientId, String host,
+        String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), acceptLanguage, clientId, host, apiVersion);
     }
 
     /**
@@ -140,17 +163,21 @@ public final class SearchClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param clientId Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security
-     * model. It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management
-     * plane Account API. To use Microsoft Entra ID security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String clientId, String host,
-        String apiVersion) {
+    SearchClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String acceptLanguage,
+        String clientId, String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.acceptLanguage = acceptLanguage;
         this.clientId = clientId;
         this.host = host;
         this.apiVersion = apiVersion;

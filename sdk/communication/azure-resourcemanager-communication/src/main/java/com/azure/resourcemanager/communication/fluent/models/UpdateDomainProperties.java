@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.UserEngagementTracking;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * A class that describes the updatable properties of a Domains resource.
  */
 @Fluent
-public final class UpdateDomainProperties {
+public final class UpdateDomainProperties implements JsonSerializable<UpdateDomainProperties> {
     /*
      * Describes whether user engagement tracking is enabled or disabled.
      */
-    @JsonProperty(value = "userEngagementTracking")
     private UserEngagementTracking userEngagementTracking;
 
     /**
@@ -51,5 +54,43 @@ public final class UpdateDomainProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userEngagementTracking",
+            this.userEngagementTracking == null ? null : this.userEngagementTracking.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateDomainProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateDomainProperties.
+     */
+    public static UpdateDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateDomainProperties deserializedUpdateDomainProperties = new UpdateDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userEngagementTracking".equals(fieldName)) {
+                    deserializedUpdateDomainProperties.userEngagementTracking
+                        = UserEngagementTracking.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateDomainProperties;
+        });
     }
 }

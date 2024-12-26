@@ -15,11 +15,13 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ApplicableScheduleInn
 import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceFabricInner;
 import com.azure.resourcemanager.devtestlabs.models.ServiceFabricFragment;
 
-/** An instance of this class provides access to all the operations defined in ServiceFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceFabricsClient.
+ */
 public interface ServiceFabricsClient {
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -33,7 +35,7 @@ public interface ServiceFabricsClient {
 
     /**
      * List service fabrics in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -53,7 +55,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -71,7 +73,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Get service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -86,7 +88,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -103,7 +105,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -121,7 +123,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -138,7 +140,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Create or replace an existing service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -156,7 +158,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -172,7 +174,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -189,7 +191,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -203,7 +205,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Delete service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -218,7 +220,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -236,7 +238,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Allows modifying tags of service fabrics. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -253,7 +255,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -270,7 +272,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Lists the applicable start/stop schedules, if any.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -286,7 +288,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -302,7 +304,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -319,7 +321,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -333,7 +335,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Start a service fabric. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -348,7 +350,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -364,7 +366,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -381,7 +383,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -395,7 +397,7 @@ public interface ServiceFabricsClient {
 
     /**
      * Stop a service fabric This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.

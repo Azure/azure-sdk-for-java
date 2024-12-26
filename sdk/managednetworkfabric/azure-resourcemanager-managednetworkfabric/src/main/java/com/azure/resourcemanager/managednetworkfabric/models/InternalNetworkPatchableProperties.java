@@ -5,79 +5,77 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The InternalNetwork patchable properties. */
+/**
+ * The InternalNetwork patchable properties.
+ */
 @Fluent
-public class InternalNetworkPatchableProperties {
+public class InternalNetworkPatchableProperties implements JsonSerializable<InternalNetworkPatchableProperties> {
     /*
      * Maximum transmission unit. Default value is 1500.
      */
-    @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
      * List of Connected IPv4 Subnets.
      */
-    @JsonProperty(value = "connectedIPv4Subnets")
     private List<ConnectedSubnet> connectedIPv4Subnets;
 
     /*
      * List of connected IPv6 Subnets.
      */
-    @JsonProperty(value = "connectedIPv6Subnets")
     private List<ConnectedSubnet> connectedIPv6Subnets;
 
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
 
     /*
      * Import Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "importRoutePolicy")
     private ImportRoutePolicy importRoutePolicy;
 
     /*
      * Export Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private ExportRoutePolicy exportRoutePolicy;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
     /*
      * To check whether monitoring of internal network is enabled or not.
      */
-    @JsonProperty(value = "isMonitoringEnabled")
     private IsMonitoringEnabled isMonitoringEnabled;
 
-    /** Creates an instance of InternalNetworkPatchableProperties class. */
+    /**
+     * Creates an instance of InternalNetworkPatchableProperties class.
+     */
     public InternalNetworkPatchableProperties() {
     }
 
     /**
      * Get the mtu property: Maximum transmission unit. Default value is 1500.
-     *
+     * 
      * @return the mtu value.
      */
     public Integer mtu() {
@@ -86,7 +84,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the mtu property: Maximum transmission unit. Default value is 1500.
-     *
+     * 
      * @param mtu the mtu value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -97,7 +95,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
-     *
+     * 
      * @return the connectedIPv4Subnets value.
      */
     public List<ConnectedSubnet> connectedIPv4Subnets() {
@@ -106,7 +104,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
-     *
+     * 
      * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -117,7 +115,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
-     *
+     * 
      * @return the connectedIPv6Subnets value.
      */
     public List<ConnectedSubnet> connectedIPv6Subnets() {
@@ -126,7 +124,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
-     *
+     * 
      * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -138,7 +136,7 @@ public class InternalNetworkPatchableProperties {
     /**
      * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the importRoutePolicyId value.
      */
     public String importRoutePolicyId() {
@@ -148,7 +146,7 @@ public class InternalNetworkPatchableProperties {
     /**
      * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -160,7 +158,7 @@ public class InternalNetworkPatchableProperties {
     /**
      * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the exportRoutePolicyId value.
      */
     public String exportRoutePolicyId() {
@@ -170,7 +168,7 @@ public class InternalNetworkPatchableProperties {
     /**
      * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -181,7 +179,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicy importRoutePolicy() {
@@ -190,7 +188,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -201,7 +199,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicy exportRoutePolicy() {
@@ -210,7 +208,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -221,7 +219,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -230,7 +228,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -241,7 +239,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -250,7 +248,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -261,7 +259,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
-     *
+     * 
      * @return the isMonitoringEnabled value.
      */
     public IsMonitoringEnabled isMonitoringEnabled() {
@@ -270,7 +268,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
-     *
+     * 
      * @param isMonitoringEnabled the isMonitoringEnabled value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
@@ -281,7 +279,7 @@ public class InternalNetworkPatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -297,5 +295,79 @@ public class InternalNetworkPatchableProperties {
         if (exportRoutePolicy() != null) {
             exportRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("mtu", this.mtu);
+        jsonWriter.writeArrayField("connectedIPv4Subnets", this.connectedIPv4Subnets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectedIPv6Subnets", this.connectedIPv6Subnets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("importRoutePolicyId", this.importRoutePolicyId);
+        jsonWriter.writeStringField("exportRoutePolicyId", this.exportRoutePolicyId);
+        jsonWriter.writeJsonField("importRoutePolicy", this.importRoutePolicy);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        jsonWriter.writeStringField("isMonitoringEnabled",
+            this.isMonitoringEnabled == null ? null : this.isMonitoringEnabled.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternalNetworkPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternalNetworkPatchableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InternalNetworkPatchableProperties.
+     */
+    public static InternalNetworkPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternalNetworkPatchableProperties deserializedInternalNetworkPatchableProperties
+                = new InternalNetworkPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mtu".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.mtu = reader.getNullable(JsonReader::getInt);
+                } else if ("connectedIPv4Subnets".equals(fieldName)) {
+                    List<ConnectedSubnet> connectedIPv4Subnets
+                        = reader.readArray(reader1 -> ConnectedSubnet.fromJson(reader1));
+                    deserializedInternalNetworkPatchableProperties.connectedIPv4Subnets = connectedIPv4Subnets;
+                } else if ("connectedIPv6Subnets".equals(fieldName)) {
+                    List<ConnectedSubnet> connectedIPv6Subnets
+                        = reader.readArray(reader1 -> ConnectedSubnet.fromJson(reader1));
+                    deserializedInternalNetworkPatchableProperties.connectedIPv6Subnets = connectedIPv6Subnets;
+                } else if ("importRoutePolicyId".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.importRoutePolicyId = reader.getString();
+                } else if ("exportRoutePolicyId".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.exportRoutePolicyId = reader.getString();
+                } else if ("importRoutePolicy".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.importRoutePolicy
+                        = ImportRoutePolicy.fromJson(reader);
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.exportRoutePolicy
+                        = ExportRoutePolicy.fromJson(reader);
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.ingressAclId = reader.getString();
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.egressAclId = reader.getString();
+                } else if ("isMonitoringEnabled".equals(fieldName)) {
+                    deserializedInternalNetworkPatchableProperties.isMonitoringEnabled
+                        = IsMonitoringEnabled.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternalNetworkPatchableProperties;
+        });
     }
 }

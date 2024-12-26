@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
      * @param name a name to look for.
      * @return the corresponding SkuTier.
      */
-    @JsonCreator
     public static SkuTier fromString(String name) {
         return fromString(name, SkuTier.class);
     }

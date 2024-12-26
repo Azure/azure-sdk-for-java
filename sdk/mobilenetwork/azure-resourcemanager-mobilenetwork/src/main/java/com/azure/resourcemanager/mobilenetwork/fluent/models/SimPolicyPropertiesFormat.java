@@ -6,13 +6,16 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,48 +23,44 @@ import java.util.Map;
  * SIM policy properties. Must be created in the same location as its parent mobile network.
  */
 @Fluent
-public final class SimPolicyPropertiesFormat {
+public final class SimPolicyPropertiesFormat implements JsonSerializable<SimPolicyPropertiesFormat> {
     /*
      * The provisioning state of the SIM policy resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * A dictionary of sites to the provisioning state of this SIM policy on that site.
      */
-    @JsonProperty(value = "siteProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SiteProvisioningState> siteProvisioningState;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
+     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501
+     * section 5.7.2.6 for a full description of the UE-AMBR.
      */
-    @JsonProperty(value = "ueAmbr", required = true)
     private Ambr ueAmbr;
 
     /*
-     * The default slice to use if the UE does not explicitly specify it. This slice must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
+     * The default slice to use if the UE does not explicitly specify it. This slice must exist in the
+     * `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      */
-    @JsonProperty(value = "defaultSlice", required = true)
     private SliceResourceId defaultSlice;
 
     /*
-     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is unspecified.
+     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is
+     * unspecified.
      */
-    @JsonProperty(value = "rfspIndex")
     private Integer rfspIndex;
 
     /*
      * UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds.
      */
-    @JsonProperty(value = "registrationTimer")
     private Integer registrationTimer;
 
     /*
-     * The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain at least one item.
+     * The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain
+     * at least one item.
      */
-    @JsonProperty(value = "sliceConfigurations", required = true)
     private List<SliceConfiguration> sliceConfigurations;
 
     /**
@@ -229,4 +228,63 @@ public final class SimPolicyPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimPolicyPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ueAmbr", this.ueAmbr);
+        jsonWriter.writeJsonField("defaultSlice", this.defaultSlice);
+        jsonWriter.writeArrayField("sliceConfigurations", this.sliceConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("rfspIndex", this.rfspIndex);
+        jsonWriter.writeNumberField("registrationTimer", this.registrationTimer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPolicyPropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimPolicyPropertiesFormat.
+     */
+    public static SimPolicyPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPolicyPropertiesFormat deserializedSimPolicyPropertiesFormat = new SimPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ueAmbr".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.ueAmbr = Ambr.fromJson(reader);
+                } else if ("defaultSlice".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.defaultSlice = SliceResourceId.fromJson(reader);
+                } else if ("sliceConfigurations".equals(fieldName)) {
+                    List<SliceConfiguration> sliceConfigurations
+                        = reader.readArray(reader1 -> SliceConfiguration.fromJson(reader1));
+                    deserializedSimPolicyPropertiesFormat.sliceConfigurations = sliceConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("siteProvisioningState".equals(fieldName)) {
+                    Map<String, SiteProvisioningState> siteProvisioningState
+                        = reader.readMap(reader1 -> SiteProvisioningState.fromString(reader1.getString()));
+                    deserializedSimPolicyPropertiesFormat.siteProvisioningState = siteProvisioningState;
+                } else if ("rfspIndex".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.rfspIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("registrationTimer".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.registrationTimer = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPolicyPropertiesFormat;
+        });
+    }
 }

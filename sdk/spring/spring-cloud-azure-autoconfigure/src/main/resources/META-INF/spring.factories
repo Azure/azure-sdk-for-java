@@ -1,9 +1,9 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalConfigurationEnvironmentPostProcessor,\
-com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor,\
-com.azure.spring.cloud.autoconfigure.implementation.passwordless.AzurePasswordlessEnvironmentPostProcessor,\
-com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsPropertiesEnvironmentPostProcessor
+com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer
 
+org.springframework.boot.SpringApplicationRunListener=\
+com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderApplicationRunListener

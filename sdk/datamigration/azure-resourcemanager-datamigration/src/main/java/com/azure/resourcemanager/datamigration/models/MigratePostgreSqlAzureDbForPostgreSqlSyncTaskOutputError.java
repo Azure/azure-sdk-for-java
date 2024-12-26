@@ -26,11 +26,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
      */
     private ReportableException error;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError class.
      */
@@ -54,16 +49,6 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
      */
     public ReportableException error() {
         return this.error;
-    }
-
-    /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -107,7 +92,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.id = reader.getString();
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputError.resultType
                         = reader.getString();

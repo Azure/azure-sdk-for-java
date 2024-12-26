@@ -18,33 +18,34 @@ public final class RoutingRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingRuleProperties model = BinaryData.fromString(
-            "{\"resourceState\":\"Creating\",\"frontendEndpoints\":[{\"id\":\"rymsgaojfmw\"}],\"acceptedProtocols\":[\"Http\",\"Https\"],\"patternsToMatch\":[\"hirctymoxoftpipi\"],\"enabledState\":\"Disabled\",\"routeConfiguration\":{\"@odata.type\":\"hxacpqjlihhyu\"},\"rulesEngine\":{\"id\":\"kasdvlm\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"gz\"}}")
+            "{\"resourceState\":\"Enabling\",\"frontendEndpoints\":[{\"id\":\"db\"},{\"id\":\"vwrdnhfukuvsj\"},{\"id\":\"wsmystuluqypf\"}],\"acceptedProtocols\":[\"Http\",\"Https\"],\"patternsToMatch\":[\"pqbmfpjbab\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{\"id\":\"sspuunnoxyhkx\"},\"webApplicationFirewallPolicyLink\":{\"id\":\"drihpfhoqcaaewda\"}}")
             .toObject(RoutingRuleProperties.class);
-        Assertions.assertEquals("rymsgaojfmw", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("db", model.frontendEndpoints().get(0).id());
         Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("hirctymoxoftpipi", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("kasdvlm", model.rulesEngine().id());
-        Assertions.assertEquals("gz", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("pqbmfpjbab", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals("sspuunnoxyhkx", model.rulesEngine().id());
+        Assertions.assertEquals("drihpfhoqcaaewda", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingRuleProperties model
-            = new RoutingRuleProperties().withFrontendEndpoints(Arrays.asList(new SubResource().withId("rymsgaojfmw")))
-                .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
-                .withPatternsToMatch(Arrays.asList("hirctymoxoftpipi"))
-                .withEnabledState(RoutingRuleEnabledState.DISABLED)
-                .withRouteConfiguration(new RouteConfiguration())
-                .withRulesEngine(new SubResource().withId("kasdvlm"))
-                .withWebApplicationFirewallPolicyLink(
-                    new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("gz"));
+        RoutingRuleProperties model = new RoutingRuleProperties()
+            .withFrontendEndpoints(Arrays.asList(new SubResource().withId("db"),
+                new SubResource().withId("vwrdnhfukuvsj"), new SubResource().withId("wsmystuluqypf")))
+            .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
+            .withPatternsToMatch(Arrays.asList("pqbmfpjbab"))
+            .withEnabledState(RoutingRuleEnabledState.ENABLED)
+            .withRouteConfiguration(new RouteConfiguration())
+            .withRulesEngine(new SubResource().withId("sspuunnoxyhkx"))
+            .withWebApplicationFirewallPolicyLink(
+                new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("drihpfhoqcaaewda"));
         model = BinaryData.fromObject(model).toObject(RoutingRuleProperties.class);
-        Assertions.assertEquals("rymsgaojfmw", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("db", model.frontendEndpoints().get(0).id());
         Assertions.assertEquals(FrontDoorProtocol.HTTP, model.acceptedProtocols().get(0));
-        Assertions.assertEquals("hirctymoxoftpipi", model.patternsToMatch().get(0));
-        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals("kasdvlm", model.rulesEngine().id());
-        Assertions.assertEquals("gz", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("pqbmfpjbab", model.patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals("sspuunnoxyhkx", model.rulesEngine().id());
+        Assertions.assertEquals("drihpfhoqcaaewda", model.webApplicationFirewallPolicyLink().id());
     }
 }

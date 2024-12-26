@@ -24,12 +24,14 @@ public class AmazonS3LinkedService extends LinkedService {
     private String type = "AmazonS3";
 
     /*
-     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string (or Expression with resultType string).
+     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string
+     * (or Expression with resultType string).
      */
     private Object authenticationType;
 
     /*
-     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
+     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression
+     * with resultType string).
      */
     private Object accessKeyId;
 
@@ -39,7 +41,9 @@ public class AmazonS3LinkedService extends LinkedService {
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only
+     * if you want to try a different service endpoint or want to switch between https and http. Type: string (or
+     * Expression with resultType string).
      */
     private Object serviceUrl;
 
@@ -49,7 +53,8 @@ public class AmazonS3LinkedService extends LinkedService {
     private SecretBase sessionToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

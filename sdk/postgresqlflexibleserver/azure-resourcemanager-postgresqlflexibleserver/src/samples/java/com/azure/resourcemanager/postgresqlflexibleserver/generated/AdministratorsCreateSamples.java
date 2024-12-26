@@ -11,7 +11,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
  */
 public final class AdministratorsCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/AdministratorAdd.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * AdministratorAdd.json
      */
     /**
      * Sample code: Adds an Active DIrectory Administrator for the server.

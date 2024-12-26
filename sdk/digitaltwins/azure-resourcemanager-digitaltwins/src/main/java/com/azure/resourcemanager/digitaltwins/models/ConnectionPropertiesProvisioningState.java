@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * The provisioning state.
+ */
 public final class ConnectionPropertiesProvisioningState
     extends ExpandableStringEnum<ConnectionPropertiesProvisioningState> {
-    /** Static value Pending for ConnectionPropertiesProvisioningState. */
+    /**
+     * Static value Pending for ConnectionPropertiesProvisioningState.
+     */
     public static final ConnectionPropertiesProvisioningState PENDING = fromString("Pending");
 
-    /** Static value Approved for ConnectionPropertiesProvisioningState. */
+    /**
+     * Static value Approved for ConnectionPropertiesProvisioningState.
+     */
     public static final ConnectionPropertiesProvisioningState APPROVED = fromString("Approved");
 
-    /** Static value Rejected for ConnectionPropertiesProvisioningState. */
+    /**
+     * Static value Rejected for ConnectionPropertiesProvisioningState.
+     */
     public static final ConnectionPropertiesProvisioningState REJECTED = fromString("Rejected");
 
-    /** Static value Disconnected for ConnectionPropertiesProvisioningState. */
+    /**
+     * Static value Disconnected for ConnectionPropertiesProvisioningState.
+     */
     public static final ConnectionPropertiesProvisioningState DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of ConnectionPropertiesProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class ConnectionPropertiesProvisioningState
 
     /**
      * Creates or finds a ConnectionPropertiesProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionPropertiesProvisioningState.
      */
-    @JsonCreator
     public static ConnectionPropertiesProvisioningState fromString(String name) {
         return fromString(name, ConnectionPropertiesProvisioningState.class);
     }
 
     /**
      * Gets known ConnectionPropertiesProvisioningState values.
-     *
+     * 
      * @return known ConnectionPropertiesProvisioningState values.
      */
     public static Collection<ConnectionPropertiesProvisioningState> values() {

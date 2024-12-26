@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcemover.models.OperationsDiscovery;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of ClientDiscovery details. */
+/**
+ * Collection of ClientDiscovery details.
+ */
 @Fluent
-public final class OperationsDiscoveryCollectionInner {
+public final class OperationsDiscoveryCollectionInner implements JsonSerializable<OperationsDiscoveryCollectionInner> {
     /*
      * Gets or sets the ClientDiscovery details.
      */
-    @JsonProperty(value = "value")
     private List<OperationsDiscovery> value;
 
     /*
      * Gets or sets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationsDiscoveryCollectionInner class. */
+    /**
+     * Creates an instance of OperationsDiscoveryCollectionInner class.
+     */
     public OperationsDiscoveryCollectionInner() {
     }
 
     /**
      * Get the value property: Gets or sets the ClientDiscovery details.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationsDiscovery> value() {
@@ -39,7 +45,7 @@ public final class OperationsDiscoveryCollectionInner {
 
     /**
      * Set the value property: Gets or sets the ClientDiscovery details.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsDiscoveryCollectionInner object itself.
      */
@@ -50,7 +56,7 @@ public final class OperationsDiscoveryCollectionInner {
 
     /**
      * Get the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class OperationsDiscoveryCollectionInner {
 
     /**
      * Set the nextLink property: Gets or sets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationsDiscoveryCollectionInner object itself.
      */
@@ -70,12 +76,54 @@ public final class OperationsDiscoveryCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsDiscoveryCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsDiscoveryCollectionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationsDiscoveryCollectionInner.
+     */
+    public static OperationsDiscoveryCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsDiscoveryCollectionInner deserializedOperationsDiscoveryCollectionInner
+                = new OperationsDiscoveryCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationsDiscovery> value
+                        = reader.readArray(reader1 -> OperationsDiscovery.fromJson(reader1));
+                    deserializedOperationsDiscoveryCollectionInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationsDiscoveryCollectionInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsDiscoveryCollectionInner;
+        });
     }
 }

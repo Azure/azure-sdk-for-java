@@ -26,21 +26,6 @@ public final class SourceConfiguration implements JsonSerializable<SourceConfigu
      */
     private String value;
 
-    /*
-     * The type of setting
-     */
-    private LinkerConfigurationType configType;
-
-    /*
-     * The identity for key vault reference, system or user-assigned managed identity ID
-     */
-    private String keyVaultReferenceIdentity;
-
-    /*
-     * Descriptive information for the configuration
-     */
-    private String description;
-
     /**
      * Creates an instance of SourceConfiguration class.
      */
@@ -88,57 +73,6 @@ public final class SourceConfiguration implements JsonSerializable<SourceConfigu
     }
 
     /**
-     * Get the configType property: The type of setting.
-     * 
-     * @return the configType value.
-     */
-    public LinkerConfigurationType configType() {
-        return this.configType;
-    }
-
-    /**
-     * Get the keyVaultReferenceIdentity property: The identity for key vault reference, system or user-assigned managed
-     * identity ID.
-     * 
-     * @return the keyVaultReferenceIdentity value.
-     */
-    public String keyVaultReferenceIdentity() {
-        return this.keyVaultReferenceIdentity;
-    }
-
-    /**
-     * Set the keyVaultReferenceIdentity property: The identity for key vault reference, system or user-assigned managed
-     * identity ID.
-     * 
-     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
-     * @return the SourceConfiguration object itself.
-     */
-    public SourceConfiguration withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
-        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
-        return this;
-    }
-
-    /**
-     * Get the description property: Descriptive information for the configuration.
-     * 
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Descriptive information for the configuration.
-     * 
-     * @param description the description value to set.
-     * @return the SourceConfiguration object itself.
-     */
-    public SourceConfiguration withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,8 +88,6 @@ public final class SourceConfiguration implements JsonSerializable<SourceConfigu
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
-        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -178,12 +110,6 @@ public final class SourceConfiguration implements JsonSerializable<SourceConfigu
                     deserializedSourceConfiguration.name = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     deserializedSourceConfiguration.value = reader.getString();
-                } else if ("configType".equals(fieldName)) {
-                    deserializedSourceConfiguration.configType = LinkerConfigurationType.fromString(reader.getString());
-                } else if ("keyVaultReferenceIdentity".equals(fieldName)) {
-                    deserializedSourceConfiguration.keyVaultReferenceIdentity = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedSourceConfiguration.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

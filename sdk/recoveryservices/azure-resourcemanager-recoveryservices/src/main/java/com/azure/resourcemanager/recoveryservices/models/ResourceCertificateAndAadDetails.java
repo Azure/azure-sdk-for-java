@@ -5,71 +5,59 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Certificate details representing the Vault credentials for AAD.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authType",
-    defaultImpl = ResourceCertificateAndAadDetails.class,
-    visible = true)
-@JsonTypeName("AzureActiveDirectory")
 @Fluent
 public final class ResourceCertificateAndAadDetails extends ResourceCertificateDetails {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authType", required = true)
     private String authType = "AzureActiveDirectory";
 
     /*
      * AAD tenant authority.
      */
-    @JsonProperty(value = "aadAuthority", required = true)
     private String aadAuthority;
 
     /*
      * AAD tenant Id.
      */
-    @JsonProperty(value = "aadTenantId", required = true)
     private String aadTenantId;
 
     /*
      * AAD service principal clientId.
      */
-    @JsonProperty(value = "servicePrincipalClientId", required = true)
     private String servicePrincipalClientId;
 
     /*
      * AAD service principal ObjectId.
      */
-    @JsonProperty(value = "servicePrincipalObjectId", required = true)
     private String servicePrincipalObjectId;
 
     /*
      * Azure Management Endpoint Audience.
      */
-    @JsonProperty(value = "azureManagementEndpointAudience", required = true)
     private String azureManagementEndpointAudience;
 
     /*
      * Service Resource Id.
      */
-    @JsonProperty(value = "serviceResourceId")
     private String serviceResourceId;
 
     /*
      * AAD audience for the resource
      */
-    @JsonProperty(value = "aadAudience")
     private String aadAudience;
 
     /**
@@ -309,7 +297,6 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
      */
     @Override
     public void validate() {
-        super.validate();
         if (aadAuthority() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -338,4 +325,92 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAadDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("certificate", certificate());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("issuer", issuer());
+        jsonWriter.writeNumberField("resourceId", resourceId());
+        jsonWriter.writeStringField("subject", subject());
+        jsonWriter.writeStringField("thumbprint", thumbprint());
+        jsonWriter.writeStringField("validFrom",
+            validFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validFrom()));
+        jsonWriter.writeStringField("validTo",
+            validTo() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validTo()));
+        jsonWriter.writeStringField("aadAuthority", this.aadAuthority);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("servicePrincipalClientId", this.servicePrincipalClientId);
+        jsonWriter.writeStringField("servicePrincipalObjectId", this.servicePrincipalObjectId);
+        jsonWriter.writeStringField("azureManagementEndpointAudience", this.azureManagementEndpointAudience);
+        jsonWriter.writeStringField("authType", this.authType);
+        jsonWriter.writeStringField("serviceResourceId", this.serviceResourceId);
+        jsonWriter.writeStringField("aadAudience", this.aadAudience);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceCertificateAndAadDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCertificateAndAadDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceCertificateAndAadDetails.
+     */
+    public static ResourceCertificateAndAadDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceCertificateAndAadDetails deserializedResourceCertificateAndAadDetails
+                = new ResourceCertificateAndAadDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withCertificate(reader.getBinary());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withFriendlyName(reader.getString());
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withIssuer(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails
+                        .withResourceId(reader.getNullable(JsonReader::getLong));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withSubject(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withThumbprint(reader.getString());
+                } else if ("validFrom".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withValidFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("validTo".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withValidTo(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("aadAuthority".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadAuthority = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadTenantId = reader.getString();
+                } else if ("servicePrincipalClientId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.servicePrincipalClientId = reader.getString();
+                } else if ("servicePrincipalObjectId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.servicePrincipalObjectId = reader.getString();
+                } else if ("azureManagementEndpointAudience".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.azureManagementEndpointAudience = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.authType = reader.getString();
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.serviceResourceId = reader.getString();
+                } else if ("aadAudience".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadAudience = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceCertificateAndAadDetails;
+        });
+    }
 }

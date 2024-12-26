@@ -25,7 +25,7 @@ public final class ExperimentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ormkfqlwxldyk\",\"endpointA\":{\"name\":\"ygaolnjpnnb\",\"endpoint\":\"ksibjgsjjxx\"},\"endpointB\":{\"name\":\"rnadzyqegxyiv\",\"endpoint\":\"nbm\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabling\",\"status\":\"kgqxn\",\"scriptFileUri\":\"bkezn\"},\"location\":\"aujvaa\",\"tags\":{\"umrrqmbzm\":\"giycwkdtaawxwfek\",\"idbirkfpkso\":\"kratbnxwbj\",\"ewijymrhbguz\":\"dgo\",\"nfnzhhh\":\"zkye\"},\"id\":\"o\",\"name\":\"mffjkutycyarn\",\"type\":\"oohguabzoghkt\"}";
+            = "{\"properties\":{\"description\":\"cvmwfauxxepmy\",\"endpointA\":{\"name\":\"rmcqmiciijqpkz\",\"endpoint\":\"ojxjmcsmyqwix\"},\"endpointB\":{\"name\":\"wnkwywzwo\",\"endpoint\":\"lickduoi\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Creating\",\"status\":\"vsknxrwzawnv\",\"scriptFileUri\":\"cfhzagxnvhycv\"},\"location\":\"imwrzregzgyufu\",\"tags\":{\"hmeott\":\"pweryekzk\",\"yos\":\"w\"},\"id\":\"wwhnhjtfvpn\",\"name\":\"pmil\",\"type\":\"pnwy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,24 +35,24 @@ public final class ExperimentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Experiment response = manager.experiments()
-            .define("jxcjrmmuabwib")
-            .withRegion("ekidswyskb")
-            .withExistingNetworkExperimentProfile("jcmmzrrscub", "wsdrnpxqwodif")
-            .withTags(mapOf("rpq", "fgllukkutvlx"))
-            .withDescription("gjonmcy")
-            .withEndpointA(new Endpoint().withName("y").withEndpoint("amwineofvfkakp"))
-            .withEndpointB(new Endpoint().withName("t").withEndpoint("vboclzhzjk"))
+            .define("pag")
+            .withRegion("brzmqxucycijoclx")
+            .withExistingNetworkExperimentProfile("aderzmw", "t")
+            .withTags(mapOf("btxjeaoqaqbzg", "gjcyzyzjdnrq", "v", "hfw"))
+            .withDescription("v")
+            .withEndpointA(new Endpoint().withName("goaqylkjztj").withEndpoint("azjcgmxitpfin"))
+            .withEndpointB(new Endpoint().withName("dltkrlg").withEndpoint("tbdrvcqgue"))
             .withEnabledState(State.DISABLED)
             .create();
 
-        Assertions.assertEquals("aujvaa", response.location());
-        Assertions.assertEquals("giycwkdtaawxwfek", response.tags().get("umrrqmbzm"));
-        Assertions.assertEquals("ormkfqlwxldyk", response.description());
-        Assertions.assertEquals("ygaolnjpnnb", response.endpointA().name());
-        Assertions.assertEquals("ksibjgsjjxx", response.endpointA().endpoint());
-        Assertions.assertEquals("rnadzyqegxyiv", response.endpointB().name());
-        Assertions.assertEquals("nbm", response.endpointB().endpoint());
-        Assertions.assertEquals(State.DISABLED, response.enabledState());
+        Assertions.assertEquals("imwrzregzgyufu", response.location());
+        Assertions.assertEquals("pweryekzk", response.tags().get("hmeott"));
+        Assertions.assertEquals("cvmwfauxxepmy", response.description());
+        Assertions.assertEquals("rmcqmiciijqpkz", response.endpointA().name());
+        Assertions.assertEquals("ojxjmcsmyqwix", response.endpointA().endpoint());
+        Assertions.assertEquals("wnkwywzwo", response.endpointB().name());
+        Assertions.assertEquals("lickduoi", response.endpointB().endpoint());
+        Assertions.assertEquals(State.ENABLED, response.enabledState());
     }
 
     // Use "Map.of" if available

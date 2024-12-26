@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Network Fabrics. */
+/**
+ * List of Network Fabrics.
+ */
 @Fluent
-public final class NetworkFabricsListResult {
+public final class NetworkFabricsListResult implements JsonSerializable<NetworkFabricsListResult> {
     /*
      * List of Network Fabric resources.
      */
-    @JsonProperty(value = "value")
     private List<NetworkFabricInner> value;
 
     /*
      * Url to follow for getting next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkFabricsListResult class. */
+    /**
+     * Creates an instance of NetworkFabricsListResult class.
+     */
     public NetworkFabricsListResult() {
     }
 
     /**
      * Get the value property: List of Network Fabric resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkFabricInner> value() {
@@ -39,7 +45,7 @@ public final class NetworkFabricsListResult {
 
     /**
      * Set the value property: List of Network Fabric resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkFabricsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class NetworkFabricsListResult {
 
     /**
      * Get the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class NetworkFabricsListResult {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkFabricsListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class NetworkFabricsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkFabricsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkFabricsListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkFabricsListResult.
+     */
+    public static NetworkFabricsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkFabricsListResult deserializedNetworkFabricsListResult = new NetworkFabricsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkFabricInner> value = reader.readArray(reader1 -> NetworkFabricInner.fromJson(reader1));
+                    deserializedNetworkFabricsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkFabricsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkFabricsListResult;
+        });
     }
 }

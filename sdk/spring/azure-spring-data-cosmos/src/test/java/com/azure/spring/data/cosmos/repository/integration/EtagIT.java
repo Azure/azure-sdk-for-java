@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PersonWithEtagRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -121,13 +122,13 @@ public class EtagIT {
         try {
             personWithEtagRepository.save(updatedPersonWithEtag);
             Assert.fail();
-        } catch (CosmosAccessException ex) {
+        } catch (CosmosPreconditionFailedException ex) {
         }
 
         try {
             personWithEtagRepository.delete(updatedPersonWithEtag);
             Assert.fail();
-        } catch (CosmosAccessException ex) {
+        } catch (CosmosPreconditionFailedException ex) {
         }
     }
 

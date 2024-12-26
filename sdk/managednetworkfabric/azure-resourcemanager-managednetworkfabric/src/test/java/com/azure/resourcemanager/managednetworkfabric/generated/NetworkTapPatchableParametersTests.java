@@ -18,59 +18,47 @@ public final class NetworkTapPatchableParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapPatchableParameters model = BinaryData.fromString(
-            "{\"pollingType\":\"Pull\",\"destinations\":[{\"name\":\"eecwtfm\",\"destinationType\":\"Direct\",\"destinationId\":\"mnhtwofxfmhlvyq\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"mlqkiekhj\"]},\"destinationTapRuleId\":\"q\"},{\"name\":\"gwespscvsmsp\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"ozfvza\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"gx\",\"vwio\"]},\"destinationTapRuleId\":\"cmcgmlmpnvq\"},{\"name\":\"yiarzn\",\"destinationType\":\"Direct\",\"destinationId\":\"eypd\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"yxoaf\",\"mzgccy\"]},\"destinationTapRuleId\":\"uvmsie\"},{\"name\":\"dmmvoneeyr\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"xtzayqwddig\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"z\",\"ssiwwv\"]},\"destinationTapRuleId\":\"ozbjk\"}],\"annotation\":\"p\"}")
+            "{\"pollingType\":\"Push\",\"destinations\":[{\"name\":\"oh\",\"destinationType\":\"Direct\",\"destinationId\":\"njzpchiypbfhmi\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"zewbrsrjzgkbr\",\"uxboufqnnqbjxgj\"]},\"destinationTapRuleId\":\"rerukbuudrizw\"},{\"name\":\"kjxl\",\"destinationType\":\"Direct\",\"destinationId\":\"dikqelssybz\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"rommkiqhypwt\",\"zyjj\"]},\"destinationTapRuleId\":\"t\"}],\"annotation\":\"zql\"}")
             .toObject(NetworkTapPatchableParameters.class);
-        Assertions.assertEquals("p", model.annotation());
-        Assertions.assertEquals(PollingType.PULL, model.pollingType());
-        Assertions.assertEquals("eecwtfm", model.destinations().get(0).name());
+        Assertions.assertEquals("zql", model.annotation());
+        Assertions.assertEquals(PollingType.PUSH, model.pollingType());
+        Assertions.assertEquals("oh", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.DIRECT, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("mnhtwofxfmhlvyq", model.destinations().get(0).destinationId());
-        Assertions.assertEquals(Encapsulation.NONE,
+        Assertions.assertEquals("njzpchiypbfhmi", model.destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.GRE,
             model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("mlqkiekhj",
+        Assertions.assertEquals("zewbrsrjzgkbr",
             model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("q", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("rerukbuudrizw", model.destinations().get(0).destinationTapRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapPatchableParameters model = new NetworkTapPatchableParameters().withAnnotation("p")
-            .withPollingType(PollingType.PULL)
+        NetworkTapPatchableParameters model = new NetworkTapPatchableParameters().withAnnotation("zql")
+            .withPollingType(PollingType.PUSH)
             .withDestinations(Arrays.asList(
-                new NetworkTapPatchableParametersDestinationsItem().withName("eecwtfm")
+                new NetworkTapPatchableParametersDestinationsItem().withName("oh")
                     .withDestinationType(DestinationType.DIRECT)
-                    .withDestinationId("mnhtwofxfmhlvyq")
-                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("mlqkiekhj")))
-                    .withDestinationTapRuleId("q"),
-                new NetworkTapPatchableParametersDestinationsItem().withName("gwespscvsmsp")
-                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                    .withDestinationId("ozfvza")
-                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("gx", "vwio")))
-                    .withDestinationTapRuleId("cmcgmlmpnvq"),
-                new NetworkTapPatchableParametersDestinationsItem().withName("yiarzn")
+                    .withDestinationId("njzpchiypbfhmi")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("zewbrsrjzgkbr", "uxboufqnnqbjxgj")))
+                    .withDestinationTapRuleId("rerukbuudrizw"),
+                new NetworkTapPatchableParametersDestinationsItem().withName("kjxl")
                     .withDestinationType(DestinationType.DIRECT)
-                    .withDestinationId("eypd")
-                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("yxoaf", "mzgccy")))
-                    .withDestinationTapRuleId("uvmsie"),
-                new NetworkTapPatchableParametersDestinationsItem().withName("dmmvoneeyr")
-                    .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                    .withDestinationId("xtzayqwddig")
-                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("z", "ssiwwv")))
-                    .withDestinationTapRuleId("ozbjk")));
+                    .withDestinationId("dikqelssybz")
+                    .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.GRE)
+                        .withNeighborGroupIds(Arrays.asList("rommkiqhypwt", "zyjj")))
+                    .withDestinationTapRuleId("t")));
         model = BinaryData.fromObject(model).toObject(NetworkTapPatchableParameters.class);
-        Assertions.assertEquals("p", model.annotation());
-        Assertions.assertEquals(PollingType.PULL, model.pollingType());
-        Assertions.assertEquals("eecwtfm", model.destinations().get(0).name());
+        Assertions.assertEquals("zql", model.annotation());
+        Assertions.assertEquals(PollingType.PUSH, model.pollingType());
+        Assertions.assertEquals("oh", model.destinations().get(0).name());
         Assertions.assertEquals(DestinationType.DIRECT, model.destinations().get(0).destinationType());
-        Assertions.assertEquals("mnhtwofxfmhlvyq", model.destinations().get(0).destinationId());
-        Assertions.assertEquals(Encapsulation.NONE,
+        Assertions.assertEquals("njzpchiypbfhmi", model.destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.GRE,
             model.destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("mlqkiekhj",
+        Assertions.assertEquals("zewbrsrjzgkbr",
             model.destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("q", model.destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("rerukbuudrizw", model.destinations().get(0).destinationTapRuleId());
     }
 }

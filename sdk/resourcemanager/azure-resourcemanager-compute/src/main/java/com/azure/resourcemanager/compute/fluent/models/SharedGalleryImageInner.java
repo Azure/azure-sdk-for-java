@@ -34,9 +34,9 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     private SharedGalleryImageProperties innerProperties;
 
     /*
-     * Resource name
+     * The identifier information of shared gallery.
      */
-    private String name;
+    private SharedGalleryIdentifier innerIdentifier;
 
     /*
      * Resource location
@@ -44,9 +44,9 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     private String location;
 
     /*
-     * The identifier information of shared gallery.
+     * Resource name
      */
-    private SharedGalleryIdentifier innerIdentifier;
+    private String name;
 
     /**
      * Creates an instance of SharedGalleryImageInner class.
@@ -64,13 +64,12 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the innerIdentifier property: The identifier information of shared gallery.
      * 
-     * @return the name value.
+     * @return the innerIdentifier value.
      */
-    @Override
-    public String name() {
-        return this.name;
+    private SharedGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
     }
 
     /**
@@ -84,12 +83,13 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the innerIdentifier property: The identifier information of shared gallery.
+     * Get the name property: Resource name.
      * 
-     * @return the innerIdentifier value.
+     * @return the name value.
      */
-    private SharedGalleryIdentifier innerIdentifier() {
-        return this.innerIdentifier;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -333,7 +333,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Get the architecture property: CPU architecture supported by an OS disk.
      * 
      * @return the architecture value.
      */
@@ -342,7 +342,7 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Set the architecture property: CPU architecture supported by an OS disk.
      * 
      * @param architecture the architecture value to set.
      * @return the SharedGalleryImageInner object itself.
@@ -431,9 +431,11 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (innerIdentifier() != null) {
+            innerIdentifier().validate();
         }
     }
 

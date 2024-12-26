@@ -20,8 +20,10 @@ public final class ImagesCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void imageCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.images().define("00000000-0000-0000-0000-000000000000")
+        manager.images()
+            .define("00000000-0000-0000-0000-000000000000")
             .withExistingCatalog("MyResourceGroup1", "MyCatalog1")
-            .withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc=")).create();
+            .withProperties(new ImageProperties().withImage("bXliYXNlNjRzdHJpbmc="))
+            .create();
     }
 }

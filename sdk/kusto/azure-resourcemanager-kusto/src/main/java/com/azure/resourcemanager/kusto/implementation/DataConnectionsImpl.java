@@ -37,14 +37,14 @@ public final class DataConnectionsImpl implements DataConnections {
         String databaseName) {
         PagedIterable<DataConnectionInner> inner
             = this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataConnection> listByDatabase(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
         PagedIterable<DataConnectionInner> inner
             = this.serviceClient().listByDatabase(resourceGroupName, clusterName, databaseName, context);
-        return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
     public DataConnectionValidationListResult dataConnectionValidation(String resourceGroupName, String clusterName,

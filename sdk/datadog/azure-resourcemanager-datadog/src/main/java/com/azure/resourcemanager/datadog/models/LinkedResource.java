@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datadog.models;
 
 import com.azure.resourcemanager.datadog.fluent.models.LinkedResourceInner;
 
-/** An immutable client-side representation of LinkedResource. */
+/**
+ * An immutable client-side representation of LinkedResource.
+ */
 public interface LinkedResource {
     /**
      * Gets the id property: The ARM id of the linked resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.LinkedResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     LinkedResourceInner innerModel();

@@ -9,8 +9,8 @@ package com.azure.resourcemanager.synapse.generated;
  */
 public final class IntegrationRuntimesStopSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Stop.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Stop.json
      */
     /**
      * Sample code: Stop integration runtime.

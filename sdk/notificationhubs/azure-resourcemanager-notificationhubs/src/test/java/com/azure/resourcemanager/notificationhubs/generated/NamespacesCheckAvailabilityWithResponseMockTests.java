@@ -26,7 +26,7 @@ public final class NamespacesCheckAvailabilityWithResponseMockTests {
     @Test
     public void testCheckAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isAvailiable\":false,\"location\":\"mueedndrdvstk\",\"tags\":{\"tdaaygdvwvg\":\"tchealmf\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"g\",\"size\":\"rtfudxepxg\",\"family\":\"agvrvmnpkuk\",\"capacity\":101100234},\"id\":\"dblx\",\"name\":\"wi\",\"type\":\"fnjhfjxwmszkkfo\"}";
+            = "{\"isAvailiable\":true,\"sku\":{\"name\":\"Free\",\"tier\":\"pfhyhl\",\"size\":\"pmopjmc\",\"family\":\"tuo\",\"capacity\":607140678},\"location\":\"fu\",\"tags\":{\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\"},\"id\":\"fksymddystki\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,26 +36,25 @@ public final class NamespacesCheckAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResult response = manager.namespaces()
-            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("tllxdyhgsyocogj")
-                .withLocation("ocrkvcikh")
-                .withTags(mapOf("gxk", "amqgxqquezikyw"))
-                .withIsAvailiable(false)
-                .withSku(new Sku().withName(SkuName.BASIC)
-                    .withTier("elwuipi")
-                    .withSize("jzkzi")
-                    .withFamily("vvcnayr")
-                    .withCapacity(108895877)),
-                com.azure.core.util.Context.NONE)
+            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("amdecte")
+                .withLocation("zrkgqhcjrefovg")
+                .withTags(mapOf("yvxyqjp", "sle"))
+                .withSku(new Sku().withName(SkuName.FREE)
+                    .withTier("tpngjcrcczsqpjh")
+                    .withSize("daj")
+                    .withFamily("ysou")
+                    .withCapacity(104525492))
+                .withIsAvailiable(false), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.isAvailiable());
-        Assertions.assertEquals("mueedndrdvstk", response.location());
-        Assertions.assertEquals("tchealmf", response.tags().get("tdaaygdvwvg"));
-        Assertions.assertEquals(SkuName.BASIC, response.sku().name());
-        Assertions.assertEquals("g", response.sku().tier());
-        Assertions.assertEquals("rtfudxepxg", response.sku().size());
-        Assertions.assertEquals("agvrvmnpkuk", response.sku().family());
-        Assertions.assertEquals(101100234, response.sku().capacity());
+        Assertions.assertEquals("fu", response.location());
+        Assertions.assertEquals("odsfcpkvxodpuozm", response.tags().get("zydagfuaxbezyiuo"));
+        Assertions.assertEquals(true, response.isAvailiable());
+        Assertions.assertEquals(SkuName.FREE, response.sku().name());
+        Assertions.assertEquals("pfhyhl", response.sku().tier());
+        Assertions.assertEquals("pmopjmc", response.sku().size());
+        Assertions.assertEquals("tuo", response.sku().family());
+        Assertions.assertEquals(607140678, response.sku().capacity());
     }
 
     // Use "Map.of" if available

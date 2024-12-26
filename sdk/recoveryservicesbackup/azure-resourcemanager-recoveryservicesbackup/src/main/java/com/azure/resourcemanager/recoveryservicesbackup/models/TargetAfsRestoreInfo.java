@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Target Azure File Share Info.
  */
 @Fluent
-public final class TargetAfsRestoreInfo {
+public final class TargetAfsRestoreInfo implements JsonSerializable<TargetAfsRestoreInfo> {
     /*
      * File share name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Target file share resource ARM ID
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /**
@@ -76,5 +78,44 @@ public final class TargetAfsRestoreInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetAfsRestoreInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetAfsRestoreInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetAfsRestoreInfo.
+     */
+    public static TargetAfsRestoreInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetAfsRestoreInfo deserializedTargetAfsRestoreInfo = new TargetAfsRestoreInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTargetAfsRestoreInfo.name = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedTargetAfsRestoreInfo.targetResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetAfsRestoreInfo;
+        });
     }
 }

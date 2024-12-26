@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DNN and UE IP address.
  */
 @Fluent
-public final class DnnIpPair {
+public final class DnnIpPair implements JsonSerializable<DnnIpPair> {
     /*
      * Data network name
      */
-    @JsonProperty(value = "dnn")
     private String dnn;
 
     /*
      * UE IP address
      */
-    @JsonProperty(value = "ueIpAddress")
     private UeIpAddress ueIpAddress;
 
     /**
@@ -79,5 +81,44 @@ public final class DnnIpPair {
         if (ueIpAddress() != null) {
             ueIpAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dnn", this.dnn);
+        jsonWriter.writeJsonField("ueIpAddress", this.ueIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnnIpPair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnnIpPair if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DnnIpPair.
+     */
+    public static DnnIpPair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnnIpPair deserializedDnnIpPair = new DnnIpPair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnn".equals(fieldName)) {
+                    deserializedDnnIpPair.dnn = reader.getString();
+                } else if ("ueIpAddress".equals(fieldName)) {
+                    deserializedDnnIpPair.ueIpAddress = UeIpAddress.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnnIpPair;
+        });
     }
 }

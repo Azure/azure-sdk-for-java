@@ -184,6 +184,16 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer
+        withVectorEmbeddingPolicy(VectorEmbeddingPolicy vectorEmbeddingPolicy) {
+        super.withVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -216,6 +226,9 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
         }
+        if (vectorEmbeddingPolicy() != null) {
+            vectorEmbeddingPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER
@@ -239,6 +252,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
         jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -293,6 +307,9 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
                     deserializedRestorableSqlContainerPropertiesResourceContainer
                         .withComputedProperties(computedProperties);
+                } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
+                    deserializedRestorableSqlContainerPropertiesResourceContainer
+                        .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
                 } else if ("_self".equals(fieldName)) {
                     deserializedRestorableSqlContainerPropertiesResourceContainer.self = reader.getString();
                 } else if ("_rid".equals(fieldName)) {

@@ -55,7 +55,7 @@
     <javadoc.excludePackageNames>
       io.clientcore.core.annotation,io.clientcore.core.credential,io.clientcore.core.http,io.clientcore.core.http.annotation,io.clientcore.core.http.client,
       io.clientcore.core.http.exception,io.clientcore.core.http.models,io.clientcore.core.http.pipeline,io.clientcore.core.implementation,
-      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*,io.clientcore.core.json
+      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
   </properties>
 
@@ -74,6 +74,12 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>4.12.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.squareup.okio</groupId>
+          <artifactId>okio</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test dependencies on core, because we want to run tests inherited from this module using OkHttp -->

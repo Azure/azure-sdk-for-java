@@ -5,65 +5,67 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
 import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
 import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3Configuration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Network to Network Interconnect patchable properties. */
+/**
+ * Network to Network Interconnect patchable properties.
+ */
 @Fluent
-public final class NetworkToNetworkInterconnectPatchableProperties {
+public final class NetworkToNetworkInterconnectPatchableProperties
+    implements JsonSerializable<NetworkToNetworkInterconnectPatchableProperties> {
     /*
      * Common properties for Layer2Configuration.
      */
-    @JsonProperty(value = "layer2Configuration")
     private Layer2Configuration layer2Configuration;
 
     /*
      * Common properties for Layer3Configuration.
      */
-    @JsonProperty(value = "optionBLayer3Configuration")
     private OptionBLayer3Configuration optionBLayer3Configuration;
 
     /*
      * NPB Static Route Configuration properties.
      */
-    @JsonProperty(value = "npbStaticRouteConfiguration")
     private NpbStaticRouteConfiguration npbStaticRouteConfiguration;
 
     /*
      * Import Route Policy information.
      */
-    @JsonProperty(value = "importRoutePolicy")
     private ImportRoutePolicyInformation importRoutePolicy;
 
     /*
      * Export Route Policy information
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private ExportRoutePolicyInformation exportRoutePolicy;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
-    /** Creates an instance of NetworkToNetworkInterconnectPatchableProperties class. */
+    /**
+     * Creates an instance of NetworkToNetworkInterconnectPatchableProperties class.
+     */
     public NetworkToNetworkInterconnectPatchableProperties() {
     }
 
     /**
      * Get the layer2Configuration property: Common properties for Layer2Configuration.
-     *
+     * 
      * @return the layer2Configuration value.
      */
     public Layer2Configuration layer2Configuration() {
@@ -72,7 +74,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the layer2Configuration property: Common properties for Layer2Configuration.
-     *
+     * 
      * @param layer2Configuration the layer2Configuration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -84,7 +86,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the optionBLayer3Configuration property: Common properties for Layer3Configuration.
-     *
+     * 
      * @return the optionBLayer3Configuration value.
      */
     public OptionBLayer3Configuration optionBLayer3Configuration() {
@@ -93,7 +95,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the optionBLayer3Configuration property: Common properties for Layer3Configuration.
-     *
+     * 
      * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -105,7 +107,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
-     *
+     * 
      * @return the npbStaticRouteConfiguration value.
      */
     public NpbStaticRouteConfiguration npbStaticRouteConfiguration() {
@@ -114,7 +116,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
-     *
+     * 
      * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -126,7 +128,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the importRoutePolicy property: Import Route Policy information.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicyInformation importRoutePolicy() {
@@ -135,7 +137,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy information.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -147,7 +149,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy information.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicyInformation exportRoutePolicy() {
@@ -156,7 +158,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy information.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -168,7 +170,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -177,7 +179,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -188,7 +190,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -197,7 +199,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the NetworkToNetworkInterconnectPatchableProperties object itself.
      */
@@ -208,7 +210,7 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -227,5 +229,65 @@ public final class NetworkToNetworkInterconnectPatchableProperties {
         if (exportRoutePolicy() != null) {
             exportRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("layer2Configuration", this.layer2Configuration);
+        jsonWriter.writeJsonField("optionBLayer3Configuration", this.optionBLayer3Configuration);
+        jsonWriter.writeJsonField("npbStaticRouteConfiguration", this.npbStaticRouteConfiguration);
+        jsonWriter.writeJsonField("importRoutePolicy", this.importRoutePolicy);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkToNetworkInterconnectPatchableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkToNetworkInterconnectPatchableProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkToNetworkInterconnectPatchableProperties.
+     */
+    public static NetworkToNetworkInterconnectPatchableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkToNetworkInterconnectPatchableProperties deserializedNetworkToNetworkInterconnectPatchableProperties
+                = new NetworkToNetworkInterconnectPatchableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("layer2Configuration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.layer2Configuration
+                        = Layer2Configuration.fromJson(reader);
+                } else if ("optionBLayer3Configuration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.optionBLayer3Configuration
+                        = OptionBLayer3Configuration.fromJson(reader);
+                } else if ("npbStaticRouteConfiguration".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.npbStaticRouteConfiguration
+                        = NpbStaticRouteConfiguration.fromJson(reader);
+                } else if ("importRoutePolicy".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.importRoutePolicy
+                        = ImportRoutePolicyInformation.fromJson(reader);
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.exportRoutePolicy
+                        = ExportRoutePolicyInformation.fromJson(reader);
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.egressAclId = reader.getString();
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedNetworkToNetworkInterconnectPatchableProperties.ingressAclId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkToNetworkInterconnectPatchableProperties;
+        });
     }
 }

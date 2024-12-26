@@ -20,7 +20,7 @@ public final class ReplicationAlertSettingsGetSamples {
      */
     public static void getsAnEmailNotificationAlertConfiguration(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAlertSettings().getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting",
-            com.azure.core.util.Context.NONE);
+        manager.replicationAlertSettings()
+            .getWithResponse("vault1", "resourceGroupPS1", "defaultAlertSetting", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,51 +5,60 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A2A provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AProtectionContainerMappingDetails extends ProtectionContainerMappingProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * A value indicating whether the auto update is enabled.
      */
-    @JsonProperty(value = "agentAutoUpdateStatus")
     private AgentAutoUpdateStatus agentAutoUpdateStatus;
 
     /*
      * The automation account arm id.
      */
-    @JsonProperty(value = "automationAccountArmId")
     private String automationAccountArmId;
 
     /*
      * A value indicating the type authentication to use for automation Account.
      */
-    @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
     /*
      * The schedule arm name.
      */
-    @JsonProperty(value = "scheduleName")
     private String scheduleName;
 
     /*
      * The job schedule arm name.
      */
-    @JsonProperty(value = "jobScheduleName")
     private String jobScheduleName;
 
     /**
      * Creates an instance of A2AProtectionContainerMappingDetails class.
      */
     public A2AProtectionContainerMappingDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -162,6 +171,63 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("agentAutoUpdateStatus",
+            this.agentAutoUpdateStatus == null ? null : this.agentAutoUpdateStatus.toString());
+        jsonWriter.writeStringField("automationAccountArmId", this.automationAccountArmId);
+        jsonWriter.writeStringField("automationAccountAuthenticationType",
+            this.automationAccountAuthenticationType == null
+                ? null
+                : this.automationAccountAuthenticationType.toString());
+        jsonWriter.writeStringField("scheduleName", this.scheduleName);
+        jsonWriter.writeStringField("jobScheduleName", this.jobScheduleName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AProtectionContainerMappingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AProtectionContainerMappingDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AProtectionContainerMappingDetails.
+     */
+    public static A2AProtectionContainerMappingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AProtectionContainerMappingDetails deserializedA2AProtectionContainerMappingDetails
+                = new A2AProtectionContainerMappingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.instanceType = reader.getString();
+                } else if ("agentAutoUpdateStatus".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.agentAutoUpdateStatus
+                        = AgentAutoUpdateStatus.fromString(reader.getString());
+                } else if ("automationAccountArmId".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.automationAccountArmId = reader.getString();
+                } else if ("automationAccountAuthenticationType".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.automationAccountAuthenticationType
+                        = AutomationAccountAuthenticationType.fromString(reader.getString());
+                } else if ("scheduleName".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.scheduleName = reader.getString();
+                } else if ("jobScheduleName".equals(fieldName)) {
+                    deserializedA2AProtectionContainerMappingDetails.jobScheduleName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AProtectionContainerMappingDetails;
+        });
     }
 }

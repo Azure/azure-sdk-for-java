@@ -155,7 +155,6 @@ public final class AmazonRedshiftSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (redshiftUnloadSettings() != null) {
             redshiftUnloadSettings().validate();
         }

@@ -14,25 +14,27 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
 import com.azure.resourcemanager.digitaltwins.models.CleanupConnectionArtifacts;
 
-/** An instance of this class provides access to all the operations defined in TimeSeriesDatabaseConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TimeSeriesDatabaseConnectionsClient.
+ */
 public interface TimeSeriesDatabaseConnectionsClient {
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Get all existing time series database connections for this DigitalTwins instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -40,7 +42,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all existing time series database connections for this DigitalTwins instance as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TimeSeriesDatabaseConnectionInner> list(String resourceGroupName, String resourceName,
@@ -48,7 +50,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -64,7 +66,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Get the description of an existing time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -79,7 +81,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -96,7 +98,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -114,7 +116,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -131,7 +133,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Create or update a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -149,7 +151,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -164,13 +166,13 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -184,7 +186,7 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
@@ -199,13 +201,13 @@ public interface TimeSeriesDatabaseConnectionsClient {
 
     /**
      * Delete a time series database connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param cleanupConnectionArtifacts Specifies whether or not to attempt to clean up artifacts that were created in
-     *     order to establish a connection to the time series database. This is a best-effort attempt that will fail if
-     *     appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
+     * order to establish a connection to the time series database. This is a best-effort attempt that will fail if
+     * appropriate permissions are not in place. Setting this to 'true' does not delete any recorded data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

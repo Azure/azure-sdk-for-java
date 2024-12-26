@@ -16,25 +16,35 @@ public final class PrivateLinkHubInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkHubInfoListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"hxepcyvahfnlj\",\"value\":[{\"properties\":{\"provisioningState\":\"vuujq\",\"privateEndpointConnections\":[{\"id\":\"kgj\",\"properties\":{}},{\"id\":\"oxgvclt\",\"properties\":{}}]},\"location\":\"sncghkjeszz\",\"tags\":{\"mpvecxgodebfqk\":\"jhtxfvgxbfsmxne\",\"flz\":\"rbmpukgri\"},\"id\":\"fbxzpuzycisp\",\"name\":\"qzahmgkbrp\",\"type\":\"y\"}]}")
+            "{\"nextLink\":\"rwr\",\"value\":[{\"properties\":{\"provisioningState\":\"aenuuz\",\"privateEndpointConnections\":[{\"id\":\"minrfdw\",\"properties\":{}},{\"id\":\"hhziuief\",\"properties\":{}}]},\"location\":\"bhdmsmlmzqhof\",\"tags\":{\"u\":\"ae\",\"icslfaoq\":\"ah\",\"kaivwit\":\"piyylhalnswhccsp\",\"bwemhairs\":\"scywuggwoluhc\"},\"id\":\"rgzdwmsweyp\",\"name\":\"w\",\"type\":\"xggicccnxqhuexmk\"},{\"properties\":{\"provisioningState\":\"stvlzywemhzrnc\",\"privateEndpointConnections\":[{\"id\":\"lusiy\",\"properties\":{}},{\"id\":\"fgytguslfeadcyg\",\"properties\":{}},{\"id\":\"yhejhzisxgfp\",\"properties\":{}},{\"id\":\"lppvksrpq\",\"properties\":{}}]},\"location\":\"jzraehtwdwrf\",\"tags\":{\"cdl\":\"iby\"},\"id\":\"h\",\"name\":\"hfwpracstwit\",\"type\":\"khevxccedc\"},{\"properties\":{\"provisioningState\":\"dyodnwzxltj\",\"privateEndpointConnections\":[{\"id\":\"ltiugcxnavv\",\"properties\":{}},{\"id\":\"ibyqunyowxwlmdj\",\"properties\":{}},{\"id\":\"fgbvfvpdbo\",\"properties\":{}}]},\"location\":\"cizsjqlhkrribdei\",\"tags\":{\"kghv\":\"p\",\"pjorwkqnyhg\":\"ndzwmkrefa\",\"jivfxzsjabib\":\"ij\",\"jxbkzbzkdvn\":\"ystawfsdjpvkvp\"},\"id\":\"jabudurgkakmo\",\"name\":\"zhjjklffhmouwq\",\"type\":\"gzrf\"}]}")
             .toObject(PrivateLinkHubInfoListResult.class);
-        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
-        Assertions.assertEquals("sncghkjeszz", model.value().get(0).location());
-        Assertions.assertEquals("jhtxfvgxbfsmxne", model.value().get(0).tags().get("mpvecxgodebfqk"));
-        Assertions.assertEquals("vuujq", model.value().get(0).provisioningState());
+        Assertions.assertEquals("rwr", model.nextLink());
+        Assertions.assertEquals("bhdmsmlmzqhof", model.value().get(0).location());
+        Assertions.assertEquals("ae", model.value().get(0).tags().get("u"));
+        Assertions.assertEquals("aenuuz", model.value().get(0).provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInfoListResult model = new PrivateLinkHubInfoListResult().withNextLink("hxepcyvahfnlj")
-            .withValue(Arrays.asList(new PrivateLinkHubInner().withLocation("sncghkjeszz")
-                .withTags(mapOf("mpvecxgodebfqk", "jhtxfvgxbfsmxne", "flz", "rbmpukgri"))
-                .withProvisioningState("vuujq")));
+        PrivateLinkHubInfoListResult model
+            = new PrivateLinkHubInfoListResult().withNextLink("rwr")
+                .withValue(Arrays.asList(
+                    new PrivateLinkHubInner().withLocation("bhdmsmlmzqhof")
+                        .withTags(mapOf("u", "ae", "icslfaoq", "ah", "kaivwit", "piyylhalnswhccsp", "bwemhairs",
+                            "scywuggwoluhc"))
+                        .withProvisioningState("aenuuz"),
+                    new PrivateLinkHubInner().withLocation("jzraehtwdwrf")
+                        .withTags(mapOf("cdl", "iby"))
+                        .withProvisioningState("stvlzywemhzrnc"),
+                    new PrivateLinkHubInner().withLocation("cizsjqlhkrribdei")
+                        .withTags(mapOf("kghv", "p", "pjorwkqnyhg", "ndzwmkrefa", "jivfxzsjabib", "ij", "jxbkzbzkdvn",
+                            "ystawfsdjpvkvp"))
+                        .withProvisioningState("dyodnwzxltj")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInfoListResult.class);
-        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
-        Assertions.assertEquals("sncghkjeszz", model.value().get(0).location());
-        Assertions.assertEquals("jhtxfvgxbfsmxne", model.value().get(0).tags().get("mpvecxgodebfqk"));
-        Assertions.assertEquals("vuujq", model.value().get(0).provisioningState());
+        Assertions.assertEquals("rwr", model.nextLink());
+        Assertions.assertEquals("bhdmsmlmzqhof", model.value().get(0).location());
+        Assertions.assertEquals("ae", model.value().get(0).tags().get("u"));
+        Assertions.assertEquals("aenuuz", model.value().get(0).provisioningState());
     }
 
     // Use "Map.of" if available

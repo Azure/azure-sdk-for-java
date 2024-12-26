@@ -22,7 +22,7 @@ public final class IpFirewallRulesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endIpAddress\":\"p\",\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"ttqhnmhkrezsds\"},\"id\":\"xheq\",\"name\":\"gcruxspinym\",\"type\":\"qgwokmikp\"}]}";
+            = "{\"value\":[{\"properties\":{\"endIpAddress\":\"fwwvuatbwbqam\",\"provisioningState\":\"Failed\",\"startIpAddress\":\"iyslpkcvmwfaux\"},\"id\":\"epmywbormcqm\",\"name\":\"ciijqpkzfbojxj\",\"type\":\"cs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IpFirewallRulesListByWorkspaceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IpFirewallRuleInfo> response = manager.ipFirewallRules()
-            .listByWorkspace("obfelhldiuhz", "gqlmfaewzgi", com.azure.core.util.Context.NONE);
+        PagedIterable<IpFirewallRuleInfo> response
+            = manager.ipFirewallRules().listByWorkspace("jdnrqjbt", "jeaoqaqbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("p", response.iterator().next().endIpAddress());
-        Assertions.assertEquals("ttqhnmhkrezsds", response.iterator().next().startIpAddress());
+        Assertions.assertEquals("fwwvuatbwbqam", response.iterator().next().endIpAddress());
+        Assertions.assertEquals("iyslpkcvmwfaux", response.iterator().next().startIpAddress());
     }
 }

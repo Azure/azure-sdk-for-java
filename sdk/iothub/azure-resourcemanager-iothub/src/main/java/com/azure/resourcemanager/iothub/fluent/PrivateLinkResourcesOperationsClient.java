@@ -11,19 +11,21 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient.
+ */
 public interface PrivateLinkResourcesOperationsClient {
     /**
      * List private link resources
-     *
-     * <p>List private link resources for the given IotHub.
-     *
+     * 
+     * List private link resources for the given IotHub.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for an IotHub along with {@link Response}.
      */
@@ -33,14 +35,14 @@ public interface PrivateLinkResourcesOperationsClient {
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for the given IotHub.
-     *
+     * 
+     * List private link resources for the given IotHub.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for an IotHub.
      */
@@ -49,16 +51,16 @@ public interface PrivateLinkResourcesOperationsClient {
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given IotHub.
-     *
+     * 
+     * Get the specified private link resource for the given IotHub.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param groupId The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given IotHub along with {@link Response}.
      */
@@ -68,15 +70,15 @@ public interface PrivateLinkResourcesOperationsClient {
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given IotHub.
-     *
+     * 
+     * Get the specified private link resource for the given IotHub.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param groupId The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given IotHub.
      */

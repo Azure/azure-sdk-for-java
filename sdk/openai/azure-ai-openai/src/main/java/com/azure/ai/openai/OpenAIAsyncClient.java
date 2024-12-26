@@ -17,6 +17,8 @@ import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
+import com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
+import com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper;
 import com.azure.ai.openai.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
@@ -29,6 +31,7 @@ import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.Batch;
 import com.azure.ai.openai.models.BatchCreateRequest;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.CompleteUploadRequest;
@@ -647,7 +650,7 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<Response<ChatCompletions>> getChatCompletionsStreamWithResponse(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
-        chatCompletionsOptions.setStream(true);
+        ChatCompletionsOptionsAccessHelper.setStream(chatCompletionsOptions, true);
         Mono<Response<BinaryData>> chatCompletionsWithResponse = getChatCompletionsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(chatCompletionsOptions), requestOptions);
         AtomicReference<Response<BinaryData>> responseCopy = new AtomicReference<>();
@@ -775,7 +778,39 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<Completions> getCompletionsStream(String deploymentOrModelName, CompletionsOptions completionsOptions) {
-        completionsOptions.setStream(true);
+        CompletionsOptionsAccessHelper.setStream(completionsOptions, true);
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData requestBody = BinaryData.fromObject(completionsOptions);
+        Flux<ByteBuffer> responseStream = getCompletionsWithResponse(deploymentOrModelName, requestBody, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents<Completions> completionsStream
+            = new OpenAIServerSentEvents<>(responseStream, Completions.class);
+        return completionsStream.getEvents();
+    }
+
+    /**
+     * Gets completions as a stream for the provided input prompts. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     * variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param streamOptions the streamOptions value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Flux} of completions for the provided input prompts. Completions support a wide variety of tasks
+     * and generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<Completions> getCompletionsStream(String deploymentOrModelName, CompletionsOptions completionsOptions,
+        ChatCompletionStreamOptions streamOptions) {
+        CompletionsOptionsAccessHelper.setStream(completionsOptions, true);
+        CompletionsOptionsAccessHelper.setStreamOptions(completionsOptions, streamOptions);
         RequestOptions requestOptions = new RequestOptions();
         BinaryData requestBody = BinaryData.fromObject(completionsOptions);
         Flux<ByteBuffer> responseStream = getCompletionsWithResponse(deploymentOrModelName, requestBody, requestOptions)
@@ -836,7 +871,39 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ChatCompletions> getChatCompletionsStream(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions) {
-        chatCompletionsOptions.setStream(true);
+        ChatCompletionsOptionsAccessHelper.setStream(chatCompletionsOptions, true);
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream
+            = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+                requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        return chatCompletionsStream.getEvents();
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param streamOptions the streamOptions value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ChatCompletions> getChatCompletionsStream(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions, ChatCompletionStreamOptions streamOptions) {
+        ChatCompletionsOptionsAccessHelper.setStream(chatCompletionsOptions, true);
+        ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions, streamOptions);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream
             = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),

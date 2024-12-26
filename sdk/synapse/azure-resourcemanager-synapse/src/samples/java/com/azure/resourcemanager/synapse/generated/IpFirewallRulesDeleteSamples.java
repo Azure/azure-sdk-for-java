@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class IpFirewallRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteIpFirewallRule.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteIpFirewallRule.json
      */
     /**
      * Sample code: Delete an IP firewall rule from a workspace.

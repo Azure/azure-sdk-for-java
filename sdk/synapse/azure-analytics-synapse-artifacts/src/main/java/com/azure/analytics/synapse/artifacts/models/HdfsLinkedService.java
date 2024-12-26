@@ -24,17 +24,20 @@ public class HdfsLinkedService extends LinkedService {
     private String type = "Hdfs";
 
     /*
-     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with resultType string).
+     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
+     * resultType string).
      */
     private Object url;
 
     /*
-     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
+     * Expression with resultType string).
      */
     private Object authenticationType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

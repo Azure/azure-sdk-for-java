@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivateLinkHubsClient;
@@ -41,29 +39,6 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
             = this.serviceClient().list(resourceGroupName, privateLinkHubName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
-    }
-
-    public Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(String resourceGroupName,
-        String privateLinkHubName, String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionForPrivateLinkHubInner> inner = this.serviceClient()
-            .getWithResponse(resourceGroupName, privateLinkHubName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionForPrivateLinkHubImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public PrivateEndpointConnectionForPrivateLinkHub get(String resourceGroupName, String privateLinkHubName,
-        String privateEndpointConnectionName) {
-        PrivateEndpointConnectionForPrivateLinkHubInner inner
-            = this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     private PrivateEndpointConnectionsPrivateLinkHubsClient serviceClient() {

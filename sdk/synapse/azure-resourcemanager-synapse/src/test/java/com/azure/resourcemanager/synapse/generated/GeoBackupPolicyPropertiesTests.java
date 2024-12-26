@@ -13,7 +13,7 @@ public final class GeoBackupPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GeoBackupPolicyProperties model
-            = BinaryData.fromString("{\"state\":\"Enabled\",\"storageType\":\"oievseotgqrlltm\"}")
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"storageType\":\"loxggdufiqn\"}")
                 .toObject(GeoBackupPolicyProperties.class);
         Assertions.assertEquals(GeoBackupPolicyState.ENABLED, model.state());
     }

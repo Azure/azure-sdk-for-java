@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 

@@ -5,25 +5,30 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The subtype describes what APIs can be used to interact with the table, and what features are available against it.
  */
 public final class TableSubTypeEnum extends ExpandableStringEnum<TableSubTypeEnum> {
-    /** Static value Any for TableSubTypeEnum. */
+    /**
+     * Static value Any for TableSubTypeEnum.
+     */
     public static final TableSubTypeEnum ANY = fromString("Any");
 
-    /** Static value Classic for TableSubTypeEnum. */
+    /**
+     * Static value Classic for TableSubTypeEnum.
+     */
     public static final TableSubTypeEnum CLASSIC = fromString("Classic");
 
-    /** Static value DataCollectionRuleBased for TableSubTypeEnum. */
+    /**
+     * Static value DataCollectionRuleBased for TableSubTypeEnum.
+     */
     public static final TableSubTypeEnum DATA_COLLECTION_RULE_BASED = fromString("DataCollectionRuleBased");
 
     /**
      * Creates a new instance of TableSubTypeEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,18 +37,17 @@ public final class TableSubTypeEnum extends ExpandableStringEnum<TableSubTypeEnu
 
     /**
      * Creates or finds a TableSubTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TableSubTypeEnum.
      */
-    @JsonCreator
     public static TableSubTypeEnum fromString(String name) {
         return fromString(name, TableSubTypeEnum.class);
     }
 
     /**
      * Gets known TableSubTypeEnum values.
-     *
+     * 
      * @return known TableSubTypeEnum values.
      */
     public static Collection<TableSubTypeEnum> values() {

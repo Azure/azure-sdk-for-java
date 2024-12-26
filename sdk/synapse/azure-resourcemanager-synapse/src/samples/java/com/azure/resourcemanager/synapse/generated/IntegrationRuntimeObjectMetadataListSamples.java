@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
  */
 public final class IntegrationRuntimeObjectMetadataListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeObjectMetadata_List.json
      */
     /**

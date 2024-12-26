@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedVirtualNetworkSettings;
@@ -88,7 +87,7 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     /*
      * Workspace level configs and feature flags
      */
-    private Object extraProperties;
+    private Map<String, Object> extraProperties;
 
     /*
      * Managed Virtual Network Settings
@@ -114,26 +113,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      * Enable or Disable public network access to workspace
      */
     private WorkspacePublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * Initial workspace AAD admin properties for a CSP subscription
-     */
-    private CspWorkspaceAdminProperties cspWorkspaceAdminProperties;
-
-    /*
-     * Workspace settings
-     */
-    private Map<String, Object> settings;
-
-    /*
-     * Enable or Disable AzureADOnlyAuthentication on All Workspace subresource
-     */
-    private Boolean azureADOnlyAuthentication;
-
-    /*
-     * Is trustedServiceBypassEnabled for the workspace
-     */
-    private Boolean trustedServiceBypassEnabled;
 
     /**
      * Creates an instance of WorkspaceProperties class.
@@ -266,6 +245,17 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     }
 
     /**
+     * Set the connectivityEndpoints property: Connectivity endpoints.
+     * 
+     * @param connectivityEndpoints the connectivityEndpoints value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
+        this.connectivityEndpoints = connectivityEndpoints;
+        return this;
+    }
+
+    /**
      * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
      * 
@@ -342,7 +332,7 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      * 
      * @return the extraProperties value.
      */
-    public Object extraProperties() {
+    public Map<String, Object> extraProperties() {
         return this.extraProperties;
     }
 
@@ -438,78 +428,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     }
 
     /**
-     * Get the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
-     * 
-     * @return the cspWorkspaceAdminProperties value.
-     */
-    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
-        return this.cspWorkspaceAdminProperties;
-    }
-
-    /**
-     * Set the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
-     * 
-     * @param cspWorkspaceAdminProperties the cspWorkspaceAdminProperties value to set.
-     * @return the WorkspaceProperties object itself.
-     */
-    public WorkspaceProperties
-        withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
-        this.cspWorkspaceAdminProperties = cspWorkspaceAdminProperties;
-        return this;
-    }
-
-    /**
-     * Get the settings property: Workspace settings.
-     * 
-     * @return the settings value.
-     */
-    public Map<String, Object> settings() {
-        return this.settings;
-    }
-
-    /**
-     * Get the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
-     * subresource.
-     * 
-     * @return the azureADOnlyAuthentication value.
-     */
-    public Boolean azureADOnlyAuthentication() {
-        return this.azureADOnlyAuthentication;
-    }
-
-    /**
-     * Set the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
-     * subresource.
-     * 
-     * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
-     * @return the WorkspaceProperties object itself.
-     */
-    public WorkspaceProperties withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
-        this.azureADOnlyAuthentication = azureADOnlyAuthentication;
-        return this;
-    }
-
-    /**
-     * Get the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
-     * 
-     * @return the trustedServiceBypassEnabled value.
-     */
-    public Boolean trustedServiceBypassEnabled() {
-        return this.trustedServiceBypassEnabled;
-    }
-
-    /**
-     * Set the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
-     * 
-     * @param trustedServiceBypassEnabled the trustedServiceBypassEnabled value to set.
-     * @return the WorkspaceProperties object itself.
-     */
-    public WorkspaceProperties withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
-        this.trustedServiceBypassEnabled = trustedServiceBypassEnabled;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -536,9 +454,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
         if (purviewConfiguration() != null) {
             purviewConfiguration().validate();
         }
-        if (cspWorkspaceAdminProperties() != null) {
-            cspWorkspaceAdminProperties().validate();
-        }
     }
 
     /**
@@ -552,6 +467,8 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
         jsonWriter.writeStringField("managedResourceGroupName", this.managedResourceGroupName);
         jsonWriter.writeStringField("sqlAdministratorLogin", this.sqlAdministratorLogin);
         jsonWriter.writeJsonField("virtualNetworkProfile", this.virtualNetworkProfile);
+        jsonWriter.writeMapField("connectivityEndpoints", this.connectivityEndpoints,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("managedVirtualNetwork", this.managedVirtualNetwork);
         jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
             (writer, element) -> writer.writeJson(element));
@@ -561,9 +478,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
         jsonWriter.writeJsonField("purviewConfiguration", this.purviewConfiguration);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
-        jsonWriter.writeJsonField("cspWorkspaceAdminProperties", this.cspWorkspaceAdminProperties);
-        jsonWriter.writeBooleanField("azureADOnlyAuthentication", this.azureADOnlyAuthentication);
-        jsonWriter.writeBooleanField("trustedServiceBypassEnabled", this.trustedServiceBypassEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -610,7 +524,8 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
                     deserializedWorkspaceProperties.workspaceUid
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("extraProperties".equals(fieldName)) {
-                    deserializedWorkspaceProperties.extraProperties = reader.readUntyped();
+                    Map<String, Object> extraProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedWorkspaceProperties.extraProperties = extraProperties;
                 } else if ("managedVirtualNetworkSettings".equals(fieldName)) {
                     deserializedWorkspaceProperties.managedVirtualNetworkSettings
                         = ManagedVirtualNetworkSettings.fromJson(reader);
@@ -624,18 +539,6 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedWorkspaceProperties.publicNetworkAccess
                         = WorkspacePublicNetworkAccess.fromString(reader.getString());
-                } else if ("cspWorkspaceAdminProperties".equals(fieldName)) {
-                    deserializedWorkspaceProperties.cspWorkspaceAdminProperties
-                        = CspWorkspaceAdminProperties.fromJson(reader);
-                } else if ("settings".equals(fieldName)) {
-                    Map<String, Object> settings = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedWorkspaceProperties.settings = settings;
-                } else if ("azureADOnlyAuthentication".equals(fieldName)) {
-                    deserializedWorkspaceProperties.azureADOnlyAuthentication
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("trustedServiceBypassEnabled".equals(fieldName)) {
-                    deserializedWorkspaceProperties.trustedServiceBypassEnabled
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

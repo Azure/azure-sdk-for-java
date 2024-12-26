@@ -24,7 +24,7 @@ import java.util.Map;
 public final class WorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdateWorkspace.json
      */
     /**
      * Sample code: Update a workspace.

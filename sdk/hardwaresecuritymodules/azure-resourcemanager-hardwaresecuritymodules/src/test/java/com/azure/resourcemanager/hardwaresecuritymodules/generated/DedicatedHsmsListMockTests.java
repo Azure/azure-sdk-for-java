@@ -23,7 +23,7 @@ public final class DedicatedHsmsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"kslircizjxvydfc\",\"acvlhv\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"ftumrtwnawjslbiw\"},\"networkInterfaces\":[{\"resourceId\":\"cyztsfmznbaeqp\",\"privateIpAddress\":\"hqnrn\"},{\"resourceId\":\"x\",\"privateIpAddress\":\"uwrykqgaifmvikl\"},{\"resourceId\":\"dvk\",\"privateIpAddress\":\"ejd\"},{\"resourceId\":\"xcv\",\"privateIpAddress\":\"rhnj\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"v\"},\"networkInterfaces\":[{\"resourceId\":\"qfzgemjdftul\",\"privateIpAddress\":\"tduceamt\"},{\"resourceId\":\"zuo\",\"privateIpAddress\":\"jw\"}]},\"stampId\":\"wqiok\",\"statusMessage\":\"sx\",\"provisioningState\":\"Succeeded\"},\"location\":\"sv\",\"tags\":{\"heyd\":\"prvkwcfzqljyxgtc\"},\"id\":\"sdshmkxmaehvb\",\"name\":\"xu\",\"type\":\"iplt\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"id\":\"xxjnspydptk\"},\"networkInterfaces\":[{\"id\":\"ou\",\"privateIpAddress\":\"vudwtiukbldng\"},{\"id\":\"ocipazyxoeg\",\"privateIpAddress\":\"g\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"ucgygevqz\"},\"networkInterfaces\":[{\"id\":\"mrbpizcdrqj\",\"privateIpAddress\":\"pyd\"}]},\"stampId\":\"yhxdeoejzicwi\",\"statusMessage\":\"jttgzf\",\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"payShield10K_LMK2_CPS2500\"},\"zones\":[\"ajdeyeamdphaga\",\"pbuxwgipwhon\",\"wkgshwa\",\"kix\"],\"location\":\"bin\",\"tags\":{\"yqzrnkcqvyxlw\":\"uttmrywnuzoqft\"},\"id\":\"zlsico\",\"name\":\"oqqnwvlryav\",\"type\":\"hheunmmqhgyx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,18 @@ public final class DedicatedHsmsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DedicatedHsm> response
-            = manager.dedicatedHsms().list(1942763074, com.azure.core.util.Context.NONE);
+            = manager.dedicatedHsms().list(830818996, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sv", response.iterator().next().location());
-        Assertions.assertEquals("prvkwcfzqljyxgtc", response.iterator().next().tags().get("heyd"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.iterator().next().sku().name());
-        Assertions.assertEquals("kslircizjxvydfc", response.iterator().next().zones().get(0));
-        Assertions.assertEquals("ftumrtwnawjslbiw",
-            response.iterator().next().properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("hqnrn",
+        Assertions.assertEquals("bin", response.iterator().next().location());
+        Assertions.assertEquals("uttmrywnuzoqft", response.iterator().next().tags().get("yqzrnkcqvyxlw"));
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS2500, response.iterator().next().sku().name());
+        Assertions.assertEquals("ajdeyeamdphaga", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("xxjnspydptk", response.iterator().next().properties().networkProfile().subnet().id());
+        Assertions.assertEquals("vudwtiukbldng",
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("v",
-            response.iterator().next().properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("tduceamt",
+        Assertions.assertEquals("ucgygevqz",
+            response.iterator().next().properties().managementNetworkProfile().subnet().id());
+        Assertions.assertEquals("pyd",
             response.iterator()
                 .next()
                 .properties()
@@ -53,6 +52,6 @@ public final class DedicatedHsmsListMockTests {
                 .networkInterfaces()
                 .get(0)
                 .privateIpAddress());
-        Assertions.assertEquals("wqiok", response.iterator().next().properties().stampId());
+        Assertions.assertEquals("yhxdeoejzicwi", response.iterator().next().properties().stampId());
     }
 }

@@ -8,40 +8,34 @@ import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnect
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricController;
 import java.util.Arrays;
 
-/** Samples for NetworkFabricControllers Update. */
+/**
+ * Samples for NetworkFabricControllers Update.
+ */
 public final class NetworkFabricControllersUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabricControllers_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabricControllers_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabricControllers_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricControllersUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        NetworkFabricController resource =
-            manager
-                .networkFabricControllers()
-                .getByResourceGroupWithResponse(
-                    "example-rg", "example-networkController", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withInfrastructureExpressRouteConnections(
-                Arrays
-                    .asList(
-                        new ExpressRouteConnectionInformation()
-                            .withExpressRouteCircuitId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
-                            .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
-            .withWorkloadExpressRouteConnections(
-                Arrays
-                    .asList(
-                        new ExpressRouteConnectionInformation()
-                            .withExpressRouteCircuitId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
-                            .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
+        NetworkFabricController resource = manager.networkFabricControllers()
+            .getByResourceGroupWithResponse("example-rg", "example-networkController", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withInfrastructureExpressRouteConnections(Arrays.asList(new ExpressRouteConnectionInformation()
+                .withExpressRouteCircuitId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
+                .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
+            .withWorkloadExpressRouteConnections(Arrays.asList(new ExpressRouteConnectionInformation()
+                .withExpressRouteCircuitId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
+                .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
             .apply();
     }
 }

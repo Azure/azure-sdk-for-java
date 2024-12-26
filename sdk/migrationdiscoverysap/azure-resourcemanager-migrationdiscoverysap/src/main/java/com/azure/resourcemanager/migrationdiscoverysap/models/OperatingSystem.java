@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class OperatingSystem extends ExpandableStringEnum<OperatingSystem>
      * @param name a name to look for.
      * @return the corresponding OperatingSystem.
      */
-    @JsonCreator
     public static OperatingSystem fromString(String name) {
         return fromString(name, OperatingSystem.class);
     }

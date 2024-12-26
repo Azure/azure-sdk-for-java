@@ -32,14 +32,14 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         String serviceFabricName) {
         PagedIterable<ScheduleInner> inner
             = this.serviceClient().list(resourceGroupName, labName, username, serviceFabricName);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName, String username,
         String serviceFabricName, String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ScheduleInner> inner = this.serviceClient()
             .list(resourceGroupName, labName, username, serviceFabricName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public Response<Schedule> getWithResponse(String resourceGroupName, String labName, String username,

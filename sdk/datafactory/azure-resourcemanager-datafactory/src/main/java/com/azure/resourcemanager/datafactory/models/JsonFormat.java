@@ -215,7 +215,6 @@ public final class JsonFormat extends DatasetStorageFormat {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

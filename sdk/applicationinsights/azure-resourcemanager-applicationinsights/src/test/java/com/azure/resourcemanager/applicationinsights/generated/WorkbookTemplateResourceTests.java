@@ -14,19 +14,19 @@ public final class WorkbookTemplateResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookTemplateResource model = BinaryData.fromString(
-            "{\"location\":\"touwaboekqv\",\"tags\":{\"flhhcaal\":\"nsmvbxwyj\"},\"id\":\"jixisxyawjoyaqcs\",\"name\":\"yjpkiidzyexz\",\"type\":\"eli\"}")
+            "{\"location\":\"vljxywsu\",\"tags\":{\"aeneqnzarrwl\":\"rsndsytgadgvra\"},\"id\":\"uu\",\"name\":\"jfqka\",\"type\":\"e\"}")
             .toObject(WorkbookTemplateResource.class);
-        Assertions.assertEquals("touwaboekqv", model.location());
-        Assertions.assertEquals("nsmvbxwyj", model.tags().get("flhhcaal"));
+        Assertions.assertEquals("vljxywsu", model.location());
+        Assertions.assertEquals("rsndsytgadgvra", model.tags().get("aeneqnzarrwl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkbookTemplateResource model
-            = new WorkbookTemplateResource().withLocation("touwaboekqv").withTags(mapOf("flhhcaal", "nsmvbxwyj"));
+            = new WorkbookTemplateResource().withLocation("vljxywsu").withTags(mapOf("aeneqnzarrwl", "rsndsytgadgvra"));
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateResource.class);
-        Assertions.assertEquals("touwaboekqv", model.location());
-        Assertions.assertEquals("nsmvbxwyj", model.tags().get("flhhcaal"));
+        Assertions.assertEquals("vljxywsu", model.location());
+        Assertions.assertEquals("rsndsytgadgvra", model.tags().get("aeneqnzarrwl"));
     }
 
     // Use "Map.of" if available

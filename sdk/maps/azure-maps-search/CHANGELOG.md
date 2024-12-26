@@ -1,14 +1,20 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.2 (Unreleased)
+
+### Features added
+
+- Integrated support for SAS-based authentication
+
+## 2.0.0-beta.1 (2024-12-17)
 
 ### Features Added
 
+- Support Search API 2023-06-01
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Remove Search API 1.0
 
 ## 1.0.0-beta.1 (2022-09-06)
 

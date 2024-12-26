@@ -232,8 +232,9 @@ public final class VirtualMachineTemplateImpl
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineTemplateName = Utils.getValueFromIdByName(innerObject.id(), "virtualMachineTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualMachineTemplateName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachineTemplates");
     }
 
     public VirtualMachineTemplate refresh() {

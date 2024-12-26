@@ -27,7 +27,7 @@ public final class SlicesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.slices().delete("uhspfefyihduy", "uyld", "hmtybkcgsuthhll", com.azure.core.util.Context.NONE);
+        manager.slices().delete("krdre", "xolriy", "h", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public final class NetworkExperimentProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateProfile.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentUpdateProfile.json
      */
     /**
      * Sample code: Updates an Experiment.

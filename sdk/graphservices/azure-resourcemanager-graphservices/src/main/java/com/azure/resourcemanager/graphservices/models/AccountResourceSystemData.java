@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.graphservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Metadata pertaining to creation and last modification of the resource. */
+/**
+ * Metadata pertaining to creation and last modification of the resource.
+ */
 @Fluent
-public final class AccountResourceSystemData {
+public final class AccountResourceSystemData implements JsonSerializable<AccountResourceSystemData> {
     /*
      * The type of identity that created the resource.
      */
-    @JsonProperty(value = "createdByType")
     private CreatedByType createdByType;
 
     /*
      * The timestamp of resource creation (UTC).
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * The type of identity that last modified the resource.
      */
-    @JsonProperty(value = "lastModifiedByType")
     private CreatedByType lastModifiedByType;
 
     /*
      * The timestamp of resource last modification (UTC)
      */
-    @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
-    /** Creates an instance of AccountResourceSystemData class. */
+    /**
+     * Creates an instance of AccountResourceSystemData class.
+     */
     public AccountResourceSystemData() {
     }
 
     /**
      * Get the createdByType property: The type of identity that created the resource.
-     *
+     * 
      * @return the createdByType value.
      */
     public CreatedByType createdByType() {
@@ -50,7 +56,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Set the createdByType property: The type of identity that created the resource.
-     *
+     * 
      * @param createdByType the createdByType value to set.
      * @return the AccountResourceSystemData object itself.
      */
@@ -61,7 +67,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Get the createdAt property: The timestamp of resource creation (UTC).
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -70,7 +76,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Set the createdAt property: The timestamp of resource creation (UTC).
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the AccountResourceSystemData object itself.
      */
@@ -81,7 +87,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Get the lastModifiedByType property: The type of identity that last modified the resource.
-     *
+     * 
      * @return the lastModifiedByType value.
      */
     public CreatedByType lastModifiedByType() {
@@ -90,7 +96,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Set the lastModifiedByType property: The type of identity that last modified the resource.
-     *
+     * 
      * @param lastModifiedByType the lastModifiedByType value to set.
      * @return the AccountResourceSystemData object itself.
      */
@@ -101,7 +107,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Get the lastModifiedAt property: The timestamp of resource last modification (UTC).
-     *
+     * 
      * @return the lastModifiedAt value.
      */
     public OffsetDateTime lastModifiedAt() {
@@ -110,7 +116,7 @@ public final class AccountResourceSystemData {
 
     /**
      * Set the lastModifiedAt property: The timestamp of resource last modification (UTC).
-     *
+     * 
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the AccountResourceSystemData object itself.
      */
@@ -121,9 +127,60 @@ public final class AccountResourceSystemData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdByType", this.createdByType == null ? null : this.createdByType.toString());
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("lastModifiedByType",
+            this.lastModifiedByType == null ? null : this.lastModifiedByType.toString());
+        jsonWriter.writeStringField("lastModifiedAt",
+            this.lastModifiedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountResourceSystemData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountResourceSystemData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountResourceSystemData.
+     */
+    public static AccountResourceSystemData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountResourceSystemData deserializedAccountResourceSystemData = new AccountResourceSystemData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdByType".equals(fieldName)) {
+                    deserializedAccountResourceSystemData.createdByType = CreatedByType.fromString(reader.getString());
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedAccountResourceSystemData.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedByType".equals(fieldName)) {
+                    deserializedAccountResourceSystemData.lastModifiedByType
+                        = CreatedByType.fromString(reader.getString());
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedAccountResourceSystemData.lastModifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountResourceSystemData;
+        });
     }
 }

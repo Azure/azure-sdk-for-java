@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A class representing the access keys of a CommunicationService.
  */
 @Fluent
-public final class CommunicationServiceKeysInner {
+public final class CommunicationServiceKeysInner implements JsonSerializable<CommunicationServiceKeysInner> {
     /*
      * The primary access key.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * The secondary access key.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * CommunicationService connection string constructed via the primaryKey
      */
-    @JsonProperty(value = "primaryConnectionString")
     private String primaryConnectionString;
 
     /*
      * CommunicationService connection string constructed via the secondaryKey
      */
-    @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
     /**
@@ -130,5 +130,51 @@ public final class CommunicationServiceKeysInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("primaryConnectionString", this.primaryConnectionString);
+        jsonWriter.writeStringField("secondaryConnectionString", this.secondaryConnectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationServiceKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationServiceKeysInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunicationServiceKeysInner.
+     */
+    public static CommunicationServiceKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationServiceKeysInner deserializedCommunicationServiceKeysInner
+                = new CommunicationServiceKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedCommunicationServiceKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedCommunicationServiceKeysInner.secondaryKey = reader.getString();
+                } else if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedCommunicationServiceKeysInner.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedCommunicationServiceKeysInner.secondaryConnectionString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationServiceKeysInner;
+        });
     }
 }

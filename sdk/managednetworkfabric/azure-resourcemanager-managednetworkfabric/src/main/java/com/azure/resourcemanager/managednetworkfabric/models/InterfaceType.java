@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Interface Type. Example: Management/Data. */
+/**
+ * The Interface Type. Example: Management/Data.
+ */
 public final class InterfaceType extends ExpandableStringEnum<InterfaceType> {
-    /** Static value Management for InterfaceType. */
+    /**
+     * Static value Management for InterfaceType.
+     */
     public static final InterfaceType MANAGEMENT = fromString("Management");
 
-    /** Static value Data for InterfaceType. */
+    /**
+     * Static value Data for InterfaceType.
+     */
     public static final InterfaceType DATA = fromString("Data");
 
     /**
      * Creates a new instance of InterfaceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class InterfaceType extends ExpandableStringEnum<InterfaceType> {
 
     /**
      * Creates or finds a InterfaceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InterfaceType.
      */
-    @JsonCreator
     public static InterfaceType fromString(String name) {
         return fromString(name, InterfaceType.class);
     }
 
     /**
      * Gets known InterfaceType values.
-     *
+     * 
      * @return known InterfaceType values.
      */
     public static Collection<InterfaceType> values() {

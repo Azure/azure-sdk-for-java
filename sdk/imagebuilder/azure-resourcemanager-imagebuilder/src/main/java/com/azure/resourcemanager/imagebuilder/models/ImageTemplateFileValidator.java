@@ -134,7 +134,6 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

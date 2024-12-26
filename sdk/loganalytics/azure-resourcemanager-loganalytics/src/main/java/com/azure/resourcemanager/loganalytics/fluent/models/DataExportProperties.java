@@ -6,56 +6,58 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.Type;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Data Export properties. */
+/**
+ * Data Export properties.
+ */
 @Fluent
-public final class DataExportProperties {
+public final class DataExportProperties implements JsonSerializable<DataExportProperties> {
     /*
      * The data export rule ID.
      */
-    @JsonProperty(value = "dataExportId")
     private String dataExportId;
 
     /*
      * An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
      */
-    @JsonProperty(value = "tableNames", required = true)
     private List<String> tableNames;
 
     /*
      * destination properties.
      */
-    @JsonProperty(value = "destination")
     private Destination innerDestination;
 
     /*
      * Active when enabled.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * The latest data export rule modification time.
      */
-    @JsonProperty(value = "createdDate")
     private String createdDate;
 
     /*
      * Date and time when the export was last modified.
      */
-    @JsonProperty(value = "lastModifiedDate")
     private String lastModifiedDate;
 
-    /** Creates an instance of DataExportProperties class. */
+    /**
+     * Creates an instance of DataExportProperties class.
+     */
     public DataExportProperties() {
     }
 
     /**
      * Get the dataExportId property: The data export rule ID.
-     *
+     * 
      * @return the dataExportId value.
      */
     public String dataExportId() {
@@ -64,7 +66,7 @@ public final class DataExportProperties {
 
     /**
      * Set the dataExportId property: The data export rule ID.
-     *
+     * 
      * @param dataExportId the dataExportId value to set.
      * @return the DataExportProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class DataExportProperties {
 
     /**
      * Get the tableNames property: An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
-     *
+     * 
      * @return the tableNames value.
      */
     public List<String> tableNames() {
@@ -84,7 +86,7 @@ public final class DataExportProperties {
 
     /**
      * Set the tableNames property: An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
-     *
+     * 
      * @param tableNames the tableNames value to set.
      * @return the DataExportProperties object itself.
      */
@@ -95,7 +97,7 @@ public final class DataExportProperties {
 
     /**
      * Get the innerDestination property: destination properties.
-     *
+     * 
      * @return the innerDestination value.
      */
     private Destination innerDestination() {
@@ -104,7 +106,7 @@ public final class DataExportProperties {
 
     /**
      * Get the enable property: Active when enabled.
-     *
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -113,7 +115,7 @@ public final class DataExportProperties {
 
     /**
      * Set the enable property: Active when enabled.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the DataExportProperties object itself.
      */
@@ -124,7 +126,7 @@ public final class DataExportProperties {
 
     /**
      * Get the createdDate property: The latest data export rule modification time.
-     *
+     * 
      * @return the createdDate value.
      */
     public String createdDate() {
@@ -133,7 +135,7 @@ public final class DataExportProperties {
 
     /**
      * Set the createdDate property: The latest data export rule modification time.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the DataExportProperties object itself.
      */
@@ -144,7 +146,7 @@ public final class DataExportProperties {
 
     /**
      * Get the lastModifiedDate property: Date and time when the export was last modified.
-     *
+     * 
      * @return the lastModifiedDate value.
      */
     public String lastModifiedDate() {
@@ -153,7 +155,7 @@ public final class DataExportProperties {
 
     /**
      * Set the lastModifiedDate property: Date and time when the export was last modified.
-     *
+     * 
      * @param lastModifiedDate the lastModifiedDate value to set.
      * @return the DataExportProperties object itself.
      */
@@ -165,7 +167,7 @@ public final class DataExportProperties {
     /**
      * Get the resourceId property: The destination resource ID. This can be copied from the Properties entry of the
      * destination resource in Azure.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -175,7 +177,7 @@ public final class DataExportProperties {
     /**
      * Set the resourceId property: The destination resource ID. This can be copied from the Properties entry of the
      * destination resource in Azure.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DataExportProperties object itself.
      */
@@ -189,7 +191,7 @@ public final class DataExportProperties {
 
     /**
      * Get the type property: The type of the destination resource.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -199,7 +201,7 @@ public final class DataExportProperties {
     /**
      * Get the eventHubName property: Optional. Allows to define an Event Hub name. Not applicable when destination is
      * Storage Account.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -209,7 +211,7 @@ public final class DataExportProperties {
     /**
      * Set the eventHubName property: Optional. Allows to define an Event Hub name. Not applicable when destination is
      * Storage Account.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the DataExportProperties object itself.
      */
@@ -223,13 +225,14 @@ public final class DataExportProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tableNames() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property tableNames in model DataExportProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property tableNames in model DataExportProperties"));
         }
         if (innerDestination() != null) {
             innerDestination().validate();
@@ -237,4 +240,57 @@ public final class DataExportProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataExportProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tableNames", this.tableNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dataExportId", this.dataExportId);
+        jsonWriter.writeJsonField("destination", this.innerDestination);
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeStringField("createdDate", this.createdDate);
+        jsonWriter.writeStringField("lastModifiedDate", this.lastModifiedDate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataExportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataExportProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataExportProperties.
+     */
+    public static DataExportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataExportProperties deserializedDataExportProperties = new DataExportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableNames".equals(fieldName)) {
+                    List<String> tableNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataExportProperties.tableNames = tableNames;
+                } else if ("dataExportId".equals(fieldName)) {
+                    deserializedDataExportProperties.dataExportId = reader.getString();
+                } else if ("destination".equals(fieldName)) {
+                    deserializedDataExportProperties.innerDestination = Destination.fromJson(reader);
+                } else if ("enable".equals(fieldName)) {
+                    deserializedDataExportProperties.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedDataExportProperties.createdDate = reader.getString();
+                } else if ("lastModifiedDate".equals(fieldName)) {
+                    deserializedDataExportProperties.lastModifiedDate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataExportProperties;
+        });
+    }
 }

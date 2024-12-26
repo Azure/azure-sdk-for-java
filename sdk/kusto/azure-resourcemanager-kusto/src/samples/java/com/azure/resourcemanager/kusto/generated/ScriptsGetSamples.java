@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-/** Samples for Scripts Get. */
+/**
+ * Samples for Scripts Get.
+ */
 public final class ScriptsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsGet.json
      */
     /**
      * Sample code: KustoScriptsGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
-            .getWithResponse(
-                "kustorptest", "kustoCluster", "Kustodatabase8", "kustoScript", com.azure.core.util.Context.NONE);
+        manager.scripts()
+            .getWithResponse("kustorptest", "kustoCluster", "Kustodatabase8", "kustoScript",
+                com.azure.core.util.Context.NONE);
     }
 }

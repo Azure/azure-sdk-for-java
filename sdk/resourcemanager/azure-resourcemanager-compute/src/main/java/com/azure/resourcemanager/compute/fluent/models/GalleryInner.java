@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
+import com.azure.resourcemanager.compute.models.GalleryIdentity;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.azure.resourcemanager.compute.models.SharingStatus;
@@ -28,9 +29,14 @@ public final class GalleryInner extends Resource {
     private GalleryProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The identity of the gallery, if configured.
      */
-    private String id;
+    private GalleryIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
@@ -38,9 +44,9 @@ public final class GalleryInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of GalleryInner class.
@@ -58,13 +64,33 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the identity property: The identity of the gallery, if configured.
      * 
-     * @return the id value.
+     * @return the identity value.
+     */
+    public GalleryIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the gallery, if configured.
+     * 
+     * @param identity the identity value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withIdentity(GalleryIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -78,13 +104,13 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -224,6 +250,9 @@ public final class GalleryInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -235,6 +264,7 @@ public final class GalleryInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -267,6 +297,8 @@ public final class GalleryInner extends Resource {
                     deserializedGalleryInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedGalleryInner.innerProperties = GalleryProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGalleryInner.identity = GalleryIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

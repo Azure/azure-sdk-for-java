@@ -5,51 +5,40 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The V2 policy schedule for IaaS that supports hourly backups.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "schedulePolicyType",
-    defaultImpl = SimpleSchedulePolicyV2.class,
-    visible = true)
-@JsonTypeName("SimpleSchedulePolicyV2")
 @Fluent
 public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "schedulePolicyType", required = true)
     private String schedulePolicyType = "SimpleSchedulePolicyV2";
 
     /*
      * Frequency of the schedule operation of this policy.
      */
-    @JsonProperty(value = "scheduleRunFrequency")
     private ScheduleRunType scheduleRunFrequency;
 
     /*
      * hourly schedule of this policy
      */
-    @JsonProperty(value = "hourlySchedule")
     private HourlySchedule hourlySchedule;
 
     /*
      * Daily schedule of this policy
      */
-    @JsonProperty(value = "dailySchedule")
     private DailySchedule dailySchedule;
 
     /*
      * Weekly schedule of this policy
      */
-    @JsonProperty(value = "weeklySchedule")
     private WeeklySchedule weeklySchedule;
 
     /**
@@ -156,7 +145,6 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (hourlySchedule() != null) {
             hourlySchedule().validate();
         }
@@ -166,5 +154,55 @@ public final class SimpleSchedulePolicyV2 extends SchedulePolicy {
         if (weeklySchedule() != null) {
             weeklySchedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("schedulePolicyType", this.schedulePolicyType);
+        jsonWriter.writeStringField("scheduleRunFrequency",
+            this.scheduleRunFrequency == null ? null : this.scheduleRunFrequency.toString());
+        jsonWriter.writeJsonField("hourlySchedule", this.hourlySchedule);
+        jsonWriter.writeJsonField("dailySchedule", this.dailySchedule);
+        jsonWriter.writeJsonField("weeklySchedule", this.weeklySchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimpleSchedulePolicyV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimpleSchedulePolicyV2 if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SimpleSchedulePolicyV2.
+     */
+    public static SimpleSchedulePolicyV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimpleSchedulePolicyV2 deserializedSimpleSchedulePolicyV2 = new SimpleSchedulePolicyV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schedulePolicyType".equals(fieldName)) {
+                    deserializedSimpleSchedulePolicyV2.schedulePolicyType = reader.getString();
+                } else if ("scheduleRunFrequency".equals(fieldName)) {
+                    deserializedSimpleSchedulePolicyV2.scheduleRunFrequency
+                        = ScheduleRunType.fromString(reader.getString());
+                } else if ("hourlySchedule".equals(fieldName)) {
+                    deserializedSimpleSchedulePolicyV2.hourlySchedule = HourlySchedule.fromJson(reader);
+                } else if ("dailySchedule".equals(fieldName)) {
+                    deserializedSimpleSchedulePolicyV2.dailySchedule = DailySchedule.fromJson(reader);
+                } else if ("weeklySchedule".equals(fieldName)) {
+                    deserializedSimpleSchedulePolicyV2.weeklySchedule = WeeklySchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimpleSchedulePolicyV2;
+        });
     }
 }

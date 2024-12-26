@@ -5,72 +5,71 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the operating system settings for the virtual machine. */
+/**
+ * Specifies the operating system settings for the virtual machine.
+ */
 @Fluent
-public final class OsProfileForVMInstance {
+public final class OsProfileForVMInstance implements JsonSerializable<OsProfileForVMInstance> {
     /*
      * Gets or sets computer name.
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
      * Gets or sets administrator username.
      */
-    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
      * Sets administrator password.
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
      * Gets or sets the guestId.
      */
-    @JsonProperty(value = "guestId")
     private String guestId;
 
     /*
      * Gets or sets the type of the os.
      */
-    @JsonProperty(value = "osType")
     private OsType osType;
 
     /*
      * Gets or sets os sku.
      */
-    @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
     private String osSku;
 
     /*
      * Gets or sets the current running status of VMware Tools running in the guest operating system.
      */
-    @JsonProperty(value = "toolsRunningStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsRunningStatus;
 
     /*
      * Gets or sets the current version status of VMware Tools installed in the guest operating system.
      */
-    @JsonProperty(value = "toolsVersionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersionStatus;
 
     /*
      * Gets or sets the current version of VMware Tools.
      */
-    @JsonProperty(value = "toolsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String toolsVersion;
 
-    /** Creates an instance of OsProfileForVMInstance class. */
+    /**
+     * Creates an instance of OsProfileForVMInstance class.
+     */
     public OsProfileForVMInstance() {
     }
 
     /**
      * Get the computerName property: Gets or sets computer name.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -79,7 +78,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Set the computerName property: Gets or sets computer name.
-     *
+     * 
      * @param computerName the computerName value to set.
      * @return the OsProfileForVMInstance object itself.
      */
@@ -90,7 +89,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the adminUsername property: Gets or sets administrator username.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -99,7 +98,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Set the adminUsername property: Gets or sets administrator username.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the OsProfileForVMInstance object itself.
      */
@@ -110,7 +109,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the adminPassword property: Sets administrator password.
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -119,7 +118,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Set the adminPassword property: Sets administrator password.
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the OsProfileForVMInstance object itself.
      */
@@ -130,7 +129,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the guestId property: Gets or sets the guestId.
-     *
+     * 
      * @return the guestId value.
      */
     public String guestId() {
@@ -139,7 +138,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Set the guestId property: Gets or sets the guestId.
-     *
+     * 
      * @param guestId the guestId value to set.
      * @return the OsProfileForVMInstance object itself.
      */
@@ -150,7 +149,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -159,7 +158,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Set the osType property: Gets or sets the type of the os.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OsProfileForVMInstance object itself.
      */
@@ -170,7 +169,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the osSku property: Gets or sets os sku.
-     *
+     * 
      * @return the osSku value.
      */
     public String osSku() {
@@ -180,7 +179,7 @@ public final class OsProfileForVMInstance {
     /**
      * Get the toolsRunningStatus property: Gets or sets the current running status of VMware Tools running in the guest
      * operating system.
-     *
+     * 
      * @return the toolsRunningStatus value.
      */
     public String toolsRunningStatus() {
@@ -190,7 +189,7 @@ public final class OsProfileForVMInstance {
     /**
      * Get the toolsVersionStatus property: Gets or sets the current version status of VMware Tools installed in the
      * guest operating system.
-     *
+     * 
      * @return the toolsVersionStatus value.
      */
     public String toolsVersionStatus() {
@@ -199,7 +198,7 @@ public final class OsProfileForVMInstance {
 
     /**
      * Get the toolsVersion property: Gets or sets the current version of VMware Tools.
-     *
+     * 
      * @return the toolsVersion value.
      */
     public String toolsVersion() {
@@ -208,9 +207,65 @@ public final class OsProfileForVMInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("guestId", this.guestId);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OsProfileForVMInstance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OsProfileForVMInstance if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OsProfileForVMInstance.
+     */
+    public static OsProfileForVMInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OsProfileForVMInstance deserializedOsProfileForVMInstance = new OsProfileForVMInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.computerName = reader.getString();
+                } else if ("adminUsername".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.adminUsername = reader.getString();
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.adminPassword = reader.getString();
+                } else if ("guestId".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.guestId = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.osType = OsType.fromString(reader.getString());
+                } else if ("osSku".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.osSku = reader.getString();
+                } else if ("toolsRunningStatus".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.toolsRunningStatus = reader.getString();
+                } else if ("toolsVersionStatus".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.toolsVersionStatus = reader.getString();
+                } else if ("toolsVersion".equals(fieldName)) {
+                    deserializedOsProfileForVMInstance.toolsVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOsProfileForVMInstance;
+        });
     }
 }

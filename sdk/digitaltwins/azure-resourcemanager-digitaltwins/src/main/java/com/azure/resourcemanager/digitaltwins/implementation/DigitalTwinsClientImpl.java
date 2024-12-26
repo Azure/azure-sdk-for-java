@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DigitalTwinsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DigitalTwinsClient.
+ */
 public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DigitalTwinsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDigitalTwinsManagementClientImpl client;
 
     /**
      * Initializes an instance of DigitalTwinsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DigitalTwinsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
@@ -153,7 +159,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +194,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -223,7 +229,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,7 +245,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -256,7 +262,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get DigitalTwinsInstances resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,7 +279,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -281,7 +287,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -318,7 +324,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -327,7 +333,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -363,7 +369,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -386,7 +392,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -412,7 +418,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -431,7 +437,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -453,7 +459,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -473,7 +479,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -494,7 +500,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -513,7 +519,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
      * the DigitalTwinsInstance and security metadata, and then combine them with the modified values in a new body to
      * update the DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsCreate The DigitalTwinsInstance and security metadata.
@@ -531,7 +537,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -539,7 +545,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -575,7 +581,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -584,7 +590,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -618,7 +624,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -639,7 +645,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -663,7 +669,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -680,7 +686,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -700,7 +706,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -718,7 +724,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -737,7 +743,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -754,7 +760,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Update metadata of DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param digitalTwinsPatchDescription The DigitalTwinsInstance and security metadata.
@@ -772,14 +778,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
@@ -807,7 +813,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -815,7 +821,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the DigitalTwins service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
@@ -843,7 +849,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,7 +868,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -883,7 +889,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -899,7 +905,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -916,7 +922,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -931,7 +937,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -949,7 +955,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -964,7 +970,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Delete a DigitalTwinsInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -980,11 +986,11 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listSinglePageAsync() {
@@ -1007,13 +1013,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listSinglePageAsync(Context context) {
@@ -1036,7 +1042,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription as paginated response with {@link PagedFlux}.
@@ -1048,7 +1054,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1063,7 +1069,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a subscription as paginated response with {@link PagedIterable}.
@@ -1075,7 +1081,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1089,13 +1095,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>>
@@ -1123,14 +1129,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DigitalTwinsInstances in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>>
@@ -1158,7 +1164,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1173,7 +1179,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1190,7 +1196,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1204,7 +1210,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get all the DigitalTwinsInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1219,15 +1225,15 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -1259,16 +1265,16 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -1298,10 +1304,10 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1316,10 +1322,10 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1334,10 +1340,10 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Check if a DigitalTwinsInstance name is available.
-     *
+     * 
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
+     * name of the DigitalTwinsInstance to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1350,14 +1356,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1377,15 +1382,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listNextSinglePageAsync(String nextLink,
@@ -1406,14 +1410,13 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1435,15 +1438,14 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of DigitalTwins description objects with a next link along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DigitalTwinsDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
