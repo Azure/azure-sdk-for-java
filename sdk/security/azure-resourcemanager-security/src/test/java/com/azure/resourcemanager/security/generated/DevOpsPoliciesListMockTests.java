@@ -24,7 +24,7 @@ public final class DevOpsPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"fdyfao\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-08T05:28:43Z\",\"provisioningState\":\"Pending\",\"source\":\"Unknown\",\"policyId\":\"80a1555e-d020-4876-85c9-505f2ad4741c\",\"webUrl\":\"pu\",\"version\":\"a\",\"type\":\"Unknown\",\"content\":\"jtggybs\"},\"id\":\"am\",\"name\":\"jxejpdcliqwzut\",\"type\":\"yelrnh\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"fdyfao\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-08T05:28:43Z\",\"provisioningState\":\"Pending\",\"source\":\"Unknown\",\"policyId\":\"2756dd8a-8f5b-44b2-9e38-3d80110e1395\",\"webUrl\":\"pu\",\"version\":\"a\",\"type\":\"Unknown\",\"content\":\"jtggybs\"},\"id\":\"am\",\"name\":\"jxejpdcliqwzut\",\"type\":\"yelrnh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -25,7 +25,7 @@ public final class SensitivitySettingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sensitiveInfoTypesIds\":[\"721e3efe-3b73-4ebe-b1fa-5d5ee95f8644\"],\"sensitivityThresholdLabelOrder\":17.067177,\"sensitivityThresholdLabelId\":\"9531b593-0e5b-487d-9b7b-5b549b7c877b\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"rkljqkqwsyjtvj\",\"id\":\"6c710ff4-a61e-44ec-9b24-cff0a6cefeb2\",\"order\":7.3681116},{\"name\":\"xawwdmbypnk\",\"id\":\"6b55f0fb-8951-4655-ba53-6705ce3752d3\",\"order\":31.43292},{\"name\":\"lbovwbclprgega\",\"id\":\"64c9b47d-3414-466a-a9be-3ae452b9c7b6\",\"order\":48.644535}],\"customInfoTypes\":[{\"name\":\"er\",\"id\":\"7f420a6a-8914-4409-ae80-20c73dafcc00\",\"description\":\"julskwwnqhql\"},{\"name\":\"pwxtvc\",\"id\":\"cc9b6876-ff8b-45f5-b850-9099a59a0556\",\"description\":\"vv\"},{\"name\":\"xwvegenlrj\",\"id\":\"e5921329-05ef-4e13-9010-6f717d8d55cd\",\"description\":\"wevguy\"}],\"builtInInfoTypes\":[{\"name\":\"elrjkfzcde\",\"id\":\"26f73ca5-9fbd-4901-acea-30390be01d64\",\"type\":\"wezhyfkdilbwqlq\"},{\"name\":\"sfqbirtybcelfjn\",\"id\":\"ac16fbe0-1b4e-477c-acc9-7060aaae9292\",\"type\":\"njyhzfa\"},{\"name\":\"kdv\",\"id\":\"adbc01cf-0b96-406b-9f70-ca78fb4714ef\",\"type\":\"umo\"}]}},\"id\":\"pegqxsorch\",\"name\":\"zrqoxzyhlbeqvh\",\"type\":\"kbmpw\"}";
+            = "{\"properties\":{\"sensitiveInfoTypesIds\":[\"3b8754b1-a36b-4332-8237-f5a093c860b5\"],\"sensitivityThresholdLabelOrder\":17.067177,\"sensitivityThresholdLabelId\":\"be1351cf-7858-4391-a4a0-0e2437a46d52\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"rkljqkqwsyjtvj\",\"id\":\"b039d86e-294a-4f40-a52b-8e51075af6a8\",\"order\":7.3681116},{\"name\":\"xawwdmbypnk\",\"id\":\"d542f2e4-1b10-4649-b32f-bc9200165f3b\",\"order\":31.43292},{\"name\":\"lbovwbclprgega\",\"id\":\"902bb5bc-00b2-40dc-b3db-5de9e6221729\",\"order\":48.644535}],\"customInfoTypes\":[{\"name\":\"er\",\"id\":\"638116bf-82e4-490f-98ff-2c0a192b2c19\",\"description\":\"julskwwnqhql\"},{\"name\":\"pwxtvc\",\"id\":\"15fc716d-e24b-4e11-b4c3-d32506ff221a\",\"description\":\"vv\"},{\"name\":\"xwvegenlrj\",\"id\":\"89c16add-497f-47b7-afda-4178245bc536\",\"description\":\"wevguy\"}],\"builtInInfoTypes\":[{\"name\":\"elrjkfzcde\",\"id\":\"e512eee9-0c54-419b-a05a-26d14d6721b9\",\"type\":\"wezhyfkdilbwqlq\"},{\"name\":\"sfqbirtybcelfjn\",\"id\":\"7aa55ee6-c98a-4bb4-8de0-37b4c1d55ae6\",\"type\":\"njyhzfa\"},{\"name\":\"kdv\",\"id\":\"f3a1c826-9048-41fe-9cb4-644aacb116a6\",\"type\":\"umo\"}]}},\"id\":\"pegqxsorch\",\"name\":\"zrqoxzyhlbeqvh\",\"type\":\"kbmpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,31 +37,31 @@ public final class SensitivitySettingsCreateOrUpdateWithResponseMockTests {
         GetSensitivitySettingsResponse response = manager.sensitivitySettings()
             .createOrUpdateWithResponse(
                 new UpdateSensitivitySettingsRequest()
-                    .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("3fed362e-482c-41c8-b991-6f81d44350d8"),
-                        UUID.fromString("fdf98ca0-391e-4245-ab8b-415e5663a292")))
+                    .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("5fc1b721-850e-4711-877f-3a025910e036"),
+                        UUID.fromString("8918ff06-4bcf-4bbe-ba7d-b17940639dc5")))
                     .withSensitivityThresholdLabelOrder(57.79636F)
-                    .withSensitivityThresholdLabelId(UUID.fromString("9278a780-7939-468f-b30e-3474f87d1da5")),
+                    .withSensitivityThresholdLabelId(UUID.fromString("ef486941-a721-405d-8046-2b5a968de40d")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(UUID.fromString("721e3efe-3b73-4ebe-b1fa-5d5ee95f8644"),
+        Assertions.assertEquals(UUID.fromString("3b8754b1-a36b-4332-8237-f5a093c860b5"),
             response.properties().sensitiveInfoTypesIds().get(0));
         Assertions.assertEquals(17.067177F, response.properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("9531b593-0e5b-487d-9b7b-5b549b7c877b"),
+        Assertions.assertEquals(UUID.fromString("be1351cf-7858-4391-a4a0-0e2437a46d52"),
             response.properties().sensitivityThresholdLabelId());
         Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
             response.properties().mipInformation().mipIntegrationStatus());
         Assertions.assertEquals("rkljqkqwsyjtvj", response.properties().mipInformation().labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("6c710ff4-a61e-44ec-9b24-cff0a6cefeb2"),
+        Assertions.assertEquals(UUID.fromString("b039d86e-294a-4f40-a52b-8e51075af6a8"),
             response.properties().mipInformation().labels().get(0).id());
         Assertions.assertEquals(7.3681116F, response.properties().mipInformation().labels().get(0).order());
         Assertions.assertEquals("er", response.properties().mipInformation().customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("7f420a6a-8914-4409-ae80-20c73dafcc00"),
+        Assertions.assertEquals(UUID.fromString("638116bf-82e4-490f-98ff-2c0a192b2c19"),
             response.properties().mipInformation().customInfoTypes().get(0).id());
         Assertions.assertEquals("julskwwnqhql",
             response.properties().mipInformation().customInfoTypes().get(0).description());
         Assertions.assertEquals("elrjkfzcde", response.properties().mipInformation().builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("26f73ca5-9fbd-4901-acea-30390be01d64"),
+        Assertions.assertEquals(UUID.fromString("e512eee9-0c54-419b-a05a-26d14d6721b9"),
             response.properties().mipInformation().builtInInfoTypes().get(0).id());
         Assertions.assertEquals("wezhyfkdilbwqlq",
             response.properties().mipInformation().builtInInfoTypes().get(0).type());

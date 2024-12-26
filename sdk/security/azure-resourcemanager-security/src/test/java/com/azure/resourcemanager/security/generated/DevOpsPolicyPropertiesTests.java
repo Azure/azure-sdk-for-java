@@ -14,7 +14,7 @@ public final class DevOpsPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DevOpsPolicyProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"gn\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-29T07:37:31Z\",\"provisioningState\":\"Failed\",\"source\":\"UserDefined\",\"policyId\":\"335e13ba-78e1-40e6-ab7b-eb55c37cfc64\",\"webUrl\":\"nvudbchaqdtvqecr\",\"version\":\"tmxxdtddmflhuy\",\"type\":\"Unknown\",\"content\":\"tznapxbannovv\"}")
+            "{\"provisioningStatusMessage\":\"gn\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-29T07:37:31Z\",\"provisioningState\":\"Failed\",\"source\":\"UserDefined\",\"policyId\":\"96033c48-35f3-4cf6-b2dc-fc78afa5934e\",\"webUrl\":\"nvudbchaqdtvqecr\",\"version\":\"tmxxdtddmflhuy\",\"type\":\"Unknown\",\"content\":\"tznapxbannovv\"}")
             .toObject(DevOpsPolicyProperties.class);
         Assertions.assertEquals(DevOpsPolicySource.USER_DEFINED, model.source());
         Assertions.assertEquals("tmxxdtddmflhuy", model.version());

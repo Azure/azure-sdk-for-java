@@ -15,7 +15,7 @@ public final class DevOpsPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DevOpsPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"bsre\",\"provisioningStatusUpdateTimeUtc\":\"2020-12-27T06:02:05Z\",\"provisioningState\":\"Failed\",\"source\":\"BuiltIn\",\"policyId\":\"f0028ffe-c25d-4884-97f7-bfab6571f10a\",\"webUrl\":\"enl\",\"version\":\"htkln\",\"type\":\"Unknown\",\"content\":\"vvkyfedevjboslcq\"},\"id\":\"y\",\"name\":\"okkhminq\",\"type\":\"ymc\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"bsre\",\"provisioningStatusUpdateTimeUtc\":\"2020-12-27T06:02:05Z\",\"provisioningState\":\"Failed\",\"source\":\"BuiltIn\",\"policyId\":\"9f17b605-0510-400d-bb1a-0593e2f4a524\",\"webUrl\":\"enl\",\"version\":\"htkln\",\"type\":\"Unknown\",\"content\":\"vvkyfedevjboslcq\"},\"id\":\"y\",\"name\":\"okkhminq\",\"type\":\"ymc\"}")
             .toObject(DevOpsPolicyInner.class);
         Assertions.assertEquals(DevOpsPolicySource.BUILT_IN, model.properties().source());
         Assertions.assertEquals("htkln", model.properties().version());

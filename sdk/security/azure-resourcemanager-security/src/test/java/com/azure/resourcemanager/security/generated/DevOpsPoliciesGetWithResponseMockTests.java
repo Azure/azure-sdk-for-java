@@ -23,7 +23,7 @@ public final class DevOpsPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"kjthl\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-20T14:35:48Z\",\"provisioningState\":\"Succeeded\",\"source\":\"Unknown\",\"policyId\":\"abf0336c-1e45-482b-9df9-6a788cfd124a\",\"webUrl\":\"bknge\",\"version\":\"x\",\"type\":\"Unknown\",\"content\":\"ynjmoozmxuk\"},\"id\":\"drsjtmn\",\"name\":\"xjouwfzcfd\",\"type\":\"stiaxtyrnuhc\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"kjthl\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-20T14:35:48Z\",\"provisioningState\":\"Succeeded\",\"source\":\"Unknown\",\"policyId\":\"21d7fab2-6620-4910-80ce-f177b7379302\",\"webUrl\":\"bknge\",\"version\":\"x\",\"type\":\"Unknown\",\"content\":\"ynjmoozmxuk\"},\"id\":\"drsjtmn\",\"name\":\"xjouwfzcfd\",\"type\":\"stiaxtyrnuhc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
