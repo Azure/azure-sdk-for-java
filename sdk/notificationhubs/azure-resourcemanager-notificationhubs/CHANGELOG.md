@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2024-12-26)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Azure Resource Manager NotificationHubs client library for Java. This package contains Microsoft Azure SDK for NotificationHubs Management SDK. Azure NotificationHub client. Package tag package-2017-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Other Changes
+
+- Release for Azure Resource Manager NotificationHubs client library for Java.
 
 ## 1.0.0-beta.5 (2024-12-03)
 

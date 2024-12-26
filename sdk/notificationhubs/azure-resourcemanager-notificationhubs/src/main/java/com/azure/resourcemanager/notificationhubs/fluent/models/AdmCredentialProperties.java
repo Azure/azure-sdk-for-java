@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,17 +17,17 @@ import java.io.IOException;
 @Fluent
 public final class AdmCredentialProperties implements JsonSerializable<AdmCredentialProperties> {
     /*
-     * Gets or sets the client identifier.
+     * The client identifier.
      */
     private String clientId;
 
     /*
-     * Gets or sets the credential secret access key.
+     * The credential secret access key.
      */
     private String clientSecret;
 
     /*
-     * Gets or sets the URL of the authorization token.
+     * The URL of the authorization token.
      */
     private String authTokenUrl;
 
@@ -39,7 +38,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Get the clientId property: Gets or sets the client identifier.
+     * Get the clientId property: The client identifier.
      * 
      * @return the clientId value.
      */
@@ -48,7 +47,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Set the clientId property: Gets or sets the client identifier.
+     * Set the clientId property: The client identifier.
      * 
      * @param clientId the clientId value to set.
      * @return the AdmCredentialProperties object itself.
@@ -59,7 +58,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Get the clientSecret property: Gets or sets the credential secret access key.
+     * Get the clientSecret property: The credential secret access key.
      * 
      * @return the clientSecret value.
      */
@@ -68,7 +67,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Set the clientSecret property: Gets or sets the credential secret access key.
+     * Set the clientSecret property: The credential secret access key.
      * 
      * @param clientSecret the clientSecret value to set.
      * @return the AdmCredentialProperties object itself.
@@ -79,7 +78,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Get the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * Get the authTokenUrl property: The URL of the authorization token.
      * 
      * @return the authTokenUrl value.
      */
@@ -88,7 +87,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
     }
 
     /**
-     * Set the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * Set the authTokenUrl property: The URL of the authorization token.
      * 
      * @param authTokenUrl the authTokenUrl value to set.
      * @return the AdmCredentialProperties object itself.
@@ -104,24 +103,7 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (clientId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clientId in model AdmCredentialProperties"));
-        }
-        if (clientSecret() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clientSecret in model AdmCredentialProperties"));
-        }
-        if (authTokenUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property authTokenUrl in model AdmCredentialProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AdmCredentialProperties.class);
 
     /**
      * {@inheritDoc}
@@ -141,7 +123,6 @@ public final class AdmCredentialProperties implements JsonSerializable<AdmCreden
      * @param jsonReader The JsonReader being read.
      * @return An instance of AdmCredentialProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AdmCredentialProperties.
      */
     public static AdmCredentialProperties fromJson(JsonReader jsonReader) throws IOException {

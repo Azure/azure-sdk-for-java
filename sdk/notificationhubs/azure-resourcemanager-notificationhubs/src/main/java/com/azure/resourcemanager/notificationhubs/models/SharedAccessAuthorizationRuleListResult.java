@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,16 +16,16 @@ import java.util.List;
 /**
  * The response of the List Namespace operation.
  */
-@Immutable
+@Fluent
 public final class SharedAccessAuthorizationRuleListResult
     implements JsonSerializable<SharedAccessAuthorizationRuleListResult> {
     /*
-     * Gets or sets result of the List AuthorizationRules operation.
+     * Result of the List AuthorizationRules operation.
      */
     private List<SharedAccessAuthorizationRuleResourceInner> value;
 
     /*
-     * Gets or sets link to the next set of results.
+     * Link to the next set of results. Not empty if Value contains incomplete list of AuthorizationRules
      */
     private String nextLink;
 
@@ -36,7 +36,7 @@ public final class SharedAccessAuthorizationRuleListResult
     }
 
     /**
-     * Get the value property: Gets or sets result of the List AuthorizationRules operation.
+     * Get the value property: Result of the List AuthorizationRules operation.
      * 
      * @return the value value.
      */
@@ -45,12 +45,36 @@ public final class SharedAccessAuthorizationRuleListResult
     }
 
     /**
-     * Get the nextLink property: Gets or sets link to the next set of results.
+     * Set the value property: Result of the List AuthorizationRules operation.
+     * 
+     * @param value the value value to set.
+     * @return the SharedAccessAuthorizationRuleListResult object itself.
+     */
+    public SharedAccessAuthorizationRuleListResult withValue(List<SharedAccessAuthorizationRuleResourceInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
+     * AuthorizationRules.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
+     * AuthorizationRules.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the SharedAccessAuthorizationRuleListResult object itself.
+     */
+    public SharedAccessAuthorizationRuleListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**
@@ -70,6 +94,8 @@ public final class SharedAccessAuthorizationRuleListResult
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
