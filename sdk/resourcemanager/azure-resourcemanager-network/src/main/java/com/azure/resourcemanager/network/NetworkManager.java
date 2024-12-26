@@ -142,7 +142,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
                 .buildClient());
     }
 
-    /** @return entry point to route table management */
+    /**
+     * Gets entry point to route table management.
+     *
+     * @return entry point to route table management
+     */
     public RouteTables routeTables() {
         if (this.routeTables == null) {
             this.routeTables = new RouteTablesImpl(this);
@@ -150,7 +154,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.routeTables;
     }
 
-    /** @return entry point to virtual network management */
+    /**
+     * Gets entry point to virtual network management.
+     *
+     * @return entry point to virtual network management
+     */
     public Networks networks() {
         if (this.networks == null) {
             this.networks = new NetworksImpl(this);
@@ -158,7 +166,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networks;
     }
 
-    /** @return entry point to network security group management */
+    /**
+     * Gets entry point to network security group management.
+     *
+     * @return entry point to network security group management
+     */
     public NetworkSecurityGroups networkSecurityGroups() {
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(this);
@@ -166,7 +178,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkSecurityGroups;
     }
 
-    /** @return entry point to public IP address management */
+    /**
+     * Gets entry point to public IP address management.
+     *
+     * @return entry point to public IP address management
+     */
     public PublicIpAddresses publicIpAddresses() {
         if (this.publicIPAddresses == null) {
             this.publicIPAddresses = new PublicIpAddressesImpl(this);
@@ -174,7 +190,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.publicIPAddresses;
     }
 
-    /** @return entry point to public IP prefix management */
+    /**
+     * Gets entry point to public IP prefix management.
+     *
+     * @return entry point to public IP prefix management
+     */
     public PublicIpPrefixes publicIpPrefixes() {
         if (this.publicIpPrefixes == null) {
             this.publicIpPrefixes = new PublicIpPrefixesImpl(this);
@@ -182,7 +202,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.publicIpPrefixes;
     }
 
-    /** @return entry point to network interface management */
+    /**
+     * Gets entry point to network interface management.
+     *
+     * @return entry point to network interface management
+     */
     public NetworkInterfaces networkInterfaces() {
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(this);
@@ -190,7 +214,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkInterfaces;
     }
 
-    /** @return entry point to application gateway management */
+    /**
+     * Gets entry point to application gateway management.
+     *
+     * @return entry point to application gateway management
+     */
     public ApplicationGateways applicationGateways() {
         if (this.applicationGateways == null) {
             this.applicationGateways = new ApplicationGatewaysImpl(this);
@@ -198,7 +226,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.applicationGateways;
     }
 
-    /** @return entry point to load balancer management */
+    /**
+     * Gets entry point to load balancer management.
+     *
+     * @return entry point to load balancer management
+     */
     public LoadBalancers loadBalancers() {
         if (this.loadBalancers == null) {
             this.loadBalancers = new LoadBalancersImpl(this);
@@ -206,7 +238,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.loadBalancers;
     }
 
-    /** @return entry point to network resource usage management API entry point */
+    /**
+     * Gets entry point to network resource usage management API entry point.
+     *
+     * @return entry point to network resource usage management API entry point
+     */
     public NetworkUsages usages() {
         if (this.networkUsages == null) {
             this.networkUsages = new NetworkUsagesImpl(this.serviceClient());
@@ -214,7 +250,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkUsages;
     }
 
-    /** @return entry point to network watchers management API entry point */
+    /**
+     * Gets entry point to network watchers management API entry point.
+     *
+     * @return entry point to network watchers management API entry point
+     */
     public NetworkWatchers networkWatchers() {
         if (this.networkWatchers == null) {
             this.networkWatchers = new NetworkWatchersImpl(this);
@@ -222,7 +262,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkWatchers;
     }
 
-    /** @return entry point to virtual network gateways management */
+    /**
+     * Gets entry point to virtual network gateways management.
+     *
+     * @return entry point to virtual network gateways management
+     */
     public VirtualNetworkGateways virtualNetworkGateways() {
         if (this.virtualNetworkGateways == null) {
             this.virtualNetworkGateways = new VirtualNetworkGatewaysImpl(this);
@@ -230,7 +274,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.virtualNetworkGateways;
     }
 
-    /** @return entry point to local network gateway management */
+    /**
+     * Gets entry point to local network gateway management.
+     *
+     * @return entry point to local network gateway management
+     */
     public LocalNetworkGateways localNetworkGateways() {
         if (this.localNetworkGateways == null) {
             this.localNetworkGateways = new LocalNetworkGatewaysImpl(this);
@@ -238,7 +286,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.localNetworkGateways;
     }
 
-    /** @return entry point to express route circuit management */
+    /**
+     * Gets entry point to express route circuit management.
+     *
+     * @return entry point to express route circuit management
+     */
     public ExpressRouteCircuits expressRouteCircuits() {
         if (this.expressRouteCircuits == null) {
             this.expressRouteCircuits = new ExpressRouteCircuitsImpl(this);
@@ -246,7 +298,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.expressRouteCircuits;
     }
 
-    /** @return entry point to application security groups management */
+    /**
+     * Gets entry point to application security groups management.
+     *
+     * @return entry point to application security groups management
+     */
     public ApplicationSecurityGroups applicationSecurityGroups() {
         if (this.applicationSecurityGroups == null) {
             this.applicationSecurityGroups = new ApplicationSecurityGroupsImpl(this);
@@ -254,7 +310,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.applicationSecurityGroups;
     }
 
-    /** @return entry point to application security groups management */
+    /**
+     * Gets entry point to application security groups management.
+     *
+     * @return entry point to application security groups management
+     */
     public RouteFilters routeFilters() {
         if (this.routeFilters == null) {
             this.routeFilters = new RouteFiltersImpl(this);
@@ -262,7 +322,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.routeFilters;
     }
 
-    /** @return entry point to DDoS protection plans management */
+    /**
+     * Gets entry point to DDoS protection plans management.
+     *
+     * @return entry point to DDoS protection plans management
+     */
     public DdosProtectionPlans ddosProtectionPlans() {
         if (this.ddosProtectionPlans == null) {
             this.ddosProtectionPlans = new DdosProtectionPlansImpl(this);
@@ -270,7 +334,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.ddosProtectionPlans;
     }
 
-    /** @return entry point to express route cross connections management */
+    /**
+     * Gets entry point to express route cross connections management.
+     *
+     * @return entry point to express route cross connections management
+     */
     public ExpressRouteCrossConnections expressRouteCrossConnections() {
         if (this.expressRouteCrossConnections == null) {
             this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsImpl(this);
@@ -278,7 +346,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.expressRouteCrossConnections;
     }
 
-    /** @return entry point to private endpoints management */
+    /**
+     * Gets entry point to private endpoints management.
+     *
+     * @return entry point to private endpoints management
+     */
     public PrivateEndpoints privateEndpoints() {
         if (this.privateEndpoints == null) {
             this.privateEndpoints = new PrivateEndpointsImpl(this);
@@ -286,7 +358,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.privateEndpoints;
     }
 
-    /** @return entry point to network profiles management */
+    /**
+     * Gets entry point to network profiles management.
+     *
+     * @return entry point to network profiles management
+     */
     public NetworkProfiles networkProfiles() {
         if (this.networkProfiles == null) {
             this.networkProfiles = new NetworkProfilesImpl(this);
@@ -294,7 +370,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkProfiles;
     }
 
-    /** @return entry point to web application firewall policies management */
+    /**
+     * Gets entry point to web application firewall policies management.
+     *
+     * @return entry point to web application firewall policies management
+     */
     public WebApplicationFirewallPolicies webApplicationFirewallPolicies() {
         if (this.webApplicationFirewallPolicies == null) {
             this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesImpl(this);

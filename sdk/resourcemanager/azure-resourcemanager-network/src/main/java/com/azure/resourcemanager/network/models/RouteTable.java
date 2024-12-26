@@ -18,10 +18,18 @@ import java.util.Map;
 public interface RouteTable extends GroupableResource<NetworkManager, RouteTableInner>, Refreshable<RouteTable>,
     Updatable<RouteTable.Update>, UpdatableWithTags<RouteTable>, HasAssociatedSubnets {
 
-    /** @return the routes of this route table */
+    /**
+     * Gets the routes of this route table.
+     *
+     * @return the routes of this route table
+     */
     Map<String, Route> routes();
 
-    /** @return whether to disable the routes learned by BGP on that route table. True means disable. */
+    /**
+     * Checks whether to disable the routes learned by BGP on that route table.
+     *
+     * @return whether to disable the routes learned by BGP on that route table. True means disable.
+     */
     boolean isBgpRoutePropagationDisabled();
 
     /** The entirety of a route table definition. */

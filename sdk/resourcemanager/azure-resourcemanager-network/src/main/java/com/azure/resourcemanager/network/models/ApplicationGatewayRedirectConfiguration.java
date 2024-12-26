@@ -15,22 +15,46 @@ import java.util.Map;
 public interface ApplicationGatewayRedirectConfiguration
     extends HasInnerModel<ApplicationGatewayRedirectConfigurationInner>, ChildResource<ApplicationGateway> {
 
-    /** @return the type of redirection. */
+    /**
+     * Gets the type of redirection.
+     *
+     * @return the type of redirection.
+     */
     ApplicationGatewayRedirectType type();
 
-    /** @return the target listener on this application network traffic is redirected to */
+    /**
+     * gets the target listener on this application network traffic is redirected to.
+     *
+     * @return the target listener on this application network traffic is redirected to
+     */
     ApplicationGatewayListener targetListener();
 
-    /** @return the target URL network traffic is redirected to */
+    /**
+     * Gets the target URL network traffic is redirected to.
+     *
+     * @return the target URL network traffic is redirected to
+     */
     String targetUrl();
 
-    /** @return request routing rules on this application referencing this redirect configuration, indexed by name */
+    /**
+     * Gets request routing rules on this application referencing this redirect configuration.
+     *
+     * @return request routing rules on this application referencing this redirect configuration, indexed by name
+     */
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
 
-    /** @return true if the path is included in the redirected URL, otherwise false */
+    /**
+     * Checks whether the path is included in the redirected URL.
+     *
+     * @return true if the path is included in the redirected URL, otherwise false
+     */
     boolean isPathIncluded();
 
-    /** @return true if the query string is included in the redirected URL, otherwise false */
+    /**
+     * Checks whether the query string is included in the redirected URL.
+     *
+     * @return true if the query string is included in the redirected URL, otherwise false
+     */
     boolean isQueryStringIncluded();
 
     /** Grouping of application gateway redirect configuration configuration stages. */

@@ -23,19 +23,39 @@ public interface FlowLogSettings extends HasParent<NetworkWatcher>, HasInnerMode
      */
     String targetResourceId();
 
-    /** @return the id of the storage account used to store the flow log */
+    /**
+     * Gets the id of the storage account used to store the flow log.
+     *
+     * @return the id of the storage account used to store the flow log
+     */
     String storageId();
 
-    /** @return true if logging is enabled, false otherwise */
+    /**
+     * Checks whether logging is enabled.
+     *
+     * @return true if logging is enabled, false otherwise
+     */
     boolean enabled();
 
-    /** @return true if retention policy enabled, false otherwise */
+    /**
+     * Checks whether retention policy enabled.
+     *
+     * @return true if retention policy enabled, false otherwise
+     */
     boolean isRetentionEnabled();
 
-    /** @return the number of days to retain flow log records */
+    /**
+     * GEts the number of days to retain flow log records.
+     *
+     * @return the number of days to retain flow log records
+     */
     int retentionDays();
 
-    /** @return network security group id these flow log settings apply to */
+    /**
+     * Gets network security group id these flow log settings apply to.
+     *
+     * @return network security group id these flow log settings apply to
+     */
     String networkSecurityGroupId();
 
     /** Grouping of flow log information update stages. */

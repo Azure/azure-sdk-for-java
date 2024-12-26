@@ -34,7 +34,11 @@ public interface VirtualNetworkGateway
      */
     Mono<Void> resetAsync();
 
-    /** @return all the connections associated with this virtual network gateway */
+    /**
+     * Gets all the connections associated with this virtual network gateway.
+     *
+     * @return all the connections associated with this virtual network gateway
+     */
     PagedIterable<VirtualNetworkGatewayConnection> listConnections();
 
     /**
@@ -61,42 +65,77 @@ public interface VirtualNetworkGateway
     Mono<String> generateVpnProfileAsync();
 
     /**
+     * Gets the entry point to virtual network gateway connections management API for this virtual network gateway.
+     *
      * @return the entry point to virtual network gateway connections management API for this virtual network gateway
      */
     VirtualNetworkGatewayConnections connections();
 
     // Getters
 
-    /** @return the gatewayType value */
+    /**
+     * Gets the gatewayType value.
+     *
+     * @return the gatewayType value
+     */
     VirtualNetworkGatewayType gatewayType();
 
-    /** @return the type of this virtual network gateway */
+    /**
+     * Gets the type of this virtual network gateway.
+     *
+     * @return the type of this virtual network gateway
+     */
     VpnType vpnType();
 
-    /** @return whether BGP is enabled for this virtual network gateway or not */
+    /**
+     * Checks whether BGP is enabled for this virtual network gateway or not.
+     *
+     * @return whether BGP is enabled for this virtual network gateway or not
+     */
     boolean isBgpEnabled();
 
-    /** @return activeActive flag */
+    /**
+     * Checks whether active is active for this virtual network gateway or not.
+     *
+     * @return activeActive flag
+     */
     boolean activeActive();
 
     /**
+     * Gets the resource id of the LocalNetworkGateway resource which represents local network site having default
+     *     routes
+     *
      * @return the resource id of the LocalNetworkGateway resource which represents local network site having default
      *     routes
      */
     String gatewayDefaultSiteResourceId();
 
-    /** @return the SKU of this virtual network gateway */
+    /**
+     * Gets the SKU of this virtual network gateway.
+     *
+     * @return the SKU of this virtual network gateway
+     */
     VirtualNetworkGatewaySku sku();
 
     /**
+     * Gets the reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
+     *
      * @return the reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations
      */
     VpnClientConfiguration vpnClientConfiguration();
 
-    /** @return virtual network gateway's BGP speaker settings */
+    /**
+     * Gets virtual network gateway's BGP speaker settings.
+     *
+     * @return virtual network gateway's BGP speaker settings
+     */
     BgpSettings bgpSettings();
 
-    /** @return IP configurations for virtual network gateway */
+    /**
+     * Gets IP configurations for virtual network gateway.
+     *
+     * @return IP configurations for virtual network gateway
+     */
     Collection<VirtualNetworkGatewayIpConfiguration> ipConfigurations();
 
     /** The entirety of the virtual network gateway definition. */
@@ -205,6 +244,8 @@ public interface VirtualNetworkGateway
          */
         interface WithBgp {
             /**
+             * Specifies the BGP speaker's ASN.
+             *
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              * @return the next stage of the definition
