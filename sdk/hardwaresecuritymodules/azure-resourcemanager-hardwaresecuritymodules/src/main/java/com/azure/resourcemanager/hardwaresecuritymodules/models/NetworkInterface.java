@@ -17,9 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class NetworkInterface implements JsonSerializable<NetworkInterface> {
     /*
-     * The Azure resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+     * The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      */
-    private String resourceId;
+    private String id;
 
     /*
      * Private Ip address of the interface
@@ -33,13 +33,13 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
     }
 
     /**
-     * Get the resourceId property: The Azure resource id in the form of
+     * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
      * 
-     * @return the resourceId value.
+     * @return the id value.
      */
-    public String resourceId() {
-        return this.resourceId;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -95,8 +95,8 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceId".equals(fieldName)) {
-                    deserializedNetworkInterface.resourceId = reader.getString();
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkInterface.id = reader.getString();
                 } else if ("privateIpAddress".equals(fieldName)) {
                     deserializedNetworkInterface.privateIpAddress = reader.getString();
                 } else {
