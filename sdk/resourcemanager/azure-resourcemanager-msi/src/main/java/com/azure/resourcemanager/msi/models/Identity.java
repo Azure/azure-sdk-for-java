@@ -22,16 +22,22 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 public interface Identity
     extends GroupableResource<MsiManager, IdentityInner>, Refreshable<Identity>, Updatable<Identity.Update> {
     /**
+     * Gets id of the Azure Active Directory tenant to which the identity belongs to.
+     *
      * @return id of the Azure Active Directory tenant to which the identity belongs to
      */
     String tenantId();
 
     /**
+     * Gets id of the Azure Active Directory service principal object associated with the identity.
+     *
      * @return id of the Azure Active Directory service principal object associated with the identity
      */
     String principalId();
 
     /**
+     * Gets id of the Azure Active Directory application associated with the identity.
+     *
      * @return id of the Azure Active Directory application associated with the identity
      */
     String clientId();
