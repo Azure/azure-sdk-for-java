@@ -6,7 +6,6 @@ package io.clientcore.core.telemetry;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
 import io.clientcore.core.telemetry.tracing.SpanContext;
-import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.Context;
 
@@ -56,11 +55,6 @@ class NoopTelemetryProvider implements TelemetryProvider {
         public Scope makeCurrent() {
             return NOOP_SCOPE;
         }
-
-        @Override
-        public Context storeInContext(Context context) {
-            return context;
-        }
     };
 
     private static final SpanBuilder NOOP_SPAN_BUILDER = new SpanBuilder() {
@@ -70,7 +64,7 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
 
         @Override
-        public SpanBuilder setSpanKind(SpanKind spanKind) {
+        public SpanBuilder setParent(Context parent) {
             return this;
         }
 
@@ -99,5 +93,5 @@ class NoopTelemetryProvider implements TelemetryProvider {
 
     private static final Scope NOOP_SCOPE = () -> {
     };
-    private static final Tracer NOOP_TRACER = (spanName, ctx) -> NOOP_SPAN_BUILDER;
+    private static final Tracer NOOP_TRACER = (spanName, kind) -> NOOP_SPAN_BUILDER;
 }

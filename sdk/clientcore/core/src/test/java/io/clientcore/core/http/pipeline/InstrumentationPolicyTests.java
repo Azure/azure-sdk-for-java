@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -414,9 +415,9 @@ public class InstrumentationPolicyTests {
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.telemetry.tracing.Tracer tracer
             = TelemetryProvider.getInstance().getTracer(otelOptions, new LibraryTelemetryOptions("test-library"));
-        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", Context.none()).startSpan();
+        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", INTERNAL).startSpan();
 
-        Context parentCtx = parent.storeInContext(Context.none());
+        Context parentCtx = Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, parent);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))

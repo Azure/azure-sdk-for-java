@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
+import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
 
 /**
  * The instrumentation policy is responsible for instrumenting the HTTP request and response with distributed tracing
@@ -107,8 +109,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
-        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), request.getRequestOptions().getContext())
-            .setSpanKind(SpanKind.CLIENT)
+        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT)
+            .setParent(request.getRequestOptions().getContext())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
             .setAttribute(URL_FULL, sanitizedUrl)
             .setAttribute(SERVER_ADDRESS, request.getUri().getHost())

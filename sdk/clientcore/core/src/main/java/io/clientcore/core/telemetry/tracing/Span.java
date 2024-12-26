@@ -4,7 +4,6 @@
 package io.clientcore.core.telemetry.tracing;
 
 import io.clientcore.core.telemetry.Scope;
-import io.clientcore.core.util.Context;
 
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.
@@ -64,12 +63,4 @@ public interface Span {
      * @return The {@link Scope} object.
      */
     Scope makeCurrent();
-
-    /**
-     * Stores the span in the context.
-     *
-     * @param context The context to store the span in.
-     * @return The updated context.
-     */
-    Context storeInContext(Context context);
 }

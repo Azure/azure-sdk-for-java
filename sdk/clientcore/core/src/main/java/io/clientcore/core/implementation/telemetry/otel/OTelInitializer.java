@@ -18,6 +18,7 @@ public final class OTelInitializer {
     public static final Class<?> OTEL_CLASS;
     public static final Class<?> GLOBAL_OTEL_CLASS;
 
+    public static final Class<?> SCOPE_CLASS;
     public static final Class<?> SPAN_BUILDER_CLASS;
     public static final Class<?> SPAN_CONTEXT_CLASS;
     public static final Class<?> SPAN_KIND_CLASS;
@@ -44,6 +45,7 @@ public final class OTelInitializer {
         Class<?> otelClass = null;
         Class<?> globalOtelClass = null;
 
+        Class<?> scopeClass = null;
         Class<?> spanClass = null;
         Class<?> spanBuilderClass = null;
         Class<?> spanContextClass = null;
@@ -68,6 +70,8 @@ public final class OTelInitializer {
 
             otelClass = Class.forName("io.opentelemetry.api.OpenTelemetry", true, classLoader);
             globalOtelClass = Class.forName("io.opentelemetry.api.GlobalOpenTelemetry", true, classLoader);
+
+            scopeClass = Class.forName("io.opentelemetry.context.Scope", true, classLoader);
 
             spanClass = Class.forName("io.opentelemetry.api.trace.Span", true, classLoader);
             spanBuilderClass = Class.forName("io.opentelemetry.api.trace.SpanBuilder", true, classLoader);
@@ -97,6 +101,7 @@ public final class OTelInitializer {
         OTEL_CLASS = otelClass;
         GLOBAL_OTEL_CLASS = globalOtelClass;
 
+        SCOPE_CLASS = scopeClass;
         SPAN_CLASS = spanClass;
         SPAN_BUILDER_CLASS = spanBuilderClass;
         SPAN_CONTEXT_CLASS = spanContextClass;
@@ -124,14 +129,6 @@ public final class OTelInitializer {
     public static void runtimeError(ClientLogger logger, Throwable t) {
         if (INSTANCE.initialized) {
             logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off.", t);
-        }
-
-        INSTANCE.initialized = false;
-    }
-
-    public static void runtimeError(ClientLogger logger, String error) {
-        if (INSTANCE.initialized) {
-            logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off. " + error);
         }
 
         INSTANCE.initialized = false;

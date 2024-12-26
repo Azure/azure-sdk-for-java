@@ -3,8 +3,6 @@
 
 package io.clientcore.core.implementation.telemetry.otel;
 
-import io.clientcore.core.implementation.ReflectionUtils;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracer;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
@@ -12,6 +10,9 @@ import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.Objects;
 
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.GLOBAL_OTEL_CLASS;
@@ -19,29 +20,29 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.O
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 
 public class OTelTelemetryProvider implements TelemetryProvider {
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     public static final TelemetryProvider INSTANCE = new OTelTelemetryProvider();
-    private static final ReflectiveInvoker GET_PROVIDER_INVOKER;
-    private static final ReflectiveInvoker GET_GLOBAL_PROVIDER_INVOKER;
+    private static final MethodHandle GET_PROVIDER_INVOKER;
+    private static final MethodHandle GET_GLOBAL_PROVIDER_INVOKER;
 
     private static final Object NOOP_PROVIDER;
     private static final ClientLogger LOGGER = new ClientLogger(OTelTelemetryProvider.class);
     static {
-        ReflectiveInvoker getProviderInvoker = null;
-        ReflectiveInvoker getGlobalProviderInvoker = null;
+        MethodHandle getProviderInvoker = null;
+        MethodHandle getGlobalProviderInvoker = null;
 
         Object noopProvider = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
                 getProviderInvoker
-                    = ReflectionUtils.getMethodInvoker(OTEL_CLASS, OTEL_CLASS.getMethod("getTracerProvider"));
-                getGlobalProviderInvoker = ReflectionUtils.getMethodInvoker(GLOBAL_OTEL_CLASS,
-                    GLOBAL_OTEL_CLASS.getMethod("getTracerProvider"));
+                    = LOOKUP.findVirtual(OTEL_CLASS, "getTracerProvider", MethodType.methodType(TRACER_PROVIDER_CLASS));
+                getGlobalProviderInvoker = LOOKUP.findStatic(GLOBAL_OTEL_CLASS, "getTracerProvider",
+                    MethodType.methodType(TRACER_PROVIDER_CLASS));
 
-                ReflectiveInvoker noopProviderInvoker
-                    = ReflectionUtils.getMethodInvoker(TRACER_PROVIDER_CLASS, TRACER_PROVIDER_CLASS.getMethod("noop"));
-
-                noopProvider = noopProviderInvoker.invokeStatic();
+                MethodHandle noopProviderInvoker
+                    = LOOKUP.findStatic(TRACER_PROVIDER_CLASS, "noop", MethodType.methodType(TRACER_PROVIDER_CLASS));
+                noopProvider = noopProviderInvoker.invoke();
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -83,9 +84,9 @@ public class OTelTelemetryProvider implements TelemetryProvider {
         if (OTelInitializer.isInitialized()) {
             try {
                 if (OTEL_CLASS.isInstance(otel)) {
-                    return GET_PROVIDER_INVOKER.invokeWithArguments(otel);
+                    return GET_PROVIDER_INVOKER.invoke(otel);
                 } else {
-                    return GET_GLOBAL_PROVIDER_INVOKER.invokeStatic();
+                    return GET_GLOBAL_PROVIDER_INVOKER.invoke();
                 }
             } catch (Throwable t) {
                 OTelInitializer.runtimeError(LOGGER, t);

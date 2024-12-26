@@ -3,6 +3,8 @@
 
 package io.clientcore.core.telemetry.tracing;
 
+import io.clientcore.core.util.Context;
+
 /**
  * Represents a span builder.
  * <p>
@@ -10,28 +12,27 @@ package io.clientcore.core.telemetry.tracing;
  * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
  */
 public interface SpanBuilder {
-
     /**
      * Sets the attribute.
      *
      * @param key The attribute key.
      * @param value The attribute value.
-     * @return The span builder.
+     * @return Updated {@link SpanBuilder} object.
      */
     SpanBuilder setAttribute(String key, Object value);
 
     /**
-     * Sets the span kind.
+     * Sets the parent.
      *
-     * @param spanKind The span kind.
-     * @return The span builder.
+     * @param parent The parent.
+     * @return Updated {@link SpanBuilder} object.
      */
-    SpanBuilder setSpanKind(SpanKind spanKind);
+    SpanBuilder setParent(Context parent);
 
     /**
      * Starts the span.
      *
-     * @return The span.
+     * @return The started {@link Span} instance.
      */
     Span startSpan();
 }

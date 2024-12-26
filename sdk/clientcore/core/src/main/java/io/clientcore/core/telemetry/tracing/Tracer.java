@@ -3,7 +3,7 @@
 
 package io.clientcore.core.telemetry.tracing;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.http.models.RequestOptions;
 
 /**
  * Represents a tracer - a component that creates spans.
@@ -16,10 +16,11 @@ public interface Tracer {
      * Creates a new span builder.
      *
      * @param spanName The name of the span.
-     * @param context The parent context.
+     * @param kind The kind of the span.
+     * @param requestOptions The request options.
      * @return The span builder.
      */
-    SpanBuilder spanBuilder(String spanName, Context context);
+    SpanBuilder spanBuilder(String spanName, SpanKind kind, RequestOptions requestOptions);
 
     /**
      * Checks if the tracer is enabled.

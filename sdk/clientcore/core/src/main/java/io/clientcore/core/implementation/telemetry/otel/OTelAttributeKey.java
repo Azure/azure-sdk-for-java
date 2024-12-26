@@ -3,37 +3,37 @@
 
 package io.clientcore.core.implementation.telemetry.otel;
 
-import io.clientcore.core.implementation.ReflectionUtils;
-import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.util.ClientLogger;
+
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 
 public class OTelAttributeKey {
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelAttributeKey.class);
-    private static final ReflectiveInvoker CREATE_STRING_KEY_INVOKER;
-    private static final ReflectiveInvoker CREATE_BOOLEAN_KEY_INVOKER;
-    private static final ReflectiveInvoker CREATE_LONG_KEY_INVOKER;
-    private static final ReflectiveInvoker CREATE_DOUBLE_KEY_INVOKER;
+    private static final MethodHandle CREATE_STRING_KEY_INVOKER;
+    private static final MethodHandle CREATE_BOOLEAN_KEY_INVOKER;
+    private static final MethodHandle CREATE_LONG_KEY_INVOKER;
+    private static final MethodHandle CREATE_DOUBLE_KEY_INVOKER;
 
     static {
-        ReflectiveInvoker createStringKeyInvoker = null;
-        ReflectiveInvoker createBooleanKeyInvoker = null;
-        ReflectiveInvoker createLongKeyInvoker = null;
-        ReflectiveInvoker createDoubleKeyInvoker = null;
+        MethodHandle createStringKeyInvoker = null;
+        MethodHandle createBooleanKeyInvoker = null;
+        MethodHandle createLongKeyInvoker = null;
+        MethodHandle createDoubleKeyInvoker = null;
 
         try {
-            createStringKeyInvoker = ReflectionUtils.getMethodInvoker(ATTRIBUTE_KEY_CLASS,
-                ATTRIBUTE_KEY_CLASS.getMethod("stringKey", String.class));
-
-            createBooleanKeyInvoker = ReflectionUtils.getMethodInvoker(ATTRIBUTE_KEY_CLASS,
-                ATTRIBUTE_KEY_CLASS.getMethod("booleanKey", String.class));
-
-            createLongKeyInvoker = ReflectionUtils.getMethodInvoker(ATTRIBUTE_KEY_CLASS,
-                ATTRIBUTE_KEY_CLASS.getMethod("longKey", String.class));
-
-            createDoubleKeyInvoker = ReflectionUtils.getMethodInvoker(ATTRIBUTE_KEY_CLASS,
-                ATTRIBUTE_KEY_CLASS.getMethod("doubleKey", String.class));
+            createStringKeyInvoker = LOOKUP.findStatic(ATTRIBUTE_KEY_CLASS, "stringKey",
+                MethodType.methodType(ATTRIBUTE_KEY_CLASS, String.class));
+            createBooleanKeyInvoker = LOOKUP.findStatic(ATTRIBUTE_KEY_CLASS, "booleanKey",
+                MethodType.methodType(ATTRIBUTE_KEY_CLASS, String.class));
+            createLongKeyInvoker = LOOKUP.findStatic(ATTRIBUTE_KEY_CLASS, "longKey",
+                MethodType.methodType(ATTRIBUTE_KEY_CLASS, String.class));
+            createDoubleKeyInvoker = LOOKUP.findStatic(ATTRIBUTE_KEY_CLASS, "doubleKey",
+                MethodType.methodType(ATTRIBUTE_KEY_CLASS, String.class));
         } catch (Throwable t) {
             OTelInitializer.initError(LOGGER, t);
         }
@@ -48,15 +48,15 @@ public class OTelAttributeKey {
         if (OTelInitializer.isInitialized()) {
             try {
                 if (value instanceof Boolean) {
-                    return CREATE_BOOLEAN_KEY_INVOKER.invokeStatic(key);
+                    return CREATE_BOOLEAN_KEY_INVOKER.invoke(key);
                 } else if (value instanceof String) {
-                    return CREATE_STRING_KEY_INVOKER.invokeStatic(key);
+                    return CREATE_STRING_KEY_INVOKER.invoke(key);
                 } else if (value instanceof Long) {
-                    return CREATE_LONG_KEY_INVOKER.invokeStatic(key);
+                    return CREATE_LONG_KEY_INVOKER.invoke(key);
                 } else if (value instanceof Integer) {
-                    return CREATE_LONG_KEY_INVOKER.invokeStatic(key);
+                    return CREATE_LONG_KEY_INVOKER.invoke(key);
                 } else if (value instanceof Double) {
-                    return CREATE_DOUBLE_KEY_INVOKER.invokeStatic(key);
+                    return CREATE_DOUBLE_KEY_INVOKER.invoke(key);
                 } else {
                     LOGGER.atVerbose()
                         .addKeyValue("key", key)

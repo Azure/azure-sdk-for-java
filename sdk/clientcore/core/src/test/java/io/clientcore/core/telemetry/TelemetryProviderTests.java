@@ -20,6 +20,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -60,7 +61,7 @@ public class TelemetryProviderTests {
 
         Tracer tracer = TelemetryProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS);
         assertFalse(tracer.isEnabled());
-        tracer.spanBuilder("test", Context.none()).startSpan().end();
+        tracer.spanBuilder("test", INTERNAL).startSpan().end();
 
         assertEquals(0, exporter.getFinishedSpanItems().size());
     }
@@ -74,7 +75,7 @@ public class TelemetryProviderTests {
             Tracer tracer = TelemetryProvider.getInstance().getTracer(null, DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", Context.none()).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL).startSpan().end();
 
             assertEquals(1, exporter.getFinishedSpanItems().size());
             SpanData span = exporter.getFinishedSpanItems().get(0);
@@ -101,7 +102,7 @@ public class TelemetryProviderTests {
                 .getTracer(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", Context.none()).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL).startSpan().end();
 
             assertTrue(exporter.getFinishedSpanItems().isEmpty());
             assertEquals(1, localExporter.getFinishedSpanItems().size());
@@ -130,7 +131,7 @@ public class TelemetryProviderTests {
             Tracer tracer = TelemetryProvider.getInstance().getTracer(null, libOptions);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", Context.none()).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL).startSpan().end();
 
             SpanData span = exporter.getFinishedSpanItems().get(0);
             assertEquals("test-library", span.getInstrumentationScopeInfo().getName());
