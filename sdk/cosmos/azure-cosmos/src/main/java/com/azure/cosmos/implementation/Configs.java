@@ -47,7 +47,10 @@ public class Configs {
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
-    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT"; // Environment variable for now
+    // Environment variable for now
+    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
+    private static final String DEFAULT_THINCLIENT_ENDPOINT = "COSMOS.DEFAULT_THINCLIENT_ENDPOINT";
+    private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -366,8 +369,11 @@ public class Configs {
 
     // Temporary. Thinclient endpoint discovery to be done through GetDatabaseAccount API
     public URI getThinclientEndpoint() {
-        String uriString = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
-        return URI.create(Objects.requireNonNullElse(uriString, "testThinClientEndpoint"));
+        return getJVMConfigAsURI(THINCLIENT_ENDPOINT, DEFAULT_THINCLIENT_ENDPOINT);
+    }
+
+    public boolean getThinclientEnabled() {
+        return getJVMConfigAsBoolean(THINCLIENT_ENABLED, false);
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
@@ -558,6 +564,11 @@ public class Configs {
         return getBooleanValue(propValue, defaultValue);
     }
 
+    private static URI getJVMConfigAsURI(String propName, String defaultValue) {
+        String propValue = System.getProperty(propName); // "COSMOS.THINCLIENT_ENDPOINT"
+        return getUriValue(propValue, defaultValue); // "testThinClientEndpoint"
+    }
+
     private static int getIntValue(String val, int defaultValue) {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
@@ -571,6 +582,14 @@ public class Configs {
             return defaultValue;
         } else {
             return Boolean.parseBoolean(val);
+        }
+    }
+
+    private static URI getUriValue(String val, String defaultValue) {
+        if (StringUtils.isEmpty(val)) {
+            return URI.create(defaultValue);
+        } else {
+            return URI.create(val);
         }
     }
 

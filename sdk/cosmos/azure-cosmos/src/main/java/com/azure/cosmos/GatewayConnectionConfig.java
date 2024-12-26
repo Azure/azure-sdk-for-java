@@ -24,7 +24,6 @@ public final class GatewayConnectionConfig {
     private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
     private ProxyOptions proxy;
-    private boolean thinclientEnabled;
 
     /**
      * Constructor.
@@ -33,7 +32,6 @@ public final class GatewayConnectionConfig {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.maxConnectionPoolSize = Configs.getDefaultHttpPoolSize();
         this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
-        this.thinclientEnabled = false;
     }
 
     /**
@@ -43,13 +41,6 @@ public final class GatewayConnectionConfig {
      */
     public static GatewayConnectionConfig getDefaultConfig() {
         return new GatewayConnectionConfig();
-    }
-
-    public boolean getThinClientEnabled() { return this.thinclientEnabled; }
-
-    public GatewayConnectionConfig setThinClientEnabled(final boolean enabled) {
-        this.thinclientEnabled = enabled;
-        return this;
     }
 
     /**
@@ -156,7 +147,6 @@ public final class GatewayConnectionConfig {
             ", networkRequestTimeout=" + networkRequestTimeout +
             ", proxyType=" + proxyType +
             ", inetSocketProxyAddress=" + proxyAddress +
-            ", thinclientEnabled=" + thinclientEnabled +
             '}';
     }
 }
