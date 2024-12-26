@@ -6259,6 +6259,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // such scenarios and PPAF in general
                 request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = preResolvedPartitionKeyRangeIfAny;
 
+                request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest
+                    = isWriteRequest && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled();
+
                 // onBeforeSendRequest uses excluded regions to know the next location endpoint
                 // to route the request to unavailable regions are effectively excluded regions for this request
                 if (documentClientRetryPolicy != null) {
@@ -6306,7 +6309,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest
                     = isWriteRequest && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled();
-
 
                 // onBeforeSendRequest uses excluded regions to know the next location endpoint
                 // to route the request to unavailable regions are effectively excluded regions for this request
