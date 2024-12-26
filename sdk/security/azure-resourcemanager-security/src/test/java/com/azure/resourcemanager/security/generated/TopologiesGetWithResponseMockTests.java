@@ -20,7 +20,7 @@ public final class TopologiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"calculatedDateTime\":\"2021-05-06T11:19:58Z\",\"topologyResources\":[{\"resourceId\":\"clsxdqdchnzibix\",\"severity\":\"srwx\",\"recommendationsExist\":true,\"networkZones\":\"arg\",\"topologyScore\":370167046,\"location\":\"gosijiqexqwqy\",\"parents\":[{}],\"children\":[{},{},{}]},{\"resourceId\":\"lhdhoxurh\",\"severity\":\"nkvthwta\",\"recommendationsExist\":false,\"networkZones\":\"gyvxhfmuhkezuucq\",\"topologyScore\":111361280,\"location\":\"dxvbeqzjdwxt\",\"parents\":[{},{}],\"children\":[{}]},{\"resourceId\":\"eecmyt\",\"severity\":\"u\",\"recommendationsExist\":false,\"networkZones\":\"vnffaofkvfruxz\",\"topologyScore\":665753254,\"location\":\"hgykzovstvymdqa\",\"parents\":[{},{},{}],\"children\":[{},{},{}]}]},\"location\":\"nzg\",\"id\":\"bqkfnoxhvo\",\"name\":\"jdgfkr\",\"type\":\"sjrvpakxrdeexwe\"}";
+            = "{\"properties\":{\"calculatedDateTime\":\"2021-03-31T09:21:09Z\",\"topologyResources\":[{\"resourceId\":\"fgfiij\",\"severity\":\"kw\",\"recommendationsExist\":false,\"networkZones\":\"s\",\"topologyScore\":1136398440,\"location\":\"azfpxgnmqvzvlu\",\"parents\":[{}],\"children\":[{}]}]},\"location\":\"ssscyvai\",\"id\":\"ppuacvfyeowp\",\"name\":\"fxtjdhsoym\",\"type\":\"pvtyqfttehdpbouj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TopologiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TopologyResource response = manager.topologies()
-            .getWithResponse("lwhf", "kbweasgypjixdmob", "dyd", com.azure.core.util.Context.NONE)
+            .getWithResponse("xwjyofgwhnk", "tlwljssmcts", "ldkpwolgisu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

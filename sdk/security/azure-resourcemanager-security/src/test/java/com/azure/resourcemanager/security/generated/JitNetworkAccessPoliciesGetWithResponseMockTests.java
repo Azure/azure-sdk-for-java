@@ -22,7 +22,7 @@ public final class JitNetworkAccessPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"virtualMachines\":[{\"id\":\"kzb\",\"ports\":[{\"number\":668220729,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"athxoyxuu\"},{\"number\":1925509697,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"usyrux\"}],\"publicIpAddress\":\"hhlhrvmgs\"},{\"id\":\"pgmncrvtp\",\"ports\":[{\"number\":1348509331,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"omppz\"},{\"number\":118494776,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"qmeu\"}],\"publicIpAddress\":\"lfcmpuaiugoceqtl\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"ymwic\",\"ports\":[]},{\"id\":\"urnc\",\"ports\":[]}],\"startTimeUtc\":\"2021-05-20T00:46:55Z\",\"requestor\":\"nla\",\"justification\":\"ixhqjqhgqw\"}],\"provisioningState\":\"xiwtwf\"},\"kind\":\"clalvemnnzugabky\",\"location\":\"syweohlmtsnvon\",\"id\":\"bftswcd\",\"name\":\"pnseptvdticca\",\"type\":\"lgzwkopxdkb\"}";
+            = "{\"properties\":{\"virtualMachines\":[{\"id\":\"vqnrxtmbpj\",\"ports\":[{\"number\":1341207363,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"wjhrsidqpxlbtpa\"}],\"publicIpAddress\":\"tngatwmykyu\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"dwmf\",\"ports\":[]},{\"id\":\"hpycvjqdvdwkq\",\"ports\":[]}],\"startTimeUtc\":\"2021-03-27T19:46:53Z\",\"requestor\":\"drlefgnaavuag\",\"justification\":\"etaoutnpdc\"}],\"provisioningState\":\"hspfefyihd\"},\"kind\":\"euyldphmt\",\"location\":\"kcgsuthhl\",\"id\":\"nmwynefxexl\",\"name\":\"ciatxtjrrl\",\"type\":\"mdskjhhxdlajfoxc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,20 @@ public final class JitNetworkAccessPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JitNetworkAccessPolicy response = manager.jitNetworkAccessPolicies()
-            .getWithResponse("tgngwnxjftecg", "rzsqm", "dq", com.azure.core.util.Context.NONE)
+            .getWithResponse("mhmjpjs", "dfpdqwtygevg", "mseharx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("clalvemnnzugabky", response.kind());
-        Assertions.assertEquals("kzb", response.virtualMachines().get(0).id());
-        Assertions.assertEquals(668220729, response.virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals(Protocol.ASTERISK, response.virtualMachines().get(0).ports().get(0).protocol());
-        Assertions.assertEquals("athxoyxuu",
+        Assertions.assertEquals("euyldphmt", response.kind());
+        Assertions.assertEquals("vqnrxtmbpj", response.virtualMachines().get(0).id());
+        Assertions.assertEquals(1341207363, response.virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals(Protocol.UDP, response.virtualMachines().get(0).ports().get(0).protocol());
+        Assertions.assertEquals("wjhrsidqpxlbtpa",
             response.virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("hhlhrvmgs", response.virtualMachines().get(0).publicIpAddress());
-        Assertions.assertEquals("ymwic", response.requests().get(0).virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T00:46:55Z"),
+        Assertions.assertEquals("tngatwmykyu", response.virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("dwmf", response.requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T19:46:53Z"),
             response.requests().get(0).startTimeUtc());
-        Assertions.assertEquals("nla", response.requests().get(0).requestor());
-        Assertions.assertEquals("ixhqjqhgqw", response.requests().get(0).justification());
+        Assertions.assertEquals("drlefgnaavuag", response.requests().get(0).requestor());
+        Assertions.assertEquals("etaoutnpdc", response.requests().get(0).justification());
     }
 }

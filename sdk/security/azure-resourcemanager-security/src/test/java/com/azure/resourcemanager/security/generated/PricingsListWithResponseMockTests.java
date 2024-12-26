@@ -24,7 +24,7 @@ public final class PricingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"bxkcegcttgxk\",\"freeTrialRemainingTime\":\"PT130H35S\",\"enablementTime\":\"2021-02-22T17:41:49Z\",\"enforce\":\"True\",\"inherited\":\"False\",\"inheritedFrom\":\"qohviawpjfkrarer\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"tpxowgowwdocj\",\"isEnabled\":\"True\"},{\"name\":\"uamegjkfis\",\"isEnabled\":\"True\"},{\"name\":\"exumfavweslo\",\"isEnabled\":\"True\"},{\"name\":\"itxrrsjscosanjs\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"ogujgb\"]},\"id\":\"clxhwkzfggs\",\"name\":\"zkvdantp\",\"type\":\"uiwaz\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"hutctcabcpwabz\",\"freeTrialRemainingTime\":\"PT211H17M24S\",\"enablementTime\":\"2021-06-22T12:20:34Z\",\"enforce\":\"True\",\"inherited\":\"False\",\"inheritedFrom\":\"dfzweg\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"wgweccvufjqvfc\",\"isEnabled\":\"False\"},{\"name\":\"s\",\"isEnabled\":\"False\"},{\"name\":\"yaemkrhbsdgktlu\",\"isEnabled\":\"False\"},{\"name\":\"iqgpqcpenob\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"spqbvvaer\",\"zsu\"]},\"id\":\"zsautbricvvofe\",\"name\":\"intz\",\"type\":\"nhyyqxckd\"}]}";
+            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"knq\",\"freeTrialRemainingTime\":\"PT21H22M16S\",\"enablementTime\":\"2021-01-07T17:31:02Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"oqueqihkkyowltj\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"dxwhieproqksmfx\",\"isEnabled\":\"True\"},{\"name\":\"vprstv\",\"isEnabled\":\"True\"},{\"name\":\"tbfjtdyotnplf\",\"isEnabled\":\"True\"},{\"name\":\"qoccqrqxwetjt\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"doad\",\"xopgehpadkmd\",\"gssz\"]},\"id\":\"vctkbbx\",\"name\":\"harls\",\"type\":\"rncclabv\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"suxxc\",\"freeTrialRemainingTime\":\"PT216H51M1S\",\"enablementTime\":\"2021-05-04T17:23:56Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"saidjan\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"dxxurn\",\"isEnabled\":\"True\"},{\"name\":\"jmoilunwe\",\"isEnabled\":\"False\"},{\"name\":\"deel\",\"isEnabled\":\"True\"},{\"name\":\"lkyozdsfzj\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"htslejtvxj\",\"xvgjbfi\",\"bpnjodf\",\"bj\"]},\"id\":\"qwm\",\"name\":\"q\",\"type\":\"moxsa\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"jgwecywnfyszzacz\",\"freeTrialRemainingTime\":\"PT2H3M22S\",\"enablementTime\":\"2021-12-04T14:42:52Z\",\"enforce\":\"True\",\"inherited\":\"True\",\"inheritedFrom\":\"bozsyvr\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"it\",\"isEnabled\":\"False\"},{\"name\":\"hwudlxeei\",\"isEnabled\":\"True\"},{\"name\":\"pmnoejhqlf\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"yrfgxkyd\",\"mypgfqvmty\"]},\"id\":\"hl\",\"name\":\"kxp\",\"type\":\"jpewpyjlfx\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"crzge\",\"freeTrialRemainingTime\":\"PT128H31M34S\",\"enablementTime\":\"2021-10-07T02:31:37Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"aujegqdtadra\",\"resourcesCoverageStatus\":\"NotCovered\",\"extensions\":[{\"name\":\"jkrukizyhgsqtnqs\",\"isEnabled\":\"True\"},{\"name\":\"xqfpj\",\"isEnabled\":\"False\"},{\"name\":\"ggweeiwdhdmncgb\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"tunmlhxd\",\"bkl\"]},\"id\":\"iichgjsysmvxodgw\",\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class PricingsListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PricingList response = manager.pricings()
-            .listWithResponse("vzlhjgmrodblap", "raczvtniwfcubw", com.azure.core.util.Context.NONE)
+            .listWithResponse("knpwirfljf", "wxqouoxudnmc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PricingTier.FREE, response.value().get(0).pricingTier());
-        Assertions.assertEquals("bxkcegcttgxk", response.value().get(0).subPlan());
-        Assertions.assertEquals(Enforce.TRUE, response.value().get(0).enforce());
-        Assertions.assertEquals("tpxowgowwdocj", response.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(PricingTier.STANDARD, response.value().get(0).pricingTier());
+        Assertions.assertEquals("knq", response.value().get(0).subPlan());
+        Assertions.assertEquals(Enforce.FALSE, response.value().get(0).enforce());
+        Assertions.assertEquals("dxwhieproqksmfx", response.value().get(0).extensions().get(0).name());
         Assertions.assertEquals(IsEnabled.TRUE, response.value().get(0).extensions().get(0).isEnabled());
     }
 }

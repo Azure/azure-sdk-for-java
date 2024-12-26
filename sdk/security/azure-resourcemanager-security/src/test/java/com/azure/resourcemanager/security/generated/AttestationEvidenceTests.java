@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AttestationEvidenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttestationEvidence model
-            = BinaryData.fromString("{\"description\":\"rshzzbgullcxiqqz\",\"sourceUrl\":\"oxdu\"}")
-                .toObject(AttestationEvidence.class);
-        Assertions.assertEquals("rshzzbgullcxiqqz", model.description());
-        Assertions.assertEquals("oxdu", model.sourceUrl());
+        AttestationEvidence model = BinaryData.fromString("{\"description\":\"jyoogwxh\",\"sourceUrl\":\"duugwbsre\"}")
+            .toObject(AttestationEvidence.class);
+        Assertions.assertEquals("jyoogwxh", model.description());
+        Assertions.assertEquals("duugwbsre", model.sourceUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationEvidence model = new AttestationEvidence().withDescription("rshzzbgullcxiqqz").withSourceUrl("oxdu");
+        AttestationEvidence model = new AttestationEvidence().withDescription("jyoogwxh").withSourceUrl("duugwbsre");
         model = BinaryData.fromObject(model).toObject(AttestationEvidence.class);
-        Assertions.assertEquals("rshzzbgullcxiqqz", model.description());
-        Assertions.assertEquals("oxdu", model.sourceUrl());
+        Assertions.assertEquals("jyoogwxh", model.description());
+        Assertions.assertEquals("duugwbsre", model.sourceUrl());
     }
 }

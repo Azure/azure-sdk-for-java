@@ -13,13 +13,13 @@ public final class SettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingsList model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"fxampqcrzgeuqx\",\"name\":\"piatwfaujegqd\",\"type\":\"adr\"},{\"kind\":\"Setting\",\"id\":\"kgd\",\"name\":\"hjkrukizyhgs\",\"type\":\"tnqsktx\"}],\"nextLink\":\"p\"}")
+            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"nugj\",\"name\":\"nfsm\",\"type\":\"cttuxuu\"}],\"nextLink\":\"lflqoiqu\"}")
             .toObject(SettingsList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsList model = new SettingsList().withValue(Arrays.asList(new SettingInner(), new SettingInner()));
+        SettingsList model = new SettingsList().withValue(Arrays.asList(new SettingInner()));
         model = BinaryData.fromObject(model).toObject(SettingsList.class);
     }
 }

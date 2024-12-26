@@ -23,7 +23,7 @@ public final class DiscoveredSecuritySolutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Waf\",\"offer\":\"pzlx\",\"publisher\":\"mndhgwhlbpju\",\"sku\":\"jzqx\"},\"location\":\"mitnwlyhbujysvd\",\"id\":\"yy\",\"name\":\"dbhatmabtpgn\",\"type\":\"tjtnnrjewih\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"offer\":\"rcoiis\",\"publisher\":\"amnppcce\",\"sku\":\"u\"},\"location\":\"dsbezaxyfu\",\"id\":\"zxuizhyhnepkpe\",\"name\":\"iarxqiubxdukec\",\"type\":\"xdazv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class DiscoveredSecuritySolutionsListMockTests {
         PagedIterable<DiscoveredSecuritySolution> response
             = manager.discoveredSecuritySolutions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SecurityFamily.WAF, response.iterator().next().securityFamily());
-        Assertions.assertEquals("pzlx", response.iterator().next().offer());
-        Assertions.assertEquals("mndhgwhlbpju", response.iterator().next().publisher());
-        Assertions.assertEquals("jzqx", response.iterator().next().sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, response.iterator().next().securityFamily());
+        Assertions.assertEquals("rcoiis", response.iterator().next().offer());
+        Assertions.assertEquals("amnppcce", response.iterator().next().publisher());
+        Assertions.assertEquals("u", response.iterator().next().sku());
     }
 }

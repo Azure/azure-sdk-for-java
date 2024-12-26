@@ -20,7 +20,7 @@ public final class ComplianceResultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"tdy\",\"name\":\"lglhelwruklfq\",\"type\":\"xspxgogypbztgae\"}";
+            = "{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"qzrdzsylollg\",\"name\":\"rc\",\"type\":\"zydmxzjijpvuaurk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ComplianceResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ComplianceResult response
-            = manager.complianceResults().getWithResponse("tkhh", "emrvk", com.azure.core.util.Context.NONE).getValue();
+            = manager.complianceResults().getWithResponse("mcs", "p", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

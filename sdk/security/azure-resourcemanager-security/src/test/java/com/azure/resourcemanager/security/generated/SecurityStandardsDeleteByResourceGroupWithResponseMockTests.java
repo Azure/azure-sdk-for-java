@@ -28,7 +28,7 @@ public final class SecurityStandardsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.securityStandards()
-            .deleteByResourceGroupWithResponse("fwgnpcjniaf", "wcgjjioqwuuogdkp", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("blaxpegj", "dabalfdxaglzfytl", com.azure.core.util.Context.NONE);
 
     }
 }

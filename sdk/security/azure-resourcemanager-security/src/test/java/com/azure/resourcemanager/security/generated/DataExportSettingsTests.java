@@ -12,7 +12,7 @@ public final class DataExportSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataExportSettings model = BinaryData.fromString(
-            "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":true},\"id\":\"xkqllczipvwdtgc\",\"name\":\"zdqiqdlrat\",\"type\":\"kwx\"}")
+            "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":true},\"id\":\"yzqedikdfrd\",\"name\":\"iqmrjgeihfqlggw\",\"type\":\"iwzcxmjpbyeph\"}")
             .toObject(DataExportSettings.class);
         Assertions.assertEquals(true, model.enabled());
     }

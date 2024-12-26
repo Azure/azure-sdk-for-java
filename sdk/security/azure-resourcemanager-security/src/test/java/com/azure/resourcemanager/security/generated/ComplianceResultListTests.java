@@ -13,14 +13,14 @@ public final class ComplianceResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComplianceResultList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"gwwrxaomzis\",\"name\":\"lrrcz\",\"type\":\"zkhhltnjadhqo\"},{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"oyueayfbpcmsp\",\"name\":\"byrrueqth\",\"type\":\"mg\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"cbbxigdhxi\",\"name\":\"d\",\"type\":\"opedbwdpyqyybxub\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"fcbqwremjela\",\"name\":\"acigel\",\"type\":\"ohdbvqvwzkj\"}],\"nextLink\":\"wbeonrlkwzdqy\"}")
+            "{\"value\":[{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"uv\",\"name\":\"jxpybczmeh\",\"type\":\"tzopbsphrupidgsy\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"hphoycm\",\"name\":\"xaobhdxbmtqioqjz\",\"type\":\"htbmuf\"},{\"properties\":{\"resourceStatus\":\"Healthy\"},\"id\":\"oizh\",\"name\":\"lrxybqsoq\",\"type\":\"jgkdmbpazlobcu\"}],\"nextLink\":\"dznrbtcqq\"}")
             .toObject(ComplianceResultList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComplianceResultList model = new ComplianceResultList().withValue(Arrays.asList(new ComplianceResultInner(),
-            new ComplianceResultInner(), new ComplianceResultInner(), new ComplianceResultInner()));
+        ComplianceResultList model = new ComplianceResultList().withValue(
+            Arrays.asList(new ComplianceResultInner(), new ComplianceResultInner(), new ComplianceResultInner()));
         model = BinaryData.fromObject(model).toObject(ComplianceResultList.class);
     }
 }

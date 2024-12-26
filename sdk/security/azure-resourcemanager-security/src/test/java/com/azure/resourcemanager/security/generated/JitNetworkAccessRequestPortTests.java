@@ -16,33 +16,34 @@ public final class JitNetworkAccessRequestPortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessRequestPort model = BinaryData.fromString(
-            "{\"number\":86519488,\"allowedSourceAddressPrefix\":\"hamfowgwbtmk\",\"allowedSourceAddressPrefixes\":[\"pkzwa\"],\"endTimeUtc\":\"2021-03-09T09:38:44Z\",\"status\":\"Initiated\",\"statusReason\":\"UserRequested\",\"mappedPort\":1256995489}")
+            "{\"number\":1639942247,\"allowedSourceAddressPrefix\":\"cgxxlxs\",\"allowedSourceAddressPrefixes\":[\"cvizqzdwlvw\",\"youpfgfbkj\",\"bdyhgkfminsgowz\",\"ttsttktlahbqact\"],\"endTimeUtc\":\"2020-12-23T17:02:35Z\",\"status\":\"Initiated\",\"statusReason\":\"UserRequested\",\"mappedPort\":1623568145}")
             .toObject(JitNetworkAccessRequestPort.class);
-        Assertions.assertEquals(86519488, model.number());
-        Assertions.assertEquals("hamfowgwbtmk", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("pkzwa", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T09:38:44Z"), model.endTimeUtc());
+        Assertions.assertEquals(1639942247, model.number());
+        Assertions.assertEquals("cgxxlxs", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("cvizqzdwlvw", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T17:02:35Z"), model.endTimeUtc());
         Assertions.assertEquals(Status.INITIATED, model.status());
         Assertions.assertEquals(StatusReason.USER_REQUESTED, model.statusReason());
-        Assertions.assertEquals(1256995489, model.mappedPort());
+        Assertions.assertEquals(1623568145, model.mappedPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessRequestPort model = new JitNetworkAccessRequestPort().withNumber(86519488)
-            .withAllowedSourceAddressPrefix("hamfowgwbtmk")
-            .withAllowedSourceAddressPrefixes(Arrays.asList("pkzwa"))
-            .withEndTimeUtc(OffsetDateTime.parse("2021-03-09T09:38:44Z"))
+        JitNetworkAccessRequestPort model = new JitNetworkAccessRequestPort().withNumber(1639942247)
+            .withAllowedSourceAddressPrefix("cgxxlxs")
+            .withAllowedSourceAddressPrefixes(
+                Arrays.asList("cvizqzdwlvw", "youpfgfbkj", "bdyhgkfminsgowz", "ttsttktlahbqact"))
+            .withEndTimeUtc(OffsetDateTime.parse("2020-12-23T17:02:35Z"))
             .withStatus(Status.INITIATED)
             .withStatusReason(StatusReason.USER_REQUESTED)
-            .withMappedPort(1256995489);
+            .withMappedPort(1623568145);
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessRequestPort.class);
-        Assertions.assertEquals(86519488, model.number());
-        Assertions.assertEquals("hamfowgwbtmk", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("pkzwa", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T09:38:44Z"), model.endTimeUtc());
+        Assertions.assertEquals(1639942247, model.number());
+        Assertions.assertEquals("cgxxlxs", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("cvizqzdwlvw", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T17:02:35Z"), model.endTimeUtc());
         Assertions.assertEquals(Status.INITIATED, model.status());
         Assertions.assertEquals(StatusReason.USER_REQUESTED, model.statusReason());
-        Assertions.assertEquals(1256995489, model.mappedPort());
+        Assertions.assertEquals(1623568145, model.mappedPort());
     }
 }

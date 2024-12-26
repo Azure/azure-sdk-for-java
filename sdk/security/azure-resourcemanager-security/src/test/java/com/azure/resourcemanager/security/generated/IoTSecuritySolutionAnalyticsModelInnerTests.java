@@ -15,18 +15,17 @@ public final class IoTSecuritySolutionAnalyticsModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecuritySolutionAnalyticsModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"metrics\":{\"high\":6014104395160481249,\"medium\":7627071919291558156,\"low\":6245424672582311766},\"unhealthyDeviceCount\":1238592954040450519,\"devicesMetrics\":[{\"date\":\"2021-03-10T18:49:30Z\",\"devicesMetrics\":{\"high\":210182112940220328,\"medium\":7716194072189690304,\"low\":4476813278962669938}},{\"date\":\"2021-04-27T19:58:47Z\",\"devicesMetrics\":{\"high\":3798517332223595891,\"medium\":2805708156409889509,\"low\":6079113324241993027}},{\"date\":\"2021-06-13T11:34:12Z\",\"devicesMetrics\":{\"high\":1752319429870180165,\"medium\":2286876681661463957,\"low\":5550176157612340206}}],\"topAlertedDevices\":[{\"deviceId\":\"wvfdjkpdxphlkks\",\"alertsCount\":2650839233408749261},{\"deviceId\":\"yfijdkzuqnws\",\"alertsCount\":5502630178614902027},{\"deviceId\":\"olyahluqwqulsut\",\"alertsCount\":8665431297805107879}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"fhyqezvqqugdrft\",\"reportedSeverity\":\"Informational\",\"alertsCount\":3221619392259941147},{\"alertDisplayName\":\"uquowtljvfwhr\",\"reportedSeverity\":\"High\",\"alertsCount\":7245978043525524463},{\"alertDisplayName\":\"vrqtvbc\",\"reportedSeverity\":\"Low\",\"alertsCount\":4464524107841335548},{\"alertDisplayName\":\"glmep\",\"reportedSeverity\":\"Informational\",\"alertsCount\":7130735893149807397}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"angpszngafpgyl\",\"reportedSeverity\":\"Low\",\"devicesCount\":314180625904406134}]},\"id\":\"jcngoadyed\",\"name\":\"zrgjfok\",\"type\":\"ubn\"}")
+            "{\"properties\":{\"metrics\":{\"high\":4306854274094965404,\"medium\":7299297905990520554,\"low\":5923268141734612582},\"unhealthyDeviceCount\":8177677748180983191,\"devicesMetrics\":[{\"date\":\"2020-12-24T00:10:53Z\",\"devicesMetrics\":{\"high\":6368933305994050362,\"medium\":4737448863799070126,\"low\":6463705926594653414}}],\"topAlertedDevices\":[{\"deviceId\":\"yq\",\"alertsCount\":5320944384466972483}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"gidokgjljyoxgvcl\",\"reportedSeverity\":\"Medium\",\"alertsCount\":7497073347562685414}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"jeszzhbijhtxfv\",\"reportedSeverity\":\"Informational\",\"devicesCount\":2392745858850272013},{\"recommendationDisplayName\":\"nehmpvecx\",\"reportedSeverity\":\"High\",\"devicesCount\":6839529764170404203},{\"recommendationDisplayName\":\"kk\",\"reportedSeverity\":\"Low\",\"devicesCount\":5030393591391141924}]},\"id\":\"gr\",\"name\":\"wflzlfbxzpuzy\",\"type\":\"ispnqzahmgkbrp\"}")
             .toObject(IoTSecuritySolutionAnalyticsModelInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IoTSecuritySolutionAnalyticsModelInner model = new IoTSecuritySolutionAnalyticsModelInner()
-            .withTopAlertedDevices(Arrays.asList(new IoTSecurityAlertedDevice(), new IoTSecurityAlertedDevice(),
-                new IoTSecurityAlertedDevice()))
-            .withMostPrevalentDeviceAlerts(Arrays.asList(new IoTSecurityDeviceAlert(), new IoTSecurityDeviceAlert(),
-                new IoTSecurityDeviceAlert(), new IoTSecurityDeviceAlert()))
-            .withMostPrevalentDeviceRecommendations(Arrays.asList(new IoTSecurityDeviceRecommendation()));
+            .withTopAlertedDevices(Arrays.asList(new IoTSecurityAlertedDevice()))
+            .withMostPrevalentDeviceAlerts(Arrays.asList(new IoTSecurityDeviceAlert()))
+            .withMostPrevalentDeviceRecommendations(Arrays.asList(new IoTSecurityDeviceRecommendation(),
+                new IoTSecurityDeviceRecommendation(), new IoTSecurityDeviceRecommendation()));
         model = BinaryData.fromObject(model).toObject(IoTSecuritySolutionAnalyticsModelInner.class);
     }
 }

@@ -14,7 +14,7 @@ public final class AlertSimulatorRequestBodyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSimulatorRequestBody model = BinaryData.fromString(
-            "{\"properties\":{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"fmsibzoyrfgxkyd\":\"dataejhq\"}}}")
+            "{\"properties\":{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"tmkzjvkviirhgfgr\":\"datasii\"}}}")
             .toObject(AlertSimulatorRequestBody.class);
     }
 

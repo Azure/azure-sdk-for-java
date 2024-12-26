@@ -12,7 +12,7 @@ public final class IoTSecurityDeviceAlertTests {
     public void testDeserialize() throws Exception {
         IoTSecurityDeviceAlert model = BinaryData
             .fromString(
-                "{\"alertDisplayName\":\"x\",\"reportedSeverity\":\"Medium\",\"alertsCount\":5787954525907975470}")
+                "{\"alertDisplayName\":\"oxaepd\",\"reportedSeverity\":\"Low\",\"alertsCount\":450433937645390266}")
             .toObject(IoTSecurityDeviceAlert.class);
     }
 

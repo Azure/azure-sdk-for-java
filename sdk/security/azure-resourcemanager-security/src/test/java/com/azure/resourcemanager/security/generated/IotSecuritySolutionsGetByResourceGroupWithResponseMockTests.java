@@ -29,7 +29,7 @@ public final class IotSecuritySolutionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"yaosthulzu\",\"properties\":{\"workspace\":\"gspxldlnoc\",\"displayName\":\"cygimizl\",\"status\":\"Disabled\",\"export\":[\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"lmsppp\",\"eszthjtryjs\",\"diylgzzuqixp\"],\"userDefinedResources\":{\"query\":\"bqowgvmxwbohxd\",\"querySubscriptions\":[\"oexb\"]},\"autoDiscoveredResources\":[\"nakaj\",\"scmne\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_EdgeLoggingOptions\",\"name\":\"qeumz\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_IPFilter_PermissiveRule\",\"name\":\"gqaeiv\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_SharedCredentials\",\"name\":\"xrbgbzgfhzdza\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_OpenPorts\",\"name\":\"vcbicfecthotbkj\",\"status\":\"Enabled\"}],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[{\"workspace\":\"vtwkyjdpayx\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\",\"Alerts\"]},{\"workspace\":\"qztjfkgb\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"Alerts\",\"Alerts\",\"RawEvents\"]},{\"workspace\":\"en\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]},{\"workspace\":\"heo\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\",\"Alerts\",\"Alerts\"]}]},\"tags\":{\"bglaecctokfspvjr\":\"wypphtjtntcwgpd\",\"ftyptwjwiyyeo\":\"spkvrmp\"},\"id\":\"gmc\",\"name\":\"djmvphwfnu\",\"type\":\"slvfzzioxbgomv\"}";
+            = "{\"location\":\"yshtuwgmev\",\"properties\":{\"workspace\":\"pwzyi\",\"displayName\":\"rkgwltxeqip\",\"status\":\"Enabled\",\"export\":[\"RawEvents\",\"RawEvents\",\"RawEvents\"],\"disabledDataSources\":[\"TwinData\",\"TwinData\"],\"iotHubs\":[\"pra\",\"kj\",\"geslabnsmj\",\"wynqxaekqsykvwj\"],\"userDefinedResources\":{\"query\":\"pkevmylt\",\"querySubscriptions\":[\"rspxklur\",\"clf\",\"xa\"]},\"autoDiscoveredResources\":[\"oytzpose\",\"xigpxvkqmaupxvpi\",\"dfaifyzyzeyuube\",\"ds\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveInputFirewallRules\",\"name\":\"oithg\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_IPFilter_DenyAll\",\"name\":\"ltgvdihoynkrx\",\"status\":\"Enabled\"}],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[{\"workspace\":\"cy\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\",\"Alerts\",\"Alerts\",\"RawEvents\"]},{\"workspace\":\"dqumoenodnai\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\"]},{\"workspace\":\"ndnelqkaadlknw\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\"]}]},\"tags\":{\"ephblkwqpatvbqs\":\"etxivcnrlyxnuc\",\"tvivuzqym\":\"tcjb\",\"o\":\"uo\",\"banf\":\"tgitsqhzvbrzc\"},\"id\":\"ndscxmxeatk\",\"name\":\"bmwnrdjyibqb\",\"type\":\"aomhjrmkuhmaxl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,27 +39,27 @@ public final class IotSecuritySolutionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecuritySolutionModel response = manager.iotSecuritySolutions()
-            .getByResourceGroupWithResponse("ljgxot", "dam", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("xls", "ihmxrfdsajredn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yaosthulzu", response.location());
-        Assertions.assertEquals("wypphtjtntcwgpd", response.tags().get("bglaecctokfspvjr"));
-        Assertions.assertEquals("gspxldlnoc", response.workspace());
-        Assertions.assertEquals("cygimizl", response.displayName());
-        Assertions.assertEquals(SecuritySolutionStatus.DISABLED, response.status());
+        Assertions.assertEquals("yshtuwgmev", response.location());
+        Assertions.assertEquals("etxivcnrlyxnuc", response.tags().get("ephblkwqpatvbqs"));
+        Assertions.assertEquals("pwzyi", response.workspace());
+        Assertions.assertEquals("rkgwltxeqip", response.displayName());
+        Assertions.assertEquals(SecuritySolutionStatus.ENABLED, response.status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, response.export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, response.disabledDataSources().get(0));
-        Assertions.assertEquals("lmsppp", response.iotHubs().get(0));
-        Assertions.assertEquals("bqowgvmxwbohxd", response.userDefinedResources().query());
-        Assertions.assertEquals("oexb", response.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS,
+        Assertions.assertEquals("pra", response.iotHubs().get(0));
+        Assertions.assertEquals("pkevmylt", response.userDefinedResources().query());
+        Assertions.assertEquals("rspxklur", response.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES,
             response.recommendationsConfiguration().get(0).recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
             response.recommendationsConfiguration().get(0).status());
-        Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, response.unmaskedIpLoggingStatus());
-        Assertions.assertEquals("vtwkyjdpayx", response.additionalWorkspaces().get(0).workspace());
+        Assertions.assertEquals(UnmaskedIpLoggingStatus.DISABLED, response.unmaskedIpLoggingStatus());
+        Assertions.assertEquals("cy", response.additionalWorkspaces().get(0).workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, response.additionalWorkspaces().get(0).type());
-        Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS,
+        Assertions.assertEquals(AdditionalWorkspaceDataType.RAW_EVENTS,
             response.additionalWorkspaces().get(0).dataTypes().get(0));
     }
 }

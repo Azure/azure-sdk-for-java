@@ -22,7 +22,7 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Waf\",\"alertVendorName\":\"sprbxj\",\"packageInfoUrl\":\"ezujtoud\",\"productName\":\"de\",\"publisher\":\"wmv\",\"publisherDisplayName\":\"sr\",\"template\":\"ciexu\"},\"location\":\"mtgtgebymmc\",\"id\":\"skscbsxehax\",\"name\":\"cj\",\"type\":\"jxolknshgwa\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"tbh\",\"packageInfoUrl\":\"b\",\"productName\":\"lmnlbnatl\",\"publisher\":\"chzzcdkxort\",\"publisherDisplayName\":\"zzvhbuj\",\"template\":\"ah\"},\"location\":\"hqwojdzcc\",\"id\":\"twsrbfbsd\",\"name\":\"icdzf\",\"type\":\"vexrvnhhmfsnq\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"jtshlwvrsksdzmh\",\"packageInfoUrl\":\"tsy\",\"productName\":\"pwfbwoetxiz\",\"publisher\":\"fwxhflgdunga\",\"publisherDisplayName\":\"pxsazbxsnxykszn\",\"template\":\"stmpr\"},\"location\":\"randzktwom\",\"id\":\"pczlqbo\",\"name\":\"mzgmrolh\",\"type\":\"fddkhxvevwxmnb\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"xadxgnpyhtuhal\",\"packageInfoUrl\":\"qil\",\"productName\":\"na\",\"publisher\":\"kexznpnytkqjarl\",\"publisherDisplayName\":\"zbtgtzpcat\",\"template\":\"mz\"},\"location\":\"jfgtgxuupcz\",\"id\":\"gqnaidvss\",\"name\":\"gyo\",\"type\":\"gkztzttjnknpbq\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"lqtxnrflkndrn\",\"packageInfoUrl\":\"pgfjo\",\"productName\":\"hdaqotwfhipxwg\",\"publisher\":\"abvcipowzaf\",\"publisherDisplayName\":\"zuu\",\"template\":\"ljcirvpefycdvei\"},\"location\":\"tjnsx\",\"id\":\"ajlnsjhwjuyxx\",\"name\":\"xqvmvuay\",\"type\":\"uadx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
         SecuritySolutionsReferenceDataList response
             = manager.securitySolutionsReferenceDatas().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(SecurityFamily.WAF, response.value().get(0).securityFamily());
-        Assertions.assertEquals("sprbxj", response.value().get(0).alertVendorName());
-        Assertions.assertEquals("ezujtoud", response.value().get(0).packageInfoUrl());
-        Assertions.assertEquals("de", response.value().get(0).productName());
-        Assertions.assertEquals("wmv", response.value().get(0).publisher());
-        Assertions.assertEquals("sr", response.value().get(0).publisherDisplayName());
-        Assertions.assertEquals("ciexu", response.value().get(0).template());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, response.value().get(0).securityFamily());
+        Assertions.assertEquals("lqtxnrflkndrn", response.value().get(0).alertVendorName());
+        Assertions.assertEquals("pgfjo", response.value().get(0).packageInfoUrl());
+        Assertions.assertEquals("hdaqotwfhipxwg", response.value().get(0).productName());
+        Assertions.assertEquals("abvcipowzaf", response.value().get(0).publisher());
+        Assertions.assertEquals("zuu", response.value().get(0).publisherDisplayName());
+        Assertions.assertEquals("ljcirvpefycdvei", response.value().get(0).template());
     }
 }

@@ -12,7 +12,7 @@ public final class SecureScoreControlDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecureScoreControlDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"yvaifpp\",\"score\":{\"max\":838955449,\"current\":86.92464230297385,\"percentage\":2.5163057832325975},\"healthyResourceCount\":422013708,\"unhealthyResourceCount\":1385356359,\"notApplicableResourceCount\":149702899,\"weight\":3347151280629685856,\"definition\":{\"properties\":{\"displayName\":\"pvtyqfttehdpbouj\",\"description\":\"kfvvdshxcde\",\"maxScore\":217091641,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"cgjtfrnquktrfn\"},{\"id\":\"nlrxsmyltrwntfmt\"},{\"id\":\"wjdxw\"}]},\"id\":\"az\",\"name\":\"urrdreyzjwhsetww\",\"type\":\"wzzqseuzuukykcy\"}},\"id\":\"hyqqzzdcy\",\"name\":\"ey\",\"type\":\"tewfopazdazgbsq\"}")
+            "{\"properties\":{\"displayName\":\"omdynhdwdigum\",\"score\":{\"max\":1256720827,\"current\":73.39891966228774,\"percentage\":0.3636152936608239},\"healthyResourceCount\":194924410,\"unhealthyResourceCount\":1799745167,\"notApplicableResourceCount\":438186980,\"weight\":694347941979417663,\"definition\":{\"properties\":{\"displayName\":\"vaiqyuvvf\",\"description\":\"kphhq\",\"maxScore\":457679085,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"avluwmncs\"}]},\"id\":\"tijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}},\"id\":\"huzqgn\",\"name\":\"dgkynscliqhzvhxn\",\"type\":\"omtkub\"}")
             .toObject(SecureScoreControlDetailsInner.class);
     }
 

@@ -28,7 +28,7 @@ public final class JitNetworkAccessPoliciesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.jitNetworkAccessPolicies()
-            .deleteWithResponse("woqhgppwxn", "kfzrxxf", "duvqzjnnuww", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("scv", "lxlhuavkrm", "kmyjmkxett", com.azure.core.util.Context.NONE);
 
     }
 }

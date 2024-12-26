@@ -12,7 +12,7 @@ public final class AlertSyncSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSyncSettings model = BinaryData.fromString(
-            "{\"kind\":\"AlertSyncSettings\",\"properties\":{\"enabled\":false},\"id\":\"xsuykznhrfg\",\"name\":\"lglh\",\"type\":\"ry\"}")
+            "{\"kind\":\"AlertSyncSettings\",\"properties\":{\"enabled\":false},\"id\":\"ljvrcmyfqipgxhnp\",\"name\":\"myqwcab\",\"type\":\"nuilee\"}")
             .toObject(AlertSyncSettings.class);
         Assertions.assertEquals(false, model.enabled());
     }
