@@ -93,6 +93,8 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
     }
 
     /**
+     * Gets the Service Bus namespace management API entry point.
+     *
      * @return the Service Bus namespace management API entry point
      */
     public ServiceBusNamespaces namespaces() {
