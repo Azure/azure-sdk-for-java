@@ -5,41 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
+import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
+import com.azure.resourcemanager.notificationhubs.models.Sku;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Response for POST requests that return single SharedAccessAuthorizationRule.
+ * Description of a Namespace AuthorizationRules.
  */
 @Fluent
-public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResource {
+public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
     /*
-     * SharedAccessAuthorizationRule properties.
+     * Properties of the Namespace AuthorizationRule.
      */
     private SharedAccessAuthorizationRuleProperties innerProperties;
 
     /*
-     * Deprecated - only for compatibility.
+     * The sku of the created namespace
      */
-    private String location;
-
-    /*
-     * Deprecated - only for compatibility.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
+    private Sku sku;
 
     /*
      * The type of the resource.
@@ -63,7 +52,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the innerProperties property: SharedAccessAuthorizationRule properties.
+     * Get the innerProperties property: Properties of the Namespace AuthorizationRule.
      * 
      * @return the innerProperties value.
      */
@@ -72,52 +61,23 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the location property: Deprecated - only for compatibility.
+     * Get the sku property: The sku of the created namespace.
      * 
-     * @return the location value.
+     * @return the sku value.
      */
-    public String location() {
-        return this.location;
+    public Sku sku() {
+        return this.sku;
     }
 
     /**
-     * Set the location property: Deprecated - only for compatibility.
+     * Set the sku property: The sku of the created namespace.
      * 
-     * @param location the location value to set.
+     * @param sku the sku value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
      */
-    public SharedAccessAuthorizationRuleResourceInner withLocation(String location) {
-        this.location = location;
+    public SharedAccessAuthorizationRuleResourceInner withSku(Sku sku) {
+        this.sku = sku;
         return this;
-    }
-
-    /**
-     * Get the tags property: Deprecated - only for compatibility.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Deprecated - only for compatibility.
-     * 
-     * @param tags the tags value to set.
-     * @return the SharedAccessAuthorizationRuleResourceInner object itself.
-     */
-    public SharedAccessAuthorizationRuleResourceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -151,7 +111,25 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the rights property: Gets or sets the rights associated with the rule.
+     * {@inheritDoc}
+     */
+    @Override
+    public SharedAccessAuthorizationRuleResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SharedAccessAuthorizationRuleResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the rights property: The rights associated with the rule.
      * 
      * @return the rights value.
      */
@@ -160,7 +138,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Set the rights property: Gets or sets the rights associated with the rule.
+     * Set the rights property: The rights associated with the rule.
      * 
      * @param rights the rights value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
@@ -174,8 +152,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the primaryKey value.
      */
@@ -184,23 +161,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Set the primaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
-     * 
-     * @param primaryKey the primaryKey value to set.
-     * @return the SharedAccessAuthorizationRuleResourceInner object itself.
-     */
-    public SharedAccessAuthorizationRuleResourceInner withPrimaryKey(String primaryKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SharedAccessAuthorizationRuleProperties();
-        }
-        this.innerProperties().withPrimaryKey(primaryKey);
-        return this;
-    }
-
-    /**
-     * Get the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
+     * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
      * 
      * @return the secondaryKey value.
      */
@@ -209,22 +170,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Set the secondaryKey property: Gets a base64-encoded 256-bit primary key for signing and
-     * validating the SAS token.
-     * 
-     * @param secondaryKey the secondaryKey value to set.
-     * @return the SharedAccessAuthorizationRuleResourceInner object itself.
-     */
-    public SharedAccessAuthorizationRuleResourceInner withSecondaryKey(String secondaryKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SharedAccessAuthorizationRuleProperties();
-        }
-        this.innerProperties().withSecondaryKey(secondaryKey);
-        return this;
-    }
-
-    /**
-     * Get the keyName property: Gets a string that describes the authorization rule.
+     * Get the keyName property: A string that describes the authorization rule.
      * 
      * @return the keyName value.
      */
@@ -233,25 +179,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the modifiedTime property: Gets the last modified time for this rule.
-     * 
-     * @return the modifiedTime value.
-     */
-    public OffsetDateTime modifiedTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().modifiedTime();
-    }
-
-    /**
-     * Get the createdTime property: Gets the created time for this rule.
-     * 
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
-    }
-
-    /**
-     * Get the claimType property: Gets a string that describes the claim type.
+     * Get the claimType property: A string that describes the claim type.
      * 
      * @return the claimType value.
      */
@@ -260,7 +188,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the claimValue property: Gets a string that describes the claim value.
+     * Get the claimValue property: A string that describes the claim value.
      * 
      * @return the claimValue value.
      */
@@ -269,7 +197,25 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     }
 
     /**
-     * Get the revision property: Gets the revision number for the rule.
+     * Get the modifiedTime property: The last modified time for this rule.
+     * 
+     * @return the modifiedTime value.
+     */
+    public String modifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().modifiedTime();
+    }
+
+    /**
+     * Get the createdTime property: The created time for this rule.
+     * 
+     * @return the createdTime value.
+     */
+    public String createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the revision property: The revision number for the rule.
      * 
      * @return the revision value.
      */
@@ -286,6 +232,9 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 
     /**
@@ -294,9 +243,10 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
         return jsonWriter.writeEndObject();
     }
 
@@ -323,16 +273,16 @@ public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResou
                     deserializedSharedAccessAuthorizationRuleResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSharedAccessAuthorizationRuleResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedSharedAccessAuthorizationRuleResourceInner.innerProperties
                         = SharedAccessAuthorizationRuleProperties.fromJson(reader);
-                } else if ("location".equals(fieldName)) {
-                    deserializedSharedAccessAuthorizationRuleResourceInner.location = reader.getString();
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedSharedAccessAuthorizationRuleResourceInner.tags = tags;
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedSharedAccessAuthorizationRuleResourceInner.systemData = SystemData.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.sku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
