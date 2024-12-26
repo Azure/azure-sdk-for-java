@@ -11,7 +11,7 @@ public final class ComplianceResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComplianceResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"akxcptsoqfyiaseq\",\"name\":\"hkrttzrazis\",\"type\":\"ykiue\"}")
+            "{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"lhqgnufooojy\",\"name\":\"ifsqesaagdfmg\",\"type\":\"zlhjxrifkwmrvkt\"}")
             .toObject(ComplianceResultInner.class);
     }
 

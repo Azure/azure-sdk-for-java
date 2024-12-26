@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono;
 public final class AdvancedThreatProtectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr
-            = "{\"properties\":{\"isEnabled\":false},\"id\":\"mb\",\"name\":\"ttmhlvr\",\"type\":\"cyxrn\"}";
+        String responseStr = "{\"properties\":{\"isEnabled\":true},\"id\":\"fx\",\"name\":\"dcoxnbk\",\"type\":\"ja\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +29,9 @@ public final class AdvancedThreatProtectionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AdvancedThreatProtectionSetting response = manager.advancedThreatProtections()
-            .getWithResponse("jnskvct", com.azure.core.util.Context.NONE)
-            .getValue();
+        AdvancedThreatProtectionSetting response
+            = manager.advancedThreatProtections().getWithResponse("hci", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(false, response.isEnabled());
+        Assertions.assertEquals(true, response.isEnabled());
     }
 }

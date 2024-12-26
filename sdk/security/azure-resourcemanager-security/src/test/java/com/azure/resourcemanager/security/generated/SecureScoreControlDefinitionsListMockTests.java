@@ -21,7 +21,7 @@ public final class SecureScoreControlDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"scjwyyeomiflrvfe\",\"description\":\"ctshwfrhhasabvau\",\"maxScore\":1674693803,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"gcil\"},{\"id\":\"tpwbjlpfwuqp\"},{\"id\":\"dgi\"},{\"id\":\"nyu\"}]},\"id\":\"slizmpnxghamr\",\"name\":\"lanchqotmmxl\",\"type\":\"xej\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"ctofldseacdhztxk\",\"description\":\"fg\",\"maxScore\":1341568706,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"fj\"},{\"id\":\"wqrxetfgcwv\"},{\"id\":\"mdqntycnaw\"}]},\"id\":\"hvmaxgnuyeamcmhu\",\"name\":\"fjeceho\",\"type\":\"wcpqtwl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

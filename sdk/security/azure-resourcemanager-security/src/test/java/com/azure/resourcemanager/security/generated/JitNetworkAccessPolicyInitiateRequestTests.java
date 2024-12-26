@@ -16,43 +16,39 @@ public final class JitNetworkAccessPolicyInitiateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessPolicyInitiateRequest model = BinaryData.fromString(
-            "{\"virtualMachines\":[{\"id\":\"chiqbplvfid\",\"ports\":[{\"number\":1535267928,\"allowedSourceAddressPrefix\":\"ekxbyjg\",\"endTimeUtc\":\"2021-05-22T03:29:48Z\"},{\"number\":1206122541,\"allowedSourceAddressPrefix\":\"pxyihpqadagr\",\"endTimeUtc\":\"2021-11-13T12:07:33Z\"}]},{\"id\":\"dicxdw\",\"ports\":[{\"number\":1754375162,\"allowedSourceAddressPrefix\":\"wxwy\",\"endTimeUtc\":\"2021-08-02T02:20:10Z\"},{\"number\":145966746,\"allowedSourceAddressPrefix\":\"j\",\"endTimeUtc\":\"2021-04-13T00:22:08Z\"}]}],\"justification\":\"ipcukdveks\"}")
+            "{\"virtualMachines\":[{\"id\":\"xrxc\",\"ports\":[{\"number\":2074998294,\"allowedSourceAddressPrefix\":\"savokqdzf\",\"endTimeUtc\":\"2021-02-04T21:35:57Z\"},{\"number\":1042869569,\"allowedSourceAddressPrefix\":\"vjlfrqtt\",\"endTimeUtc\":\"2021-10-27T10:22:37Z\"},{\"number\":213163160,\"allowedSourceAddressPrefix\":\"katnwxyi\",\"endTimeUtc\":\"2021-10-08T07:32:22Z\"}]}],\"justification\":\"dkqqfkuvscxkd\"}")
             .toObject(JitNetworkAccessPolicyInitiateRequest.class);
-        Assertions.assertEquals("chiqbplvfid", model.virtualMachines().get(0).id());
-        Assertions.assertEquals(1535267928, model.virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals("ekxbyjg", model.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T03:29:48Z"),
+        Assertions.assertEquals("xrxc", model.virtualMachines().get(0).id());
+        Assertions.assertEquals(2074998294, model.virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals("savokqdzf",
+            model.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T21:35:57Z"),
             model.virtualMachines().get(0).ports().get(0).endTimeUtc());
-        Assertions.assertEquals("ipcukdveks", model.justification());
+        Assertions.assertEquals("dkqqfkuvscxkd", model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JitNetworkAccessPolicyInitiateRequest model = new JitNetworkAccessPolicyInitiateRequest()
-            .withVirtualMachines(Arrays.asList(
-                new JitNetworkAccessPolicyInitiateVirtualMachine().withId("chiqbplvfid")
-                    .withPorts(Arrays.asList(
-                        new JitNetworkAccessPolicyInitiatePort().withNumber(1535267928)
-                            .withAllowedSourceAddressPrefix("ekxbyjg")
-                            .withEndTimeUtc(OffsetDateTime.parse("2021-05-22T03:29:48Z")),
-                        new JitNetworkAccessPolicyInitiatePort().withNumber(1206122541)
-                            .withAllowedSourceAddressPrefix("pxyihpqadagr")
-                            .withEndTimeUtc(OffsetDateTime.parse("2021-11-13T12:07:33Z")))),
-                new JitNetworkAccessPolicyInitiateVirtualMachine().withId("dicxdw")
-                    .withPorts(Arrays.asList(
-                        new JitNetworkAccessPolicyInitiatePort().withNumber(1754375162)
-                            .withAllowedSourceAddressPrefix("wxwy")
-                            .withEndTimeUtc(OffsetDateTime.parse("2021-08-02T02:20:10Z")),
-                        new JitNetworkAccessPolicyInitiatePort().withNumber(145966746)
-                            .withAllowedSourceAddressPrefix("j")
-                            .withEndTimeUtc(OffsetDateTime.parse("2021-04-13T00:22:08Z"))))))
-            .withJustification("ipcukdveks");
+            .withVirtualMachines(Arrays.asList(new JitNetworkAccessPolicyInitiateVirtualMachine().withId("xrxc")
+                .withPorts(Arrays.asList(
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(2074998294)
+                        .withAllowedSourceAddressPrefix("savokqdzf")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-02-04T21:35:57Z")),
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(1042869569)
+                        .withAllowedSourceAddressPrefix("vjlfrqtt")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-10-27T10:22:37Z")),
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(213163160)
+                        .withAllowedSourceAddressPrefix("katnwxyi")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-10-08T07:32:22Z"))))))
+            .withJustification("dkqqfkuvscxkd");
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPolicyInitiateRequest.class);
-        Assertions.assertEquals("chiqbplvfid", model.virtualMachines().get(0).id());
-        Assertions.assertEquals(1535267928, model.virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals("ekxbyjg", model.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T03:29:48Z"),
+        Assertions.assertEquals("xrxc", model.virtualMachines().get(0).id());
+        Assertions.assertEquals(2074998294, model.virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals("savokqdzf",
+            model.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T21:35:57Z"),
             model.virtualMachines().get(0).ports().get(0).endTimeUtc());
-        Assertions.assertEquals("ipcukdveks", model.justification());
+        Assertions.assertEquals("dkqqfkuvscxkd", model.justification());
     }
 }

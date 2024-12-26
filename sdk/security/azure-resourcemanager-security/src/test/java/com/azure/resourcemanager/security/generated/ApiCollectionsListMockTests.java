@@ -21,7 +21,7 @@ public final class ApiCollectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"nrvxyyh\",\"discoveredVia\":\"i\",\"baseUrl\":\"tq\",\"numberOfApiEndpoints\":8541856603295749551,\"numberOfInactiveApiEndpoints\":6695249720842762342,\"numberOfUnauthenticatedApiEndpoints\":8425578413001116316,\"numberOfExternalApiEndpoints\":3304044395200083085,\"numberOfApiEndpointsWithSensitiveDataExposed\":9206752299380360428,\"sensitivityLabel\":\"imkjzcx\"},\"id\":\"sj\",\"name\":\"f\",\"type\":\"vksijrjgyind\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"xapeqiscrpi\",\"discoveredVia\":\"ftr\",\"baseUrl\":\"ejdaahuqimld\",\"numberOfApiEndpoints\":5717922508892024559,\"numberOfInactiveApiEndpoints\":8586070490644256683,\"numberOfUnauthenticatedApiEndpoints\":5811937101736568092,\"numberOfExternalApiEndpoints\":7269381240300955404,\"numberOfApiEndpointsWithSensitiveDataExposed\":1360712294441035838,\"sensitivityLabel\":\"snc\"},\"id\":\"kiioshj\",\"name\":\"cz\",\"type\":\"tybnxgztlcgctj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

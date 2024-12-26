@@ -14,24 +14,24 @@ public final class SecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"a\",\"protectionStatus\":\"iwkkvya\"},\"location\":\"kvvcsemsvuvdjkq\",\"id\":\"etqmmli\",\"name\":\"rj\",\"type\":\"xnwxdch\"}")
+            "{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"jrajcivm\",\"protectionStatus\":\"ghfcfiwrxgkneuvy\"},\"location\":\"zqodfvpgshox\",\"id\":\"sgbpfgzdjtx\",\"name\":\"zflbqvg\",\"type\":\"qvlgafcqusrdvetn\"}")
             .toObject(SecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("a", model.template());
-        Assertions.assertEquals("iwkkvya", model.protectionStatus());
+        Assertions.assertEquals("jrajcivm", model.template());
+        Assertions.assertEquals("ghfcfiwrxgkneuvy", model.protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecuritySolutionInner model = new SecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
             .withProvisioningState(ProvisioningState.FAILED)
-            .withTemplate("a")
-            .withProtectionStatus("iwkkvya");
+            .withTemplate("jrajcivm")
+            .withProtectionStatus("ghfcfiwrxgkneuvy");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("a", model.template());
-        Assertions.assertEquals("iwkkvya", model.protectionStatus());
+        Assertions.assertEquals("jrajcivm", model.template());
+        Assertions.assertEquals("ghfcfiwrxgkneuvy", model.protectionStatus());
     }
 }

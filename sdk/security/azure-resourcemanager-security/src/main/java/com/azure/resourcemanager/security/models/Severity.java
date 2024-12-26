@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The sub-assessment severity level.
+ * The severity level of the assessment.
  */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /**

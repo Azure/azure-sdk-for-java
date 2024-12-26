@@ -23,7 +23,7 @@ public final class JitNetworkAccessPoliciesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"jxnnnoz\",\"ports\":[{\"number\":213218486,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"dtuoamqobqe\"},{\"number\":1680065726,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"sht\"},{\"number\":926157641,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"zfeoctrzjw\"}],\"publicIpAddress\":\"wckzeb\"},{\"id\":\"bvwdxgyypmxq\",\"ports\":[{\"number\":1763246546,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"nxrcatkuhskegdk\"},{\"number\":730100218,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"ilyeshox\"},{\"number\":180908634,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"jdmu\"}],\"publicIpAddress\":\"usx\"},{\"id\":\"ugozwplxzgzumnot\",\"ports\":[{\"number\":1361773912,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"kbygb\"},{\"number\":168327185,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"kwyshybbn\"},{\"number\":1940462931,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"yizonzsurqcoja\"}],\"publicIpAddress\":\"zhzzcarciuoxyipd\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"vnhwsgnsputfel\",\"ports\":[]},{\"id\":\"ch\",\"ports\":[]}],\"startTimeUtc\":\"2021-07-11T12:17:35Z\",\"requestor\":\"fssjgbfbbachxx\",\"justification\":\"zunf\"}],\"provisioningState\":\"phceeivk\"},\"kind\":\"xlepghcnu\",\"location\":\"qpvtwttf\",\"id\":\"clggagygntbfytn\",\"name\":\"dnihuzzjuzvwg\",\"type\":\"zdtorbiwnyfzdpxc\"}]}";
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"qdcadwvps\",\"ports\":[{\"number\":103408291,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"ih\"},{\"number\":1849407422,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"ybmrzoepnxwd\"}],\"publicIpAddress\":\"njkgvfnmx\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"q\",\"ports\":[]},{\"id\":\"tibtyi\",\"ports\":[]},{\"id\":\"uyvpirf\",\"ports\":[]},{\"id\":\"jpnqnoowsbeden\",\"ports\":[]}],\"startTimeUtc\":\"2021-09-26T02:26:05Z\",\"requestor\":\"xkxbhxvu\",\"justification\":\"ulgm\"},{\"virtualMachines\":[{\"id\":\"jevdyznf\",\"ports\":[]},{\"id\":\"jsvkskmqozzkivy\",\"ports\":[]}],\"startTimeUtc\":\"2020-12-21T15:13:37Z\",\"requestor\":\"rl\",\"justification\":\"zji\"}],\"provisioningState\":\"qfhefkwabsol\"},\"kind\":\"nqqlmgnl\",\"location\":\"sjxtel\",\"id\":\"xhvuqbozool\",\"name\":\"qocarkuzlbc\",\"type\":\"ndtsnxawqytll\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,20 @@ public final class JitNetworkAccessPoliciesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JitNetworkAccessPolicy> response
-            = manager.jitNetworkAccessPolicies().listByResourceGroup("tjfdzfmnpbdrc", com.azure.core.util.Context.NONE);
+            = manager.jitNetworkAccessPolicies().listByResourceGroup("uqqiqezxlhd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xlepghcnu", response.iterator().next().kind());
-        Assertions.assertEquals("jxnnnoz", response.iterator().next().virtualMachines().get(0).id());
-        Assertions.assertEquals(213218486, response.iterator().next().virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals("nqqlmgnl", response.iterator().next().kind());
+        Assertions.assertEquals("qdcadwvps", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(103408291, response.iterator().next().virtualMachines().get(0).ports().get(0).number());
         Assertions.assertEquals(Protocol.UDP,
             response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
-        Assertions.assertEquals("dtuoamqobqe",
+        Assertions.assertEquals("ih",
             response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("wckzeb", response.iterator().next().virtualMachines().get(0).publicIpAddress());
-        Assertions.assertEquals("vnhwsgnsputfel",
-            response.iterator().next().requests().get(0).virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T12:17:35Z"),
+        Assertions.assertEquals("njkgvfnmx", response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("q", response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T02:26:05Z"),
             response.iterator().next().requests().get(0).startTimeUtc());
-        Assertions.assertEquals("fssjgbfbbachxx", response.iterator().next().requests().get(0).requestor());
-        Assertions.assertEquals("zunf", response.iterator().next().requests().get(0).justification());
+        Assertions.assertEquals("xkxbhxvu", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("ulgm", response.iterator().next().requests().get(0).justification());
     }
 }

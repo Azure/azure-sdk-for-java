@@ -27,7 +27,8 @@ public final class DeviceSecurityGroupsDeleteByResourceGroupWithResponseMockTest
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.deviceSecurityGroups().deleteByResourceGroupWithResponse("mds", "ij", com.azure.core.util.Context.NONE);
+        manager.deviceSecurityGroups()
+            .deleteByResourceGroupWithResponse("aupia", "cxnafbwqrooh", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,7 +11,7 @@ public final class TopologySingleResourceChildTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopologySingleResourceChild model
-            = BinaryData.fromString("{\"resourceId\":\"g\"}").toObject(TopologySingleResourceChild.class);
+            = BinaryData.fromString("{\"resourceId\":\"zkwrrwoyc\"}").toObject(TopologySingleResourceChild.class);
     }
 
     @org.junit.jupiter.api.Test

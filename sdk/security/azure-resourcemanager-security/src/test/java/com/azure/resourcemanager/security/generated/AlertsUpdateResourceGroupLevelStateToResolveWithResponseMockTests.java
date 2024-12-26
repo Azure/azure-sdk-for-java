@@ -28,7 +28,7 @@ public final class AlertsUpdateResourceGroupLevelStateToResolveWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateResourceGroupLevelStateToResolveWithResponse("uqaemoyg", "axjy", "dqr",
+            .updateResourceGroupLevelStateToResolveWithResponse("ky", "zolgjzmicuydocc", "xshanzb",
                 com.azure.core.util.Context.NONE);
 
     }

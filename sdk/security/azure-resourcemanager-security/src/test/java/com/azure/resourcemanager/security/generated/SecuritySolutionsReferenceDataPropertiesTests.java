@@ -13,34 +13,34 @@ public final class SecuritySolutionsReferenceDataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionsReferenceDataProperties model = BinaryData.fromString(
-            "{\"securityFamily\":\"Waf\",\"alertVendorName\":\"skwsdgkj\",\"packageInfoUrl\":\"yacwrasekwefc\",\"productName\":\"o\",\"publisher\":\"nwoqartwy\",\"publisherDisplayName\":\"qicladv\",\"template\":\"tdavuqmcbymsfobj\"}")
+            "{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"qfr\",\"packageInfoUrl\":\"qlkzme\",\"productName\":\"nitgvkxlz\",\"publisher\":\"qdrfegcealzxwhc\",\"publisherDisplayName\":\"nsymoyqhlwigd\",\"template\":\"vbkbxgomf\"}")
             .toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals("skwsdgkj", model.alertVendorName());
-        Assertions.assertEquals("yacwrasekwefc", model.packageInfoUrl());
-        Assertions.assertEquals("o", model.productName());
-        Assertions.assertEquals("nwoqartwy", model.publisher());
-        Assertions.assertEquals("qicladv", model.publisherDisplayName());
-        Assertions.assertEquals("tdavuqmcbymsfobj", model.template());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals("qfr", model.alertVendorName());
+        Assertions.assertEquals("qlkzme", model.packageInfoUrl());
+        Assertions.assertEquals("nitgvkxlz", model.productName());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.publisher());
+        Assertions.assertEquals("nsymoyqhlwigd", model.publisherDisplayName());
+        Assertions.assertEquals("vbkbxgomf", model.template());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecuritySolutionsReferenceDataProperties model
-            = new SecuritySolutionsReferenceDataProperties().withSecurityFamily(SecurityFamily.WAF)
-                .withAlertVendorName("skwsdgkj")
-                .withPackageInfoUrl("yacwrasekwefc")
-                .withProductName("o")
-                .withPublisher("nwoqartwy")
-                .withPublisherDisplayName("qicladv")
-                .withTemplate("tdavuqmcbymsfobj");
+            = new SecuritySolutionsReferenceDataProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
+                .withAlertVendorName("qfr")
+                .withPackageInfoUrl("qlkzme")
+                .withProductName("nitgvkxlz")
+                .withPublisher("qdrfegcealzxwhc")
+                .withPublisherDisplayName("nsymoyqhlwigd")
+                .withTemplate("vbkbxgomf");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals("skwsdgkj", model.alertVendorName());
-        Assertions.assertEquals("yacwrasekwefc", model.packageInfoUrl());
-        Assertions.assertEquals("o", model.productName());
-        Assertions.assertEquals("nwoqartwy", model.publisher());
-        Assertions.assertEquals("qicladv", model.publisherDisplayName());
-        Assertions.assertEquals("tdavuqmcbymsfobj", model.template());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals("qfr", model.alertVendorName());
+        Assertions.assertEquals("qlkzme", model.packageInfoUrl());
+        Assertions.assertEquals("nitgvkxlz", model.productName());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.publisher());
+        Assertions.assertEquals("nsymoyqhlwigd", model.publisherDisplayName());
+        Assertions.assertEquals("vbkbxgomf", model.template());
     }
 }

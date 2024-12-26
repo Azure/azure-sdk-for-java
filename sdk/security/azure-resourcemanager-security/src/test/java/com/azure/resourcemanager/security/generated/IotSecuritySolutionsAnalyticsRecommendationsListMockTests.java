@@ -22,7 +22,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recommendationName\":\"dpkwdtobpgdcid\",\"recommendationDisplayName\":\"aqermnddlir\",\"description\":\"clsaqifepdu\",\"recommendationTypeId\":\"evivkigliokl\",\"detectedBy\":\"ffpxeswctlfyt\",\"remediationSteps\":\"tytvnpbgces\",\"reportedSeverity\":\"High\",\"healthyDevices\":1597146389580948713,\"unhealthyDeviceCount\":5733980130708274981,\"logAnalyticsQuery\":\"rofofkbcjzzw\"},\"tags\":{\"nkfs\":\"blbtdqzhixc\",\"gbbzdsl\":\"gvyoxmyqzyqe\",\"xwukfjvqglaxseis\":\"okcevoxdddpwmg\",\"ejk\":\"vvgyphheo\"},\"id\":\"aleczt\",\"name\":\"thrtzpuv\",\"type\":\"s\"}]}";
+            = "{\"value\":[{\"properties\":{\"recommendationName\":\"we\",\"recommendationDisplayName\":\"l\",\"description\":\"skbuhzaca\",\"recommendationTypeId\":\"yltcoqcuj\",\"detectedBy\":\"sxzakuejkm\",\"remediationSteps\":\"iztjof\",\"reportedSeverity\":\"High\",\"healthyDevices\":3549832754787191051,\"unhealthyDeviceCount\":926999956512364754,\"logAnalyticsQuery\":\"sj\"},\"tags\":{\"yeji\":\"e\",\"rtudawlpjfel\":\"iuxegth\"},\"id\":\"erppt\",\"name\":\"bgqnz\",\"type\":\"nhii\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsListMockTests {
 
         PagedIterable<IoTSecurityAggregatedRecommendation> response
             = manager.iotSecuritySolutionsAnalyticsRecommendations()
-                .list("dpvhwirilam", "trhqdoxdeg", 1967570412, com.azure.core.util.Context.NONE);
+                .list("coqra", "wugyx", 354096943, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("blbtdqzhixc", response.iterator().next().tags().get("nkfs"));
-        Assertions.assertEquals("dpkwdtobpgdcid", response.iterator().next().recommendationName());
+        Assertions.assertEquals("e", response.iterator().next().tags().get("yeji"));
+        Assertions.assertEquals("we", response.iterator().next().recommendationName());
     }
 }

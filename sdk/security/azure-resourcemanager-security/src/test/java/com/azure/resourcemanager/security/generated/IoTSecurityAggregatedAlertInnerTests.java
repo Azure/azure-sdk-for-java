@@ -14,17 +14,17 @@ public final class IoTSecurityAggregatedAlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedAlertInner model = BinaryData.fromString(
-            "{\"properties\":{\"alertType\":\"oiqtamtyvskn\",\"alertDisplayName\":\"wzawnvsbcfhzagxn\",\"vendorName\":\"cvd\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"zregzgyufutrwpw\",\"description\":\"ye\",\"count\":7725440285768406469,\"effectedResourceType\":\"meottawj\",\"systemSource\":\"sxwwhnhjtf\",\"actionTaken\":\"n\",\"logAnalyticsQuery\":\"miljpnwynud\",\"topDevicesList\":[{\"deviceId\":\"sauzpjlx\",\"alertsCount\":6301220478923674751,\"lastOccurrence\":\"iqhzlr\"}]},\"tags\":{\"rfdsajrednwy\":\"ezxlskihm\"},\"id\":\"shtuwgm\",\"name\":\"vuafpwzyifr\",\"type\":\"gwltxeqip\"}")
+            "{\"properties\":{\"alertType\":\"cmgyud\",\"alertDisplayName\":\"tlmoyrx\",\"vendorName\":\"u\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"ntxhdzhlrqjbhck\",\"description\":\"lhrxsbkyvpyc\",\"count\":1835147591912684740,\"effectedResourceType\":\"p\",\"systemSource\":\"afkuwb\",\"actionTaken\":\"nwbmeh\",\"logAnalyticsQuery\":\"eyvjusrtslhspkde\",\"topDevicesList\":[{\"deviceId\":\"fm\",\"alertsCount\":6174140957199534437,\"lastOccurrence\":\"t\"},{\"deviceId\":\"lmqkrhahvlj\",\"alertsCount\":8641218324516083606,\"lastOccurrence\":\"uhcdhm\"},{\"deviceId\":\"alaexqpvfadmwsrc\",\"alertsCount\":8220008823832302214,\"lastOccurrence\":\"vgomz\"}]},\"tags\":{\"ali\":\"isgwbnbbeldawkz\",\"hashsfwxosow\":\"urqhaka\"},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"}")
             .toObject(IoTSecurityAggregatedAlertInner.class);
-        Assertions.assertEquals("ezxlskihm", model.tags().get("rfdsajrednwy"));
+        Assertions.assertEquals("isgwbnbbeldawkz", model.tags().get("ali"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedAlertInner model
-            = new IoTSecurityAggregatedAlertInner().withTags(mapOf("rfdsajrednwy", "ezxlskihm"));
+        IoTSecurityAggregatedAlertInner model = new IoTSecurityAggregatedAlertInner()
+            .withTags(mapOf("ali", "isgwbnbbeldawkz", "hashsfwxosow", "urqhaka"));
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedAlertInner.class);
-        Assertions.assertEquals("ezxlskihm", model.tags().get("rfdsajrednwy"));
+        Assertions.assertEquals("isgwbnbbeldawkz", model.tags().get("ali"));
     }
 
     // Use "Map.of" if available

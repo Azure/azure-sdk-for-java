@@ -23,7 +23,7 @@ public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionMockTests
     @Test
     public void testListByResourceGroupAndRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"cnzalgmpupjh\",\"ports\":[{\"number\":1048512699,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"yu\"}],\"publicIpAddress\":\"vb\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"zjsb\",\"ports\":[]},{\"id\":\"p\",\"ports\":[]},{\"id\":\"utzaziydpoknsea\",\"ports\":[]},{\"id\":\"mbdqra\",\"ports\":[]}],\"startTimeUtc\":\"2021-03-07T03:41:08Z\",\"requestor\":\"d\",\"justification\":\"luobbva\"}],\"provisioningState\":\"wzknyujxysv\"},\"kind\":\"f\",\"location\":\"clvildlf\",\"id\":\"lleirmtxfqpfi\",\"name\":\"dcgbfouzf\",\"type\":\"pgcryvidbzdylbvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"akckywym\",\"ports\":[{\"number\":1308483372,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"bjkdtfohf\"},{\"number\":1240250337,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"zvkiwrsiwdy\"},{\"number\":1132634691,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"rykcrraueekcsue\"}],\"publicIpAddress\":\"gdda\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"gydlqidywm\",\"ports\":[]},{\"id\":\"mptyrilkfbnrqqxv\",\"ports\":[]},{\"id\":\"tpbnfnqtxjtoma\",\"ports\":[]}],\"startTimeUtc\":\"2021-11-19T14:40:41Z\",\"requestor\":\"wbnfddepl\",\"justification\":\"qjn\"},{\"virtualMachines\":[{\"id\":\"zygleexahvm\",\"ports\":[]}],\"startTimeUtc\":\"2021-09-17T20:33:22Z\",\"requestor\":\"hsbrcary\",\"justification\":\"jjzyvoaqajuve\"}],\"provisioningState\":\"ptdmkrrbhmpful\"},\"kind\":\"efgybpmfbfununmp\",\"location\":\"rvfyifkdsch\",\"id\":\"zvfictnk\",\"name\":\"jwg\",\"type\":\"wnphbkgfyrto\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,22 @@ public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionMockTests
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JitNetworkAccessPolicy> response = manager.jitNetworkAccessPolicies()
-            .listByResourceGroupAndRegion("sucr", "dtejobjzrlwt", com.azure.core.util.Context.NONE);
+            .listByResourceGroupAndRegion("dyz", "yckzex", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("f", response.iterator().next().kind());
-        Assertions.assertEquals("cnzalgmpupjh", response.iterator().next().virtualMachines().get(0).id());
-        Assertions.assertEquals(1048512699,
+        Assertions.assertEquals("efgybpmfbfununmp", response.iterator().next().kind());
+        Assertions.assertEquals("akckywym", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(1308483372,
             response.iterator().next().virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals(Protocol.ASTERISK,
+        Assertions.assertEquals(Protocol.UDP,
             response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
-        Assertions.assertEquals("yu",
+        Assertions.assertEquals("bjkdtfohf",
             response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("vb", response.iterator().next().virtualMachines().get(0).publicIpAddress());
-        Assertions.assertEquals("zjsb", response.iterator().next().requests().get(0).virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T03:41:08Z"),
+        Assertions.assertEquals("gdda", response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("gydlqidywm",
+            response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T14:40:41Z"),
             response.iterator().next().requests().get(0).startTimeUtc());
-        Assertions.assertEquals("d", response.iterator().next().requests().get(0).requestor());
-        Assertions.assertEquals("luobbva", response.iterator().next().requests().get(0).justification());
+        Assertions.assertEquals("wbnfddepl", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("qjn", response.iterator().next().requests().get(0).justification());
     }
 }

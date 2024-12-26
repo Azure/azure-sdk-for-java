@@ -21,7 +21,7 @@ public final class SecureScoresListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"ntk\",\"score\":{\"max\":449490729,\"current\":41.187189091355215,\"percentage\":5.904030835688379},\"weight\":5540092792041480414},\"id\":\"jdlhmkspybn\",\"name\":\"nlpqd\",\"type\":\"nskatupm\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"cpaqkt\",\"score\":{\"max\":1718076740,\"current\":3.9915742200950843,\"percentage\":90.67150748179714},\"weight\":5198029740001145946},\"id\":\"vxov\",\"name\":\"kxiuxqggvqr\",\"type\":\"hyhlwcjsqg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

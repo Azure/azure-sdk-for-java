@@ -20,12 +20,12 @@ public final class PricingListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PricingListInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"hraxquddrwjcl\",\"freeTrialRemainingTime\":\"PT219H48M33S\",\"enablementTime\":\"2020-12-22T20:05:05Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"dbwen\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"h\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"cwviqllukhk\":\"datarmvzti\"},\"operationStatus\":{}},{\"name\":\"qxgcbvzarmqcbpo\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"xbrdvcehqwh\":\"datainvagovjyhd\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"gnmguz\",\"uwvorbalkjn\",\"kbd\",\"lltqstqkqs\"]},\"id\":\"gxiynecovagzk\",\"name\":\"eubanlxunpqcc\",\"type\":\"qiawzl\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"slga\",\"freeTrialRemainingTime\":\"PT178H47M30S\",\"enablementTime\":\"2021-02-22T21:49:10Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"p\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"doejtighsxjpyt\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"hjnhjiot\":\"dataalahovuuwxhm\"},\"operationStatus\":{}},{\"name\":\"fbbcngkegxcypxbb\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"xql\":\"datailyrzoxp\"},\"operationStatus\":{}},{\"name\":\"olqownki\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"k\":\"datawnah\",\"cdhdyswcrpt\":\"datajjmztnlmsoodtmv\",\"izrpywlptyuqhrl\":\"dataeajczxvlgsrgkr\",\"ykpfu\":\"datacs\"},\"operationStatus\":{}},{\"name\":\"ixcnpcf\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"pcfpcfj\":\"datayycpawmpjprdpw\",\"peyamnnidmdiaw\":\"datawzlgzawkgy\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"ntmkctdhuosgwqps\",\"azihq\",\"dvqgcnbhcbmjkz\"]},\"id\":\"ibniynts\",\"name\":\"jmfmeftvhkm\",\"type\":\"ogjrhskbwgm\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"lcfog\",\"freeTrialRemainingTime\":\"PT177H14M43S\",\"enablementTime\":\"2021-10-21T06:47:03Z\",\"enforce\":\"True\",\"inherited\":\"False\",\"inheritedFrom\":\"dzxcouzfwo\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"kzkdtzxsoednlwg\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"zdrd\":\"datazomucmqgisnionet\",\"lxcznn\":\"datauenxkgtlzlmt\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"mxlxmwtygeq\",\"usi\"]},\"id\":\"oqcah\",\"name\":\"sgbjmlree\",\"type\":\"rfwss\"}]}")
+            "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"ozqvbubqmam\",\"freeTrialRemainingTime\":\"PT184H5M28S\",\"enablementTime\":\"2021-03-29T14:41:16Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"zttaboidvmf\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"bowsepd\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"tobkauxofshfph\":\"datatdherngbtcjuahok\",\"whslwkoj\":\"datapnulaiywzej\",\"rpqaf\":\"datallndnpd\"},\"operationStatus\":{}},{\"name\":\"ug\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"fypococtfjgti\":\"datahyet\",\"rmlmuowo\":\"datarjvzuyt\"},\"operationStatus\":{}},{\"name\":\"au\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"gajinnixjawrtmj\":\"dataionszonwp\"},\"operationStatus\":{}}],\"deprecated\":true,\"replacedBy\":[\"xlzhcoxovnekh\",\"nlusfnrd\",\"jxtxrdc\",\"tjvidt\"]},\"id\":\"gepuslvyjtc\",\"name\":\"uwkasiz\",\"type\":\"esfuught\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"cjxeygt\",\"freeTrialRemainingTime\":\"PT43H18M51S\",\"enablementTime\":\"2021-09-26T16:06:28Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"mr\",\"resourcesCoverageStatus\":\"NotCovered\",\"extensions\":[{\"name\":\"xuzrhwpusxjba\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"zjqatucoig\":\"datapdo\",\"fmxjg\":\"databxncnwfepbnw\"},\"operationStatus\":{}}],\"deprecated\":true,\"replacedBy\":[\"dlfgtdysnaq\",\"flq\"]},\"id\":\"ctqhamzjrwdk\",\"name\":\"zeqyjleziun\",\"type\":\"xdfzantkw\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"amlbnseqacjjvpil\",\"freeTrialRemainingTime\":\"PT23H5M32S\",\"enablementTime\":\"2021-12-03T16:31Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"itgueiookjbs\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"tpdelqa\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"jkgd\":\"dataotoebnfxofv\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"xejw\",\"bmdujtmvcopexc\"]},\"id\":\"jurbuhhlkyqltqsr\",\"name\":\"gtuwkff\",\"type\":\"jk\"}]}")
             .toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("hraxquddrwjcl", model.value().get(0).subPlan());
+        Assertions.assertEquals("ozqvbubqmam", model.value().get(0).subPlan());
         Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
-        Assertions.assertEquals("h", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals("bowsepd", model.value().get(0).extensions().get(0).name());
         Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
     }
 
@@ -33,45 +33,37 @@ public final class PricingListInnerTests {
     public void testSerialize() throws Exception {
         PricingListInner model = new PricingListInner().withValue(Arrays.asList(
             new PricingInner().withPricingTier(PricingTier.STANDARD)
-                .withSubPlan("hraxquddrwjcl")
+                .withSubPlan("ozqvbubqmam")
                 .withEnforce(Enforce.FALSE)
                 .withExtensions(Arrays.asList(
-                    new Extension().withName("h")
+                    new Extension().withName("bowsepd")
                         .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("cwviqllukhk", "datarmvzti")),
-                    new Extension().withName("qxgcbvzarmqcbpo")
-                        .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("xbrdvcehqwh", "datainvagovjyhd")))),
-            new PricingInner().withPricingTier(PricingTier.STANDARD)
-                .withSubPlan("slga")
-                .withEnforce(Enforce.FALSE)
-                .withExtensions(Arrays.asList(
-                    new Extension().withName("doejtighsxjpyt")
-                        .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("hjnhjiot", "dataalahovuuwxhm")),
-                    new Extension().withName("fbbcngkegxcypxbb")
-                        .withIsEnabled(IsEnabled.FALSE)
-                        .withAdditionalExtensionProperties(mapOf("xql", "datailyrzoxp")),
-                    new Extension().withName("olqownki")
-                        .withIsEnabled(IsEnabled.TRUE)
-                        .withAdditionalExtensionProperties(mapOf("k", "datawnah", "cdhdyswcrpt", "datajjmztnlmsoodtmv",
-                            "izrpywlptyuqhrl", "dataeajczxvlgsrgkr", "ykpfu", "datacs")),
-                    new Extension().withName("ixcnpcf")
+                        .withAdditionalExtensionProperties(mapOf("tobkauxofshfph", "datatdherngbtcjuahok", "whslwkoj",
+                            "datapnulaiywzej", "rpqaf", "datallndnpd")),
+                    new Extension().withName("ug")
                         .withIsEnabled(IsEnabled.FALSE)
                         .withAdditionalExtensionProperties(
-                            mapOf("pcfpcfj", "datayycpawmpjprdpw", "peyamnnidmdiaw", "datawzlgzawkgy")))),
-            new PricingInner().withPricingTier(PricingTier.FREE)
-                .withSubPlan("lcfog")
-                .withEnforce(Enforce.TRUE)
-                .withExtensions(Arrays.asList(new Extension().withName("kzkdtzxsoednlwg")
+                            mapOf("fypococtfjgti", "datahyet", "rmlmuowo", "datarjvzuyt")),
+                    new Extension().withName("au")
+                        .withIsEnabled(IsEnabled.TRUE)
+                        .withAdditionalExtensionProperties(mapOf("gajinnixjawrtmj", "dataionszonwp")))),
+            new PricingInner().withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("cjxeygt")
+                .withEnforce(Enforce.FALSE)
+                .withExtensions(Arrays.asList(new Extension().withName("xuzrhwpusxjba")
                     .withIsEnabled(IsEnabled.FALSE)
-                    .withAdditionalExtensionProperties(
-                        mapOf("zdrd", "datazomucmqgisnionet", "lxcznn", "datauenxkgtlzlmt"))))));
+                    .withAdditionalExtensionProperties(mapOf("zjqatucoig", "datapdo", "fmxjg", "databxncnwfepbnw")))),
+            new PricingInner().withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("amlbnseqacjjvpil")
+                .withEnforce(Enforce.FALSE)
+                .withExtensions(Arrays.asList(new Extension().withName("tpdelqa")
+                    .withIsEnabled(IsEnabled.TRUE)
+                    .withAdditionalExtensionProperties(mapOf("jkgd", "dataotoebnfxofv"))))));
         model = BinaryData.fromObject(model).toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("hraxquddrwjcl", model.value().get(0).subPlan());
+        Assertions.assertEquals("ozqvbubqmam", model.value().get(0).subPlan());
         Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
-        Assertions.assertEquals("h", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals("bowsepd", model.value().get(0).extensions().get(0).name());
         Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
     }
 

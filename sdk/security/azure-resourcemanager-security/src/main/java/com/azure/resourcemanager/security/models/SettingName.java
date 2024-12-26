@@ -12,9 +12,30 @@ import java.util.Collection;
  */
 public final class SettingName extends ExpandableStringEnum<SettingName> {
     /**
-     * Static value current for SettingName.
+     * Static value MCAS for SettingName.
      */
-    public static final SettingName CURRENT = fromString("current");
+    public static final SettingName MCAS = fromString("MCAS");
+
+    /**
+     * Static value WDATP for SettingName.
+     */
+    public static final SettingName WDATP = fromString("WDATP");
+
+    /**
+     * Static value WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW for SettingName.
+     */
+    public static final SettingName WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW
+        = fromString("WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW");
+
+    /**
+     * Static value WDATP_UNIFIED_SOLUTION for SettingName.
+     */
+    public static final SettingName WDATP_UNIFIED_SOLUTION = fromString("WDATP_UNIFIED_SOLUTION");
+
+    /**
+     * Static value Sentinel for SettingName.
+     */
+    public static final SettingName SENTINEL = fromString("Sentinel");
 
     /**
      * Creates a new instance of SettingName value.

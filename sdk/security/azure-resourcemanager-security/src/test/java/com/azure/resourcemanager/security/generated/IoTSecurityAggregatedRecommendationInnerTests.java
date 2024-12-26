@@ -14,20 +14,20 @@ public final class IoTSecurityAggregatedRecommendationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedRecommendationInner model = BinaryData.fromString(
-            "{\"properties\":{\"recommendationName\":\"scxmxeat\",\"recommendationDisplayName\":\"bmwnrdjyibqb\",\"description\":\"omhjrmkuhm\",\"recommendationTypeId\":\"ljalfihcjmobc\",\"detectedBy\":\"cd\",\"remediationSteps\":\"xqcwgax\",\"reportedSeverity\":\"Medium\",\"healthyDevices\":6143908202946578029,\"unhealthyDeviceCount\":5266619398102313433,\"logAnalyticsQuery\":\"jjzr\"},\"tags\":{\"mmpuj\":\"xldzyyfytpqsix\",\"ovwzdbpqvybefg\":\"vyqlkjuvsmbmslzo\",\"okcvtlubses\":\"mx\"},\"id\":\"vcuartrhun\",\"name\":\"pirykycndzfqiv\",\"type\":\"reuykbbmnwagl\"}")
+            "{\"properties\":{\"recommendationName\":\"xrmcqibycnojvk\",\"recommendationDisplayName\":\"e\",\"description\":\"sgzvahapjyzhpv\",\"recommendationTypeId\":\"zcjrvxdjzlmwlx\",\"detectedBy\":\"ug\",\"remediationSteps\":\"zovawjvz\",\"reportedSeverity\":\"Low\",\"healthyDevices\":6384208989627743230,\"unhealthyDeviceCount\":193130563963832642,\"logAnalyticsQuery\":\"nxipeil\"},\"tags\":{\"bbtdzumvee\":\"uaejxdultsk\",\"zuhkfpbsjyof\":\"gpw\"},\"id\":\"xl\",\"name\":\"us\",\"type\":\"ttouwaboekqvkel\"}")
             .toObject(IoTSecurityAggregatedRecommendationInner.class);
-        Assertions.assertEquals("xldzyyfytpqsix", model.tags().get("mmpuj"));
-        Assertions.assertEquals("scxmxeat", model.recommendationName());
+        Assertions.assertEquals("uaejxdultsk", model.tags().get("bbtdzumvee"));
+        Assertions.assertEquals("xrmcqibycnojvk", model.recommendationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IoTSecurityAggregatedRecommendationInner model = new IoTSecurityAggregatedRecommendationInner()
-            .withTags(mapOf("mmpuj", "xldzyyfytpqsix", "ovwzdbpqvybefg", "vyqlkjuvsmbmslzo", "okcvtlubses", "mx"))
-            .withRecommendationName("scxmxeat");
+            .withTags(mapOf("bbtdzumvee", "uaejxdultsk", "zuhkfpbsjyof", "gpw"))
+            .withRecommendationName("xrmcqibycnojvk");
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedRecommendationInner.class);
-        Assertions.assertEquals("xldzyyfytpqsix", model.tags().get("mmpuj"));
-        Assertions.assertEquals("scxmxeat", model.recommendationName());
+        Assertions.assertEquals("uaejxdultsk", model.tags().get("bbtdzumvee"));
+        Assertions.assertEquals("xrmcqibycnojvk", model.recommendationName());
     }
 
     // Use "Map.of" if available
