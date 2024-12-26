@@ -17,9 +17,9 @@ import java.util.List;
  * The list of Linker.
  */
 @Fluent
-public final class ResourceList implements JsonSerializable<ResourceList> {
+public final class LinkerList implements JsonSerializable<LinkerList> {
     /*
-     * The Linker used to get the next page of Linker list.
+     * The link used to get the next page of Linker list.
      */
     private String nextLink;
 
@@ -29,13 +29,13 @@ public final class ResourceList implements JsonSerializable<ResourceList> {
     private List<LinkerResourceInner> value;
 
     /**
-     * Creates an instance of ResourceList class.
+     * Creates an instance of LinkerList class.
      */
-    public ResourceList() {
+    public LinkerList() {
     }
 
     /**
-     * Get the nextLink property: The Linker used to get the next page of Linker list.
+     * Get the nextLink property: The link used to get the next page of Linker list.
      * 
      * @return the nextLink value.
      */
@@ -44,12 +44,12 @@ public final class ResourceList implements JsonSerializable<ResourceList> {
     }
 
     /**
-     * Set the nextLink property: The Linker used to get the next page of Linker list.
+     * Set the nextLink property: The link used to get the next page of Linker list.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the ResourceList object itself.
+     * @return the LinkerList object itself.
      */
-    public ResourceList withNextLink(String nextLink) {
+    public LinkerList withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
@@ -67,9 +67,9 @@ public final class ResourceList implements JsonSerializable<ResourceList> {
      * Set the value property: The list of Linkers.
      * 
      * @param value the value value to set.
-     * @return the ResourceList object itself.
+     * @return the LinkerList object itself.
      */
-    public ResourceList withValue(List<LinkerResourceInner> value) {
+    public LinkerList withValue(List<LinkerResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -97,32 +97,32 @@ public final class ResourceList implements JsonSerializable<ResourceList> {
     }
 
     /**
-     * Reads an instance of ResourceList from the JsonReader.
+     * Reads an instance of LinkerList from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ResourceList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResourceList.
+     * @return An instance of LinkerList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the LinkerList.
      */
-    public static ResourceList fromJson(JsonReader jsonReader) throws IOException {
+    public static LinkerList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceList deserializedResourceList = new ResourceList();
+            LinkerList deserializedLinkerList = new LinkerList();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("nextLink".equals(fieldName)) {
-                    deserializedResourceList.nextLink = reader.getString();
+                    deserializedLinkerList.nextLink = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     List<LinkerResourceInner> value
                         = reader.readArray(reader1 -> LinkerResourceInner.fromJson(reader1));
-                    deserializedResourceList.value = value;
+                    deserializedLinkerList.value = value;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedResourceList;
+            return deserializedLinkerList;
         });
     }
 }

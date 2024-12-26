@@ -10,15 +10,14 @@ package com.azure.resourcemanager.servicelinker.generated;
 public final class LinkerDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2024-07-01-preview/examples/
-     * DeleteLinker.json
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/DeleteLink.json
      */
     /**
-     * Sample code: DeleteLinker.
+     * Sample code: DeleteLink.
      * 
      * @param manager Entry point to ServiceLinkerManager.
      */
-    public static void deleteLinker(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
+    public static void deleteLink(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
         manager.linkers()
             .delete(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",

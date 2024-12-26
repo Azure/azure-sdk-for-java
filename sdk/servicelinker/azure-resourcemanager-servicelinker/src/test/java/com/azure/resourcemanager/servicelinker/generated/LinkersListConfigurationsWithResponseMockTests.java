@@ -6,22 +6,22 @@ package com.azure.resourcemanager.servicelinker.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicelinker.ServiceLinkerManager;
-import com.azure.resourcemanager.servicelinker.models.DryrunResource;
+import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class LinkersOperationsListDryrunMockTests {
+public final class LinkersListConfigurationsWithResponseMockTests {
     @Test
-    public void testListDryrun() throws Exception {
+    public void testListConfigurationsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"parameters\":{\"actionName\":\"DryrunParameters\"},\"prerequisiteResults\":[{\"type\":\"DryrunPrerequisiteResult\"},{\"type\":\"DryrunPrerequisiteResult\"},{\"type\":\"DryrunPrerequisiteResult\"},{\"type\":\"DryrunPrerequisiteResult\"}],\"operationPreviews\":[{\"name\":\"hkxbpv\",\"operationType\":\"configNetwork\",\"description\":\"hx\",\"action\":\"yngudivk\",\"scope\":\"swbxqz\"},{\"name\":\"zjf\",\"operationType\":\"configAuth\",\"description\":\"fdxxivetvtcqaqtd\",\"action\":\"mcbxvwvxysl\",\"scope\":\"hsfxoblytkb\"}],\"provisioningState\":\"pe\"},\"id\":\"wfbkrvrns\",\"name\":\"shqjohxcrsbf\",\"type\":\"vasrruvwb\"}]}";
+            = "{\"configurations\":[{\"name\":\"dqytbciqfouflmm\",\"value\":\"zsm\"},{\"name\":\"mglougpbkw\",\"value\":\"utduqktapspwgcu\"},{\"name\":\"tumkdosvqwhbm\",\"value\":\"bbjfddgmbmbexp\"},{\"name\":\"htqqrolfp\",\"value\":\"s\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,11 @@ public final class LinkersOperationsListDryrunMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DryrunResource> response
-            = manager.linkersOperations().listDryrun("grcfb", com.azure.core.util.Context.NONE);
+        SourceConfigurationResult response = manager.linkers()
+            .listConfigurationsWithResponse("gakeqsr", "yb", com.azure.core.util.Context.NONE)
+            .getValue();
 
+        Assertions.assertEquals("dqytbciqfouflmm", response.configurations().get(0).name());
+        Assertions.assertEquals("zsm", response.configurations().get(0).value());
     }
 }

@@ -27,7 +27,7 @@ public final class LinkersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.linkers().delete("kzbbtd", "umveekgpwozuhkf", com.azure.core.util.Context.NONE);
+        manager.linkers().delete("mrldhu", "jzzd", com.azure.core.util.Context.NONE);
 
     }
 }

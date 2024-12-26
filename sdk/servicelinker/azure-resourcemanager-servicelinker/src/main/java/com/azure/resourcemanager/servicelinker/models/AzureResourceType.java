@@ -17,11 +17,6 @@ public final class AzureResourceType extends ExpandableStringEnum<AzureResourceT
     public static final AzureResourceType KEY_VAULT = fromString("KeyVault");
 
     /**
-     * Static value AppConfig for AzureResourceType.
-     */
-    public static final AzureResourceType APP_CONFIG = fromString("AppConfig");
-
-    /**
      * Creates a new instance of AzureResourceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
