@@ -261,7 +261,11 @@ public final class AzureResourceManager {
      * previously specified authentication file).
      */
     public interface Authenticated extends AccessManagement {
-        /** @return the currently selected tenant ID this client is authenticated to work with */
+        /**
+         * Gets the currently selected tenant ID this client is authenticated to work with.
+         *
+         * @return the currently selected tenant ID this client is authenticated to work with
+         */
         String tenantId();
 
         /**
