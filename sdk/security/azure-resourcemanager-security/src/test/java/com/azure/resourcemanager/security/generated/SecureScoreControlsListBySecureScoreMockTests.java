@@ -22,7 +22,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
     @Test
     public void testListBySecureScore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"qdnppfcfguamrvam\",\"score\":{\"max\":1643732189,\"current\":37.63228304709491,\"percentage\":61.2029894208796},\"healthyResourceCount\":2010198474,\"unhealthyResourceCount\":1472965569,\"notApplicableResourceCount\":1868768880,\"weight\":6940120133635182123,\"definition\":{\"properties\":{\"displayName\":\"syydjlhdukcsqvye\",\"description\":\"xhulojwumfjdy\",\"maxScore\":791669096,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{},{},{},{}]},\"id\":\"yxdjspnonxemhqp\",\"name\":\"hnatwvgcmcvdjl\",\"type\":\"wefevt\"}},\"id\":\"llqypmjcoy\",\"name\":\"fwgkzuhk\",\"type\":\"hx\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"qagywvtxig\",\"score\":{\"max\":1582673883,\"current\":41.63449958292145,\"percentage\":35.43985394272515},\"healthyResourceCount\":385096525,\"unhealthyResourceCount\":1073609864,\"notApplicableResourceCount\":634572436,\"weight\":3274030063433880813,\"definition\":{\"properties\":{\"displayName\":\"u\",\"description\":\"klhsidsjtdlpb\",\"maxScore\":690959949,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{},{},{},{}]},\"id\":\"sv\",\"name\":\"zfcpuoeedwjcc\",\"type\":\"klhsyekrdrenxol\"}},\"id\":\"i\",\"name\":\"ehqbeivdlhydwbdb\",\"type\":\"grlpuny\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecureScoreControlDetails> response = manager.secureScoreControls()
-            .listBySecureScore("wqjz", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+            .listBySecureScore("lxpnovyoanf", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
 
     }
 }

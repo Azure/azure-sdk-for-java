@@ -16,37 +16,29 @@ public final class SecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"gjtnhtukfacihm\",\"protectionStatus\":\"fntumeezbxvqx\"},\"location\":\"uvwc\",\"id\":\"asgom\",\"name\":\"mjzwx\",\"type\":\"qgo\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Succeeded\",\"template\":\"wwztj\",\"protectionStatus\":\"mkkhtgfredml\"},\"location\":\"grllcc\",\"id\":\"aovjow\",\"name\":\"zhpabac\",\"type\":\"mlyotg\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"provisioningState\":\"Updating\",\"template\":\"nsrqor\",\"protectionStatus\":\"genmvceb\"},\"location\":\"etqujxcxxq\",\"id\":\"dcqjkedwqurc\",\"name\":\"ojmrvvxwjongzse\",\"type\":\"qqrsil\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Failed\",\"template\":\"kxxkan\",\"protectionStatus\":\"bvriaqgvtojrulfu\"},\"location\":\"ejrthcfjzhxlyub\",\"id\":\"jrostvrje\",\"name\":\"mtzzbeq\",\"type\":\"ztr\"}],\"nextLink\":\"lxrdhabsrwrsn\"}")
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Succeeded\",\"template\":\"lnwiaaomylwe\",\"protectionStatus\":\"z\"},\"location\":\"cse\",\"id\":\"hwwn\",\"name\":\"jhlfzswpchwahf\",\"type\":\"ousnfepgfewe\"},{\"properties\":{\"securityFamily\":\"Waf\",\"provisioningState\":\"Succeeded\",\"template\":\"xgncxyk\",\"protectionStatus\":\"hdjhlimmbcx\"},\"location\":\"bcporxvxcjzhqizx\",\"id\":\"pxtgqscjav\",\"name\":\"t\",\"type\":\"uhdqazk\"}],\"nextLink\":\"gg\"}")
             .toObject(SecuritySolutionList.class);
         Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
-        Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("gjtnhtukfacihm", model.value().get(0).template());
-        Assertions.assertEquals("fntumeezbxvqx", model.value().get(0).protectionStatus());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lnwiaaomylwe", model.value().get(0).template());
+        Assertions.assertEquals("z", model.value().get(0).protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecuritySolutionList model = new SecuritySolutionList().withValue(Arrays.asList(
             new SecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withTemplate("gjtnhtukfacihm")
-                .withProtectionStatus("fntumeezbxvqx"),
-            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
                 .withProvisioningState(ProvisioningState.SUCCEEDED)
-                .withTemplate("wwztj")
-                .withProtectionStatus("mkkhtgfredml"),
-            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.SAAS_WAF)
-                .withProvisioningState(ProvisioningState.UPDATING)
-                .withTemplate("nsrqor")
-                .withProtectionStatus("genmvceb"),
-            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withTemplate("kxxkan")
-                .withProtectionStatus("bvriaqgvtojrulfu")));
+                .withTemplate("lnwiaaomylwe")
+                .withProtectionStatus("z"),
+            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.WAF)
+                .withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withTemplate("xgncxyk")
+                .withProtectionStatus("hdjhlimmbcx")));
         model = BinaryData.fromObject(model).toObject(SecuritySolutionList.class);
         Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
-        Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("gjtnhtukfacihm", model.value().get(0).template());
-        Assertions.assertEquals("fntumeezbxvqx", model.value().get(0).protectionStatus());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lnwiaaomylwe", model.value().get(0).template());
+        Assertions.assertEquals("z", model.value().get(0).protectionStatus());
     }
 }

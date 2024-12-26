@@ -47,13 +47,17 @@ public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     }
 
     /**
-     * @return sku tier
+     * Gets sku name.
+     *
+     * @return sku name
      */
     public SkuName name() {
         return this.sku.name();
     }
 
     /**
+     * Gets sku tier.
+     *
      * @return sku tier
      */
     public SkuTier tier() {
@@ -61,6 +65,8 @@ public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     }
 
     /**
+     * Gets sku capacity.
+     *
      * @return sku capacity
      */
     public int capacity() {

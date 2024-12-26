@@ -27,8 +27,7 @@ public final class PricingsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.pricings()
-            .deleteByResourceGroupWithResponse("hpvarumvuwj", "ulqfpqqll", com.azure.core.util.Context.NONE);
+        manager.pricings().deleteByResourceGroupWithResponse("whscozawmv", "xsm", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -28,7 +28,7 @@ public final class CustomRecommendationsDeleteByResourceGroupWithResponseMockTes
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.customRecommendations()
-            .deleteByResourceGroupWithResponse("ywylav", "tqj", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("zc", "cpiuzvk", com.azure.core.util.Context.NONE);
 
     }
 }

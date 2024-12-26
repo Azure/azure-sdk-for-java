@@ -12,21 +12,29 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface EventHubAuthorizationKey extends HasInnerModel<AccessKeysInner> {
     /**
+     * Gets primary access key.
+     *
      * @return primary access key
      */
     String primaryKey();
 
     /**
+     * Gets secondary access key.
+     *
      * @return secondary access key
      */
     String secondaryKey();
 
     /**
+     * Gets primary connection string.
+     *
      * @return primary connection string
      */
     String primaryConnectionString();
 
     /**
+     * Gets secondary connection string.
+     *
      * @return secondary connection string
      */
     String secondaryConnectionString();

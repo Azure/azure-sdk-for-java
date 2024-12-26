@@ -28,7 +28,7 @@ public final class StandardAssignmentsDeleteByResourceGroupWithResponseMockTests
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.standardAssignments()
-            .deleteByResourceGroupWithResponse("pzb", "xbmljrjyfjleuxix", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("mdafbgymqt", "apr", com.azure.core.util.Context.NONE);
 
     }
 }

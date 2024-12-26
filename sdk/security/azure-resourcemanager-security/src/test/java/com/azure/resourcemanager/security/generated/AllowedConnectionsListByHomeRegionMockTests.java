@@ -21,7 +21,7 @@ public final class AllowedConnectionsListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-10-15T08:18:43Z\",\"connectableResources\":[{\"id\":\"pmrrhyjx\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{},{}]}]},\"location\":\"zvwaeztt\",\"id\":\"jqyfy\",\"name\":\"qlyyslg\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-12T06:12:04Z\",\"connectableResources\":[{\"id\":\"owtdvrfmvlihcvj\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{},{}]},{\"id\":\"idhftu\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{}]},{\"id\":\"wyojbfqzdkfnjyi\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"tqxmbj\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{},{}]}]},\"location\":\"n\",\"id\":\"al\",\"name\":\"jrhuzgf\",\"type\":\"on\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AllowedConnectionsListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedConnectionsResource> response
-            = manager.allowedConnections().listByHomeRegion("xrxhxmlfouqp", com.azure.core.util.Context.NONE);
+            = manager.allowedConnections().listByHomeRegion("mo", com.azure.core.util.Context.NONE);
 
     }
 }

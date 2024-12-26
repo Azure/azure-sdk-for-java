@@ -21,7 +21,7 @@ public final class TopologiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-04-04T00:51:36Z\",\"topologyResources\":[{\"resourceId\":\"wxqzkkagve\",\"severity\":\"mnaphrskmpeajzzy\",\"recommendationsExist\":false,\"networkZones\":\"mzmzfntteyrftxyt\",\"topologyScore\":2016164957,\"location\":\"j\",\"parents\":[{},{}],\"children\":[{},{}]}]},\"location\":\"kkv\",\"id\":\"faehjjirvjqxavqm\",\"name\":\"mracfsffdralihh\",\"type\":\"scygyzhcvlavyr\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-11-14T20:36:47Z\",\"topologyResources\":[{\"resourceId\":\"ydi\",\"severity\":\"qkwaruwd\",\"recommendationsExist\":true,\"networkZones\":\"xoebwg\",\"topologyScore\":2016844798,\"location\":\"banbaupwtzv\",\"parents\":[{},{}],\"children\":[{},{},{},{}]}]},\"location\":\"k\",\"id\":\"bzrpejp\",\"name\":\"ssanbtttkgsuxun\",\"type\":\"swgkpjhboyikebh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

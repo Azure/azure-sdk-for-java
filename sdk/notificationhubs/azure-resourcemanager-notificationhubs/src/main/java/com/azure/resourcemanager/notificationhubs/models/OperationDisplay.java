@@ -17,24 +17,19 @@ import java.io.IOException;
 @Immutable
 public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * Gets service provider: Microsoft.NotificationHubs
+     * Service provider: Microsoft.NotificationHubs
      */
     private String provider;
 
     /*
-     * Gets resource on which the operation is performed: Invoice, etc.
+     * Resource on which the operation is performed: Invoice, etc.
      */
     private String resource;
 
     /*
-     * Gets operation type: Read, write, delete, etc.
+     * Operation type: Read, write, delete, etc.
      */
     private String operation;
-
-    /*
-     * Human-friendly operation description.
-     */
-    private String description;
 
     /**
      * Creates an instance of OperationDisplay class.
@@ -43,7 +38,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the provider property: Gets service provider: Microsoft.NotificationHubs.
+     * Get the provider property: Service provider: Microsoft.NotificationHubs.
      * 
      * @return the provider value.
      */
@@ -52,7 +47,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the resource property: Gets resource on which the operation is performed: Invoice, etc.
+     * Get the resource property: Resource on which the operation is performed: Invoice, etc.
      * 
      * @return the resource value.
      */
@@ -61,21 +56,12 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the operation property: Gets operation type: Read, write, delete, etc.
+     * Get the operation property: Operation type: Read, write, delete, etc.
      * 
      * @return the operation value.
      */
     public String operation() {
         return this.operation;
-    }
-
-    /**
-     * Get the description property: Human-friendly operation description.
-     * 
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
     }
 
     /**
@@ -116,8 +102,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
                     deserializedOperationDisplay.resource = reader.getString();
                 } else if ("operation".equals(fieldName)) {
                     deserializedOperationDisplay.operation = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedOperationDisplay.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

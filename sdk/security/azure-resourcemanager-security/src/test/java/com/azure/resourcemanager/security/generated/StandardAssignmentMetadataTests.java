@@ -11,7 +11,7 @@ public final class StandardAssignmentMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandardAssignmentMetadata model = BinaryData.fromString(
-            "{\"createdBy\":\"amglrouig\",\"createdOn\":\"2021-11-03T18:55:04Z\",\"lastUpdatedBy\":\"vjqterdq\",\"lastUpdatedOn\":\"2021-07-27T17:49:22Z\"}")
+            "{\"createdBy\":\"fqkfuarenl\",\"createdOn\":\"2021-11-15T21:51:51Z\",\"lastUpdatedBy\":\"klnvnafvvkyfede\",\"lastUpdatedOn\":\"2021-04-19T04:08:29Z\"}")
             .toObject(StandardAssignmentMetadata.class);
     }
 

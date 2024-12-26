@@ -13,18 +13,18 @@ public final class AllowlistCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AllowlistCustomAlertRule model = BinaryData.fromString(
-            "{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"zs\"],\"valueType\":\"String\",\"displayName\":\"rzx\",\"description\":\"ewsrsxkrplbjaze\",\"isEnabled\":false}")
+            "{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"ovm\",\"okacspk\",\"lhzdobp\",\"jmflbvvnch\"],\"valueType\":\"IpCidr\",\"displayName\":\"iwwzjuqk\",\"description\":\"sa\",\"isEnabled\":false}")
             .toObject(AllowlistCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("zs", model.allowlistValues().get(0));
+        Assertions.assertEquals("ovm", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllowlistCustomAlertRule model
-            = new AllowlistCustomAlertRule().withIsEnabled(false).withAllowlistValues(Arrays.asList("zs"));
+        AllowlistCustomAlertRule model = new AllowlistCustomAlertRule().withIsEnabled(false)
+            .withAllowlistValues(Arrays.asList("ovm", "okacspk", "lhzdobp", "jmflbvvnch"));
         model = BinaryData.fromObject(model).toObject(AllowlistCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("zs", model.allowlistValues().get(0));
+        Assertions.assertEquals("ovm", model.allowlistValues().get(0));
     }
 }

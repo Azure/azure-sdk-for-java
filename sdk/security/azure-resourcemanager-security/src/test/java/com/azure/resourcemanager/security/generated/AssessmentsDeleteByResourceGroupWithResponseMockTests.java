@@ -28,7 +28,7 @@ public final class AssessmentsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.assessments()
-            .deleteByResourceGroupWithResponse("usnylfhic", "jriybfbydrlql", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("scgrllccna", "vjowazhpabac", com.azure.core.util.Context.NONE);
 
     }
 }

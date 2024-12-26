@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class AssignedStandardItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssignedStandardItem model
-            = BinaryData.fromString("{\"id\":\"lhzqpxzbawkikcdg\"}").toObject(AssignedStandardItem.class);
-        Assertions.assertEquals("lhzqpxzbawkikcdg", model.id());
+        AssignedStandardItem model = BinaryData.fromString("{\"id\":\"ywjxh\"}").toObject(AssignedStandardItem.class);
+        Assertions.assertEquals("ywjxh", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssignedStandardItem model = new AssignedStandardItem().withId("lhzqpxzbawkikcdg");
+        AssignedStandardItem model = new AssignedStandardItem().withId("ywjxh");
         model = BinaryData.fromObject(model).toObject(AssignedStandardItem.class);
-        Assertions.assertEquals("lhzqpxzbawkikcdg", model.id());
+        Assertions.assertEquals("ywjxh", model.id());
     }
 }

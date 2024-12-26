@@ -28,7 +28,7 @@ public final class AlertsUpdateResourceGroupLevelStateToInProgressWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateResourceGroupLevelStateToInProgressWithResponse("vxvfvhrq", "rqghoti", "gzickgygaw",
+            .updateResourceGroupLevelStateToInProgressWithResponse("si", "xxtclhuulri", "byokvjgbzsxe",
                 com.azure.core.util.Context.NONE);
 
     }

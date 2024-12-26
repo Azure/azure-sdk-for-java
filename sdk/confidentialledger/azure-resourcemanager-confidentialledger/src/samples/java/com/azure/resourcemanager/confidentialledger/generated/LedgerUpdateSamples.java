@@ -20,8 +20,8 @@ import java.util.Map;
 public final class LedgerUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/
-     * examples/ConfidentialLedger_Update.json
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/
+     * ConfidentialLedger_Update.json
      */
     /**
      * Sample code: ConfidentialLedgerUpdate.

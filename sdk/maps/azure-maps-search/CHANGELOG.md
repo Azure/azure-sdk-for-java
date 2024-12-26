@@ -2,13 +2,9 @@
 
 ## 2.0.0-beta.2 (Unreleased)
 
-### Features Added
+### Features added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Integrated support for SAS-based authentication
 
 ## 2.0.0-beta.1 (2024-12-17)
 

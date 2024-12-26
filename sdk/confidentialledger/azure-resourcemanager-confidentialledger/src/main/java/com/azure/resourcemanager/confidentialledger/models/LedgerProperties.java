@@ -40,11 +40,6 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     private String ledgerInternalNamespace;
 
     /*
-     * Object representing RunningState for Ledger.
-     */
-    private RunningState runningState;
-
-    /*
      * Type of Confidential Ledger
      */
     private LedgerType ledgerType;
@@ -53,11 +48,6 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      * Provisioning state of Ledger Resource
      */
     private ProvisioningState provisioningState;
-
-    /*
-     * SKU associated with the ledger
-     */
-    private LedgerSku ledgerSku;
 
     /*
      * Array of all AAD based Security Principals.
@@ -112,26 +102,6 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     }
 
     /**
-     * Get the runningState property: Object representing RunningState for Ledger.
-     * 
-     * @return the runningState value.
-     */
-    public RunningState runningState() {
-        return this.runningState;
-    }
-
-    /**
-     * Set the runningState property: Object representing RunningState for Ledger.
-     * 
-     * @param runningState the runningState value to set.
-     * @return the LedgerProperties object itself.
-     */
-    public LedgerProperties withRunningState(RunningState runningState) {
-        this.runningState = runningState;
-        return this;
-    }
-
-    /**
      * Get the ledgerType property: Type of Confidential Ledger.
      * 
      * @return the ledgerType value.
@@ -158,26 +128,6 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the ledgerSku property: SKU associated with the ledger.
-     * 
-     * @return the ledgerSku value.
-     */
-    public LedgerSku ledgerSku() {
-        return this.ledgerSku;
-    }
-
-    /**
-     * Set the ledgerSku property: SKU associated with the ledger.
-     * 
-     * @param ledgerSku the ledgerSku value to set.
-     * @return the LedgerProperties object itself.
-     */
-    public LedgerProperties withLedgerSku(LedgerSku ledgerSku) {
-        this.ledgerSku = ledgerSku;
-        return this;
     }
 
     /**
@@ -241,9 +191,7 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("runningState", this.runningState == null ? null : this.runningState.toString());
         jsonWriter.writeStringField("ledgerType", this.ledgerType == null ? null : this.ledgerType.toString());
-        jsonWriter.writeStringField("ledgerSku", this.ledgerSku == null ? null : this.ledgerSku.toString());
         jsonWriter.writeArrayField("aadBasedSecurityPrincipals", this.aadBasedSecurityPrincipals,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("certBasedSecurityPrincipals", this.certBasedSecurityPrincipals,
@@ -274,14 +222,10 @@ public final class LedgerProperties implements JsonSerializable<LedgerProperties
                     deserializedLedgerProperties.identityServiceUri = reader.getString();
                 } else if ("ledgerInternalNamespace".equals(fieldName)) {
                     deserializedLedgerProperties.ledgerInternalNamespace = reader.getString();
-                } else if ("runningState".equals(fieldName)) {
-                    deserializedLedgerProperties.runningState = RunningState.fromString(reader.getString());
                 } else if ("ledgerType".equals(fieldName)) {
                     deserializedLedgerProperties.ledgerType = LedgerType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLedgerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
-                } else if ("ledgerSku".equals(fieldName)) {
-                    deserializedLedgerProperties.ledgerSku = LedgerSku.fromString(reader.getString());
                 } else if ("aadBasedSecurityPrincipals".equals(fieldName)) {
                     List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals
                         = reader.readArray(reader1 -> AadBasedSecurityPrincipal.fromJson(reader1));

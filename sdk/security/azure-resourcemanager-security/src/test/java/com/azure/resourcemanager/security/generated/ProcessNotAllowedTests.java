@@ -13,18 +13,18 @@ public final class ProcessNotAllowedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProcessNotAllowed model = BinaryData.fromString(
-            "{\"ruleType\":\"ProcessNotAllowed\",\"allowlistValues\":[\"gnkwm\",\"feu\",\"tzjyrkwfugiph\",\"rkuumn\"],\"valueType\":\"IpCidr\",\"displayName\":\"hz\",\"description\":\"opueo\",\"isEnabled\":false}")
+            "{\"ruleType\":\"ProcessNotAllowed\",\"allowlistValues\":[\"fstmhqykizmdksao\"],\"valueType\":\"IpCidr\",\"displayName\":\"uqvoxmycjimryv\",\"description\":\"cwwp\",\"isEnabled\":false}")
             .toObject(ProcessNotAllowed.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("gnkwm", model.allowlistValues().get(0));
+        Assertions.assertEquals("fstmhqykizmdksao", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProcessNotAllowed model = new ProcessNotAllowed().withIsEnabled(false)
-            .withAllowlistValues(Arrays.asList("gnkwm", "feu", "tzjyrkwfugiph", "rkuumn"));
+        ProcessNotAllowed model
+            = new ProcessNotAllowed().withIsEnabled(false).withAllowlistValues(Arrays.asList("fstmhqykizmdksao"));
         model = BinaryData.fromObject(model).toObject(ProcessNotAllowed.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("gnkwm", model.allowlistValues().get(0));
+        Assertions.assertEquals("fstmhqykizmdksao", model.allowlistValues().get(0));
     }
 }

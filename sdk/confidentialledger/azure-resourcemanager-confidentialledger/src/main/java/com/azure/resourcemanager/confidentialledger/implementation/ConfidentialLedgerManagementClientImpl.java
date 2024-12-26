@@ -25,7 +25,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.confidentialledger.fluent.ConfidentialLedgerManagementClient;
 import com.azure.resourcemanager.confidentialledger.fluent.LedgersClient;
-import com.azure.resourcemanager.confidentialledger.fluent.ManagedCcfsClient;
 import com.azure.resourcemanager.confidentialledger.fluent.OperationsClient;
 import com.azure.resourcemanager.confidentialledger.fluent.ResourceProvidersClient;
 import java.io.IOException;
@@ -43,12 +42,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = ConfidentialLedgerManagementClientBuilder.class)
 public final class ConfidentialLedgerManagementClientImpl implements ConfidentialLedgerManagementClient {
     /**
-     * The ID of the target subscription.
+     * The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * 
      * @return the subscriptionId value.
      */
@@ -169,27 +168,14 @@ public final class ConfidentialLedgerManagementClientImpl implements Confidentia
     }
 
     /**
-     * The ManagedCcfsClient object to access its operations.
-     */
-    private final ManagedCcfsClient managedCcfs;
-
-    /**
-     * Gets the ManagedCcfsClient object to access its operations.
-     * 
-     * @return the ManagedCcfsClient object.
-     */
-    public ManagedCcfsClient getManagedCcfs() {
-        return this.managedCcfs;
-    }
-
-    /**
      * Initializes an instance of ConfidentialLedgerManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The Azure subscription ID. This is a GUID-formatted string (e.g.
+     * 00000000-0000-0000-0000-000000000000).
      * @param endpoint server parameter.
      */
     ConfidentialLedgerManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -199,11 +185,10 @@ public final class ConfidentialLedgerManagementClientImpl implements Confidentia
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-28-preview";
+        this.apiVersion = "2022-05-13";
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.ledgers = new LedgersClientImpl(this);
-        this.managedCcfs = new ManagedCcfsClientImpl(this);
     }
 
     /**

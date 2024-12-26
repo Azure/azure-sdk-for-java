@@ -19,12 +19,12 @@ public final class UpdateIotSecuritySolutionDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIotSecuritySolutionData model = BinaryData.fromString(
-            "{\"properties\":{\"userDefinedResources\":{\"query\":\"bvntnrgmqsorhce\",\"querySubscriptions\":[\"gnlykm\",\"cpwzv\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_EdgeHubMemOptimize\",\"name\":\"qdtiwlwxlb\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_AgentSendsUnutilizedMessages\",\"name\":\"bazqicqchygtvxby\",\"status\":\"Disabled\"}]},\"tags\":{\"qvgx\":\"pubdpkx\",\"hkxdxuwsaifmc\":\"aodetv\"}}")
+            "{\"properties\":{\"userDefinedResources\":{\"query\":\"rnxxmueed\",\"querySubscriptions\":[\"rdvstkwqqtch\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveInputFirewallRules\",\"name\":\"mtdaa\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_IPFilter_DenyAll\",\"name\":\"wvgpiohg\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_OpenPorts\",\"name\":\"fudxepxgyqagvrv\",\"status\":\"Enabled\"}]},\"tags\":{\"mfnjh\":\"ukghimdblxgw\"}}")
             .toObject(UpdateIotSecuritySolutionData.class);
-        Assertions.assertEquals("pubdpkx", model.tags().get("qvgx"));
-        Assertions.assertEquals("bvntnrgmqsorhce", model.userDefinedResources().query());
-        Assertions.assertEquals("gnlykm", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_EDGE_HUB_MEM_OPTIMIZE,
+        Assertions.assertEquals("ukghimdblxgw", model.tags().get("mfnjh"));
+        Assertions.assertEquals("rnxxmueed", model.userDefinedResources().query());
+        Assertions.assertEquals("rdvstkwqqtch", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
@@ -32,22 +32,24 @@ public final class UpdateIotSecuritySolutionDataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateIotSecuritySolutionData model
-            = new UpdateIotSecuritySolutionData().withTags(mapOf("qvgx", "pubdpkx", "hkxdxuwsaifmc", "aodetv"))
-                .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("bvntnrgmqsorhce")
-                    .withQuerySubscriptions(Arrays.asList("gnlykm", "cpwzv")))
-                .withRecommendationsConfiguration(Arrays.asList(
-                    new RecommendationConfigurationProperties()
-                        .withRecommendationType(RecommendationType.IO_T_EDGE_HUB_MEM_OPTIMIZE)
-                        .withStatus(RecommendationConfigStatus.DISABLED),
-                    new RecommendationConfigurationProperties()
-                        .withRecommendationType(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES)
-                        .withStatus(RecommendationConfigStatus.DISABLED)));
+        UpdateIotSecuritySolutionData model = new UpdateIotSecuritySolutionData()
+            .withTags(mapOf("mfnjh", "ukghimdblxgw"))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("rnxxmueed")
+                .withQuerySubscriptions(Arrays.asList("rdvstkwqqtch")))
+            .withRecommendationsConfiguration(Arrays.asList(
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES)
+                    .withStatus(RecommendationConfigStatus.DISABLED),
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_IPFILTER_DENY_ALL)
+                    .withStatus(RecommendationConfigStatus.ENABLED),
+                new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_OPEN_PORTS)
+                    .withStatus(RecommendationConfigStatus.ENABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIotSecuritySolutionData.class);
-        Assertions.assertEquals("pubdpkx", model.tags().get("qvgx"));
-        Assertions.assertEquals("bvntnrgmqsorhce", model.userDefinedResources().query());
-        Assertions.assertEquals("gnlykm", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_EDGE_HUB_MEM_OPTIMIZE,
+        Assertions.assertEquals("ukghimdblxgw", model.tags().get("mfnjh"));
+        Assertions.assertEquals("rnxxmueed", model.userDefinedResources().query());
+        Assertions.assertEquals("rdvstkwqqtch", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_INPUT_FIREWALL_RULES,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());

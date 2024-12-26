@@ -12,24 +12,24 @@ public final class OnPremiseResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OnPremiseResourceDetails model = BinaryData.fromString(
-            "{\"source\":\"OnPremise\",\"workspaceId\":\"zytijcx\",\"vmuuid\":\"nondegjdyd\",\"sourceComputerId\":\"qkkkbjuckcatuqbh\",\"machineName\":\"owcnxtpz\"}")
+            "{\"source\":\"OnPremise\",\"workspaceId\":\"amljdlrgmsplzgau\",\"vmuuid\":\"cshhv\",\"sourceComputerId\":\"ewgnxkympqanxrj\",\"machineName\":\"ixt\"}")
             .toObject(OnPremiseResourceDetails.class);
-        Assertions.assertEquals("zytijcx", model.workspaceId());
-        Assertions.assertEquals("nondegjdyd", model.vmuuid());
-        Assertions.assertEquals("qkkkbjuckcatuqbh", model.sourceComputerId());
-        Assertions.assertEquals("owcnxtpz", model.machineName());
+        Assertions.assertEquals("amljdlrgmsplzgau", model.workspaceId());
+        Assertions.assertEquals("cshhv", model.vmuuid());
+        Assertions.assertEquals("ewgnxkympqanxrj", model.sourceComputerId());
+        Assertions.assertEquals("ixt", model.machineName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnPremiseResourceDetails model = new OnPremiseResourceDetails().withWorkspaceId("zytijcx")
-            .withVmuuid("nondegjdyd")
-            .withSourceComputerId("qkkkbjuckcatuqbh")
-            .withMachineName("owcnxtpz");
+        OnPremiseResourceDetails model = new OnPremiseResourceDetails().withWorkspaceId("amljdlrgmsplzgau")
+            .withVmuuid("cshhv")
+            .withSourceComputerId("ewgnxkympqanxrj")
+            .withMachineName("ixt");
         model = BinaryData.fromObject(model).toObject(OnPremiseResourceDetails.class);
-        Assertions.assertEquals("zytijcx", model.workspaceId());
-        Assertions.assertEquals("nondegjdyd", model.vmuuid());
-        Assertions.assertEquals("qkkkbjuckcatuqbh", model.sourceComputerId());
-        Assertions.assertEquals("owcnxtpz", model.machineName());
+        Assertions.assertEquals("amljdlrgmsplzgau", model.workspaceId());
+        Assertions.assertEquals("cshhv", model.vmuuid());
+        Assertions.assertEquals("ewgnxkympqanxrj", model.sourceComputerId());
+        Assertions.assertEquals("ixt", model.machineName());
     }
 }
