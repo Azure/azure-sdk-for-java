@@ -15,7 +15,6 @@ import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.Scope;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanContext;
-import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
 import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
-import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
 
 /**
  * The instrumentation policy is responsible for instrumenting the HTTP request and response with distributed tracing
@@ -109,8 +107,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
-        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT)
-            .setParent(request.getRequestOptions().getContext())
+        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
             .setAttribute(URL_FULL, sanitizedUrl)
             .setAttribute(SERVER_ADDRESS, request.getUri().getHost())

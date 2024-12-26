@@ -26,6 +26,7 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
+import org.eclipse.jetty.server.Request;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -415,16 +416,18 @@ public class InstrumentationPolicyTests {
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.telemetry.tracing.Tracer tracer
             = TelemetryProvider.getInstance().getTracer(otelOptions, new LibraryTelemetryOptions("test-library"));
-        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", INTERNAL).startSpan();
 
-        Context parentCtx = Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, parent);
+        RequestOptions requestOptions = new RequestOptions();
+        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", INTERNAL, requestOptions).startSpan();
+
+        requestOptions.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, parent));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
-            .setRequestOptions(new RequestOptions().setContext(parentCtx))).close();
+            .setRequestOptions(requestOptions)).close();
 
         parent.end();
 

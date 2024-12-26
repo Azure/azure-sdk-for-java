@@ -64,11 +64,6 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
 
         @Override
-        public SpanBuilder setParent(Context parent) {
-            return this;
-        }
-
-        @Override
         public Span startSpan() {
             return NOOP_SPAN;
         }
@@ -93,5 +88,5 @@ class NoopTelemetryProvider implements TelemetryProvider {
 
     private static final Scope NOOP_SCOPE = () -> {
     };
-    private static final Tracer NOOP_TRACER = (spanName, kind) -> NOOP_SPAN_BUILDER;
+    private static final Tracer NOOP_TRACER = (spanName, kind, ctx) -> NOOP_SPAN_BUILDER;
 }

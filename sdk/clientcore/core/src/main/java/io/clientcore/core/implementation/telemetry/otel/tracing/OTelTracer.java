@@ -3,12 +3,14 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
 import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.Context;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -86,10 +88,11 @@ public final class OTelTracer implements Tracer {
     }
 
     @Override
-    public SpanBuilder spanBuilder(String spanName, SpanKind kind) {
+    public SpanBuilder spanBuilder(String spanName, SpanKind kind, RequestOptions options) {
         if (isEnabled()) {
             try {
-                return new OTelSpanBuilder(SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName), kind, libraryOptions);
+                Context parent = options == null ? Context.none() : options.getContext();
+                return new OTelSpanBuilder(SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName), kind, parent, libraryOptions);
             } catch (Throwable t) {
                 OTelInitializer.runtimeError(LOGGER, t);
             }

@@ -25,7 +25,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.S
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 
 public class OTelSpanBuilder implements SpanBuilder {
-    static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null,  SpanKind.INTERNAL, new LibraryTelemetryOptions("noop"));
+    static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null,  SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
 
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
@@ -43,7 +43,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     private final Object otelSpanBuilder;
     private final boolean suppressNestedSpans;
     private final SpanKind spanKind;
-    private Context context = Context.none();
+    private final Context context;
 
     static {
         MethodHandle setParentInvoker = null;
@@ -93,11 +93,12 @@ public class OTelSpanBuilder implements SpanBuilder {
         NOOP_SPAN = noopSpan;
     }
 
-    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, LibraryTelemetryOptions libraryOptions) {
+    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, Context parent, LibraryTelemetryOptions libraryOptions) {
         this.otelSpanBuilder = otelSpanBuilder;
         this.suppressNestedSpans
             = libraryOptions == null || !LibraryTelemetryOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
         this.spanKind = kind;
+        this.context = parent;
     }
 
     @Override
@@ -111,12 +112,6 @@ public class OTelSpanBuilder implements SpanBuilder {
             }
         }
 
-        return this;
-    }
-
-    @Override
-    public SpanBuilder setParent(Context parent) {
-        this.context = parent;
         return this;
     }
 

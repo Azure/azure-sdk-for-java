@@ -89,7 +89,7 @@ public class TracingShimBenchmarks {
 
     @SuppressWarnings("try")
     private Span testShimSpan(Tracer tracer) {
-        Span span = tracer.spanBuilder("test", SpanKind.CLIENT)
+        Span span = tracer.spanBuilder("test", SpanKind.CLIENT, null)
             .setAttribute("string1", "test")
             .startSpan();
 

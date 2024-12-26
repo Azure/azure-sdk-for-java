@@ -4,7 +4,6 @@
 package io.clientcore.core.telemetry;
 
 import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.util.Context;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.TracerProvider;
@@ -61,7 +60,7 @@ public class TelemetryProviderTests {
 
         Tracer tracer = TelemetryProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS);
         assertFalse(tracer.isEnabled());
-        tracer.spanBuilder("test", INTERNAL).startSpan().end();
+        tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
         assertEquals(0, exporter.getFinishedSpanItems().size());
     }
@@ -75,7 +74,7 @@ public class TelemetryProviderTests {
             Tracer tracer = TelemetryProvider.getInstance().getTracer(null, DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", INTERNAL).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
             assertEquals(1, exporter.getFinishedSpanItems().size());
             SpanData span = exporter.getFinishedSpanItems().get(0);
@@ -102,7 +101,7 @@ public class TelemetryProviderTests {
                 .getTracer(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", INTERNAL).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
             assertTrue(exporter.getFinishedSpanItems().isEmpty());
             assertEquals(1, localExporter.getFinishedSpanItems().size());
@@ -131,7 +130,7 @@ public class TelemetryProviderTests {
             Tracer tracer = TelemetryProvider.getInstance().getTracer(null, libOptions);
             assertTrue(tracer.isEnabled());
 
-            tracer.spanBuilder("test", INTERNAL).startSpan().end();
+            tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
             SpanData span = exporter.getFinishedSpanItems().get(0);
             assertEquals("test-library", span.getInstrumentationScopeInfo().getName());

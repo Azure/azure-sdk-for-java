@@ -3,8 +3,6 @@
 
 package io.clientcore.core.telemetry.tracing;
 
-import io.clientcore.core.util.Context;
-
 /**
  * Represents a span builder.
  * <p>
@@ -20,14 +18,6 @@ public interface SpanBuilder {
      * @return Updated {@link SpanBuilder} object.
      */
     SpanBuilder setAttribute(String key, Object value);
-
-    /**
-     * Sets the parent.
-     *
-     * @param parent The parent.
-     * @return Updated {@link SpanBuilder} object.
-     */
-    SpanBuilder setParent(Context parent);
 
     /**
      * Starts the span.
