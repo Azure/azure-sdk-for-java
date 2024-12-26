@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The authentication info when authType is servicePrincipal certificate.
@@ -36,16 +35,6 @@ public final class ServicePrincipalCertificateAuthInfo extends AuthInfoBase {
      * ServicePrincipal certificate for servicePrincipal auth.
      */
     private String certificate;
-
-    /*
-     * Indicates whether to clean up previous operation when Linker is updating or deleting
-     */
-    private DeleteOrUpdateBehavior deleteOrUpdateBehavior;
-
-    /*
-     * Optional, this value specifies the Azure roles to be assigned. Automatically
-     */
-    private List<String> roles;
 
     /**
      * Creates an instance of ServicePrincipalCertificateAuthInfo class.
@@ -124,58 +113,6 @@ public final class ServicePrincipalCertificateAuthInfo extends AuthInfoBase {
     }
 
     /**
-     * Get the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @return the deleteOrUpdateBehavior value.
-     */
-    public DeleteOrUpdateBehavior deleteOrUpdateBehavior() {
-        return this.deleteOrUpdateBehavior;
-    }
-
-    /**
-     * Set the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @param deleteOrUpdateBehavior the deleteOrUpdateBehavior value to set.
-     * @return the ServicePrincipalCertificateAuthInfo object itself.
-     */
-    public ServicePrincipalCertificateAuthInfo
-        withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior deleteOrUpdateBehavior) {
-        this.deleteOrUpdateBehavior = deleteOrUpdateBehavior;
-        return this;
-    }
-
-    /**
-     * Get the roles property: Optional, this value specifies the Azure roles to be assigned. Automatically.
-     * 
-     * @return the roles value.
-     */
-    public List<String> roles() {
-        return this.roles;
-    }
-
-    /**
-     * Set the roles property: Optional, this value specifies the Azure roles to be assigned. Automatically.
-     * 
-     * @param roles the roles value to set.
-     * @return the ServicePrincipalCertificateAuthInfo object itself.
-     */
-    public ServicePrincipalCertificateAuthInfo withRoles(List<String> roles) {
-        this.roles = roles;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServicePrincipalCertificateAuthInfo withAuthMode(AuthMode authMode) {
-        super.withAuthMode(authMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -207,14 +144,10 @@ public final class ServicePrincipalCertificateAuthInfo extends AuthInfoBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("authMode", authMode() == null ? null : authMode().toString());
         jsonWriter.writeStringField("clientId", this.clientId);
         jsonWriter.writeStringField("principalId", this.principalId);
         jsonWriter.writeStringField("certificate", this.certificate);
         jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
-        jsonWriter.writeStringField("deleteOrUpdateBehavior",
-            this.deleteOrUpdateBehavior == null ? null : this.deleteOrUpdateBehavior.toString());
-        jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -235,10 +168,7 @@ public final class ServicePrincipalCertificateAuthInfo extends AuthInfoBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("authMode".equals(fieldName)) {
-                    deserializedServicePrincipalCertificateAuthInfo
-                        .withAuthMode(AuthMode.fromString(reader.getString()));
-                } else if ("clientId".equals(fieldName)) {
+                if ("clientId".equals(fieldName)) {
                     deserializedServicePrincipalCertificateAuthInfo.clientId = reader.getString();
                 } else if ("principalId".equals(fieldName)) {
                     deserializedServicePrincipalCertificateAuthInfo.principalId = reader.getString();
@@ -246,12 +176,6 @@ public final class ServicePrincipalCertificateAuthInfo extends AuthInfoBase {
                     deserializedServicePrincipalCertificateAuthInfo.certificate = reader.getString();
                 } else if ("authType".equals(fieldName)) {
                     deserializedServicePrincipalCertificateAuthInfo.authType = AuthType.fromString(reader.getString());
-                } else if ("deleteOrUpdateBehavior".equals(fieldName)) {
-                    deserializedServicePrincipalCertificateAuthInfo.deleteOrUpdateBehavior
-                        = DeleteOrUpdateBehavior.fromString(reader.getString());
-                } else if ("roles".equals(fieldName)) {
-                    List<String> roles = reader.readArray(reader1 -> reader1.getString());
-                    deserializedServicePrincipalCertificateAuthInfo.roles = roles;
                 } else {
                     reader.skipChildren();
                 }

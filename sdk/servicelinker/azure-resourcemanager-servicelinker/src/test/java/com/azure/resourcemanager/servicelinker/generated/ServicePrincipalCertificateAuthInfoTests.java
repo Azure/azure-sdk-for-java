@@ -5,41 +5,28 @@
 package com.azure.resourcemanager.servicelinker.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicelinker.models.AuthMode;
-import com.azure.resourcemanager.servicelinker.models.DeleteOrUpdateBehavior;
 import com.azure.resourcemanager.servicelinker.models.ServicePrincipalCertificateAuthInfo;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ServicePrincipalCertificateAuthInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServicePrincipalCertificateAuthInfo model = BinaryData.fromString(
-            "{\"authType\":\"servicePrincipalCertificate\",\"clientId\":\"yocf\",\"principalId\":\"fksymddystki\",\"certificate\":\"uxh\",\"deleteOrUpdateBehavior\":\"Default\",\"roles\":[\"o\",\"rq\"],\"authMode\":\"optOutAllAuth\"}")
+            "{\"authType\":\"servicePrincipalCertificate\",\"clientId\":\"jofxqe\",\"principalId\":\"fjaeq\",\"certificate\":\"hqjbasvmsmj\"}")
             .toObject(ServicePrincipalCertificateAuthInfo.class);
-        Assertions.assertEquals(AuthMode.OPT_OUT_ALL_AUTH, model.authMode());
-        Assertions.assertEquals("yocf", model.clientId());
-        Assertions.assertEquals("fksymddystki", model.principalId());
-        Assertions.assertEquals("uxh", model.certificate());
-        Assertions.assertEquals(DeleteOrUpdateBehavior.DEFAULT, model.deleteOrUpdateBehavior());
-        Assertions.assertEquals("o", model.roles().get(0));
+        Assertions.assertEquals("jofxqe", model.clientId());
+        Assertions.assertEquals("fjaeq", model.principalId());
+        Assertions.assertEquals("hqjbasvmsmj", model.certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServicePrincipalCertificateAuthInfo model
-            = new ServicePrincipalCertificateAuthInfo().withAuthMode(AuthMode.OPT_OUT_ALL_AUTH)
-                .withClientId("yocf")
-                .withPrincipalId("fksymddystki")
-                .withCertificate("uxh")
-                .withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior.DEFAULT)
-                .withRoles(Arrays.asList("o", "rq"));
+        ServicePrincipalCertificateAuthInfo model = new ServicePrincipalCertificateAuthInfo().withClientId("jofxqe")
+            .withPrincipalId("fjaeq")
+            .withCertificate("hqjbasvmsmj");
         model = BinaryData.fromObject(model).toObject(ServicePrincipalCertificateAuthInfo.class);
-        Assertions.assertEquals(AuthMode.OPT_OUT_ALL_AUTH, model.authMode());
-        Assertions.assertEquals("yocf", model.clientId());
-        Assertions.assertEquals("fksymddystki", model.principalId());
-        Assertions.assertEquals("uxh", model.certificate());
-        Assertions.assertEquals(DeleteOrUpdateBehavior.DEFAULT, model.deleteOrUpdateBehavior());
-        Assertions.assertEquals("o", model.roles().get(0));
+        Assertions.assertEquals("jofxqe", model.clientId());
+        Assertions.assertEquals("fjaeq", model.principalId());
+        Assertions.assertEquals("hqjbasvmsmj", model.certificate());
     }
 }

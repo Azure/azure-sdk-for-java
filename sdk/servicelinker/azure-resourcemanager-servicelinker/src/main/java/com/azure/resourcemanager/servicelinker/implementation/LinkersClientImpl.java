@@ -34,11 +34,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicelinker.fluent.LinkersClient;
-import com.azure.resourcemanager.servicelinker.fluent.models.ConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
+import com.azure.resourcemanager.servicelinker.models.LinkerList;
 import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
-import com.azure.resourcemanager.servicelinker.models.ResourceList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,7 +78,7 @@ public final class LinkersClientImpl implements LinkersClient {
         @Get("/{resourceUri}/providers/Microsoft.ServiceLinker/linkers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceList>> list(@HostParam("$host") String endpoint,
+        Mono<Response<LinkerList>> list(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
@@ -133,7 +133,7 @@ public final class LinkersClientImpl implements LinkersClient {
         @Post("/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}/listConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationResultInner>> listConfigurations(@HostParam("$host") String endpoint,
+        Mono<Response<SourceConfigurationResultInner>> listConfigurations(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion, @PathParam("linkerName") String linkerName,
             @HeaderParam("Accept") String accept, Context context);
@@ -142,13 +142,12 @@ public final class LinkersClientImpl implements LinkersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<LinkerList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,8 +174,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
@@ -202,8 +200,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,8 +214,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
@@ -234,8 +230,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,8 +244,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Returns list of Linkers which connects to the resource. which supports to config both application and target
-     * service during the resource provision.
+     * Returns list of Linkers which connects to the resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
@@ -372,7 +366,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -409,7 +403,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -446,7 +440,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -465,7 +459,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -487,7 +481,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -504,7 +498,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -522,7 +516,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -540,7 +534,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -559,7 +553,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -575,7 +569,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Create or update Linker resource.
+     * Create or update linker resource.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -593,7 +587,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -622,7 +616,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -652,7 +646,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -669,7 +663,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -689,7 +683,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -704,7 +698,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -720,7 +714,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -735,7 +729,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -751,7 +745,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -765,7 +759,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Delete a Linker.
+     * Delete a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -780,7 +774,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -817,7 +811,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -854,7 +848,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -873,7 +867,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -894,7 +888,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -911,7 +905,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -929,7 +923,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -946,7 +940,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -965,7 +959,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -981,7 +975,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Operation to update an existing Linker.
+     * Operation to update an existing link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -998,14 +992,14 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker along with {@link Response} on successful completion of
+     * @return the validation operation result for a linker along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1028,7 +1022,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1036,7 +1030,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker along with {@link Response} on successful completion of
+     * @return the validation operation result for a linker along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1059,14 +1053,14 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the validation operation result for a Linker.
+     * @return the {@link PollerFlux} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner>
@@ -1078,7 +1072,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1086,7 +1080,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the validation operation result for a Linker.
+     * @return the {@link PollerFlux} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner>
@@ -1099,14 +1093,14 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validation operation result for a Linker.
+     * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner>
@@ -1115,7 +1109,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1123,7 +1117,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validation operation result for a Linker.
+     * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner>
@@ -1132,14 +1126,14 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker on successful completion of {@link Mono}.
+     * @return the validation operation result for a linker on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateOperationResultInner> validateAsync(String resourceUri, String linkerName) {
@@ -1147,7 +1141,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1155,7 +1149,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker on successful completion of {@link Mono}.
+     * @return the validation operation result for a linker on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateOperationResultInner> validateAsync(String resourceUri, String linkerName, Context context) {
@@ -1164,14 +1158,14 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker.
+     * @return the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateOperationResultInner validate(String resourceUri, String linkerName) {
@@ -1179,7 +1173,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * Validate a Linker.
+     * Validate a link.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1187,7 +1181,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation operation result for a Linker.
+     * @return the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateOperationResultInner validate(String resourceUri, String linkerName, Context context) {
@@ -1195,7 +1189,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1206,7 +1200,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationResultInner>> listConfigurationsWithResponseAsync(String resourceUri,
+    private Mono<Response<SourceConfigurationResultInner>> listConfigurationsWithResponseAsync(String resourceUri,
         String linkerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1226,7 +1220,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1238,7 +1232,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationResultInner>> listConfigurationsWithResponseAsync(String resourceUri,
+    private Mono<Response<SourceConfigurationResultInner>> listConfigurationsWithResponseAsync(String resourceUri,
         String linkerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1257,7 +1251,7 @@ public final class LinkersClientImpl implements LinkersClient {
     }
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1268,13 +1262,13 @@ public final class LinkersClientImpl implements LinkersClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationResultInner> listConfigurationsAsync(String resourceUri, String linkerName) {
+    private Mono<SourceConfigurationResultInner> listConfigurationsAsync(String resourceUri, String linkerName) {
         return listConfigurationsWithResponseAsync(resourceUri, linkerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1286,13 +1280,13 @@ public final class LinkersClientImpl implements LinkersClient {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationResultInner> listConfigurationsWithResponse(String resourceUri, String linkerName,
-        Context context) {
+    public Response<SourceConfigurationResultInner> listConfigurationsWithResponse(String resourceUri,
+        String linkerName, Context context) {
         return listConfigurationsWithResponseAsync(resourceUri, linkerName, context).block();
     }
 
     /**
-     * list source configurations for a Linker.
+     * list source configurations for a linker.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
@@ -1302,7 +1296,7 @@ public final class LinkersClientImpl implements LinkersClient {
      * @return configurations for source resource, include appSettings, connectionString and serviceBindings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationResultInner listConfigurations(String resourceUri, String linkerName) {
+    public SourceConfigurationResultInner listConfigurations(String resourceUri, String linkerName) {
         return listConfigurationsWithResponse(resourceUri, linkerName, Context.NONE).getValue();
     }
 
