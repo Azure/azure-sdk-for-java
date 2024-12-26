@@ -25,11 +25,15 @@ public interface EventHubNamespaces
     SupportsGettingById<EventHubNamespace>, SupportsDeletingById, SupportsDeletingByResourceGroup,
     SupportsBatchCreation<EventHubNamespace>, SupportsBatchDeletion, HasManager<EventHubsManager> {
     /**
+     * Gets entry point to manage authorization rules of event hub namespaces.
+     *
      * @return entry point to manage authorization rules of event hub namespaces.
      */
     EventHubNamespaceAuthorizationRules authorizationRules();
 
     /**
+     * Gets entry point to manage event hubs of event hub namespaces.
+     *
      * @return entry point to manage event hubs of event hub namespaces.
      */
     EventHubs eventHubs();
