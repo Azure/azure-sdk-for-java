@@ -1,14 +1,83 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2024-12-26)
 
-### Features Added
+- Azure Resource Manager ConfidentialLedger client library for Java. This package contains Microsoft Azure SDK for ConfidentialLedger Management SDK. Microsoft Azure Confidential Compute Ledger Control Plane REST API version 2020-12-01-preview. Package tag package-2022-05-13. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.MemberIdentityCertificate` was removed
 
-### Other Changes
+#### `models.ManagedCcfRestore` was removed
+
+#### `models.LanguageRuntime` was removed
+
+#### `models.ManagedCcf$Update` was removed
+
+#### `models.ManagedCcfBackup` was removed
+
+#### `models.ConfidentialLedgerBackup` was removed
+
+#### `models.ManagedCcf$UpdateStages` was removed
+
+#### `models.ManagedCcf$Definition` was removed
+
+#### `models.ManagedCcf$DefinitionStages` was removed
+
+#### `models.ManagedCcfs` was removed
+
+#### `models.ConfidentialLedgerBackupResponse` was removed
+
+#### `models.ManagedCcfRestoreResponse` was removed
+
+#### `models.ManagedCcfProperties` was removed
+
+#### `models.ManagedCcfList` was removed
+
+#### `models.ManagedCcf` was removed
+
+#### `models.ConfidentialLedgerRestore` was removed
+
+#### `models.ManagedCcfBackupResponse` was removed
+
+#### `models.RunningState` was removed
+
+#### `models.DeploymentType` was removed
+
+#### `models.ConfidentialLedgerRestoreResponse` was removed
+
+#### `models.LedgerSku` was removed
+
+#### `models.LedgerProperties` was modified
+
+* `runningState()` was removed
+* `ledgerSku()` was removed
+* `withRunningState(models.RunningState)` was removed
+* `withLedgerSku(models.LedgerSku)` was removed
+
+#### `ConfidentialLedgerManager` was modified
+
+* `managedCcfs()` was removed
+
+#### `models.ConfidentialLedger` was modified
+
+* `backup(models.ConfidentialLedgerBackup)` was removed
+* `backup(models.ConfidentialLedgerBackup,com.azure.core.util.Context)` was removed
+* `restore(models.ConfidentialLedgerRestore,com.azure.core.util.Context)` was removed
+* `restore(models.ConfidentialLedgerRestore)` was removed
+
+#### `models.Ledgers` was modified
+
+* `backup(java.lang.String,java.lang.String,models.ConfidentialLedgerBackup,com.azure.core.util.Context)` was removed
+* `restore(java.lang.String,java.lang.String,models.ConfidentialLedgerRestore,com.azure.core.util.Context)` was removed
+* `backup(java.lang.String,java.lang.String,models.ConfidentialLedgerBackup)` was removed
+* `restore(java.lang.String,java.lang.String,models.ConfidentialLedgerRestore)` was removed
+
+### Features Added
+
+* `models.ResourceLocation` was added
+
+* `models.Tags` was added
 
 ## 1.0.0-beta.5 (2024-12-04)
 
