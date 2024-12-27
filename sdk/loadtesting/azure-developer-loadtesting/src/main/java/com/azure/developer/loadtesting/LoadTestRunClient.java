@@ -314,7 +314,7 @@ public final class LoadTestRunClient {
         }
         // Content-Type header required even though body can be null
         requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        return this.serviceClient.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
+        return this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions);
     }
 
     /**
@@ -665,7 +665,7 @@ public final class LoadTestRunClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> createOrUpdateTestRunWithResponse(String testRunId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions);
+        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions);
     }
 
     /**
@@ -1782,12 +1782,12 @@ public final class LoadTestRunClient {
         if (testProfileRunRequestOptions != null) {
             defaultRequestOptions.setContext(testProfileRunRequestOptions.getContext());
         }
-        return SyncPoller.createPoller(Duration.ofSeconds(5),
-            (context) -> PollingUtils
-                .getTestProfileRunStatus(createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, testProfileRunRequestOptions).getValue()),
-            (context) -> PollingUtils
-                .getTestProfileRunStatus(getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue()),
-            (activationResponse, context) -> stopTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue(),
+        return SyncPoller.createPoller(Duration.ofSeconds(5), (context) -> PollingUtils.getTestProfileRunStatus(
+            createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, testProfileRunRequestOptions).getValue()),
+            (context) -> PollingUtils.getTestProfileRunStatus(
+                getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue()),
+            (activationResponse, context) -> stopTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions)
+                .getValue(),
             (context) -> getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue());
     }
 
