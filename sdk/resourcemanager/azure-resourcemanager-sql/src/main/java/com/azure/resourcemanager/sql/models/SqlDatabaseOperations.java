@@ -150,12 +150,16 @@ public interface SqlDatabaseOperations
         /** Sets the storage key type and value to use. */
         interface WithStorageKey {
             /**
+             * Sets the storage access key to use.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
             SqlDatabaseOperations.DefinitionStages.WithAuthentication withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Sets share access key to use.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
