@@ -16,40 +16,83 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure traffic manager profile. */
 public interface TrafficManagerProfile extends GroupableResource<TrafficManager, ProfileInner>,
     Refreshable<TrafficManagerProfile>, Updatable<TrafficManagerProfile.Update> {
-    /** @return the relative DNS name of the traffic manager profile */
+    /**
+     * Gets the relative DNS name of the traffic manager profile.
+     *
+     * @return the relative DNS name of the traffic manager profile
+     */
     String dnsLabel();
 
-    /** @return fully qualified domain name (FQDN) of the traffic manager profile. */
+    /**
+     * Gets fully qualified domain name (FQDN) of the traffic manager profile.
+     *
+     * @return fully qualified domain name (FQDN) of the traffic manager profile.
+     */
     String fqdn();
 
-    /** @return the DNS Time-To-Live (TTL), in seconds */
+    /**
+     * Gets the DNS Time-To-Live (TTL).
+     *
+     * @return the DNS Time-To-Live (TTL), in seconds
+     */
     long timeToLive();
 
-    /** @return true if the traffic manager profile is enabled, false if enabled */
+    /**
+     * Checks whether the traffic manager profile is enabled, false if enabled.
+     *
+     * @return true if the traffic manager profile is enabled, false if enabled
+     */
     boolean isEnabled();
 
-    /** @return the routing method used to route traffic to traffic manager profile endpoints */
+    /**
+     * Gets the routing method used to route traffic to traffic manager profile endpoints.
+     *
+     * @return the routing method used to route traffic to traffic manager profile endpoints
+     */
     TrafficRoutingMethod trafficRoutingMethod();
 
     /**
+     * Gets profile monitor status which is combination of the endpoint monitor status values for all endpoints in
+     *      the profile, and the configured profile status.
+     *
      * @return profile monitor status which is combination of the endpoint monitor status values for all endpoints in
      *     the profile, and the configured profile status
      */
     ProfileMonitorStatus monitorStatus();
 
-    /** @return the port that is monitored to check the health of traffic manager profile endpoints */
+    /**
+     * Gets the port that is monitored to check the health of traffic manager profile endpoints.
+     *
+     * @return the port that is monitored to check the health of traffic manager profile endpoints
+     */
     long monitoringPort();
 
-    /** @return the path that is monitored to check the health of traffic manager profile endpoints */
+    /**
+     * Gets the path that is monitored to check the health of traffic manager profile endpoints.
+     *
+     * @return the path that is monitored to check the health of traffic manager profile endpoints
+     */
     String monitoringPath();
 
-    /** @return external endpoints in the traffic manager profile, indexed by the name */
+    /**
+     * Gets external endpoints in the traffic manager profile.
+     *
+     * @return external endpoints in the traffic manager profile, indexed by the name
+     */
     Map<String, TrafficManagerExternalEndpoint> externalEndpoints();
 
-    /** @return Azure endpoints in the traffic manager profile, indexed by the name */
+    /**
+     * Gets Azure endpoints in the traffic manager profile.
+     *
+     * @return Azure endpoints in the traffic manager profile, indexed by the name
+     */
     Map<String, TrafficManagerAzureEndpoint> azureEndpoints();
 
-    /** @return nested traffic manager profile endpoints in this traffic manager profile, indexed by the name */
+    /**
+     * Gets nested traffic manager profile endpoints in this traffic manager profile.
+     *
+     * @return nested traffic manager profile endpoints in this traffic manager profile, indexed by the name
+     */
     Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints();
 
     /** The entirety of the traffic manager profile definition. */
