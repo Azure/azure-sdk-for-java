@@ -66,6 +66,7 @@ model FullBackupOperation {
   /**
    * Error encountered, if any, during the full backup operation.
    */
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable model"
   error?: Error;
 
   /**
@@ -77,10 +78,9 @@ model FullBackupOperation {
   /**
    * The end time of the backup operation in UTC
    */
-  #suppress "@azure-tools/typespec-azure-core/no-openapi" "Need to mark this as nullable"
-  @OpenAPI.extension("x-nullable", true)
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable attribute"
   @encode("unixTimestamp", int32)
-  endTime?: utcDateTime;
+  endTime?: utcDateTime | null;
 
   /**
    * Identifier for the full backup operation.
@@ -147,6 +147,7 @@ model RestoreOperation {
   /**
    * Error encountered, if any, during the restore operation.
    */
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable model"
   error?: Error;
 
   /**
@@ -163,10 +164,9 @@ model RestoreOperation {
   /**
    * The end time of the restore operation
    */
-  #suppress "@azure-tools/typespec-azure-core/no-openapi" "Need to mark this as nullable"
-  @OpenAPI.extension("x-nullable", true)
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable attribute"
   @encode("unixTimestamp", int32)
-  endTime?: utcDateTime;
+  endTime?: utcDateTime | null;
 }
 
 /**
@@ -216,6 +216,7 @@ model SelectiveKeyRestoreOperation {
   /**
    * Error encountered, if any, during the selective key restore operation.
    */
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable model"
   error?: Error;
 
   /**
@@ -232,8 +233,7 @@ model SelectiveKeyRestoreOperation {
   /**
    * The end time of the restore operation
    */
-  #suppress "@azure-tools/typespec-azure-core/no-openapi" "Need to mark this as nullable"
-  @OpenAPI.extension("x-nullable", true)
+  #suppress "@azure-tools/typespec-azure-core/no-nullable" "Intentionally nullable attribute"
   @encode("unixTimestamp", int32)
-  endTime?: utcDateTime;
+  endTime?: utcDateTime | null;
 }

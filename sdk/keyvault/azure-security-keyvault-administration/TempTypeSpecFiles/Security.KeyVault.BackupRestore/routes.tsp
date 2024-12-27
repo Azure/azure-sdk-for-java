@@ -39,7 +39,7 @@ op fullBackup is KeyVaultOperation<
     /**
      * Azure blob shared access signature token pointing to a valid Azure blob container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the time of making this call.
      */
-    @body azureStorageBlobContainerUri?: SASTokenParameter;
+    @body azureStorageBlobContainerUri: SASTokenParameter;
   },
   {
     @statusCode _: 202;
@@ -76,7 +76,7 @@ op fullBackup is KeyVaultOperation<
 op preFullBackup is KeyVaultOperation<
   {
     /** Optional parameters to validate prior to performing a full backup operation. */
-    @body preBackupOperationParameters?: PreBackupOperationParameters;
+    @body preBackupOperationParameters: PreBackupOperationParameters;
   },
   {
     @statusCode _: 202;
@@ -131,7 +131,7 @@ op restoreStatus is KeyVaultOperation<
 op preFullRestoreOperation is KeyVaultOperation<
   {
     /** Optional pre restore parameters to validate prior to performing a full restore operation. */
-    @body preRestoreOperationParameters?: PreRestoreOperationParameters;
+    @body preRestoreOperationParameters: PreRestoreOperationParameters;
   },
   {
     @statusCode _: 202;
@@ -167,7 +167,7 @@ op preFullRestoreOperation is KeyVaultOperation<
 op fullRestoreOperation is KeyVaultOperation<
   {
     /** The Azure blob SAS token pointing to a folder where the previous successful full backup was stored. */
-    @body restoreBlobDetails?: RestoreOperationParameters;
+    @body restoreBlobDetails: RestoreOperationParameters;
   },
   {
     @statusCode _: 202;
@@ -212,7 +212,7 @@ op selectiveKeyRestoreOperation is KeyVaultOperation<
      * The Azure blob SAS token pointing to a folder where the previous successful full backup was stored
      */
     @body
-    restoreBlobDetails?: SelectiveKeyRestoreOperationParameters;
+    restoreBlobDetails: SelectiveKeyRestoreOperationParameters;
   },
   {
     @statusCode _: 202;
