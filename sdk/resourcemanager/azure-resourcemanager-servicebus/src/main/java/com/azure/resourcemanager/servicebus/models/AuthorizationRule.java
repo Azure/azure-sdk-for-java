@@ -89,6 +89,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
          */
         interface WithListen<T> {
             /**
+             * Enables listening.
+             *
              * @return the next stage of the definition
              */
             T withListeningEnabled();
@@ -101,6 +103,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
          */
         interface WithSend<T> {
             /**
+             * Enables sending.
+             *
              * @return the next stage of the definition
              */
             T withSendingEnabled();
@@ -113,6 +117,8 @@ public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
          */
         interface WithManage<T> {
             /**
+             * Enables management.
+             *
              * @return the next stage of the definition
              */
             T withManagementEnabled();
