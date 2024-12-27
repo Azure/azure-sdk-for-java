@@ -12,50 +12,102 @@ import java.util.List;
 /** An immutable client-side representation of a rule in an Azure Management Policy. */
 @Fluent
 public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
-    /** @return the name of the rule */
+    /**
+     * Gets the name of the rule .
+     *
+     * @return the name of the rule
+     */
     String name();
 
-    /** @return the type of the rule */
+    /**
+     * Gets the type of the rule.
+     *
+     * @return the type of the rule
+     */
     RuleType type();
 
-    /** @return an unmodifiable list of the blob types this rule will apply for */
+    /**
+     * Gets an unmodifiable list of the blob types this rule will apply for.
+     *
+     * @return an unmodifiable list of the blob types this rule will apply for
+     */
     List<BlobTypes> blobTypesToFilterFor();
 
-    /** @return an unmodifiable list of the prefixes of the blob types this rule will apply for */
+    /**
+     * Gets an unmodifiable list of the prefixes of the blob types this rule will apply for.
+     *
+     * @return an unmodifiable list of the prefixes of the blob types this rule will apply for
+     */
     List<String> prefixesToFilterFor();
 
-    /** @return an object describing the actions to take on the filtered base blobs in this rule */
+    /**
+     * Gets an object describing the actions to take on the filtered base blobs in this rule.
+     *
+     * @return an object describing the actions to take on the filtered base blobs in this rule
+     */
     ManagementPolicyBaseBlob actionsOnBaseBlob();
 
-    /** @return an object describing the actions to take on the filtered snapshot in this rule */
+    /**
+     * Gets an object describing the actions to take on the filtered snapshot in this rule.
+     *
+     * @return an object describing the actions to take on the filtered snapshot in this rule
+     */
     ManagementPolicySnapShot actionsOnSnapShot();
 
-    /** @return whether there is a tier to cool action specified for the filtered base blobs in this rule */
+    /**
+     * Checks whether there is a tier to cool action specified for the filtered base blobs in this rule.
+     *
+     * @return whether there is a tier to cool action specified for the filtered base blobs in this rule
+     */
     boolean tierToCoolActionOnBaseBlobEnabled();
 
-    /** @return whether there is a tier to archive action specified for the filtered base blobs in this rule */
+    /**
+     * Checks whether there is a tier to archive action specified for the filtered base blobs in this rule.
+     *
+     * @return whether there is a tier to archive action specified for the filtered base blobs in this rule
+     */
     boolean tierToArchiveActionOnBaseBlobEnabled();
 
-    /** @return whether there is a delete action specified for the filtered base blobs in this rule */
+    /**
+     * Checks whether there is a delete action specified for the filtered base blobs in this rule.
+     *
+     * @return whether there is a delete action specified for the filtered base blobs in this rule
+     */
     boolean deleteActionOnBaseBlobEnabled();
 
-    /** @return whether there is a delete action specified for the filtered snapshots in this rule */
+    /**
+     * Checks whether there is a delete action specified for the filtered snapshots in this rule.
+     *
+     * @return whether there is a delete action specified for the filtered snapshots in this rule
+     */
     boolean deleteActionOnSnapShotEnabled();
 
     /**
+     * Gets the number of days after a filtered base blob is last modified when the tier to cool action is enacted
+     *
      * @return the number of days after a filtered base blob is last modified when the tier to cool action is enacted
      */
     Float daysAfterBaseBlobModificationUntilCooling();
 
     /**
+     * Gets the number of days after a filtered base blob is last modified when the tier to archive action is enacted.
+     *
      * @return the number of days after a filtered base blob is last modified when the tier to archive action is enacted
      */
     Float daysAfterBaseBlobModificationUntilArchiving();
 
-    /** @return the number of days after a filtered base blob is last modified when the delete action is enacted */
+    /**
+     * Gets the number of days after a filtered base blob is last modified when the delete action is enacted.
+     *
+     * @return the number of days after a filtered base blob is last modified when the delete action is enacted
+     */
     Float daysAfterBaseBlobModificationUntilDeleting();
 
-    /** @return the number of days after a filtered snapshot is created when the delete action is enacted */
+    /**
+     * Gets the number of days after a filtered snapshot is created when the delete action is enacted.
+     *
+     * @return the number of days after a filtered snapshot is created when the delete action is enacted
+     */
     Float daysAfterSnapShotCreationUntilDeleting();
 
     /** Container interface for all of the definitions related to a rule in a management policy. */

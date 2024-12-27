@@ -22,7 +22,11 @@ public final class StorageAccountSkuType {
 
     private final SkuName name;
 
-    /** @return the storage account sku name */
+    /**
+     * Gets the storage account sku name.
+     *
+     * @return the storage account sku name
+     */
     public SkuName name() {
         return this.name;
     }
