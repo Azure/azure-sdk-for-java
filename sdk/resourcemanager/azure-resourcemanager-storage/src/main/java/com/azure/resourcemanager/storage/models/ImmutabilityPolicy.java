@@ -75,7 +75,7 @@ public interface ImmutabilityPolicy extends HasInnerModel<ImmutabilityPolicyInne
 
     /**
      * Extends the immutability policy.
-
+    
      * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
      *     policy creation, in days.
      */
@@ -83,7 +83,7 @@ public interface ImmutabilityPolicy extends HasInnerModel<ImmutabilityPolicyInne
 
     /**
      * Extends the immutability policy.
-
+    
      * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
      *     policy creation, in days.
      * @return the completion
