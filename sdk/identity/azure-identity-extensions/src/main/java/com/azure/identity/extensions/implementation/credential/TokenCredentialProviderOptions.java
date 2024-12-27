@@ -25,6 +25,7 @@ public class TokenCredentialProviderOptions {
     private boolean managedIdentityEnabled;
     private String tokenCredentialProviderClassName;
     private String tokenCredentialBeanName;
+    private String accessTokenTimeoutInSeconds;
 
     public TokenCredentialProviderOptions() {
 
@@ -41,6 +42,7 @@ public class TokenCredentialProviderOptions {
         this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(properties));
         this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(properties);
         this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(properties);
+        this.accessTokenTimeoutInSeconds = AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.get(properties);
         this.authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
     }
 
@@ -132,4 +134,11 @@ public class TokenCredentialProviderOptions {
         this.authorityHost = authorityHost;
     }
 
+    public String getAccessTokenTimeoutInSeconds() {
+        return accessTokenTimeoutInSeconds;
+    }
+
+    public void setAccessTokenTimeoutInSeconds(String accessTokenTimeoutInSeconds) {
+        this.accessTokenTimeoutInSeconds = accessTokenTimeoutInSeconds;
+    }
 }

@@ -9,10 +9,11 @@ import com.azure.identity.extensions.implementation.credential.provider.TokenCre
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
-import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+import reactor.core.publisher.Mono;
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS;
 
 /**
  * Template class can be extended to get password from access token.
@@ -26,6 +27,8 @@ public class AzureAuthenticationTemplate {
     private TokenCredentialProvider tokenCredentialProvider;
 
     private AccessTokenResolver accessTokenResolver;
+
+    private long accessTokenTimeoutInSeconds;
 
     /**
      * Default constructor for AzureAuthenticationTemplate
@@ -66,6 +69,12 @@ public class AzureAuthenticationTemplate {
                     = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
             }
 
+            if (properties.containsKey(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getPropertyKey())) {
+                accessTokenTimeoutInSeconds = Long.parseLong(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.get(properties));
+            } else {
+                accessTokenTimeoutInSeconds = 30;
+                LOGGER.verbose("Use default access token timeout: {} seconds.", accessTokenTimeoutInSeconds);
+            }
             LOGGER.verbose("Initialized AzureAuthenticationTemplate.");
         } else {
             LOGGER.info("AzureAuthenticationTemplate has already initialized.");
@@ -110,7 +119,7 @@ public class AzureAuthenticationTemplate {
     }
 
     Duration getBlockTimeout() {
-        return Duration.ofSeconds(30);
+        return Duration.ofSeconds(accessTokenTimeoutInSeconds);
     }
 
     AtomicBoolean getIsInitialized() {

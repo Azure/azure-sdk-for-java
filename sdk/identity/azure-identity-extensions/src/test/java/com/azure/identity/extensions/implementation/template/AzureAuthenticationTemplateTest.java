@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -109,4 +111,25 @@ class AzureAuthenticationTemplateTest {
         }
     }
 
+    @Test
+    void useDefaultTokenTimeout() throws NoSuchFieldException, IllegalAccessException {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        Field defaultValueField = TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getClass().getDeclaredField("defaultValue");
+        defaultValueField.setAccessible(true);
+        String defaultVault = (String) defaultValueField.get(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS);
+        assertEquals(template.getBlockTimeout().getSeconds() + "", defaultVault);
+    }
+
+    @Test
+    void useCustomTokenTimeout() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        properties.setProperty(AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getPropertyKey(), "35");
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(template.getBlockTimeout().getSeconds() , 35);
+    }
 }
