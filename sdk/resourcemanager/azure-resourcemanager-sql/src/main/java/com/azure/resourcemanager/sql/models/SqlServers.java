@@ -28,37 +28,81 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
     SupportsGettingById<SqlServer>, SupportsDeletingById, SupportsDeletingByResourceGroup,
     SupportsBatchCreation<SqlServer>, SupportsBatchDeletion, HasManager<SqlServerManager> {
 
-    /** @return the SQL Server Firewall Rules API entry point */
+    /**
+     * Gets the SQL Server Firewall Rules API entry point.
+     *
+     * @return the SQL Server Firewall Rules API entry point
+     */
     SqlFirewallRuleOperations firewallRules();
 
-    /** @return the SQL Server VirtualNetwork Rules API entry point */
+    /**
+     * Gets the SQL Server VirtualNetwork Rules API entry point.
+     *
+     * @return the SQL Server VirtualNetwork Rules API entry point
+     */
     SqlVirtualNetworkRuleOperations virtualNetworkRules();
 
-    /** @return the SQL Server DNS aliases API entry point */
+    /**
+     * Gets the SQL Server DNS aliases API entry point.
+     *
+     * @return the SQL Server DNS aliases API entry point
+     */
     SqlServerDnsAliasOperations dnsAliases();
 
-    /** @return the SQL Failover Group API entry point */
+    /**
+     * Gets the SQL Failover Group API entry point.
+     *
+     * @return the SQL Failover Group API entry point
+     */
     SqlFailoverGroupOperations failoverGroups();
 
-    /** @return the SQL Server Key entry point */
+    /**
+     * Gets the SQL Server Key entry point.
+     *
+     * @return the SQL Server Key entry point
+     */
     SqlServerKeyOperations serverKeys();
 
-    /** @return the SQL Encryption Protector entry point */
+    /**
+     * Gets the SQL Encryption Protector entry point.
+     *
+     * @return the SQL Encryption Protector entry point
+     */
     SqlEncryptionProtectorOperations encryptionProtectors();
 
-    /** @return entry point to manage SQL Server Security Alert Policy */
+    /**
+     * Gets entry point to manage SQL Server Security Alert Policy.
+     *
+     * @return entry point to manage SQL Server Security Alert Policy
+     */
     SqlServerSecurityAlertPolicyOperations serverSecurityAlertPolicies();
 
-    /** @return the SQL Sync Group entry point */
+    /**
+     * Gets the SQL Sync Group entry point.
+     *
+     * @return the SQL Sync Group entry point
+     */
     SqlSyncGroupOperations syncGroups();
 
-    /** @return the SQL Sync Group entry point */
+    /**
+     * Gets the SQL Sync Group entry point.
+     *
+     * @return the SQL Sync Group entry point
+     */
     SqlSyncMemberOperations syncMembers();
 
-    /** @return the SQL Server Elastic Pools API entry point */
+    /**
+     * Gets the SQL Server Elastic Pools API entry point.
+     *
+     * @return the SQL Server Elastic Pools API entry point
+     */
     SqlElasticPoolOperations elasticPools();
 
-    /** @return the SQL Server Database API entry point */
+    /**
+     * Gets the SQL Server Database API entry point.
+     *
+     * @return the SQL Server Database API entry point
+     */
     SqlDatabaseOperations databases();
 
     /**
