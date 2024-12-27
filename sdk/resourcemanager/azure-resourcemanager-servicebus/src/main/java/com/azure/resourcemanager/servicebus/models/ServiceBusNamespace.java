@@ -22,41 +22,57 @@ import java.time.OffsetDateTime;
 public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager, SBNamespaceInner>,
     Refreshable<ServiceBusNamespace>, Updatable<ServiceBusNamespace.Update> {
     /**
+     * Gets the relative DNS name of the Service Bus namespace.
+     *
      * @return the relative DNS name of the Service Bus namespace
      */
     String dnsLabel();
 
     /**
+     * Gets fully qualified domain name (FQDN) of the Service Bus namespace.
+     *
      * @return fully qualified domain name (FQDN) of the Service Bus namespace
      */
     String fqdn();
 
     /**
+     * Gets SKU.
+     *
      * @return sku value
      */
     NamespaceSku sku();
 
     /**
+     * Gets time the namespace was created.
+     *
      * @return time the namespace was created
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets time the namespace was updated.
+     *
      * @return time the namespace was updated
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Gets entry point to manage queue entities in the Service Bus namespace.
+     *
      * @return entry point to manage queue entities in the Service Bus namespace
      */
     Queues queues();
 
     /**
+     * Gets entry point to manage topics entities in the Service Bus namespace.
+     *
      * @return entry point to manage topics entities in the Service Bus namespace
      */
     Topics topics();
 
     /**
+     * Gets entry point to manage authorization rules for the Service Bus namespace.
+     *
      * @return entry point to manage authorization rules for the Service Bus namespace
      */
     NamespaceAuthorizationRules authorizationRules();
