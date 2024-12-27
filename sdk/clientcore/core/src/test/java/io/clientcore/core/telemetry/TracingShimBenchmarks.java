@@ -6,6 +6,7 @@ package io.clientcore.core.telemetry;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.StatusCode;
@@ -89,9 +90,7 @@ public class TracingShimBenchmarks {
 
     @SuppressWarnings("try")
     private Span testShimSpan(Tracer tracer) {
-        Span span = tracer.spanBuilder("test", SpanKind.CLIENT, null)
-            .setAttribute("string1", "test")
-            .startSpan();
+        Span span = tracer.spanBuilder("test", SpanKind.CLIENT, null).setAttribute("string1", "test").startSpan();
 
         if (span.isRecording()) {
             span.setAttribute("string2", "test");
@@ -101,7 +100,7 @@ public class TracingShimBenchmarks {
             span.setAttribute("boolean", true);
         }
 
-        try (io.clientcore.core.telemetry.Scope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             span.setError("canceled");
         }
         span.end();

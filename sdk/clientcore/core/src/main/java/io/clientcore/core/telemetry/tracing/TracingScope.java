@@ -10,10 +10,11 @@ package io.clientcore.core.telemetry.tracing;
  * The scope MUST be closed. It also MUST be closed on the same thread it was created.
  * <p>
  *
- * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
+ * <strong>This interface is intended to be used by client libraries. Application developers
+ * should use OpenTelemetry API directly</strong>
  */
+@FunctionalInterface
 public interface TracingScope extends AutoCloseable {
     @Override
-    default void close() {
-    }
+    void close();
 }

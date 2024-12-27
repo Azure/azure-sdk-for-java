@@ -7,7 +7,7 @@ import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
 import io.clientcore.core.telemetry.tracing.SpanContext;
 import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.telemetry.tracing.TracingScope;
 
 import java.util.Objects;
 
@@ -27,18 +27,16 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
 
         @Override
-        public Span setError(Throwable error) {
-            return this;
-        }
-
-        @Override
         public Span setError(String errorType) {
             return this;
         }
 
         @Override
         public void end() {
+        }
 
+        @Override
+        public void end(Throwable error) {
         }
 
         @Override
@@ -52,7 +50,7 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
 
         @Override
-        public Scope makeCurrent() {
+        public TracingScope makeCurrent() {
             return NOOP_SCOPE;
         }
     };
@@ -86,7 +84,7 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
     };
 
-    private static final Scope NOOP_SCOPE = () -> {
+    private static final TracingScope NOOP_SCOPE = () -> {
     };
-    private static final Tracer NOOP_TRACER = (spanName, kind, ctx) -> NOOP_SPAN_BUILDER;
+    private static final Tracer NOOP_TRACER = (name, kind, ctx) -> NOOP_SPAN_BUILDER;
 }

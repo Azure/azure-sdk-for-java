@@ -7,14 +7,23 @@ package io.clientcore.core.telemetry.tracing;
  * Represents a span builder.
  * <p>
  *
- * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
+ * <strong>Classes in this package are not intended to be used by client libraries. Application developers
+ * should use OpenTelemetry API directly</strong>
  */
 public interface SpanBuilder {
+
     /**
-     * Sets the attribute.
+     * Sets attribute value under provided key.
+     * <p>
+     * Attributes added on span builder are used to make sampling decisions,
+     * and if the span is sampled, they are added to the resulting span.
+     * <p>
+     * <strong>When adding attributes, make sure to follow <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry semantic conventions</a>
+     * </strong>
      *
      * @param key The attribute key.
-     * @param value The attribute value.
+     * @param value The value of the attribute. Only {@link Boolean}, {@link String}, {@link Long}, {@link Integer},
+     *              and {@link Double} are supported.
      * @return Updated {@link SpanBuilder} object.
      */
     SpanBuilder setAttribute(String key, Object value);

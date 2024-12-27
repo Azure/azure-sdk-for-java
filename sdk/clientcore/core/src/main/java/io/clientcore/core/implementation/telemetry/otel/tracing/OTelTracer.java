@@ -88,11 +88,12 @@ public final class OTelTracer implements Tracer {
     }
 
     @Override
-    public SpanBuilder spanBuilder(String spanName, SpanKind kind, RequestOptions options) {
+    public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions options) {
         if (isEnabled()) {
             try {
                 Context parent = options == null ? Context.none() : options.getContext();
-                return new OTelSpanBuilder(SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName), kind, parent, libraryOptions);
+                return new OTelSpanBuilder(SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName), spanKind, parent,
+                    libraryOptions);
             } catch (Throwable t) {
                 OTelInitializer.runtimeError(LOGGER, t);
             }

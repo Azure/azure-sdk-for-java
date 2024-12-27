@@ -12,10 +12,10 @@ import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccess
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
-import io.clientcore.core.telemetry.Scope;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanContext;
 import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -32,8 +32,61 @@ import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY
 import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
 
 /**
- * The instrumentation policy is responsible for instrumenting the HTTP request and response with distributed tracing
- * and (in the future) metrics.
+ * The {@link InstrumentationPolicy} is responsible for instrumenting the HTTP request and response with distributed tracing
+ * and (in the future) metrics following
+ * <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md">OpenTelemetry Semantic Conventions</a>.
+ * <p>
+ * It propagates context to the downstream service following <a href="https://www.w3.org/TR/trace-context-1/">W3C Trace Context</a> specification.
+ * <p>
+ *
+ * The {@link InstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added between
+ * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try (redirect), and logging happens
+ * in the scope of the span.
+ * <p>
+ * The policy supports basic customizations using {@link TelemetryOptions}, {@link HttpLogOptions}, and additional request and
+ * response headers to record as attributes.
+ * <p>
+ * If your client library needs a different approach to distributed tracing,
+ * you can create a custom policy and use it instead of the {@link InstrumentationPolicy}. If you want to enrich instrumentation
+ * policy spans with additional attributes, you can create a custom policy and add it under the {@link InstrumentationPolicy}
+ * so that it's executed in the scope of the span created by the {@link InstrumentationPolicy}.
+ * <p>
+ * <strong>Configure instrumentation policy:</strong>
+ * <p>
+ * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <pre>
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;
+ *         new HttpRetryPolicy&#40;&#41;,
+ *         new InstrumentationPolicy&#40;telemetryOptions, logOptions&#41;,
+ *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
+ *     .build&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <p>
+ * <strong>Customize instrumentation policy:</strong>
+ * <p>
+ * <!-- src_embed io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ * <pre>
+ *
+ * &#47;&#47; InstrumentationPolicy can capture custom headers from requests and responses - for example when the endpoint
+ * &#47;&#47; supports legacy correlation headers.
+ * Map&lt;HttpHeaderName, String&gt; requestHeadersToRecord
+ *     = Collections.singletonMap&#40;HttpHeaderName.CLIENT_REQUEST_ID, &quot;custom.request.id&quot;&#41;;
+ * Map&lt;HttpHeaderName, String&gt; responseHeadersToRecord
+ *     = Collections.singletonMap&#40;HttpHeaderName.REQUEST_ID, &quot;custom.response.id&quot;&#41;;
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;
+ *         new HttpRetryPolicy&#40;&#41;,
+ *         new InstrumentationPolicy&#40;telemetryOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord&#41;,
+ *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
+ *     .build&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
  */
 public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
@@ -72,7 +125,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates a new instrumentation policy.
-     *
      * @param telemetryOptions Application telemetry options.
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
@@ -81,12 +133,12 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a new instrumentation policy with the ability to capture request and response headers.
+     * Creates a new instrumentation policy with additional request and response headers to record as attributes.
      *
      * @param telemetryOptions Application telemetry options.
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
-     * @param requestHeaders The request headers to capture.
-     * @param responseHeaders The response headers to capture.
+     * @param requestHeaders The request headers to capture as span attributes.
+     * @param responseHeaders The response headers to capture as span attributes.
      */
     public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions,
         Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
@@ -114,7 +166,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
             .startSpan();
 
-        try (Scope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             propagateContext(request, span.getSpanContext());
             Response<?> response = next.process();
 
@@ -141,12 +193,11 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
                 span.setError(String.valueOf(response.getStatusCode()));
             }
 
+            span.end();
             return response;
         } catch (Throwable t) {
-            span.setError(unwrap(t));
+            span.end(unwrap(t));
             throw t;
-        } finally {
-            span.end();
         }
     }
 

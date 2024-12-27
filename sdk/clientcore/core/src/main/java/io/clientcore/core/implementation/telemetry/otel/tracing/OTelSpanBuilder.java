@@ -25,7 +25,8 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.S
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 
 public class OTelSpanBuilder implements SpanBuilder {
-    static final OTelSpanBuilder NOOP = new OTelSpanBuilder(null,  SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
+    static final OTelSpanBuilder NOOP
+        = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
 
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
@@ -145,7 +146,7 @@ public class OTelSpanBuilder implements SpanBuilder {
         if (CONTEXT_CLASS.isInstance(parent)) {
             return parent;
         } else if (parent instanceof OTelSpan) {
-            return  ((OTelSpan) parent).getOtelContext();
+            return ((OTelSpan) parent).getOtelContext();
         } else if (parent != null) {
             LOGGER.atVerbose()
                 .addKeyValue("expectedType", CONTEXT_CLASS.getName())
@@ -160,12 +161,16 @@ public class OTelSpanBuilder implements SpanBuilder {
         switch (spanKind) {
             case SERVER:
                 return SERVER_KIND;
+
             case CLIENT:
                 return CLIENT_KIND;
+
             case PRODUCER:
                 return PRODUCER_KIND;
+
             case CONSUMER:
                 return CONSUMER_KIND;
+
             default:
                 return INTERNAL_KIND;
         }

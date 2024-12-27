@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -65,7 +66,7 @@ public class TracerTests {
 
         assertTrue(span.isRecording());
 
-        try (Scope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             assertTrue(io.opentelemetry.api.trace.Span.current().getSpanContext().isValid());
         }
 
@@ -163,9 +164,7 @@ public class TracerTests {
 
         RequestOptions requestOptions = new RequestOptions()
             .setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
-        Span child = tracer
-            .spanBuilder("child", INTERNAL, requestOptions)
-            .startSpan();
+        Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
 
         assertEquals(1, exporter.getFinishedSpanItems().size());

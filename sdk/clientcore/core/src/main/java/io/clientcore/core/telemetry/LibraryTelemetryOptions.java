@@ -9,9 +9,19 @@ import java.util.Objects;
 
 /**
  * Options for configuring library-specific telemetry settings.
- * <p>
  *
- * It's provided by the client library and is not intended to be used directly by the end users.
+ * <p><strong>This class is intended to be used by the client libraries only. Library options must not be provided or modified
+ * by application code</strong>
+ * <p>
+ * Library options describe the client library - it's name, version, and schema URL.
+ * Schema URL describes telemetry schema and version.
+ * <p>
+ * If your client library adds any attributes (links, events, etc.) to the spans,
+ * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>.
+ * And provide the corresponding schema URL.
+ * <p>
+ * The {@link LibraryTelemetryOptions} are usually static and shared across all instances of the client.
+ * Application developers are not expected to change them.
  */
 public final class LibraryTelemetryOptions {
     private final String libraryName;

@@ -13,7 +13,8 @@ import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
  * Provides observability capabilities (distributed tracing, metrics, etc.) with OpenTelemetry to the client library.
  * <p>
  *
- * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
+ * <p><strong>This interface is intended to be used by client libraries. Application developers
+ * should use OpenTelemetry API directly</strong>
  */
 public interface TelemetryProvider {
     String DISABLE_TRACING_KEY = "disable-tracing";
@@ -21,6 +22,25 @@ public interface TelemetryProvider {
 
     /**
      * Gets the tracer.
+     * <p>
+     * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.
+     * <p>
+     * <strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong>
+     * <p>
+     * <!-- src_embed io.clientcore.core.telemetry.tracing.createtracer -->
+     * <pre>
+     *
+     * LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions&#40;&quot;sample&quot;&#41;
+     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *
+     * TelemetryOptions&lt;?&gt; telemetryOptions = new TelemetryOptions&lt;&gt;&#40;&#41;;
+     *
+     * Tracer tracer = TelemetryProvider.getInstance&#40;&#41;.getTracer&#40;telemetryOptions, libraryOptions&#41;;
+     *
+     * </pre>
+     * <!-- end io.clientcore.core.telemetry.tracing.createtracer -->
      *
      * @param applicationOptions Options provided by the application.
      * @param libraryOptions Options provided by the library.

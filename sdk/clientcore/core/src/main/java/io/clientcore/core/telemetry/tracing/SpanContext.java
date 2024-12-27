@@ -8,7 +8,8 @@ package io.clientcore.core.telemetry.tracing;
  * is used to correlated spans across different services.
  * <p>
  *
- * This interface should only be used by client libraries. It is not intended to be used directly by the end users.
+ * <strong>Classes in this package are not intended to be used by client libraries. Application developers
+ * should use OpenTelemetry API directly</strong>
  */
 public interface SpanContext {
 

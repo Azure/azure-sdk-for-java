@@ -26,7 +26,6 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
-import org.eclipse.jetty.server.Request;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -418,7 +417,8 @@ public class InstrumentationPolicyTests {
             = TelemetryProvider.getInstance().getTracer(otelOptions, new LibraryTelemetryOptions("test-library"));
 
         RequestOptions requestOptions = new RequestOptions();
-        io.clientcore.core.telemetry.tracing.Span parent = tracer.spanBuilder("parent", INTERNAL, requestOptions).startSpan();
+        io.clientcore.core.telemetry.tracing.Span parent
+            = tracer.spanBuilder("parent", INTERNAL, requestOptions).startSpan();
 
         requestOptions.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, parent));
 
