@@ -76,7 +76,7 @@ public enum AuthProperty {
     /**
      * The given bean name of a TokenCredential bean in the Spring context.
      */
-    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName",
+    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName", "springCloudAzureDefaultCredential",
         "The given bean name of a TokenCredential bean in the Spring context.", false),
 
     /**
