@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
@@ -155,6 +156,11 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 .setExpectedMinRetryCount(1)
                 .setShouldFinalResponseHaveSuccess(true)
                 .setExpectedRegionsContactedCount(2);
+
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover = new ExpectedResponseCharacteristics()
                 .setExpectedMinRetryCount(0)
@@ -305,6 +311,54 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Batch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover
             }
         };
@@ -683,6 +737,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ForbiddenException forbiddenException = new ForbiddenException(null, -1, null, new HashMap<>());
                 BridgeInternal.setSubStatusCode(forbiddenException, subStatusCode);
                 return forbiddenException;
+            case HttpConstants.StatusCodes.REQUEST_TIMEOUT:
+                return new RequestTimeoutException("", null, subStatusCode);
             default:
                 throw new UnsupportedOperationException(String.format("Uncovered erroneous status code %d", statusCode));
         }
