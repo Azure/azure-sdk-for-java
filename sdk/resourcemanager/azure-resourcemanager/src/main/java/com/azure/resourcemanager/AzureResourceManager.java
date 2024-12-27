@@ -877,6 +877,8 @@ public final class AzureResourceManager {
     //    }
 
     /**
+     * Gets entry point to managing traffic manager profiles.
+     *
      * @return entry point to managing traffic manager profiles.
      */
     public TrafficManagerProfiles trafficManagerProfiles() {
