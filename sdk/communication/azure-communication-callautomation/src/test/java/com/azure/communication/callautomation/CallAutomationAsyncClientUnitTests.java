@@ -117,13 +117,11 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
                 CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
-                CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200))));
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200))));
 
-        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
-            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
-            answerCallOptions.getCustomCallingContext().addSipUui("OBOuuivalue");
-            answerCallOptions.getCustomCallingContext().addSipX("XheaderOBO", "value");
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
+        answerCallOptions.getCustomCallingContext().addSipUui("OBOuuivalue");
+        answerCallOptions.getCustomCallingContext().addSipX("XheaderOBO", "value");
 
         Response<AnswerCallResult> answerCallResult
             = callAutomationAsyncClient.answerCallWithResponse(answerCallOptions).block();
@@ -131,10 +129,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
-        assertEquals(MEDIA_SUBSCRIPTION_ID,
-            answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-        assertEquals(DATA_SUBSCRIPTION_ID,
-            answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 
     @Test

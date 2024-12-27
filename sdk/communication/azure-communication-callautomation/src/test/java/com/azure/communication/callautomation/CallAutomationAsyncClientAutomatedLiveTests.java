@@ -213,7 +213,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
