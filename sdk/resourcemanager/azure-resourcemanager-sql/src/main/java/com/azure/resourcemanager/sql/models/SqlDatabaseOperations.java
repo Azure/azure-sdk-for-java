@@ -165,6 +165,8 @@ public interface SqlDatabaseOperations
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
         interface WithAuthentication {
             /**
+             * Specifies the SQL login administrator and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -173,6 +175,8 @@ public interface SqlDatabaseOperations
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Specifies the Active Directory administrator and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
@@ -206,6 +210,8 @@ public interface SqlDatabaseOperations
         /** Sets the storage key type and value to use. */
         interface WithStorageKeyAfterElasticPool {
             /**
+             * Specifies the storage access key.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
@@ -213,6 +219,8 @@ public interface SqlDatabaseOperations
                 withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies the share access key.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
@@ -223,6 +231,8 @@ public interface SqlDatabaseOperations
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
         interface WithAuthenticationAfterElasticPool {
             /**
+             * Specifies the SQL login administrator and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -231,6 +241,8 @@ public interface SqlDatabaseOperations
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Specifies the Active Directory administrator and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage

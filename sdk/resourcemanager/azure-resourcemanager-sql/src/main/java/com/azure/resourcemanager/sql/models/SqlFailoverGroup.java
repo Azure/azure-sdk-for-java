@@ -18,31 +18,67 @@ import reactor.core.publisher.Mono;
 public interface SqlFailoverGroup extends Resource, HasInnerModel<FailoverGroupInner>, HasResourceGroup,
     Refreshable<SqlFailoverGroup>, Updatable<SqlFailoverGroup.Update> {
 
-    /** @return name of the SQL Server to which this Failover Group belongs */
+    /**
+     * Gets name of the SQL Server to which this Failover Group belongs.
+     *
+     * @return name of the SQL Server to which this Failover Group belongs
+     */
     String sqlServerName();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the failover policy of the read-write endpoint for the failover group */
+    /**
+     * Gets the failover policy of the read-write endpoint for the failover group.
+     *
+     * @return the failover policy of the read-write endpoint for the failover group
+     */
     ReadWriteEndpointFailoverPolicy readWriteEndpointPolicy();
 
-    /** @return the grace period before failover with data loss is attempted for the read-write endpoint */
+    /**
+     * Gets the grace period before failover with data loss is attempted for the read-write endpoint.
+     *
+     * @return the grace period before failover with data loss is attempted for the read-write endpoint
+     */
     int readWriteEndpointDataLossGracePeriodMinutes();
 
-    /** @return the failover policy of the read-only endpoint for the failover group */
+    /**
+     * Gets the failover policy of the read-only endpoint for the failover group.
+     *
+     * @return the failover policy of the read-only endpoint for the failover group
+     */
     ReadOnlyEndpointFailoverPolicy readOnlyEndpointPolicy();
 
-    /** @return the local replication role of the failover group instance */
+    /**
+     * Gets the local replication role of the failover group instance.
+     *
+     * @return the local replication role of the failover group instance
+     */
     FailoverGroupReplicationRole replicationRole();
 
-    /** @return the replication state of the failover group instance */
+    /**
+     * Gets the replication state of the failover group instance.
+     *
+     * @return the replication state of the failover group instance
+     */
     String replicationState();
 
-    /** @return the list of partner server information for the failover group */
+    /**
+     * Gets the list of partner server information for the failover group.
+     *
+     * @return the list of partner server information for the failover group
+     */
     List<PartnerInfo> partnerServers();
 
-    /** @return the list of database IDs in the failover group */
+    /**
+     * Gets the list of database IDs in the failover group.
+     *
+     * @return the list of database IDs in the failover group
+     */
     List<String> databases();
 
     /** Deletes the Failover Group. */
