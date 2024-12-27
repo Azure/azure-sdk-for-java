@@ -1766,6 +1766,32 @@ public final class LoadTestRunClient {
     }
 
     /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric, underscore
+     * or hyphen characters.
+     * @param body Test Profile Run Model.
+     * @param testProfileRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @return A {@link SyncPoller} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginTestProfileRun(String testProfileRunId, BinaryData body,
+        RequestOptions testProfileRunRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (testProfileRunRequestOptions != null) {
+            defaultRequestOptions.setContext(testProfileRunRequestOptions.getContext());
+        }
+        return SyncPoller.createPoller(Duration.ofSeconds(5),
+            (context) -> PollingUtils
+                .getTestProfileRunStatus(createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, testProfileRunRequestOptions).getValue()),
+            (context) -> PollingUtils
+                .getTestProfileRunStatus(getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue()),
+            (activationResponse, context) -> stopTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue(),
+            (context) -> getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue());
+    }
+
+    /**
      * Create and start a new test run with the given test run Id.
      *
      * @param testRunId Unique test run identifier for the load test run, must contain only lower-case alphabetic,
