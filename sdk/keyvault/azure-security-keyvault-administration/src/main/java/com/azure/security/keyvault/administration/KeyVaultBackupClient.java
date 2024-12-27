@@ -8,29 +8,24 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupHeaders;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
-import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.PreBackupOperationParameters;
-import com.azure.security.keyvault.administration.implementation.models.PreFullBackupHeaders;
-import com.azure.security.keyvault.administration.implementation.models.PreFullRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.PreRestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
@@ -45,7 +40,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
 import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.restoreOperationToSelectiveKeyRestoreOperation;
@@ -208,27 +202,15 @@ public final class KeyVaultBackupClient {
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
-    private final KeyVaultBackupAsyncClient asyncClient;
-
     /**
      * The underlying AutoRest client used to interact with the Key Vault service.
      */
-    private final KeyVaultBackupClientImpl clientImpl;
+    private final KeyVaultAdministrationClientImpl clientImpl;
 
     /**
      * The Key Vault URL this client is associated to.
      */
     private final String vaultUrl;
-
-    /**
-     * The Key Vault Administration Service version to use with this client.
-     */
-    private final String serviceVersion;
-
-    /**
-     * The {@link HttpPipeline} powering this client.
-     */
-    private final HttpPipeline pipeline;
 
     Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
@@ -238,14 +220,11 @@ public final class KeyVaultBackupClient {
      * Package private constructor to be used by {@link KeyVaultBackupClientBuilder}.
      */
     KeyVaultBackupClient(URL vaultUrl, HttpPipeline httpPipeline, KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
+        Objects.requireNonNull(vaultUrl, KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl.toString();
-        this.serviceVersion = serviceVersion.getVersion();
-        this.pipeline = httpPipeline;
-        this.asyncClient = null;
 
-        clientImpl = new KeyVaultBackupClientImpl(httpPipeline, this.serviceVersion);
+        clientImpl = new KeyVaultAdministrationClientImpl(httpPipeline, this.vaultUrl, serviceVersion);
     }
 
     /**
@@ -254,7 +233,7 @@ public final class KeyVaultBackupClient {
      * @return The vault endpoint URL.
      */
     public String getVaultUrl() {
-        return asyncClient.getVaultUrl();
+        return this.vaultUrl;
     }
 
     /**
@@ -301,14 +280,13 @@ public final class KeyVaultBackupClient {
     public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         if (blobStorageUrl == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException(
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'blobStorageUrl'")));
+                String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'blobStorageUrl'")));
         }
 
-        Context context = Context.NONE;
         return SyncPoller.createPoller(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                backupActivationOperation(blobStorageUrl, sasToken, context).apply(cxt)),
-            backupPollOperation(context), (pollingContext, firstResponse) -> {
+                backupActivationOperation(blobStorageUrl, sasToken, Context.NONE).apply(cxt)),
+            backupPollOperation(Context.NONE), (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, backupFetchOperation());
     }
@@ -326,23 +304,25 @@ public final class KeyVaultBackupClient {
      * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
      */
     Response<KeyVaultBackupOperation> backupWithResponse(String blobStorageUrl, String sasToken, Context context) {
-        SASTokenParameter sasTokenParameter
-            = new SASTokenParameter(blobStorageUrl).setToken(sasToken).setUseManagedIdentity(sasToken == null);
-        context = enableSyncRestProxy(context);
+        //TODO (vicolina): Fix code generation to take body parameters for LROs.
+        SASTokenParameter sasTokenParameter = new SASTokenParameter(blobStorageUrl).setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
 
         try {
-            ResponseBase<FullBackupHeaders, FullBackupOperation> backupOperationResponse
-                = clientImpl.fullBackupWithResponse(vaultUrl, sasTokenParameter, context);
+            Response<BinaryData> backupOperationResponse = clientImpl.fullBackupWithResponse(
+                new RequestOptions().setContext(context));
+
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
-                backupOperationResponse.getHeaders(),
-                (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
+                backupOperationResponse.getHeaders(), (KeyVaultBackupOperation) transformToLongRunningOperation(
+                backupOperationResponse.getValue().toObject(FullBackupOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private Function<PollingContext<KeyVaultBackupOperation>, KeyVaultBackupOperation>
-        backupActivationOperation(String blobStorageUrl, String sasToken, Context context) {
+    private Function<PollingContext<KeyVaultBackupOperation>, KeyVaultBackupOperation> backupActivationOperation(
+        String blobStorageUrl, String sasToken, Context context) {
+
         return (pollingContext) -> {
             try {
                 return backupWithResponse(blobStorageUrl, sasToken, context).getValue();
@@ -352,14 +332,16 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private Function<PollingContext<KeyVaultBackupOperation>, PollResponse<KeyVaultBackupOperation>>
-        backupPollOperation(Context context) {
+    private Function<PollingContext<KeyVaultBackupOperation>, PollResponse<KeyVaultBackupOperation>> backupPollOperation(
+        Context context) {
+
         return (pollingContext) -> {
             try {
                 PollResponse<KeyVaultBackupOperation> pollResponse = pollingContext.getLatestResponse();
 
                 if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
+
                     return pollResponse;
                 }
 
@@ -367,20 +349,21 @@ public final class KeyVaultBackupClient {
 
                 if (keyVaultBackupOperation == null) {
                     LOGGER.warning("Backup operation does not exist. Activation operation failed.");
-                    return new PollResponse<KeyVaultBackupOperation>(
-                        LongRunningOperationStatus.fromString("BACKUP_START_FAILED", true), null);
+
+                    return new PollResponse<>(LongRunningOperationStatus.fromString("BACKUP_START_FAILED", true), null);
                 }
 
                 final String jobId = keyVaultBackupOperation.getOperationId();
-                Context contextToUse = enableSyncRestProxy(context);
+                Response<BinaryData> backupOperationResponse = clientImpl.fullBackupStatusWithResponse(jobId,
+                    new RequestOptions().setContext(context));
 
-                Response<FullBackupOperation> backupOperationResponse
-                    = clientImpl.fullBackupStatusWithResponse(vaultUrl, jobId, contextToUse);
                 return processBackupOperationResponse(new SimpleResponse<>(backupOperationResponse,
-                    (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
+                    (KeyVaultBackupOperation) transformToLongRunningOperation(
+                        backupOperationResponse.getValue().toObject(FullBackupOperation.class))));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 LOGGER.logExceptionAsError(e);
+
                 return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             } catch (RuntimeException e) {
                 throw LOGGER.logExceptionAsError(e);
@@ -398,9 +381,11 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private static PollResponse<KeyVaultBackupOperation>
-        processBackupOperationResponse(Response<KeyVaultBackupOperation> response) {
+    private static PollResponse<KeyVaultBackupOperation> processBackupOperationResponse(
+        Response<KeyVaultBackupOperation> response) {
+
         String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+
         return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
             response.getValue());
     }
@@ -448,21 +433,19 @@ public final class KeyVaultBackupClient {
     public SyncPoller<KeyVaultBackupOperation, String> beginPreBackup(String blobStorageUrl, String sasToken) {
         if (blobStorageUrl == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException(
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'blobStorageUrl'")));
+                String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'blobStorageUrl'")));
         }
-
-        Context context = Context.NONE;
 
         return SyncPoller.createPoller(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                preBackupActivationOperation(blobStorageUrl, sasToken, context).apply(cxt)),
-            backupPollOperation(context), (pollingContext, firstResponse) -> {
+                preBackupActivationOperation(blobStorageUrl, sasToken, Context.NONE).apply(cxt)),
+            backupPollOperation(Context.NONE), (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, backupFetchOperation());
     }
 
-    private Function<PollingContext<KeyVaultBackupOperation>, KeyVaultBackupOperation>
-        preBackupActivationOperation(String blobStorageUrl, String sasToken, Context context) {
+    private Function<PollingContext<KeyVaultBackupOperation>, KeyVaultBackupOperation> preBackupActivationOperation(
+        String blobStorageUrl, String sasToken, Context context) {
 
         return (pollingContext) -> {
             try {
@@ -487,19 +470,19 @@ public final class KeyVaultBackupClient {
      * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
      */
     Response<KeyVaultBackupOperation> preBackupWithResponse(String blobStorageUrl, String sasToken, Context context) {
+        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreBackupOperationParameters preBackupOperationParameters
             = new PreBackupOperationParameters().setStorageResourceUri(blobStorageUrl)
-                .setToken(sasToken)
-                .setUseManagedIdentity(sasToken == null);
-        context = enableSyncRestProxy(context);
+            .setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
 
         try {
-            ResponseBase<PreFullBackupHeaders, FullBackupOperation> backupOperationResponse
-                = clientImpl.preFullBackupWithResponse(vaultUrl, preBackupOperationParameters, context);
+            Response<BinaryData> backupOperationResponse = clientImpl.preFullBackupWithResponse(
+                new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
-                backupOperationResponse.getHeaders(),
-                (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
+                backupOperationResponse.getHeaders(), (KeyVaultBackupOperation) transformToLongRunningOperation(
+                backupOperationResponse.getValue().toObject(FullBackupOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -551,15 +534,13 @@ public final class KeyVaultBackupClient {
     public SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         if (folderUrl == null) {
             throw LOGGER.logExceptionAsError(
-                new NullPointerException(String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'folderUrl'")));
+                new NullPointerException(String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'folderUrl'")));
         }
-
-        Context context = Context.NONE;
 
         return SyncPoller.createPoller(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                restoreActivationOperation(folderUrl, sasToken, context).apply(cxt)),
-            restorePollOperation(context), (pollingContext, firstResponse) -> {
+                restoreActivationOperation(folderUrl, sasToken, Context.NONE).apply(cxt)),
+            restorePollOperation(Context.NONE), (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, (pollingContext) -> new KeyVaultRestoreResult());
     }
@@ -584,25 +565,25 @@ public final class KeyVaultBackupClient {
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
 
-        SASTokenParameter sasTokenParameter
-            = new SASTokenParameter(containerUrl).setToken(sasToken).setUseManagedIdentity(sasToken == null);
-        RestoreOperationParameters restoreOperationParameters
-            = new RestoreOperationParameters(sasTokenParameter, folderName);
-        context = enableSyncRestProxy(context);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
+        //TODO (vicolina): Fix code generation to take body parameters for LROs.
+        RestoreOperationParameters restoreOperationParameters = new RestoreOperationParameters(sasTokenParameter,
+            folderName);
 
         try {
-            ResponseBase<FullRestoreOperationHeaders, RestoreOperation> restoreOperationResponse
-                = clientImpl.fullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters, context);
+            Response<BinaryData> restoreOperationResponse = clientImpl.fullRestoreOperationWithResponse(
+                new RequestOptions().setContext(context));
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
-                restoreOperationResponse.getHeaders(),
-                (KeyVaultRestoreOperation) transformToLongRunningOperation(restoreOperationResponse.getValue()));
+                restoreOperationResponse.getHeaders(), (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                restoreOperationResponse.getValue().toObject(RestoreOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private Function<PollingContext<KeyVaultRestoreOperation>, KeyVaultRestoreOperation>
-        restoreActivationOperation(String folderUrl, String sasToken, Context context) {
+    private Function<PollingContext<KeyVaultRestoreOperation>, KeyVaultRestoreOperation> restoreActivationOperation(
+        String folderUrl, String sasToken, Context context) {
         return (pollingContext) -> {
             try {
                 return restoreWithResponse(folderUrl, sasToken, context).getValue();
@@ -612,8 +593,8 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private Function<PollingContext<KeyVaultRestoreOperation>, PollResponse<KeyVaultRestoreOperation>>
-        restorePollOperation(Context context) {
+    private Function<PollingContext<KeyVaultRestoreOperation>, PollResponse<KeyVaultRestoreOperation>> restorePollOperation(
+        Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<KeyVaultRestoreOperation> pollResponse = pollingContext.getLatestResponse();
@@ -634,16 +615,17 @@ public final class KeyVaultBackupClient {
                 }
 
                 final String jobId = keyVaultRestoreOperation.getOperationId();
-                Context contextToUse = enableSyncRestProxy(context);
+                Response<BinaryData> response = clientImpl.restoreStatusWithResponse(jobId,
+                    new RequestOptions().setContext(context));
 
-                Response<RestoreOperation> response
-                    = clientImpl.restoreStatusWithResponse(vaultUrl, jobId, contextToUse);
                 return processRestoreOperationResponse(new SimpleResponse<>(response,
-                    (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())));
+                    (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                        response.getValue().toObject(RestoreOperation.class))));
 
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 LOGGER.logExceptionAsError(e);
+
                 return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             } catch (RuntimeException e) {
                 throw LOGGER.logExceptionAsError(e);
@@ -651,9 +633,11 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private static PollResponse<KeyVaultRestoreOperation>
-        processRestoreOperationResponse(Response<KeyVaultRestoreOperation> response) {
+    private static PollResponse<KeyVaultRestoreOperation> processRestoreOperationResponse(
+        Response<KeyVaultRestoreOperation> response) {
+
         String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+
         return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
             response.getValue());
     }
@@ -705,15 +689,15 @@ public final class KeyVaultBackupClient {
         String sasToken) {
         if (folderUrl == null) {
             throw LOGGER.logExceptionAsError(
-                new NullPointerException(String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'folderUrl'")));
+                new NullPointerException(String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'folderUrl'")));
         }
 
         Context context = Context.NONE;
 
         return SyncPoller.createPoller(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                preRestoreActivationOperation(folderUrl, sasToken, context).apply(cxt)),
-            restorePollOperation(context), (pollingContext, firstResponse) -> {
+                preRestoreActivationOperation(folderUrl, sasToken, context).apply(cxt)), restorePollOperation(context),
+            (pollingContext, firstResponse) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, (pollingContext) -> new KeyVaultRestoreResult());
     }
@@ -739,26 +723,28 @@ public final class KeyVaultBackupClient {
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
 
-        SASTokenParameter sasTokenParameter
-            = new SASTokenParameter(containerUrl).setToken(sasToken).setUseManagedIdentity(sasToken == null);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
+        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreRestoreOperationParameters restoreOperationParameters
             = new PreRestoreOperationParameters().setFolderToRestore(folderName)
-                .setSasTokenParameters(sasTokenParameter);
-        context = enableSyncRestProxy(context);
+            .setSasTokenParameters(sasTokenParameter);
 
         try {
-            ResponseBase<PreFullRestoreOperationHeaders, RestoreOperation> restoreOperationResponse
-                = clientImpl.preFullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters, context);
+            Response<BinaryData> restoreOperationResponse = clientImpl.preFullRestoreOperationWithResponse(
+                new RequestOptions().setContext(context));
+
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
-                restoreOperationResponse.getHeaders(),
-                (KeyVaultRestoreOperation) transformToLongRunningOperation(restoreOperationResponse.getValue()));
+                restoreOperationResponse.getHeaders(), (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                restoreOperationResponse.getValue().toObject(RestoreOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private Function<PollingContext<KeyVaultRestoreOperation>, KeyVaultRestoreOperation>
-        preRestoreActivationOperation(String folderUrl, String sasToken, Context context) {
+    private Function<PollingContext<KeyVaultRestoreOperation>, KeyVaultRestoreOperation> preRestoreActivationOperation(
+        String folderUrl, String sasToken, Context context) {
+
         return (pollingContext) -> {
             try {
                 return preRestoreWithResponse(folderUrl, sasToken, context).getValue();
@@ -813,16 +799,17 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException If the {@code keyName} or {@code folderUrl} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult>
-        beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
+    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> beginSelectiveKeyRestore(
+        String keyName, String folderUrl, String sasToken) {
+
         if (keyName == null) {
             throw LOGGER.logExceptionAsError(
-                new NullPointerException(String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'keyName'")));
+                new NullPointerException(String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'keyName'")));
         }
 
         if (folderUrl == null) {
             throw LOGGER.logExceptionAsError(
-                new NullPointerException(String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'folderUrl'")));
+                new NullPointerException(String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'folderUrl'")));
         }
 
         Context context = Context.NONE;
@@ -852,31 +839,33 @@ public final class KeyVaultBackupClient {
      */
     Response<KeyVaultSelectiveKeyRestoreOperation> selectiveKeyRestoreWithResponse(String keyName, String folderUrl,
         String sasToken, Context context) {
+
         String[] segments = folderUrl.split("/");
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
 
-        SASTokenParameter sasTokenParameter
-            = new SASTokenParameter(containerUrl).setToken(sasToken).setUseManagedIdentity(sasToken == null);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
+            .setUseManagedIdentity(sasToken == null);
+        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         SelectiveKeyRestoreOperationParameters selectiveKeyRestoreOperationParameters
             = new SelectiveKeyRestoreOperationParameters(sasTokenParameter, folderName);
-        context = enableSyncRestProxy(context);
 
         try {
-            ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation> restoreOperationResponse
-                = clientImpl.selectiveKeyRestoreOperationWithResponse(vaultUrl, keyName,
-                    selectiveKeyRestoreOperationParameters, context);
+            Response<BinaryData> restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(keyName,
+                new RequestOptions().setContext(context));
+
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(),
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
-                    restoreOperationResponse.getValue()));
+                    restoreOperationResponse.getValue().toObject(SelectiveKeyRestoreOperation.class)));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, KeyVaultSelectiveKeyRestoreOperation>
-        selectiveKeyRestoreActivationOperation(String keyName, String folderUrl, String sasToken, Context context) {
+    private Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, KeyVaultSelectiveKeyRestoreOperation> selectiveKeyRestoreActivationOperation(
+        String keyName, String folderUrl, String sasToken, Context context) {
+
         return (pollingContext) -> {
             try {
                 return selectiveKeyRestoreWithResponse(keyName, folderUrl, sasToken, context).getValue();
@@ -886,15 +875,16 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private
-        Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, PollResponse<KeyVaultSelectiveKeyRestoreOperation>>
-        selectiveKeyRestorePollOperation(Context context) {
+    private Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, PollResponse<KeyVaultSelectiveKeyRestoreOperation>> selectiveKeyRestorePollOperation(
+        Context context) {
+
         return (pollingContext) -> {
             try {
                 PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = pollingContext.getLatestResponse();
 
                 if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
+
                     return pollResponse;
                 }
 
@@ -907,13 +897,15 @@ public final class KeyVaultBackupClient {
                     return new PollResponse<>(
                         LongRunningOperationStatus.fromString("SELECTIVE_RESTORE_START_FAILED", true), null);
                 }
+
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
-                Context contextToUse = enableSyncRestProxy(context);
-                Response<RestoreOperation> response
-                    = clientImpl.restoreStatusWithResponse(vaultUrl, jobId, contextToUse);
+
+                Response<BinaryData> response = clientImpl.restoreStatusWithResponse(jobId,
+                    new RequestOptions().setContext(context));
+
                 return processSelectiveKeyRestoreOperationResponse(new SimpleResponse<>(response,
                     (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(
-                        response.getValue())));
+                        response.getValue().toObject(RestoreOperation.class))));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 LOGGER.logExceptionAsError(e);
@@ -925,9 +917,11 @@ public final class KeyVaultBackupClient {
         };
     }
 
-    private static PollResponse<KeyVaultSelectiveKeyRestoreOperation>
-        processSelectiveKeyRestoreOperationResponse(Response<KeyVaultSelectiveKeyRestoreOperation> response) {
+    private static PollResponse<KeyVaultSelectiveKeyRestoreOperation> processSelectiveKeyRestoreOperationResponse(
+        Response<KeyVaultSelectiveKeyRestoreOperation> response) {
+
         String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+
         return new PollResponse<>(toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)),
             response.getValue());
     }

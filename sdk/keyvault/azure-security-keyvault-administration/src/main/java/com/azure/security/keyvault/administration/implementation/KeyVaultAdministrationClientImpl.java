@@ -63,7 +63,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the vaultBaseUrl value.
      */
     public String getVaultBaseUrl() {
@@ -77,7 +77,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public KeyVaultAdministrationServiceVersion getServiceVersion() {
@@ -91,7 +91,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -105,7 +105,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -119,7 +119,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets the RoleAssignmentsImpl object to access its operations.
-     * 
+     *
      * @return the RoleAssignmentsImpl object.
      */
     public RoleAssignmentsImpl getRoleAssignments() {
@@ -133,7 +133,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets the RoleDefinitionsImpl object to access its operations.
-     * 
+     *
      * @return the RoleDefinitionsImpl object.
      */
     public RoleDefinitionsImpl getRoleDefinitions() {
@@ -142,7 +142,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     * 
+     *
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
@@ -153,7 +153,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
@@ -165,7 +165,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param vaultBaseUrl
@@ -396,7 +396,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of full backup operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -414,7 +414,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The id returned as part of the backup request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -433,7 +433,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of full backup operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -451,7 +451,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The id returned as part of the backup request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -478,7 +478,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -488,9 +488,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -508,7 +508,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -517,9 +517,9 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> fullBackupWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fullBackupWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        RequestOptions requestOptionsLocal= requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
@@ -540,7 +540,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -550,9 +550,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -570,7 +570,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -579,7 +579,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> fullBackupWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> fullBackupWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -602,7 +602,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -612,9 +612,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -632,7 +632,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -663,7 +663,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -673,9 +673,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -693,7 +693,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -724,7 +724,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -734,9 +734,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -754,7 +754,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -787,7 +787,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -797,9 +797,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -817,7 +817,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -850,7 +850,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -860,9 +860,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -880,7 +880,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -889,7 +889,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> preFullBackupWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> preFullBackupWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -912,7 +912,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -922,9 +922,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -942,7 +942,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -951,7 +951,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> preFullBackupWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> preFullBackupWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -974,7 +974,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -984,9 +984,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1004,7 +1004,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1035,7 +1035,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1045,9 +1045,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1065,7 +1065,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1096,7 +1096,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1106,9 +1106,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1126,7 +1126,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1159,7 +1159,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1169,9 +1169,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1189,7 +1189,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1214,7 +1214,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of restore operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1231,7 +1231,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The Job Id returned part of the restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1250,7 +1250,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of restore operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1267,7 +1267,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param jobId The Job Id returned part of the restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1294,7 +1294,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1307,9 +1307,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1326,7 +1326,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1335,7 +1335,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1358,7 +1358,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1371,9 +1371,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1390,7 +1390,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1399,7 +1399,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> preFullRestoreOperationWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> preFullRestoreOperationWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1422,7 +1422,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1435,9 +1435,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1454,7 +1454,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1486,7 +1486,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1499,9 +1499,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1518,7 +1518,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1550,7 +1550,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1563,9 +1563,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1582,7 +1582,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1615,7 +1615,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1628,9 +1628,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1647,7 +1647,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1680,7 +1680,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1693,9 +1693,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1712,7 +1712,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1721,7 +1721,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1744,7 +1744,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1757,9 +1757,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1776,7 +1776,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1785,7 +1785,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> fullRestoreOperationWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> fullRestoreOperationWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1808,7 +1808,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1821,9 +1821,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1840,7 +1840,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1872,7 +1872,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1885,9 +1885,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1904,7 +1904,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1936,7 +1936,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1949,9 +1949,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1968,7 +1968,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2001,7 +2001,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2014,9 +2014,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2033,7 +2033,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2067,7 +2067,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2080,9 +2080,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2099,7 +2099,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2109,7 +2109,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return selective Key Restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync(String keyName,
+    public Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync(String keyName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2134,7 +2134,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2147,9 +2147,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2166,7 +2166,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2176,7 +2176,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @return selective Key Restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> selectiveKeyRestoreOperationWithResponse(String keyName,
+    public Response<BinaryData> selectiveKeyRestoreOperationWithResponse(String keyName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -2201,7 +2201,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2214,9 +2214,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2233,7 +2233,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2268,7 +2268,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2281,9 +2281,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2300,7 +2300,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2335,7 +2335,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2348,9 +2348,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2367,7 +2367,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2402,7 +2402,7 @@ public final class KeyVaultAdministrationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2415,9 +2415,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2434,7 +2434,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param keyName The name of the key to be restored from the user supplied backup.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2459,10 +2459,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Updates key vault account setting, stores it, then returns the setting name and value to the client.
-     * 
+     *
      * Description of the pool setting to be updated.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2470,9 +2470,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2482,7 +2482,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param parameters The parameters to update an account setting.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2504,10 +2504,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Updates key vault account setting, stores it, then returns the setting name and value to the client.
-     * 
+     *
      * Description of the pool setting to be updated.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2515,9 +2515,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2527,7 +2527,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param parameters The parameters to update an account setting.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2548,10 +2548,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Get specified account setting object.
-     * 
+     *
      * Retrieves the setting object of a specified setting name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2561,7 +2561,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2569,7 +2569,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specified account setting object.
-     * 
+     *
      * Retrieves the setting object of a specified setting name along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -2582,10 +2582,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Get specified account setting object.
-     * 
+     *
      * Retrieves the setting object of a specified setting name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2595,7 +2595,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2603,7 +2603,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specified account setting object.
-     * 
+     *
      * Retrieves the setting object of a specified setting name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2615,10 +2615,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * List account settings.
-     * 
+     *
      * Retrieves a list of all the available account settings that can be configured.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2632,7 +2632,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2649,10 +2649,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * List account settings.
-     * 
+     *
      * Retrieves a list of all the available account settings that can be configured.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2666,7 +2666,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

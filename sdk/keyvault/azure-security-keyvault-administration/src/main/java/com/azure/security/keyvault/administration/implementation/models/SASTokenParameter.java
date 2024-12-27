@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,20 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
     /*
      * Azure Blob storage container Uri
      */
+    @Generated
     private final String storageResourceUri;
 
     /*
      * The SAS token pointing to an Azure Blob storage container
      */
+    @Generated
     private String token;
 
     /*
      * Indicates which authentication method should be used. If set to true, Managed HSM will use the configured
      * user-assigned managed identity to authenticate with Azure Storage. Otherwise, a SAS token has to be specified.
      */
+    @Generated
     private Boolean useManagedIdentity;
 
     /**
@@ -37,6 +41,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      *
      * @param storageResourceUri the storageResourceUri value to set.
      */
+    @Generated
     public SASTokenParameter(String storageResourceUri) {
         this.storageResourceUri = storageResourceUri;
     }
@@ -46,6 +51,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      *
      * @return the storageResourceUri value.
      */
+    @Generated
     public String getStorageResourceUri() {
         return this.storageResourceUri;
     }
@@ -55,6 +61,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      *
      * @return the token value.
      */
+    @Generated
     public String getToken() {
         return this.token;
     }
@@ -65,6 +72,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      * @param token the token value to set.
      * @return the SASTokenParameter object itself.
      */
+    @Generated
     public SASTokenParameter setToken(String token) {
         this.token = token;
         return this;
@@ -77,6 +85,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      *
      * @return the useManagedIdentity value.
      */
+    @Generated
     public Boolean isUseManagedIdentity() {
         return this.useManagedIdentity;
     }
@@ -89,6 +98,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      * @param useManagedIdentity the useManagedIdentity value to set.
      * @return the SASTokenParameter object itself.
      */
+    @Generated
     public SASTokenParameter setUseManagedIdentity(Boolean useManagedIdentity) {
         this.useManagedIdentity = useManagedIdentity;
         return this;
@@ -97,6 +107,7 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,9 +126,9 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SASTokenParameter.
      */
+    @Generated
     public static SASTokenParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean storageResourceUriFound = false;
             String storageResourceUri = null;
             String token = null;
             Boolean useManagedIdentity = null;
@@ -126,7 +137,6 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
                 reader.nextToken();
                 if ("storageResourceUri".equals(fieldName)) {
                     storageResourceUri = reader.getString();
-                    storageResourceUriFound = true;
                 } else if ("token".equals(fieldName)) {
                     token = reader.getString();
                 } else if ("useManagedIdentity".equals(fieldName)) {
@@ -135,13 +145,10 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
                     reader.skipChildren();
                 }
             }
-            if (storageResourceUriFound) {
-                SASTokenParameter deserializedSASTokenParameter = new SASTokenParameter(storageResourceUri);
-                deserializedSASTokenParameter.token = token;
-                deserializedSASTokenParameter.useManagedIdentity = useManagedIdentity;
-                return deserializedSASTokenParameter;
-            }
-            throw new IllegalStateException("Missing required property: storageResourceUri");
+            SASTokenParameter deserializedSASTokenParameter = new SASTokenParameter(storageResourceUri);
+            deserializedSASTokenParameter.token = token;
+            deserializedSASTokenParameter.useManagedIdentity = useManagedIdentity;
+            return deserializedSASTokenParameter;
         });
     }
 }

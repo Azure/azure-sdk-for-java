@@ -35,9 +35,8 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -95,8 +94,9 @@ import java.util.stream.Collectors;
  * @see KeyVaultSettingsAsyncClient
  */
 @ServiceClientBuilder(serviceClients = { KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class })
-public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
-    HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
+public final class KeyVaultSettingsClientBuilder
+    implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>, HttpTrait<KeyVaultSettingsClientBuilder>,
+    ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
@@ -395,11 +395,14 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      *
      * @return an instance of KeyVaultSettingsClientImpl.
      */
-    private KeyVaultSettingsClientImpl buildImplClient() {
+    private KeyVaultAdministrationClientImpl buildImplClient() {
         HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        KeyVaultAdministrationServiceVersion version
-            = (serviceVersion != null) ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
-        return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
+
+        KeyVaultAdministrationServiceVersion version = (serviceVersion != null)
+            ? serviceVersion
+            : KeyVaultAdministrationServiceVersion.getLatest();
+
+        return new KeyVaultAdministrationClientImpl(buildPipeline, vaultUrl, version);
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -407,12 +410,13 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
             return pipeline;
         }
 
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
 
         if (vaultUrl == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
@@ -471,7 +475,7 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      * @return an instance of KeyVaultSettingsAsyncClient.
      */
     public KeyVaultSettingsAsyncClient buildAsyncClient() {
-        return new KeyVaultSettingsAsyncClient(vaultUrl, buildImplClient());
+        return new KeyVaultSettingsAsyncClient(buildImplClient());
     }
 
     /**
@@ -480,6 +484,6 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      * @return an instance of KeyVaultSettingsClient.
      */
     public KeyVaultSettingsClient buildClient() {
-        return new KeyVaultSettingsClient(vaultUrl, buildImplClient());
+        return new KeyVaultSettingsClient(buildImplClient());
     }
 }

@@ -33,7 +33,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -90,8 +89,9 @@ import java.util.Map;
  * @see KeyVaultBackupAsyncClient
  */
 @ServiceClientBuilder(serviceClients = { KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class })
-public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<KeyVaultBackupClientBuilder>,
-    HttpTrait<KeyVaultBackupClientBuilder>, ConfigurationTrait<KeyVaultBackupClientBuilder> {
+public final class KeyVaultBackupClientBuilder
+    implements TokenCredentialTrait<KeyVaultBackupClientBuilder>, HttpTrait<KeyVaultBackupClientBuilder>,
+    ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
@@ -179,14 +179,15 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
     }
 
     private Configuration validateEndpointAndGetBuildConfiguration() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone()
+            : configuration;
 
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }

@@ -34,7 +34,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -95,6 +94,7 @@ import java.util.Map;
 public final class KeyVaultAccessControlClientBuilder
     implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder>, HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
+
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
@@ -150,10 +150,13 @@ public final class KeyVaultAccessControlClientBuilder
     public KeyVaultAccessControlClient buildClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
+
         if (pipeline != null) {
             return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
         }
+
         HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+
         return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
@@ -182,15 +185,16 @@ public final class KeyVaultAccessControlClientBuilder
     }
 
     private Configuration validateEndpointAndGetConfiguration() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone()
+            : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
+
         return buildConfiguration;
     }
 
@@ -438,6 +442,7 @@ public final class KeyVaultAccessControlClientBuilder
     @Override
     public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+
         return this;
     }
 

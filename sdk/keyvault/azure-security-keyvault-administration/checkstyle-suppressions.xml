@@ -9,6 +9,5 @@
   <suppress files="com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.administration.implementation.RoleDefinitionsImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.security.keyvault.administration.implementation.models.SASTokenParameter.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
 </suppressions>
