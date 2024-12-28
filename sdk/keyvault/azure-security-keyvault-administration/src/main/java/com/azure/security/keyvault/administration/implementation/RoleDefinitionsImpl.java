@@ -54,7 +54,7 @@ public final class RoleDefinitionsImpl {
 
     /**
      * Initializes an instance of RoleDefinitionsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
@@ -65,7 +65,7 @@ public final class RoleDefinitionsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public KeyVaultAdministrationServiceVersion getServiceVersion() {
@@ -191,7 +191,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Deletes a custom role definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -225,7 +225,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
      * @param roleDefinitionName The name (GUID) of the role definition to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -246,7 +246,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Deletes a custom role definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -280,7 +280,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
      * @param roleDefinitionName The name (GUID) of the role definition to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -301,7 +301,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Creates or updates a custom role definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -332,9 +332,9 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -368,7 +368,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
      * @param parameters Parameters for the role definition.
@@ -392,7 +392,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Creates or updates a custom role definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -423,9 +423,9 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -459,7 +459,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
      * @param parameters Parameters for the role definition.
@@ -482,7 +482,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Get the specified role definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -516,7 +516,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the role definition to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -537,7 +537,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Get the specified role definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -571,7 +571,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the role definition to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -600,7 +600,7 @@ public final class RoleDefinitionsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -634,7 +634,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -665,7 +665,7 @@ public final class RoleDefinitionsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -699,7 +699,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -728,7 +728,7 @@ public final class RoleDefinitionsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -762,7 +762,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -791,7 +791,7 @@ public final class RoleDefinitionsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -825,7 +825,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -847,7 +847,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -881,7 +881,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -904,7 +904,7 @@ public final class RoleDefinitionsImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -938,7 +938,7 @@ public final class RoleDefinitionsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

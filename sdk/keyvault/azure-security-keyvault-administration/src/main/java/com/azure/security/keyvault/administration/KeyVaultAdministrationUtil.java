@@ -298,7 +298,7 @@ class KeyVaultAdministrationUtil {
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
-            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
+            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus().getValue(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 toKeyVaultAdministrationError(selectiveKeyRestoreOperation.getError()),
                 selectiveKeyRestoreOperation.getJobId(), selectiveKeyRestoreOperation.getStartTime(),

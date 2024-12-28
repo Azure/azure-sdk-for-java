@@ -23,7 +23,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -45,6 +44,7 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -63,7 +63,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets.
-     *
+     * 
      * @return the vaultBaseUrl value.
      */
     public String getVaultBaseUrl() {
@@ -77,7 +77,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public KeyVaultAdministrationServiceVersion getServiceVersion() {
@@ -91,7 +91,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -105,7 +105,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -119,7 +119,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets the RoleAssignmentsImpl object to access its operations.
-     *
+     * 
      * @return the RoleAssignmentsImpl object.
      */
     public RoleAssignmentsImpl getRoleAssignments() {
@@ -133,7 +133,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Gets the RoleDefinitionsImpl object to access its operations.
-     *
+     * 
      * @return the RoleDefinitionsImpl object.
      */
     public RoleDefinitionsImpl getRoleDefinitions() {
@@ -142,7 +142,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     *
+     * 
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
@@ -153,7 +153,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
@@ -165,7 +165,7 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param vaultBaseUrl
@@ -217,8 +217,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> fullBackup(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData azureStorageBlobContainerUri, RequestOptions requestOptions,
+            Context context);
 
         @Post("/backup")
         @ExpectedResponses({ 202 })
@@ -227,8 +229,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> fullBackupSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData azureStorageBlobContainerUri, RequestOptions requestOptions,
+            Context context);
 
         @Post("/prebackup")
         @ExpectedResponses({ 202 })
@@ -237,8 +241,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> preFullBackup(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData preBackupOperationParameters, RequestOptions requestOptions,
+            Context context);
 
         @Post("/prebackup")
         @ExpectedResponses({ 202 })
@@ -247,8 +253,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> preFullBackupSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData preBackupOperationParameters, RequestOptions requestOptions,
+            Context context);
 
         @Get("/restore/{jobId}/pending")
         @ExpectedResponses({ 200 })
@@ -277,8 +285,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> preFullRestoreOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData preRestoreOperationParameters, RequestOptions requestOptions,
+            Context context);
 
         @Put("/prerestore")
         @ExpectedResponses({ 202 })
@@ -287,8 +297,10 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> preFullRestoreOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData preRestoreOperationParameters, RequestOptions requestOptions,
+            Context context);
 
         @Put("/restore")
         @ExpectedResponses({ 202 })
@@ -297,7 +309,8 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> fullRestoreOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
             RequestOptions requestOptions, Context context);
 
         @Put("/restore")
@@ -307,8 +320,29 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> fullRestoreOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData restoreBlobDetails,
             RequestOptions requestOptions, Context context);
+
+        @Get("/restore/{jobId}/pending")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> selectiveKeyRestoreStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/restore/{jobId}/pending")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> selectiveKeyRestoreStatusSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/keys/{keyName}/restore")
         @ExpectedResponses({ 202 })
@@ -318,7 +352,9 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> selectiveKeyRestoreOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("keyName") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData restoreBlobDetails, RequestOptions requestOptions,
+            Context context);
 
         @Put("/keys/{keyName}/restore")
         @ExpectedResponses({ 202 })
@@ -328,7 +364,9 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> selectiveKeyRestoreOperationSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("keyName") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData restoreBlobDetails, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/settings/{setting-name}")
         @ExpectedResponses({ 200 })
@@ -396,7 +434,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of full backup operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -414,7 +452,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The id returned as part of the backup request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -433,7 +471,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of full backup operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -451,7 +489,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The id returned as part of the backup request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -469,16 +507,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -488,9 +518,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -508,7 +538,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -517,30 +550,19 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> fullBackupWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fullBackupWithResponseAsync(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal= requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return FluxUtil.withContext(context -> service.fullBackup(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
+        return FluxUtil
+            .withContext(context -> service.fullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                contentType, accept, azureStorageBlobContainerUri, requestOptions, context));
     }
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -550,9 +572,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -570,7 +592,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -579,30 +604,18 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> fullBackupWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> fullBackupWithResponse(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return service.fullBackupSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptionsLocal, Context.NONE);
+        return service.fullBackupSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
+            accept, azureStorageBlobContainerUri, requestOptions, Context.NONE);
     }
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -612,9 +625,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -632,7 +645,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -641,8 +657,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginFullBackupAsync(RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.fullBackupWithResponseAsync(requestOptions),
+    public PollerFlux<BinaryData, BinaryData> beginFullBackupAsync(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponseAsync(azureStorageBlobContainerUri, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -654,16 +672,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -673,9 +683,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -693,7 +703,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -702,8 +715,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginFullBackup(RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.fullBackupWithResponse(requestOptions),
+    public SyncPoller<BinaryData, BinaryData> beginFullBackup(BinaryData azureStorageBlobContainerUri,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -715,16 +730,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -734,9 +741,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -754,7 +761,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -764,8 +774,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FullBackupOperation, FullBackupOperation>
-        beginFullBackupWithModelAsync(RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.fullBackupWithResponseAsync(requestOptions),
+        beginFullBackupWithModelAsync(BinaryData azureStorageBlobContainerUri, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponseAsync(azureStorageBlobContainerUri, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -778,16 +789,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -797,9 +800,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -817,7 +820,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
+     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
+     * time of making this call.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -827,8 +833,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FullBackupOperation, FullBackupOperation>
-        beginFullBackupWithModel(RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.fullBackupWithResponse(requestOptions),
+        beginFullBackupWithModel(BinaryData azureStorageBlobContainerUri, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.fullBackupWithResponse(azureStorageBlobContainerUri, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -841,16 +848,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -860,9 +859,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -880,7 +879,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -889,30 +889,19 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> preFullBackupWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> preFullBackupWithResponseAsync(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return FluxUtil.withContext(context -> service.preFullBackup(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
+        return FluxUtil
+            .withContext(context -> service.preFullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                contentType, accept, preBackupOperationParameters, requestOptions, context));
     }
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -922,9 +911,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -942,7 +931,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -951,30 +941,18 @@ public final class KeyVaultAdministrationClientImpl {
      * @return full backup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> preFullBackupWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> preFullBackupWithResponse(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return service.preFullBackupSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptionsLocal, Context.NONE);
+        return service.preFullBackupSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
+            accept, preBackupOperationParameters, requestOptions, Context.NONE);
     }
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -984,9 +962,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1004,7 +982,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1013,8 +992,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginPreFullBackupAsync(RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.preFullBackupWithResponseAsync(requestOptions),
+    public PollerFlux<BinaryData, BinaryData> beginPreFullBackupAsync(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponseAsync(preBackupOperationParameters, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1026,16 +1007,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1045,9 +1018,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1065,7 +1038,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1074,8 +1048,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of full backup operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPreFullBackup(RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.preFullBackupWithResponse(requestOptions),
+    public SyncPoller<BinaryData, BinaryData> beginPreFullBackup(BinaryData preBackupOperationParameters,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponse(preBackupOperationParameters, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1087,16 +1063,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1106,9 +1074,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1126,7 +1094,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1136,8 +1105,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FullBackupOperation, FullBackupOperation>
-        beginPreFullBackupWithModelAsync(RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.preFullBackupWithResponseAsync(requestOptions),
+        beginPreFullBackupWithModelAsync(BinaryData preBackupOperationParameters, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponseAsync(preBackupOperationParameters, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1150,16 +1120,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-backup operation for checking whether the customer can perform a full backup operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1169,9 +1131,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1189,7 +1151,8 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preBackupOperationParameters Optional parameters to validate prior to performing a full backup operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1199,8 +1162,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FullBackupOperation, FullBackupOperation>
-        beginPreFullBackupWithModel(RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.preFullBackupWithResponse(requestOptions),
+        beginPreFullBackupWithModel(BinaryData preBackupOperationParameters, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.preFullBackupWithResponse(preBackupOperationParameters, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1214,7 +1178,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of restore operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1231,7 +1195,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The Job Id returned part of the restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1250,7 +1214,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Returns the status of restore operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1267,7 +1231,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The Job Id returned part of the restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1285,16 +1249,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1307,9 +1263,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1326,7 +1282,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1335,30 +1293,19 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> preFullRestoreOperationWithResponseAsync(BinaryData preRestoreOperationParameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return FluxUtil.withContext(context -> service.preFullRestoreOperation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
+        return FluxUtil.withContext(
+            context -> service.preFullRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                contentType, accept, preRestoreOperationParameters, requestOptions, context));
     }
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1371,9 +1318,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1390,7 +1337,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1399,30 +1348,18 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> preFullRestoreOperationWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> preFullRestoreOperationWithResponse(BinaryData preRestoreOperationParameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
         return service.preFullRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            accept, requestOptionsLocal, Context.NONE);
+            contentType, accept, preRestoreOperationParameters, requestOptions, Context.NONE);
     }
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1435,9 +1372,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1454,7 +1391,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1463,9 +1402,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginPreFullRestoreOperationAsync(RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData>
+        beginPreFullRestoreOperationAsync(BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponseAsync(requestOptions),
+            () -> this.preFullRestoreOperationWithResponseAsync(preRestoreOperationParameters, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1477,16 +1417,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1499,9 +1431,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1518,7 +1450,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1527,9 +1461,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPreFullRestoreOperation(RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginPreFullRestoreOperation(BinaryData preRestoreOperationParameters,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponse(requestOptions),
+            () -> this.preFullRestoreOperationWithResponse(preRestoreOperationParameters, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1541,16 +1476,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1563,9 +1490,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1582,7 +1509,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1591,10 +1520,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RestoreOperation, RestoreOperation>
-        beginPreFullRestoreOperationWithModelAsync(RequestOptions requestOptions) {
+    public PollerFlux<RestoreOperation, RestoreOperation> beginPreFullRestoreOperationWithModelAsync(
+        BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponseAsync(requestOptions),
+            () -> this.preFullRestoreOperationWithResponseAsync(preRestoreOperationParameters, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1606,16 +1535,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Pre-restore operation for checking whether the customer can perform a full restore operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1628,9 +1549,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1647,7 +1568,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param preRestoreOperationParameters Optional pre restore parameters to validate prior to performing a full
+     * restore operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1657,9 +1580,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RestoreOperation, RestoreOperation>
-        beginPreFullRestoreOperationWithModel(RequestOptions requestOptions) {
+        beginPreFullRestoreOperationWithModel(BinaryData preRestoreOperationParameters, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.preFullRestoreOperationWithResponse(requestOptions),
+            () -> this.preFullRestoreOperationWithResponse(preRestoreOperationParameters, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1671,16 +1594,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1693,9 +1608,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1712,7 +1627,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1721,30 +1638,18 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fullRestoreOperationWithResponseAsync(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
         return FluxUtil.withContext(context -> service.fullRestoreOperation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), contentType, accept, restoreBlobDetails, requestOptions, context));
     }
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1757,9 +1662,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1776,7 +1681,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1785,30 +1692,18 @@ public final class KeyVaultAdministrationClientImpl {
      * @return restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> fullRestoreOperationWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> fullRestoreOperationWithResponse(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
-        return service.fullRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptionsLocal, Context.NONE);
+        return service.fullRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, restoreBlobDetails, requestOptions, Context.NONE);
     }
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1821,9 +1716,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1840,7 +1735,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1849,9 +1746,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginFullRestoreOperationAsync(RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginFullRestoreOperationAsync(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponseAsync(requestOptions),
+            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1863,16 +1761,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1885,9 +1775,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1904,7 +1794,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1913,9 +1805,10 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginFullRestoreOperation(RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginFullRestoreOperation(BinaryData restoreBlobDetails,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponse(requestOptions),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1927,16 +1820,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1949,9 +1834,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1968,7 +1853,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1978,9 +1865,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RestoreOperation, RestoreOperation>
-        beginFullRestoreOperationWithModelAsync(RequestOptions requestOptions) {
+        beginFullRestoreOperationWithModelAsync(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponseAsync(requestOptions),
+            () -> this.fullRestoreOperationWithResponseAsync(restoreBlobDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -1992,16 +1879,8 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2014,9 +1893,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2033,7 +1912,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2043,9 +1924,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RestoreOperation, RestoreOperation>
-        beginFullRestoreOperationWithModel(RequestOptions requestOptions) {
+        beginFullRestoreOperationWithModel(BinaryData restoreBlobDetails, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.fullRestoreOperationWithResponse(requestOptions),
+            () -> this.fullRestoreOperationWithResponse(restoreBlobDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2053,21 +1934,86 @@ public final class KeyVaultAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+    }
+
+    /**
+     * Returns the status of selective key restore operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The Job Id returned part of the selective key restore operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return selective Key Restore operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> selectiveKeyRestoreStatusWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns the status of selective key restore operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
+     *     statusDetails: String (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         innererror (Optional): (recursive schema, see innererror above)
+     *     }
+     *     jobId: String (Optional)
+     *     startTime: Long (Optional)
+     *     endTime: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The Job Id returned part of the selective key restore operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return selective Key Restore operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> selectiveKeyRestoreStatusWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.selectiveKeyRestoreStatusSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            jobId, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2080,9 +2026,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2099,8 +2045,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2110,31 +2058,19 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> selectiveKeyRestoreOperationWithResponseAsync(String keyName,
-        RequestOptions requestOptions) {
+        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
         return FluxUtil.withContext(context -> service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), keyName, contentType, accept, restoreBlobDetails, requestOptions,
+            context));
     }
 
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2147,9 +2083,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2166,8 +2102,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2176,32 +2114,19 @@ public final class KeyVaultAdministrationClientImpl {
      * @return selective Key Restore operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> selectiveKeyRestoreOperationWithResponse(String keyName,
+    public Response<BinaryData> selectiveKeyRestoreOperationWithResponse(String keyName, BinaryData restoreBlobDetails,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            }
-        });
         return service.selectiveKeyRestoreOperationSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            keyName, accept, requestOptionsLocal, Context.NONE);
+            keyName, contentType, accept, restoreBlobDetails, requestOptions, Context.NONE);
     }
 
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2214,9 +2139,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2233,8 +2158,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2244,9 +2171,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginSelectiveKeyRestoreOperationAsync(String keyName,
-        RequestOptions requestOptions) {
+        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, requestOptions),
+            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, restoreBlobDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2259,16 +2186,8 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2281,9 +2200,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2300,8 +2219,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2311,9 +2232,9 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginSelectiveKeyRestoreOperation(String keyName,
-        RequestOptions requestOptions) {
+        BinaryData restoreBlobDetails, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, requestOptions),
+            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -2326,16 +2247,8 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2348,9 +2261,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2367,8 +2280,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2377,32 +2292,26 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RestoreOperation, RestoreOperation>
-        beginSelectiveKeyRestoreOperationWithModelAsync(String keyName, RequestOptions requestOptions) {
+    public PollerFlux<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
+        beginSelectiveKeyRestoreOperationWithModelAsync(String keyName, BinaryData restoreBlobDetails,
+            RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, requestOptions),
+            () -> this.selectiveKeyRestoreOperationWithResponseAsync(keyName, restoreBlobDetails, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class),
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class));
     }
 
     /**
      * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
      * storage backup folder.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2415,9 +2324,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2434,8 +2343,10 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param keyName The name of the key to be restored from the user supplied backup.
+     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
+     * was stored.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2444,25 +2355,27 @@ public final class KeyVaultAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of selective Key Restore operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RestoreOperation, RestoreOperation> beginSelectiveKeyRestoreOperationWithModel(String keyName,
-        RequestOptions requestOptions) {
+    public SyncPoller<SelectiveKeyRestoreOperation, SelectiveKeyRestoreOperation>
+        beginSelectiveKeyRestoreOperationWithModel(String keyName, BinaryData restoreBlobDetails,
+            RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, requestOptions),
+            () -> this.selectiveKeyRestoreOperationWithResponse(keyName, restoreBlobDetails, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
 
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(RestoreOperation.class), TypeReference.createInstance(RestoreOperation.class));
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class),
+            TypeReference.createInstance(SelectiveKeyRestoreOperation.class));
     }
 
     /**
      * Updates key vault account setting, stores it, then returns the setting name and value to the client.
-     *
+     * 
      * Description of the pool setting to be updated.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2470,9 +2383,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2482,7 +2395,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param parameters The parameters to update an account setting.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2504,10 +2417,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Updates key vault account setting, stores it, then returns the setting name and value to the client.
-     *
+     * 
      * Description of the pool setting to be updated.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2515,9 +2428,9 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2527,7 +2440,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param parameters The parameters to update an account setting.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2548,10 +2461,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Get specified account setting object.
-     *
+     * 
      * Retrieves the setting object of a specified setting name.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2561,7 +2474,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2569,7 +2482,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specified account setting object.
-     *
+     * 
      * Retrieves the setting object of a specified setting name along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -2582,10 +2495,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * Get specified account setting object.
-     *
+     * 
      * Retrieves the setting object of a specified setting name.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2595,7 +2508,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2603,7 +2516,7 @@ public final class KeyVaultAdministrationClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specified account setting object.
-     *
+     * 
      * Retrieves the setting object of a specified setting name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2615,10 +2528,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * List account settings.
-     *
+     * 
      * Retrieves a list of all the available account settings that can be configured.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2632,7 +2545,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2649,10 +2562,10 @@ public final class KeyVaultAdministrationClientImpl {
 
     /**
      * List account settings.
-     *
+     * 
      * Retrieves a list of all the available account settings that can be configured.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2666,7 +2579,7 @@ public final class KeyVaultAdministrationClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

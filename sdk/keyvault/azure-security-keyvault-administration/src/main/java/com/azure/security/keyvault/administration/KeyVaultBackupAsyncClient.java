@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -294,12 +295,12 @@ public final class KeyVaultBackupAsyncClient {
     Mono<Response<KeyVaultBackupOperation>> backupWithResponse(String blobStorageUrl, String sasToken,
         Context context) {
 
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         SASTokenParameter sasTokenParameter = new SASTokenParameter(blobStorageUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
 
         try {
-            return clientImpl.fullBackupWithResponseAsync(new RequestOptions().setContext(context))
+            return clientImpl.fullBackupWithResponseAsync(BinaryData.fromObject(sasTokenParameter),
+                    new RequestOptions().setContext(context))
                 .map(backupOperationResponse -> new SimpleResponse<>(backupOperationResponse.getRequest(),
                     backupOperationResponse.getStatusCode(), backupOperationResponse.getHeaders(),
                     (KeyVaultBackupOperation) transformToLongRunningOperation(
@@ -448,14 +449,14 @@ public final class KeyVaultBackupAsyncClient {
     Mono<Response<KeyVaultBackupOperation>> preBackupWithResponse(String blobStorageUrl, String sasToken,
         Context context) {
 
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreBackupOperationParameters preBackupOperationParameters
             = new PreBackupOperationParameters().setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
 
         try {
-            return clientImpl.preFullBackupWithResponseAsync(new RequestOptions().setContext(context))
+            return clientImpl.preFullBackupWithResponseAsync(BinaryData.fromObject(preBackupOperationParameters),
+                    new RequestOptions().setContext(context))
                 .map(backupOperationResponse -> new SimpleResponse<>(backupOperationResponse.getRequest(),
                     backupOperationResponse.getStatusCode(), backupOperationResponse.getHeaders(),
                     (KeyVaultBackupOperation) transformToLongRunningOperation(
@@ -548,12 +549,12 @@ public final class KeyVaultBackupAsyncClient {
         SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
 
-        // TODO (vicolina): Fix code generation to take body parameters for LROs.
         RestoreOperationParameters restoreOperationParameters = new RestoreOperationParameters(sasTokenParameter,
             folderName);
 
         try {
-            return clientImpl.fullRestoreOperationWithResponseAsync(new RequestOptions().setContext(context))
+            return clientImpl.fullRestoreOperationWithResponseAsync(BinaryData.fromObject(restoreOperationParameters),
+                    new RequestOptions().setContext(context))
                 .map(restoreOperationResponse -> new SimpleResponse<>(restoreOperationResponse.getRequest(),
                     restoreOperationResponse.getStatusCode(), restoreOperationResponse.getHeaders(),
                     (KeyVaultRestoreOperation) transformToLongRunningOperation(
@@ -701,13 +702,13 @@ public final class KeyVaultBackupAsyncClient {
         SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
 
-        // TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreRestoreOperationParameters preRestoreOperationParameters
             = new PreRestoreOperationParameters().setFolderToRestore(folderName)
             .setSasTokenParameters(sasTokenParameter);
 
         try {
-            return clientImpl.preFullRestoreOperationWithResponseAsync(new RequestOptions().setContext(context))
+            return clientImpl.preFullRestoreOperationWithResponseAsync(
+                    BinaryData.fromObject(preRestoreOperationParameters), new RequestOptions().setContext(context))
                 .map(restoreOperationResponse -> new SimpleResponse<>(restoreOperationResponse.getRequest(),
                     restoreOperationResponse.getStatusCode(), restoreOperationResponse.getHeaders(),
                     (KeyVaultRestoreOperation) transformToLongRunningOperation(
@@ -817,7 +818,7 @@ public final class KeyVaultBackupAsyncClient {
 
         try {
             return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(keyName,
-                    new RequestOptions().setContext(context))
+                    BinaryData.fromObject(selectiveKeyRestoreOperationParameters), new RequestOptions().setContext(context))
                 .map(restoreOperationResponse -> new SimpleResponse<>(restoreOperationResponse.getRequest(),
                     restoreOperationResponse.getStatusCode(), restoreOperationResponse.getHeaders(),
                     (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(

@@ -36,7 +36,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      * Error encountered, if any, during the restore operation.
      */
     @Generated
-    private Error error;
+    private FullBackupOperationError error;
 
     /*
      * Identifier for the restore operation.
@@ -89,7 +89,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      * @return the error value.
      */
     @Generated
-    public Error getError() {
+    public FullBackupOperationError getError() {
         return this.error;
     }
 
@@ -165,7 +165,7 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
                 } else if ("statusDetails".equals(fieldName)) {
                     deserializedRestoreOperation.statusDetails = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedRestoreOperation.error = Error.fromJson(reader);
+                    deserializedRestoreOperation.error = FullBackupOperationError.fromJson(reader);
                 } else if ("jobId".equals(fieldName)) {
                     deserializedRestoreOperation.jobId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {

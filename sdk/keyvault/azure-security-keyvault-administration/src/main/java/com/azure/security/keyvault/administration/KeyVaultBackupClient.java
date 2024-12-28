@@ -304,13 +304,12 @@ public final class KeyVaultBackupClient {
      * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
      */
     Response<KeyVaultBackupOperation> backupWithResponse(String blobStorageUrl, String sasToken, Context context) {
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         SASTokenParameter sasTokenParameter = new SASTokenParameter(blobStorageUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
 
         try {
             Response<BinaryData> backupOperationResponse = clientImpl.fullBackupWithResponse(
-                new RequestOptions().setContext(context));
+                BinaryData.fromObject(sasTokenParameter), new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(), (KeyVaultBackupOperation) transformToLongRunningOperation(
@@ -470,7 +469,6 @@ public final class KeyVaultBackupClient {
      * @throws KeyVaultAdministrationException If the given {@code blobStorageUrl} or {@code sasToken} are invalid.
      */
     Response<KeyVaultBackupOperation> preBackupWithResponse(String blobStorageUrl, String sasToken, Context context) {
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreBackupOperationParameters preBackupOperationParameters
             = new PreBackupOperationParameters().setStorageResourceUri(blobStorageUrl)
             .setToken(sasToken)
@@ -478,7 +476,7 @@ public final class KeyVaultBackupClient {
 
         try {
             Response<BinaryData> backupOperationResponse = clientImpl.preFullBackupWithResponse(
-                new RequestOptions().setContext(context));
+                BinaryData.fromObject(preBackupOperationParameters), new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(), (KeyVaultBackupOperation) transformToLongRunningOperation(
@@ -567,13 +565,13 @@ public final class KeyVaultBackupClient {
 
         SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         RestoreOperationParameters restoreOperationParameters = new RestoreOperationParameters(sasTokenParameter,
             folderName);
 
         try {
             Response<BinaryData> restoreOperationResponse = clientImpl.fullRestoreOperationWithResponse(
-                new RequestOptions().setContext(context));
+                BinaryData.fromObject(restoreOperationParameters), new RequestOptions().setContext(context));
+
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(), (KeyVaultRestoreOperation) transformToLongRunningOperation(
                 restoreOperationResponse.getValue().toObject(RestoreOperation.class)));
@@ -725,14 +723,13 @@ public final class KeyVaultBackupClient {
 
         SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         PreRestoreOperationParameters restoreOperationParameters
             = new PreRestoreOperationParameters().setFolderToRestore(folderName)
             .setSasTokenParameters(sasTokenParameter);
 
         try {
             Response<BinaryData> restoreOperationResponse = clientImpl.preFullRestoreOperationWithResponse(
-                new RequestOptions().setContext(context));
+                BinaryData.fromObject(restoreOperationParameters), new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(), (KeyVaultRestoreOperation) transformToLongRunningOperation(
@@ -846,12 +843,12 @@ public final class KeyVaultBackupClient {
 
         SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl).setToken(sasToken)
             .setUseManagedIdentity(sasToken == null);
-        //TODO (vicolina): Fix code generation to take body parameters for LROs.
         SelectiveKeyRestoreOperationParameters selectiveKeyRestoreOperationParameters
             = new SelectiveKeyRestoreOperationParameters(sasTokenParameter, folderName);
 
         try {
             Response<BinaryData> restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(keyName,
+                BinaryData.fromObject(selectiveKeyRestoreOperationParameters),
                 new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(restoreOperationResponse.getRequest(), restoreOperationResponse.getStatusCode(),

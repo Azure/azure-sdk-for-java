@@ -36,7 +36,7 @@ public final class FullBackupOperation implements JsonSerializable<FullBackupOpe
      * Error encountered, if any, during the full backup operation.
      */
     @Generated
-    private Error error;
+    private FullBackupOperationError error;
 
     /*
      * The start time of the backup operation in UTC
@@ -95,7 +95,7 @@ public final class FullBackupOperation implements JsonSerializable<FullBackupOpe
      * @return the error value.
      */
     @Generated
-    public Error getError() {
+    public FullBackupOperationError getError() {
         return this.error;
     }
 
@@ -183,7 +183,7 @@ public final class FullBackupOperation implements JsonSerializable<FullBackupOpe
                 } else if ("statusDetails".equals(fieldName)) {
                     deserializedFullBackupOperation.statusDetails = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedFullBackupOperation.error = Error.fromJson(reader);
+                    deserializedFullBackupOperation.error = FullBackupOperationError.fromJson(reader);
                 } else if ("startTime".equals(fieldName)) {
                     deserializedFullBackupOperation.startTime = reader.getNullable(JsonReader::getLong);
                 } else if ("endTime".equals(fieldName)) {

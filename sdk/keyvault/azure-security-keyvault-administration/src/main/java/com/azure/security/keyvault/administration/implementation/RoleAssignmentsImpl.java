@@ -54,7 +54,7 @@ public final class RoleAssignmentsImpl {
 
     /**
      * Initializes an instance of RoleAssignmentsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
@@ -65,7 +65,7 @@ public final class RoleAssignmentsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public KeyVaultAdministrationServiceVersion getServiceVersion() {
@@ -191,7 +191,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Deletes a role assignment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -206,7 +206,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -227,7 +227,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Deletes a role assignment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -242,7 +242,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -263,7 +263,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Creates a role assignment.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -274,9 +274,9 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -291,7 +291,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
@@ -315,7 +315,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Creates a role assignment.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -326,9 +326,9 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -343,7 +343,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
@@ -366,7 +366,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the specified role assignment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -381,7 +381,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -402,7 +402,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the specified role assignment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -417,7 +417,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -447,7 +447,7 @@ public final class RoleAssignmentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -462,7 +462,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignments.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -493,7 +493,7 @@ public final class RoleAssignmentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -508,7 +508,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignments.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -538,7 +538,7 @@ public final class RoleAssignmentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -553,7 +553,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignments.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -583,7 +583,7 @@ public final class RoleAssignmentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -598,7 +598,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param scope The scope of the role assignments.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -619,7 +619,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -634,7 +634,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -658,7 +658,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -673,7 +673,7 @@ public final class RoleAssignmentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
