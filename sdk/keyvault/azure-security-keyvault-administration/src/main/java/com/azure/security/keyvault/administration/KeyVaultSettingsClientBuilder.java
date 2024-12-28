@@ -94,9 +94,8 @@ import java.util.stream.Collectors;
  * @see KeyVaultSettingsAsyncClient
  */
 @ServiceClientBuilder(serviceClients = { KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class })
-public final class KeyVaultSettingsClientBuilder
-    implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>, HttpTrait<KeyVaultSettingsClientBuilder>,
-    ConfigurationTrait<KeyVaultSettingsClientBuilder> {
+public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
+    HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
@@ -398,9 +397,8 @@ public final class KeyVaultSettingsClientBuilder
     private KeyVaultAdministrationClientImpl buildImplClient() {
         HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
 
-        KeyVaultAdministrationServiceVersion version = (serviceVersion != null)
-            ? serviceVersion
-            : KeyVaultAdministrationServiceVersion.getLatest();
+        KeyVaultAdministrationServiceVersion version
+            = (serviceVersion != null) ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
 
         return new KeyVaultAdministrationClientImpl(buildPipeline, vaultUrl, version);
     }
@@ -410,13 +408,12 @@ public final class KeyVaultSettingsClientBuilder
             return pipeline;
         }
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         if (vaultUrl == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();

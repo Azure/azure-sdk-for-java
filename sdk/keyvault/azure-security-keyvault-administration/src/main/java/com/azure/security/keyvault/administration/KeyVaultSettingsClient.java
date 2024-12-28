@@ -180,9 +180,10 @@ public final class KeyVaultSettingsClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-                implClient.updateSettingWithResponse(setting.getName(), BinaryData.fromObject(settingValue),
-                    EMPTY_OPTIONS).getValue().toObject(Setting.class));
+            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(implClient
+                .updateSettingWithResponse(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
+                .getValue()
+                .toObject(Setting.class));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -294,8 +295,8 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> getSettingWithResponse(String name, Context context) {
         try {
-            Response<BinaryData> response = implClient.getSettingWithResponse(name,
-                new RequestOptions().setContext(context));
+            Response<BinaryData> response
+                = implClient.getSettingWithResponse(name, new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue().toObject(Setting.class)));
@@ -377,8 +378,8 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultGetSettingsResult> getSettingsWithResponse(Context context) {
         try {
-            Response<BinaryData> response = implClient.getSettingsWithResponse(
-                new RequestOptions().setContext(context));
+            Response<BinaryData> response
+                = implClient.getSettingsWithResponse(new RequestOptions().setContext(context));
             List<KeyVaultSetting> keyVaultSettings = response.getValue()
                 .toObject(SettingsListResult.class)
                 .getSettings()

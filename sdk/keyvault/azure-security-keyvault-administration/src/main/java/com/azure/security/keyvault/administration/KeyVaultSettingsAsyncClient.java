@@ -196,8 +196,8 @@ public final class KeyVaultSettingsAsyncClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            return implClient.updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue),
-                    EMPTY_OPTIONS)
+            return implClient
+                .updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> transformToKeyVaultSetting(response.getValue().toObject(Setting.class)));
         } catch (RuntimeException e) {
@@ -241,8 +241,8 @@ public final class KeyVaultSettingsAsyncClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            return implClient.updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue),
-                    EMPTY_OPTIONS)
+            return implClient
+                .updateSettingWithResponseAsync(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> new SimpleResponse<>(response,
                     transformToKeyVaultSetting(response.getValue().toObject(Setting.class))));

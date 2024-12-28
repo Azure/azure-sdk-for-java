@@ -114,8 +114,8 @@ class KeyVaultAdministrationUtil {
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
-    static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(
-        SetRoleDefinitionOptions options) {
+    static RoleDefinitionCreateParameters
+        validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
         Objects.requireNonNull(options, String.format(PARAMETER_REQUIRED, "'options'"));
         Objects.requireNonNull(options.getRoleScope(), String.format(PARAMETER_REQUIRED, "'options.getRoleScope()'"));
         Objects.requireNonNull(options.getRoleDefinitionName(),
@@ -133,11 +133,11 @@ class KeyVaultAdministrationUtil {
                 .collect(Collectors.toList());
         }
 
-        RoleDefinitionProperties roleDefinitionProperties = new RoleDefinitionProperties().setRoleName(
-                options.getRoleDefinitionName())
-            .setAssignableScopes(options.getAssignableScopes())
-            .setDescription(options.getDescription())
-            .setPermissions(permissions);
+        RoleDefinitionProperties roleDefinitionProperties
+            = new RoleDefinitionProperties().setRoleName(options.getRoleDefinitionName())
+                .setAssignableScopes(options.getAssignableScopes())
+                .setDescription(options.getDescription())
+                .setPermissions(permissions);
         return new RoleDefinitionCreateParameters(roleDefinitionProperties);
     }
 
@@ -152,8 +152,8 @@ class KeyVaultAdministrationUtil {
     }
 
     @SuppressWarnings("BoundedWildcard")
-    static PagedResponse<KeyVaultRoleDefinition> transformRoleDefinitionsPagedResponse(
-        PagedResponse<RoleDefinition> pagedResponse) {
+    static PagedResponse<KeyVaultRoleDefinition>
+        transformRoleDefinitionsPagedResponse(PagedResponse<RoleDefinition> pagedResponse) {
 
         List<KeyVaultRoleDefinition> keyVaultRoleDefinitions = new ArrayList<>();
 
@@ -201,10 +201,11 @@ class KeyVaultAdministrationUtil {
                 permission.getDataActions()
                     .stream()
                     .map(dataAction -> KeyVaultDataAction.fromString(dataAction.toString()))
-                    .collect(Collectors.toList()), permission.getNotDataActions()
-                .stream()
-                .map(notDataAction -> KeyVaultDataAction.fromString(notDataAction.toString()))
-                .collect(Collectors.toList())));
+                    .collect(Collectors.toList()),
+                permission.getNotDataActions()
+                    .stream()
+                    .map(notDataAction -> KeyVaultDataAction.fromString(notDataAction.toString()))
+                    .collect(Collectors.toList())));
         }
 
         return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),

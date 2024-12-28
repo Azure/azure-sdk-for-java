@@ -318,8 +318,8 @@ public final class KeyVaultAccessControlClient {
         try {
             return implClient.getRoleDefinitions()
                 .list(roleScope.toString(), new RequestOptions().setContext(context))
-                .mapPage(binaryData -> roleDefinitionToKeyVaultRoleDefinition(
-                    binaryData.toObject(RoleDefinition.class)));
+                .mapPage(
+                    binaryData -> roleDefinitionToKeyVaultRoleDefinition(binaryData.toObject(RoleDefinition.class)));
         } catch (HttpResponseException e) {
             throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
@@ -386,8 +386,8 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName),
-            Context.NONE).getValue();
+        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -612,8 +612,7 @@ public final class KeyVaultAccessControlClient {
 
             return new SimpleResponse<>(roleDefinitionResponse, null);
         } catch (HttpResponseException e) {
-            KeyVaultAdministrationException mappedException
-                = toKeyVaultAdministrationException(e);
+            KeyVaultAdministrationException mappedException = toKeyVaultAdministrationException(e);
             return swallowExceptionForStatusCodeSync(404, mappedException, LOGGER);
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
@@ -683,8 +682,8 @@ public final class KeyVaultAccessControlClient {
         try {
             return implClient.getRoleAssignments()
                 .listForScope(roleScope.toString(), new RequestOptions().setContext(context))
-                .mapPage(binaryData -> roleAssignmentToKeyVaultRoleAssignment(
-                    binaryData.toObject(RoleAssignment.class)));
+                .mapPage(
+                    binaryData -> roleAssignmentToKeyVaultRoleAssignment(binaryData.toObject(RoleAssignment.class)));
         } catch (HttpResponseException e) {
             throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
@@ -980,8 +979,7 @@ public final class KeyVaultAccessControlClient {
 
             return new SimpleResponse<>(roleAssignmentResponse, null);
         } catch (HttpResponseException e) {
-            KeyVaultAdministrationException mappedException
-                = toKeyVaultAdministrationException(e);
+            KeyVaultAdministrationException mappedException = toKeyVaultAdministrationException(e);
             return swallowExceptionForStatusCodeSync(404, mappedException, LOGGER);
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);

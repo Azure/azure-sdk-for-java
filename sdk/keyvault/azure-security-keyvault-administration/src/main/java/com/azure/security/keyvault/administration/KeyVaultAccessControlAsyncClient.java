@@ -302,18 +302,18 @@ public final class KeyVaultAccessControlAsyncClient {
             Objects.requireNonNull(roleScope,
                 String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'roleScope'"));
 
-            return new PagedFlux<>(() -> withContext(context -> clientImpl.getRoleDefinitions()
-                .listSinglePageAsync(roleScope.toString(), new RequestOptions().setContext(context))
-                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(pagedResponse -> mapPagedResponse(pagedResponse,
-                    binaryData -> KeyVaultAdministrationUtil.roleDefinitionToKeyVaultRoleDefinition(
-                        binaryData.toObject(RoleDefinition.class))))), nextLink -> withContext(
-                context -> clientImpl.getRoleDefinitions()
-                    .listNextSinglePageAsync(nextLink, new RequestOptions().setContext(context))
+            return new PagedFlux<>(
+                () -> withContext(context -> clientImpl.getRoleDefinitions()
+                    .listSinglePageAsync(roleScope.toString(), new RequestOptions().setContext(context))
                     .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                     .map(pagedResponse -> mapPagedResponse(pagedResponse,
-                        binaryData -> KeyVaultAdministrationUtil.roleDefinitionToKeyVaultRoleDefinition(
-                            binaryData.toObject(RoleDefinition.class))))));
+                        binaryData -> KeyVaultAdministrationUtil
+                            .roleDefinitionToKeyVaultRoleDefinition(binaryData.toObject(RoleDefinition.class))))),
+                nextLink -> withContext(context -> clientImpl.getRoleDefinitions()
+                    .listNextSinglePageAsync(nextLink, new RequestOptions().setContext(context))
+                    .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> KeyVaultAdministrationUtil
+                        .roleDefinitionToKeyVaultRoleDefinition(binaryData.toObject(RoleDefinition.class))))));
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -378,8 +378,8 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultRoleDefinition> setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName)).flatMap(
-            FluxUtil::toMono);
+        return setRoleDefinitionWithResponse(new SetRoleDefinitionOptions(roleScope, roleDefinitionName))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -462,8 +462,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     BinaryData.fromObject(parameters), new RequestOptions().setContext(context))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> KeyVaultAdministrationUtil.transformBinaryDataResponse(response,
-                    binaryData -> KeyVaultAdministrationUtil.roleDefinitionToKeyVaultRoleDefinition(
-                        binaryData.toObject(RoleDefinition.class))));
+                    binaryData -> KeyVaultAdministrationUtil
+                        .roleDefinitionToKeyVaultRoleDefinition(binaryData.toObject(RoleDefinition.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -562,8 +562,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     new RequestOptions().setContext(context))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> KeyVaultAdministrationUtil.transformBinaryDataResponse(response,
-                    binaryData -> KeyVaultAdministrationUtil.roleDefinitionToKeyVaultRoleDefinition(
-                        binaryData.toObject(RoleDefinition.class))));
+                    binaryData -> KeyVaultAdministrationUtil
+                        .roleDefinitionToKeyVaultRoleDefinition(binaryData.toObject(RoleDefinition.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -680,18 +680,18 @@ public final class KeyVaultAccessControlAsyncClient {
             Objects.requireNonNull(roleScope,
                 String.format(KeyVaultAdministrationUtil.PARAMETER_REQUIRED, "'roleScope'"));
 
-            return new PagedFlux<>(() -> withContext(context -> clientImpl.getRoleAssignments()
-                .listForScopeSinglePageAsync(roleScope.toString(), new RequestOptions().setContext(context))
-                .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(pagedResponse -> mapPagedResponse(pagedResponse,
-                    binaryData -> KeyVaultAdministrationUtil.roleAssignmentToKeyVaultRoleAssignment(
-                        binaryData.toObject(RoleAssignment.class))))), nextLink -> withContext(
-                context -> clientImpl.getRoleAssignments()
-                    .listForScopeNextSinglePageAsync(nextLink, new RequestOptions().setContext(context))
+            return new PagedFlux<>(
+                () -> withContext(context -> clientImpl.getRoleAssignments()
+                    .listForScopeSinglePageAsync(roleScope.toString(), new RequestOptions().setContext(context))
                     .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                     .map(pagedResponse -> mapPagedResponse(pagedResponse,
-                        binaryData -> KeyVaultAdministrationUtil.roleAssignmentToKeyVaultRoleAssignment(
-                            binaryData.toObject(RoleAssignment.class))))));
+                        binaryData -> KeyVaultAdministrationUtil
+                            .roleAssignmentToKeyVaultRoleAssignment(binaryData.toObject(RoleAssignment.class))))),
+                nextLink -> withContext(context -> clientImpl.getRoleAssignments()
+                    .listForScopeNextSinglePageAsync(nextLink, new RequestOptions().setContext(context))
+                    .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
+                    .map(pagedResponse -> mapPagedResponse(pagedResponse, binaryData -> KeyVaultAdministrationUtil
+                        .roleAssignmentToKeyVaultRoleAssignment(binaryData.toObject(RoleAssignment.class))))));
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -771,8 +771,8 @@ public final class KeyVaultAccessControlAsyncClient {
     public Mono<KeyVaultRoleAssignment> createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
         String principalId, String roleAssignmentName) {
 
-        return createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName).flatMap(
-            FluxUtil::toMono);
+        return createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -817,9 +817,8 @@ public final class KeyVaultAccessControlAsyncClient {
     public Mono<Response<KeyVaultRoleAssignment>> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
         String roleDefinitionId, String principalId, String roleAssignmentName) {
 
-        return withContext(
-            context -> createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId, roleAssignmentName,
-                context));
+        return withContext(context -> createRoleAssignmentWithResponse(roleScope, roleDefinitionId, principalId,
+            roleAssignmentName, context));
     }
 
     /**
@@ -853,8 +852,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     new RequestOptions().setContext(context))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> KeyVaultAdministrationUtil.transformBinaryDataResponse(response,
-                    binaryData -> KeyVaultAdministrationUtil.roleAssignmentToKeyVaultRoleAssignment(
-                        binaryData.toObject(RoleAssignment.class))));
+                    binaryData -> KeyVaultAdministrationUtil
+                        .roleAssignmentToKeyVaultRoleAssignment(binaryData.toObject(RoleAssignment.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -952,8 +951,8 @@ public final class KeyVaultAccessControlAsyncClient {
                     new RequestOptions().setContext(context))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> KeyVaultAdministrationUtil.transformBinaryDataResponse(response,
-                    binaryData -> KeyVaultAdministrationUtil.roleAssignmentToKeyVaultRoleAssignment(
-                        binaryData.toObject(RoleAssignment.class))));
+                    binaryData -> KeyVaultAdministrationUtil
+                        .roleAssignmentToKeyVaultRoleAssignment(binaryData.toObject(RoleAssignment.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }

@@ -89,9 +89,8 @@ import java.util.Map;
  * @see KeyVaultBackupAsyncClient
  */
 @ServiceClientBuilder(serviceClients = { KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class })
-public final class KeyVaultBackupClientBuilder
-    implements TokenCredentialTrait<KeyVaultBackupClientBuilder>, HttpTrait<KeyVaultBackupClientBuilder>,
-    ConfigurationTrait<KeyVaultBackupClientBuilder> {
+public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<KeyVaultBackupClientBuilder>,
+    HttpTrait<KeyVaultBackupClientBuilder>, ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
@@ -179,15 +178,14 @@ public final class KeyVaultBackupClientBuilder
     }
 
     private Configuration validateEndpointAndGetBuildConfiguration() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
