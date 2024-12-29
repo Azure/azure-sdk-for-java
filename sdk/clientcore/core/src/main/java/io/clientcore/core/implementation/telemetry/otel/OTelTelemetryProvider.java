@@ -41,15 +41,14 @@ public class OTelTelemetryProvider implements TelemetryProvider {
             try {
                 getProviderInvoker
                     = LOOKUP.findVirtual(OTEL_CLASS, "getTracerProvider", MethodType.methodType(TRACER_PROVIDER_CLASS));
-                getGlobalOtelInvoker = LOOKUP.findStatic(GLOBAL_OTEL_CLASS, "get",
-                    MethodType.methodType(OTEL_CLASS));
+                getGlobalOtelInvoker = LOOKUP.findStatic(GLOBAL_OTEL_CLASS, "get", MethodType.methodType(OTEL_CLASS));
 
                 MethodHandle noopProviderInvoker
                     = LOOKUP.findStatic(TRACER_PROVIDER_CLASS, "noop", MethodType.methodType(TRACER_PROVIDER_CLASS));
                 noopProvider = noopProviderInvoker.invoke();
 
-                MethodHandle w3cPropagatorInvoker
-                    = LOOKUP.findStatic(W3C_PROPAGATOR_CLASS, "getInstance", MethodType.methodType(W3C_PROPAGATOR_CLASS));
+                MethodHandle w3cPropagatorInvoker = LOOKUP.findStatic(W3C_PROPAGATOR_CLASS, "getInstance",
+                    MethodType.methodType(W3C_PROPAGATOR_CLASS));
 
                 w3cPropagatorInstance = w3cPropagatorInvoker.invoke();
 

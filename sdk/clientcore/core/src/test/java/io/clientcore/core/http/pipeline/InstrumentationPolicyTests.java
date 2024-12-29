@@ -48,7 +48,6 @@ import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -86,9 +85,7 @@ public class InstrumentationPolicyTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .build();
+        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
     }
 
@@ -107,8 +104,7 @@ public class InstrumentationPolicyTests {
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertStartAttributes((ReadableSpan) Span.current(), request.getHttpMethod(), request.getUri());
                 assertNull(request.getHeaders().get(TRACESTATE));
-                assertEquals(traceparent(Span.current()),
-                    request.getHeaders().get(TRACEPARENT).getValue());
+                assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 current.set(Span.current());
                 return new MockHttpResponse(request, statusCode);
             }).build();
@@ -160,8 +156,7 @@ public class InstrumentationPolicyTests {
             HttpPipeline pipeline = new HttpPipelineBuilder()
                 .policies(new HttpRetryPolicy(), new InstrumentationPolicy(otelOptions, null))
                 .httpClient(request -> {
-                    assertEquals(traceparent(Span.current()),
-                        request.getHeaders().get(TRACEPARENT).getValue());
+                    assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                     if (count.getAndIncrement() == 0) {
                         throw new UnknownHostException("test exception");
                     } else {
@@ -200,16 +195,13 @@ public class InstrumentationPolicyTests {
             .setSampler(Sampler.alwaysOff())
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(sampleNone)
-            .build();
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(sampleNone).build();
         TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertTrue(Span.current().getSpanContext().isValid());
-                assertEquals(traceparent(Span.current()),
-                    request.getHeaders().get(TRACEPARENT).getValue());
+                assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
                 return new MockHttpResponse(request, 200);
             }).build();
 
@@ -221,18 +213,16 @@ public class InstrumentationPolicyTests {
     @Test
     @SuppressWarnings("try")
     public void tracestateIsPropagated() throws IOException {
-        SpanContext parentContext = SpanContext.create(IdGenerator.random().generateTraceId(),
-            IdGenerator.random().generateSpanId(),
-            TraceFlags.getSampled(),
-            TraceState.builder().put("key", "value").build());
+        SpanContext parentContext
+            = SpanContext.create(IdGenerator.random().generateTraceId(), IdGenerator.random().generateSpanId(),
+                TraceFlags.getSampled(), TraceState.builder().put("key", "value").build());
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
-            assertEquals("key=value", request.getHeaders().get(TRACESTATE).getValue());
-            assertEquals(traceparent(Span.current()),
-                request.getHeaders().get(TRACEPARENT).getValue());
-            return new MockHttpResponse(request, 200);
-        }).build();
+                assertEquals("key=value", request.getHeaders().get(TRACESTATE).getValue());
+                assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
+                return new MockHttpResponse(request, 200);
+            }).build();
 
         try (Scope scope = Span.wrap(parentContext).makeCurrent()) {
             pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
@@ -258,7 +248,8 @@ public class InstrumentationPolicyTests {
                 }
 
                 @Override
-                public <C> io.opentelemetry.context.Context extract(io.opentelemetry.context.Context context, C carrier, TextMapGetter<C> getter) {
+                public <C> io.opentelemetry.context.Context extract(io.opentelemetry.context.Context context, C carrier,
+                    TextMapGetter<C> getter) {
                     return context;
                 }
             }))
@@ -268,10 +259,9 @@ public class InstrumentationPolicyTests {
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
-            assertEquals(traceparent(Span.current()),
-                request.getHeaders().get(TRACEPARENT).getValue());
-            return new MockHttpResponse(request, 200);
-        }).build();
+                assertEquals(traceparent(Span.current()), request.getHeaders().get(TRACEPARENT).getValue());
+                return new MockHttpResponse(request, 200);
+            }).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
     }

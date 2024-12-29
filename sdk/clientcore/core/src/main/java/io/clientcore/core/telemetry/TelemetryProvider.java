@@ -12,22 +12,31 @@ import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
 
 /**
  * Provides observability capabilities (distributed tracing, metrics, etc.) with OpenTelemetry to the client library.
- * <p>
+ *
  * <p><strong>This interface is intended to be used by client libraries. Application developers
- * should use OpenTelemetry API directly</strong>
+ * should use OpenTelemetry API directly</strong></p>
  */
 public interface TelemetryProvider {
+    /**
+     * The key used to disable tracing on a per-request basis.
+     * To disable tracing, set this key to {@code true} on the request context.
+     */
     String DISABLE_TRACING_KEY = "disable-tracing";
+
+    /**
+     * The key used to set the parent trace context explicitly.
+     * To set the trace context, set this key to a value of {@code io.opentelemetry.context.Context}.
+     */
     String TRACE_CONTEXT_KEY = "trace-context";
 
     /**
      * Gets the tracer.
      * <p>
      * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.
-     * <p>
-     * <strong>This method is intended to be used by client libraries. Application developers
-     * should use OpenTelemetry API directly</strong>
-     * <p>
+     *
+     * <p><strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong></p>
+     *
      * <!-- src_embed io.clientcore.core.telemetry.tracing.createtracer -->
      * <pre>
      *
@@ -56,7 +65,9 @@ public interface TelemetryProvider {
     /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
-     * @return The singleton instance of the resolved telemetry provider.
+     * @param applicationOptions Telemetry collection options provided by the application.
+     * @param libraryOptions Library-specific telemetry collection options.
+     * @return The instance of telemetry provider implementation.
      */
     static TelemetryProvider create(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         if (OTelInitializer.isInitialized()) {

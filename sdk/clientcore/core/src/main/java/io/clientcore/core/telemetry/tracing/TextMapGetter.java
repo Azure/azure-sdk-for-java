@@ -3,11 +3,18 @@
 
 package io.clientcore.core.telemetry.tracing;
 
+/**
+ * A {@code TextMapGetter} retrieves context fields from a carrier, such as {@link io.clientcore.core.http.models.HttpRequest}.
+ *
+ * @param <C> the type of the carrier.
+ */
 public interface TextMapGetter<C> {
     /**
      * Returns all the keys in the given carrier.
      *
      * @param carrier carrier of propagation fields, such as an http request.
+     *
+     * @return all the keys in the given carrier.
      */
     Iterable<String> keys(C carrier);
 

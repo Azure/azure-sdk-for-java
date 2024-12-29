@@ -96,7 +96,8 @@ public class SuppressionTests {
     @Test
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
-        Tracer innerTracer = TelemetryProvider.create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+        Tracer innerTracer = TelemetryProvider
+            .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
             .getTracer();
 
         RequestOptions options = new RequestOptions();
@@ -119,7 +120,8 @@ public class SuppressionTests {
 
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
-        Tracer outerTracer = TelemetryProvider.create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+        Tracer outerTracer = TelemetryProvider
+            .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
             .getTracer();
         Tracer innerTracer = tracer;
 

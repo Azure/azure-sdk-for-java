@@ -53,7 +53,7 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * policy spans with additional attributes, you can create a custom policy and add it under the {@link InstrumentationPolicy}
  * so that it's executed in the scope of the span created by the {@link InstrumentationPolicy}.
  *
- * <p><strong>Configure instrumentation policy:</strong><p>
+ * <p><strong>Configure instrumentation policy:</strong></p>
  * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
  * <pre>
  *
@@ -66,9 +66,8 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  *
  * </pre>
  * <!-- end io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
- * <p>
- * <strong>Customize instrumentation policy:</strong>
- * <p>
+ *
+ * <p><strong>Customize instrumentation policy:</strong></p>
  * <!-- src_embed io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
  * <pre>
  *

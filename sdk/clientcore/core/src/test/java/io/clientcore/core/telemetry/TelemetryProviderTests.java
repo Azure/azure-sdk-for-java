@@ -97,7 +97,8 @@ public class TelemetryProviderTests {
 
             OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
-            Tracer tracer = TelemetryProvider.create(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS)
+            Tracer tracer = TelemetryProvider
+                .create(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS)
                 .getTracer();
             assertTrue(tracer.isEnabled());
 

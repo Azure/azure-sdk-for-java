@@ -16,11 +16,10 @@ public interface Tracer {
     /**
      * Creates a new span builder.
      *
-     * <strong>Make sure to follow <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry semantic conventions</a>
-     * </strong>
-     * <p>
-     * <strong>Basic tracing instrumentation for a service method:</strong>
-     * <p>
+     * <p><strong>Make sure to follow <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry semantic conventions</a>
+     * </strong></p>
+     *
+     * <p><strong>Basic tracing instrumentation for a service method:</strong></p>
      * <!-- src_embed io.clientcore.core.telemetry.tracing.tracecall -->
      * <pre>
      *
@@ -49,9 +48,8 @@ public interface Tracer {
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.tracing.tracecall -->
-     * <p>
-     * <strong>Adding attributes to spans:</strong>
-     * <p>
+     *
+     * <p><strong>Adding attributes to spans:</strong></p>
      * <!-- src_embed io.clientcore.core.telemetry.tracing.tracewithattributes -->
      * <pre>
      *
@@ -78,7 +76,7 @@ public interface Tracer {
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.tracing.tracewithattributes -->
-     * <p>
+     *
      * @param spanName The name of the span.
      * @param spanKind The kind of the span.
      * @param requestOptions The request options.

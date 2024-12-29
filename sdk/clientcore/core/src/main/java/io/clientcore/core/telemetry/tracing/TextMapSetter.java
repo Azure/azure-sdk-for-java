@@ -3,6 +3,11 @@
 
 package io.clientcore.core.telemetry.tracing;
 
+/**
+ * A {@code TextMapSetter} sets context fields on a carrier, such as {@link io.clientcore.core.http.models.HttpRequest}.
+ *
+ * @param <C> the type of the carrier.
+ */
 public interface TextMapSetter<C> {
     /**
      * Sets the context property on the carrier.

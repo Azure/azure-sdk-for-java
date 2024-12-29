@@ -82,7 +82,7 @@ public class OTelTextMapPropagator implements TextMapPropagator {
         return context;
     }
 
-    private static  class Setter<C> implements InvocationHandler {
+    private static final class Setter<C> implements InvocationHandler {
         private static final Class<?>[] INTERFACES = new Class<?>[] { TEXT_MAP_SETTER_CLASS };
         private static final Map<TextMapSetter<?>, Object> PROXIES = new java.util.concurrent.ConcurrentHashMap<>();
         private final TextMapSetter<C> setter;

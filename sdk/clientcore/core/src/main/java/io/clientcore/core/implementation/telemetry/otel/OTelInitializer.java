@@ -81,7 +81,8 @@ public final class OTelInitializer {
 
             contextClass = Class.forName("io.opentelemetry.context.Context", true, classLoader);
             contextKeyClass = Class.forName("io.opentelemetry.context.ContextKey", true, classLoader);
-            contextPropagatorsClass = Class.forName("io.opentelemetry.context.propagation.ContextPropagators", true, classLoader);
+            contextPropagatorsClass
+                = Class.forName("io.opentelemetry.context.propagation.ContextPropagators", true, classLoader);
 
             otelClass = Class.forName("io.opentelemetry.api.OpenTelemetry", true, classLoader);
             globalOtelClass = Class.forName("io.opentelemetry.api.GlobalOpenTelemetry", true, classLoader);
@@ -94,7 +95,8 @@ public final class OTelInitializer {
             spanKindClass = Class.forName("io.opentelemetry.api.trace.SpanKind", true, classLoader);
             statusCodeClass = Class.forName("io.opentelemetry.api.trace.StatusCode", true, classLoader);
 
-            textMapPropagatorClass = Class.forName("io.opentelemetry.context.propagation.TextMapPropagator", true, classLoader);
+            textMapPropagatorClass
+                = Class.forName("io.opentelemetry.context.propagation.TextMapPropagator", true, classLoader);
             textMapGetterClass = Class.forName("io.opentelemetry.context.propagation.TextMapGetter", true, classLoader);
             textMapSetterClass = Class.forName("io.opentelemetry.context.propagation.TextMapSetter", true, classLoader);
 
@@ -103,7 +105,8 @@ public final class OTelInitializer {
             tracerClass = Class.forName("io.opentelemetry.api.trace.Tracer", true, classLoader);
             tracerBuilderClass = Class.forName("io.opentelemetry.api.trace.TracerBuilder", true, classLoader);
             tracerProviderClass = Class.forName("io.opentelemetry.api.trace.TracerProvider", true, classLoader);
-            w3cPropagatorClass = Class.forName("io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator", true, classLoader);
+            w3cPropagatorClass
+                = Class.forName("io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator", true, classLoader);
 
             instance = new OTelInitializer(true);
         } catch (Throwable t) {

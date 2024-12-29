@@ -37,6 +37,7 @@ public class TracerTests {
     private SdkTracerProvider tracerProvider;
     private TelemetryOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
+
     @BeforeEach
     public void setUp() {
         exporter = InMemorySpanExporter.create();

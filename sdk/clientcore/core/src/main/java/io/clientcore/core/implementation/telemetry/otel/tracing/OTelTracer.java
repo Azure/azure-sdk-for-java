@@ -73,8 +73,7 @@ public final class OTelTracer implements Tracer {
     public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) throws Throwable {
         assert TRACER_PROVIDER_CLASS.isInstance(otelTracerProvider);
 
-        Object tracerBuilder
-            = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
+        Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
 
         SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
         SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
