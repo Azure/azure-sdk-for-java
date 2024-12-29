@@ -5,13 +5,7 @@ package io.clientcore.core.telemetry.tracing;
 
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.
- * <p>
- *
- * This span is a wrapper over OpenTelemetry's span,
- * <p>
- *
- * <strong>Classes in this package are not intended to be used by client libraries. Application developers
- * should use OpenTelemetry API directly</strong>
+ * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
 public interface Span {
     /**

@@ -11,8 +11,8 @@ import java.util.Objects;
  * Options for configuring library-specific telemetry settings.
  *
  * <p><strong>This class is intended to be used by the client libraries only. Library options must not be provided or modified
- * by application code</strong>
- * <p>
+ * by application code</strong></p>
+ *
  * Library options describe the client library - it's name, version, and schema URL.
  * Schema URL describes telemetry schema and version.
  * <p>

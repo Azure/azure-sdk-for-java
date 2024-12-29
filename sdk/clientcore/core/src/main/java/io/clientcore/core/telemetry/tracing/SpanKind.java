@@ -5,10 +5,8 @@ package io.clientcore.core.telemetry.tracing;
 
 /**
  * Represents the span kind.
- * <p>
- *
- * <strong>This enum is intended to be used by client libraries. Application developers
- * should use OpenTelemetry API directly</strong>
+ * <p><strong>This enum is intended to be used by client libraries only. Application developers
+ * should use OpenTelemetry API directly</strong></p>
  */
 public enum SpanKind {
     /**

@@ -8,6 +8,7 @@ import io.clientcore.core.util.Context;
 /**
  * A {@code TextMapPropagator} injects and extracts tracing context from a carrier,
  * such as {@link io.clientcore.core.http.models.HttpRequest}.
+ * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
 public interface TextMapPropagator {
     /**

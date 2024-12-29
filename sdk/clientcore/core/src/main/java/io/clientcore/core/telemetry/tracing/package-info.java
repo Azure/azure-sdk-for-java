@@ -5,7 +5,7 @@
  * Package containing core tracing primitives to be used by client libraries.
  * <p>
  *
- * <strong>Classes in this package are not intended to be used by client libraries. Application developers
+ * <strong>Classes in this package are intended to be used by client libraries only. Application developers
  * should use OpenTelemetry API directly</strong>
  */
 package io.clientcore.core.telemetry.tracing;

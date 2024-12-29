@@ -11,7 +11,7 @@ import io.clientcore.core.telemetry.tracing.Tracer;
 import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
 
 /**
- * Provides observability capabilities (distributed tracing, metrics, etc.) with OpenTelemetry to the client library.
+ * A container that can resolve observability provider and its components. Only OpenTelemetry is supported.
  *
  * <p><strong>This interface is intended to be used by client libraries. Application developers
  * should use OpenTelemetry API directly</strong></p>

@@ -7,10 +7,7 @@ import io.clientcore.core.http.models.RequestOptions;
 
 /**
  * Represents a tracer - a component that creates spans.
- * <p>
- *
- * <strong>This interface is intended to be used by client libraries. Application developers
- * should use OpenTelemetry API directly</strong>
+ * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
 public interface Tracer {
     /**

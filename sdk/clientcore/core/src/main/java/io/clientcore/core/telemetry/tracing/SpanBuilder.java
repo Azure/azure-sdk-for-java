@@ -5,10 +5,7 @@ package io.clientcore.core.telemetry.tracing;
 
 /**
  * Represents a span builder.
- * <p>
- *
- * <strong>Classes in this package are not intended to be used by client libraries. Application developers
- * should use OpenTelemetry API directly</strong>
+ * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
 public interface SpanBuilder {
 

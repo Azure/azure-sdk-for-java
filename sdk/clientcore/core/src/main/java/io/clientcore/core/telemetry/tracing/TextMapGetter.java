@@ -5,6 +5,7 @@ package io.clientcore.core.telemetry.tracing;
 
 /**
  * A {@code TextMapGetter} retrieves context fields from a carrier, such as {@link io.clientcore.core.http.models.HttpRequest}.
+ * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  *
  * @param <C> the type of the carrier.
  */
