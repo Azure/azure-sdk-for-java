@@ -47,7 +47,7 @@ public class TelemetryProviderTests {
 
     @Test
     public void createTracerOTelNotConfigured() {
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(null, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.create(null, DEFAULT_LIB_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
     }
 
@@ -58,7 +58,7 @@ public class TelemetryProviderTests {
         TelemetryOptions<OpenTelemetry> options
             = new TelemetryOptions<OpenTelemetry>().setTracingEnabled(false).setProvider(otel);
 
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
         tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
@@ -71,7 +71,7 @@ public class TelemetryProviderTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            Tracer tracer = TelemetryProvider.getInstance().getTracer(null, DEFAULT_LIB_OPTIONS);
+            Tracer tracer = TelemetryProvider.create(null, DEFAULT_LIB_OPTIONS).getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -97,8 +97,8 @@ public class TelemetryProviderTests {
 
             OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
-            Tracer tracer = TelemetryProvider.getInstance()
-                .getTracer(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS);
+            Tracer tracer = TelemetryProvider.create(new TelemetryOptions<OpenTelemetry>().setProvider(localOTel), DEFAULT_LIB_OPTIONS)
+                .getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -114,8 +114,8 @@ public class TelemetryProviderTests {
         TelemetryOptions<TracerProvider> options = new TelemetryOptions<TracerProvider>().setProvider(tracerProvider);
 
         assertThrows(IllegalArgumentException.class,
-            () -> TelemetryProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS));
-        assertThrows(NullPointerException.class, () -> TelemetryProvider.getInstance().getTracer(null, null));
+            () -> TelemetryProvider.create(options, DEFAULT_LIB_OPTIONS).getTracer());
+        assertThrows(NullPointerException.class, () -> TelemetryProvider.create(null, null).getTracer());
     }
 
     @SuppressWarnings("try")
@@ -127,7 +127,7 @@ public class TelemetryProviderTests {
             LibraryTelemetryOptions libOptions = new LibraryTelemetryOptions("test-library").setLibraryVersion("1.0.0")
                 .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-            Tracer tracer = TelemetryProvider.getInstance().getTracer(null, libOptions);
+            Tracer tracer = TelemetryProvider.create(null, libOptions).getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();

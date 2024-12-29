@@ -6,18 +6,24 @@ package io.clientcore.core.telemetry;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
 import io.clientcore.core.telemetry.tracing.SpanContext;
+import io.clientcore.core.telemetry.tracing.TextMapGetter;
+import io.clientcore.core.telemetry.tracing.TextMapPropagator;
+import io.clientcore.core.telemetry.tracing.TextMapSetter;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.telemetry.tracing.TracingScope;
-
-import java.util.Objects;
+import io.clientcore.core.util.Context;
 
 class NoopTelemetryProvider implements TelemetryProvider {
     static final TelemetryProvider NOOP_PROVIDER = new NoopTelemetryProvider();
 
     @Override
-    public Tracer getTracer(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
-        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
+    public Tracer getTracer() {
         return NOOP_TRACER;
+    }
+
+    @Override
+    public TextMapPropagator getW3CTraceContextPropagator() {
+        return NOOP_CONTEXT_PROPAGATOR;
     }
 
     private static final Span NOOP_SPAN = new Span() {
@@ -87,4 +93,17 @@ class NoopTelemetryProvider implements TelemetryProvider {
     private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final Tracer NOOP_TRACER = (name, kind, ctx) -> NOOP_SPAN_BUILDER;
+
+    private static final TextMapPropagator NOOP_CONTEXT_PROPAGATOR = new TextMapPropagator() {
+
+        @Override
+        public <C> void inject(Context context, C carrier, TextMapSetter<C> setter) {
+
+        }
+
+        @Override
+        public <C> Context extract(Context context, C carrier, TextMapGetter<C> getter) {
+            return context;
+        }
+    };
 }

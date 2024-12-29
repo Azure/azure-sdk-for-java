@@ -16,11 +16,19 @@ import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.TraceFlags;
+import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.context.propagation.TextMapGetter;
+import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.context.propagation.TextMapSetter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
+import io.opentelemetry.sdk.trace.IdGenerator;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
@@ -37,12 +45,15 @@ import java.io.UncheckedIOException;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
 import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,6 +74,7 @@ public class InstrumentationPolicyTests {
     private static final AttributeKey<Long> SERVER_PORT = AttributeKey.longKey("server.port");
     private static final AttributeKey<Long> HTTP_RESPONSE_STATUS_CODE
         = AttributeKey.longKey("http.response.status_code");
+    private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
@@ -74,7 +86,9 @@ public class InstrumentationPolicyTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .build();
         otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
     }
 
@@ -92,8 +106,9 @@ public class InstrumentationPolicyTests {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertStartAttributes((ReadableSpan) Span.current(), request.getHttpMethod(), request.getUri());
+                assertNull(request.getHeaders().get(TRACESTATE));
                 assertEquals(traceparent(Span.current()),
-                    request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
+                    request.getHeaders().get(TRACEPARENT).getValue());
                 current.set(Span.current());
                 return new MockHttpResponse(request, statusCode);
             }).build();
@@ -146,7 +161,7 @@ public class InstrumentationPolicyTests {
                 .policies(new HttpRetryPolicy(), new InstrumentationPolicy(otelOptions, null))
                 .httpClient(request -> {
                     assertEquals(traceparent(Span.current()),
-                        request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
+                        request.getHeaders().get(TRACEPARENT).getValue());
                     if (count.getAndIncrement() == 0) {
                         throw new UnknownHostException("test exception");
                     } else {
@@ -185,21 +200,80 @@ public class InstrumentationPolicyTests {
             .setSampler(Sampler.alwaysOff())
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(sampleNone).build();
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(sampleNone)
+            .build();
         TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
 
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
                 assertTrue(Span.current().getSpanContext().isValid());
                 assertEquals(traceparent(Span.current()),
-                    request.getHeaders().get(HttpHeaderName.TRACEPARENT).getValue());
+                    request.getHeaders().get(TRACEPARENT).getValue());
                 return new MockHttpResponse(request, 200);
             }).build();
 
-        // just a sanity check - should not throw
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(0, exporter.getFinishedSpanItems().size());
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    public void tracestateIsPropagated() throws IOException {
+        SpanContext parentContext = SpanContext.create(IdGenerator.random().generateTraceId(),
+            IdGenerator.random().generateSpanId(),
+            TraceFlags.getSampled(),
+            TraceState.builder().put("key", "value").build());
+
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
+            assertEquals("key=value", request.getHeaders().get(TRACESTATE).getValue());
+            assertEquals(traceparent(Span.current()),
+                request.getHeaders().get(TRACEPARENT).getValue());
+            return new MockHttpResponse(request, 200);
+        }).build();
+
+        try (Scope scope = Span.wrap(parentContext).makeCurrent()) {
+            pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        }
+
+        assertNotNull(exporter.getFinishedSpanItems());
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+    }
+
+    @Test
+    public void otelPropagatorIsIgnored() throws IOException {
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .setPropagators(ContextPropagators.create(new TextMapPropagator() {
+                @Override
+                public Collection<String> fields() {
+                    return Collections.singleton("foo");
+                }
+
+                @Override
+                public <C> void inject(io.opentelemetry.context.Context context, C carrier, TextMapSetter<C> setter) {
+                    setter.set(carrier, "foo", "bar");
+                }
+
+                @Override
+                public <C> io.opentelemetry.context.Context extract(io.opentelemetry.context.Context context, C carrier, TextMapGetter<C> getter) {
+                    return context;
+                }
+            }))
+            .build();
+
+        TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
+
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null)).httpClient(request -> {
+            assertEquals(traceparent(Span.current()),
+                request.getHeaders().get(TRACEPARENT).getValue());
+            return new MockHttpResponse(request, 200);
+        }).build();
+
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
     }
 
     @Test
@@ -230,7 +304,7 @@ public class InstrumentationPolicyTests {
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options, null)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
                 assertFalse(Span.current().isRecording());
-                assertNull(request.getHeaders().get(HttpHeaderName.TRACEPARENT));
+                assertNull(request.getHeaders().get(TRACEPARENT));
                 return new MockHttpResponse(request, 200);
             }).build();
 
@@ -247,7 +321,7 @@ public class InstrumentationPolicyTests {
             = new HttpPipelineBuilder().policies(new InstrumentationPolicy(options, null)).httpClient(request -> {
                 assertFalse(Span.current().getSpanContext().isValid());
                 assertFalse(Span.current().isRecording());
-                assertNull(request.getHeaders().get(HttpHeaderName.TRACEPARENT));
+                assertNull(request.getHeaders().get(TRACEPARENT));
                 return new MockHttpResponse(request, 200);
             }).build();
 
@@ -414,7 +488,7 @@ public class InstrumentationPolicyTests {
     @Test
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.telemetry.tracing.Tracer tracer
-            = TelemetryProvider.getInstance().getTracer(otelOptions, new LibraryTelemetryOptions("test-library"));
+            = TelemetryProvider.create(otelOptions, new LibraryTelemetryOptions("test-library")).getTracer();
 
         RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.telemetry.tracing.Span parent

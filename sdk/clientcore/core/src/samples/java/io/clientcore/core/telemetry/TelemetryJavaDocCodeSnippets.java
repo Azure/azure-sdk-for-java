@@ -169,7 +169,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient(TelemetryOptions<?> telemetryOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = TelemetryProvider.getInstance().getTracer(telemetryOptions, LIBRARY_OPTIONS);
+            this.tracer = TelemetryProvider.create(telemetryOptions, LIBRARY_OPTIONS).getTracer();
         }
 
         public void clientCall() {

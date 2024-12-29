@@ -7,7 +7,6 @@ import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccess
 import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
-import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.tracing.Span;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
 import io.clientcore.core.telemetry.tracing.SpanKind;
@@ -23,6 +22,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_BUILDER_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
+import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
 
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
@@ -120,7 +120,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     public Span startSpan() {
         if (OTelInitializer.isInitialized() && otelSpanBuilder != null) {
             try {
-                Object otelParentContext = getParent(context);
+                Object otelParentContext = getOTelContext(context);
                 SET_PARENT_INVOKER.invoke(otelSpanBuilder, otelParentContext);
                 SET_SPAN_KIND_INVOKER.invoke(otelSpanBuilder, toOtelSpanKind(spanKind));
                 Object otelSpan = shouldSuppress(otelParentContext)
@@ -139,22 +139,6 @@ public class OTelSpanBuilder implements SpanBuilder {
         return suppressNestedSpans
             && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)
             && OTelContext.hasClientCoreSpan(parentContext);
-    }
-
-    private static Object getParent(Context context) throws Throwable {
-        Object parent = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
-        if (CONTEXT_CLASS.isInstance(parent)) {
-            return parent;
-        } else if (parent instanceof OTelSpan) {
-            return ((OTelSpan) parent).getOtelContext();
-        } else if (parent != null) {
-            LOGGER.atVerbose()
-                .addKeyValue("expectedType", CONTEXT_CLASS.getName())
-                .addKeyValue("actualType", parent.getClass().getName())
-                .log("Context does not contain an OpenTelemetry context. Ignoring it.");
-        }
-
-        return OTelContext.getCurrent();
     }
 
     private Object toOtelSpanKind(SpanKind spanKind) {

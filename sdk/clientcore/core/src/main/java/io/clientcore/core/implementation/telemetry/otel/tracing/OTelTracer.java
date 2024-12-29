@@ -22,7 +22,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 
 public final class OTelTracer implements Tracer {
-    public static final OTelTracer NOOP = new OTelTracer(null, null);
+    public static final OTelTracer NOOP = new OTelTracer();
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelTracer.class);
     private static final MethodHandle SPAN_BUILDER_INVOKER;
@@ -65,25 +65,21 @@ public final class OTelTracer implements Tracer {
         GET_TRACER_BUILDER_INVOKER = getTracerBuilderInvoker;
     }
 
-    public static OTelTracer createTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) {
-        if (OTelInitializer.isInitialized() && otelTracerProvider != null) {
-            assert TRACER_PROVIDER_CLASS.isInstance(otelTracerProvider);
-            try {
-                Object tracerBuilder
-                    = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
-
-                SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
-                SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
-                return new OTelTracer(BUILD_INVOKER.invoke(tracerBuilder), libraryOptions);
-            } catch (Throwable t) {
-                OTelInitializer.runtimeError(LOGGER, t);
-            }
-        }
-        return OTelTracer.NOOP;
+    private OTelTracer() {
+        this.otelTracer = null;
+        this.libraryOptions = null;
     }
 
-    private OTelTracer(Object otelTracer, LibraryTelemetryOptions libraryOptions) {
-        this.otelTracer = otelTracer;
+    public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) throws Throwable {
+        assert TRACER_PROVIDER_CLASS.isInstance(otelTracerProvider);
+
+        Object tracerBuilder
+            = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
+
+        SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
+        SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
+
+        this.otelTracer = BUILD_INVOKER.invoke(tracerBuilder);
         this.libraryOptions = libraryOptions;
     }
 

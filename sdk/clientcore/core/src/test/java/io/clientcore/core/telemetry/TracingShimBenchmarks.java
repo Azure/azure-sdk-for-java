@@ -60,12 +60,12 @@ public class TracingShimBenchmarks {
 
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");
-        shimTracer = TelemetryProvider.getInstance()
-            .getTracer(new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry),
-                new LibraryTelemetryOptions("test"));
-        shimTracerDisabled = TelemetryProvider.getInstance()
-            .getTracer(new TelemetryOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
-                new LibraryTelemetryOptions("test"));
+        shimTracer = TelemetryProvider.create(new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry),
+                new LibraryTelemetryOptions("test"))
+            .getTracer();
+        shimTracerDisabled = TelemetryProvider.create(new TelemetryOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
+                new LibraryTelemetryOptions("test"))
+            .getTracer();
     }
 
     @Benchmark

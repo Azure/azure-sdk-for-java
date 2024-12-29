@@ -41,7 +41,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         TelemetryOptions<?> telemetryOptions = new TelemetryOptions<>();
 
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(telemetryOptions, libraryOptions);
+        Tracer tracer = TelemetryProvider.create(telemetryOptions, libraryOptions).getTracer();
 
         // END: io.clientcore.core.telemetry.tracing.createtracer
     }
@@ -51,7 +51,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceCall() {
 
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(null, LIBRARY_OPTIONS);
+        Tracer tracer = TelemetryProvider.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracecall
@@ -87,7 +87,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceWithAttributes() {
 
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(null, LIBRARY_OPTIONS);
+        Tracer tracer = TelemetryProvider.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracewithattributes

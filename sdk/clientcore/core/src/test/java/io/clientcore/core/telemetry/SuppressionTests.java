@@ -50,14 +50,15 @@ public class SuppressionTests {
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private TelemetryOptions<OpenTelemetry> otelOptions;
+    private Tracer tracer;
 
     @BeforeEach
     public void setUp() {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
-
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
+        tracer = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
     }
 
     @AfterEach
@@ -94,9 +95,9 @@ public class SuppressionTests {
 
     @Test
     public void testDisabledSuppression() {
-        Tracer outerTracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-        Tracer innerTracer = TelemetryProvider.getInstance()
-            .getTracer(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true));
+        Tracer outerTracer = tracer;
+        Tracer innerTracer = TelemetryProvider.create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+            .getTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options).startSpan();
@@ -118,9 +119,9 @@ public class SuppressionTests {
 
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
-        Tracer outerTracer = TelemetryProvider.getInstance()
-            .getTracer(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true));
-        Tracer innerTracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer outerTracer = TelemetryProvider.create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+            .getTracer();
+        Tracer innerTracer = tracer;
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options).startSpan();
@@ -139,7 +140,6 @@ public class SuppressionTests {
     @Test
     @SuppressWarnings("try")
     public void noSuppressionForSiblings() {
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
         Span first = tracer.spanBuilder("first", CLIENT, null).startSpan();
         try (TracingScope outerScope = first.makeCurrent()) {
             first.setAttribute("key", "valueOuter");
@@ -153,7 +153,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
+        Tracer tracer = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -182,8 +182,6 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionExplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-
         RequestOptions options = new RequestOptions();
         Span outerSpan
             = tracer.spanBuilder("outerSpan", outerKind, options).setAttribute("key", "valueOuter").startSpan();
@@ -227,8 +225,6 @@ public class SuppressionTests {
     @MethodSource("suppressionTestCases")
     @SuppressWarnings("try")
     public void testSuppressionImplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
-        Tracer tracer = TelemetryProvider.getInstance().getTracer(otelOptions, DEFAULT_LIB_OPTIONS);
-
         Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null).setAttribute("key", "valueOuter").startSpan();
         Span innerSpan = null;
         try (TracingScope outerScope = outerSpan.makeCurrent()) {
@@ -307,7 +303,7 @@ public class SuppressionTests {
 
         SampleClient(HttpPipeline pipeline, TelemetryOptions<?> options) {
             this.pipeline = pipeline;
-            this.tracer = TelemetryProvider.getInstance().getTracer(options, DEFAULT_LIB_OPTIONS);
+            this.tracer = TelemetryProvider.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         }
 
         @SuppressWarnings("try")

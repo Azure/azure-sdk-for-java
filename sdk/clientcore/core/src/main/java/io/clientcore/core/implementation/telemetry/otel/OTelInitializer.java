@@ -15,6 +15,7 @@ public final class OTelInitializer {
 
     public static final Class<?> CONTEXT_CLASS;
     public static final Class<?> CONTEXT_KEY_CLASS;
+    public static final Class<?> CONTEXT_PROPAGATORS_CLASS;
     public static final Class<?> OTEL_CLASS;
     public static final Class<?> GLOBAL_OTEL_CLASS;
 
@@ -26,11 +27,17 @@ public final class OTelInitializer {
 
     public static final Class<?> STATUS_CODE_CLASS;
 
+    public static final Class<?> TEXT_MAP_PROPAGATOR_CLASS;
+    public static final Class<?> TEXT_MAP_GETTER_CLASS;
+    public static final Class<?> TEXT_MAP_SETTER_CLASS;
+
     public static final Class<?> TRACE_FLAGS_CLASS;
     public static final Class<?> TRACE_STATE_CLASS;
     public static final Class<?> TRACER_CLASS;
     public static final Class<?> TRACER_BUILDER_CLASS;
     public static final Class<?> TRACER_PROVIDER_CLASS;
+
+    public static final Class<?> W3C_PROPAGATOR_CLASS;
 
     private volatile boolean initialized;
 
@@ -41,6 +48,7 @@ public final class OTelInitializer {
 
         Class<?> contextClass = null;
         Class<?> contextKeyClass = null;
+        Class<?> contextPropagatorsClass = null;
 
         Class<?> otelClass = null;
         Class<?> globalOtelClass = null;
@@ -52,11 +60,17 @@ public final class OTelInitializer {
         Class<?> spanKindClass = null;
         Class<?> statusCodeClass = null;
 
+        Class<?> textMapPropagatorClass = null;
+        Class<?> textMapGetterClass = null;
+        Class<?> textMapSetterClass = null;
+
         Class<?> traceFlagsClass = null;
         Class<?> traceStateClass = null;
         Class<?> tracerClass = null;
         Class<?> tracerBuilderClass = null;
         Class<?> tracerProviderClass = null;
+
+        Class<?> w3cPropagatorClass = null;
 
         OTelInitializer instance = null;
         try {
@@ -67,6 +81,7 @@ public final class OTelInitializer {
 
             contextClass = Class.forName("io.opentelemetry.context.Context", true, classLoader);
             contextKeyClass = Class.forName("io.opentelemetry.context.ContextKey", true, classLoader);
+            contextPropagatorsClass = Class.forName("io.opentelemetry.context.propagation.ContextPropagators", true, classLoader);
 
             otelClass = Class.forName("io.opentelemetry.api.OpenTelemetry", true, classLoader);
             globalOtelClass = Class.forName("io.opentelemetry.api.GlobalOpenTelemetry", true, classLoader);
@@ -79,15 +94,20 @@ public final class OTelInitializer {
             spanKindClass = Class.forName("io.opentelemetry.api.trace.SpanKind", true, classLoader);
             statusCodeClass = Class.forName("io.opentelemetry.api.trace.StatusCode", true, classLoader);
 
+            textMapPropagatorClass = Class.forName("io.opentelemetry.context.propagation.TextMapPropagator", true, classLoader);
+            textMapGetterClass = Class.forName("io.opentelemetry.context.propagation.TextMapGetter", true, classLoader);
+            textMapSetterClass = Class.forName("io.opentelemetry.context.propagation.TextMapSetter", true, classLoader);
+
             traceFlagsClass = Class.forName("io.opentelemetry.api.trace.TraceFlags", true, classLoader);
             traceStateClass = Class.forName("io.opentelemetry.api.trace.TraceState", true, classLoader);
             tracerClass = Class.forName("io.opentelemetry.api.trace.Tracer", true, classLoader);
             tracerBuilderClass = Class.forName("io.opentelemetry.api.trace.TracerBuilder", true, classLoader);
             tracerProviderClass = Class.forName("io.opentelemetry.api.trace.TracerProvider", true, classLoader);
+            w3cPropagatorClass = Class.forName("io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator", true, classLoader);
 
             instance = new OTelInitializer(true);
         } catch (Throwable t) {
-            LOGGER.atVerbose().log("OpenTelemetry is not detected.", t);
+            LOGGER.atVerbose().log("OpenTelemetry was not initialized.", t);
             instance = new OTelInitializer(false);
         }
 
@@ -97,6 +117,7 @@ public final class OTelInitializer {
 
         CONTEXT_CLASS = contextClass;
         CONTEXT_KEY_CLASS = contextKeyClass;
+        CONTEXT_PROPAGATORS_CLASS = contextPropagatorsClass;
 
         OTEL_CLASS = otelClass;
         GLOBAL_OTEL_CLASS = globalOtelClass;
@@ -108,11 +129,17 @@ public final class OTelInitializer {
         SPAN_KIND_CLASS = spanKindClass;
         STATUS_CODE_CLASS = statusCodeClass;
 
+        TEXT_MAP_PROPAGATOR_CLASS = textMapPropagatorClass;
+        TEXT_MAP_GETTER_CLASS = textMapGetterClass;
+        TEXT_MAP_SETTER_CLASS = textMapSetterClass;
+
         TRACE_FLAGS_CLASS = traceFlagsClass;
         TRACE_STATE_CLASS = traceStateClass;
         TRACER_CLASS = tracerClass;
         TRACER_BUILDER_CLASS = tracerBuilderClass;
         TRACER_PROVIDER_CLASS = tracerProviderClass;
+
+        W3C_PROPAGATOR_CLASS = w3cPropagatorClass;
 
         INSTANCE = instance;
     }

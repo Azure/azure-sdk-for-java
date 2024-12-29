@@ -4,6 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -13,7 +14,8 @@ import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryOptions;
 import io.clientcore.core.telemetry.TelemetryProvider;
 import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanContext;
+import io.clientcore.core.telemetry.tracing.TextMapPropagator;
+import io.clientcore.core.telemetry.tracing.TextMapSetter;
 import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.clientcore.core.util.ClientLogger;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
 
 /**
@@ -38,7 +41,6 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * <p>
  * It propagates context to the downstream service following <a href="https://www.w3.org/TR/trace-context-1/">W3C Trace Context</a> specification.
  * <p>
- *
  * The {@link InstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added between
  * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try (redirect), and logging happens
  * in the scope of the span.
@@ -50,9 +52,8 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * you can create a custom policy and use it instead of the {@link InstrumentationPolicy}. If you want to enrich instrumentation
  * policy spans with additional attributes, you can create a custom policy and add it under the {@link InstrumentationPolicy}
  * so that it's executed in the scope of the span created by the {@link InstrumentationPolicy}.
- * <p>
- * <strong>Configure instrumentation policy:</strong>
- * <p>
+ *
+ * <p><strong>Configure instrumentation policy:</strong><p>
  * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
  * <pre>
  *
@@ -93,6 +94,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryTelemetryOptions LIBRARY_OPTIONS;
+    private static final TextMapSetter<HttpHeaders> SETTER
+        = (headers, name, value) -> headers.set(HttpHeaderName.fromString(name), value);
 
     static {
         Map<String, String> properties = getProperties("core.properties");
@@ -122,6 +125,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedQueryParams;
     private final Map<HttpHeaderName, String> requestHeaders;
     private final Map<HttpHeaderName, String> responseHeaders;
+    private final TextMapPropagator contextPropagator;
 
     /**
      * Creates a new instrumentation policy.
@@ -142,7 +146,9 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
      */
     public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions,
         Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
-        this.tracer = TelemetryProvider.getInstance().getTracer(telemetryOptions, LIBRARY_OPTIONS);
+        TelemetryProvider telemetryProvider = TelemetryProvider.create(telemetryOptions, LIBRARY_OPTIONS);
+        this.tracer = telemetryProvider.getTracer();
+        this.contextPropagator = telemetryProvider.getW3CTraceContextPropagator();
         this.allowedQueryParams = logOptions == null ? Collections.emptySet() : logOptions.getAllowedQueryParamNames();
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
@@ -159,6 +165,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
+
         Span span = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
             .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
             .setAttribute(URL_FULL, sanitizedUrl)
@@ -166,8 +173,10 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
             .startSpan();
 
+        Context context = request.getRequestOptions().getContext();
+        propagateContext(context.put(TRACE_CONTEXT_KEY, span), request.getHeaders());
+
         try (TracingScope scope = span.makeCurrent()) {
-            propagateContext(request, span.getSpanContext());
             Response<?> response = next.process();
 
             if (span.isRecording()) {
@@ -222,12 +231,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return t;
     }
 
-    private void propagateContext(HttpRequest request, SpanContext spanContext) {
-        // TODO (lmolkova): we should support full propagation including tracestate and baggage, especially for messaging cases
-        // for now we'll only support traceparent
-        String traceparent
-            = "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId() + "-" + spanContext.getTraceFlags();
-        request.getHeaders().set(HttpHeaderName.TRACEPARENT, traceparent);
+    private void propagateContext(Context context, HttpHeaders headers) {
+        contextPropagator.inject(context, headers, SETTER);
     }
 
     private void addResponseHeaders(Response<?> response, Span span) {

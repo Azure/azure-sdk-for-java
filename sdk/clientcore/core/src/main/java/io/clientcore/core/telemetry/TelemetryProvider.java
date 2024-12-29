@@ -5,6 +5,7 @@ package io.clientcore.core.telemetry;
 
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.implementation.telemetry.otel.OTelTelemetryProvider;
+import io.clientcore.core.telemetry.tracing.TextMapPropagator;
 import io.clientcore.core.telemetry.tracing.Tracer;
 
 import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
@@ -12,7 +13,6 @@ import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
 /**
  * Provides observability capabilities (distributed tracing, metrics, etc.) with OpenTelemetry to the client library.
  * <p>
- *
  * <p><strong>This interface is intended to be used by client libraries. Application developers
  * should use OpenTelemetry API directly</strong>
  */
@@ -37,25 +37,30 @@ public interface TelemetryProvider {
      *
      * TelemetryOptions&lt;?&gt; telemetryOptions = new TelemetryOptions&lt;&gt;&#40;&#41;;
      *
-     * Tracer tracer = TelemetryProvider.getInstance&#40;&#41;.getTracer&#40;telemetryOptions, libraryOptions&#41;;
+     * Tracer tracer = TelemetryProvider.create&#40;telemetryOptions, libraryOptions&#41;.getTracer&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.tracing.createtracer -->
      *
-     * @param applicationOptions Options provided by the application.
-     * @param libraryOptions Options provided by the library.
      * @return The tracer.
      */
-    Tracer getTracer(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions);
+    Tracer getTracer();
+
+    /**
+     * Gets the implementation of W3C Trace Context propagator.
+     *
+     * @return The context propagator.
+     */
+    TextMapPropagator getW3CTraceContextPropagator();
 
     /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
      * @return The singleton instance of the resolved telemetry provider.
      */
-    static TelemetryProvider getInstance() {
+    static TelemetryProvider create(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         if (OTelInitializer.isInitialized()) {
-            return OTelTelemetryProvider.INSTANCE;
+            return new OTelTelemetryProvider(applicationOptions, libraryOptions);
         } else {
             return NOOP_PROVIDER;
         }
