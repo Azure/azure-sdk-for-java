@@ -152,21 +152,41 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     @DataProvider(name = "ppafTestConfigsWithWriteOps")
     public Object[][] ppafTestConfigsWithWriteOps() {
 
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
-                .setExpectedMinRetryCount(1)
-                .setShouldFinalResponseHaveSuccess(true)
-                .setExpectedRegionsContactedCount(2);
+        ExpectedResponseCharacteristics expected403ResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        ExpectedResponseCharacteristics expected410ResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        ExpectedResponseCharacteristics expected503ResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        ExpectedResponseCharacteristics expected503BatchResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(0)
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        ExpectedResponseCharacteristics expectedBatchResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
             .setShouldFinalResponseHaveSuccess(false)
             .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover = new ExpectedResponseCharacteristics()
-                .setExpectedMinRetryCount(0)
-                .setExpectedMaxRetryCount(0)
-                .setShouldFinalResponseHaveSuccess(true)
-                .setExpectedRegionsContactedCount(1);
+            .setExpectedMinRetryCount(0)
+            .setExpectedMaxRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(1);
 
         return new Object[][]{
             {
@@ -174,7 +194,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.CREATED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -182,7 +202,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -190,7 +210,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -198,7 +218,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -206,7 +226,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -214,7 +234,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected410ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -222,7 +242,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.CREATED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -230,7 +250,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -238,7 +258,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -246,7 +266,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -254,7 +274,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -262,7 +282,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected503BatchResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -270,7 +290,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.CREATED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -278,7 +298,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -286,7 +306,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -294,7 +314,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -302,7 +322,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -310,7 +330,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
+                expected403ResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover
             },
             {
@@ -358,7 +378,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
+                expectedBatchResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover
             }
         };

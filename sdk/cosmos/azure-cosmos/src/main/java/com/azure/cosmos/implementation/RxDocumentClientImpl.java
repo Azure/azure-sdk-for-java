@@ -6722,7 +6722,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
-            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
+            (isParallelWriteRegionDiscoveryApplicable) ? null : (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
         List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
