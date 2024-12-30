@@ -130,6 +130,6 @@ class AzureAuthenticationTemplateTest {
         properties.setProperty(AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getPropertyKey(), "35");
         template.init(properties);
         assertNotNull(template.getBlockTimeout());
-        assertEquals(template.getBlockTimeout().getSeconds() , 35);
+        assertEquals(template.getBlockTimeout().getSeconds(), 35);
     }
 }
