@@ -13,8 +13,6 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Assertions;
@@ -408,7 +406,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.resolvedCollectionRid = collectionResourceId;
         request.requestContext.setExcludeRegions(Collections.emptyList());
-        request.requestContext.setPointOperationContext(
+        request.requestContext.setPointOperationContextForCircuitBreaker(
             new PointOperationContextForCircuitBreaker(
                 new AtomicBoolean(false),
                 false,

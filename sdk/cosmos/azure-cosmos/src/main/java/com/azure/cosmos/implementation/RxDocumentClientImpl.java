@@ -1845,7 +1845,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                            boolean disableAutomaticIdGeneration,
                                                                            OperationType operationType,
                                                                            DiagnosticsClientContext clientContextOverride,
-                                                                           PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+                                                                           PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+                                                                           PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -1886,6 +1887,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             requestContext.setExcludeRegions(options.getExcludedRegions());
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+        }
+
+        if (request.requestContext != null && pointOperationContextForPerPartitionAutomaticFailover != null) {
+            request.requestContext.setPointOperationContextForPerPartitionAutomaticFailover(pointOperationContextForPerPartitionAutomaticFailover);
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1953,6 +1958,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
+        if (request.requestContext != null) {
+            request.requestContext.setPointOperationContextForPerPartitionAutomaticFailover(new PointOperationContextForPerPartitionAutomaticFailover(false, false));
+        }
+
         // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
         // instance into 'request' amongst other things - this way metadataDiagnosticsContext is not
         // null and can be used for metadata-related telemetry (partition key range, container and server address lookups)
@@ -1962,7 +1971,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
-        request.requestContext.setPointOperationContext(
+        request.requestContext.setPointOperationContextForCircuitBreaker(
             new PointOperationContextForCircuitBreaker(
                 new AtomicBoolean(false),
                 false,
@@ -2290,14 +2299,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Create,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> createDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> createDocumentCore(
                 collectionLink,
                 document,
                 opt,
                 disableAutomaticIdGeneration,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover
             ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
@@ -2312,7 +2322,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
@@ -2337,7 +2348,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        pointOperationContextForCircuitBreaker),
+                        pointOperationContextForCircuitBreaker,
+                        pointOperationContextForPerPartitionAutomaticFailover),
                 requestRetryPolicy),
             scopedDiagnosticsFactory
         ), requestReference);
@@ -2351,7 +2363,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy requestRetryPolicy,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
+
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
@@ -2363,7 +2377,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 disableAutomaticIdGeneration,
                 OperationType.Create,
                 clientContextOverride,
-                pointOperationContextForCircuitBreaker);
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover);
 
             return requestToDocumentCollectionObs
                 .flatMap(requestToDocumentCollection -> {
@@ -2400,7 +2415,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 preResolvedPartitionKeyRangeIfAny);
 
                             documentServiceRequestReference.set(request);
-                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                            request.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
 
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                             // to the RxDocumentServiceRequest instance
@@ -2555,7 +2570,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory scopedDiagnosticsFactory,
         Throwable throwable,
         AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook) {
-        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+        Throwable unwrappedException = Exceptions.unwrap(throwable);
         if (unwrappedException instanceof TimeoutException) {
 
             CosmosException exception = new OperationCancelledException();
@@ -2606,8 +2621,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Upsert,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> upsertDocumentCore(
-                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> upsertDocumentCore(
+                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2621,7 +2636,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2645,7 +2661,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        pointOperationContextForCircuitBreaker),
+                        pointOperationContextForCircuitBreaker,
+                        pointOperationContextForPerPartitionAutomaticFailover),
                     finalRetryPolicyInstance),
                 scopedDiagnosticsFactory), requestReference);
     }
@@ -2658,7 +2675,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
@@ -2672,7 +2690,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     disableAutomaticIdGeneration,
                     OperationType.Upsert,
                     clientContextOverride,
-                    pointOperationContextForCircuitBreaker);
+                    pointOperationContextForCircuitBreaker,
+                    pointOperationContextForPerPartitionAutomaticFailover);
 
             return requestToDocumentCollectionObs
                 .flatMap(requestToDocumentCollection -> {
@@ -2707,7 +2726,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 retryPolicyInstance,
                                 preResolvedPartitionKeyRangeIfAny);
 
-                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                            request.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
                             requestReference.set(request);
 
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -2735,13 +2754,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> replaceDocumentCore(
                 documentLink,
                 document,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker),
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2754,7 +2774,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2780,7 +2801,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         endToEndPolicyConfig,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        pointOperationContextForCircuitBreaker),
+                        pointOperationContextForCircuitBreaker,
+                        pointOperationContextForPerPartitionAutomaticFailover),
                     requestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
     }
@@ -2793,7 +2815,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -2813,7 +2836,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
-                pointOperationContextForCircuitBreaker);
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
@@ -2829,12 +2853,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> replaceDocumentCore(
                 document,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover
             ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
@@ -2847,7 +2872,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
@@ -2867,7 +2893,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 endToEndPolicyConfig,
                 clientContextOverride,
                 requestReference,
-                pointOperationContextForCircuitBreaker),
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover),
             requestRetryPolicy), requestReference);
     }
 
@@ -2878,7 +2905,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         try {
             if (document == null) {
@@ -2892,7 +2920,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
-                pointOperationContextForCircuitBreaker);
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
@@ -2907,7 +2936,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         if (document == null) {
             throw new IllegalArgumentException("document");
@@ -2951,6 +2981,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             requestContext.setExcludeRegions(options.getExcludedRegions());
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+        }
+
+        if (request.requestContext != null && pointOperationContextForPerPartitionAutomaticFailover != null) {
+            request.requestContext.setPointOperationContextForPerPartitionAutomaticFailover(pointOperationContextForPerPartitionAutomaticFailover);
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
@@ -3004,7 +3038,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                req.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3057,13 +3091,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Patch,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> patchDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> patchDocumentCore(
                 documentLink,
                 cosmosPatchOperations,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker),
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -3076,7 +3111,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -3096,7 +3132,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         documentClientRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        pointOperationContextForCircuitBreaker),
+                        pointOperationContextForCircuitBreaker,
+                        pointOperationContextForPerPartitionAutomaticFailover),
                     documentClientRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
     }
@@ -3108,7 +3145,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
         checkNotNull(cosmosPatchOperations, "expected non null cosmosPatchOperations");
@@ -3151,6 +3189,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             requestContext.setExcludeRegions(options.getExcludedRegions());
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+        }
+
+        if (request.requestContext != null && pointOperationContextForPerPartitionAutomaticFailover != null) {
+            request.requestContext.setPointOperationContextForPerPartitionAutomaticFailover(pointOperationContextForPerPartitionAutomaticFailover);
         }
 
         if (retryPolicyInstance != null) {
@@ -3212,7 +3254,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                req.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3234,13 +3276,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> deleteDocumentCore(
                 documentLink,
                 null,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover
             ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
@@ -3256,13 +3299,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> deleteDocumentCore(
                 documentLink,
                 internalObjectNode,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker),
+                pointOperationContextForCircuitBreaker,
+                pointOperationContextForPerPartitionAutomaticFailover),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -3275,7 +3319,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -3295,7 +3340,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        pointOperationContextForCircuitBreaker),
+                        pointOperationContextForCircuitBreaker,
+                        pointOperationContextForPerPartitionAutomaticFailover),
                     requestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
     }
@@ -3307,7 +3353,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -3333,6 +3380,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
                 requestContext.setExcludeRegions(options.getExcludedRegions());
                 requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+            }
+
+            if (request.requestContext != null && pointOperationContextForPerPartitionAutomaticFailover != null) {
+                request.requestContext.setPointOperationContextForPerPartitionAutomaticFailover(pointOperationContextForPerPartitionAutomaticFailover);
             }
 
             if (retryPolicyInstance != null) {
@@ -3371,7 +3422,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                req.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3441,7 +3492,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Read,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, pointOperationContextForPerPartitionAutomaticFailover),
             options,
             false,
             innerDiagnosticsFactory,
@@ -3454,7 +3505,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -3472,7 +3524,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicyInstance,
                     scopedDiagnosticsFactory,
                     requestReference,
-                    pointOperationContextForCircuitBreaker),
+                    pointOperationContextForCircuitBreaker,
+                    pointOperationContextForPerPartitionAutomaticFailover),
                 retryPolicyInstance),
             scopedDiagnosticsFactory
         ), requestReference);
@@ -3484,7 +3537,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -3505,6 +3559,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
             requestContext.setExcludeRegions(options.getExcludedRegions());
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+
+            if (pointOperationContextForPerPartitionAutomaticFailover != null) {
+                requestContext.setPointOperationContextForPerPartitionAutomaticFailover(pointOperationContextForPerPartitionAutomaticFailover);
+            }
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
@@ -3546,7 +3604,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartionKeyRangeIfAny);
 
-                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                req.requestContext.setPointOperationContextForCircuitBreaker(pointOperationContextForCircuitBreaker);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -4285,7 +4343,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ResourceType.Document,
             OperationType.Query,
             false,
-            nonNullRequestOptions);
+            nonNullRequestOptions,
+            false);
 
         ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
 
@@ -6636,12 +6695,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
+        boolean isParallelWriteRegionDiscoveryApplicable
+            = isParallelWriteRegionDiscoveryApplicableForPerPartitionAutomaticFailover(
+                operationType, this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, this.globalEndpointManager);
+
         List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
             resourceType,
             operationType,
             idempotentWriteRetriesEnabled,
-            nonNullRequestOptions);
+            nonNullRequestOptions,
+            isParallelWriteRegionDiscoveryApplicable);
 
         AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
 
@@ -6654,7 +6718,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 new SerializationDiagnosticsContext());
 
             pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
-            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest);
+            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest, null);
         }
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
@@ -6668,6 +6732,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
 
                 if (monoList.isEmpty()) {
+
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions;
+
                     // no special error handling for transient errors to suppress them here
                     // because any cross-regional retries are expected to be processed
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
@@ -6681,14 +6748,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         new SerializationDiagnosticsContext());
 
                     pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
-                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest)
+
+                    if (isParallelWriteRegionDiscoveryApplicable) {
+
+                        PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover = new PointOperationContextForPerPartitionAutomaticFailover(true, false);
+
+                        // Do not wrap in case of
+                        initialMonoAcrossAllRegions = callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest, pointOperationContextForPerPartitionAutomaticFailover)
+                            .map(NonTransientPointOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isNonTransientCosmosExceptionForPerPartitionAutomaticFailover,
+                                t -> Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class))))
+                            .cache();
+
+                    } else {
+                        initialMonoAcrossAllRegions = callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest, null)
                             .map(NonTransientPointOperationResult::new)
                             .onErrorResume(
                                 RxDocumentClientImpl::isCosmosException,
                                 t -> Mono.just(
                                     new NonTransientPointOperationResult(
                                         Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                    }
 
                     if (logger.isDebugEnabled()) {
                         monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
@@ -6699,6 +6782,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         monoList.add(initialMonoAcrossAllRegions);
                     }
                 } else {
+
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions = monoList.get(0);
+
                     clonedOptions.setExcludedRegions(
                         getEffectiveExcludedRegionsForHedging(
                             nonNullRequestOptions.getExcludedRegions(),
@@ -6717,8 +6803,40 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         new SerializationDiagnosticsContext());
 
                     pointOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
-                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest)
+                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono;
+
+                    if (isParallelWriteRegionDiscoveryApplicable) {
+
+                        regionalCrossRegionRetryMono = initialMonoAcrossAllRegions.onErrorResume(throwable -> {
+
+                            if (RxDocumentClientImpl.isWriteRegionDiscoveryParallelizableForPerPartitionAutomaticFailover(throwable)) {
+
+                                PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover = new PointOperationContextForPerPartitionAutomaticFailover(true, true);
+
+                                return callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest, pointOperationContextForPerPartitionAutomaticFailover)
+                                    .map(NonTransientPointOperationResult::new)
+                                    .onErrorResume(
+                                        RxDocumentClientImpl::isNonTransientCosmosException,
+                                        t -> Mono.just(
+                                            new NonTransientPointOperationResult(
+                                                Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                            } else {
+                                return Mono.error(throwable);
+                            }
+                        });
+
+                        if (logger.isDebugEnabled()) {
+                            monoList.add(
+                                regionalCrossRegionRetryMono
+                                    .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region)));
+                        } else {
+                            monoList.add(regionalCrossRegionRetryMono);
+                        }
+
+                    } else {
+
+                        regionalCrossRegionRetryMono = callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest, null)
                             .map(NonTransientPointOperationResult::new)
                             .onErrorResume(
                                 RxDocumentClientImpl::isNonTransientCosmosException,
@@ -6726,21 +6844,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     new NonTransientPointOperationResult(
                                         Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
-                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
-                        .getThreshold()
-                        .plus((availabilityStrategy)
-                            .getThresholdStep()
-                            .multipliedBy(monoList.size() - 1));
+                        Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                            .getThreshold()
+                            .plus((availabilityStrategy)
+                                .getThresholdStep()
+                                .multipliedBy(monoList.size() - 1));
 
-                    if (logger.isDebugEnabled()) {
-                        monoList.add(
-                            regionalCrossRegionRetryMono
-                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
-                                .delaySubscription(delayForCrossRegionalRetry));
-                    } else {
-                        monoList.add(
-                            regionalCrossRegionRetryMono
-                                .delaySubscription(delayForCrossRegionalRetry));
+                        if (logger.isDebugEnabled()) {
+                            monoList.add(
+                                regionalCrossRegionRetryMono
+                                    .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
+                                    .delaySubscription(delayForCrossRegionalRetry));
+                        } else {
+                            monoList.add(
+                                regionalCrossRegionRetryMono
+                                    .delaySubscription(delayForCrossRegionalRetry));
+                        }
                     }
                 }
             });
@@ -6820,6 +6939,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             cosmosException.getSubStatusCode());
     }
 
+    private static boolean isNonTransientCosmosExceptionForPerPartitionAutomaticFailover(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
+        }
+        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
+        return isNonTransientResultForPerPartitionAutomaticFailover(
+            cosmosException.getStatusCode(),
+            cosmosException.getSubStatusCode());
+    }
+
+    private static boolean isWriteRegionDiscoveryParallelizableForPerPartitionAutomaticFailover(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
+        }
+        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
+
+        int statusCode = cosmosException.getStatusCode();
+        int subStatusCode = cosmosException.getSubStatusCode();
+
+        if (statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE) {
+            return true;
+        }
+
+        return false;
+    }
+
     private List<String> getEffectiveExcludedRegionsForHedging(
         List<String> initialExcludedRegions,
         List<String> applicableRegions,
@@ -6876,6 +7023,51 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return false;
     }
 
+    private static boolean isNonTransientResultForPerPartitionAutomaticFailover(int statusCode, int subStatusCode) {
+        // All 1xx, 2xx and 3xx status codes should be treated as final result
+        if (statusCode < HttpConstants.StatusCodes.BADREQUEST) {
+            return true;
+        }
+
+        // Treat OperationCancelledException as non-transient timeout
+        if (statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT &&
+            subStatusCode == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+            return true;
+        }
+
+        // Status codes below indicate non-transient errors
+        if (statusCode == HttpConstants.StatusCodes.BADREQUEST
+            || statusCode == HttpConstants.StatusCodes.CONFLICT
+            || statusCode == HttpConstants.StatusCodes.METHOD_NOT_ALLOWED
+            || statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED
+            || statusCode == HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE
+            || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED) {
+
+            return true;
+        }
+
+        // 404 - NotFound is also a final result - it means document was not yet available
+        // after enforcing whatever the consistency model is
+        if (statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+
+            return true;
+        }
+
+        // All other errors should be treated as possibly transient
+        return false;
+    }
+
+    private static boolean isParallelWriteRegionDiscoveryApplicableForPerPartitionAutomaticFailover(
+        OperationType operationType,
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+        GlobalEndpointManager globalEndpointManager) {
+
+        return operationType.isWriteOperation()
+            && globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
+            && !globalEndpointManager.canUseMultipleWriteLocations();
+    }
+
     private DiagnosticsClientContext getEffectiveClientContext(DiagnosticsClientContext clientContextOverride) {
         if (clientContextOverride != null) {
             return clientContextOverride;
@@ -6883,6 +7075,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return this;
     }
+
 
     /**
      * Returns the applicable endpoints ordered by preference list if any
@@ -6921,14 +7114,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         OperationType operationType,
         boolean isIdempotentWriteRetriesEnabled,
-        RequestOptions options) {
+        RequestOptions options,
+        boolean isParallelizedWriteRegionDiscoveryApplicable) {
 
-        return getApplicableRegionsForSpeculation(
+        List<String> excludedRegions = options.getExcludedRegions();
+
+        return isParallelizedWriteRegionDiscoveryApplicable ?
+            getApplicableRegionsForParallelizedWriteRegionDiscovery(excludedRegions) :
+            getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
             resourceType,
             operationType,
             isIdempotentWriteRetriesEnabled,
             options.getExcludedRegions());
+    }
+
+    private List<String> getApplicableRegionsForParallelizedWriteRegionDiscovery(List<String> excludedRegions) {
+
+        List<URI> endpoints = getApplicableEndPoints(OperationType.Read, excludedRegions);
+
+        HashSet<String> normalizedExcludedRegions = new HashSet<>();
+        if (excludedRegions != null) {
+            excludedRegions.forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
+        }
+
+        List<String> orderedRegionsForSpeculation = new ArrayList<>();
+        endpoints.forEach(uri -> {
+            String regionName = this.globalEndpointManager.getRegionName(uri, OperationType.Read);
+            if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
+                orderedRegionsForSpeculation.add(regionName);
+            }
+        });
+
+        return orderedRegionsForSpeculation;
     }
 
     private List<String> getApplicableRegionsForSpeculation(
@@ -7011,7 +7229,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionLink);
 
             feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow.setIsRequestHedged(false);
-            req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow);
+            req.requestContext.setFeedOperationContextForCircuitBreaker(feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow);
 
             // There is at most one applicable region - no hedging possible
             return feedOperation.apply(retryPolicyFactory, req);
@@ -7024,7 +7242,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionLink);
 
         feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow.setIsRequestHedged(false);
-        req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow);
+        req.requestContext.setFeedOperationContextForCircuitBreaker(feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow);
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
@@ -7047,7 +7265,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         collectionLink);
 
                     feedOperationContextForCircuitBreakerForNonHedgedRequest.setIsRequestHedged(false);
-                    clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForNonHedgedRequest);
+                    clonedRequest.requestContext.setFeedOperationContextForCircuitBreaker(feedOperationContextForCircuitBreakerForNonHedgedRequest);
 
                     Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
                         handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(feedOperation.apply(retryPolicyFactory, clonedRequest)
@@ -7081,7 +7299,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         collectionLink);
 
                     feedOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
-                    clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForHedgedRequest);
+                    clonedRequest.requestContext.setFeedOperationContextForCircuitBreaker(feedOperationContextForCircuitBreakerForHedgedRequest);
 
                     clonedRequest.requestContext.setKeywordIdentifiers(req.requestContext.getKeywordIdentifiers());
 
@@ -7186,7 +7404,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RequestOptions requestOptions,
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
             DiagnosticsClientContext clientContextOverride,
-            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker);
+            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
+            PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover);
     }
 
     private static class NonTransientPointOperationResult {

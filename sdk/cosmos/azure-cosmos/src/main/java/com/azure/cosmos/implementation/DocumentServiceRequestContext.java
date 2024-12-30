@@ -62,8 +62,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
     private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
-
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
+    private PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover;
+
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
     private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
         = new Utils.ValueHolder<>();
@@ -153,6 +154,8 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
         context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
         context.pointOperationContextForCircuitBreaker = this.pointOperationContextForCircuitBreaker;
+        context.pointOperationContextForPerPartitionAutomaticFailover = this.pointOperationContextForPerPartitionAutomaticFailover;
+
         return context;
     }
 
@@ -192,15 +195,23 @@ public class DocumentServiceRequestContext implements Cloneable {
         return pointOperationContextForCircuitBreaker;
     }
 
-    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+    public void setPointOperationContextForCircuitBreaker(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
         this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
+    }
+
+    public PointOperationContextForPerPartitionAutomaticFailover getPointOperationContextForPerPartitionAutomaticFailover() {
+        return this.pointOperationContextForPerPartitionAutomaticFailover;
+    }
+
+    public void setPointOperationContextForPerPartitionAutomaticFailover(PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
+        this.pointOperationContextForPerPartitionAutomaticFailover = pointOperationContextForPerPartitionAutomaticFailover;
     }
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
         return feedOperationContextForCircuitBreaker;
     }
 
-    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
+    public void setFeedOperationContextForCircuitBreaker(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
         this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
     }
 

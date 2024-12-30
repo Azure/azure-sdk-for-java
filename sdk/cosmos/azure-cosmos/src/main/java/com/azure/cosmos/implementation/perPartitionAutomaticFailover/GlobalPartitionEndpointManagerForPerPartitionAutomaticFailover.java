@@ -4,14 +4,15 @@
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
+import com.azure.cosmos.implementation.PointOperationContextForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +64,28 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
             return false;
+        }
+
+        if (request.requestContext.getPointOperationContextForPerPartitionAutomaticFailover() != null) {
+            PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover = request.requestContext.getPointOperationContextForPerPartitionAutomaticFailover();
+
+            boolean isOperationEligibleForParallelWriteRegionDiscovery = pointOperationContextForPerPartitionAutomaticFailover.isOperationEligibleForParallelWriteRegionDiscovery();
+            boolean isParallelWriteRegionDiscoveryAttempt = pointOperationContextForPerPartitionAutomaticFailover.isParallelWriteRegionDiscoveryAttempt();
+
+            if (isOperationEligibleForParallelWriteRegionDiscovery && isParallelWriteRegionDiscoveryAttempt) {
+
+                List<String> excludedRegions = request.requestContext.getExcludeRegions();
+
+                UnmodifiableList<URI> applicableReadEndpoints = this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions);
+
+                if (applicableReadEndpoints.size() == 1) {
+                    URI locationEndpointToOverride = applicableReadEndpoints.get(0);
+
+                    request.requestContext.routeToLocation(locationEndpointToOverride);
+
+                    return true;
+                }
+            }
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);

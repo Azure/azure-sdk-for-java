@@ -153,7 +153,7 @@ class ChangeFeedQueryImpl<T> {
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
-            request.requestContext.setFeedOperationContext(
+            request.requestContext.setFeedOperationContextForCircuitBreaker(
                 new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink));
         }
 

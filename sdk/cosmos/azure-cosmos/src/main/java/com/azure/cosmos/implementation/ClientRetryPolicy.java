@@ -505,6 +505,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         CosmosException cosmosException) {
 
         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+
+            if (this.request.requestContext != null) {
+
+                DocumentServiceRequestContext requestContext = this.request.requestContext;
+
+                PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover = requestContext.getPointOperationContextForPerPartitionAutomaticFailover();
+
+                if (pointOperationContextForPerPartitionAutomaticFailover != null) {
+
+                    return !pointOperationContextForPerPartitionAutomaticFailover.isOperationEligibleForParallelWriteRegionDiscovery();
+                }
+            }
+
             return true;
         }
 
