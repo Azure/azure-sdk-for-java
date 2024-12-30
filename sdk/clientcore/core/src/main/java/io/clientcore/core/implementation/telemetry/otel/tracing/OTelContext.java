@@ -44,7 +44,7 @@ class OTelContext {
 
                 ReflectiveInvoker contextKeyNamedInvoker
                     = getMethodInvoker(CONTEXT_KEY_CLASS, CONTEXT_KEY_CLASS.getMethod("named", String.class));
-                // TODO: this is wronggggg
+
                 hasClientSpanContextKey = contextKeyNamedInvoker.invoke("client-core-call");
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);

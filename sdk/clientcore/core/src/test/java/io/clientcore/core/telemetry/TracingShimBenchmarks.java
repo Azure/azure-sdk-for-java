@@ -72,12 +72,12 @@ public class TracingShimBenchmarks {
                 .getTracer();
     }
 
-    //@Benchmark
+    @Benchmark
     public void shimTracingDisabled(Blackhole blackhole) {
         blackhole.consume(testShimSpan(shimTracerDisabled));
     }
 
-    //@Benchmark
+    @Benchmark
     public void directTracingDisabled(Blackhole blackhole) {
         blackhole.consume(testOTelSpan(otelTracerDisabled));
     }
