@@ -9,6 +9,8 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.identity.extensions.implementation.cache.TokenCredentialCache;
+import com.azure.identity.extensions.implementation.cache.TokenCredentialCacheHelper;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import reactor.util.annotation.Nullable;
 
@@ -21,14 +23,19 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredential tokenCredential;
 
+    private TokenCredentialCache tokenCredentialCache;
+
     DefaultTokenCredentialProvider() {
-        this.options = new TokenCredentialProviderOptions();
-        this.tokenCredential = get(this.options);
+        this(new TokenCredentialProviderOptions());
     }
 
     DefaultTokenCredentialProvider(TokenCredentialProviderOptions options) {
         this.options = options;
         this.tokenCredential = get(this.options);
+
+        if (this.options.isTokenCredentialCacheEnabled()) {
+            tokenCredentialCache = TokenCredentialCacheHelper.createInstance(this.options.getTokenCredentialCacheClassName());
+        }
     }
 
     @Override
@@ -42,6 +49,16 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
             return new DefaultAzureCredentialBuilder().build();
         }
         return resolveTokenCredential(options);
+    }
+
+    @Override
+    public TokenCredentialCache getTokenCredentialCache() {
+        return tokenCredentialCache;
+    }
+
+    @Override
+    public TokenCredentialProviderOptions getTokenCredentialProviderOptions() {
+        return options;
     }
 
     private TokenCredential resolveTokenCredential(TokenCredentialProviderOptions options) {

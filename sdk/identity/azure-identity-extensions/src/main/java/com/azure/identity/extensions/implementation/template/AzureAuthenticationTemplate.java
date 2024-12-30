@@ -5,14 +5,16 @@ package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-import reactor.core.publisher.Mono;
+
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 
 /**
@@ -90,7 +92,7 @@ public class AzureAuthenticationTemplate {
         if (!isInitialized.get()) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("must call init() first"));
         }
-        return Mono.fromSupplier(getTokenCredentialProvider())
+        return Mono.fromSupplier(() -> getTokenCredentialProvider().getFromCache())
             .flatMap(getAccessTokenResolver())
             .filter(token -> !token.isExpired())
             .map(AccessToken::getToken);
@@ -125,5 +127,4 @@ public class AzureAuthenticationTemplate {
     AtomicBoolean getIsInitialized() {
         return isInitialized;
     }
-
 }

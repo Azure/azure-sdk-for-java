@@ -26,6 +26,8 @@ public class TokenCredentialProviderOptions {
     private String tokenCredentialProviderClassName;
     private String tokenCredentialBeanName;
     private String accessTokenTimeoutInSeconds;
+    private String tokenCredentialCacheClassName;
+    private boolean tokenCredentialCacheEnabled;
 
     public TokenCredentialProviderOptions() {
 
@@ -42,6 +44,8 @@ public class TokenCredentialProviderOptions {
         this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(properties));
         this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(properties);
         this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(properties);
+        this.tokenCredentialCacheClassName = AuthProperty.TOKEN_CREDENTIAL_CACHE_CLASS_NAME.get(properties);
+        this.tokenCredentialCacheEnabled = Boolean.TRUE.equals(AuthProperty.TOKEN_CREDENTIAL_CACHE_ENABLED.getBoolean(properties));
         this.accessTokenTimeoutInSeconds = AuthProperty.GET_TOKEN_TIMEOUT.get(properties);
         this.authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
     }
@@ -140,5 +144,21 @@ public class TokenCredentialProviderOptions {
 
     public void setAccessTokenTimeoutInSeconds(String accessTokenTimeoutInSeconds) {
         this.accessTokenTimeoutInSeconds = accessTokenTimeoutInSeconds;
+    }
+
+    public String getTokenCredentialCacheClassName() {
+        return tokenCredentialCacheClassName;
+    }
+
+    public void setTokenCredentialCacheClassName(String tokenCredentialCacheClassName) {
+        this.tokenCredentialCacheClassName = tokenCredentialCacheClassName;
+    }
+
+    public boolean isTokenCredentialCacheEnabled() {
+        return tokenCredentialCacheEnabled;
+    }
+
+    public void setTokenCredentialCacheEnabled(boolean tokenCredentialCacheEnabled) {
+        this.tokenCredentialCacheEnabled = tokenCredentialCacheEnabled;
     }
 }
