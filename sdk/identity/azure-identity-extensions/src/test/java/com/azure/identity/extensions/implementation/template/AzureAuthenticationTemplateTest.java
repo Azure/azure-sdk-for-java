@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.identity.extensions.implementation.enums.AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS;
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -112,22 +112,22 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void useDefaultTokenTimeout() throws NoSuchFieldException, IllegalAccessException {
+    void useDefaultAccessTokenTimeout() throws NoSuchFieldException, IllegalAccessException {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
         Properties properties = new Properties();
         template.init(properties);
         assertNotNull(template.getBlockTimeout());
-        Field defaultValueField = TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getClass().getDeclaredField("defaultValue");
+        Field defaultValueField = GET_TOKEN_TIMEOUT.getClass().getDeclaredField("defaultValue");
         defaultValueField.setAccessible(true);
-        String defaultVault = (String) defaultValueField.get(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS);
+        String defaultVault = (String) defaultValueField.get(GET_TOKEN_TIMEOUT);
         assertEquals(template.getBlockTimeout().getSeconds() + "", defaultVault);
     }
 
     @Test
-    void useCustomTokenTimeout() {
+    void useCustomAccessTokenTimeout() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
         Properties properties = new Properties();
-        properties.setProperty(AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getPropertyKey(), "35");
+        properties.setProperty(AuthProperty.GET_TOKEN_TIMEOUT.getPropertyKey(), "35");
         template.init(properties);
         assertNotNull(template.getBlockTimeout());
         assertEquals(template.getBlockTimeout().getSeconds(), 35);

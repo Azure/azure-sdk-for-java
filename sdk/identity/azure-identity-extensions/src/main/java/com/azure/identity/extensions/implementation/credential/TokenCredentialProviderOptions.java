@@ -42,7 +42,7 @@ public class TokenCredentialProviderOptions {
         this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(properties));
         this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(properties);
         this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(properties);
-        this.accessTokenTimeoutInSeconds = AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.get(properties);
+        this.accessTokenTimeoutInSeconds = AuthProperty.GET_TOKEN_TIMEOUT.get(properties);
         this.authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
     }
 

@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.publisher.Mono;
-import static com.azure.identity.extensions.implementation.enums.AuthProperty.TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS;
+import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 
 /**
  * Template class can be extended to get password from access token.
@@ -69,8 +69,8 @@ public class AzureAuthenticationTemplate {
                     = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
             }
 
-            if (properties.containsKey(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.getPropertyKey())) {
-                accessTokenTimeoutInSeconds = Long.parseLong(TOKEN_ACCESS_TOKEN_TIMEOUT_IN_SECONDS.get(properties));
+            if (properties.containsKey(GET_TOKEN_TIMEOUT.getPropertyKey())) {
+                accessTokenTimeoutInSeconds = Long.parseLong(GET_TOKEN_TIMEOUT.get(properties));
             } else {
                 accessTokenTimeoutInSeconds = 30;
                 LOGGER.verbose("Use default access token timeout: {} seconds.", accessTokenTimeoutInSeconds);
