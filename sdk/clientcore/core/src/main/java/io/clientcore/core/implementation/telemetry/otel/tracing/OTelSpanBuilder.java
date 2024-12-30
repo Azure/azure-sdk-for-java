@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
 import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
@@ -13,14 +14,10 @@ import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
+import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_BUILDER_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
 
@@ -28,13 +25,12 @@ public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
         = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
 
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
     private static final OTelSpan NOOP_SPAN;
-    private static final MethodHandle SET_PARENT_INVOKER;
-    private static final MethodHandle SET_ATTRIBUTE_INVOKER;
-    private static final MethodHandle SET_SPAN_KIND_INVOKER;
-    private static final MethodHandle START_SPAN_INVOKER;
+    private static final ReflectiveInvoker SET_PARENT_INVOKER;
+    private static final ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
+    private static final ReflectiveInvoker SET_SPAN_KIND_INVOKER;
+    private static final ReflectiveInvoker START_SPAN_INVOKER;
     private static final Object INTERNAL_KIND;
     private static final Object SERVER_KIND;
     private static final Object CLIENT_KIND;
@@ -47,10 +43,10 @@ public class OTelSpanBuilder implements SpanBuilder {
     private final Context context;
 
     static {
-        MethodHandle setParentInvoker = null;
-        MethodHandle setAttributeInvoker = null;
-        MethodHandle setSpanKindInvoker = null;
-        MethodHandle startSpanInvoker = null;
+        ReflectiveInvoker setParentInvoker = null;
+        ReflectiveInvoker setAttributeInvoker = null;
+        ReflectiveInvoker setSpanKindInvoker = null;
+        ReflectiveInvoker startSpanInvoker = null;
 
         Object internalKind = null;
         Object serverKind = null;
@@ -61,14 +57,16 @@ public class OTelSpanBuilder implements SpanBuilder {
 
         if (OTelInitializer.isInitialized()) {
             try {
-                setParentInvoker = LOOKUP.findVirtual(SPAN_BUILDER_CLASS, "setParent",
-                    MethodType.methodType(SPAN_BUILDER_CLASS, CONTEXT_CLASS));
-                setAttributeInvoker = LOOKUP.findVirtual(SPAN_BUILDER_CLASS, "setAttribute",
-                    MethodType.methodType(SPAN_BUILDER_CLASS, ATTRIBUTE_KEY_CLASS, Object.class));
-                setSpanKindInvoker = LOOKUP.findVirtual(SPAN_BUILDER_CLASS, "setSpanKind",
-                    MethodType.methodType(SPAN_BUILDER_CLASS, SPAN_KIND_CLASS));
-                startSpanInvoker
-                    = LOOKUP.findVirtual(SPAN_BUILDER_CLASS, "startSpan", MethodType.methodType(SPAN_CLASS));
+                setParentInvoker
+                    = getMethodInvoker(SPAN_BUILDER_CLASS, SPAN_BUILDER_CLASS.getMethod("setParent", CONTEXT_CLASS));
+
+                setAttributeInvoker = getMethodInvoker(SPAN_BUILDER_CLASS,
+                    SPAN_BUILDER_CLASS.getMethod("setAttribute", ATTRIBUTE_KEY_CLASS, Object.class));
+
+                setSpanKindInvoker = getMethodInvoker(SPAN_BUILDER_CLASS,
+                    SPAN_BUILDER_CLASS.getMethod("setSpanKind", SPAN_KIND_CLASS));
+
+                startSpanInvoker = getMethodInvoker(SPAN_BUILDER_CLASS, SPAN_BUILDER_CLASS.getMethod("startSpan"));
 
                 internalKind = SPAN_KIND_CLASS.getField("INTERNAL").get(null);
                 serverKind = SPAN_KIND_CLASS.getField("SERVER").get(null);

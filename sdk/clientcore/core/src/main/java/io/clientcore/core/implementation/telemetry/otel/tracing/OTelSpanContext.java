@@ -3,44 +3,41 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.SpanContext;
 import io.clientcore.core.util.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
+import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACE_FLAGS_CLASS;
 
 public class OTelSpanContext implements SpanContext {
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final OTelSpanContext INVALID;
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanContext.class);
-    private static final MethodHandle GET_SPAN_ID_INVOKER;
-    private static final MethodHandle GET_TRACE_ID_INVOKER;
-    private static final MethodHandle GET_TRACE_FLAGS_INVOKER;
+    private static final ReflectiveInvoker GET_SPAN_ID_INVOKER;
+    private static final ReflectiveInvoker GET_TRACE_ID_INVOKER;
+    private static final ReflectiveInvoker GET_TRACE_FLAGS_INVOKER;
 
     private final Object otelSpanContext;
     static {
-        MethodHandle getSpanIdInvoker = null;
-        MethodHandle getTraceIdInvoker = null;
-        MethodHandle getTraceFlagsInvoker = null;
+        ReflectiveInvoker getSpanIdInvoker = null;
+        ReflectiveInvoker getTraceIdInvoker = null;
+        ReflectiveInvoker getTraceFlagsInvoker = null;
 
         Object invalidInstance = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                getTraceIdInvoker
-                    = LOOKUP.findVirtual(SPAN_CONTEXT_CLASS, "getTraceId", MethodType.methodType(String.class));
-                getSpanIdInvoker
-                    = LOOKUP.findVirtual(SPAN_CONTEXT_CLASS, "getSpanId", MethodType.methodType(String.class));
-                getTraceFlagsInvoker
-                    = LOOKUP.findVirtual(SPAN_CONTEXT_CLASS, "getTraceFlags", MethodType.methodType(TRACE_FLAGS_CLASS));
+                getTraceIdInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getTraceId"));
 
-                MethodHandle getInvalidInvoker
-                    = LOOKUP.findStatic(SPAN_CONTEXT_CLASS, "getInvalid", MethodType.methodType(SPAN_CONTEXT_CLASS));
+                getSpanIdInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getSpanId"));
+
+                getTraceFlagsInvoker
+                    = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getTraceFlags"));
+
+                ReflectiveInvoker getInvalidInvoker
+                    = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getInvalid"));
+
                 invalidInstance = getInvalidInvoker.invoke();
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);

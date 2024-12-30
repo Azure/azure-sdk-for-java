@@ -3,25 +3,21 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
+import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_KEY_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SCOPE_CLASS;
 
 class OTelContext {
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    private static final MethodHandle CURRENT_INVOKER;
-    private static final MethodHandle MAKE_CURRENT_INVOKER;
-    private static final MethodHandle WITH_INVOKER;
-    private static final MethodHandle GET_INVOKER;
+    private static final ReflectiveInvoker CURRENT_INVOKER;
+    private static final ReflectiveInvoker MAKE_CURRENT_INVOKER;
+    private static final ReflectiveInvoker WITH_INVOKER;
+    private static final ReflectiveInvoker GET_INVOKER;
 
     // this context key will indicate if the span is created by client core
     // AND has client or internal kind (logical client operation)
@@ -32,23 +28,23 @@ class OTelContext {
     private static final Object HAS_CLIENT_SPAN_CONTEXT_KEY;
 
     static {
-        MethodHandle currentInvoker = null;
-        MethodHandle makeCurrentInvoker = null;
-        MethodHandle withInvoker = null;
-        MethodHandle getInvoker = null;
+        ReflectiveInvoker currentInvoker = null;
+        ReflectiveInvoker makeCurrentInvoker = null;
+        ReflectiveInvoker withInvoker = null;
+        ReflectiveInvoker getInvoker = null;
         Object hasClientSpanContextKey = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                currentInvoker = LOOKUP.findStatic(CONTEXT_CLASS, "current", MethodType.methodType(CONTEXT_CLASS));
-                makeCurrentInvoker
-                    = LOOKUP.findVirtual(CONTEXT_CLASS, "makeCurrent", MethodType.methodType(SCOPE_CLASS));
-                withInvoker = LOOKUP.findVirtual(CONTEXT_CLASS, "with",
-                    MethodType.methodType(CONTEXT_CLASS, CONTEXT_KEY_CLASS, Object.class));
-                getInvoker
-                    = LOOKUP.findVirtual(CONTEXT_CLASS, "get", MethodType.methodType(Object.class, CONTEXT_KEY_CLASS));
-                MethodHandle contextKeyNamedInvoker = LOOKUP.findStatic(CONTEXT_KEY_CLASS, "named",
-                    MethodType.methodType(CONTEXT_KEY_CLASS, String.class));
+                currentInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("current"));
+                makeCurrentInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("makeCurrent"));
+                withInvoker
+                    = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("with", CONTEXT_KEY_CLASS, Object.class));
+                getInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("get", CONTEXT_KEY_CLASS));
+
+                ReflectiveInvoker contextKeyNamedInvoker
+                    = getMethodInvoker(CONTEXT_KEY_CLASS, CONTEXT_KEY_CLASS.getMethod("named", String.class));
+                // TODO: this is wronggggg
                 hasClientSpanContextKey = contextKeyNamedInvoker.invoke("client-core-call");
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);

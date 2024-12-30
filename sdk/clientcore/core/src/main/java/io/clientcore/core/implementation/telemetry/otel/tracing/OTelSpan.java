@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.Span;
@@ -11,11 +12,9 @@ import io.clientcore.core.telemetry.tracing.SpanKind;
 import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.clientcore.core.util.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.util.Objects;
 
+import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CLASS;
@@ -24,18 +23,17 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.S
 import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelContext.markCoreSpan;
 
 public class OTelSpan implements Span {
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
     private static final TracingScope NOOP_SCOPE = () -> {
     };
-    private static final MethodHandle SET_ATTRIBUTE_INVOKER;
-    private static final MethodHandle SET_STATUS_INVOKER;
-    private static final MethodHandle END_INVOKER;
-    private static final MethodHandle GET_SPAN_CONTEXT_INVOKER;
-    private static final MethodHandle IS_RECORDING_INVOKER;
-    private static final MethodHandle STORE_IN_CONTEXT_INVOKER;
-    private static final MethodHandle FROM_CONTEXT_INVOKER;
-    private static final MethodHandle WRAP_INVOKER;
+    private static final ReflectiveInvoker SET_ATTRIBUTE_INVOKER;
+    private static final ReflectiveInvoker SET_STATUS_INVOKER;
+    private static final ReflectiveInvoker END_INVOKER;
+    private static final ReflectiveInvoker GET_SPAN_CONTEXT_INVOKER;
+    private static final ReflectiveInvoker IS_RECORDING_INVOKER;
+    private static final ReflectiveInvoker STORE_IN_CONTEXT_INVOKER;
+    private static final ReflectiveInvoker FROM_CONTEXT_INVOKER;
+    private static final ReflectiveInvoker WRAP_INVOKER;
     private static final Object ERROR_STATUS_CODE;
     private final Object otelSpan;
     private final Object otelContext;
@@ -43,36 +41,35 @@ public class OTelSpan implements Span {
     private boolean isRecording;
 
     static {
-        MethodHandle setAttributeInvoker = null;
-        MethodHandle setStatusInvoker = null;
-        MethodHandle endInvoker = null;
-        MethodHandle getSpanContextInvoker = null;
-        MethodHandle isRecordingInvoker = null;
-        MethodHandle storeInContextInvoker = null;
-        MethodHandle fromContextInvoker = null;
-        MethodHandle wrapInvoker = null;
+        ReflectiveInvoker setAttributeInvoker = null;
+        ReflectiveInvoker setStatusInvoker = null;
+        ReflectiveInvoker endInvoker = null;
+        ReflectiveInvoker getSpanContextInvoker = null;
+        ReflectiveInvoker isRecordingInvoker = null;
+        ReflectiveInvoker storeInContextInvoker = null;
+        ReflectiveInvoker fromContextInvoker = null;
+        ReflectiveInvoker wrapInvoker = null;
 
         Object errorStatusCode = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
-                setAttributeInvoker = LOOKUP.findVirtual(SPAN_CLASS, "setAttribute",
-                    MethodType.methodType(SPAN_CLASS, ATTRIBUTE_KEY_CLASS, Object.class));
+                setAttributeInvoker = getMethodInvoker(SPAN_CLASS,
+                    SPAN_CLASS.getMethod("setAttribute", ATTRIBUTE_KEY_CLASS, Object.class));
 
-                setStatusInvoker = LOOKUP.findVirtual(SPAN_CLASS, "setStatus",
-                    MethodType.methodType(SPAN_CLASS, STATUS_CODE_CLASS, String.class));
-                endInvoker = LOOKUP.findVirtual(SPAN_CLASS, "end", MethodType.methodType(void.class));
-                isRecordingInvoker
-                    = LOOKUP.findVirtual(SPAN_CLASS, "isRecording", MethodType.methodType(boolean.class));
-                getSpanContextInvoker
-                    = LOOKUP.findVirtual(SPAN_CLASS, "getSpanContext", MethodType.methodType(SPAN_CONTEXT_CLASS));
-                storeInContextInvoker = LOOKUP.findVirtual(SPAN_CLASS, "storeInContext",
-                    MethodType.methodType(CONTEXT_CLASS, CONTEXT_CLASS));
-                fromContextInvoker
-                    = LOOKUP.findStatic(SPAN_CLASS, "fromContext", MethodType.methodType(SPAN_CLASS, CONTEXT_CLASS));
+                setStatusInvoker
+                    = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("setStatus", STATUS_CODE_CLASS, String.class));
+                endInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("end"));
 
-                wrapInvoker
-                    = LOOKUP.findStatic(SPAN_CLASS, "wrap", MethodType.methodType(SPAN_CLASS, SPAN_CONTEXT_CLASS));
+                isRecordingInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("isRecording"));
+
+                getSpanContextInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("getSpanContext"));
+
+                storeInContextInvoker
+                    = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("storeInContext", CONTEXT_CLASS));
+                fromContextInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("fromContext", CONTEXT_CLASS));
+
+                wrapInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("wrap", SPAN_CONTEXT_CLASS));
                 errorStatusCode = STATUS_CODE_CLASS.getField("ERROR").get(null);
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);

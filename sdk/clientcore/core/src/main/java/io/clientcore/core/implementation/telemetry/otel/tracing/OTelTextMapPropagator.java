@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
+import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.TextMapGetter;
 import io.clientcore.core.telemetry.tracing.TextMapPropagator;
@@ -10,14 +11,12 @@ import io.clientcore.core.telemetry.tracing.TextMapSetter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
+import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_GETTER_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
@@ -28,20 +27,20 @@ import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
 public class OTelTextMapPropagator implements TextMapPropagator {
     public static final TextMapPropagator NOOP = new OTelTextMapPropagator(null);
 
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelTextMapPropagator.class);
-    private static final MethodHandle INJECT_INVOKER;
-    private static final MethodHandle EXTRACT_INVOKER;
+    private static final ReflectiveInvoker INJECT_INVOKER;
+    private static final ReflectiveInvoker EXTRACT_INVOKER;
 
     static {
-        MethodHandle injectInvoker = null;
-        MethodHandle extractInvoker = null;
+        ReflectiveInvoker injectInvoker = null;
+        ReflectiveInvoker extractInvoker = null;
         if (OTelInitializer.isInitialized()) {
             try {
-                injectInvoker = LOOKUP.findVirtual(TEXT_MAP_PROPAGATOR_CLASS, "inject",
-                    MethodType.methodType(void.class, CONTEXT_CLASS, Object.class, TEXT_MAP_SETTER_CLASS));
-                extractInvoker = LOOKUP.findVirtual(TEXT_MAP_PROPAGATOR_CLASS, "extract",
-                    MethodType.methodType(CONTEXT_CLASS, CONTEXT_CLASS, Object.class, TEXT_MAP_GETTER_CLASS));
+                injectInvoker = getMethodInvoker(TEXT_MAP_PROPAGATOR_CLASS,
+                    TEXT_MAP_PROPAGATOR_CLASS.getMethod("inject", CONTEXT_CLASS, Object.class, TEXT_MAP_SETTER_CLASS));
+
+                extractInvoker = getMethodInvoker(TEXT_MAP_PROPAGATOR_CLASS,
+                    TEXT_MAP_PROPAGATOR_CLASS.getMethod("extract", CONTEXT_CLASS, Object.class, TEXT_MAP_GETTER_CLASS));
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
