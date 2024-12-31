@@ -55,6 +55,5 @@ extends:
         safeName: corejson
         releaseInBatch: ${{ parameters.release_corejson }}
     AdditionalModules:
-      - name:
+      - name: optional-dependency-tests
         groupId: io.clientcore
-        safeName: clientcore
