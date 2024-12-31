@@ -7,10 +7,9 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanContext;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Objects;
@@ -30,7 +29,7 @@ import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanC
  */
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    private static final TracingScope NOOP_SCOPE = () -> {
+    private static final InstrumentationScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker SET_ATTRIBUTE_INVOKER;
     private static final FallbackInvoker SET_STATUS_INVOKER;
@@ -143,10 +142,11 @@ public class OTelSpan implements Span {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets span context.
+     *
+     * @return the span context.
      */
-    @Override
-    public SpanContext getSpanContext() {
+    public OTelSpanContext getSpanContext() {
         return isInitialized()
             ? new OTelSpanContext(GET_SPAN_CONTEXT_INVOKER.invoke(otelSpan))
             : OTelSpanContext.getInvalid();
@@ -164,7 +164,7 @@ public class OTelSpan implements Span {
      * {@inheritDoc}
      */
     @Override
-    public TracingScope makeCurrent() {
+    public InstrumentationScope makeCurrent() {
         return isInitialized() ? wrapOTelScope(OTelContext.makeCurrent(otelContext)) : NOOP_SCOPE;
     }
 
@@ -199,7 +199,7 @@ public class OTelSpan implements Span {
         }
     }
 
-    private static TracingScope wrapOTelScope(AutoCloseable otelScope) {
+    private static InstrumentationScope wrapOTelScope(AutoCloseable otelScope) {
         return () -> {
             try {
                 otelScope.close();

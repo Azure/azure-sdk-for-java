@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.StatusCode;
@@ -61,13 +60,13 @@ public class TracingShimBenchmarks {
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");
         shimTracer
-            = TelemetryProvider
-                .create(new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry),
+            = InstrumentationProvider
+                .create(new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry),
                     new LibraryTelemetryOptions("test"))
                 .getTracer();
         shimTracerDisabled
-            = TelemetryProvider
-                .create(new TelemetryOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
+            = InstrumentationProvider
+                .create(new InstrumentationOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
                     new LibraryTelemetryOptions("test"))
                 .getTracer();
     }
@@ -104,7 +103,7 @@ public class TracingShimBenchmarks {
             span.setAttribute("boolean", true);
         }
 
-        try (TracingScope scope = span.makeCurrent()) {
+        try (InstrumentationScope scope = span.makeCurrent()) {
             span.setError("canceled");
         }
         span.end();

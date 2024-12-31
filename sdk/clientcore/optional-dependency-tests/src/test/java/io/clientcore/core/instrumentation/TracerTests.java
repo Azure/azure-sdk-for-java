@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -26,7 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +35,7 @@ public class TracerTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private TelemetryOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
 
     @BeforeEach
@@ -45,8 +44,8 @@ public class TracerTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        tracer = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
     }
 
     @AfterEach
@@ -68,7 +67,7 @@ public class TracerTests {
 
         assertTrue(span.isRecording());
 
-        try (TracingScope scope = span.makeCurrent()) {
+        try (InstrumentationScope scope = span.makeCurrent()) {
             assertTrue(io.opentelemetry.api.trace.Span.current().getSpanContext().isValid());
         }
 
@@ -175,8 +174,9 @@ public class TracerTests {
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
 
-        RequestOptions requestOptions = new RequestOptions().setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY,
-            parent.storeInContext(io.opentelemetry.context.Context.current())));
+        RequestOptions requestOptions
+            = new RequestOptions().setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY,
+                parent.storeInContext(io.opentelemetry.context.Context.current())));
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
         parent.end();
@@ -193,7 +193,7 @@ public class TracerTests {
     @Test
     public void explicitParentWrongType() {
         RequestOptions requestOptions = new RequestOptions()
-            .setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
+            .setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
 

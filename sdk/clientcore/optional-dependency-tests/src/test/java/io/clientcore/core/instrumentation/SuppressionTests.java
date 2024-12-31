@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpMethod;
@@ -10,10 +10,11 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpan;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanContext;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -32,9 +33,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
-import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
-import static io.clientcore.core.telemetry.tracing.SpanKind.PRODUCER;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.PRODUCER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -49,7 +50,7 @@ public class SuppressionTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private TelemetryOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
 
     @BeforeEach
@@ -57,8 +58,8 @@ public class SuppressionTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        tracer = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
     }
 
     @AfterEach
@@ -96,14 +97,14 @@ public class SuppressionTests {
     @Test
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
-        Tracer innerTracer = TelemetryProvider
+        Tracer innerTracer = InstrumentationProvider
             .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
             .getTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options).startSpan();
 
-        options.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, outerSpan));
+        options.setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, outerSpan));
 
         Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options).startSpan();
         innerSpan.end();
@@ -120,7 +121,7 @@ public class SuppressionTests {
 
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
-        Tracer outerTracer = TelemetryProvider
+        Tracer outerTracer = InstrumentationProvider
             .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
             .getTracer();
         Tracer innerTracer = tracer;
@@ -128,7 +129,7 @@ public class SuppressionTests {
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options).startSpan();
 
-        options.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, outerSpan));
+        options.setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, outerSpan));
         Span innerSpan = innerTracer.spanBuilder("innerSpan", CLIENT, options).startSpan();
         innerSpan.end();
         outerSpan.end();
@@ -143,7 +144,7 @@ public class SuppressionTests {
     @SuppressWarnings("try")
     public void noSuppressionForSiblings() {
         Span first = tracer.spanBuilder("first", CLIENT, null).startSpan();
-        try (TracingScope outerScope = first.makeCurrent()) {
+        try (InstrumentationScope outerScope = first.makeCurrent()) {
             first.setAttribute("key", "valueOuter");
         } finally {
             first.end();
@@ -155,15 +156,15 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
 
         RequestOptions options = new RequestOptions();
 
         Span outer = tracer.spanBuilder("outer", CLIENT, options).startSpan();
-        options.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, outer));
+        options.setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, outer));
 
         Span inner = tracer.spanBuilder("inner", PRODUCER, options).startSpan();
-        options.setContext(options.getContext().put(TelemetryProvider.TRACE_CONTEXT_KEY, inner));
+        options.setContext(options.getContext().put(InstrumentationProvider.TRACE_CONTEXT_KEY, inner));
 
         Span suppressed = tracer.spanBuilder("suppressed", CLIENT, options).startSpan();
         suppressed.end();
@@ -188,7 +189,7 @@ public class SuppressionTests {
         Span outerSpan
             = tracer.spanBuilder("outerSpan", outerKind, options).setAttribute("key", "valueOuter").startSpan();
 
-        options.setContext(Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, outerSpan));
+        options.setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, outerSpan));
 
         Span innerSpan
             = tracer.spanBuilder("innerSpan", innerKind, options).setAttribute("key", "valueInner").startSpan();
@@ -229,10 +230,10 @@ public class SuppressionTests {
     public void testSuppressionImplicitContext(SpanKind outerKind, SpanKind innerKind, int expectedSpanCount) {
         Span outerSpan = tracer.spanBuilder("outerSpan", outerKind, null).setAttribute("key", "valueOuter").startSpan();
         Span innerSpan = null;
-        try (TracingScope outerScope = outerSpan.makeCurrent()) {
+        try (InstrumentationScope outerScope = outerSpan.makeCurrent()) {
             innerSpan = tracer.spanBuilder("innerSpan", innerKind, null).setAttribute("key", "valueInner").startSpan();
             io.opentelemetry.api.trace.Span outerCurrentSpan = io.opentelemetry.api.trace.Span.current();
-            try (TracingScope innerScope = innerSpan.makeCurrent()) {
+            try (InstrumentationScope innerScope = innerSpan.makeCurrent()) {
                 // sanity check - this should not throw
                 innerSpan.setAttribute("anotherKey", "anotherValue");
 
@@ -279,9 +280,11 @@ public class SuppressionTests {
     }
 
     private static void assertSpanContextEquals(Span first, Span second) {
-        assertEquals(first.getSpanContext().getTraceId(), second.getSpanContext().getTraceId());
-        assertEquals(first.getSpanContext().getSpanId(), second.getSpanContext().getSpanId());
-        assertSame(first.getSpanContext().getTraceFlags(), second.getSpanContext().getTraceFlags());
+        OTelSpanContext firstContext = ((OTelSpan) first).getSpanContext();
+        OTelSpanContext secondContext = ((OTelSpan) second).getSpanContext();
+        assertEquals(firstContext.getTraceId(), secondContext.getTraceId());
+        assertEquals(firstContext.getSpanId(), secondContext.getSpanId());
+        assertSame(firstContext.getTraceFlags(), secondContext.getTraceFlags());
     }
 
     private static void assertSpanContextEquals(io.opentelemetry.api.trace.Span first,
@@ -303,9 +306,9 @@ public class SuppressionTests {
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
-        SampleClient(HttpPipeline pipeline, TelemetryOptions<?> options) {
+        SampleClient(HttpPipeline pipeline, InstrumentationOptions<?> options) {
             this.pipeline = pipeline;
-            this.tracer = TelemetryProvider.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+            this.tracer = InstrumentationProvider.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         }
 
         @SuppressWarnings("try")
@@ -313,9 +316,9 @@ public class SuppressionTests {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options).startSpan();
 
             // TODO (limolkova): should we have addContext(k, v) on options?
-            options.setContext(options.getContext().put(TelemetryProvider.TRACE_CONTEXT_KEY, span));
+            options.setContext(options.getContext().put(InstrumentationProvider.TRACE_CONTEXT_KEY, span));
 
-            try (TracingScope scope = span.makeCurrent()) {
+            try (InstrumentationScope scope = span.makeCurrent()) {
                 Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost"));
                 try {
                     response.close();
@@ -331,9 +334,9 @@ public class SuppressionTests {
         public void convenienceMethod(RequestOptions options) {
             Span span = tracer.spanBuilder("convenienceMethod", INTERNAL, options).startSpan();
 
-            options.setContext(options.getContext().put(TelemetryProvider.TRACE_CONTEXT_KEY, span));
+            options.setContext(options.getContext().put(InstrumentationProvider.TRACE_CONTEXT_KEY, span));
 
-            try (TracingScope scope = span.makeCurrent()) {
+            try (InstrumentationScope scope = span.makeCurrent()) {
                 protocolMethod(options);
             } finally {
                 span.end();

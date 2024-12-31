@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.telemetry;
 
-import io.clientcore.core.telemetry.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
 
 /**
  * Helper class to access package-private members of {@link LibraryTelemetryOptions}.

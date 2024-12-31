@@ -6,8 +6,8 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.function.Consumer;
@@ -18,7 +18,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 
 class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
-    private static final TracingScope NOOP_SCOPE = () -> {
+    private static final InstrumentationScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker CURRENT_INVOKER;
     private static final FallbackInvoker MAKE_CURRENT_INVOKER;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -10,8 +10,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.InstrumentationPolicy;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
@@ -22,6 +21,8 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -72,10 +73,10 @@ public class TelemetryJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
         OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-        TelemetryOptions<OpenTelemetry> telemetryOptions = new TelemetryOptions<OpenTelemetry>()
+        InstrumentationOptions<OpenTelemetry> instrumentationOptions = new InstrumentationOptions<OpenTelemetry>()
             .setProvider(openTelemetry);
 
-        SampleClient client = new SampleClientBuilder().telemetryOptions(telemetryOptions).build();
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useexplicitopentelemetry
@@ -88,10 +89,10 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.disabledistributedtracing
 
-        TelemetryOptions<?> telemetryOptions = new TelemetryOptions<>()
+        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
             .setTracingEnabled(false);
 
-        SampleClient client = new SampleClientBuilder().telemetryOptions(telemetryOptions).build();
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.disabledistributedtracing
@@ -139,7 +140,7 @@ public class TelemetryJavaDocCodeSnippets {
         // and explicit io.clientcore.core.util.Context.
 
         RequestOptions options = new RequestOptions()
-            .setContext(io.clientcore.core.util.Context.of(TelemetryProvider.TRACE_CONTEXT_KEY, Context.current().with(span)));
+            .setContext(io.clientcore.core.util.Context.of(TRACE_CONTEXT_KEY, Context.current().with(span)));
 
         // run on another thread
         client.clientCall(options);
@@ -148,16 +149,16 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClientBuilder {
-        private TelemetryOptions<?> telemetryOptions;
-        // TODO (limolkova): do we need TelemetryOptionsTrait?
-        public SampleClientBuilder telemetryOptions(TelemetryOptions<?> telemetryOptions) {
-            this.telemetryOptions = telemetryOptions;
+        private InstrumentationOptions<?> instrumentationOptions;
+        // TODO (limolkova): do we need InstrumnetationTrait?
+        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+            this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
-            return new SampleClient(telemetryOptions, new HttpPipelineBuilder()
-                .policies(new InstrumentationPolicy(telemetryOptions, null))
+            return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
+                .policies(new InstrumentationPolicy(instrumentationOptions, null))
                 .build());
         }
     }
@@ -165,11 +166,11 @@ public class TelemetryJavaDocCodeSnippets {
     static class SampleClient {
         private final static LibraryTelemetryOptions LIBRARY_OPTIONS = new LibraryTelemetryOptions("sample");
         private final HttpPipeline httpPipeline;
-        private final io.clientcore.core.telemetry.tracing.Tracer tracer;
+        private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
 
-        SampleClient(TelemetryOptions<?> telemetryOptions, HttpPipeline httpPipeline) {
+        SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = TelemetryProvider.create(telemetryOptions, LIBRARY_OPTIONS).getTracer();
+            this.tracer = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
         }
 
         public void clientCall() {
@@ -178,16 +179,16 @@ public class TelemetryJavaDocCodeSnippets {
 
         @SuppressWarnings("try")
         public void clientCall(RequestOptions options) {
-            io.clientcore.core.telemetry.tracing.Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, options)
+            io.clientcore.core.instrumentation.tracing.Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, options)
                 .startSpan();
 
             if (options == null) {
                 options = new RequestOptions();
             }
 
-            options.setContext(options.getContext().put(TelemetryProvider.TRACE_CONTEXT_KEY, span));
+            options.setContext(options.getContext().put(TRACE_CONTEXT_KEY, span));
 
-            try (TracingScope scope = span.makeCurrent()) {
+            try (InstrumentationScope scope = span.makeCurrent()) {
                 Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
                 response.close();
                 span.end();

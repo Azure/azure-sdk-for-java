@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
-import io.clientcore.core.telemetry.TelemetryProvider;
+import io.clientcore.core.instrumentation.InstrumentationProvider;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -22,7 +22,7 @@ public final class OTelUtils {
      * @return the OpenTelemetry context
      */
     public static Object getOTelContext(Context context) {
-        Object parent = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
+        Object parent = context.get(InstrumentationProvider.TRACE_CONTEXT_KEY);
         if (CONTEXT_CLASS.isInstance(parent)) {
             return parent;
         } else if (parent instanceof OTelSpan) {

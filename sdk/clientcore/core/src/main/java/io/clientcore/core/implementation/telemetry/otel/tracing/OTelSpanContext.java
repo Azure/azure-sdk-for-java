@@ -6,7 +6,6 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.telemetry.tracing.SpanContext;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.function.Consumer;
@@ -15,9 +14,9 @@ import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 
 /**
- * OpenTelemetry implementation of {@link SpanContext}.
+ * Wrapper around OpenTelemetry SpanContext.
  */
-public class OTelSpanContext implements SpanContext {
+public class OTelSpanContext {
     public static final Object INVALID_OTEL_SPAN_CONTEXT;
     private static final String INVALID_TRACE_ID = "00000000000000000000000000000000";
     private static final String INVALID_SPAN_ID = "0000000000000000";
@@ -68,25 +67,28 @@ public class OTelSpanContext implements SpanContext {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets trace id.
+     *
+     * @return the trace id.
      */
-    @Override
     public String getTraceId() {
         return isInitialized() ? (String) GET_TRACE_ID_INVOKER.invoke(otelSpanContext) : INVALID_TRACE_ID;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets span id.
+     *
+     * @return the span id.
      */
-    @Override
     public String getSpanId() {
         return isInitialized() ? (String) GET_SPAN_ID_INVOKER.invoke(otelSpanContext) : INVALID_SPAN_ID;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets trace flags.
+     *
+     * @return the trace flags.
      */
-    @Override
     public String getTraceFlags() {
         if (isInitialized()) {
             Object traceFlags = GET_TRACE_FLAGS_INVOKER.invoke(otelSpanContext);

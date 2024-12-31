@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.TextMapGetter;
-import io.clientcore.core.telemetry.tracing.TextMapPropagator;
-import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpan;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanContext;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.TextMapGetter;
+import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.SpanContext;
@@ -26,8 +28,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
-import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -50,10 +52,10 @@ public class ContextPropagationTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private TelemetryOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
     private TextMapPropagator contextPropagator;
-    private TelemetryProvider telemetryProvider;
+    private InstrumentationProvider instrumentationProvider;
 
     @BeforeEach
     public void setUp() {
@@ -61,10 +63,10 @@ public class ContextPropagationTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);
-        telemetryProvider = TelemetryProvider.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        tracer = telemetryProvider.getTracer();
-        contextPropagator = telemetryProvider.getW3CTraceContextPropagator();
+        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        instrumentationProvider = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS);
+        tracer = instrumentationProvider.getTracer();
+        contextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
     }
 
     @AfterEach
@@ -185,7 +187,8 @@ public class ContextPropagationTests {
     }
 
     private String getTraceparent(Span span) {
-        return "00-" + span.getSpanContext().getTraceId() + "-" + span.getSpanContext().getSpanId() + "-01";
+        OTelSpanContext spanContext = ((OTelSpan) span).getSpanContext();
+        return "00-" + spanContext.getTraceId() + "-" + spanContext.getSpanId() + "-01";
     }
 
     private String getTraceparent(SpanContext spanContext) {

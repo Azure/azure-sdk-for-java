@@ -1,20 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
 /**
  * Telemetry options describe application-level configuration and can be configured on specific
  * client instances via the corresponding client builder.
  * <p>
  *
- * Library should use them on all instance of {@link io.clientcore.core.telemetry.tracing.Tracer}
+ * Library should use them on all instance of {@link io.clientcore.core.instrumentation.tracing.Tracer}
  * it creates and, if it sets up {@link io.clientcore.core.http.pipeline.InstrumentationPolicy}, it should pass
- * {@link TelemetryOptions} to the policy.
+ * {@link InstrumentationOptions} to the policy.
  *
  * @param <T> The type of the provider. Only {@code io.opentelemetry.api.OpenTelemetry} is supported.
  */
-public class TelemetryOptions<T> {
+public class InstrumentationOptions<T> {
     private boolean isTracingEnabled = true;
     private T provider = null;
 
@@ -27,19 +27,19 @@ public class TelemetryOptions<T> {
      * <!-- src_embed io.clientcore.core.telemetry.disabledistributedtracing -->
      * <pre>
      *
-     * TelemetryOptions&lt;?&gt; telemetryOptions = new TelemetryOptions&lt;&gt;&#40;&#41;
+     * InstrumentationOptions&lt;?&gt; instrumentationOptions = new InstrumentationOptions&lt;&gt;&#40;&#41;
      *     .setTracingEnabled&#40;false&#41;;
      *
-     * SampleClient client = new SampleClientBuilder&#40;&#41;.telemetryOptions&#40;telemetryOptions&#41;.build&#40;&#41;;
+     * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
      * client.clientCall&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.disabledistributedtracing -->
      *
      * @param isTracingEnabled true to enable distributed tracing, false to disable.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link InstrumentationOptions} object.
      */
-    public TelemetryOptions<T> setTracingEnabled(boolean isTracingEnabled) {
+    public InstrumentationOptions<T> setTracingEnabled(boolean isTracingEnabled) {
         this.isTracingEnabled = isTracingEnabled;
         return this;
     }
@@ -57,19 +57,19 @@ public class TelemetryOptions<T> {
      * <pre>
      *
      * OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
-     * TelemetryOptions&lt;OpenTelemetry&gt; telemetryOptions = new TelemetryOptions&lt;OpenTelemetry&gt;&#40;&#41;
+     * InstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new InstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
      *     .setProvider&#40;openTelemetry&#41;;
      *
-     * SampleClient client = new SampleClientBuilder&#40;&#41;.telemetryOptions&#40;telemetryOptions&#41;.build&#40;&#41;;
+     * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
      * client.clientCall&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
      *
      * @param provider The provider to use for telemetry.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link InstrumentationOptions} object.
      */
-    public TelemetryOptions<T> setProvider(T provider) {
+    public InstrumentationOptions<T> setProvider(T provider) {
         this.provider = provider;
         return this;
     }
@@ -93,8 +93,8 @@ public class TelemetryOptions<T> {
     }
 
     /**
-     * Creates an instance of {@link TelemetryOptions}.
+     * Creates an instance of {@link InstrumentationOptions}.
      */
-    public TelemetryOptions() {
+    public InstrumentationOptions() {
     }
 }

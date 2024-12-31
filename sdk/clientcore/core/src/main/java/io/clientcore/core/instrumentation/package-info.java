@@ -41,10 +41,10 @@
  * <pre>
  *
  * OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
- * TelemetryOptions&lt;OpenTelemetry&gt; telemetryOptions = new TelemetryOptions&lt;OpenTelemetry&gt;&#40;&#41;
+ * InstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new InstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
  *     .setProvider&#40;openTelemetry&#41;;
  *
- * SampleClient client = new SampleClientBuilder&#40;&#41;.telemetryOptions&#40;telemetryOptions&#41;.build&#40;&#41;;
+ * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
  * client.clientCall&#40;&#41;;
  *
  * </pre>
@@ -97,7 +97,7 @@
  * &#47;&#47; and explicit io.clientcore.core.util.Context.
  *
  * RequestOptions options = new RequestOptions&#40;&#41;
- *     .setContext&#40;io.clientcore.core.util.Context.of&#40;TelemetryProvider.TRACE_CONTEXT_KEY, Context.current&#40;&#41;.with&#40;span&#41;&#41;&#41;;
+ *     .setContext&#40;io.clientcore.core.util.Context.of&#40;TRACE_CONTEXT_KEY, Context.current&#40;&#41;.with&#40;span&#41;&#41;&#41;;
  *
  * &#47;&#47; run on another thread
  * client.clientCall&#40;options&#41;;
@@ -105,4 +105,4 @@
  * </pre>
  * <!-- end io.clientcore.core.telemetry.correlationwithexplicitcontext -->
  */
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;

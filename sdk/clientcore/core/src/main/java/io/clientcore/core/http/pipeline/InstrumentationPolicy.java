@@ -10,14 +10,14 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
-import io.clientcore.core.telemetry.LibraryTelemetryOptions;
-import io.clientcore.core.telemetry.TelemetryOptions;
-import io.clientcore.core.telemetry.TelemetryProvider;
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.TextMapPropagator;
-import io.clientcore.core.telemetry.tracing.TextMapSetter;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.InstrumentationOptions;
+import io.clientcore.core.instrumentation.InstrumentationProvider;
+import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -30,9 +30,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
-import static io.clientcore.core.telemetry.TelemetryProvider.DISABLE_TRACING_KEY;
-import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
-import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
  * The {@link InstrumentationPolicy} is responsible for instrumenting the HTTP request and response with distributed tracing
@@ -45,7 +45,7 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try (redirect), and logging happens
  * in the scope of the span.
  * <p>
- * The policy supports basic customizations using {@link TelemetryOptions}, {@link HttpLogOptions}, and additional request and
+ * The policy supports basic customizations using {@link InstrumentationOptions}, {@link HttpLogOptions}, and additional request and
  * response headers to record as attributes.
  * <p>
  * If your client library needs a different approach to distributed tracing,
@@ -60,7 +60,7 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;telemetryOptions, logOptions&#41;,
+ *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
@@ -81,14 +81,14 @@ import static io.clientcore.core.telemetry.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;telemetryOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord&#41;,
+ *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord&#41;,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
  * <!-- end io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
  */
-public class InstrumentationPolicy implements HttpPipelinePolicy {
+public final class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
@@ -128,26 +128,27 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates a new instrumentation policy.
-     * @param telemetryOptions Application telemetry options.
+     * @param instrumentationOptions Application telemetry options.
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
-    public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions) {
-        this(telemetryOptions, logOptions, null, null);
+    public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
+        this(instrumentationOptions, logOptions, null, null);
     }
 
     /**
      * Creates a new instrumentation policy with additional request and response headers to record as attributes.
      *
-     * @param telemetryOptions Application telemetry options.
+     * @param instrumentationOptions Application telemetry options.
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      * @param requestHeaders The request headers to capture as span attributes.
      * @param responseHeaders The response headers to capture as span attributes.
      */
-    public InstrumentationPolicy(TelemetryOptions<?> telemetryOptions, HttpLogOptions logOptions,
+    public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions,
         Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
-        TelemetryProvider telemetryProvider = TelemetryProvider.create(telemetryOptions, LIBRARY_OPTIONS);
-        this.tracer = telemetryProvider.getTracer();
-        this.contextPropagator = telemetryProvider.getW3CTraceContextPropagator();
+        InstrumentationProvider instrumentationProvider
+            = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.tracer = instrumentationProvider.getTracer();
+        this.contextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
         this.allowedQueryParams = logOptions == null ? Collections.emptySet() : logOptions.getAllowedQueryParamNames();
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
@@ -175,7 +176,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         Context context = request.getRequestOptions().getContext();
         propagateContext(context.put(TRACE_CONTEXT_KEY, span), request.getHeaders());
 
-        try (TracingScope scope = span.makeCurrent()) {
+        try (InstrumentationScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
             if (span.isRecording()) {

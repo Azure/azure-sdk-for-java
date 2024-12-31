@@ -6,9 +6,9 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.telemetry.tracing.TextMapGetter;
-import io.clientcore.core.telemetry.tracing.TextMapPropagator;
-import io.clientcore.core.telemetry.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.TextMapGetter;
+import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TextMapSetter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -24,7 +24,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_SETTER_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
-import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 
 /**
  * OpenTelemetry implementation of {@link TextMapPropagator}.

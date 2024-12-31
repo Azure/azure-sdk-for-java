@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry.tracing;
+package io.clientcore.core.instrumentation.tracing;
 
 import io.clientcore.core.http.models.RequestOptions;
 
@@ -29,10 +29,10 @@ public interface Tracer {
      *     if &#40;requestOptions == null&#41; &#123;
      *         requestOptions = new RequestOptions&#40;&#41;;
      *     &#125;
-     *     requestOptions.setContext&#40;requestOptions.getContext&#40;&#41;.put&#40;TelemetryProvider.TRACE_CONTEXT_KEY, span&#41;&#41;;
+     *     requestOptions.setContext&#40;requestOptions.getContext&#40;&#41;.put&#40;InstrumentationProvider.TRACE_CONTEXT_KEY, span&#41;&#41;;
      * &#125;
      *
-     * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
+     * try &#40;InstrumentationScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
      *     clientCall&#40;requestOptions&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
@@ -58,7 +58,7 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;messaging.operations.name&quot;, &quot;send&quot;&#41;
      *     .startSpan&#40;&#41;;
      *
-     * try &#40;TracingScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
+     * try &#40;InstrumentationScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
      *     if &#40;sendSpan.isRecording&#40;&#41;&#41; &#123;
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;

@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry.tracing;
+package io.clientcore.core.instrumentation.tracing;
+
+import io.clientcore.core.instrumentation.InstrumentationScope;
 
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.
@@ -57,13 +59,6 @@ public interface Span {
     void end();
 
     /**
-     * Gets the span context.
-     *
-     * @return The span context.
-     */
-    SpanContext getSpanContext();
-
-    /**
      * Checks if the span is recording.
      *
      * @return true if the span is recording, false otherwise.
@@ -80,7 +75,7 @@ public interface Span {
      * <p>
      * <strong>Closing the scope does not end the span.</strong>
      *
-     * @return The {@link TracingScope} object.
+     * @return The {@link InstrumentationScope} object.
      */
-    TracingScope makeCurrent();
+    InstrumentationScope makeCurrent();
 }

@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.telemetry.TelemetryOptions;
+import io.clientcore.core.instrumentation.InstrumentationOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class InstrumentationPolicyNoopTests {
-    private static final TelemetryOptions<?> OPTIONS = new TelemetryOptions<>();
+    private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
     private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
 
     @ParameterizedTest

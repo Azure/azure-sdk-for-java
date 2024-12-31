@@ -8,4 +8,4 @@
  * <strong>Classes in this package are intended to be used by client libraries only. Application developers
  * should use OpenTelemetry API directly</strong>
  */
-package io.clientcore.core.telemetry.tracing;
+package io.clientcore.core.instrumentation.tracing;

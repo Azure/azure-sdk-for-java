@@ -7,11 +7,11 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTextMapPropagator;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracer;
-import io.clientcore.core.telemetry.LibraryTelemetryOptions;
-import io.clientcore.core.telemetry.TelemetryOptions;
-import io.clientcore.core.telemetry.TelemetryProvider;
-import io.clientcore.core.telemetry.tracing.TextMapPropagator;
-import io.clientcore.core.telemetry.tracing.Tracer;
+import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.InstrumentationOptions;
+import io.clientcore.core.instrumentation.InstrumentationProvider;
+import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.function.Consumer;
@@ -23,15 +23,15 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.W3C_PROPAGATOR_CLASS;
 
 /**
- * A {@link TelemetryProvider} implementation that uses OpenTelemetry.
+ * A {@link InstrumentationProvider} implementation that uses OpenTelemetry.
  */
-public class OTelTelemetryProvider implements TelemetryProvider {
+public class OTelInstrumentationProvider implements InstrumentationProvider {
     private static final FallbackInvoker GET_PROVIDER_INVOKER;
     private static final FallbackInvoker GET_GLOBAL_OTEL_INVOKER;
 
     private static final Object NOOP_PROVIDER;
     private static final OTelTextMapPropagator W3C_PROPAGATOR_INSTANCE;
-    private static final ClientLogger LOGGER = new ClientLogger(OTelTelemetryProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OTelInstrumentationProvider.class);
     static {
         ReflectiveInvoker getProviderInvoker = null;
         ReflectiveInvoker getGlobalOtelInvoker = null;
@@ -70,12 +70,13 @@ public class OTelTelemetryProvider implements TelemetryProvider {
     private final boolean isTracingEnabled;
 
     /**
-     * Creates a new instance of {@link OTelTelemetryProvider}.
+     * Creates a new instance of {@link OTelInstrumentationProvider}.
      *
      * @param applicationOptions the application options
      * @param libraryOptions the library options
      */
-    public OTelTelemetryProvider(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
+    public OTelInstrumentationProvider(InstrumentationOptions<?> applicationOptions,
+        LibraryTelemetryOptions libraryOptions) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
             throw LOGGER.atError()

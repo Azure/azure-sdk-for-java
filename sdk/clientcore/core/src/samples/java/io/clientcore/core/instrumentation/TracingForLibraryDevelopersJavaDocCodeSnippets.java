@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpLogOptions;
@@ -11,10 +11,9 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.InstrumentationPolicy;
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanKind;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 
 import java.util.Collections;
 import java.util.Map;
@@ -39,9 +38,9 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-        TelemetryOptions<?> telemetryOptions = new TelemetryOptions<>();
+        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
 
-        Tracer tracer = TelemetryProvider.create(telemetryOptions, libraryOptions).getTracer();
+        Tracer tracer = InstrumentationProvider.create(instrumentationOptions, libraryOptions).getTracer();
 
         // END: io.clientcore.core.telemetry.tracing.createtracer
     }
@@ -51,7 +50,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceCall() {
 
-        Tracer tracer = TelemetryProvider.create(null, LIBRARY_OPTIONS).getTracer();
+        Tracer tracer = InstrumentationProvider.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracecall
@@ -65,10 +64,10 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             if (requestOptions == null) {
                 requestOptions = new RequestOptions();
             }
-            requestOptions.setContext(requestOptions.getContext().put(TelemetryProvider.TRACE_CONTEXT_KEY, span));
+            requestOptions.setContext(requestOptions.getContext().put(InstrumentationProvider.TRACE_CONTEXT_KEY, span));
         }
 
-        try (TracingScope scope = span.makeCurrent()) {
+        try (InstrumentationScope scope = span.makeCurrent()) {
             clientCall(requestOptions);
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
@@ -87,7 +86,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceWithAttributes() {
 
-        Tracer tracer = TelemetryProvider.create(null, LIBRARY_OPTIONS).getTracer();
+        Tracer tracer = InstrumentationProvider.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracewithattributes
@@ -100,7 +99,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .setAttribute("messaging.operations.name", "send")
             .startSpan();
 
-        try (TracingScope scope = sendSpan.makeCurrent()) {
+        try (InstrumentationScope scope = sendSpan.makeCurrent()) {
             if (sendSpan.isRecording()) {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }
@@ -117,7 +116,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void configureInstrumentationPolicy() {
-        TelemetryOptions<?> telemetryOptions = new TelemetryOptions<>();
+        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
         HttpLogOptions logOptions = new HttpLogOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.instrumentationpolicy
@@ -125,7 +124,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(telemetryOptions, logOptions),
+                new InstrumentationPolicy(instrumentationOptions, logOptions),
                 new HttpLoggingPolicy(logOptions))
             .build();
 
@@ -133,7 +132,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     }
 
     public void customizeInstrumentationPolicy() {
-        TelemetryOptions<?> telemetryOptions = new TelemetryOptions<>();
+        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
         HttpLogOptions logOptions = new HttpLogOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
@@ -148,7 +147,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(telemetryOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord),
+                new InstrumentationPolicy(instrumentationOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord),
                 new HttpLoggingPolicy(logOptions))
             .build();
 

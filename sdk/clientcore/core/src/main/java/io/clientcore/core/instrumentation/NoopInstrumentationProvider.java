@@ -1,20 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.telemetry;
+package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.telemetry.tracing.Span;
-import io.clientcore.core.telemetry.tracing.SpanBuilder;
-import io.clientcore.core.telemetry.tracing.SpanContext;
-import io.clientcore.core.telemetry.tracing.TextMapGetter;
-import io.clientcore.core.telemetry.tracing.TextMapPropagator;
-import io.clientcore.core.telemetry.tracing.TextMapSetter;
-import io.clientcore.core.telemetry.tracing.Tracer;
-import io.clientcore.core.telemetry.tracing.TracingScope;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanBuilder;
+import io.clientcore.core.instrumentation.tracing.TextMapGetter;
+import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 
-class NoopTelemetryProvider implements TelemetryProvider {
-    static final TelemetryProvider NOOP_PROVIDER = new NoopTelemetryProvider();
+class NoopInstrumentationProvider implements InstrumentationProvider {
+    static final InstrumentationProvider NOOP_PROVIDER = new NoopInstrumentationProvider();
 
     @Override
     public Tracer getTracer() {
@@ -46,17 +44,12 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
 
         @Override
-        public SpanContext getSpanContext() {
-            return NOOP_SPAN_CONTEXT;
-        }
-
-        @Override
         public boolean isRecording() {
             return false;
         }
 
         @Override
-        public TracingScope makeCurrent() {
+        public InstrumentationScope makeCurrent() {
             return NOOP_SCOPE;
         }
     };
@@ -73,24 +66,7 @@ class NoopTelemetryProvider implements TelemetryProvider {
         }
     };
 
-    private static final SpanContext NOOP_SPAN_CONTEXT = new SpanContext() {
-        @Override
-        public String getTraceId() {
-            return "00000000000000000000000000000000";
-        }
-
-        @Override
-        public String getSpanId() {
-            return "0000000000000000";
-        }
-
-        @Override
-        public String getTraceFlags() {
-            return "00";
-        }
-    };
-
-    private static final TracingScope NOOP_SCOPE = () -> {
+    private static final InstrumentationScope NOOP_SCOPE = () -> {
     };
     private static final Tracer NOOP_TRACER = (name, kind, ctx) -> NOOP_SPAN_BUILDER;
 

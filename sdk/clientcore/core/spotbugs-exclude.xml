@@ -73,7 +73,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
       <Class name="io.clientcore.core.util.ClientLogger" />
-      <Class name="io.clientcore.core.implementation.telemetry.otel.OTelTelemetryProvider" />
+      <Class name="io.clientcore.core.implementation.telemetry.otel.OTelInstrumentationProvider" />
     </Or>
   </Match>
   <Match>
