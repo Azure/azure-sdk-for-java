@@ -1041,8 +1041,9 @@ public final class KeyClient {
                 .setTags(keyProperties.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-        Response<BinaryData> response = implClient.updateKeyWithResponse(keyProperties.getName(),
-            keyProperties.getVersion(), BinaryData.fromObject(keyUpdateParameters), new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
+                BinaryData.fromObject(keyUpdateParameters), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }

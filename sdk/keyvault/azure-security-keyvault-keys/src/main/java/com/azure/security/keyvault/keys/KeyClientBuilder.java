@@ -185,10 +185,12 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
+        if (version == null) {
+            version = KeyServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
-            return new KeyClientImpl(pipeline, vaultUrl, serviceVersion);
+            return new KeyClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -234,7 +236,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(builtPipeline, vaultUrl, serviceVersion);
+        return new KeyClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**
