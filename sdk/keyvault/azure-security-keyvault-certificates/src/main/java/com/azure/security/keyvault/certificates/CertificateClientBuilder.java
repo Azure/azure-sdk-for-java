@@ -197,10 +197,10 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
+        version = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateClientImpl(pipeline, vaultUrl, serviceVersion);
+            return new CertificateClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -246,7 +246,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
             .clientOptions(localClientOptions)
             .build();
 
-        return new CertificateClientImpl(builtPipeline, vaultUrl, serviceVersion);
+        return new CertificateClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**
