@@ -181,7 +181,6 @@ public final class SecretClientBuilder implements
         return new SecretAsyncClient(getClientImpl(), vaultUrl);
     }
 
-
     private SecretClientImpl getClientImpl() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -192,10 +191,10 @@ public final class SecretClientBuilder implements
                 new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
+        version = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(pipeline, vaultUrl, serviceVersion);
+            return new SecretClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -247,7 +246,7 @@ public final class SecretClientBuilder implements
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(builtPipeline, vaultUrl, serviceVersion);
+        return new SecretClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**
