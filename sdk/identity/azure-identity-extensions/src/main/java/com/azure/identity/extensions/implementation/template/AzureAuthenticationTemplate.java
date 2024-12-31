@@ -5,8 +5,10 @@ package com.azure.identity.extensions.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.extensions.implementation.cache.IdentityCache;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolver;
 import com.azure.identity.extensions.implementation.token.AccessTokenResolverOptions;
 import reactor.core.publisher.Mono;
@@ -15,7 +17,9 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.identity.extensions.implementation.cache.IdentityCacheHelper.createAccessTokenCacheInstance;
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
+import static com.azure.identity.extensions.implementation.utils.StringUtils.getAccessTokenCacheKey;
 
 /**
  * Template class can be extended to get password from access token.
@@ -29,6 +33,10 @@ public class AzureAuthenticationTemplate {
     private TokenCredentialProvider tokenCredentialProvider;
 
     private AccessTokenResolver accessTokenResolver;
+
+    private IdentityCache<String, AccessToken> accessTokenCache;
+
+    private AccessTokenResolverOptions resolverOptions;
 
     private long accessTokenTimeoutInSeconds;
 
@@ -61,14 +69,20 @@ public class AzureAuthenticationTemplate {
         if (isInitialized.compareAndSet(false, true)) {
             LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
+            TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
             if (getTokenCredentialProvider() == null) {
                 this.tokenCredentialProvider
-                    = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
+                    = TokenCredentialProvider.createDefault(providerOptions);
             }
 
+            this.resolverOptions = new AccessTokenResolverOptions(properties);
             if (getAccessTokenResolver() == null) {
                 this.accessTokenResolver
-                    = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(properties));
+                    = AccessTokenResolver.createDefault(resolverOptions);
+            }
+
+            if (AuthProperty.ACCESS_TOKEN_CACHE_ENABLED.getBoolean(properties)) {
+                this.accessTokenCache = createAccessTokenCacheInstance(providerOptions.getAccessTokenCacheClassName());
             }
 
             if (properties.containsKey(GET_TOKEN_TIMEOUT.getPropertyKey())) {
@@ -92,10 +106,31 @@ public class AzureAuthenticationTemplate {
         if (!isInitialized.get()) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("must call init() first"));
         }
-        return Mono.fromSupplier(() -> getTokenCredentialProvider().getFromCache())
-            .flatMap(getAccessTokenResolver())
-            .filter(token -> !token.isExpired())
-            .map(AccessToken::getToken);
+
+        if (accessTokenCache != null) {
+            String accessTokenCacheKey = getAccessTokenCacheKey(this.resolverOptions);
+            AccessToken accessToken = accessTokenCache.get(accessTokenCacheKey);
+            if (accessToken != null) {
+                if (!accessToken.isExpired()) {
+                    LOGGER.verbose("Returning access token from cache.");
+                    return Mono.just(accessToken.getToken());
+                } else {
+                    accessTokenCache.remove(accessTokenCacheKey);
+                }
+
+            }
+        }
+
+        return Mono.fromSupplier(getTokenCredentialProvider())
+                   .flatMap(getAccessTokenResolver())
+                   .doOnSuccess(accessToken -> {
+                       if (accessTokenCache != null) {
+                           accessTokenCache.put(getAccessTokenCacheKey(this.resolverOptions), accessToken);
+                           LOGGER.verbose("The access token cached.");
+                        }
+                    })
+                   .filter(token -> !token.isExpired())
+                   .map(AccessToken::getToken);
     }
 
     /**

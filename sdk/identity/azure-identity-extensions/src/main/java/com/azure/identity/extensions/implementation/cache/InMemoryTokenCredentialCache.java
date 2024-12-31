@@ -4,12 +4,12 @@ import com.azure.core.credential.TokenCredential;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryTokenCredentialCache implements TokenCredentialCache {
+public class InMemoryTokenCredentialCache implements IdentityCache<String, TokenCredential> {
 
     private static final ConcurrentHashMap<String, TokenCredential> cache = new ConcurrentHashMap<>();
 
     @Override
-    public void put(String key, TokenCredential value) {
+    public synchronized void put(String key, TokenCredential value) {
         cache.putIfAbsent(key, value);
     }
 
@@ -19,7 +19,8 @@ public class InMemoryTokenCredentialCache implements TokenCredentialCache {
     }
 
     @Override
-    public void remove(String key) {
+    public synchronized void remove(String key) {
         cache.remove(key);
     }
+
 }
