@@ -28,6 +28,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.net.URI;
 import java.util.regex.Pattern;
 import reactor.core.publisher.Mono;
 
@@ -85,7 +86,21 @@ public final class NonAzureOpenAIClientImpl {
      * Pattern for validating native OpenAI API endpoint URLs. This allows for subdomains to support
      * regional endpoints.
      */
-    public static final Pattern OPEN_AI_ENDPOINT_PATTERN = Pattern.compile("https://(\\w*\\.)?api\\.openai\\.com/v1");
+    public static final Pattern OPEN_AI_HOST_PATTERN = Pattern.compile("(\\w*\\.)?api\\.openai\\.com");
+
+    /**
+     * Determines whether {@code endpoint} is a native OpenAI endpoint or one pointing to an
+     * instance hosted through Azure.
+     *
+     * @param endpoint The endpoint in question.
+     * @return Whether the endpoint is controlled by OpenAI.
+     */
+    public static boolean isOpenAiEndpoint(String endpoint) {
+        URI uri = URI.create(endpoint);
+        return uri.getScheme().equalsIgnoreCase("https")
+            && OPEN_AI_HOST_PATTERN.matcher(uri.getHost().toLowerCase()).matches()
+            && uri.getPath().startsWith("/v1");
+    }
 
     /**
      * Initializes an instance of OpenAIClient client.
