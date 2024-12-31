@@ -155,9 +155,9 @@ public final class KeyVaultAccessControlClientBuilder
             return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
         }
 
-        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
 
-        return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
+        return new KeyVaultAccessControlClient(vaultUrl, builtPipeline, serviceVersion);
     }
 
     /**
@@ -177,11 +177,14 @@ public final class KeyVaultAccessControlClientBuilder
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
+
         if (pipeline != null) {
             return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
-        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
-        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+
+        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
+
+        return new KeyVaultAccessControlAsyncClient(vaultUrl, builtPipeline, serviceVersion);
     }
 
     private Configuration validateEndpointAndGetConfiguration() {
