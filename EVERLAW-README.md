@@ -14,6 +14,8 @@ After the changes are merged, follow the instructions below for updating the ver
 
 If something specific to our fork needs to be changed, open a pull request targeting the `origin/main` branch of this repository.
 
+**Note:** _Make sure the base of your PR is OUR FORK. **DO NOT** target PRs to the upstream fork._
+
 Make your changes and find an appropriate reviewer to review them.
 
 Follow testing instructions below.
