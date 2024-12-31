@@ -200,7 +200,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateClientImpl(vaultUrl, serviceVersion);
+            return new CertificateClientImpl(pipeline, vaultUrl, serviceVersion);
         }
 
         if (credential == null) {
@@ -240,13 +240,13 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
             .build();
 
-        return new CertificateClientImpl(pipeline, vaultUrl, serviceVersion);
+        return new CertificateClientImpl(builtPipeline, vaultUrl, serviceVersion);
     }
 
     /**
