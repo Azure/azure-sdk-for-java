@@ -161,7 +161,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildInnerClient(), vaultUrl);
+        return new CertificateClient(buildClientImpl(), vaultUrl);
     }
 
     /**
@@ -183,10 +183,10 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        return new CertificateAsyncClient(buildInnerClient(), vaultUrl);
+        return new CertificateAsyncClient(buildClientImpl(), vaultUrl);
     }
 
-    private CertificateClientImpl buildInnerClient() {
+    private CertificateClientImpl buildClientImpl() {
         Configuration buildConfiguration
             = (configuration != null) ? configuration : Configuration.getGlobalConfiguration().clone();
 
@@ -197,7 +197,9 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        version = version != null ? version : CertificateServiceVersion.getLatest();
+        if (version == null) {
+            version = CertificateServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
             return new CertificateClientImpl(pipeline, vaultUrl, version);
