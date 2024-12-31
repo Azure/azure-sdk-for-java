@@ -26,7 +26,9 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.implementation.models.BackupSecretResult;
 import com.azure.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
+import com.azure.security.keyvault.secrets.implementation.models.DeletedSecretItem;
 import com.azure.security.keyvault.secrets.implementation.models.SecretBundle;
+import com.azure.security.keyvault.secrets.implementation.models.SecretItem;
 import com.azure.security.keyvault.secrets.implementation.models.SecretRestoreParameters;
 import com.azure.security.keyvault.secrets.implementation.models.SecretSetParameters;
 import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
@@ -153,25 +155,24 @@ import static com.azure.security.keyvault.secrets.implementation.models.SecretsM
  * @see PollerFlux
  * @see PagedFlux
  */
-@ServiceClient(builder = SecretClientBuilder.class, isAsync = true,
-    serviceInterfaces = SecretClientImpl.SecretClientService.class)
+@ServiceClient(
+    builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretClientImpl.SecretClientService.class)
 public final class SecretAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(SecretAsyncClient.class);
-    private static final RequestOptions NO_OPTIONS = new RequestOptions();
 
-    private final com.azure.security.keyvault.secrets.implementation.SecretAsyncClient innerClient;
+    static final RequestOptions EMPTY_OPTIONS = new RequestOptions();
+
+    private final SecretClientImpl implClient;
     private final String vaultUrl;
 
     /**
      * Creates a SecretAsyncClient to service requests
      *
-     * @param innerClient the implementation client.
-     * @param vaultUrl the vault url.
+     * @param implClient The implementation client.
+     * @param vaultUrl The vault url.
      */
-    SecretAsyncClient(com.azure.security.keyvault.secrets.implementation.SecretAsyncClient innerClient,
-        String vaultUrl) {
-
-        this.innerClient = innerClient;
+    SecretAsyncClient(SecretClientImpl implClient, String vaultUrl) {
+        this.implClient = implClient;
         this.vaultUrl = vaultUrl;
     }
 
@@ -220,9 +221,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(KeyVaultSecret secret) {
         try {
-            return innerClient.setSecret(secret.getName(), prepareSecretSetParameters(secret))
+            return implClient.setSecretWithResponseAsync(secret.getName(),
+                    BinaryData.fromObject(prepareSecretSetParameters(secret)), EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapSetSecretException)
-                .map(SecretsModelsUtils::createKeyVaultSecret);
+                .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -253,9 +255,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(String name, String value) {
         try {
-            return innerClient.setSecret(name, new SecretSetParameters(value))
+            return implClient.setSecretWithResponseAsync(name, BinaryData.fromObject(new SecretSetParameters(value)),
+                    EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapSetSecretException)
-                .map(SecretsModelsUtils::createKeyVaultSecret);
+                .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -296,12 +299,11 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret) {
         try {
-            return innerClient.setSecretWithResponse(secret.getName(),
-                    BinaryData.fromObject(prepareSecretSetParameters(secret)), NO_OPTIONS)
+            return implClient.setSecretWithResponseAsync(secret.getName(),
+                    BinaryData.fromObject(prepareSecretSetParameters(secret)), EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapSetSecretException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -310,9 +312,8 @@ public final class SecretAsyncClient {
     // For some reason, the service does not return a 409 when a secret with the same name exists. Instead, it returns
     // a 400.
     static HttpResponseException mapSetSecretException(HttpResponseException e) {
-        return (e.getResponse().getStatusCode() == 400)
-            ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
-            : e;
+        return (e.getResponse().getStatusCode() == 400) ? new ResourceModifiedException(e.getMessage(), e.getResponse(),
+            e.getValue()) : e;
     }
 
     /**
@@ -339,17 +340,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name) {
-        if (CoreUtils.isNullOrEmpty(name)) {
-            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be null or empty."));
-        }
-
-        try {
-            return innerClient.getSecret(name, null)
-                .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
-                .map(SecretsModelsUtils::createKeyVaultSecret);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return getSecret(name, "");
     }
 
     /**
@@ -390,9 +381,9 @@ public final class SecretAsyncClient {
         }
 
         try {
-            return innerClient.getSecret(name, version)
+            return implClient.getSecretWithResponseAsync(name, version, EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
-                .map(SecretsModelsUtils::createKeyVaultSecret);
+                .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -435,11 +426,10 @@ public final class SecretAsyncClient {
         }
 
         try {
-            return innerClient.getSecretWithResponse(name, version, NO_OPTIONS)
+            return implClient.getSecretWithResponseAsync(name, version, EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -494,8 +484,9 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretProperties> updateSecretProperties(SecretProperties secretProperties) {
         try {
-            return innerClient.updateSecret(secretProperties.getName(), secretProperties.getVersion(),
-                prepareUpdateSecretParameters(secretProperties)).map(SecretsModelsUtils::createSecretProperties);
+            return implClient.updateSecretWithResponseAsync(secretProperties.getName(), secretProperties.getVersion(),
+                    BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), EMPTY_OPTIONS)
+                .map(response -> createSecretProperties(response.getValue().toObject(SecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -541,11 +532,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
-            return innerClient.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
-                    BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), NO_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createSecretProperties(response.getValue().toObject(SecretBundle.class))));
+            return implClient.updateSecretWithResponseAsync(secretProperties.getName(), secretProperties.getVersion(),
+                    BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), EMPTY_OPTIONS)
+                .map(response -> new SimpleResponse<>(response,
+                    createSecretProperties(response.getValue().toObject(SecretBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -585,7 +575,8 @@ public final class SecretAsyncClient {
     private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> deleteActivationOperation(String name) {
         return pollingContext -> {
             try {
-                return innerClient.deleteSecret(name).map(SecretsModelsUtils::createDeletedSecret);
+                return implClient.deleteSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                    .map(response -> createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class)));
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -595,9 +586,9 @@ public final class SecretAsyncClient {
     private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> deletePollOperation(
         String name) {
 
-        return pollingContext -> innerClient.getDeletedSecret(name)
-            .map(bundle -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createDeletedSecret(bundle)))
+        return pollingContext -> implClient.getDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS)
+            .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class))))
             .onErrorResume(HttpResponseException.class, exception -> {
                 if (exception.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -641,7 +632,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> getDeletedSecret(String name) {
         try {
-            return innerClient.getDeletedSecret(name).map(SecretsModelsUtils::createDeletedSecret);
+            return implClient.getDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response -> createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -673,10 +665,9 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
         try {
-            return innerClient.getDeletedSecretWithResponse(name, NO_OPTIONS)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class))));
+            return implClient.getDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response -> new SimpleResponse<>(response,
+                    createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class))));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -707,7 +698,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedSecret(String name) {
         try {
-            return innerClient.purgeDeletedSecret(name);
+            return implClient.purgeDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                .flatMap(response -> Mono.empty());
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -737,7 +729,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponse(String name) {
         try {
-            return innerClient.purgeDeletedSecretWithResponse(name, NO_OPTIONS);
+            return implClient.purgeDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -769,14 +761,15 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1), recoverActivationOperation(name),
-            recoverPollOperation(name), (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
+        return new PollerFlux<>(Duration.ofSeconds(1), recoverActivationOperation(name), recoverPollOperation(name),
+            (context, firstResponse) -> Mono.empty(), context -> Mono.empty());
     }
 
     private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
         return pollingContext -> {
             try {
-                return innerClient.recoverDeletedSecret(name).map(SecretsModelsUtils::createKeyVaultSecret);
+                return implClient.recoverDeletedSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                    .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -786,7 +779,7 @@ public final class SecretAsyncClient {
     private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> recoverPollOperation(
         String name) {
 
-        return pollingContext -> innerClient.getSecretWithResponse(name, null, NO_OPTIONS)
+        return pollingContext -> implClient.getSecretWithResponseAsync(name, "", EMPTY_OPTIONS)
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))))
             .onErrorResume(HttpResponseException.class, exception -> {
@@ -830,7 +823,9 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupSecret(String name) {
         try {
-            return innerClient.backupSecret(name).mapNotNull(BackupSecretResult::getValue);
+            return implClient.backupSecretWithResponseAsync(name, EMPTY_OPTIONS)
+                .map(response -> response.getValue().toObject(BackupSecretResult.class))
+                .mapNotNull(BackupSecretResult::getValue);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -861,7 +856,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
         try {
-            return innerClient.backupSecretWithResponse(name, NO_OPTIONS)
+            return implClient.backupSecretWithResponseAsync(name, EMPTY_OPTIONS)
                 .map(response -> new SimpleResponse<>(response, response.getValue().toBytes()));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -893,9 +888,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> restoreSecretBackup(byte[] backup) {
         try {
-            return innerClient.restoreSecret(new SecretRestoreParameters(backup))
+            return implClient.restoreSecretWithResponseAsync(BinaryData.fromObject(new SecretRestoreParameters(backup)),
+                    EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapRestoreSecretException)
-                .map(SecretsModelsUtils::createKeyVaultSecret);
+                .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -927,8 +923,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup) {
         try {
-            return innerClient.restoreSecretWithResponse(BinaryData.fromObject(new SecretRestoreParameters(backup)),
-                    NO_OPTIONS)
+            return implClient.restoreSecretWithResponseAsync(BinaryData.fromObject(new SecretRestoreParameters(backup)),
+                    EMPTY_OPTIONS)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapRestoreSecretException)
                 .map(response -> new SimpleResponse<>(response,
                     createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
@@ -939,9 +935,8 @@ public final class SecretAsyncClient {
 
     // For some reason, the service does not return a 409 but a 400 in this case.
     static HttpResponseException mapRestoreSecretException(HttpResponseException e) {
-        return (e.getResponse().getStatusCode() == 400)
-            ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
-            : e;
+        return (e.getResponse().getStatusCode() == 400) ? new ResourceModifiedException(e.getMessage(), e.getResponse(),
+            e.getValue()) : e;
     }
 
     /**
@@ -973,7 +968,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
         try {
-            return mapPages(innerClient.getSecrets(), SecretsModelsUtils::createSecretProperties);
+            return mapPages(implClient.getSecretsAsync(EMPTY_OPTIONS),
+                binaryData -> SecretsModelsUtils.createSecretProperties(binaryData.toObject(SecretItem.class)));
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -1000,7 +996,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
         try {
-            return mapPages(innerClient.getDeletedSecrets(), SecretsModelsUtils::createDeletedSecret);
+            return mapPages(implClient.getDeletedSecretsAsync(EMPTY_OPTIONS),
+                binaryData -> SecretsModelsUtils.createDeletedSecret(binaryData.toObject(DeletedSecretItem.class)));
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
@@ -1036,32 +1033,26 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
         try {
-            return mapPages(innerClient.getSecretVersions(name), SecretsModelsUtils::createSecretProperties);
+            return mapPages(implClient.getSecretVersionsAsync(name, EMPTY_OPTIONS),
+                binaryData -> SecretsModelsUtils.createSecretProperties(binaryData.toObject(SecretItem.class)));
         } catch (RuntimeException e) {
             return pagedFluxError(LOGGER, e);
         }
     }
 
     private static <R, T> PagedFlux<R> mapPages(PagedFlux<T> pagedFlux, Function<T, R> mapper) {
-        final Function<PagedResponse<T>, PagedResponse<R>> responseMapper = inputResponse ->
-            new PagedResponseBase<Void, R>(inputResponse.getRequest(),
-                inputResponse.getStatusCode(),
-                inputResponse.getHeaders(),
-                inputResponse.getValue()
-                    .stream()
-                    .map(mapper)
-                    .collect(Collectors.toList()),
-                inputResponse.getContinuationToken(),
-            null);
+        final Function<PagedResponse<T>, PagedResponse<R>> responseMapper
+            = inputResponse -> new PagedResponseBase<Void, R>(inputResponse.getRequest(), inputResponse.getStatusCode(),
+            inputResponse.getHeaders(), inputResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            inputResponse.getContinuationToken(), null);
 
-        final Supplier<PageRetriever<String, PagedResponse<R>>> provider = () ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<T>> flux = (continuationToken == null)
-                    ? pagedFlux.byPage()
-                    : pagedFlux.byPage(continuationToken);
+        final Supplier<PageRetriever<String, PagedResponse<R>>> provider = () -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? pagedFlux.byPage()
+                : pagedFlux.byPage(continuationToken);
 
-                return flux.map(responseMapper);
-            };
+            return flux.map(responseMapper);
+        };
 
         return PagedFlux.create(provider);
     }

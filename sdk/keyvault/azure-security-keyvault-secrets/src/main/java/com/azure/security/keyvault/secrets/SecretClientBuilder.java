@@ -34,6 +34,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
@@ -155,7 +156,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(getClientBuilder().buildClient(), vaultUrl);
+        return new SecretClient(getClientImpl(), vaultUrl);
     }
 
     /**
@@ -177,11 +178,11 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(getClientBuilder().buildAsyncClient(), vaultUrl);
+        return new SecretAsyncClient(getClientImpl(), vaultUrl);
     }
 
 
-    private com.azure.security.keyvault.secrets.implementation.SecretClientBuilder getClientBuilder() {
+    private SecretClientImpl getClientImpl() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -194,10 +195,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new com.azure.security.keyvault.secrets.implementation.SecretClientBuilder()
-                .pipeline(pipeline)
-                .vaultBaseUrl(vaultUrl)
-                .serviceVersion(serviceVersion);
+            return new SecretClientImpl(pipeline, vaultUrl, serviceVersion);
         }
 
         if (credential == null) {
@@ -249,10 +247,7 @@ public final class SecretClientBuilder implements
             .tracer(tracer)
             .build();
 
-        return new com.azure.security.keyvault.secrets.implementation.SecretClientBuilder()
-            .pipeline(builtPipeline)
-            .vaultBaseUrl(vaultUrl)
-            .serviceVersion(serviceVersion);
+        return new SecretClientImpl(builtPipeline, vaultUrl, serviceVersion);
     }
 
     /**
