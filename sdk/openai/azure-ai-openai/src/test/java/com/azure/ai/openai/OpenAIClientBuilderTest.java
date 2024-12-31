@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai;
 
-import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_AI_ENDPOINT_PATTERN;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_AI_HOST_PATTERN;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.isOpenAiEndpoint;
 import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,15 +14,25 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_A
 
 public class OpenAIClientBuilderTest {
     @Test
-    public void testEndpointPattern() {
-        assertTrue(OPEN_AI_ENDPOINT_PATTERN.matcher(OPEN_AI_ENDPOINT).matches());
-        assertTrue(OPEN_AI_ENDPOINT_PATTERN.matcher("https://eu.api.openai.com/v1").matches());
-        assertTrue(OPEN_AI_ENDPOINT_PATTERN.matcher("https://asdf.api.openai.com/v1").matches());
-        assertFalse(OPEN_AI_ENDPOINT_PATTERN.matcher("http://api.openai.com/v1").matches());
-        assertFalse(OPEN_AI_ENDPOINT_PATTERN.matcher("https://api.openai.com/").matches());
-        assertFalse(OPEN_AI_ENDPOINT_PATTERN.matcher("https://dead.beef.api.openai.com/v1").matches());
-        assertFalse(OPEN_AI_ENDPOINT_PATTERN.matcher("https://api.openai.com.org/v1").matches());
-        assertFalse(OPEN_AI_ENDPOINT_PATTERN.matcher("https://api.openai.com/v2").matches());
+    public void testHostPattern() {
+        assertTrue(OPEN_AI_HOST_PATTERN.matcher("eu.api.openai.com").matches());
+        assertTrue(OPEN_AI_HOST_PATTERN.matcher("asdf.api.openai.com").matches());
+        assertFalse(OPEN_AI_HOST_PATTERN.matcher("dead.beef.api.openai.com").matches());
+        assertFalse(OPEN_AI_HOST_PATTERN.matcher("api.openai.com.org").matches());
+    }
+
+    @Test
+    public void testEndpointClassificationHelper() {
+        assertTrue(isOpenAiEndpoint("https://eu.api.openai.com/v1"));
+        assertTrue(isOpenAiEndpoint("https://asdf.api.openai.com/v1"));
+        assertFalse(isOpenAiEndpoint("http://api.openai.com/v1"));
+        assertFalse(isOpenAiEndpoint("https://api.openai.com/"));
+        assertFalse(isOpenAiEndpoint("https://dead.beef.api.openai.com/v1"));
+        assertFalse(isOpenAiEndpoint("https://api.openai.com.org/v1"));
+        assertFalse(isOpenAiEndpoint("https://api.openai.com/v2"));
+        assertTrue(isOpenAiEndpoint("HTTPS://api.openai.com/v1"));
+        assertTrue(isOpenAiEndpoint("https://api.OPENAI.com/v1"));
+        assertTrue(isOpenAiEndpoint("https://api.openai.com/v1/foo/bar"));
     }
 
     @Test
