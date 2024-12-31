@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.telemetry.otel.tracing;
+package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.telemetry.FallbackInvoker;
-import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
+import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_GETTER_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TEXT_MAP_SETTER_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_GETTER_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_SETTER_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelUtils.getOTelContext;
 import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 
 /**

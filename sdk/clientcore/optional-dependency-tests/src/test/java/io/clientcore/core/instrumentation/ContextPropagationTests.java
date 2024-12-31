@@ -3,8 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpan;
-import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanContext;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;

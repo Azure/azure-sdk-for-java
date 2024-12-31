@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.telemetry;
+package io.clientcore.core.implementation.instrumentation;
 
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 

@@ -4,4 +4,4 @@
 /**
  * This package contains the optional OpenTelemetry implementation of the telemetry API.
  */
-package io.clientcore.core.implementation.telemetry;
+package io.clientcore.core.implementation.instrumentation;

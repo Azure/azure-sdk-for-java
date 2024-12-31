@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.telemetry.otel.tracing;
+package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.telemetry.FallbackInvoker;
-import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
+import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationScope;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
@@ -13,8 +13,8 @@ import io.clientcore.core.util.ClientLogger;
 import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
-import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_KEY_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_KEY_CLASS;
 
 class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);

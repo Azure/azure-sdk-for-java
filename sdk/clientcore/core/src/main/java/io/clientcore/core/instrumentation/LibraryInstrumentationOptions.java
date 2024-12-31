@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.implementation.telemetry.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 
 import java.util.Objects;
 

@@ -4,4 +4,4 @@
 /**
  * This package contains the implementation of the OpenTelemetry tracing.
  */
-package io.clientcore.core.implementation.telemetry.otel.tracing;
+package io.clientcore.core.implementation.instrumentation.otel.tracing;

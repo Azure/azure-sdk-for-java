@@ -3,8 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.implementation.telemetry.otel.OTelInstrumentationProvider;
+import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentationProvider;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
