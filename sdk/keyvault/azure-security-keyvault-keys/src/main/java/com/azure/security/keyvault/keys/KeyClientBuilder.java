@@ -150,7 +150,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildInnerClient(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyClient(buildClientImpl(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
     }
 
     /**
@@ -171,11 +171,11 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildInnerClient(), vaultUrl,
+        return new KeyAsyncClient(buildClientImpl(), vaultUrl,
             version != null ? version : KeyServiceVersion.getLatest());
     }
 
-    private KeyClientImpl buildInnerClient() {
+    private KeyClientImpl buildClientImpl() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -228,13 +228,13 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(pipeline, vaultUrl, serviceVersion);
+        return new KeyClientImpl(builtPipeline, vaultUrl, serviceVersion);
     }
 
     /**
