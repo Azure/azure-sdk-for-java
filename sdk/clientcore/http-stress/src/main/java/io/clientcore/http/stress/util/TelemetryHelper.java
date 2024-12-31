@@ -101,7 +101,7 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            AzureMonitorExporter.customize(AutoConfiguredOpenTelemetrySdk.builder(),
+            AzureMonitorExporter.customize(sdkBuilder,
                 new AzureMonitorExporterOptions().connectionString(applicationInsightsConnectionString));
         } else {
             System.setProperty("otel.traces.exporter", "none");

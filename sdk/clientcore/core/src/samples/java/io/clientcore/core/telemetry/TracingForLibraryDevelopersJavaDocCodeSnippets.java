@@ -24,7 +24,7 @@ import java.util.Map;
  * <p>
  *
  * Application developers are expected to use OpenTelemetry API directly.
- * Check out {@link TelemetryJavaDocCodeSnippets} for application-level samples.
+ * Check out {@code TelemetryJavaDocCodeSnippets} for application-level samples.
  */
 public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     private static final LibraryTelemetryOptions LIBRARY_OPTIONS = new LibraryTelemetryOptions("sample")

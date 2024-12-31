@@ -50,3 +50,11 @@ extends:
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
+      - name: core-json
+        groupId: io.clientcore
+        safeName: corejson
+        releaseInBatch: ${{ parameters.release_corejson }}
+    AdditionalModules:
+      - name:
+        groupId: io.clientcore
+        safeName: clientcore

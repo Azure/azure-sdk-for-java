@@ -5,9 +5,9 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.util.DefaultLogger;
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProviders;
-import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.json.JsonOptions;
+import io.clientcore.core.json.JsonProviders;
+import io.clientcore.core.json.JsonReader;
 import io.clientcore.core.util.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -775,7 +775,26 @@ public class ClientLoggerTests {
             return;
         }
 
-        logger.atLevel(logLevel).log(logMessage, runtimeException);
+        switch (logLevel) {
+            case VERBOSE:
+                logger.atVerbose().log(logMessage, runtimeException);
+                break;
+
+            case INFORMATIONAL:
+                logger.atInfo().log(logMessage, runtimeException);
+                break;
+
+            case WARNING:
+                logger.atWarning().log(logMessage, runtimeException);
+                break;
+
+            case ERROR:
+                logger.atError().log(logMessage, runtimeException);
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage) {
@@ -783,7 +802,26 @@ public class ClientLoggerTests {
             return;
         }
 
-        logger.atLevel(logLevel).log(logMessage);
+        switch (logLevel) {
+            case VERBOSE:
+                logger.atVerbose().log(logMessage);
+                break;
+
+            case INFORMATIONAL:
+                logger.atInfo().log(logMessage);
+                break;
+
+            case WARNING:
+                logger.atWarning().log(logMessage);
+                break;
+
+            case ERROR:
+                logger.atError().log(logMessage);
+                break;
+
+            default:
+                break;
+        }
     }
 
     private static IllegalStateException createIllegalStateException(String message) {
@@ -810,7 +848,6 @@ public class ClientLoggerTests {
         LogLevel loggedLevel) {
         if (loggedLevel.compareTo(configuredLevel) >= 0) {
             // remove date/time/level/etc from fullMessage
-
             String messageJson = fullLog.substring(fullLog.indexOf(" - ") + 3);
             System.out.println(messageJson);
             Map<String, Object> message = fromJson(messageJson);
