@@ -12,7 +12,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 public final class OTelUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OTelUtils.class);
 
-    public static Object getOTelContext(Context context) throws Throwable {
+    public static Object getOTelContext(Context context) {
         Object parent = context.get(TelemetryProvider.TRACE_CONTEXT_KEY);
         if (CONTEXT_CLASS.isInstance(parent)) {
             return parent;

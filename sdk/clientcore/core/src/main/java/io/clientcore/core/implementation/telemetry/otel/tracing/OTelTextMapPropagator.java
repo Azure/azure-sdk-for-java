@@ -4,6 +4,7 @@
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.TextMapGetter;
 import io.clientcore.core.telemetry.tracing.TextMapPropagator;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
@@ -28,8 +30,8 @@ public class OTelTextMapPropagator implements TextMapPropagator {
     public static final TextMapPropagator NOOP = new OTelTextMapPropagator(null);
 
     private static final ClientLogger LOGGER = new ClientLogger(OTelTextMapPropagator.class);
-    private static final ReflectiveInvoker INJECT_INVOKER;
-    private static final ReflectiveInvoker EXTRACT_INVOKER;
+    private static final FallbackInvoker INJECT_INVOKER;
+    private static final FallbackInvoker EXTRACT_INVOKER;
 
     static {
         ReflectiveInvoker injectInvoker = null;
@@ -46,8 +48,9 @@ public class OTelTextMapPropagator implements TextMapPropagator {
             }
         }
 
-        INJECT_INVOKER = injectInvoker;
-        EXTRACT_INVOKER = extractInvoker;
+        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
+        INJECT_INVOKER = new FallbackInvoker(injectInvoker, null, onError);
+        EXTRACT_INVOKER = new FallbackInvoker(extractInvoker, null, onError);
     }
 
     private final Object otelPropagator;
@@ -58,27 +61,25 @@ public class OTelTextMapPropagator implements TextMapPropagator {
 
     @Override
     public <C> void inject(Context context, C carrier, TextMapSetter<C> setter) {
-        if (OTelInitializer.isInitialized() && otelPropagator != null) {
-            try {
-                INJECT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Setter.toOTelSetter(setter));
-            } catch (Throwable t) {
-                OTelInitializer.initError(LOGGER, t);
-            }
+        if (isInitialized()) {
+            INJECT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Setter.toOTelSetter(setter));
         }
     }
 
     @Override
     public <C> Context extract(Context context, C carrier, TextMapGetter<C> getter) {
-        if (OTelInitializer.isInitialized() && otelPropagator != null) {
-            try {
-                Object updatedContext = EXTRACT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier,
-                    Getter.toOTelGetter(getter));
+        if (isInitialized()) {
+            Object updatedContext
+                = EXTRACT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Getter.toOTelGetter(getter));
+            if (updatedContext != null) {
                 return context.put(TRACE_CONTEXT_KEY, updatedContext);
-            } catch (Throwable t) {
-                OTelInitializer.initError(LOGGER, t);
             }
         }
         return context;
+    }
+
+    private boolean isInitialized() {
+        return OTelInitializer.isInitialized() && otelPropagator != null;
     }
 
     private static final class Setter<C> implements InvocationHandler {

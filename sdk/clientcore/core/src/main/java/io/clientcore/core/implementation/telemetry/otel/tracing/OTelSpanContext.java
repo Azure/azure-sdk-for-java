@@ -4,19 +4,26 @@
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.SpanContext;
 import io.clientcore.core.util.ClientLogger;
+
+import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 
 public class OTelSpanContext implements SpanContext {
+    public static final Object INVALID_OTEL_SPAN_CONTEXT;
+    private static final String INVALID_TRACE_ID = "00000000000000000000000000000000";
+    private static final String INVALID_SPAN_ID = "0000000000000000";
+    private static final String INVALID_TRACE_FLAGS = "00";
     private static final OTelSpanContext INVALID;
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanContext.class);
-    private static final ReflectiveInvoker GET_SPAN_ID_INVOKER;
-    private static final ReflectiveInvoker GET_TRACE_ID_INVOKER;
-    private static final ReflectiveInvoker GET_TRACE_FLAGS_INVOKER;
+    private static final FallbackInvoker GET_SPAN_ID_INVOKER;
+    private static final FallbackInvoker GET_TRACE_ID_INVOKER;
+    private static final FallbackInvoker GET_TRACE_FLAGS_INVOKER;
 
     private final Object otelSpanContext;
     static {
@@ -29,12 +36,9 @@ public class OTelSpanContext implements SpanContext {
         if (OTelInitializer.isInitialized()) {
             try {
                 getTraceIdInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getTraceId"));
-
                 getSpanIdInvoker = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getSpanId"));
-
                 getTraceFlagsInvoker
                     = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getTraceFlags"));
-
                 ReflectiveInvoker getInvalidInvoker
                     = getMethodInvoker(SPAN_CONTEXT_CLASS, SPAN_CONTEXT_CLASS.getMethod("getInvalid"));
 
@@ -44,10 +48,12 @@ public class OTelSpanContext implements SpanContext {
             }
         }
 
+        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
+        INVALID_OTEL_SPAN_CONTEXT = invalidInstance;
         INVALID = new OTelSpanContext(invalidInstance);
-        GET_SPAN_ID_INVOKER = getSpanIdInvoker;
-        GET_TRACE_ID_INVOKER = getTraceIdInvoker;
-        GET_TRACE_FLAGS_INVOKER = getTraceFlagsInvoker;
+        GET_SPAN_ID_INVOKER = new FallbackInvoker(getSpanIdInvoker, INVALID_SPAN_ID, onError);
+        GET_TRACE_ID_INVOKER = new FallbackInvoker(getTraceIdInvoker, INVALID_TRACE_ID, onError);
+        GET_TRACE_FLAGS_INVOKER = new FallbackInvoker(getTraceFlagsInvoker, INVALID_TRACE_FLAGS, onError);
     }
 
     OTelSpanContext(Object otelSpanContext) {
@@ -60,41 +66,27 @@ public class OTelSpanContext implements SpanContext {
 
     @Override
     public String getTraceId() {
-        if (OTelInitializer.isInitialized() && otelSpanContext != null) {
-            try {
-                return (String) GET_TRACE_ID_INVOKER.invoke(otelSpanContext);
-            } catch (Throwable t) {
-                OTelInitializer.runtimeError(LOGGER, t);
-            }
-        }
-
-        return "00000000000000000000000000000000";
+        return isInitialized() ? (String) GET_TRACE_ID_INVOKER.invoke(otelSpanContext) : INVALID_TRACE_ID;
     }
 
     @Override
     public String getSpanId() {
-        if (OTelInitializer.isInitialized() && otelSpanContext != null) {
-            try {
-                return (String) GET_SPAN_ID_INVOKER.invoke(otelSpanContext);
-            } catch (Throwable t) {
-                OTelInitializer.runtimeError(LOGGER, t);
-            }
-        }
-
-        return "0000000000000000";
+        return isInitialized() ? (String) GET_SPAN_ID_INVOKER.invoke(otelSpanContext) : INVALID_SPAN_ID;
     }
 
     @Override
     public String getTraceFlags() {
-        if (OTelInitializer.isInitialized() && otelSpanContext != null) {
-            try {
-                Object otelTraceFlags = GET_TRACE_FLAGS_INVOKER.invoke(otelSpanContext);
-                return otelTraceFlags == null ? null : otelTraceFlags.toString();
-            } catch (Throwable t) {
-                OTelInitializer.runtimeError(LOGGER, t);
+        if (isInitialized()) {
+            Object traceFlags = GET_TRACE_FLAGS_INVOKER.invoke(otelSpanContext);
+            if (traceFlags != null) {
+                return traceFlags.toString();
             }
         }
 
-        return "00";
+        return INVALID_TRACE_FLAGS;
+    }
+
+    private boolean isInitialized() {
+        return (OTelInitializer.isInitialized() && otelSpanContext != null);
     }
 }

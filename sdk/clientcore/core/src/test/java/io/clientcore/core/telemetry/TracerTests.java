@@ -23,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.telemetry.tracing.SpanKind.INTERNAL;
@@ -98,6 +99,41 @@ public class TracerTests {
 
         assertEquals(true, spanData.getAttributes().get(AttributeKey.booleanKey("builder-boolean-attribute")));
         assertEquals(true, spanData.getAttributes().get(AttributeKey.booleanKey("span-boolean-attribute")));
+
+        assertEquals(io.opentelemetry.api.trace.StatusCode.UNSET, spanData.getStatus().getStatusCode());
+    }
+
+    @Test
+    public void testEndWithErrorString() {
+        Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
+
+        span.setError("cancelled");
+        span.end();
+
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        SpanData spanData = exporter.getFinishedSpanItems().get(0);
+        assertEquals("test-span", spanData.getName());
+
+        assertEquals("cancelled", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
+        assertEquals(io.opentelemetry.api.trace.StatusCode.ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("", spanData.getStatus().getDescription());
+    }
+
+    @Test
+    public void testEndWithException() {
+        Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
+
+        IOException exception = new IOException("test");
+        span.end(exception);
+
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        SpanData spanData = exporter.getFinishedSpanItems().get(0);
+        assertEquals("test-span", spanData.getName());
+
+        assertEquals(IOException.class.getCanonicalName(),
+            spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
+        assertEquals(io.opentelemetry.api.trace.StatusCode.ERROR, spanData.getStatus().getStatusCode());
+        assertEquals(exception.getMessage(), spanData.getStatus().getDescription());
     }
 
     @ParameterizedTest

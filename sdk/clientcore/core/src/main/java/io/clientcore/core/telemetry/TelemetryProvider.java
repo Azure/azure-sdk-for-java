@@ -8,6 +8,8 @@ import io.clientcore.core.implementation.telemetry.otel.OTelTelemetryProvider;
 import io.clientcore.core.telemetry.tracing.TextMapPropagator;
 import io.clientcore.core.telemetry.tracing.Tracer;
 
+import java.util.Objects;
+
 import static io.clientcore.core.telemetry.NoopTelemetryProvider.NOOP_PROVIDER;
 
 /**
@@ -70,6 +72,7 @@ public interface TelemetryProvider {
      * @return The instance of telemetry provider implementation.
      */
     static TelemetryProvider create(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         if (OTelInitializer.isInitialized()) {
             return new OTelTelemetryProvider(applicationOptions, libraryOptions);
         } else {

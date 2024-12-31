@@ -4,9 +4,13 @@
 package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.tracing.SpanKind;
+import io.clientcore.core.telemetry.tracing.TracingScope;
 import io.clientcore.core.util.ClientLogger;
+
+import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_CLASS;
@@ -14,10 +18,12 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 
 class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    private static final ReflectiveInvoker CURRENT_INVOKER;
-    private static final ReflectiveInvoker MAKE_CURRENT_INVOKER;
-    private static final ReflectiveInvoker WITH_INVOKER;
-    private static final ReflectiveInvoker GET_INVOKER;
+    private static final TracingScope NOOP_SCOPE = () -> {
+    };
+    private static final FallbackInvoker CURRENT_INVOKER;
+    private static final FallbackInvoker MAKE_CURRENT_INVOKER;
+    private static final FallbackInvoker WITH_INVOKER;
+    private static final FallbackInvoker GET_INVOKER;
 
     // this context key will indicate if the span is created by client core
     // AND has client or internal kind (logical client operation)
@@ -33,6 +39,7 @@ class OTelContext {
         ReflectiveInvoker withInvoker = null;
         ReflectiveInvoker getInvoker = null;
         Object hasClientSpanContextKey = null;
+        Object rootContext = null;
 
         if (OTelInitializer.isInitialized()) {
             try {
@@ -46,40 +53,47 @@ class OTelContext {
                     = getMethodInvoker(CONTEXT_KEY_CLASS, CONTEXT_KEY_CLASS.getMethod("named", String.class));
 
                 hasClientSpanContextKey = contextKeyNamedInvoker.invoke("client-core-call");
+
+                ReflectiveInvoker rootInvoker = getMethodInvoker(CONTEXT_CLASS, CONTEXT_CLASS.getMethod("root"));
+                rootContext = rootInvoker.invoke();
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
         }
 
-        CURRENT_INVOKER = currentInvoker;
-        MAKE_CURRENT_INVOKER = makeCurrentInvoker;
-        WITH_INVOKER = withInvoker;
-        GET_INVOKER = getInvoker;
+        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
+        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, rootContext, onError);
+        MAKE_CURRENT_INVOKER = new FallbackInvoker(makeCurrentInvoker, NOOP_SCOPE, onError);
+        WITH_INVOKER = new FallbackInvoker(withInvoker, onError);
+        GET_INVOKER = new FallbackInvoker(getInvoker, onError);
         HAS_CLIENT_SPAN_CONTEXT_KEY = hasClientSpanContextKey;
     }
 
-    static Object getCurrent() throws Throwable {
+    static Object getCurrent() {
         Object currentContext = CURRENT_INVOKER.invoke();
         assert CONTEXT_CLASS.isInstance(currentContext);
         return currentContext;
     }
 
-    static AutoCloseable makeCurrent(Object context) throws Throwable {
+    static AutoCloseable makeCurrent(Object context) {
         assert CONTEXT_CLASS.isInstance(context);
         Object scope = MAKE_CURRENT_INVOKER.invoke(context);
         assert scope instanceof AutoCloseable;
         return (AutoCloseable) scope;
     }
 
-    static Object markCoreSpan(Object context, SpanKind spanKind) throws Throwable {
+    static Object markCoreSpan(Object context, SpanKind spanKind) {
         assert CONTEXT_CLASS.isInstance(context);
         if (spanKind == SpanKind.CLIENT || spanKind == SpanKind.INTERNAL) {
-            return WITH_INVOKER.invoke(context, HAS_CLIENT_SPAN_CONTEXT_KEY, Boolean.TRUE);
+            Object updatedContext = WITH_INVOKER.invoke(context, HAS_CLIENT_SPAN_CONTEXT_KEY, Boolean.TRUE);
+            if (updatedContext != null) {
+                return updatedContext;
+            }
         }
         return context;
     }
 
-    static boolean hasClientCoreSpan(Object context) throws Throwable {
+    static boolean hasClientCoreSpan(Object context) {
         assert CONTEXT_CLASS.isInstance(context);
         Object flag = GET_INVOKER.invoke(context, HAS_CLIENT_SPAN_CONTEXT_KEY);
         assert flag == null || flag instanceof Boolean;

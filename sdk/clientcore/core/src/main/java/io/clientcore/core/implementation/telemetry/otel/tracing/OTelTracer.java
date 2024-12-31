@@ -5,6 +5,7 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.telemetry.LibraryTelemetryOptions;
 import io.clientcore.core.telemetry.tracing.SpanBuilder;
@@ -13,7 +14,7 @@ import io.clientcore.core.telemetry.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
-import java.lang.invoke.MethodHandles;
+import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_BUILDER_CLASS;
@@ -22,13 +23,12 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 
 public final class OTelTracer implements Tracer {
     public static final OTelTracer NOOP = new OTelTracer();
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.publicLookup();
     private static final ClientLogger LOGGER = new ClientLogger(OTelTracer.class);
-    private static final ReflectiveInvoker SPAN_BUILDER_INVOKER;
-    private static final ReflectiveInvoker SET_INSTRUMENTATION_VERSION_INVOKER;
-    private static final ReflectiveInvoker BUILD_INVOKER;
-    private static final ReflectiveInvoker SET_SCHEMA_URL_INVOKER;
-    private static final ReflectiveInvoker GET_TRACER_BUILDER_INVOKER;
+    private static final FallbackInvoker SPAN_BUILDER_INVOKER;
+    private static final FallbackInvoker SET_INSTRUMENTATION_VERSION_INVOKER;
+    private static final FallbackInvoker BUILD_INVOKER;
+    private static final FallbackInvoker SET_SCHEMA_URL_INVOKER;
+    private static final FallbackInvoker GET_TRACER_BUILDER_INVOKER;
 
     private final Object otelTracer;
     private final LibraryTelemetryOptions libraryOptions;
@@ -60,11 +60,12 @@ public final class OTelTracer implements Tracer {
             }
         }
 
-        SPAN_BUILDER_INVOKER = spanBuilderInvoker;
-        SET_INSTRUMENTATION_VERSION_INVOKER = setInstrumentationVersionInvoker;
-        SET_SCHEMA_URL_INVOKER = setSchemaUrlInvoker;
-        BUILD_INVOKER = buildInvoker;
-        GET_TRACER_BUILDER_INVOKER = getTracerBuilderInvoker;
+        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
+        SPAN_BUILDER_INVOKER = new FallbackInvoker(spanBuilderInvoker, onError);
+        SET_INSTRUMENTATION_VERSION_INVOKER = new FallbackInvoker(setInstrumentationVersionInvoker, onError);
+        SET_SCHEMA_URL_INVOKER = new FallbackInvoker(setSchemaUrlInvoker, onError);
+        BUILD_INVOKER = new FallbackInvoker(buildInvoker, onError);
+        GET_TRACER_BUILDER_INVOKER = new FallbackInvoker(getTracerBuilderInvoker, onError);
     }
 
     private OTelTracer() {
@@ -72,27 +73,27 @@ public final class OTelTracer implements Tracer {
         this.libraryOptions = null;
     }
 
-    public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) throws Throwable {
+    public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) {
         assert TRACER_PROVIDER_CLASS.isInstance(otelTracerProvider);
 
         Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
-
-        SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
-        SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
-
-        this.otelTracer = BUILD_INVOKER.invoke(tracerBuilder);
+        if (tracerBuilder != null) {
+            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
+            SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
+            this.otelTracer = BUILD_INVOKER.invoke(tracerBuilder);
+        } else {
+            this.otelTracer = null;
+        }
         this.libraryOptions = libraryOptions;
     }
 
     @Override
     public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions options) {
         if (isEnabled()) {
-            try {
+            Object otelSpanBuilder = SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName);
+            if (otelSpanBuilder != null) {
                 Context parent = options == null ? Context.none() : options.getContext();
-                return new OTelSpanBuilder(SPAN_BUILDER_INVOKER.invoke(otelTracer, spanName), spanKind, parent,
-                    libraryOptions);
-            } catch (Throwable t) {
-                OTelInitializer.runtimeError(LOGGER, t);
+                return new OTelSpanBuilder(otelSpanBuilder, spanKind, parent, libraryOptions);
             }
         }
 
