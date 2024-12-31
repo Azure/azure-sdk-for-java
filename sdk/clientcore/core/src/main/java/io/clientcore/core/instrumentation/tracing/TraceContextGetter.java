@@ -9,11 +9,11 @@ package io.clientcore.core.instrumentation.tracing;
  *
  * @param <C> the type of the carrier.
  */
-public interface TextMapGetter<C> {
+public interface TraceContextGetter<C> {
     /**
      * Returns all the keys in the given carrier.
      *
-     * @param carrier carrier of propagation fields, such as an http request.
+     * @param carrier carrier of propagation fields, such as http request.
      *
      * @return all the keys in the given carrier.
      */
@@ -22,7 +22,7 @@ public interface TextMapGetter<C> {
     /**
      * Returns the first value of the given propagation {@code key} or returns {@code null}.
      *
-     * @param carrier carrier of propagation fields, such as an http request.
+     * @param carrier carrier of propagation fields, such as http request.
      * @param key the key of the field.
      * @return the first value of the given propagation {@code key} or returns {@code null}.
      */

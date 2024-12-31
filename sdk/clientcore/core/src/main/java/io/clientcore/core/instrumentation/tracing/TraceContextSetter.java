@@ -9,7 +9,7 @@ package io.clientcore.core.instrumentation.tracing;
  *
  * @param <C> the type of the carrier.
  */
-public interface TextMapSetter<C> {
+public interface TraceContextSetter<C> {
     /**
      * Sets the context property on the carrier.
      *

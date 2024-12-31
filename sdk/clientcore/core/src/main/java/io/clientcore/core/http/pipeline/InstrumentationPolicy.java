@@ -9,14 +9,14 @@ import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
-import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.implementation.telemetry.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationProvider;
 import io.clientcore.core.instrumentation.InstrumentationScope;
 import io.clientcore.core.instrumentation.tracing.Span;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
-import io.clientcore.core.instrumentation.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
@@ -92,22 +92,22 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
-    private static final LibraryTelemetryOptions LIBRARY_OPTIONS;
-    private static final TextMapSetter<HttpHeaders> SETTER
+    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
+    private static final TraceContextSetter<HttpHeaders> SETTER
         = (headers, name, value) -> headers.set(HttpHeaderName.fromString(name), value);
 
     static {
         Map<String, String> properties = getProperties("core.properties");
         LIBRARY_NAME = properties.getOrDefault("name", "unknown");
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
-        LibraryTelemetryOptions libOptions
-            = new LibraryTelemetryOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
+        LibraryInstrumentationOptions libOptions
+            = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
                 .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
         // We might want to make it configurable for other cases, but let's hide the API for now.
-        LibraryTelemetryOptionsAccessHelper.disableSpanSuppression(libOptions);
+        LibraryInstrumentationOptionsAccessHelper.disableSpanSuppression(libOptions);
 
         LIBRARY_OPTIONS = libOptions;
     }
@@ -124,7 +124,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedQueryParams;
     private final Map<HttpHeaderName, String> requestHeaders;
     private final Map<HttpHeaderName, String> responseHeaders;
-    private final TextMapPropagator contextPropagator;
+    private final TraceContextPropagator traceContextPropagator;
 
     /**
      * Creates a new instrumentation policy.
@@ -148,7 +148,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
         InstrumentationProvider instrumentationProvider
             = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentationProvider.getTracer();
-        this.contextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
+        this.traceContextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
         this.allowedQueryParams = logOptions == null ? Collections.emptySet() : logOptions.getAllowedQueryParamNames();
         this.requestHeaders = requestHeaders;
         this.responseHeaders = responseHeaders;
@@ -232,7 +232,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private void propagateContext(Context context, HttpHeaders headers) {
-        contextPropagator.inject(context, headers, SETTER);
+        traceContextPropagator.inject(context, headers, SETTER);
     }
 
     private void addResponseHeaders(Response<?> response, Span span) {

@@ -11,7 +11,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanContext;
-import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationProvider;
 import io.clientcore.core.util.Context;
@@ -485,7 +485,8 @@ public class InstrumentationPolicyTests {
     @Test
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.instrumentation.tracing.Tracer tracer
-            = InstrumentationProvider.create(otelOptions, new LibraryTelemetryOptions("test-library")).getTracer();
+            = InstrumentationProvider.create(otelOptions, new LibraryInstrumentationOptions("test-library"))
+                .getTracer();
 
         RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.instrumentation.tracing.Span parent

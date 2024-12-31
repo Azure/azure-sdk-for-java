@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
+import io.clientcore.core.implementation.telemetry.LibraryInstrumentationOptionsAccessHelper;
 
 import java.util.Objects;
 
@@ -20,36 +20,36 @@ import java.util.Objects;
  * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>.
  * And provide the corresponding schema URL.
  * <p>
- * The {@link LibraryTelemetryOptions} are usually static and shared across all instances of the client.
+ * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.
  */
-public final class LibraryTelemetryOptions {
+public final class LibraryInstrumentationOptions {
     private final String libraryName;
     private String libraryVersion;
     private String schemaUrl;
     private boolean disableSpanSuppression;
 
     static {
-        LibraryTelemetryOptionsAccessHelper
-            .setAccessor(new LibraryTelemetryOptionsAccessHelper.LibraryTelemetryOptionsAccessor() {
+        LibraryInstrumentationOptionsAccessHelper
+            .setAccessor(new LibraryInstrumentationOptionsAccessHelper.LibraryInstrumentationOptionsAccessor() {
                 @Override
-                public LibraryTelemetryOptions disableSpanSuppression(LibraryTelemetryOptions options) {
+                public LibraryInstrumentationOptions disableSpanSuppression(LibraryInstrumentationOptions options) {
                     return options.disableSpanSuppression(true);
                 }
 
                 @Override
-                public boolean isSpanSuppressionDisabled(LibraryTelemetryOptions options) {
+                public boolean isSpanSuppressionDisabled(LibraryInstrumentationOptions options) {
                     return options.isSpanSuppressionDisabled();
                 }
             });
     }
 
     /**
-     * Creates an instance of {@link LibraryTelemetryOptions}.
+     * Creates an instance of {@link LibraryInstrumentationOptions}.
      *
      * @param libraryName The client library name.
      */
-    public LibraryTelemetryOptions(String libraryName) {
+    public LibraryInstrumentationOptions(String libraryName) {
         this.libraryName = Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
     }
 
@@ -57,9 +57,9 @@ public final class LibraryTelemetryOptions {
      * Sets the client library version.
      *
      * @param libraryVersion The client library version.
-     * @return The updated {@link LibraryTelemetryOptions} object.
+     * @return The updated {@link LibraryInstrumentationOptions} object.
      */
-    public LibraryTelemetryOptions setLibraryVersion(String libraryVersion) {
+    public LibraryInstrumentationOptions setLibraryVersion(String libraryVersion) {
         this.libraryVersion = libraryVersion;
         return this;
     }
@@ -69,9 +69,9 @@ public final class LibraryTelemetryOptions {
      * the library emits.
      *
      * @param schemaUrl The schema URL.
-     * @return The updated {@link LibraryTelemetryOptions} object.
+     * @return The updated {@link LibraryInstrumentationOptions} object.
      */
-    public LibraryTelemetryOptions setSchemaUrl(String schemaUrl) {
+    public LibraryInstrumentationOptions setSchemaUrl(String schemaUrl) {
         this.schemaUrl = schemaUrl;
         return this;
     }
@@ -104,7 +104,7 @@ public final class LibraryTelemetryOptions {
         return schemaUrl;
     }
 
-    LibraryTelemetryOptions disableSpanSuppression(boolean disableSpanSuppression) {
+    LibraryInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {
         this.disableSpanSuppression = disableSpanSuppression;
         return this;
     }

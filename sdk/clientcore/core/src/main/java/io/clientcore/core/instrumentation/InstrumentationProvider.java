@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
 import io.clientcore.core.implementation.telemetry.otel.OTelInstrumentationProvider;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
 import java.util.Objects;
@@ -42,7 +42,7 @@ public interface InstrumentationProvider {
      * <!-- src_embed io.clientcore.core.telemetry.tracing.createtracer -->
      * <pre>
      *
-     * LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions&#40;&quot;sample&quot;&#41;
+     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
@@ -62,7 +62,7 @@ public interface InstrumentationProvider {
      *
      * @return The context propagator.
      */
-    TextMapPropagator getW3CTraceContextPropagator();
+    TraceContextPropagator getW3CTraceContextPropagator();
 
     /**
      * Gets the singleton instance of the resolved telemetry provider.
@@ -72,7 +72,7 @@ public interface InstrumentationProvider {
      * @return The instance of telemetry provider implementation.
      */
     static InstrumentationProvider create(InstrumentationOptions<?> applicationOptions,
-        LibraryTelemetryOptions libraryOptions) {
+        LibraryInstrumentationOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         if (OTelInitializer.isInitialized()) {
             return new OTelInstrumentationProvider(applicationOptions, libraryOptions);

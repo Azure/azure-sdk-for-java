@@ -46,7 +46,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class SuppressionTests {
 
-    private static final LibraryTelemetryOptions DEFAULT_LIB_OPTIONS = new LibraryTelemetryOptions("test-library");
+    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
+        = new LibraryInstrumentationOptions("test-library");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
@@ -98,7 +99,7 @@ public class SuppressionTests {
     public void testDisabledSuppression() {
         Tracer outerTracer = tracer;
         Tracer innerTracer = InstrumentationProvider
-            .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
             .getTracer();
 
         RequestOptions options = new RequestOptions();
@@ -122,7 +123,7 @@ public class SuppressionTests {
     @Test
     public void disabledSuppressionDoesNotAffectChildren() {
         Tracer outerTracer = InstrumentationProvider
-            .create(otelOptions, new LibraryTelemetryOptions("test-library").disableSpanSuppression(true))
+            .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
             .getTracer();
         Tracer innerTracer = tracer;
 

@@ -6,9 +6,9 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.tracing.TextMapGetter;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
-import io.clientcore.core.instrumentation.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 
@@ -27,12 +27,12 @@ import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils
 import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 
 /**
- * OpenTelemetry implementation of {@link TextMapPropagator}.
+ * OpenTelemetry implementation of {@link TraceContextPropagator}.
  */
-public class OTelTextMapPropagator implements TextMapPropagator {
-    public static final TextMapPropagator NOOP = new OTelTextMapPropagator(null);
+public class OTelTraceContextPropagator implements TraceContextPropagator {
+    public static final TraceContextPropagator NOOP = new OTelTraceContextPropagator(null);
 
-    private static final ClientLogger LOGGER = new ClientLogger(OTelTextMapPropagator.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OTelTraceContextPropagator.class);
     private static final FallbackInvoker INJECT_INVOKER;
     private static final FallbackInvoker EXTRACT_INVOKER;
 
@@ -59,11 +59,11 @@ public class OTelTextMapPropagator implements TextMapPropagator {
     private final Object otelPropagator;
 
     /**
-     * Creates a new instance of {@link OTelTextMapPropagator}.
+     * Creates a new instance of {@link OTelTraceContextPropagator}.
      *
      * @param otelPropagator the OpenTelemetry propagator
      */
-    public OTelTextMapPropagator(Object otelPropagator) {
+    public OTelTraceContextPropagator(Object otelPropagator) {
         this.otelPropagator = otelPropagator;
     }
 
@@ -71,7 +71,7 @@ public class OTelTextMapPropagator implements TextMapPropagator {
      * {@inheritDoc}
      */
     @Override
-    public <C> void inject(Context context, C carrier, TextMapSetter<C> setter) {
+    public <C> void inject(Context context, C carrier, TraceContextSetter<C> setter) {
         if (isInitialized()) {
             INJECT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Setter.toOTelSetter(setter));
         }
@@ -81,7 +81,7 @@ public class OTelTextMapPropagator implements TextMapPropagator {
      * {@inheritDoc}
      */
     @Override
-    public <C> Context extract(Context context, C carrier, TextMapGetter<C> getter) {
+    public <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter) {
         if (isInitialized()) {
             Object updatedContext
                 = EXTRACT_INVOKER.invoke(otelPropagator, getOTelContext(context), carrier, Getter.toOTelGetter(getter));
@@ -98,15 +98,16 @@ public class OTelTextMapPropagator implements TextMapPropagator {
 
     private static final class Setter<C> implements InvocationHandler {
         private static final Class<?>[] INTERFACES = new Class<?>[] { TEXT_MAP_SETTER_CLASS };
-        private static final Map<TextMapSetter<?>, Object> PROXIES = new java.util.concurrent.ConcurrentHashMap<>();
-        private final TextMapSetter<C> setter;
+        private static final Map<TraceContextSetter<?>, Object> PROXIES
+            = new java.util.concurrent.ConcurrentHashMap<>();
+        private final TraceContextSetter<C> setter;
 
-        static Object toOTelSetter(TextMapSetter<?> setter) {
+        static Object toOTelSetter(TraceContextSetter<?> setter) {
             return PROXIES.computeIfAbsent(setter,
                 s -> Proxy.newProxyInstance(TEXT_MAP_SETTER_CLASS.getClassLoader(), INTERFACES, new Setter<>(s)));
         }
 
-        private Setter(TextMapSetter<C> setter) {
+        private Setter(TraceContextSetter<C> setter) {
             this.setter = setter;
         }
 
@@ -124,15 +125,16 @@ public class OTelTextMapPropagator implements TextMapPropagator {
 
     private static final class Getter<C> implements InvocationHandler {
         private static final Class<?>[] INTERFACES = new Class<?>[] { TEXT_MAP_GETTER_CLASS };
-        private static final Map<TextMapGetter<?>, Object> PROXIES = new java.util.concurrent.ConcurrentHashMap<>();
-        private final TextMapGetter<C> getter;
+        private static final Map<TraceContextGetter<?>, Object> PROXIES
+            = new java.util.concurrent.ConcurrentHashMap<>();
+        private final TraceContextGetter<C> getter;
 
-        static Object toOTelGetter(TextMapGetter<?> getter) {
+        static Object toOTelGetter(TraceContextGetter<?> getter) {
             return PROXIES.computeIfAbsent(getter,
                 g -> Proxy.newProxyInstance(TEXT_MAP_GETTER_CLASS.getClassLoader(), INTERFACES, new Getter<>(g)));
         }
 
-        private Getter(TextMapGetter<C> getter) {
+        private Getter(TraceContextGetter<C> getter) {
             this.getter = getter;
         }
 

@@ -26,7 +26,7 @@ import java.util.Map;
  * Check out {@code TelemetryJavaDocCodeSnippets} for application-level samples.
  */
 public class TracingForLibraryDevelopersJavaDocCodeSnippets {
-    private static final LibraryTelemetryOptions LIBRARY_OPTIONS = new LibraryTelemetryOptions("sample")
+    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
         .setLibraryVersion("1.0.0")
         .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
@@ -34,7 +34,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.telemetry.tracing.createtracer
 
-        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("sample")
+        LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions("sample")
             .setLibraryVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 

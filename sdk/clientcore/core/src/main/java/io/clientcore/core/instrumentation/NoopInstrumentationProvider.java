@@ -5,9 +5,9 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
-import io.clientcore.core.instrumentation.tracing.TextMapGetter;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
-import io.clientcore.core.instrumentation.tracing.TextMapSetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 
@@ -20,7 +20,7 @@ class NoopInstrumentationProvider implements InstrumentationProvider {
     }
 
     @Override
-    public TextMapPropagator getW3CTraceContextPropagator() {
+    public TraceContextPropagator getW3CTraceContextPropagator() {
         return NOOP_CONTEXT_PROPAGATOR;
     }
 
@@ -70,15 +70,15 @@ class NoopInstrumentationProvider implements InstrumentationProvider {
     };
     private static final Tracer NOOP_TRACER = (name, kind, ctx) -> NOOP_SPAN_BUILDER;
 
-    private static final TextMapPropagator NOOP_CONTEXT_PROPAGATOR = new TextMapPropagator() {
+    private static final TraceContextPropagator NOOP_CONTEXT_PROPAGATOR = new TraceContextPropagator() {
 
         @Override
-        public <C> void inject(Context context, C carrier, TextMapSetter<C> setter) {
+        public <C> void inject(Context context, C carrier, TraceContextSetter<C> setter) {
 
         }
 
         @Override
-        public <C> Context extract(Context context, C carrier, TextMapGetter<C> getter) {
+        public <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter) {
             return context;
         }
     };

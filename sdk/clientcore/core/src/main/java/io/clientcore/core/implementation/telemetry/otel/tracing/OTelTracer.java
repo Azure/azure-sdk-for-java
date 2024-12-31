@@ -7,7 +7,7 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
@@ -34,7 +34,7 @@ public final class OTelTracer implements Tracer {
     private static final FallbackInvoker GET_TRACER_BUILDER_INVOKER;
 
     private final Object otelTracer;
-    private final LibraryTelemetryOptions libraryOptions;
+    private final LibraryInstrumentationOptions libraryOptions;
 
     static {
         ReflectiveInvoker spanBuilderInvoker = null;
@@ -81,7 +81,7 @@ public final class OTelTracer implements Tracer {
      * @param otelTracerProvider the OpenTelemetry tracer provider
      * @param libraryOptions the library options
      */
-    public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) {
+    public OTelTracer(Object otelTracerProvider, LibraryInstrumentationOptions libraryOptions) {
         Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
         if (tracerBuilder != null) {
             SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());

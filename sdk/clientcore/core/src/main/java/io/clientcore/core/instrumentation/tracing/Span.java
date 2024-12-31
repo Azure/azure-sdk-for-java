@@ -66,10 +66,10 @@ public interface Span {
     boolean isRecording();
 
     /**
-     * Makes the span the current span.
+     * Makes the context representing this span current.
      * <p>
      * By making span current, we create a scope that's used to correlate all other telemetry reported under it
-     * such as spans, logs, or metrics exemplars.
+     * such as other spans, logs, or metrics exemplars.
      * <p>
      * The scope MUST be closed on the same thread that created it.
      * <p>

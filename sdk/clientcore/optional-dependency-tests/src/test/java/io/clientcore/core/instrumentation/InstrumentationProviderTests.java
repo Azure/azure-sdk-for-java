@@ -29,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class InstrumentationProviderTests {
-    private static final LibraryTelemetryOptions DEFAULT_LIB_OPTIONS = new LibraryTelemetryOptions("test-library");
+    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
+        = new LibraryInstrumentationOptions("test-library");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
 
@@ -126,8 +127,9 @@ public class InstrumentationProviderTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            LibraryTelemetryOptions libOptions = new LibraryTelemetryOptions("test-library").setLibraryVersion("1.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            LibraryInstrumentationOptions libOptions
+                = new LibraryInstrumentationOptions("test-library").setLibraryVersion("1.0.0")
+                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
             Tracer tracer = InstrumentationProvider.create(null, libOptions).getTracer();
             assertTrue(tracer.isEnabled());

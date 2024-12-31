@@ -5,12 +5,12 @@ package io.clientcore.core.implementation.telemetry.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
-import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTextMapPropagator;
+import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTraceContextPropagator;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelTracer;
-import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationProvider;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 
@@ -30,7 +30,7 @@ public class OTelInstrumentationProvider implements InstrumentationProvider {
     private static final FallbackInvoker GET_GLOBAL_OTEL_INVOKER;
 
     private static final Object NOOP_PROVIDER;
-    private static final OTelTextMapPropagator W3C_PROPAGATOR_INSTANCE;
+    private static final OTelTraceContextPropagator W3C_PROPAGATOR_INSTANCE;
     private static final ClientLogger LOGGER = new ClientLogger(OTelInstrumentationProvider.class);
     static {
         ReflectiveInvoker getProviderInvoker = null;
@@ -62,11 +62,11 @@ public class OTelInstrumentationProvider implements InstrumentationProvider {
         GET_GLOBAL_OTEL_INVOKER = new FallbackInvoker(getGlobalOtelInvoker, onError);
         NOOP_PROVIDER = noopProvider;
 
-        W3C_PROPAGATOR_INSTANCE = new OTelTextMapPropagator(w3cPropagatorInstance);
+        W3C_PROPAGATOR_INSTANCE = new OTelTraceContextPropagator(w3cPropagatorInstance);
     }
 
     private final Object otelInstance;
-    private final LibraryTelemetryOptions libraryOptions;
+    private final LibraryInstrumentationOptions libraryOptions;
     private final boolean isTracingEnabled;
 
     /**
@@ -76,7 +76,7 @@ public class OTelInstrumentationProvider implements InstrumentationProvider {
      * @param libraryOptions the library options
      */
     public OTelInstrumentationProvider(InstrumentationOptions<?> applicationOptions,
-        LibraryTelemetryOptions libraryOptions) {
+        LibraryInstrumentationOptions libraryOptions) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
             throw LOGGER.atError()
@@ -111,8 +111,8 @@ public class OTelInstrumentationProvider implements InstrumentationProvider {
      * {@inheritDoc}
      */
     @Override
-    public TextMapPropagator getW3CTraceContextPropagator() {
-        return OTelInitializer.isInitialized() ? W3C_PROPAGATOR_INSTANCE : OTelTextMapPropagator.NOOP;
+    public TraceContextPropagator getW3CTraceContextPropagator() {
+        return OTelInitializer.isInitialized() ? W3C_PROPAGATOR_INSTANCE : OTelTraceContextPropagator.NOOP;
     }
 
     private Object getOtelInstance() {

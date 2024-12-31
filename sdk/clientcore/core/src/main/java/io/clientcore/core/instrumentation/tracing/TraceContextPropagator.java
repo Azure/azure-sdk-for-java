@@ -6,11 +6,11 @@ package io.clientcore.core.instrumentation.tracing;
 import io.clientcore.core.util.Context;
 
 /**
- * A {@code TextMapPropagator} injects and extracts tracing context from a carrier,
+ * A {@link TraceContextPropagator} injects and extracts tracing context from a carrier,
  * such as {@link io.clientcore.core.http.models.HttpRequest}.
  * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
-public interface TextMapPropagator {
+public interface TraceContextPropagator {
     /**
      * Injects the context into the carrier.
      *
@@ -19,7 +19,7 @@ public interface TextMapPropagator {
      * @param setter The setter to use to inject the context into the carrier.
      * @param <C> The type of the carrier.
      */
-    <C> void inject(Context context, C carrier, TextMapSetter<C> setter);
+    <C> void inject(Context context, C carrier, TraceContextSetter<C> setter);
 
     /**
      * Extracts the context from the carrier.
@@ -31,5 +31,5 @@ public interface TextMapPropagator {
      *
      * @return The extracted context.
      */
-    <C> Context extract(Context context, C carrier, TextMapGetter<C> getter);
+    <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter);
 }

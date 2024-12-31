@@ -5,9 +5,9 @@ package io.clientcore.core.implementation.telemetry.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.telemetry.FallbackInvoker;
-import io.clientcore.core.implementation.telemetry.LibraryTelemetryOptionsAccessHelper;
+import io.clientcore.core.implementation.telemetry.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.telemetry.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.LibraryTelemetryOptions;
+import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -30,7 +30,7 @@ import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils
  */
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
-        = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
+        = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryInstrumentationOptions("noop"));
 
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpanBuilder.class);
     private static final OTelSpan NOOP_SPAN;
@@ -101,10 +101,11 @@ public class OTelSpanBuilder implements SpanBuilder {
 
     }
 
-    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, Context parent, LibraryTelemetryOptions libraryOptions) {
+    OTelSpanBuilder(Object otelSpanBuilder, SpanKind kind, Context parent,
+        LibraryInstrumentationOptions libraryOptions) {
         this.otelSpanBuilder = otelSpanBuilder;
-        this.suppressNestedSpans
-            = libraryOptions == null || !LibraryTelemetryOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+        this.suppressNestedSpans = libraryOptions == null
+            || !LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
         this.spanKind = kind;
         this.context = parent;
     }

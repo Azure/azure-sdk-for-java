@@ -164,7 +164,7 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private final static LibraryTelemetryOptions LIBRARY_OPTIONS = new LibraryTelemetryOptions("sample");
+        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
         private final HttpPipeline httpPipeline;
         private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
 

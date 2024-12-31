@@ -6,8 +6,8 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.telemetry.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.tracing.Span;
-import io.clientcore.core.instrumentation.tracing.TextMapGetter;
-import io.clientcore.core.instrumentation.tracing.TextMapPropagator;
+import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
+import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
@@ -37,24 +37,26 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContextPropagationTests {
-    private static final LibraryTelemetryOptions DEFAULT_LIB_OPTIONS = new LibraryTelemetryOptions("test-library");
-    private static final TextMapGetter<Map<String, String>> GETTER = new TextMapGetter<Map<String, String>>() {
-        @Override
-        public Iterable<String> keys(Map<String, String> carrier) {
-            return carrier.keySet();
-        }
+    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
+        = new LibraryInstrumentationOptions("test-library");
+    private static final TraceContextGetter<Map<String, String>> GETTER
+        = new TraceContextGetter<Map<String, String>>() {
+            @Override
+            public Iterable<String> keys(Map<String, String> carrier) {
+                return carrier.keySet();
+            }
 
-        @Override
-        public String get(Map<String, String> carrier, String key) {
-            return carrier.get(key);
-        }
-    };
+            @Override
+            public String get(Map<String, String> carrier, String key) {
+                return carrier.get(key);
+            }
+        };
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private InstrumentationOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
-    private TextMapPropagator contextPropagator;
+    private TraceContextPropagator contextPropagator;
     private InstrumentationProvider instrumentationProvider;
 
     @BeforeEach
