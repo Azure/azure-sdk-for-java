@@ -1,25 +1,25 @@
 package com.azure.identity.extensions.implementation.cache;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryTokenCredentialCache implements TokenCredentialCache {
+
     private static final ConcurrentHashMap<String, TokenCredential> cache = new ConcurrentHashMap<>();
 
     @Override
-    public void put(TokenCredentialProviderOptions options, TokenCredential value) {
-        cache.putIfAbsent(getKey(options), value);
+    public void put(String key, TokenCredential value) {
+        cache.putIfAbsent(key, value);
     }
 
     @Override
-    public TokenCredential get(TokenCredentialProviderOptions options) {
-        return cache.get(getKey(options));
+    public TokenCredential get(String key) {
+        return cache.get(key);
     }
 
     @Override
-    public void remove(TokenCredentialProviderOptions options) {
-        cache.remove(getKey(options));
+    public void remove(String key) {
+        cache.remove(key);
     }
 }

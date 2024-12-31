@@ -24,8 +24,7 @@ public final class TokenCredentialCacheHelper {
             return new InMemoryTokenCredentialCache();
         }
 
-        Class<? extends TokenCredentialCache> clazz
-            = ClassUtil.getClass(cacheClassName, TokenCredentialCache.class);
+        Class<? extends TokenCredentialCache> clazz = ClassUtil.getClass(cacheClassName, TokenCredentialCache.class);
         if (clazz == null) {
             clazz = defaultCacheClass;
         }

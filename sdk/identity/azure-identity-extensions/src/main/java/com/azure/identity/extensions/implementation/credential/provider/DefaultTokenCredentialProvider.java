@@ -34,7 +34,8 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
         this.tokenCredential = get(this.options);
 
         if (this.options.isTokenCredentialCacheEnabled()) {
-            tokenCredentialCache = TokenCredentialCacheHelper.createInstance(this.options.getTokenCredentialCacheClassName());
+            tokenCredentialCache
+                = TokenCredentialCacheHelper.createInstance(this.options.getTokenCredentialCacheClassName());
         }
     }
 

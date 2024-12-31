@@ -3,16 +3,29 @@ package com.azure.identity.extensions.implementation.cache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public interface TokenCredentialCache {
 
-    void put(TokenCredentialProviderOptions options, TokenCredential value);
+    void put(String key, TokenCredential value);
 
-    TokenCredential get(TokenCredentialProviderOptions options);
+    TokenCredential get(String key);
 
-    void remove(TokenCredentialProviderOptions options);
+    void remove(String key);
 
     default String getKey(TokenCredentialProviderOptions options) {
-        // todo implement the key generation
-        return "";
+        return joinOptions(options.getTenantId(), options.getClientId(), options.getClientCertificatePath(),
+            options.getUsername(), String.valueOf(options.isManagedIdentityEnabled()),
+            options.getTokenCredentialProviderClassName(), options.getTokenCredentialBeanName(),
+            options.getTokenCredentialCacheClassName());
+    }
+
+    static String joinOptions(String... options) {
+        return Arrays.stream(options).map(TokenCredentialCache::nonNullOption).collect(Collectors.joining(","));
+    }
+
+    static String nonNullOption(String option) {
+        return option == null ? "" : option;
     }
 }

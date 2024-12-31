@@ -31,19 +31,20 @@ public interface TokenCredentialProvider extends Supplier<TokenCredential> {
     }
 
     default TokenCredential getFromCache() {
-        TokenCredentialCache tokenCredentialCache = getTokenCredentialCache();
-        TokenCredentialProviderOptions providerOptions = getTokenCredentialProviderOptions();
-        if (providerOptions != null && tokenCredentialCache != null && providerOptions.isTokenCredentialCacheEnabled()) {
-            TokenCredential cachedTokenCredential = tokenCredentialCache.get(providerOptions);
+        TokenCredentialCache cache = getTokenCredentialCache();
+        TokenCredentialProviderOptions options = getTokenCredentialProviderOptions();
+        if (options != null && cache != null && options.isTokenCredentialCacheEnabled()) {
+            TokenCredential cachedTokenCredential = cache.get(cache.getKey(options));
             if (cachedTokenCredential != null) {
-                LOGGER.verbose("Returning TokenCredential from cache.");
+                LOGGER.verbose("Returning token credential from cache.");
                 return cachedTokenCredential;
             }
         }
 
         TokenCredential tokenCredential = get();
-        if (providerOptions != null && tokenCredentialCache != null && providerOptions.isTokenCredentialCacheEnabled()) {
-            tokenCredentialCache.put(providerOptions, tokenCredential);
+        if (options != null && cache != null && options.isTokenCredentialCacheEnabled()) {
+            cache.put(cache.getKey(options), tokenCredential);
+            LOGGER.verbose("The token credential cached.");
         }
         return tokenCredential;
     }
