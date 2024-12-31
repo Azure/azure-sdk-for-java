@@ -150,7 +150,7 @@ matrix:
       sync: true
       sizeBytes: "10240"
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob upload, no chunking
