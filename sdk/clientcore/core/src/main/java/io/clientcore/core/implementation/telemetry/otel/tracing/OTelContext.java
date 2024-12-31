@@ -17,7 +17,7 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.C
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.CONTEXT_KEY_CLASS;
 
 class OTelContext {
-    private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
     private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker CURRENT_INVOKER;

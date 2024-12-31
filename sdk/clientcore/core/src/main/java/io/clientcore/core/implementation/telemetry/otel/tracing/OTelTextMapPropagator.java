@@ -26,6 +26,9 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
 import static io.clientcore.core.telemetry.TelemetryProvider.TRACE_CONTEXT_KEY;
 
+/**
+ * OpenTelemetry implementation of {@link TextMapPropagator}.
+ */
 public class OTelTextMapPropagator implements TextMapPropagator {
     public static final TextMapPropagator NOOP = new OTelTextMapPropagator(null);
 
@@ -55,10 +58,18 @@ public class OTelTextMapPropagator implements TextMapPropagator {
 
     private final Object otelPropagator;
 
+    /**
+     * Creates a new instance of {@link OTelTextMapPropagator}.
+     *
+     * @param otelPropagator the OpenTelemetry propagator
+     */
     public OTelTextMapPropagator(Object otelPropagator) {
         this.otelPropagator = otelPropagator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <C> void inject(Context context, C carrier, TextMapSetter<C> setter) {
         if (isInitialized()) {
@@ -66,6 +77,9 @@ public class OTelTextMapPropagator implements TextMapPropagator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <C> Context extract(Context context, C carrier, TextMapGetter<C> getter) {
         if (isInitialized()) {

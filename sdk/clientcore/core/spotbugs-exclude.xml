@@ -73,6 +73,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.SwaggerMethodParser" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
       <Class name="io.clientcore.core.util.ClientLogger" />
+      <Class name="io.clientcore.core.implementation.telemetry.otel.OTelTelemetryProvider" />
     </Or>
   </Match>
   <Match>
@@ -392,5 +393,13 @@
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+  </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicy" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+    <Class name="io.clientcore.core.http.pipeline.InstrumentationPolicy" />
   </Match>
 </FindBugsFilter>

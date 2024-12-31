@@ -5,6 +5,9 @@ package io.clientcore.core.implementation.telemetry.otel;
 
 import io.clientcore.core.util.ClientLogger;
 
+/**
+ * This class is used to initialize OpenTelemetry.
+ */
 public final class OTelInitializer {
     private static final ClientLogger LOGGER = new ClientLogger(OTelInitializer.class);
     private static final OTelInitializer INSTANCE;
@@ -151,11 +154,22 @@ public final class OTelInitializer {
         this.initialized = initialized;
     }
 
+    /**
+     * Disables OTel and logs OTel initialization error.
+     * @param logger the logger
+     * @param t the error
+     */
     public static void initError(ClientLogger logger, Throwable t) {
         logger.atVerbose().log("OpenTelemetry version is incompatible.", t);
         INSTANCE.initialized = false;
     }
 
+    /**
+     * Disables OTel and logs runtime error when using OTel.
+     *
+     * @param logger the logger
+     * @param t the error
+     */
     public static void runtimeError(ClientLogger logger, Throwable t) {
         if (INSTANCE.initialized) {
             logger.atWarning().log("Unexpected error when invoking OpenTelemetry, turning tracing off.", t);
@@ -164,6 +178,11 @@ public final class OTelInitializer {
         INSTANCE.initialized = false;
     }
 
+    /**
+     * Checks if OTel initialization was successful.
+     *
+     * @return true if OTel is initialized successfully, false otherwise
+     */
     public static boolean isInitialized() {
         return INSTANCE.initialized;
     }

@@ -12,6 +12,9 @@ import java.util.function.Consumer;
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 
+/**
+ * Helper class to create OTel attribute keys.
+ */
 public class OTelAttributeKey {
     private static final ClientLogger LOGGER = new ClientLogger(OTelAttributeKey.class);
     private static final FallbackInvoker CREATE_STRING_KEY_INVOKER;
@@ -45,6 +48,13 @@ public class OTelAttributeKey {
         CREATE_DOUBLE_KEY_INVOKER = new FallbackInvoker(createDoubleKeyInvoker, null, onError);
     }
 
+    /**
+     * Creates an OTel attribute key.
+     *
+     * @param key the key name
+     * @param value the value
+     * @return the OTel attribute key
+     */
     public static Object getKey(String key, Object value) {
         if (OTelInitializer.isInitialized()) {
             if (value instanceof Boolean) {
@@ -69,6 +79,12 @@ public class OTelAttributeKey {
         return null;
     }
 
+    /**
+     * Casts the attribute value to the correct type.
+     *
+     * @param value the value
+     * @return the casted value
+     */
     public static Object castAttributeValue(Object value) {
         if (value instanceof Integer) {
             return ((Integer) value).longValue();

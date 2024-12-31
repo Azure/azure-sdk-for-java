@@ -234,25 +234,27 @@ public class InstrumentationPolicyTests {
 
     @Test
     public void otelPropagatorIsIgnored() throws IOException {
+        TextMapPropagator testPropagator = new TextMapPropagator() {
+            @Override
+            public Collection<String> fields() {
+                return Collections.singleton("foo");
+            }
+
+            @Override
+            public <C> void inject(io.opentelemetry.context.Context context, C carrier, TextMapSetter<C> setter) {
+                setter.set(carrier, "foo", "bar");
+            }
+
+            @Override
+            public <C> io.opentelemetry.context.Context extract(io.opentelemetry.context.Context context, C carrier,
+                TextMapGetter<C> getter) {
+                return context;
+            }
+        };
+
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
             .setTracerProvider(tracerProvider)
-            .setPropagators(ContextPropagators.create(new TextMapPropagator() {
-                @Override
-                public Collection<String> fields() {
-                    return Collections.singleton("foo");
-                }
-
-                @Override
-                public <C> void inject(io.opentelemetry.context.Context context, C carrier, TextMapSetter<C> setter) {
-                    setter.set(carrier, "foo", "bar");
-                }
-
-                @Override
-                public <C> io.opentelemetry.context.Context extract(io.opentelemetry.context.Context context, C carrier,
-                    TextMapGetter<C> getter) {
-                    return context;
-                }
-            }))
+            .setPropagators(ContextPropagators.create(testPropagator))
             .build();
 
         TelemetryOptions<OpenTelemetry> otelOptions = new TelemetryOptions<OpenTelemetry>().setProvider(openTelemetry);

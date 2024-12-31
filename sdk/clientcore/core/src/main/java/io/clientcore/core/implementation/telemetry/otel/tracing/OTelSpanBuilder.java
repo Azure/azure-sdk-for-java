@@ -25,6 +25,9 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.S
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_KIND_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.tracing.OTelUtils.getOTelContext;
 
+/**
+ * OpenTelemetry implementation of {@link SpanBuilder}.
+ */
 public class OTelSpanBuilder implements SpanBuilder {
     static final OTelSpanBuilder NOOP
         = new OTelSpanBuilder(null, SpanKind.INTERNAL, Context.none(), new LibraryTelemetryOptions("noop"));
@@ -106,6 +109,9 @@ public class OTelSpanBuilder implements SpanBuilder {
         this.context = parent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpanBuilder setAttribute(String key, Object value) {
         if (isInitialized()) {
@@ -115,6 +121,9 @@ public class OTelSpanBuilder implements SpanBuilder {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Span startSpan() {
         if (isInitialized()) {

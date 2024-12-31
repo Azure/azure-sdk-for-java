@@ -10,13 +10,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Utility class for URL redaction.
+ */
 public final class UrlRedactionUtil {
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
-    /*
+    /**
      * Generates the redacted URI for logging.
      *
      * @param uri URI where the request is being sent.
+     * @param allowedQueryParameterNames Set of query parameter names that are allowed to be logged.
      * @return A URI with query parameters redacted based on configurations in this policy.
      */
     public static String getRedactedUri(URI uri, Set<String> allowedQueryParameterNames) {

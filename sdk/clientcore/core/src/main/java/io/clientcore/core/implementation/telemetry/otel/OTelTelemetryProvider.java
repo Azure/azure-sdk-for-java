@@ -22,6 +22,9 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.O
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.W3C_PROPAGATOR_CLASS;
 
+/**
+ * A {@link TelemetryProvider} implementation that uses OpenTelemetry.
+ */
 public class OTelTelemetryProvider implements TelemetryProvider {
     private static final FallbackInvoker GET_PROVIDER_INVOKER;
     private static final FallbackInvoker GET_GLOBAL_OTEL_INVOKER;
@@ -66,6 +69,12 @@ public class OTelTelemetryProvider implements TelemetryProvider {
     private final LibraryTelemetryOptions libraryOptions;
     private final boolean isTracingEnabled;
 
+    /**
+     * Creates a new instance of {@link OTelTelemetryProvider}.
+     *
+     * @param applicationOptions the application options
+     * @param libraryOptions the library options
+     */
     public OTelTelemetryProvider(TelemetryOptions<?> applicationOptions, LibraryTelemetryOptions libraryOptions) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
@@ -81,6 +90,9 @@ public class OTelTelemetryProvider implements TelemetryProvider {
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Tracer getTracer() {
         if (OTelInitializer.isInitialized() && isTracingEnabled) {
@@ -94,13 +106,16 @@ public class OTelTelemetryProvider implements TelemetryProvider {
         return OTelTracer.NOOP;
     }
 
-    private Object getOtelInstance() {
-        // not caching global to prevent caching instance that was not setup yet at the start time.
-        return otelInstance != null ? otelInstance : GET_GLOBAL_OTEL_INVOKER.invoke();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TextMapPropagator getW3CTraceContextPropagator() {
         return OTelInitializer.isInitialized() ? W3C_PROPAGATOR_INSTANCE : OTelTextMapPropagator.NOOP;
+    }
+
+    private Object getOtelInstance() {
+        // not caching global to prevent caching instance that was not setup yet at the start time.
+        return otelInstance != null ? otelInstance : GET_GLOBAL_OTEL_INVOKER.invoke();
     }
 }

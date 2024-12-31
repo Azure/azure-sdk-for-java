@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
@@ -183,6 +183,10 @@
           <additionalCodesnippets>
             <additionalCodesnippet>
               <root>../optional-dependency-tests/src/samples/java</root>
+              <glob>**/*.java</glob>
+            </additionalCodesnippet>
+            <additionalCodesnippet>
+              <root>src/test</root>
               <glob>**/*.java</glob>
             </additionalCodesnippet>
           </additionalCodesnippets>

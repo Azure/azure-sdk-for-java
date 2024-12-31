@@ -14,6 +14,9 @@ import java.util.function.Consumer;
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 
+/**
+ * OpenTelemetry implementation of {@link SpanContext}.
+ */
 public class OTelSpanContext implements SpanContext {
     public static final Object INVALID_OTEL_SPAN_CONTEXT;
     private static final String INVALID_TRACE_ID = "00000000000000000000000000000000";
@@ -64,16 +67,25 @@ public class OTelSpanContext implements SpanContext {
         return INVALID;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTraceId() {
         return isInitialized() ? (String) GET_TRACE_ID_INVOKER.invoke(otelSpanContext) : INVALID_TRACE_ID;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSpanId() {
         return isInitialized() ? (String) GET_SPAN_ID_INVOKER.invoke(otelSpanContext) : INVALID_SPAN_ID;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTraceFlags() {
         if (isInitialized()) {

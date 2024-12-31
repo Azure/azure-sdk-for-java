@@ -21,6 +21,9 @@ import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.T
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_CLASS;
 import static io.clientcore.core.implementation.telemetry.otel.OTelInitializer.TRACER_PROVIDER_CLASS;
 
+/**
+ * OpenTelemetry implementation of {@link Tracer}.
+ */
 public final class OTelTracer implements Tracer {
     public static final OTelTracer NOOP = new OTelTracer();
     private static final ClientLogger LOGGER = new ClientLogger(OTelTracer.class);
@@ -73,9 +76,12 @@ public final class OTelTracer implements Tracer {
         this.libraryOptions = null;
     }
 
+    /**
+     * Creates a new instance of {@link OTelTracer}.
+     * @param otelTracerProvider the OpenTelemetry tracer provider
+     * @param libraryOptions the library options
+     */
     public OTelTracer(Object otelTracerProvider, LibraryTelemetryOptions libraryOptions) {
-        assert TRACER_PROVIDER_CLASS.isInstance(otelTracerProvider);
-
         Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
         if (tracerBuilder != null) {
             SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
@@ -87,6 +93,9 @@ public final class OTelTracer implements Tracer {
         this.libraryOptions = libraryOptions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpanBuilder spanBuilder(String spanName, SpanKind spanKind, RequestOptions options) {
         if (isEnabled()) {
@@ -100,6 +109,9 @@ public final class OTelTracer implements Tracer {
         return OTelSpanBuilder.NOOP;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnabled() {
         return OTelInitializer.isInitialized() && otelTracer != null;

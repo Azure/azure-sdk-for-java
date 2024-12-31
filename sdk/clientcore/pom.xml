@@ -12,7 +12,7 @@
   <modules>
     <module>core</module>
     <module>http-okhttp3</module>
-    <module>http-stress</module>
     <module>optional-dependency-tests</module>
+    <module>http-stress</module>
   </modules>
 </project>
