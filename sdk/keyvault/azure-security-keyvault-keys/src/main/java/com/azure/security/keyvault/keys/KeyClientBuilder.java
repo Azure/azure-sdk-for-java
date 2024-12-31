@@ -150,7 +150,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildClientImpl(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyClient(buildClientImpl(), vaultUrl, version);
     }
 
     /**
@@ -171,8 +171,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildClientImpl(), vaultUrl,
-            version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyAsyncClient(buildClientImpl(), vaultUrl, version);
     }
 
     private KeyClientImpl buildClientImpl() {
