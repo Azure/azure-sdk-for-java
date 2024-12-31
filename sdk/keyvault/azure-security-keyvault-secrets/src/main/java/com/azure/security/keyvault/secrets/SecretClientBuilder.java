@@ -191,7 +191,9 @@ public final class SecretClientBuilder implements
                 new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        version = version != null ? version : SecretServiceVersion.getLatest();
+        if (version == null) {
+            version = SecretServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
             return new SecretClientImpl(pipeline, vaultUrl, version);
