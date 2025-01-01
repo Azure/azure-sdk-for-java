@@ -6,6 +6,7 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.StatusCode;
@@ -60,12 +61,12 @@ public class TracingShimBenchmarks {
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");
         shimTracer
-            = InstrumentationProvider
+            = Instrumentation
                 .create(new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry),
                     new LibraryInstrumentationOptions("test"))
                 .getTracer();
         shimTracerDisabled
-            = InstrumentationProvider
+            = Instrumentation
                 .create(new InstrumentationOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
                     new LibraryInstrumentationOptions("test"))
                 .getTracer();
@@ -103,7 +104,7 @@ public class TracingShimBenchmarks {
             span.setAttribute("boolean", true);
         }
 
-        try (InstrumentationScope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             span.setError("canceled");
         }
         span.end();

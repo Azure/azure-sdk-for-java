@@ -15,9 +15,9 @@ import io.clientcore.core.http.pipeline.InstrumentationPolicy;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * THESE CODE SNIPPETS ARE INTENDED FOR CLIENT LIBRARY DEVELOPERS ONLY.
@@ -42,7 +42,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
 
-        Tracer tracer = InstrumentationProvider.create(instrumentationOptions, libraryOptions).getTracer();
+        Tracer tracer = Instrumentation.create(instrumentationOptions, libraryOptions).getTracer();
 
         // END: io.clientcore.core.telemetry.tracing.createtracer
     }
@@ -52,7 +52,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceCall() {
 
-        Tracer tracer = InstrumentationProvider.create(null, LIBRARY_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracecall
@@ -69,7 +69,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             requestOptions.setContext(requestOptions.getContext().put(TRACE_CONTEXT_KEY, span));
         }
 
-        try (InstrumentationScope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             clientCall(requestOptions);
         } catch (Throwable t) {
             // make sure to report any exceptions including unchecked ones.
@@ -88,7 +88,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void traceWithAttributes() {
 
-        Tracer tracer = InstrumentationProvider.create(null, LIBRARY_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(null, LIBRARY_OPTIONS).getTracer();
         RequestOptions requestOptions = null;
 
         // BEGIN: io.clientcore.core.telemetry.tracing.tracewithattributes
@@ -101,7 +101,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             .setAttribute("messaging.operations.name", "send")
             .startSpan();
 
-        try (InstrumentationScope scope = sendSpan.makeCurrent()) {
+        try (TracingScope scope = sendSpan.makeCurrent()) {
             if (sendSpan.isRecording()) {
                 sendSpan.setAttribute("messaging.message.id", "{message-id}");
             }

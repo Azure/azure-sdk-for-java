@@ -3,8 +3,6 @@
 
 package io.clientcore.core.instrumentation.tracing;
 
-import io.clientcore.core.instrumentation.InstrumentationScope;
-
 /**
  * A {@code Span} represents a single operation within a trace. Spans can be nested to form a trace tree.
  * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
@@ -75,7 +73,7 @@ public interface Span {
      * <p>
      * <strong>Closing the scope does not end the span.</strong>
      *
-     * @return The {@link InstrumentationScope} object.
+     * @return The {@link TracingScope} object.
      */
-    InstrumentationScope makeCurrent();
+    TracingScope makeCurrent();
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.instrumentation;
+package io.clientcore.core.instrumentation.tracing;
 
 /**
  * An {@code AutoCloseable} scope that controls implicit tracing context lifetime.
@@ -12,7 +12,7 @@ package io.clientcore.core.instrumentation;
  * <p><strong>This interface is intended to be used by client libraries only. Application developers should use OpenTelemetry API directly</strong></p>
  */
 @FunctionalInterface
-public interface InstrumentationScope extends AutoCloseable {
+public interface TracingScope extends AutoCloseable {
     @Override
     void close();
 }

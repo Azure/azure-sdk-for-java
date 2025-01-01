@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
@@ -13,8 +13,6 @@ import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
-
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey.castAttributeValue;
@@ -87,12 +85,11 @@ public class OTelSpanBuilder implements SpanBuilder {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
         NOOP_SPAN = noopSpan;
-        SET_PARENT_INVOKER = new FallbackInvoker(setParentInvoker, onError);
-        SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, onError);
-        SET_SPAN_KIND_INVOKER = new FallbackInvoker(setSpanKindInvoker, onError);
-        START_SPAN_INVOKER = new FallbackInvoker(startSpanInvoker, NOOP_SPAN, onError);
+        SET_PARENT_INVOKER = new FallbackInvoker(setParentInvoker, LOGGER);
+        SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, LOGGER);
+        SET_SPAN_KIND_INVOKER = new FallbackInvoker(setSpanKindInvoker, LOGGER);
+        START_SPAN_INVOKER = new FallbackInvoker(startSpanInvoker, NOOP_SPAN, LOGGER);
         INTERNAL_KIND = internalKind;
         SERVER_KIND = serverKind;
         CLIENT_KIND = clientKind;

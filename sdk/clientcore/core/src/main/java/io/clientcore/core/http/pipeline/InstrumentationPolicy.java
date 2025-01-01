@@ -11,10 +11,10 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.InstrumentationProvider;
-import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
-import static io.clientcore.core.instrumentation.InstrumentationProvider.DISABLE_TRACING_KEY;
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
@@ -156,10 +156,9 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
     public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
-        InstrumentationProvider instrumentationProvider
-            = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS);
-        this.tracer = instrumentationProvider.getTracer();
-        this.traceContextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
+        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.tracer = instrumentation.getTracer();
+        this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
         HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_LOG_OPTIONS : logOptions;
         this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames();
@@ -186,7 +185,7 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
         request.getRequestOptions().setContext(context);
         propagateContext(context, request.getHeaders());
 
-        try (InstrumentationScope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
             addDetails(request, response, span);

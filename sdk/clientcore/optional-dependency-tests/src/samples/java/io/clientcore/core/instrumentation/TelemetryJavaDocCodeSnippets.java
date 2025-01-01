@@ -11,6 +11,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.InstrumentationPolicy;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
@@ -22,7 +23,7 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -170,7 +171,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
         }
 
         public void clientCall() {
@@ -188,7 +189,7 @@ public class TelemetryJavaDocCodeSnippets {
 
             options.setContext(options.getContext().put(TRACE_CONTEXT_KEY, span));
 
-            try (InstrumentationScope scope = span.makeCurrent()) {
+            try (TracingScope scope = span.makeCurrent()) {
                 Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
                 response.close();
                 span.end();

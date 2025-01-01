@@ -4,11 +4,9 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.util.ClientLogger;
-
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
@@ -50,12 +48,11 @@ public class OTelSpanContext {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
         INVALID_OTEL_SPAN_CONTEXT = invalidInstance;
         INVALID = new OTelSpanContext(invalidInstance);
-        GET_SPAN_ID_INVOKER = new FallbackInvoker(getSpanIdInvoker, INVALID_SPAN_ID, onError);
-        GET_TRACE_ID_INVOKER = new FallbackInvoker(getTraceIdInvoker, INVALID_TRACE_ID, onError);
-        GET_TRACE_FLAGS_INVOKER = new FallbackInvoker(getTraceFlagsInvoker, INVALID_TRACE_FLAGS, onError);
+        GET_SPAN_ID_INVOKER = new FallbackInvoker(getSpanIdInvoker, INVALID_SPAN_ID, LOGGER);
+        GET_TRACE_ID_INVOKER = new FallbackInvoker(getTraceIdInvoker, INVALID_TRACE_ID, LOGGER);
+        GET_TRACE_FLAGS_INVOKER = new FallbackInvoker(getTraceFlagsInvoker, INVALID_TRACE_FLAGS, LOGGER);
     }
 
     OTelSpanContext(Object otelSpanContext) {

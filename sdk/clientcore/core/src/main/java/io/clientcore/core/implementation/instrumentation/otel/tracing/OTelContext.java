@@ -4,13 +4,11 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
-
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
@@ -18,7 +16,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 
 class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
-    private static final InstrumentationScope NOOP_SCOPE = () -> {
+    private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker CURRENT_INVOKER;
     private static final FallbackInvoker MAKE_CURRENT_INVOKER;
@@ -61,11 +59,10 @@ class OTelContext {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
-        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, rootContext, onError);
-        MAKE_CURRENT_INVOKER = new FallbackInvoker(makeCurrentInvoker, NOOP_SCOPE, onError);
-        WITH_INVOKER = new FallbackInvoker(withInvoker, onError);
-        GET_INVOKER = new FallbackInvoker(getInvoker, onError);
+        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, rootContext, LOGGER);
+        MAKE_CURRENT_INVOKER = new FallbackInvoker(makeCurrentInvoker, NOOP_SCOPE, LOGGER);
+        WITH_INVOKER = new FallbackInvoker(withInvoker, LOGGER);
+        GET_INVOKER = new FallbackInvoker(getInvoker, LOGGER);
         HAS_CLIENT_SPAN_CONTEXT_KEY = hasClientSpanContextKey;
     }
 

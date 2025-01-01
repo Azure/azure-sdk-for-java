@@ -11,9 +11,9 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.InstrumentationProvider;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -53,8 +53,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
-import static io.clientcore.core.instrumentation.InstrumentationProvider.DISABLE_TRACING_KEY;
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.DISABLE_TRACING_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -419,8 +419,8 @@ public class InstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        RequestOptions requestOptions = new RequestOptions().setContext(Context
-            .of(InstrumentationProvider.TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(testSpan)));
+        RequestOptions requestOptions = new RequestOptions().setContext(
+            Context.of(Instrumentation.TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(testSpan)));
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
             .setRequestOptions(requestOptions)).close();
@@ -457,14 +457,13 @@ public class InstrumentationPolicyTests {
     @Test
     public void explicitLibraryCallParent() throws IOException {
         io.clientcore.core.instrumentation.tracing.Tracer tracer
-            = InstrumentationProvider.create(otelOptions, new LibraryInstrumentationOptions("test-library"))
-                .getTracer();
+            = Instrumentation.create(otelOptions, new LibraryInstrumentationOptions("test-library")).getTracer();
 
         RequestOptions requestOptions = new RequestOptions();
         io.clientcore.core.instrumentation.tracing.Span parent
             = tracer.spanBuilder("parent", INTERNAL, requestOptions).startSpan();
 
-        requestOptions.setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, parent));
+        requestOptions.setContext(Context.of(Instrumentation.TRACE_CONTEXT_KEY, parent));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new InstrumentationPolicy(otelOptions, null))
             .httpClient(request -> new MockHttpResponse(request, 200))

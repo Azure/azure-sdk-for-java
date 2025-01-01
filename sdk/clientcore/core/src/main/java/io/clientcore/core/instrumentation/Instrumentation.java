@@ -4,13 +4,13 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
-import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentationProvider;
+import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
 import java.util.Objects;
 
-import static io.clientcore.core.instrumentation.NoopInstrumentationProvider.NOOP_PROVIDER;
+import static io.clientcore.core.instrumentation.NoopInstrumentation.NOOP_PROVIDER;
 
 /**
  * A container that can resolve observability provider and its components. Only OpenTelemetry is supported.
@@ -18,7 +18,7 @@ import static io.clientcore.core.instrumentation.NoopInstrumentationProvider.NOO
  * <p><strong>This interface is intended to be used by client libraries. Application developers
  * should use OpenTelemetry API directly</strong></p>
  */
-public interface InstrumentationProvider {
+public interface Instrumentation {
     /**
      * The key used to disable tracing on a per-request basis.
      * To disable tracing, set this key to {@code true} on the request context.
@@ -48,7 +48,7 @@ public interface InstrumentationProvider {
      *
      * InstrumentationOptions&lt;?&gt; instrumentationOptions = new InstrumentationOptions&lt;&gt;&#40;&#41;;
      *
-     * Tracer tracer = InstrumentationProvider.create&#40;instrumentationOptions, libraryOptions&#41;.getTracer&#40;&#41;;
+     * Tracer tracer = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;.getTracer&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.tracing.createtracer -->
@@ -71,11 +71,11 @@ public interface InstrumentationProvider {
      * @param libraryOptions Library-specific telemetry collection options.
      * @return The instance of telemetry provider implementation.
      */
-    static InstrumentationProvider create(InstrumentationOptions<?> applicationOptions,
+    static Instrumentation create(InstrumentationOptions<?> applicationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         if (OTelInitializer.isInitialized()) {
-            return new OTelInstrumentationProvider(applicationOptions, libraryOptions);
+            return new OTelInstrumentation(applicationOptions, libraryOptions);
         } else {
             return NOOP_PROVIDER;
         }

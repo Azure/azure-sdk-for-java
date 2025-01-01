@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
@@ -13,8 +13,6 @@ import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
-
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TRACER_BUILDER_CLASS;
@@ -63,12 +61,11 @@ public final class OTelTracer implements Tracer {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
-        SPAN_BUILDER_INVOKER = new FallbackInvoker(spanBuilderInvoker, onError);
-        SET_INSTRUMENTATION_VERSION_INVOKER = new FallbackInvoker(setInstrumentationVersionInvoker, onError);
-        SET_SCHEMA_URL_INVOKER = new FallbackInvoker(setSchemaUrlInvoker, onError);
-        BUILD_INVOKER = new FallbackInvoker(buildInvoker, onError);
-        GET_TRACER_BUILDER_INVOKER = new FallbackInvoker(getTracerBuilderInvoker, onError);
+        SPAN_BUILDER_INVOKER = new FallbackInvoker(spanBuilderInvoker, LOGGER);
+        SET_INSTRUMENTATION_VERSION_INVOKER = new FallbackInvoker(setInstrumentationVersionInvoker, LOGGER);
+        SET_SCHEMA_URL_INVOKER = new FallbackInvoker(setSchemaUrlInvoker, LOGGER);
+        BUILD_INVOKER = new FallbackInvoker(buildInvoker, LOGGER);
+        GET_TRACER_BUILDER_INVOKER = new FallbackInvoker(getTracerBuilderInvoker, LOGGER);
     }
 
     private OTelTracer() {

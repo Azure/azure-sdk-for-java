@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
@@ -16,7 +16,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
@@ -24,7 +23,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_PROPAGATOR_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.TEXT_MAP_SETTER_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelUtils.getOTelContext;
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * OpenTelemetry implementation of {@link TraceContextPropagator}.
@@ -51,9 +50,8 @@ public class OTelTraceContextPropagator implements TraceContextPropagator {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
-        INJECT_INVOKER = new FallbackInvoker(injectInvoker, null, onError);
-        EXTRACT_INVOKER = new FallbackInvoker(extractInvoker, null, onError);
+        INJECT_INVOKER = new FallbackInvoker(injectInvoker, LOGGER);
+        EXTRACT_INVOKER = new FallbackInvoker(extractInvoker, LOGGER);
     }
 
     private final Object otelPropagator;

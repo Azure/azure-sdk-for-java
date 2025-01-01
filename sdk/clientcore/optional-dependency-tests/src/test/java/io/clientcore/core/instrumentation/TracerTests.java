@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.util.Context;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -46,7 +47,7 @@ public class TracerTests {
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
     }
 
     @AfterEach
@@ -68,7 +69,7 @@ public class TracerTests {
 
         assertTrue(span.isRecording());
 
-        try (InstrumentationScope scope = span.makeCurrent()) {
+        try (TracingScope scope = span.makeCurrent()) {
             assertTrue(io.opentelemetry.api.trace.Span.current().getSpanContext().isValid());
         }
 
@@ -175,9 +176,8 @@ public class TracerTests {
         io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
 
-        RequestOptions requestOptions
-            = new RequestOptions().setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY,
-                parent.storeInContext(io.opentelemetry.context.Context.current())));
+        RequestOptions requestOptions = new RequestOptions().setContext(Context.of(Instrumentation.TRACE_CONTEXT_KEY,
+            parent.storeInContext(io.opentelemetry.context.Context.current())));
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
         parent.end();
@@ -194,7 +194,7 @@ public class TracerTests {
     @Test
     public void explicitParentWrongType() {
         RequestOptions requestOptions = new RequestOptions()
-            .setContext(Context.of(InstrumentationProvider.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
+            .setContext(Context.of(Instrumentation.TRACE_CONTEXT_KEY, "This is not a valid trace context"));
         Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
         child.end();
 

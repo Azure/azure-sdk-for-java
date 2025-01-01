@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
+import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -57,7 +57,7 @@ public class ContextPropagationTests {
     private InstrumentationOptions<OpenTelemetry> otelOptions;
     private Tracer tracer;
     private TraceContextPropagator contextPropagator;
-    private InstrumentationProvider instrumentationProvider;
+    private Instrumentation instrumentation;
 
     @BeforeEach
     public void setUp() {
@@ -66,9 +66,9 @@ public class ContextPropagationTests {
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        instrumentationProvider = InstrumentationProvider.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        tracer = instrumentationProvider.getTracer();
-        contextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
+        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
+        tracer = instrumentation.getTracer();
+        contextPropagator = instrumentation.getW3CTraceContextPropagator();
     }
 
     @AfterEach

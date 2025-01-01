@@ -32,7 +32,7 @@ public interface Tracer {
      *     requestOptions.setContext&#40;requestOptions.getContext&#40;&#41;.put&#40;TRACE_CONTEXT_KEY, span&#41;&#41;;
      * &#125;
      *
-     * try &#40;InstrumentationScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
+     * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
      *     clientCall&#40;requestOptions&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
@@ -58,7 +58,7 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;messaging.operations.name&quot;, &quot;send&quot;&#41;
      *     .startSpan&#40;&#41;;
      *
-     * try &#40;InstrumentationScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
+     * try &#40;TracingScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
      *     if &#40;sendSpan.isRecording&#40;&#41;&#41; &#123;
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;

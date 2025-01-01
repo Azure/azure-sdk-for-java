@@ -9,10 +9,11 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.util.Context;
 
-class NoopInstrumentationProvider implements InstrumentationProvider {
-    static final InstrumentationProvider NOOP_PROVIDER = new NoopInstrumentationProvider();
+class NoopInstrumentation implements Instrumentation {
+    static final Instrumentation NOOP_PROVIDER = new NoopInstrumentation();
 
     @Override
     public Tracer getTracer() {
@@ -49,7 +50,7 @@ class NoopInstrumentationProvider implements InstrumentationProvider {
         }
 
         @Override
-        public InstrumentationScope makeCurrent() {
+        public TracingScope makeCurrent() {
             return NOOP_SCOPE;
         }
     };
@@ -66,7 +67,7 @@ class NoopInstrumentationProvider implements InstrumentationProvider {
         }
     };
 
-    private static final InstrumentationScope NOOP_SCOPE = () -> {
+    private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final Tracer NOOP_TRACER = (name, kind, ctx) -> NOOP_SPAN_BUILDER;
 

@@ -4,16 +4,15 @@
 package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.InstrumentationScope;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
@@ -29,7 +28,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTe
  */
 public class OTelSpan implements Span {
     private static final ClientLogger LOGGER = new ClientLogger(OTelSpan.class);
-    private static final InstrumentationScope NOOP_SCOPE = () -> {
+    private static final TracingScope NOOP_SCOPE = () -> {
     };
     private static final FallbackInvoker SET_ATTRIBUTE_INVOKER;
     private static final FallbackInvoker SET_STATUS_INVOKER;
@@ -81,15 +80,14 @@ public class OTelSpan implements Span {
             }
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
-        SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, onError);
-        SET_STATUS_INVOKER = new FallbackInvoker(setStatusInvoker, onError);
-        END_INVOKER = new FallbackInvoker(endInvoker, onError);
-        GET_SPAN_CONTEXT_INVOKER = new FallbackInvoker(getSpanContextInvoker, INVALID_OTEL_SPAN_CONTEXT, onError);
-        IS_RECORDING_INVOKER = new FallbackInvoker(isRecordingInvoker, false, onError);
-        STORE_IN_CONTEXT_INVOKER = new FallbackInvoker(storeInContextInvoker, onError);
-        FROM_CONTEXT_INVOKER = new FallbackInvoker(fromContextInvoker, onError);
-        WRAP_INVOKER = new FallbackInvoker(wrapInvoker, onError);
+        SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, LOGGER);
+        SET_STATUS_INVOKER = new FallbackInvoker(setStatusInvoker, LOGGER);
+        END_INVOKER = new FallbackInvoker(endInvoker, LOGGER);
+        GET_SPAN_CONTEXT_INVOKER = new FallbackInvoker(getSpanContextInvoker, INVALID_OTEL_SPAN_CONTEXT, LOGGER);
+        IS_RECORDING_INVOKER = new FallbackInvoker(isRecordingInvoker, false, LOGGER);
+        STORE_IN_CONTEXT_INVOKER = new FallbackInvoker(storeInContextInvoker, LOGGER);
+        FROM_CONTEXT_INVOKER = new FallbackInvoker(fromContextInvoker, LOGGER);
+        WRAP_INVOKER = new FallbackInvoker(wrapInvoker, LOGGER);
 
         ERROR_STATUS_CODE = errorStatusCode;
     }
@@ -164,7 +162,7 @@ public class OTelSpan implements Span {
      * {@inheritDoc}
      */
     @Override
-    public InstrumentationScope makeCurrent() {
+    public TracingScope makeCurrent() {
         return isInitialized() ? wrapOTelScope(OTelContext.makeCurrent(otelContext)) : NOOP_SCOPE;
     }
 
@@ -199,7 +197,7 @@ public class OTelSpan implements Span {
         }
     }
 
-    private static InstrumentationScope wrapOTelScope(AutoCloseable otelScope) {
+    private static TracingScope wrapOTelScope(AutoCloseable otelScope) {
         return () -> {
             try {
                 otelScope.close();

@@ -4,10 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.FallbackInvoker;
 import io.clientcore.core.util.ClientLogger;
-
-import java.util.function.Consumer;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
@@ -41,11 +38,10 @@ public class OTelAttributeKey {
             OTelInitializer.initError(LOGGER, t);
         }
 
-        Consumer<Throwable> onError = t -> OTelInitializer.runtimeError(LOGGER, t);
-        CREATE_STRING_KEY_INVOKER = new FallbackInvoker(createStringKeyInvoker, null, onError);
-        CREATE_BOOLEAN_KEY_INVOKER = new FallbackInvoker(createBooleanKeyInvoker, null, onError);
-        CREATE_LONG_KEY_INVOKER = new FallbackInvoker(createLongKeyInvoker, null, onError);
-        CREATE_DOUBLE_KEY_INVOKER = new FallbackInvoker(createDoubleKeyInvoker, null, onError);
+        CREATE_STRING_KEY_INVOKER = new FallbackInvoker(createStringKeyInvoker, LOGGER);
+        CREATE_BOOLEAN_KEY_INVOKER = new FallbackInvoker(createBooleanKeyInvoker, LOGGER);
+        CREATE_LONG_KEY_INVOKER = new FallbackInvoker(createLongKeyInvoker, LOGGER);
+        CREATE_DOUBLE_KEY_INVOKER = new FallbackInvoker(createDoubleKeyInvoker, LOGGER);
     }
 
     /**
