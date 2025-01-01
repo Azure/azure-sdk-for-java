@@ -3,14 +3,13 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
 import java.util.Objects;
-
-import static io.clientcore.core.instrumentation.NoopInstrumentation.NOOP_PROVIDER;
 
 /**
  * A container that can resolve observability provider and its components. Only OpenTelemetry is supported.
@@ -77,7 +76,7 @@ public interface Instrumentation {
         if (OTelInitializer.isInitialized()) {
             return new OTelInstrumentation(applicationOptions, libraryOptions);
         } else {
-            return NOOP_PROVIDER;
+            return new DefaultInstrumentation(applicationOptions, libraryOptions);
         }
     }
 }

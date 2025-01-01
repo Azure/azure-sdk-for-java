@@ -186,4 +186,5 @@ public final class OTelInitializer {
     public static boolean isInitialized() {
         return INSTANCE.initialized;
     }
+
 }

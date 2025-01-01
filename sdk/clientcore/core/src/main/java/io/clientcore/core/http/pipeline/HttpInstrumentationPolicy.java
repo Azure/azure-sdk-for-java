@@ -183,6 +183,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         Context context = request.getRequestOptions().getContext().put(TRACE_CONTEXT_KEY, span);
+
         request.getRequestOptions().setContext(context);
         propagateContext(context, request.getHeaders());
 

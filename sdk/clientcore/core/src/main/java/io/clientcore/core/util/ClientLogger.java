@@ -5,6 +5,7 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
+import io.clientcore.core.implementation.instrumentation.DefaultInstrumentation;
 import io.clientcore.core.implementation.util.DefaultLogger;
 import io.clientcore.core.implementation.util.Slf4jLoggerShim;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -60,8 +61,19 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
+        this(className, null);
+    }
+
+    /**
+     * Retrieves a logger for the passed class name.
+     *
+     * @param className Class name creating the logger.
+     * @param context Context to be populated on every log record written with this logger.
+     * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
+     */
+    public ClientLogger(String className, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
-        globalContext = null;
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
     /**
@@ -288,6 +300,7 @@ public class ClientLogger {
         private final boolean isEnabled;
         private Map<String, Object> keyValuePairs;
         private String eventName;
+        private Context context;
 
         /**
          * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
@@ -430,6 +443,18 @@ public class ClientLogger {
             return this;
         }
 
+        public LoggingEvent setContext(Context context) {
+            this.context = context;
+            return this;
+        }
+
+        public LoggingEvent setCause(Throwable throwable) {
+            if (this.isEnabled) {
+                setThrowableInternal(throwable, logger.canLogAtLevel(LogLevel.VERBOSE));
+            }
+            return this;
+        }
+
         /**
          * Sets the event name for the current log event. The event name is used to query all logs
          * that describe the same event. It must not contain any dynamic parts.
@@ -472,24 +497,31 @@ public class ClientLogger {
         public <T extends Throwable> T log(String message, T throwable) {
             if (this.isEnabled) {
                 boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
-                if (throwable != null) {
-                    addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
-                    addKeyValueInternal("exception.message", throwable.getMessage());
-                    if (isDebugEnabled) {
-                        StringBuilder stackTrace = new StringBuilder();
-                        DefaultLogger.appendThrowable(stackTrace, throwable);
-                        addKeyValue("exception.stacktrace", stackTrace.toString());
-                    }
-                }
+                setThrowableInternal(throwable, isDebugEnabled);
+                // TODO: we should not trace-id/span-id (by default) when otel is enabled?
                 logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
             }
             return throwable;
+        }
+
+        private void setThrowableInternal(Throwable throwable, boolean isDebugEnabled) {
+            if (throwable != null) {
+                addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
+                addKeyValueInternal("exception.message", throwable.getMessage());
+                if (isDebugEnabled) {
+                    StringBuilder stackTrace = new StringBuilder();
+                    DefaultLogger.appendThrowable(stackTrace, throwable);
+                    addKeyValue("exception.stacktrace", stackTrace.toString());
+                }
+            }
         }
 
         private String getMessageWithContext(String message) {
             if (message == null) {
                 message = "";
             }
+
+            DefaultInstrumentation.enrichLog(this, context);
 
             int pairsCount
                 = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());

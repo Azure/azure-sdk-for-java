@@ -5,6 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -24,12 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpInstrumentationPolicyNoopTests {
     private static final InstrumentationOptions<?> OPTIONS = new InstrumentationOptions<>();
+    private static final HttpLogOptions ENABLED_HTTP_LOG_OPTIONS
+        = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
     private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
 
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
     public void simpleRequestTracingDisabled(int statusCode) throws IOException {
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, null))
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS),
+                new HttpLoggingPolicy(ENABLED_HTTP_LOG_OPTIONS))
             .httpClient(request -> new MockHttpResponse(request, statusCode))
             .build();
 
@@ -45,9 +50,13 @@ public class HttpInstrumentationPolicyNoopTests {
     public void exceptionTracingDisabled() {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(OPTIONS, null)).httpClient(request -> {
-                throw exception;
-            }).build();
+            = new HttpPipelineBuilder()
+                .policies(new HttpInstrumentationPolicy(OPTIONS, ENABLED_HTTP_LOG_OPTIONS),
+                    new HttpLoggingPolicy(ENABLED_HTTP_LOG_OPTIONS))
+                .httpClient(request -> {
+                    throw exception;
+                })
+                .build();
 
         assertThrows(UncheckedIOException.class,
             () -> pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close());

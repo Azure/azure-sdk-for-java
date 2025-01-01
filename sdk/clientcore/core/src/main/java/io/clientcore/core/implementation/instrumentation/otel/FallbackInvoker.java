@@ -39,6 +39,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @return the result of the invocation or the fallback value
      */
     public Object invoke() {
@@ -52,6 +53,7 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
      * @return the result of the invocation or the fallback value
      */
@@ -66,8 +68,9 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
-     * @param arg1 the first argument
+     * @param arg1        the first argument
      * @return the result of the invocation or the fallback value
      */
     public Object invoke(Object argOrTarget, Object arg1) {
@@ -81,9 +84,10 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
-     * @param arg1 the first argument
-     * @param arg2 the second argument
+     * @param arg1        the first argument
+     * @param arg2        the second argument
      * @return the result of the invocation or the fallback value
      */
     public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
@@ -97,10 +101,11 @@ public class FallbackInvoker {
 
     /**
      * Invokes the inner invoker and returns the fallback value if the invocation fails.
+     *
      * @param argOrTarget the argument or target
-     * @param arg1 the first argument
-     * @param arg2 the second argument
-     * @param arg3 the third argument
+     * @param arg1        the first argument
+     * @param arg2        the second argument
+     * @param arg3        the third argument
      * @return the result of the invocation or the fallback value
      */
     public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {

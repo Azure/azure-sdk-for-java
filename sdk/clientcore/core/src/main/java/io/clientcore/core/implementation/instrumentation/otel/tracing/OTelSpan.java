@@ -38,6 +38,7 @@ public class OTelSpan implements Span {
     private static final FallbackInvoker STORE_IN_CONTEXT_INVOKER;
     private static final FallbackInvoker FROM_CONTEXT_INVOKER;
     private static final FallbackInvoker WRAP_INVOKER;
+    private static final FallbackInvoker CURRENT_INVOKER;
     private static final Object ERROR_STATUS_CODE;
     private final Object otelSpan;
     private final Object otelContext;
@@ -53,6 +54,7 @@ public class OTelSpan implements Span {
         ReflectiveInvoker storeInContextInvoker = null;
         ReflectiveInvoker fromContextInvoker = null;
         ReflectiveInvoker wrapInvoker = null;
+        ReflectiveInvoker currentInvoker = null;
 
         Object errorStatusCode = null;
 
@@ -75,6 +77,8 @@ public class OTelSpan implements Span {
 
                 wrapInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("wrap", SPAN_CONTEXT_CLASS));
                 errorStatusCode = STATUS_CODE_CLASS.getField("ERROR").get(null);
+
+                currentInvoker = getMethodInvoker(SPAN_CLASS, SPAN_CLASS.getMethod("current"));
             } catch (Throwable t) {
                 OTelInitializer.initError(LOGGER, t);
             }
@@ -88,6 +92,7 @@ public class OTelSpan implements Span {
         STORE_IN_CONTEXT_INVOKER = new FallbackInvoker(storeInContextInvoker, LOGGER);
         FROM_CONTEXT_INVOKER = new FallbackInvoker(fromContextInvoker, LOGGER);
         WRAP_INVOKER = new FallbackInvoker(wrapInvoker, LOGGER);
+        CURRENT_INVOKER = new FallbackInvoker(currentInvoker, LOGGER);
 
         ERROR_STATUS_CODE = errorStatusCode;
     }

@@ -317,7 +317,6 @@ public class SuppressionTests {
         public void protocolMethod(RequestOptions options) {
             Span span = tracer.spanBuilder("protocolMethod", INTERNAL, options).startSpan();
 
-            // TODO (limolkova): should we have addContext(k, v) on options?
             options.putContext(TRACE_CONTEXT_KEY, span);
 
             try (TracingScope scope = span.makeCurrent()) {
