@@ -49,13 +49,12 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 import static io.clientcore.core.instrumentation.InstrumentationProvider.DISABLE_TRACING_KEY;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -76,6 +75,7 @@ public class InstrumentationPolicyTests {
     private static final AttributeKey<Long> HTTP_RESPONSE_STATUS_CODE
         = AttributeKey.longKey("http.response.status_code");
     private static final HttpHeaderName TRACESTATE = HttpHeaderName.fromString("tracestate");
+    private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
@@ -351,54 +351,28 @@ public class InstrumentationPolicyTests {
     }
 
     @Test
-    public void recordRequestAndResponseHeaders() throws IOException {
-        Map<HttpHeaderName, String> requestHeaders
-            = Collections.singletonMap(HttpHeaderName.CLIENT_REQUEST_ID, "custom.request.id");
-        Map<HttpHeaderName, String> responseHeaders
-            = Collections.singletonMap(HttpHeaderName.REQUEST_ID, "custom.response.id");
-        InstrumentationPolicy instrumentationPolicy
-            = new InstrumentationPolicy(otelOptions, null, requestHeaders, responseHeaders);
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(instrumentationPolicy).httpClient(request -> {
-            MockHttpResponse response = new MockHttpResponse(request, 200);
-            response.getHeaders().set(HttpHeaderName.REQUEST_ID, "response-id");
-            return response;
-        }).build();
+    public void enrichSpans() throws IOException {
+        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
-        request.getHeaders().set(HttpHeaderName.CLIENT_REQUEST_ID, "request-id");
-        pipeline.send(request).close();
+        InstrumentationPolicy instrumentationPolicy = new InstrumentationPolicy(otelOptions, logOptions);
 
-        assertNotNull(exporter.getFinishedSpanItems());
-        assertEquals(1, exporter.getFinishedSpanItems().size());
+        HttpPipelinePolicy enrichingPolicy = (request, next) -> {
+            Object span = request.getRequestOptions().getContext().get(TRACE_CONTEXT_KEY);
+            if (span instanceof io.clientcore.core.instrumentation.tracing.Span) {
+                ((io.clientcore.core.instrumentation.tracing.Span) span).setAttribute("custom.request.id",
+                    request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+            }
 
-        SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
+            return next.process();
+        };
 
-        assertEquals("request-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
-        assertEquals("response-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.response.id")));
-    }
-
-    @Test
-    public void missingRequestAndResponseHeaders() throws IOException {
-        Map<HttpHeaderName, String> requestHeaders = new HashMap<>();
-        requestHeaders.put(HttpHeaderName.CLIENT_REQUEST_ID, "custom.request.id");
-        requestHeaders.put(HttpHeaderName.fromString("x-request-foo-id"), "custom.request.foo.id");
-
-        Map<HttpHeaderName, String> responseHeaders = new HashMap<>();
-        responseHeaders.put(HttpHeaderName.fromString("x-response-foo-id"), "custom.response.foo.id");
-
-        InstrumentationPolicy instrumentationPolicy
-            = new InstrumentationPolicy(otelOptions, null, requestHeaders, responseHeaders);
-
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(instrumentationPolicy)
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(instrumentationPolicy, enrichingPolicy)
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        URI url = URI.create("https://localhost/");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.getHeaders().set(HttpHeaderName.CLIENT_REQUEST_ID, "request-id");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
+        request.getHeaders().set(CUSTOM_REQUEST_ID, "42");
 
-        // should not throw
         pipeline.send(request).close();
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -407,9 +381,7 @@ public class InstrumentationPolicyTests {
         SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
         assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
 
-        assertEquals("request-id", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
-        assertNull(exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.foo.id")));
-        assertNull(exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.response.foo.id")));
+        assertEquals("42", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
     }
 
     @SuppressWarnings("try")

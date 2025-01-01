@@ -29,7 +29,7 @@ public interface Tracer {
      *     if &#40;requestOptions == null&#41; &#123;
      *         requestOptions = new RequestOptions&#40;&#41;;
      *     &#125;
-     *     requestOptions.setContext&#40;requestOptions.getContext&#40;&#41;.put&#40;InstrumentationProvider.TRACE_CONTEXT_KEY, span&#41;&#41;;
+     *     requestOptions.setContext&#40;requestOptions.getContext&#40;&#41;.put&#40;TRACE_CONTEXT_KEY, span&#41;&#41;;
      * &#125;
      *
      * try &#40;InstrumentationScope scope = span.makeCurrent&#40;&#41;&#41; &#123;

@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
@@ -45,8 +46,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * {@link HttpRetryPolicy} and {@link HttpLoggingPolicy} so that it's executed on each try (redirect), and logging happens
  * in the scope of the span.
  * <p>
- * The policy supports basic customizations using {@link InstrumentationOptions}, {@link HttpLogOptions}, and additional request and
- * response headers to record as attributes.
+ * The policy supports basic customizations using {@link InstrumentationOptions} and {@link HttpLogOptions}.
  * <p>
  * If your client library needs a different approach to distributed tracing,
  * you can create a custom policy and use it instead of the {@link InstrumentationPolicy}. If you want to enrich instrumentation
@@ -71,25 +71,51 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <!-- src_embed io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
  * <pre>
  *
- * &#47;&#47; InstrumentationPolicy can capture custom headers from requests and responses - for example when the endpoint
- * &#47;&#47; supports legacy correlation headers.
- * Map&lt;HttpHeaderName, String&gt; requestHeadersToRecord
- *     = Collections.singletonMap&#40;HttpHeaderName.CLIENT_REQUEST_ID, &quot;custom.request.id&quot;&#41;;
- * Map&lt;HttpHeaderName, String&gt; responseHeadersToRecord
- *     = Collections.singletonMap&#40;HttpHeaderName.REQUEST_ID, &quot;custom.response.id&quot;&#41;;
+ * &#47;&#47; You can configure URL sanitization to include additional query parameters to preserve
+ * &#47;&#47; in `url.full` attribute.
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;;
+ * logOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord&#41;,
+ *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
  *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
  * <!-- end io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ *
+ * <p><strong>Enrich HTTP spans with additional attributes:</strong></p>
+ * <!-- src_embed io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ * <pre>
+ *
+ * HttpPipelinePolicy enrichingPolicy = &#40;request, next&#41; -&gt; &#123;
+ *     Object span = request.getRequestOptions&#40;&#41;.getContext&#40;&#41;.get&#40;TRACE_CONTEXT_KEY&#41;;
+ *     if &#40;span instanceof Span&#41; &#123;
+ *         &#40;&#40;Span&#41;span&#41;.setAttribute&#40;&quot;custom.request.id&quot;, request.getHeaders&#40;&#41;.getValue&#40;CUSTOM_REQUEST_ID&#41;&#41;;
+ *     &#125;
+ *
+ *     return next.process&#40;&#41;;
+ * &#125;;
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;
+ *         new HttpRetryPolicy&#40;&#41;,
+ *         new InstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
+ *         enrichingPolicy,
+ *         new HttpLoggingPolicy&#40;logOptions&#41;&#41;
+ *     .build&#40;&#41;;
+ *
+ *
+ * </pre>
+ * <!-- end io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ *
  */
 public final class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
+    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+    private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -121,10 +147,8 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String USER_AGENT_ORIGINAL = "user_agent.original";
 
     private final Tracer tracer;
-    private final Set<String> allowedQueryParams;
-    private final Map<HttpHeaderName, String> requestHeaders;
-    private final Map<HttpHeaderName, String> responseHeaders;
     private final TraceContextPropagator traceContextPropagator;
+    private final Set<String> allowedQueryParameterNames;
 
     /**
      * Creates a new instrumentation policy.
@@ -132,26 +156,13 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
      * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
     public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
-        this(instrumentationOptions, logOptions, null, null);
-    }
-
-    /**
-     * Creates a new instrumentation policy with additional request and response headers to record as attributes.
-     *
-     * @param instrumentationOptions Application telemetry options.
-     * @param logOptions Http log options. TODO: we should merge this with telemetry options.
-     * @param requestHeaders The request headers to capture as span attributes.
-     * @param responseHeaders The response headers to capture as span attributes.
-     */
-    public InstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions,
-        Map<HttpHeaderName, String> requestHeaders, Map<HttpHeaderName, String> responseHeaders) {
         InstrumentationProvider instrumentationProvider
             = InstrumentationProvider.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentationProvider.getTracer();
         this.traceContextPropagator = instrumentationProvider.getW3CTraceContextPropagator();
-        this.allowedQueryParams = logOptions == null ? Collections.emptySet() : logOptions.getAllowedQueryParamNames();
-        this.requestHeaders = requestHeaders;
-        this.responseHeaders = responseHeaders;
+
+        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_LOG_OPTIONS : logOptions;
+        this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames();
     }
 
     /**
@@ -164,43 +175,21 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParams);
+        String sanitizedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
+        Span span = startHttpSpan(request, sanitizedUrl);
 
-        Span span = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
-            .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL, sanitizedUrl)
-            .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
-            .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
-            .startSpan();
+        if (request.getRequestOptions() == RequestOptions.none()) {
+            request = request.setRequestOptions(new RequestOptions());
+        }
 
-        Context context = request.getRequestOptions().getContext();
-        propagateContext(context.put(TRACE_CONTEXT_KEY, span), request.getHeaders());
+        Context context = request.getRequestOptions().getContext().put(TRACE_CONTEXT_KEY, span);
+        request.getRequestOptions().setContext(context);
+        propagateContext(context, request.getHeaders());
 
         try (InstrumentationScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
-            if (span.isRecording()) {
-                span.setAttribute(HTTP_RESPONSE_STATUS_CODE, (long) response.getStatusCode());
-
-                int retryCount = HttpRequestAccessHelper.getRetryCount(request);
-                if (retryCount > 1) {
-                    span.setAttribute(HTTP_REQUEST_RESEND_COUNT,
-                        (long) HttpRequestAccessHelper.getRetryCount(request) - 1);
-                }
-
-                String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
-                if (userAgent != null) {
-                    span.setAttribute(USER_AGENT_ORIGINAL, userAgent);
-                }
-
-                addRequestHeaders(request, span);
-                addResponseHeaders(response, span);
-                // TODO (lmolkova) url.template and experimental features
-            }
-
-            if (response.getStatusCode() >= 400) {
-                span.setError(String.valueOf(response.getStatusCode()));
-            }
+            addDetails(request, response, span);
 
             span.end();
             return response;
@@ -208,6 +197,38 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
             span.end(unwrap(t));
             throw t;
         }
+    }
+
+    private Span startHttpSpan(HttpRequest request, String sanitizedUrl) {
+        return tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, request.getRequestOptions())
+            .setAttribute(HTTP_REQUEST_METHOD, request.getHttpMethod().toString())
+            .setAttribute(URL_FULL, sanitizedUrl)
+            .setAttribute(SERVER_ADDRESS, request.getUri().getHost())
+            .setAttribute(SERVER_PORT, request.getUri().getPort() == -1 ? 443 : request.getUri().getPort())
+            .startSpan();
+    }
+
+    private void addDetails(HttpRequest request, Response<?> response, Span span) {
+        if (!span.isRecording()) {
+            return;
+        }
+
+        span.setAttribute(HTTP_RESPONSE_STATUS_CODE, (long) response.getStatusCode());
+
+        int retryCount = HttpRequestAccessHelper.getRetryCount(request);
+        if (retryCount > 1) {
+            span.setAttribute(HTTP_REQUEST_RESEND_COUNT, (long) HttpRequestAccessHelper.getRetryCount(request) - 1);
+        }
+
+        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
+        if (userAgent != null) {
+            span.setAttribute(USER_AGENT_ORIGINAL, userAgent);
+        }
+
+        if (response.getStatusCode() >= 400) {
+            span.setError(String.valueOf(response.getStatusCode()));
+        }
+        // TODO (lmolkova) url.template and experimental features
     }
 
     private boolean isTracingEnabled(HttpRequest httpRequest) {
@@ -233,30 +254,6 @@ public final class InstrumentationPolicy implements HttpPipelinePolicy {
 
     private void propagateContext(Context context, HttpHeaders headers) {
         traceContextPropagator.inject(context, headers, SETTER);
-    }
-
-    private void addResponseHeaders(Response<?> response, Span span) {
-        if (responseHeaders != null) {
-            Set<Map.Entry<HttpHeaderName, String>> entries = responseHeaders.entrySet();
-            for (Map.Entry<HttpHeaderName, String> entry : entries) {
-                String value = response.getHeaders().getValue(entry.getKey());
-                if (value != null) {
-                    span.setAttribute(entry.getValue(), value);
-                }
-            }
-        }
-    }
-
-    private void addRequestHeaders(HttpRequest httpRequest, Span span) {
-        if (requestHeaders != null) {
-            Set<Map.Entry<HttpHeaderName, String>> entries = requestHeaders.entrySet();
-            for (Map.Entry<HttpHeaderName, String> entry : entries) {
-                String value = httpRequest.getHeaders().getValue(entry.getKey());
-                if (value != null) {
-                    span.setAttribute(entry.getValue(), value);
-                }
-            }
-        }
     }
 
     private static Map<String, String> getProperties(String propertiesFileName) {

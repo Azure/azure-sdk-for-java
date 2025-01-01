@@ -9,14 +9,15 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.InstrumentationPolicy;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+import io.clientcore.core.util.Context;
 
-import java.util.Collections;
-import java.util.Map;
+import static io.clientcore.core.instrumentation.InstrumentationProvider.TRACE_CONTEXT_KEY;
 
 /**
  * THESE CODE SNIPPETS ARE INTENDED FOR CLIENT LIBRARY DEVELOPERS ONLY.
@@ -29,6 +30,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample")
         .setLibraryVersion("1.0.0")
         .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+    private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
 
     public void createTracer() {
 
@@ -64,7 +66,7 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
             if (requestOptions == null) {
                 requestOptions = new RequestOptions();
             }
-            requestOptions.setContext(requestOptions.getContext().put(InstrumentationProvider.TRACE_CONTEXT_KEY, span));
+            requestOptions.setContext(requestOptions.getContext().put(TRACE_CONTEXT_KEY, span));
         }
 
         try (InstrumentationScope scope = span.makeCurrent()) {
@@ -133,25 +135,49 @@ public class TracingForLibraryDevelopersJavaDocCodeSnippets {
 
     public void customizeInstrumentationPolicy() {
         InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
-        HttpLogOptions logOptions = new HttpLogOptions();
 
         // BEGIN: io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
 
-        // InstrumentationPolicy can capture custom headers from requests and responses - for example when the endpoint
-        // supports legacy correlation headers.
-        Map<HttpHeaderName, String> requestHeadersToRecord
-            = Collections.singletonMap(HttpHeaderName.CLIENT_REQUEST_ID, "custom.request.id");
-        Map<HttpHeaderName, String> responseHeadersToRecord
-            = Collections.singletonMap(HttpHeaderName.REQUEST_ID, "custom.response.id");
+        // You can configure URL sanitization to include additional query parameters to preserve
+        // in `url.full` attribute.
+        HttpLogOptions logOptions = new HttpLogOptions();
+        logOptions.addAllowedQueryParamName("documentId");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(
                 new HttpRetryPolicy(),
-                new InstrumentationPolicy(instrumentationOptions, logOptions, requestHeadersToRecord, responseHeadersToRecord),
+                new InstrumentationPolicy(instrumentationOptions, logOptions),
                 new HttpLoggingPolicy(logOptions))
             .build();
 
         // END:  io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy
+    }
+
+    public void enrichInstrumentationPolicySpans() {
+        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>();
+        HttpLogOptions logOptions = new HttpLogOptions();
+
+        // BEGIN: io.clientcore.core.telemetry.tracing.enrichhttpspans
+
+        HttpPipelinePolicy enrichingPolicy = (request, next) -> {
+            Object span = request.getRequestOptions().getContext().get(TRACE_CONTEXT_KEY);
+            if (span instanceof Span) {
+                ((Span)span).setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+            }
+
+            return next.process();
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(
+                new HttpRetryPolicy(),
+                new InstrumentationPolicy(instrumentationOptions, logOptions),
+                enrichingPolicy,
+                new HttpLoggingPolicy(logOptions))
+            .build();
+
+
+        // END:  io.clientcore.core.telemetry.tracing.enrichhttpspans
     }
 
     private void clientCall(RequestOptions options) {
