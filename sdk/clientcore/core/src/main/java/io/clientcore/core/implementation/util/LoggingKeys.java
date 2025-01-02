@@ -26,7 +26,17 @@ public final class LoggingKeys {
     public static final String TRY_COUNT_KEY = "tryCount";
 
     /**
+     * Key representing time from request start to the moment response (headers and response code) were received in milliseconds,
+     * the value should be a number.
+     * <p>
+     * Depending on the implementation and content type, this time may include time to receive the body.
+     */
+    public static final String TIME_TO_HEADERS_MS = "timeToHeadersMs";
+
+    /**
      * Key representing duration of call in milliseconds, the value should be a number.
+     * <p>
+     * This time can
      */
     public static final String DURATION_MS_KEY = "durationMs";
 
@@ -43,7 +53,12 @@ public final class LoggingKeys {
     /**
      * Key representing request body content length.
      */
-    public static final String CONTENT_LENGTH_KEY = "contentLength";
+    public static final String REQUEST_CONTENT_LENGTH_KEY = "requestContentLength";
+
+    /**
+     * Key representing response body content length.
+     */
+    public static final String RESPONSE_CONTENT_LENGTH_KEY = "responseContentLength";
 
     /**
      * Key representing request body. The value should be populated conditionally

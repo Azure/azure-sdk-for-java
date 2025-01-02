@@ -287,6 +287,7 @@ public class ClientLogger {
         private final Map<String, Object> globalPairs;
         private final boolean isEnabled;
         private Map<String, Object> keyValuePairs;
+        private String eventName;
 
         /**
          * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
@@ -306,6 +307,15 @@ public class ClientLogger {
             this.level = level;
             this.isEnabled = isEnabled;
             this.globalPairs = globalContext;
+        }
+
+        /**
+         * Returns true if this logging event will be logged.
+         *
+         * @return true if this logging event will be logged.
+         */
+        public boolean isEnabled() {
+            return isEnabled;
         }
 
         /**
@@ -421,6 +431,27 @@ public class ClientLogger {
         }
 
         /**
+         * Sets the event name for the current log event. The event name is used to query all logs
+         * that describe the same event. It must not contain any dynamic parts.
+         *
+         * @param eventName The name of the event.
+         * @return The updated {@code LoggingEventBuilder} object.
+         */
+        public LoggingEventBuilder setEventName(String eventName) {
+            this.eventName = eventName;
+            return this;
+        }
+
+        /**
+         * Logs event annotated with context.
+         */
+        public void log() {
+            if (this.isEnabled) {
+                logger.performLogging(level, getMessageWithContext(null), null);
+            }
+        }
+
+        /**
          * Logs message annotated with context.
          *
          * @param message log message.
@@ -444,6 +475,7 @@ public class ClientLogger {
             if (this.isEnabled) {
                 boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
                 if (throwable != null) {
+                    addKeyValueInternal("exception.type", throwable.getClass().getCanonicalName());
                     addKeyValueInternal("exception.message", throwable.getMessage());
                     if (isDebugEnabled) {
                         StringBuilder stackTrace = new StringBuilder();
@@ -478,6 +510,10 @@ public class ClientLogger {
                     for (Map.Entry<String, Object> kvp : keyValuePairs.entrySet()) {
                         jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
                     }
+                }
+
+                if (eventName != null) {
+                    jsonWriter.writeStringField("event.name", eventName);
                 }
 
                 jsonWriter.writeEndObject().flush();
