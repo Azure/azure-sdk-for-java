@@ -10,11 +10,11 @@ package com.azure.resourcemanager.baremetalinfrastructure.generated;
 public final class AzureBareMetalInstancesListSamples {
     /*
      * x-ms-original-file:
-     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
-     * preview/examples/AzureBareMetalInstances_ListBySubscription.json
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/
+     * examples/AzureBareMetalInstances_ListBySubscription.json
      */
     /**
-     * Sample code: List all Azure Bare Metal Instances in a subscription.
+     * Sample code: List all AzureBareMetal instances in a subscription.
      * 
      * @param manager Entry point to BareMetalInfrastructureManager.
      */

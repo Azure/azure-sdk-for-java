@@ -25,11 +25,6 @@ public final class FacebookChannel extends Channel {
      */
     private FacebookChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of FacebookChannel class.
      */
@@ -64,16 +59,6 @@ public final class FacebookChannel extends Channel {
     public FacebookChannel withProperties(FacebookChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class FacebookChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedFacebookChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedFacebookChannel.provisioningState = reader.getString();
+                    deserializedFacebookChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedFacebookChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {
