@@ -1,14 +1,135 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
+- Azure Resource Manager BotService client library for Java. This package contains Microsoft Azure SDK for BotService Management SDK. Azure Bot Service is a platform for creating smart conversational agents. Package tag package-2021-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationResultsDescription` was removed
 
-### Other Changes
+#### `models.PrivateLinkResources` was removed
+
+#### `models.PrivateEndpointConnection$DefinitionStages` was removed
+
+#### `models.PrivateEndpointConnections` was removed
+
+#### `models.OperationResultStatus` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was removed
+
+#### `models.PrivateEndpointConnectionProvisioningState` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.PrivateLinkResource` was removed
+
+#### `models.PrivateEndpoint` was removed
+
+#### `models.PrivateEndpointConnection` was removed
+
+#### `models.PrivateEndpointServiceConnectionStatus` was removed
+
+#### `models.PrivateLinkResourceBase` was removed
+
+#### `models.PrivateEndpointConnection$Definition` was removed
+
+#### `models.OperationResults` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.DirectLineChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.KikChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.OutlookChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.DirectLineSpeechChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.WebChatChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.TelephonyChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.BotProperties` was modified
+
+* `privateEndpointConnections()` was removed
+
+#### `models.TelegramChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.SlackChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.FacebookChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.MsTeamsChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.ConnectionSettingProperties` was modified
+
+* `id()` was removed
+* `withId(java.lang.String)` was removed
+* `name()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.SearchAssistant` was modified
+
+* `provisioningState()` was removed
+
+#### `models.EmailChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.Omnichannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.AcsChatChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.SkypeChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.LineChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.AlexaChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.SmsChannel` was modified
+
+* `provisioningState()` was removed
+
+#### `models.M365Extensions` was modified
+
+* `provisioningState()` was removed
+
+#### `BotServiceManager` was modified
+
+* `privateEndpointConnections()` was removed
+* `operationResults()` was removed
+* `privateLinkResources()` was removed
 
 ## 1.0.0-beta.6 (2024-10-09)
 
