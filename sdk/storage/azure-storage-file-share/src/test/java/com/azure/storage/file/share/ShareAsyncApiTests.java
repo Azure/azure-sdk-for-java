@@ -404,22 +404,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void setPropertiesOAuth() {
-        ShareServiceAsyncClient oAuthServiceClient
-            = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
-
-        StepVerifier
-            .create(
-                primaryShareAsyncClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT))
-                    .then(shareClient.setPropertiesWithResponse(
-                        new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL))))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
     public void setPropertiesAccessTierPremium() {
@@ -434,25 +418,20 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         client.delete().block();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
-    public void setQuota() {
-        StepVerifier
-            .create(primaryShareAsyncClient.createWithResponse(null, 1).then(primaryShareAsyncClient.getProperties()))
-            .assertNext(it -> assertEquals(1, it.getQuota()))
-            .verifyComplete();
-        StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
-            .verifyComplete();
-        StepVerifier.create(primaryShareAsyncClient.getProperties())
-            .assertNext(it -> assertEquals(2, it.getQuota()))
-            .verifyComplete();
-    }
+    public void setPropertiesOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient
+            = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareAsyncClient shareClient = oAuthServiceClient.getShareAsyncClient(shareName);
 
-    @Test
-    public void setQuotaError() {
-        StepVerifier.create(primaryShareAsyncClient.setQuota(2))
-            .verifyErrorSatisfies(
-                it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+        StepVerifier
+            .create(
+                primaryShareAsyncClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT))
+                    .then(shareClient.setPropertiesWithResponse(
+                        new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL))))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -532,24 +511,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void createDirectoryInvalidName() {
-        StepVerifier
-            .create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.createDirectory("test/directory")))
-            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
-                ShareErrorCode.PARENT_NOT_FOUND));
-    }
-
-    @Test
-    public void createDirectoryMetadata() {
-        StepVerifier
-            .create(primaryShareAsyncClient.create()
-                .then(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null, null,
-                    testMetadata)))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
-            .verifyComplete();
-    }
-
-    @Test
     public void createDirectoryFilePermission() {
         StepVerifier
             .create(
@@ -572,6 +533,25 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             return primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null,
                 null);
         })).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
+    }
+
+
+    @Test
+    public void createDirectoryInvalidName() {
+        StepVerifier
+            .create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.createDirectory("test/directory")))
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
+                ShareErrorCode.PARENT_NOT_FOUND));
+    }
+
+    @Test
+    public void createDirectoryMetadata() {
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null, null,
+                    testMetadata)))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @Test
@@ -716,30 +696,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void createFileLease() {
-        StepVerifier
-            .create(
-                primaryShareAsyncClient.create()
-                    .then(primaryShareAsyncClient.getFileClient("testCreateFile").create(512))
-                    .then(createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease())
-                    .flatMap(leaseId -> primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null,
-                        null, null, null, new ShareRequestConditions().setLeaseId(leaseId))))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    public void createFileLeaseFail() {
-        StepVerifier
-            .create(primaryShareAsyncClient.create()
-                .then(primaryShareAsyncClient.getFileClient("testCreateFile").create(512))
-                .then(createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease())
-                .then(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null,
-                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
-            .verifyError(ShareStorageException.class);
-    }
-
-    @Test
     public void createFileMaxOverload() {
         StepVerifier
             .create(primaryShareAsyncClient.create()
@@ -819,30 +775,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void deleteFileLease() {
-        String fileName = "testCreateFile";
-        StepVerifier.create(primaryShareAsyncClient.create()
-            .then(primaryShareAsyncClient.createFile(fileName, 1024))
-            .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
-            .flatMap(leaseId -> primaryShareAsyncClient.deleteFileWithResponse(fileName,
-                new ShareRequestConditions().setLeaseId(leaseId))))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    public void deleteFileLeaseFail() {
-        String fileName = "testCreateFile";
-        StepVerifier
-            .create(primaryShareAsyncClient.create()
-                .then(primaryShareAsyncClient.createFile(fileName, 1024))
-                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
-                .then(primaryShareAsyncClient.deleteFileWithResponse(fileName,
-                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
-            .verifyError(ShareStorageException.class);
-    }
-
-    @Test
     public void deleteFileError() {
         StepVerifier.create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.deleteFile("testdirectory")))
             .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
@@ -861,18 +793,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void deleteIfExistsFileLease() {
-        String fileName = "testCreateFile";
-        StepVerifier.create(primaryShareAsyncClient.create()
-            .then(primaryShareAsyncClient.createFile(fileName, 1024))
-            .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
-            .flatMap(leaseId -> primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
-                new ShareRequestConditions().setLeaseId(leaseId))))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
     public void deleteIfExistsFileThatDoesNotExist() {
         String fileName = "testCreateFile";
         StepVerifier.create(primaryShareAsyncClient.create()
@@ -881,19 +801,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 assertFalse(response.getValue());
                 FileShareTestHelper.assertResponseStatusCode(response, 404);
             }).verifyComplete();
-    }
-
-    @Test
-    public void deleteIfExistsFileLeaseFail() {
-        String fileName = "testCreateFile";
-
-        StepVerifier
-            .create(primaryShareAsyncClient.create()
-                .then(primaryShareAsyncClient.createFile(fileName, 1024))
-                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
-                .then(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
-                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
-            .verifyError(ShareStorageException.class);
     }
 
     @Test
@@ -1179,5 +1086,100 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertNotNull(r.getNextAllowedProvisionedIopsDowngradeTime());
             assertNotNull(r.getNextAllowedProvisionedBandwidthDowngradeTime());
         }).verifyComplete();
+    }
+
+    //Unique Tests
+    @Test
+    public void setQuota() {
+        StepVerifier
+            .create(primaryShareAsyncClient.createWithResponse(null, 1).then(primaryShareAsyncClient.getProperties()))
+            .assertNext(it -> assertEquals(1, it.getQuota()))
+            .verifyComplete();
+        StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
+            .verifyComplete();
+        StepVerifier.create(primaryShareAsyncClient.getProperties())
+            .assertNext(it -> assertEquals(2, it.getQuota()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void setQuotaError() {
+        StepVerifier.create(primaryShareAsyncClient.setQuota(2))
+            .verifyErrorSatisfies(
+                it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+    }
+
+    @Test
+    public void createFileLease() {
+        StepVerifier
+            .create(
+                primaryShareAsyncClient.create()
+                    .then(primaryShareAsyncClient.getFileClient("testCreateFile").create(512))
+                    .then(createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease())
+                    .flatMap(leaseId -> primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null,
+                        null, null, null, new ShareRequestConditions().setLeaseId(leaseId))))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void createFileLeaseFail() {
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.getFileClient("testCreateFile").create(512))
+                .then(createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease())
+                .then(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null,
+                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
+            .verifyError(ShareStorageException.class);
+    }
+
+    @Test
+    public void deleteFileLease() {
+        String fileName = "testCreateFile";
+        StepVerifier.create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.createFile(fileName, 1024))
+                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
+                .flatMap(leaseId -> primaryShareAsyncClient.deleteFileWithResponse(fileName,
+                    new ShareRequestConditions().setLeaseId(leaseId))))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteFileLeaseFail() {
+        String fileName = "testCreateFile";
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.createFile(fileName, 1024))
+                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
+                .then(primaryShareAsyncClient.deleteFileWithResponse(fileName,
+                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
+            .verifyError(ShareStorageException.class);
+    }
+
+    @Test
+    public void deleteIfExistsFileLease() {
+        String fileName = "testCreateFile";
+        StepVerifier.create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.createFile(fileName, 1024))
+                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
+                .flatMap(leaseId -> primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
+                    new ShareRequestConditions().setLeaseId(leaseId))))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsFileLeaseFail() {
+        String fileName = "testCreateFile";
+
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.createFile(fileName, 1024))
+                .then(createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease())
+                .then(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
+                    new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid()))))
+            .verifyError(ShareStorageException.class);
     }
 }
