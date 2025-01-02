@@ -15,8 +15,6 @@ The main shared concepts of Azure Core (and therefore all Azure client libraries
 - Exceptions for reporting errors from service requests in a consistent fashion.
 - Abstractions for representing Azure SDK credentials.
 
-Testing cspell changes
-
 ## Sub-projects
 
 Azure Core is split into a number of sub-components:
