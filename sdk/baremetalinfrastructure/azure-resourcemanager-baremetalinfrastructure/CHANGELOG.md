@@ -1,14 +1,77 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
+- Azure Resource Manager BareMetalInfrastructure client library for Java. This package contains Microsoft Azure SDK for BareMetalInfrastructure Management SDK. The BareMetalInfrastructure Management client. Package tag package-2021-08-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Origin` was removed
 
-### Other Changes
+#### `models.AzureBareMetalInstanceForcePowerState` was removed
+
+#### `models.AzureBareMetalStorageInstance` was removed
+
+#### `models.OperationDisplay` was removed
+
+#### `models.AzureBareMetalStorageInstance$UpdateStages` was removed
+
+#### `models.AzureBareMetalStorageInstance$Update` was removed
+
+#### `models.AsyncOperationStatus` was removed
+
+#### `models.OperationStatusError` was removed
+
+#### `models.StorageProperties` was removed
+
+#### `models.OperationStatus` was removed
+
+#### `models.AzureBareMetalStorageInstance$DefinitionStages` was removed
+
+#### `models.AzureBareMetalStorageInstances` was removed
+
+#### `models.ProvisioningState` was removed
+
+#### `models.AzureBareMetalStorageInstance$Definition` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.StorageBillingProperties` was removed
+
+#### `models.ForceState` was removed
+
+#### `models.NetworkInterface` was removed
+
+#### `models.ActionType` was removed
+
+#### `models.AzureBareMetalStorageInstancesListResult` was removed
+
+#### `models.Operation` was modified
+
+* `actionType()` was removed
+* `origin()` was removed
+* `models.OperationDisplay display()` -> `models.Display display()`
+
+#### `models.AzureBareMetalInstances` was modified
+
+* `restart(java.lang.String,java.lang.String)` was removed
+* `start(java.lang.String,java.lang.String)` was removed
+* `shutdown(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `start(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `restart(java.lang.String,java.lang.String,models.ForceState,com.azure.core.util.Context)` was removed
+* `shutdown(java.lang.String,java.lang.String)` was removed
+
+#### `BareMetalInfrastructureManager` was modified
+
+* `azureBareMetalStorageInstances()` was removed
+
+### Features Added
+
+* `models.OperationList` was added
+
+* `models.Display` was added
+
+* `models.IpAddress` was added
 
 ## 1.0.0-beta.4 (2024-10-31)
 
