@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.baremetalinfrastructure.models.HardwareProfile;
+import com.azure.resourcemanager.baremetalinfrastructure.models.Display;
 
-public final class HardwareProfileTests {
+public final class DisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareProfile model
-            = BinaryData.fromString("{\"hardwareType\":\"Cisco_UCS\",\"azureBareMetalInstanceSize\":\"S144\"}")
-                .toObject(HardwareProfile.class);
+        Display model = BinaryData.fromString(
+            "{\"provider\":\"iheogna\",\"resource\":\"zxtheotusivyevcc\",\"operation\":\"ihnhun\",\"description\":\"wjzrnfygxgisp\"}")
+            .toObject(Display.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HardwareProfile model = new HardwareProfile();
-        model = BinaryData.fromObject(model).toObject(HardwareProfile.class);
+        Display model = new Display();
+        model = BinaryData.fromObject(model).toObject(Display.class);
     }
 }
