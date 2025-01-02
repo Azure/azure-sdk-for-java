@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-01-02)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Azure Resource Manager DnsResolver client library for Java. This package contains Microsoft Azure SDK for DnsResolver Management SDK. DNS Resolver Client. Package tag package-2022-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Other Changes
+
+- Release for Azure Resource Manager DnsResolver client library for Java.
 
 ## 1.0.0-beta.4 (2024-10-23)
 

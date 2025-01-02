@@ -21,7 +21,7 @@ public final class DnsForwardingRulesetsGetByResourceGroupWithResponseMockTests 
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"u\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"pbsfgytgu\"},{\"id\":\"feadcygq\"},{\"id\":\"yhejhzisxgfp\"},{\"id\":\"olppvksrpqvujz\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"twdw\"},\"location\":\"tswiby\",\"tags\":{\"h\":\"l\"},\"id\":\"hfwpracstwit\",\"name\":\"khevxccedc\",\"type\":\"nmdyodnwzxl\"}";
+            = "{\"etag\":\"dtbnnha\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"crkvcikhnv\"},{\"id\":\"mqg\"},{\"id\":\"queziky\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"kallatmel\"},\"location\":\"ipicc\",\"tags\":{\"v\":\"z\",\"yrnxxmueedn\":\"vvcnayr\",\"alm\":\"rdvstkwqqtch\",\"gdv\":\"mtdaa\"},\"id\":\"vgpiohgwxrt\",\"name\":\"udxepxgyqagv\",\"type\":\"vmnpkukghimdblx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class DnsForwardingRulesetsGetByResourceGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsForwardingRuleset response = manager.dnsForwardingRulesets()
-            .getByResourceGroupWithResponse("tlstvlzywem", "zrncsdt", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("lxdy", "gsyocogj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tswiby", response.location());
-        Assertions.assertEquals("l", response.tags().get("h"));
-        Assertions.assertEquals("pbsfgytgu", response.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("ipicc", response.location());
+        Assertions.assertEquals("z", response.tags().get("v"));
+        Assertions.assertEquals("crkvcikhnv", response.dnsResolverOutboundEndpoints().get(0).id());
     }
 }
