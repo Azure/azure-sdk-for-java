@@ -78,12 +78,11 @@ public enum AuthProperty {
      */
     TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName", "springCloudAzureDefaultCredential",
         "The given bean name of a TokenCredential bean in the Spring context.", false),
-    TOKEN_CREDENTIAL_CACHE_CLASS_NAME("azure.tokenCredentialCacheClassName",
-        "The given class name of a TokenCredential cache.", false),
+    /**
+     *  Whether to enable access token cache.
+     */
     ACCESS_TOKEN_CACHE_ENABLED("azure.accessTokenCacheEnabled", "true",
-        "Whether to enable the token cache.", false),
-    ACCESS_TOKEN_CACHE_CLASS_NAME("azure.accessTokenCacheClassName",
-        "The given class name of a AccessToken cache.", false);
+        "Whether to enable the token cache.", false);
 
     String propertyKey;
     String defaultValue;

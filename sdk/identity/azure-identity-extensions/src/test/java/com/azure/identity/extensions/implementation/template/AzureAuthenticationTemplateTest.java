@@ -6,6 +6,7 @@ package com.azure.identity.extensions.implementation.template;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.identity.extensions.implementation.enums.AuthProperty.GET_TOKEN_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,6 +80,40 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
+    void testTokenCredentialFromCache() {
+        Properties properties = new Properties();
+        properties.setProperty("azure.tokenCredentialProviderClassName",
+            "com.azure.identity.extensions.implementation.credential.provider.DefaultCacheTokenCredentialProvider");
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        template.init(properties);
+
+        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+        template2.init(properties);
+
+        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
+
+        assertNotNull(template.getTokenCredentialProvider().get(providerOptions));
+        assertNotNull(template2.getTokenCredentialProvider().get(providerOptions));
+        assertEquals(template.getTokenCredentialProvider().get(providerOptions), template2.getTokenCredentialProvider().get(providerOptions));
+    }
+
+    @Test
+    void testTokenCredentialFromNonCache() {
+        Properties properties = new Properties();
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        template.init(properties);
+
+        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+        template2.init(properties);
+
+        TokenCredentialProviderOptions providerOptions = new TokenCredentialProviderOptions(properties);
+
+        assertNotNull(template.getTokenCredentialProvider().get(providerOptions));
+        assertNotNull(template2.getTokenCredentialProvider().get(providerOptions));
+        assertNotEquals(template.getTokenCredentialProvider().get(providerOptions), template2.getTokenCredentialProvider().get(providerOptions));
+    }
+
+    @Test
     void testGetTokenAsPassword() throws InterruptedException {
         // setup
         String token1 = "token1";
@@ -109,6 +145,92 @@ class AzureAuthenticationTemplateTest {
 
             assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    void testGetTokenAsPasswordFromNonCache() throws InterruptedException {
+        int tokenExpireSeconds = 3;
+        AtomicInteger tokenIndex1 = new AtomicInteger();
+        AtomicInteger tokenIndex2 = new AtomicInteger(1);
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
+        when(mockTokenCredential.getToken(any())).thenAnswer(u -> {
+            if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                return Mono.just(new AccessToken("token1-" + (tokenIndex1.getAndIncrement()), offsetDateTime));
+            } else {
+                return Mono.just(new AccessToken("token2-" + (tokenIndex2.getAndIncrement()), offsetDateTime.plusSeconds(tokenExpireSeconds)));
+            }
+        });
+        // mock
+        try (MockedConstruction<DefaultTokenCredentialProvider> ignored
+                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+        })) {
+            Properties properties = new Properties();
+            properties.setProperty("azure.accessTokenCacheEnabled", "false");
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+
+            AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+            template2.init(properties);
+
+            verifyNonCacheToken("token1-", 0, template);
+            verifyNonCacheToken("token1-", 5, template2);
+            TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
+            verifyNonCacheToken("token2-", 1, template);
+            verifyNonCacheToken("token2-", 6, template2);
+        }
+    }
+
+    private static void verifyNonCacheToken(String tokenPrefix,
+                                           int tokenInitialValue,
+                                           AzureAuthenticationTemplate template) {
+        for (int i = 0; i < 5; i++) {
+            assertEquals(tokenPrefix + (tokenInitialValue + i), template.getTokenAsPassword());
+        }
+    }
+
+    @Test
+    void testGetTokenAsPasswordFromCache() throws InterruptedException {
+        int tokenExpireSeconds = 3;
+        AtomicInteger tokenIndex1 = new AtomicInteger();
+        AtomicInteger tokenIndex2 = new AtomicInteger();
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusSeconds(tokenExpireSeconds);
+        when(mockTokenCredential.getToken(any())).thenAnswer(u -> {
+            if (OffsetDateTime.now().isBefore(offsetDateTime)) {
+                return Mono.just(new AccessToken("token1-" + (tokenIndex1.getAndIncrement()), offsetDateTime));
+            } else {
+                return Mono.just(new AccessToken("token2-" + (tokenIndex2.getAndIncrement()), offsetDateTime.plusSeconds(tokenExpireSeconds)));
+            }
+        });
+        // mock
+        try (MockedConstruction<DefaultTokenCredentialProvider> ignored
+                 = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+            when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+        })) {
+            Properties properties = new Properties();
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+
+            AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
+            template2.init(properties);
+
+            verifyCacheToken("token1-0", template, template2);
+            TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
+            verifyCacheToken("token2-0", template, template2);
+            assertEquals(template.getTokenAsPassword(), template2.getTokenAsPassword());
+        }
+    }
+
+    private static void verifyCacheToken(String tokenValue, AzureAuthenticationTemplate template, AzureAuthenticationTemplate template2) {
+        for (int i = 0; i < 5; i++) {
+            assertEquals(tokenValue, template.getTokenAsPassword());
+        }
+        for (int i = 0; i < 5; i++) {
+            assertEquals(tokenValue, template2.getTokenAsPassword());
+        }
+        assertEquals(template.getTokenAsPassword(), template2.getTokenAsPassword());
     }
 
     @Test

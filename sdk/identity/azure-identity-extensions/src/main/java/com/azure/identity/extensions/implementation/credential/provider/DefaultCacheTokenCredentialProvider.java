@@ -5,9 +5,9 @@ package com.azure.identity.extensions.implementation.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.extensions.implementation.cache.IdentityCache;
-import com.azure.identity.extensions.implementation.cache.IdentityCacheHelper;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.identity.extensions.implementation.utils.StringUtils.getTokenCredentialCacheKey;
 
@@ -18,9 +18,9 @@ public class DefaultCacheTokenCredentialProvider implements TokenCredentialProvi
 
     private static final ClientLogger LOGGER = new ClientLogger(DefaultCacheTokenCredentialProvider.class);
 
-    private final TokenCredentialProviderOptions options;
+    private static final ConcurrentHashMap<String, TokenCredential> CACHE = new ConcurrentHashMap<>();
 
-    private final IdentityCache<String, TokenCredential> tokenCredentialCache;
+    private final TokenCredentialProviderOptions options;
 
     private final DefaultTokenCredentialProvider defaultProvider;
 
@@ -29,30 +29,21 @@ public class DefaultCacheTokenCredentialProvider implements TokenCredentialProvi
     }
 
     DefaultCacheTokenCredentialProvider(TokenCredentialProviderOptions options) {
-        this(options, null);
-    }
-
-    DefaultCacheTokenCredentialProvider(TokenCredentialProviderOptions options, IdentityCache<String, TokenCredential> tokenCredentialCache) {
         this.options = options;
-        if (tokenCredentialCache == null) {
-            this.tokenCredentialCache = IdentityCacheHelper.createTokenCredentialCacheInstance(options.getTokenCredentialCacheClassName());
-        } else {
-            this.tokenCredentialCache = tokenCredentialCache;
-        }
         this.defaultProvider = new DefaultTokenCredentialProvider(this.options);
     }
 
     @Override
     public TokenCredential get() {
         String tokenCredentialCacheKey = getTokenCredentialCacheKey(options);
-        TokenCredential cachedTokenCredential = tokenCredentialCache.get(tokenCredentialCacheKey);
+        TokenCredential cachedTokenCredential = CACHE.get(tokenCredentialCacheKey);
         if (cachedTokenCredential != null) {
             LOGGER.verbose("Returning token credential from cache.");
             return cachedTokenCredential;
         }
 
         TokenCredential tokenCredential = defaultProvider.get();
-        tokenCredentialCache.put(tokenCredentialCacheKey, tokenCredential);
+        CACHE.put(tokenCredentialCacheKey, tokenCredential);
         LOGGER.verbose("The token credential cached.");
         return tokenCredential;
     }
