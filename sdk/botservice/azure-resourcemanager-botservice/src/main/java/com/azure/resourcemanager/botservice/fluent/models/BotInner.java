@@ -37,7 +37,7 @@ public final class BotInner extends Resource {
     private Kind kind;
 
     /*
-     * Entity Tag.
+     * Entity Tag
      */
     private String etag;
 
